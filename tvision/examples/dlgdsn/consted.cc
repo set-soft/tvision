@@ -8,6 +8,7 @@
     
     Heavily modified by Salvador E. Tropea to compile without warnings.
     Some warnings were in fact bugs.
+    For gcc 2.95.x and then 3.0.1.
     
  ***************************************************************************/
 
@@ -154,7 +155,7 @@ static Boolean identMatch(void * item, void * ident)
 
 static Boolean valueMatch(void * item, void *value)
 {
-   return (((TConstData *)item)->Value == (int &)*value);
+   return (((TConstData *)item)->Value == (int)value);
 }
 
 int TConstCollection::getIndex(char * Ident)
@@ -190,22 +191,22 @@ void TConstCollection::freeItem(void * item)
 
 static int compareOrder(const void * key1, const void * key2)
 {
-   TConstData * v1 = (TConstData *&)*key1;
-   TConstData * v2 = (TConstData *&)*key2;
+   TConstData * v1 = (TConstData *)key1;
+   TConstData * v2 = (TConstData *)key2;
    return (v1->Order > v2->Order) - (v1->Order < v2->Order);
 }
 
 static int compareId(const void * key1, const void * key2)
 {
-   TConstData * v1 = (TConstData *&)*key1;
-   TConstData * v2 = (TConstData *&)*key2;
+   TConstData * v1 = (TConstData *)key1;
+   TConstData * v2 = (TConstData *)key2;
    return strcmp(v1->Id, v2->Id);
 }
 
 static int compareValue(const void * key1, const void * key2)
 {
-   TConstData * v1 = (TConstData *&)*key1;
-   TConstData * v2 = (TConstData *&)*key2;
+   TConstData * v1 = (TConstData *)key1;
+   TConstData * v2 = (TConstData *)key2;
    return (v1->Value > v2->Value) - (v1->Value < v2->Value);
 }
 
@@ -285,7 +286,7 @@ void TConstEdit::Edit(TConstCollection * AItems)
 void TConstEdit::handleEvent(TEvent& event)
 {
    ushort sort;
-   int tmp;
+   int tmp=0;
    TDialog * dlg;
    
    struct {
@@ -303,7 +304,7 @@ void TConstEdit::handleEvent(TEvent& event)
       case cmListItemFocused:
          if ( cList )
          {
-            tmp = ( (TConstData &) * (cList->at(List->focused)) ).Value;
+            tmp = ((TConstData *)(cList->at(List->focused)))->Value;
             LVal->setText("Value:\n%i (%x)", tmp, tmp);
          }
          break;
@@ -312,7 +313,7 @@ void TConstEdit::handleEvent(TEvent& event)
          cList->sort(BY_VALUE);
          if ( (cList->getCount() > 0) && (List->focused >= 0) )
          {
-            tmp = ( (TConstData &) * (cList->at(List->focused)) ).Value;
+            tmp = ((TConstData *)(cList->at(List->focused)))->Value;
             sprintf(datarec.value, "%i", tmp);
             strcpy(datarec.id_value,
              ((TConstData *)(cList->at(List->focused)))->Id );
@@ -352,7 +353,7 @@ void TConstEdit::handleEvent(TEvent& event)
          memset(&datarec, 0, sizeof(datarec));
          if ((cList->getCount() > 0) && (List->focused >= 0))
          {
-            tmp = ( (TConstData &) * (cList->at(cList->getCount()-1)) ).Value;
+            tmp = ( (TConstData *)(cList->at(cList->getCount()-1)) )->Value;
             tmp++;
             sprintf(datarec.value, "%i", tmp);
          }

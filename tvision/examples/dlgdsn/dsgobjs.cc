@@ -8,6 +8,7 @@
     
     Heavily modified by Salvador E. Tropea to compile without warnings.
     Some warnings were in fact bugs.
+    For gcc 2.95.x and then 3.0.1.
     
  ***************************************************************************/
 
@@ -798,11 +799,11 @@ char * TDsgObj::getScript(ushort ScriptType)
 
 void TDsgObj::setupView(TView * View)
 {
-   TDsgObjData& editData = (TDsgObjData &)*attributes;
-   View->options = editData.options;
-   View->growMode = editData.growMode;
-   View->dragMode = editData.dragMode;
-   View->state = editData.state;
+   TDsgObjData *editData = (TDsgObjData *)attributes;
+   View->options = editData->options;
+   View->growMode = editData->growMode;
+   View->dragMode = editData->dragMode;
+   View->state = editData->state;
 }
 
 bool TDsgObj::tabStop()
@@ -833,7 +834,7 @@ TDDialog::TDDialog(): TDialog( TRect(0, 6, 55, 23),
              TWindowInit(TDDialog::initFrame),
              TDsgObj( vtDialog )
 {
-   setViewData((TDsgObjData &)*attributes);
+   setViewData(*((TDsgObjData *)attributes));
    defaultData.flags = flags;
    ObjEdit->setObjData(this);
    flags &= ~wfClose;
@@ -1012,7 +1013,7 @@ static void saveObject(void * v, void * d)
    }
 #endif
 #if 1
-   if (dsg) SaveObject((ofpstream &)*d, dsg->d);
+   if (dsg) SaveObject(*((ofpstream *)d), dsg->d);
 #endif
 }
 
@@ -1101,7 +1102,7 @@ Boolean TDDialog::loadFromFile(const char * FileName)
 TDLabel::TDLabel(const TRect& bounds):
          TLabel(bounds, _("~L~abel"), EditDlg),
          TDsgObj( vtLabel )
-         { setViewData((TDsgObjData &)*attributes); }
+         { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDLabel::shutDown() { _shutdown_(TLabel); }
 
@@ -1143,7 +1144,7 @@ TView * TDLabel::createView(TView * aLink)
 TDInputLine::TDInputLine(const TRect& bounds):
     TInputLine(bounds, 0),
     TDsgObj( vtInput )
-    { setViewData((TDsgObjData &)*attributes); }
+    { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDInputLine::shutDown() { _shutdown_(TInputLine); }
 
@@ -1183,7 +1184,7 @@ TView * TDInputLine::createView(TView * aOwner)
 TDMemo::TDMemo(const TRect& bounds):
          TMemo(bounds, 0, 0, 0, 0),
          TDsgObj( vtMemo )
-         { setViewData((TDsgObjData &)*attributes); }
+         { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDMemo::shutDown() { _shutdown_(TMemo); }
 
@@ -1220,7 +1221,7 @@ TView * TDMemo::createView(TView * aOwner)
 TDStaticText::TDStaticText(const TRect& bounds):
               TStaticText(bounds, "StaticText"),
               TDsgObj( vtStatic )
-              { setViewData((TDsgObjData &)*attributes); }
+              { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDStaticText::shutDown() { _shutdown_(TStaticText); }
 
@@ -1265,7 +1266,7 @@ TView * TDStaticText::createView(TView * aOwner)
 TDButton::TDButton(const TRect& bounds):
           TButton(bounds, "~O~k", 0, 0),
           TDsgObj( vtButton )
-          { setViewData((TDsgObjData &)*attributes); }
+          { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDButton::shutDown() { _shutdown_(TButton); }
 
@@ -1310,7 +1311,7 @@ TView * TDButton::createView(TView * aOwner)
 TDListBox::TDListBox(const TRect& bounds):
            TListBox(bounds, 1, 0),
            TDsgObj( vtListBox )
-           { setViewData((TDsgObjData &)*attributes); }
+           { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDListBox::shutDown() { _shutdown_(TListBox); }
 
@@ -1358,7 +1359,7 @@ TView * TDListBox::createView(TView * aOwner)
 TDRadioButtons::TDRadioButtons(const TRect& bounds, TSItem * aStrings):
                 TRadioButtons(bounds, aStrings),
                 TDsgObj( vtRadioButton )
-                { setViewData((TDsgObjData &)*attributes); }
+                { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDRadioButtons::shutDown() { _shutdown_(TRadioButtons); }
 
@@ -1397,7 +1398,7 @@ TView * TDRadioButtons::createView(TView * aOwner)
 TDCheckBoxes::TDCheckBoxes(const TRect& bounds, TSItem * aStrings):
               TCheckBoxes(bounds, aStrings),
               TDsgObj( vtCheckBox )
-              { setViewData((TDsgObjData &)*attributes); }
+              { setViewData(*((TDsgObjData *)attributes)); }
 
 void TDCheckBoxes::shutDown() { _shutdown_(TCheckBoxes); }
 
@@ -1437,7 +1438,7 @@ TView * TDCheckBoxes::createView(TView * aOwner)
 TVScrollBar::TVScrollBar(const TRect& bounds):
              TScrollBar(bounds),
              TDsgObj( vtVScroll )
-             { setViewData((TDsgObjData &)*attributes); }
+             { setViewData(*((TDsgObjData *)attributes)); }
 
 void TVScrollBar::shutDown() { _shutdown_(TScrollBar); }
 
@@ -1468,7 +1469,7 @@ TView * TVScrollBar::createView(TView * aOwner)
 THScrollBar::THScrollBar(const TRect& bounds):
              TScrollBar(bounds),
              TDsgObj( vtHScroll )
-             { setViewData((TDsgObjData &)*attributes); }
+             { setViewData(*((TDsgObjData *)attributes)); }
 
 void THScrollBar::shutDown() { _shutdown_(TScrollBar); }
 
