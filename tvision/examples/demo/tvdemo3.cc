@@ -39,8 +39,6 @@
 #include "demohelp.h"
 #include "fileview.h"
 
-#include <help.h>
-
 //
 // Mouse Control Dialog Box function
 //
