@@ -1024,7 +1024,7 @@ typedef unsigned long  ulong;
   #define Uses_CLY_IfStreamGetLine 1
  #endif
 
- #if __BORLANDC__>0x550
+ #if __BORLANDC__>=0x560
   // BC++ 5.6 (Builder 6)
   #define CLY_ISOCpp98 1
   #define CLY_DONT_DEFINE_MIN_MAX 1
@@ -1034,6 +1034,7 @@ typedef unsigned long  ulong;
   // Note: that 0777 fails to create the file and 0666 creates a hidden file.
   #define CLY_FBOpenProtDef  0
  #else
+  // BC++ 5.5 and 5.5.1 (Free command line tools)
   #define CLY_NewFBFromFD(buf,f) buf=new filebuf(f)
   #define CLY_FBOpenProtDef  0666
  #endif
