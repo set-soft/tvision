@@ -32,7 +32,7 @@ CXX=cl /nologo /TP
 
 OBJS=@TV_OBJS_MSVC@
 
-tvex.exe: libtv.lib
+tvex: libtv.lib
 	$(CXX) $(CXXFLAGS) tvex.cc -link libtv.lib user32.lib
 
 {$(SRC1)}.cc{$(OBJDIR)}.o:

@@ -1,4 +1,12 @@
-$Log$.
+$Log$
+Revision 2.206  2002/07/03 15:39:44  set
+* Modified: [Win32/WinNT] to detect how many buttons have the mouse.
+Lamentably it isn't reliable at all. My mouse generate mouse events when
+the middle button is pressed, but Windows insists that's a 2 buttons mouse.
+I also strange that IE supports the wheel, the help viewer don't and the
+wheel doesn't generate mouse events ... really strange. May be Win98 SE is
+tool old to support mouse wheels properly.
+
 Revision 2.205  2002/07/03 15:38:47  set
 * Added: [DOS] PollMouse option to the tvrc to force mouse polling.
 
