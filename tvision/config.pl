@@ -332,7 +332,7 @@ elsif ($i=~'--real-prefix=(.*)')
       }
     # For compatibility with autoconf:
     # LinCS/tiger - ignore some autoconf generated params
-    elsif (($i=~'--cache-file=(.*)') || ($i=~'--srcdir=(.*)'))
+    elsif (($i=~'--cache-file=(.*)') || ($i=~'--srcdir=(.*)') || ($i=~'--enable-ltdl-convenience'))
       {
       }
     else
