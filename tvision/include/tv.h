@@ -13,6 +13,13 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #define _TV_VERSION 0x0103
 
+// SET: Internal release number. Used to check the version of the release
+// in programs that are very sensitive, like my editor.
+#define TV_MAJOR_VERSION  1
+#define TV_MIDDLE_VERSION 0
+#define TV_MINOR_VERSION  8
+#define TV_VERSION "1.0.8"
+
 #define Uses_EventCodes
 #define Uses_ViewCommands
 #define Uses_ipstream
