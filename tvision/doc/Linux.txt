@@ -267,4 +267,3 @@ patching explained in 2.
   An example of configuration file is shown in 3.4.
   Read the ConfigFile.txt for more information about configuration files.
 
-
