@@ -61,7 +61,7 @@ int
 CLY_getopt_long(int argc, char *const *argv, const char *options,
                 const struct CLY_option *long_options, int *opt_index)
 {
-  return _getopt_internal (argc, argv, options, long_options, opt_index, 0);
+  return CLY_getopt_internal (argc, argv, options, long_options, opt_index, 0);
 }
 
 /* Like getopt_long, but '-' as well as '--' can indicate a long option.
@@ -73,7 +73,7 @@ int
 CLY_getopt_long_only(int argc, char *const *argv, const char *options,
                      const struct CLY_option *long_options, int *opt_index)
 {
-  return _getopt_internal (argc, argv, options, long_options, opt_index, 1);
+  return CLY_getopt_internal (argc, argv, options, long_options, opt_index, 1);
 }
 
 

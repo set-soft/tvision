@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.230  2002/07/22 20:40:53  set
+* Added: [MSVC] some code to solve link problems.
+
 Revision 2.229  2002/07/22 19:35:06  set
 * Updated: fontcoll.cc dependencies.
 
