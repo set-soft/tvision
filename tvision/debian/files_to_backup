@@ -1,4 +1,5 @@
 compat/compat.mak
+examples/bhelp/thelp.mak
 examples/clipboard/test.mak
 examples/demo/demo.mak
 examples/desklogo/desklogo.mak

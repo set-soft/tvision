@@ -1,3 +1,10 @@
+rhtvision (2.0.1-0.2) unstable; urgency=low
+
+  * New upstream version, not yet stable. CVS dated 13 Dec 2002.
+  * Added examples/bhelp/thelp.mak to files_to_backup.
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Sat, 14 Dec 2002 19:22:09 -0300
+
 rhtvision (2.0.1-0.1) unstable; urgency=low
 
   * New upstream version, near to be stable. CVS dated 3 Dec 2002.
