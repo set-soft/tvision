@@ -11,7 +11,11 @@ char *gettext__(const char *);
 # if !defined(__GLIBC__) || __GLIBC__ < 2
 # define gettext__ gettext
 # else
+# if (__GLIBC__==2 && __GLIBC_MINOR__>0) || __GLIBC__>2
+# define gettext__ gettext
+# else
 # define gettext__ __gettext
+# endif
 # endif
 #endif
 
