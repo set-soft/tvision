@@ -1,4 +1,22 @@
-$Log$
+$Log$.
+Revision 2.462  2003/05/29 18:24:24  set
+* Modified: Now the global function destroy is called CLY_destroy, new code
+should use the function with this name. For compatibility most targets
+defines CLY_destroy == destroy. Exception: BC++ 5.6 which have an STL
+function called destroy that collides.
+* Added: [BC++] Support for BC++ 5.6 strandard C++ library. It doesn't
+have filebuf::filebuf(int) (even when the manual clearly states it is
+there). But it have filebuf::open(int). It also have a really bizarre
+interpretation of the field used for file rights (0777 doesn't create a
+file and 0666 creates a hidden file???!!).
+* Added: A compatlayer define to avoid defining min/max. Looks like STL
+defines them in a way that collides with the current definitions and that
+the STL definition is ok for TV. So now targets can define
+CLY_DONT_DEFINE_MIN_MAX to 1 and avoid the collisions. It will most
+probably help Mike to compile with MSVC 7.0, was needed for BC++ 5.6.
+* Added: [BC++] Some code to the example to print the compiler version and
+to test the streams.
+
 Revision 2.461  2003/05/23 16:19:28  set
 * Added: Version to the configuration tool for easy detecttion.
 
