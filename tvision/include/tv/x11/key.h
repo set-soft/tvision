@@ -1,7 +1,7 @@
 /* X11 keyboard handler routines header.
-   Copyright (c) 2001 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
-#if defined(TVOS_UNIX) && defined(HAVE_X11) && !defined(X11KEY_HEADER_INCLUDED)
+#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11) && !defined(X11KEY_HEADER_INCLUDED)
 #define X11KEY_HEADER_INCLUDED
 struct TEvent;
 

@@ -31,7 +31,7 @@
 #include <tv/configtv.h>
 
 // That's a nasty side effect: X defines Boolean!
-#if defined(TVOS_UNIX) && defined(HAVE_X11)
+#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11)
  #include <X11/Xmu/Atoms.h>
 #endif
 
@@ -48,7 +48,7 @@
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(TVOS_UNIX) && defined(HAVE_X11)
+#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11)
 
 // X11 defines their own values
 #undef True
