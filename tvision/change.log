@@ -1,4 +1,15 @@
-$Log$
+$Log$.
+Revision 2.415  2003/04/15 14:42:22  set
+* Patches from Mike:
+* Added: [QNX] pterm specific functions for more keycombination detect. Now
+running TV app under pterm have the same functionality as running under raw
+console.
+* Fixed: [QNX] russian text inputing, tested on CP866/WIn1251/KOI8-R.
+* Added: [QNX] more to QNX.txt ;) will be much more in future.
+* Updated: [QNX] package generation data.
+* Fixed: Lack of check in xgettext and recode tests and wrong link to dummy
+intl lib.
+
 Revision 2.414  2003/04/10 21:34:40  set
 * Fixed: TVCodePage::FillGenericRemap must be ready to be called even
 before the code page module is initialized.
