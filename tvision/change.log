@@ -1,8 +1,11 @@
-$Log$.
+$Log$
+Revision 2.399.2.97  2003/06/10 15:17:55  set
+* Fixed: The dependencies to reflect the fact we use .umks.
+
 Revision 2.399.2.96  2003/06/10 15:17:30  set
 * Modified: The maintainance rules to maintain examples/*/*.umk because
 they are on CVS and not the .imk.
-.
+
 Revision 2.399.2.95  2003/06/05 19:57:44  set
 * Fixed: When genimk fails it must delete the partially generated .imk and
 .umk to force a new generation after fixing the problems.

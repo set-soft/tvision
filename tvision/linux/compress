@@ -26,16 +26,26 @@ if ($r!~/$Version/)
   }
 
 $doBinary=0;
+$useBzip2=0;
+$useVersioInSourceDir=0;
 foreach $i (@ARGV)
   {
    if ($i eq '--binary')
      {
       $doBinary=1;
      }
+   elsif ($i eq '--use-bzip2')
+     {
+      $useBzip2=1;
+     }
+   elsif ($i eq '--dir-version')
+     {
+      $useVersioInSourceDir=1;
+     }
    else
      {
       print "Unknown command line option: $i\n";
-      print "Usage: compres.pl [--binary]\n\n";
+      print "Usage: compres.pl [--binary] [--use-bzip2] [--dir-version]\n\n";
      }
   }
 
@@ -55,14 +65,21 @@ $r=cat('../debian/control.in');
 $r=~s/\@version\@/$Version/g;
 replace('../debian/control',$r);
 
+$ext=$useBzip2 ? '.bz2' : '.gz';
+$compresor=$useBzip2 ? 'bzip2 -9c' : 'gzip -9c';
+$dir='tvision'           unless $useVersioInSourceDir;
+$dir='librhtv-'.$Version if     $useVersioInSourceDir; # Mainly for the RPM
+
 # Generate the tar files
-$bindist="rhtvision-$Version.bin.i386.elf.static.linux.tar.gz";
-$binddist="rhtvision-$Version.bin.i386.elf.dynamic.linux.tar.gz";
-$srcdist="rhtvision-$Version.src.tar.gz";
+$bindist="rhtvision-$Version.bin.i386.elf.static.linux.tar$ext";
+$binddist="rhtvision-$Version.bin.i386.elf.dynamic.linux.tar$ext";
+$srcdist="rhtvision-$Version.src.tar$ext";
 chdir('../..');
 unlink($srcdist,$bindist,$binddist);
 
-open(FIL,'tvision/lista');
+`mv tvision $dir` if $useVersioInSourceDir;
+
+open(FIL,$dir.'/lista');
 @files=<FIL>;
 close(FIL);
 $r='';
@@ -73,25 +90,27 @@ foreach $i (@files)
      {
       $i=substr($i,1);
      }
-   $r.='tvision/'.$i.' ';
+   $r.=$dir.'/'.$i.' ';
   }
 # Add example makefiles
-@files=glob('tvision/examples/*/*.?mk');
+@files=glob($dir.'/examples/*/*.?mk');
 $r.=' '.join(' ',@files);
-@files=glob('tvision/examples/*/*/*.?mk');
+@files=glob($dir.'/examples/*/*/*.?mk');
 $r.=' '.join(' ',@files);
-@files=glob('tvision/examples/*/*.mkf');
+@files=glob($dir.'/examples/*/*.mkf');
 $r.=' '.join(' ',@files);
-@files=glob('tvision/examples/*/*/*.mkf');
+@files=glob($dir.'/examples/*/*/*.mkf');
 $r.=' '.join(' ',@files);
 # Sort the list
 @files=split(/ /,$r);
 @files=sort(@files);
 $r=join(' ',@files);
 
-system("tar -zcvf $srcdist $r");
-system("tar -zcvf $bindist --exclude=*CVS `cat tvision/linux/inclubin.txt`") if $doBinary;
-system("tar -zcvf $binddist --exclude=*CVS `cat tvision/linux/includbi.txt`") if $doBinary;
+print "$r\n" if $useVersioInSourceDir;
+system("tar -cvf - $r | $compresor > $srcdist");
+system("tar -cvf - --exclude=*CVS `cat $dir/linux/inclubin.txt` | $compresor > $bindist")  if $doBinary;
+system("tar -cvf - --exclude=*CVS `cat $dir/linux/includbi.txt` | $compresor > $binddist") if $doBinary;
+`mv $dir tvision` if $useVersioInSourceDir;
 
 # Generate the lsm distribution file (Linux Software Map entry).
 $lsm=
