@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.547  2004/06/23 19:40:51  set
+* Modified: [MSVC] Use of /Tp<file> instead of /TP in makefiles. It looks
+like MSVC 4.0 only supports it. Reported by by Arnold Wiegert.
+.
 Revision 2.546  2004/06/14 14:43:39  set
 - From valgrind:
 * Fixed: TVIntl::emptySt() new/delete[] missmatch

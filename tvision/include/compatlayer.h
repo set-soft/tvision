@@ -122,6 +122,8 @@ typedef unsigned long  ulong;
 #define IOSTREAM_HEADER <iostream.h>
 #undef  IOCTL_HEADER
 #define IOCTL_HEADER    <sys/ioctl.h>
+#undef  NEW_HEADER
+#define NEW_HEADER      <new>
 
 #ifdef Uses_ioctl
  #undef  Include_ioctl
@@ -1105,6 +1107,13 @@ typedef unsigned long  ulong;
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
+ #if _MSC_VER <= 1000
+   // MSVC 4.0 doesn't have it and reports version 10.0
+   #undef CLY_Have_snprintf
+   // Only new.h exists
+   #undef  NEW_HEADER
+   #define NEW_HEADER      <new.h>
+ #endif
  #ifndef CLY_BooleanDefined
   #define CLY_BooleanDefined 1
   /* Simple Boolean type */
