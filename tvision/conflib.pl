@@ -540,7 +540,7 @@ sub FindCFLAGS
     $ret.=' -pipe' if ($OS eq 'UNIX');
     # Looks like that's common and some sysadmins doesn't configure gcc to
     # look there:
-    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSf eq 'FreeBSD');
+    $ret.=' -I/usr/local/include -L/usr/local/lib' if ($OSf eq 'FreeBSD');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
