@@ -1,3 +1,9 @@
+rhtvision (2.0.3-0.1) unstable; urgency=low
+
+  * New version automatically modified by version update scripts
+
+ -- Salvador E. Tropea (SET) <salvador@inti.gov.ar>  Fri, 24 Sep 2004 10:36:01 -0300
+
 rhtvision (2.0.2-1) unstable; urgency=low
 
   * Upstream released a new fixed version! CVS release 2.493 2003/07/30
