@@ -131,18 +131,3 @@ install -m 0644 doc/*.txt doc/*.html  $RPM_BUILD_ROOT/usr/share/doc/packages/lib
   The same install script worked before.
   Thanks to Ernas M. Jamil for pointing it out.
 
-
-
--------------------------------------------------------
-This SF.NET email is sponsored by: eBay
-Great deals on office technology -- on eBay now! Click here:
-http://adfarm.mediaplex.com/ad/ck/711-11697-6916-5
-_______________________________________________
-Tvision-checkins mailing list
-Tvision-checkins@lists.sourceforge.net
-https://lists.sourceforge.net/lists/listinfo/tvision-checkins
-
-
---------------020404040800070604030509--
-
-

@@ -1,8 +1,16 @@
-$Log$.
+$Log$
+Revision 2.478  2003/06/13 20:49:30  set
+* Added: Files and instructions to create RPMs. They are bbcat's .spec
+files with some additions and corrections. Things I'm not sure they will
+remain:
+1) Need of tar.bz2 file.
+2) Use of package-version dir.
+3) The package have a name different than Debian package.
+
 Revision 2.477  2003/06/09 18:54:50  set
 * Modified: The maintainance rules to maintain examples/*/*.umk because
 they are on CVS and not the .imk.
-.
+
 Revision 2.476  2003/06/05 19:59:22  set
 * Fixed: When genimk fails it must delete the partially generated .imk and
 .umk to force a new generation after fixing the problems.
