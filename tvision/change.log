@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.433  2003/05/05 13:26:35  set
+* Added: A warning to configset.bat because people thinks thats "set
+configuration" and not "configuration for SET" ;-)
+* Added: Now if shell utils aren't installed (I think djgpp is the only
+that can lack it) the configuration stops and explains the problem.
+* Fixed: [DOS] snprinf and dos/mouse code needed strings.h when using SSC.
+
 Revision 2.432  2003/04/30 18:18:49  set
 * Fixed: When doing incremental searches in sorted list boxes some times
 the cursor disapeared.
