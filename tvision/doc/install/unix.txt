@@ -1,16 +1,18 @@
   This file describes how to compile the package for UNIX systems using
 GNU tools. I personaly use "Debian GNU/Linux" but the code successfuly
-compiled for FreeBSD, QNX and Solaris. Instructions specific for Linux
-systems can be found in the doc/install/linux.txt but this instructions are
-also valid for Linux and in fact the Linux file refers to this one for the
-"manual" installation mechanism.
+compiled for Darwin, FreeBSD, NetBSD, OpenBSD, QNX, Solaris and Tru64.
+Instructions specific for Linux systems can be found in the
+doc/install/linux.txt but this instructions are also valid for Linux and
+in fact the Linux file refers to this one for the "manual" installation
+mechanism.
 
 $Id$
 
 1. INTRODUCTION
-2. CONFIGURING
-3. COMPILING
-4. INSTALLING
+2. IMPORTANT NOTE
+3. CONFIGURING
+4. COMPILING
+5. INSTALLING
 
 
 1. INTRODUCTION
@@ -18,12 +20,21 @@ $Id$
   FreeBSD systems seems to have all the needed GNU tools (GNU/FreeBSD ;-).
 FreeBSD details were contributed by Andrew 'Onyx' Shevtsov (miniEleph)
 <nyxo@dnuc.polyn.kiae.su>.
+  NetBSD and OpenBSD machines that I tested at Source Forge Compile Farm
+also have GNU tools available.
+  Darwin is the core of MacOS X 10.x, it have some bizarre GNU tools modified
+by Apple. So even when Darwin is an *BSD system it is a little bit
+complicated. The code included in the 2.0.3 release compiled ok.
   QNX systems are a little bit more problematic but they also contain the
 needed tools. QNX details were contributed by Mike Gorchak <mike@malva.ua>.
   Solaris doesn't have all the needed GNU tools so you must get them from
 internet. You should get at least make, gcc/g++ and perl, I'm not sure what
 else is needed. I have a Solaris 2.7 (Ultra 60 machine) at work with the
-needed tools installed.
+needed tools installed. I also succeed using Solaris 9 at Source Forge.
+  A user reported success using HP-UX, but I couldn't verify it (HP Test
+Drive problems).
+  I also succeed to compile using Tru64 (OSF1) v5.1b. But the installed GNU
+tools (from a package identified as TWWfsw) have some major limitations.
   If you are dealing with other UNIX box the first step will be to get the
 most common GNU tools used for development and then start trying. Contact me
 if you need help or want to contribute changes needed to compile for your
@@ -31,7 +42,24 @@ UNIX box.
   For a list of tools and libraries you should have in your system please read
 the doc/install/tools.txt file.
 
-2. CONFIGURING
+2. IMPORTANT NOTE
+
+  I noticed that a lot of UNIX machines that have GNU tools installed are
+wrongly configured. Here are some details you must check:
+
+A) The PATH must include the directory where GNU tools are installed. Some
+times the tools aren't installed in the same directory. So you have to
+double check that all the tools can be started without specifying its full
+path. Example (bash):
+$ export PATH=$PATH:/usr/local/bin
+
+B) All the support libraries must be in the linker path. This can be
+configured at system level or just using the LD_LIBRARY_PATH environment
+variable. I saw too much systems where you can't even create a simple C++
+program because the libraries aren't in the linker path. Example (bash):
+$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/opt/TWWfsw/gcc33r/lib
+
+3. CONFIGURING
 
   The first step is the configuration, this is a Perl script so you must have
 Perl in your system:
@@ -65,12 +93,12 @@ $ ./configset
   This enables some maintainance stuff that you'll need for development. The
 most important detail are header dependencies.
 
-3. COMPILING
+4. COMPILING
 
   Just use the make command. If your system must use gmake the configuration
 will inform it.
 
-4. INSTALLING
+5. INSTALLING
 
   Use the install target, you'll most probably need to switch to "root" to
 run this step:
