@@ -10,7 +10,7 @@
 #
 require "../miscperl.pl";
 
-GetVersion('..');
+GetVersion('../');
 
 $destination='/usr/lib';
 $intver=$Version;
@@ -19,7 +19,7 @@ unlink('tcedit.dst',glob('*.bkp'));
 $f=&cat('../linux/Makefile');
 &replaceVar($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
 &replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
-&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC -pipe');
+&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
 &replaceVar($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$intver -lc -lncurses -lm -lgpm");
 &replaceVar($f,'MAIN_TARGET=librhtv.a','MAIN_TARGET=librhtv.so.1.0');
 &replaceVar($f,'librhtv.a:: \$\(DEPS_0\)',"librhtv.so.$intver\:\: \$(DEPS_0)");
