@@ -31,8 +31,8 @@ protected:
  static int    CheckForWindowSize(void);
  static const char *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
- static void   SetDisPaletteColorsXT(int from, int number, TScreenColor *colors);
- static void   SetDisPaletteColorsEt(int from, int number, TScreenColor *colors);
+ static int    SetDisPaletteColorsXT(int from, int number, TScreenColor *colors);
+ static int    SetDisPaletteColorsEt(int from, int number, TScreenColor *colors);
 
  // Functions and members specific for this driver
  // Current cursor position

@@ -42,7 +42,7 @@ int         (*TDisplay::setWindowTitle)(const char *name)
 int         (*TDisplay::getBlinkState)()          =TDisplay::defaultGetBlinkState;
 void        (*TDisplay::getDisPaletteColors)(int from, int number, TScreenColor *colors)
                                                   =TDisplay::defaultGetDisPaletteColors;
-void        (*TDisplay::setDisPaletteColors)(int from, int number, TScreenColor *colors)
+int         (*TDisplay::setDisPaletteColors)(int from, int number, TScreenColor *colors)
                                                   =TDisplay::defaultSetDisPaletteColors;
 int           TDisplay::argc                      =0;
 char        **TDisplay::argv                      =NULL;
@@ -295,8 +295,9 @@ void TDisplay::defaultGetDisPaletteColors(int from, int number, TScreenColor *co
     *(colors++)=PC_BIOSPalette[from++];
 }
 
-void TDisplay::defaultSetDisPaletteColors(int , int , TScreenColor *)
+int TDisplay::defaultSetDisPaletteColors(int , int number, TScreenColor *)
 {
+ return number;
 }
 
 /*****************************************************************************

@@ -256,15 +256,16 @@ int TDisplayLinux::SetWindowTitle(const char *name)
  return 1;
 }
 
-void TDisplayLinux::SetDisPaletteColors(int from, int number, TScreenColor *colors)
+int TDisplayLinux::SetDisPaletteColors(int from, int number, TScreenColor *colors)
 {
  // Assume all will be ok
- memcpy(ActualPalette+from,colors,number*sizeof(TScreenColor));
+ int ret=number;
  while (number-- && from<16)
    {
     fprintf(stdout,"\E]P%1.1X%2.2X%2.2X%2.2X",cMap[from++],colors->R,colors->G,colors->B);
     colors++;
    }
+ return ret;
 }
 
 void TDisplayLinux::GetDisPaletteColors(int from, int number, TScreenColor *colors)

@@ -84,7 +84,7 @@ TScreenDOS::TScreenDOS()
  THWMouseDOS::Init();
  TGKeyDOS::Init();
 
- flags0=CodePageVar;
+ flags0=CodePageVar | CanSetPalette | CanReadPalette;
  user_mode=screenMode=startupMode=getCrtMode();
  SaveScreen();
  setCrtData();
@@ -97,6 +97,7 @@ void TScreenDOS::Resume()
 {
  if (!dual_display)
    {
+    GetDisPaletteColors(0,16,OriginalPalette);
     SaveScreen();
     //if (screenMode == 0xffff)
     //  screenMode = getCrtMode();
@@ -106,6 +107,7 @@ void TScreenDOS::Resume()
        setBlinkState();
     else
        setIntenseState();
+    SetDisPaletteColors(0,16,ActualPalette);
    }
  else
    {
@@ -130,6 +132,7 @@ void TScreenDOS::Suspend()
    {
     wasBlink=getBlinkState();
     RestoreScreen();
+    SetDisPaletteColors(0,16,OriginalPalette);
    }
 }
 

@@ -1,6 +1,12 @@
 /* X11 screen routines header.
    Copyright (c) 2001 by Salvador E. Tropea (SET)
-   Covered by the GPL license. */
+   Covered by the GPL license.
+
+   ToDo:
+   * The SetDisPaletteColors does a redraw, it should be avoided, at least
+   for 8 bpp modes, BTW they are untested.
+*/
+
 #include <tv/configtv.h>
 
 #if defined(TVOS_UNIX) && defined(HAVE_X11)
@@ -644,7 +650,7 @@ const char *TScreenX11::getWindowTitle(void)
  return 0;
 }
 
-void TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
+int TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
 {
  XColor query;
  int i;
@@ -666,12 +672,13 @@ void TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
     XFreeColors(disp,cMap,colorMap+from,i,0);
     // Copy the new ones
     memcpy(colorMap+from,newMap,sizeof(ulong)*i);
-    // Reflect it in the current map
-    memcpy(ActualPalette+from,colors,sizeof(TScreenColor)*i);
+    // Force a redraw. This is not needed for 8 bpp.
+    // Is just a dirty hack.
     unsigned y,off;
     for (y=0,off=0; y<(unsigned)maxY; y++,off+=maxX)
         redrawBuf(0,y,maxX,off);
    }
+ return i;
 }
 
 /*****************************************************************************
