@@ -6,7 +6,7 @@ The small sections are:
 2. Notes about the package
 3. Compilation and use
 4. Linux dynamic libraries
-5. Libraries needed
+5. Libraries and tools needed
 6. Examples
 7. How to submit a patch
 8. Contact information
@@ -19,9 +19,38 @@ The small sections are:
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
-ftp://ftp.borland.com/pub/borlandcpp/devsupport/archive/turbovision/tv.zip
+ftp://ftp.inprise.com/pub/borlandcpp/devsupport/archive/turbovision/tv.zip
 
-  Look in the borland.txt file for more information.
+  Look in the borland.txt file for more information. Additionally here is
+what Inprise says about this package:
+
+URL: http://www.inprise.com/devsupport/bcppbuilder/faq/QNA906.html
+------------------------------------------------------------------------------
+Question and Answer Database
+
+QNA        :Turbo Vision
+Category   :C/C++ Language Issues
+Platform   :Windows95
+Product   :C++Builder  ALL
+
+Question:
+Where can I find the public domain version of Turbo Vision?
+
+Answer:
+It can be found at
+ftp.inprise.com/pub/borlandcpp/devsupport/archive/turbovision/
+
+the turbo vision libraries are in the tv.zip archve, the rest of the 
+files are examples.
+
+7/2/1998 10:32:32 AM
+------------------------------------------------------------------------------
+  So according to Inprise web tv.zip is a Public Domain version.
+<Clarification>
+  I added this small text because some people have doubts about copyrights
+issues.
+</Clarification>
+
   They were heavily patched to work with gcc. Some patch fixes bugs, others
 changes the behavior of things limited to 16 bits values, the resulting
 TVision isn't 100% compatible with the original. See the examples/porting.txt
@@ -83,12 +112,25 @@ Then $(TVISION)/include is the include directory and $(TVISION)/linux or
 $(TVISION)/djgpp is the library path.
 
   I use gcc 2.8.0 under DOS so the library is by default compiled with
--fno-exceptions, -fno-rtti and -funsigned-char so you should use these
-settings. If you don't like these settings change it before compiling or
-rebuild the library with your favorite settings.
+-fno-exceptions and -fno-rtti so you should use these settings. If you
+don't like these settings change it before compiling or rebuild the library
+with your favorite settings.
   In Linux I use gcc 2.7.2.3 and hence -fno-exceptions isn't needed and is
 rejected by gcc too. So if you compile the library for Linux using 2.8.x you
 could want to change it.
+
+<Clarification>
+  *** Important *** the above sentences seems to be not enough so here I
+clarify it: code compiled with -fno-exceptions and -fno-rtti doesn't have the
+hooks needed for C++ exceptions in the classes so you can't link this code
+with code compiled with gcc 2.8.x if this code wasn't compiled with
+-fno-exceptions and -fno-rtti. Why we use it? (1) We don't use C++ exceptions
+mechanism (2) It add unnecesary code and data (3) libraries compiled with
+these hooks using 2.8.x can't be linked with objects from 2.7.x.
+  So, if you use gcc 2.8.x or newer compiler and want to use the precompiled
+library you must compile your code with -fno-exceptions and -fno-rtti.
+</Clarification>
+
   The library is compiled with -O2 as optimization, that's good enough for
 this kind of code and any processor.
   The library contains debug information, the default settings use -gstabs3,
@@ -140,8 +182,21 @@ DOS:
   You must install gettext, you can find it in the v2gnu directory in
 Simtelnet. Is called (for example) gtxt032b.zip. There are a bug in the
 headers of gtxt032b.zip, in the file libintl.h there are a line that says
-@INCLUDE_LOCALE_H@, you can safetly remove it.
+@INCLUDE_LOCALE_H@, you can safetly remove it. An alternative is rename
+nointl.h to libintl.h, but isn't well tested.
 
+Tools:
+Compiler: I tested with gcc 2.7.x and 2.8.x. I know some people uses egcs but
+I don't know if you need to change something or if the binary works.
+Binutils: I use binutils 2.8.1, newers should work.
+RHIDE: if you plan to use the project (.gpr) files you'll need the last
+version of RHIDE available. Any older version will crash when loading the
+projects.
+make: (only if you plan to use the makefiles) I use make 3.77 under DOS.
+Perl: (only if you need to run some special scripts) Any perl 5 should work,
+I use 5.004 currently.
+File utils: (I'm not sure but just in case) you need to have it installed if
+you are in DOS, Linux of course have it by default.
 
 
 
@@ -175,7 +230,7 @@ Curapaligue 2124
 (1678) Bs.As. Argentina
 
 e-mail: salvador@inti.gov.ar, set-soft@usa.net, set@computer.org
-http:   setsoft.home.ml.org
+http:   www.geocities.com/SiliconValley/Vista/6552/
 
 
 
