@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.97  2002/05/30 17:26:56  set
+* Added: X11 Palette code, completly untested. The Linux driver code seems
+to work.
+
 Revision 2.96  2002/05/29 20:29:32  set
 * Added: [UNIX] XTerm and Eterm palette support, is untested!
 

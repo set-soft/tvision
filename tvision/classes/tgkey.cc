@@ -15,6 +15,7 @@ have such a class.
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
 #define Uses_ctype
+#define Uses_string
 #include <tv.h>
 
 /*****************************************************************************

@@ -13,6 +13,7 @@ same used in original Turbo Vision for compatibility purposes.
 
 #define Uses_stdio
 #define Uses_stdlib
+#define Uses_string
 #define Uses_TScreen
 #include <tv.h>
 #include <tv/drivers.h>
