@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.328  2002/09/18 20:01:28  set
+* Added: [Linux] driver documentation, this is a tricky driver and needs a
+lot of explanations. Isn't revised, it means it can contain all kind of
+stupid information ;-)
+
 Revision 2.327  2002/09/18 12:28:29  set
 * Fixed: [DOS] I restored the screen after releasing the memory used to
 hold the old content :-P it generated random artifacts in upper left corner

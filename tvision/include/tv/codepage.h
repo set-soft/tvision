@@ -119,7 +119,7 @@ protected:
  static void      SetDefaultCodePages(int idScr, int idApp, int idInp)
                   { defAppCP=idApp; defScrCP=idScr; defInpCP=idInp; }
 
- static const char alphaChar=1, lowerChar=2, upperChar=4, digitChar=8;
+ enum { alphaChar=1, lowerChar=2, upperChar=4, digitChar=8 };
  static TVCodePageCol *CodePages;
  static ushort CPTable[257];
  static int    curAppCP,curScrCP,curInpCP;
