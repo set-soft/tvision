@@ -1270,6 +1270,41 @@ void SaveScreenReleaseMemory(void)
  free(user_buffer);
 }
 
+// SET: Call to an external program, optionally forking
+int TV_System(const char *command, pid_t *pidChild)
+{
+ if (!pidChild)
+    return system(command);
+
+ pid_t cpid=fork();
+ if (cpid==0)
+   {// Ok, we are the child, run the command and exit
+    //system(command);
+    //  Exit *without* calling atexit functions.
+    //  The keyboard routines unpatches the keyboard atexit,
+    // if we use exit() this is executed.
+    //_exit(0);
+    //   I think the best is just replace as by the program we
+    // want to run freeing all resources. Is also easiest to
+    // just kill this pid.
+    char *argv[4];
+   
+    argv[0]=getenv("SHELL");
+    argv[1]="-c";
+    argv[2]=(char *)command;
+    argv[3]=0;
+    execvp(argv[0],argv);
+   }
+ if (cpid==-1)
+   {// Fork failed do it manually
+    *pidChild=0;
+    return system(command);
+   }
+ *pidChild=cpid;
+ return 0;
+}
+
+
 /*****************************************************************************
 SET:
   Here is some information about the Linux console. I got it from the kernel

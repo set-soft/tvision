@@ -1,4 +1,8 @@
 $Log$
+Revision 1.181  2001/08/31 19:36:56  set
+* Modified: Now if the terminal have fixed encoding the scroll bars uses
+the original chars. That's because we can't trust in any redefined value.
+
 Revision 1.180  2001/08/31 19:34:58  set
 * Added: A function to know if the terminal have a fixed encoding and we
 shouln't offer to the user recoding options. Boolean codePageVariable()

@@ -282,6 +282,14 @@ void SaveScreenReleaseMemory(void)
 	buffer = NULL;
 }
 
+int TV_System(const char *command, pid_t *pidChild)
+{
+  // fork mechanism not implemented, indicate the child finished
+  if (pidChild)
+     *pidChild=0;
+  return system(command);
+}
+
 /**[txh]********************************************************************
 
   Description:

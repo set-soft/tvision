@@ -385,10 +385,13 @@ static BOOL WINAPI ConsoleEventHandler(DWORD dwCtrlType)
   return FALSE;
 }
 
-int TV_System(const char *command)
+int TV_System(const char *command, pid_t *pidChild)
 {
   int rc = system(command);
   SetConsoleMode(__tvWin32ConInp, TV_CONSOLE_MODE);
+  // fork mechanism not implemented, indicate the child finished
+  if (pidChild)
+     *pidChild=0;
   return rc;
 }
 
