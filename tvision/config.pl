@@ -177,12 +177,28 @@ elsif ($OS eq 'Win32')
   }
 $MakeDefsRHIDE[4]='STDCPP_LIB='.$stdcxx;
 # C options for dynamic lib
-$MakeDefsRHIDE[5]='SHARED_CODE_OPTION=-fPIC';
-$MakeDefsRHIDE[5].=' -shared' if ($OSf eq 'QNXRtP');
+if ($OSf ne 'Darwin')
+  {
+   $MakeDefsRHIDE[5]='SHARED_CODE_OPTION=-fPIC';
+   $MakeDefsRHIDE[5].=' -shared' if ($OSf eq 'QNXRtP');
+  }
+else
+  {# PPC code is always position independent
+   # However, the linker doesn't allow "common" symbols in shared libraries.
+   $MakeDefsRHIDE[5]='SHARED_CODE_OPTION=-fno-common';
+  }
 # Flags to link as a dynamic lib
 $MakeDefsRHIDE[6]='RHIDE_LDFLAGS=';
-$MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
-$MakeDefsRHIDE[6].=' -shared -Wl,-soname,librhtv.so.'.$Version;
+if ($OSf ne 'Darwin')
+  {
+   $MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
+   $MakeDefsRHIDE[6].=' -shared -Wl,-soname,librhtv.so.'.$Version;
+  }
+else
+  {# Darwin semantic for dynamic libs is quite different
+   $MakeDefsRHIDE[6].='-dynamiclib -install_name '.$realPrefix.'/lib/librhtv.'.$Version.'.dylib';
+   $MakeDefsRHIDE[6].=' -compatibility_version '.$Version.' -current_version '.$Version;
+  }
 $libs=$conf{'X11Lib'};
 $libs=~s/(\S+)/-l$1/g;
 $MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
@@ -190,6 +206,7 @@ $MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
 $MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
 $MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
+$MakeDefsRHIDE[6].=' -ltvfintl' if ($OSf eq 'Darwin') && $UseDummyIntl;
 $MakeDefsRHIDE[7]="LIB_VER=$Version";
 $MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
 
@@ -937,7 +954,7 @@ int main(int argc, char *argv[])
 sub GenerateMakefile
 {
  my ($text,$rep,$makeDir,$ver,$internac,$maintain);
- my ($dosta,$dodyn);
+ my ($dosta,$dodyn,$nameSO,$nameSOM,$nameSOV,$stripDebug);
 
  print "Generating Makefile\n";
  $text=cat('Makefile.in');
@@ -969,6 +986,10 @@ sub GenerateMakefile
  $text=~s/\@exe_ext\@/$ExeExt/g;
  $text=~s/\@maintainer_mode\@/MAINTAINER_MODE=1/g if $maintain;
  $text=~s/\@maintainer_mode\@//g                  unless $maintain;
+ $text=~s/\@install\@/install/    if $OSf ne 'NetBSD';
+ $text=~s/\@install\@/install -c/ if $OSf eq 'NetBSD';
+ $text=~s/\@darwin\@/DARWIN=1/g   if $OSf eq 'Darwin';
+ $text=~s/\@darwin\@//g           if $OSf ne 'Darwin';
 
  $makeDir='makes';
 
@@ -988,8 +1009,21 @@ sub GenerateMakefile
  if ($dodyn)
    {
     $rep.="\ndynamic-lib:\n\t\$(MAKE) DYNAMIC_LIB=1 -C $makeDir -f librhtv.mkf\n";
-    $rep.="\tcd $makeDir; ln -sf librhtv.so.$Version librhtv.so\n";
-    $rep.="\tcd $makeDir; ln -sf librhtv.so.$Version librhtv.so.$VersionMajor\n";
+
+    if ($OSf ne 'Darwin')
+      {
+       $nameSO='librhtv.so';
+       $nameSOM="librhtv.so.$VersionMajor";
+       $nameSOV="librhtv.so.$Version";
+      }
+    else
+      {# Darwin uses a different name
+       $nameSO='librhtv.dylib';
+       $nameSOM="librhtv.$VersionMajor.dylib";
+       $nameSOV="librhtv.$Version.dylib";
+      }
+    $rep.="\tcd $makeDir; ln -sf $nameSOV $nameSO\n";
+    $rep.="\tcd $makeDir; ln -sf $nameSOV $nameSOM\n";
    }
  if ($internac)
    {
@@ -1051,6 +1085,9 @@ sub GenerateMakefile
  $rep ="install-intl-dummy: intl-dummy\n";
  $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
  $rep.="\t\$(INSTALL) -m 0644 intl/dummy/libtvfintl.a \$(libdir)/libtvfintl.a\n";
+ # In Darwin the linker checks the time stamp of the ranlib pass and the one of
+ # the file. It complains if we use ranlib and then copy the file.
+ $rep.="\tranlib \$(libdir)/libtvfintl.a\n" if $conf{'UseRanLib'};
  $text=~s/\@intl_dummy_install_rule\@/$rep/g;
 
  # Static library
@@ -1064,18 +1101,23 @@ sub GenerateMakefile
 
  if ($dodyn)
    {# Dynamic library
-    $ver=($OSf eq 'FreeBSD') ? $VersionMajor : $Version;
+    $ver=($OSf eq 'FreeBSD') ? $nameSOM : $nameSOV;
     $rep.="\ninstall-dynamic: dynamic-lib\n";
     $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
-    $rep.="\trm -f \$(libdir)/librhtv.so\n";
-    $rep.="\trm -f \$(libdir)/librhtv.so.$VersionMajor\n";
-    $rep.="\trm -f \$(libdir)/librhtv.so.$ver\n";
-    $rep.="\tcd \$(libdir); ln -s librhtv.so.$ver librhtv.so\n";
+    $rep.="\trm -f \$(libdir)/$nameSO\n";
+    $rep.="\trm -f \$(libdir)/$nameSOM\n";
+    $rep.="\trm -f \$(libdir)/$nameSOV\n";
+    $rep.="\tcd \$(libdir); ln -s $ver $nameSO\n";
     # Not needed if the soname changes which each version (at least Ivan says that)
-    $rep.="\t\$(INSTALL) -m 0644 $makeDir/librhtv.so.$ver \$(libdir)\n";
-    $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$ver\n" unless $conf{'debugInfo'} eq 'yes';
-    # FreeBSD: merge data from libdir
-    $rep.=($OSf eq 'FreeBSD') ? "\t-ldconfig -m \$(libdir)\n" : "\t-ldconfig\n";
+    $rep.="\t\$(INSTALL) -m 0644 $makeDir/$ver \$(libdir)\n";
+    $stripDebug=($OSf eq 'Darwin') ? '-S' : '--strip-debug';
+    $rep.="\tstrip $stripDebug \$(libdir)/$ver\n" unless $conf{'debugInfo'} eq 'yes';
+    # FreeBSD: merge data from libdir.
+    # Darwin: doesn't have ldconfig.
+    if ($OSf ne 'Darwin')
+      {
+       $rep.=($OSf eq 'FreeBSD') ? "\t-ldconfig -m \$(libdir)\n" : "\t-ldconfig\n";
+      }
    }
  if ($internac)
    {

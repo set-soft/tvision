@@ -83,7 +83,9 @@ compiler.@p
   #define NEEDS_ITOA
   #define NEEDS_NL_LANGINFO
   #define NEEDS_GETLINE
-  #if defined(TVOSf_FreeBSD) || defined(TVOSf_QNXRtP) || defined(TVOSf_QNX4)
+  #if defined(TVOSf_FreeBSD) || defined(TVOSf_QNXRtP) || defined(TVOSf_QNX4) \
+      || defined(TVOSf_Darwin)
+   // Not for OpenBSD and NetBSD
    #define NEEDS_GETOPT
   #endif
  #endif

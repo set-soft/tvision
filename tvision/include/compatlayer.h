@@ -840,8 +840,41 @@ typedef unsigned long  ulong;
   #undef CLY_Have_snprintf
  #endif // TVOSf_QNX4
 
+ /* OpenBSD, tested with 3.4 */
+ #ifdef TVOSf_OpenBSD
+  #ifdef Uses_getopt
+   #undef  Include_getopt
+   #define Include_getopt 1
+  #endif
+  #ifdef Uses_nl_langinfo
+   #undef  Uses_CLY_nl_langinfo
+   #define Uses_CLY_nl_langinfo 1
+  #endif
+  #ifdef Uses_getline
+   #undef  Uses_CLY_getline
+   #define Uses_CLY_getline 1
+  #endif
+ #endif
+
+ /* NetBSD, tested with 1.6.1 */
+ #ifdef TVOSf_NetBSD
+  #ifdef Uses_getopt
+   #undef  Include_getopt
+   #define Include_getopt 1
+  #endif
+  #ifdef Uses_nl_langinfo
+   #undef  Uses_CLY_nl_langinfo
+   #define Uses_CLY_nl_langinfo 1
+  #endif
+  #ifdef Uses_getline
+   #undef  Uses_CLY_getline
+   #define Uses_CLY_getline 1
+  #endif
+ #endif
+
  /* Generic UNIX system */
- #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)
+ #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris) \
+     && !defined(TVOSf_OpenBSD) && !defined(TVOSf_NetBSD)
   #ifdef Uses_getopt
    #undef  Include_cl_getopt
    #define Include_cl_getopt 1

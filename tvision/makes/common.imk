@@ -28,7 +28,11 @@ endif
 # Extensions used by GNU tools
 ifdef DYNAMIC_LIB
 ExOBJ=.lo
+ifdef DARWIN
+ExLIB=.$(LIB_VER).dylib
+else
 ExLIB=.so.$(LIB_VER)
+endif
 #ExLIB=.so
 else
 ExOBJ=.o
