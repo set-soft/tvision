@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.346  2002/10/07 20:02:37  set
+* Modified: Release details in the web pages.
+
 Revision 2.345  2002/10/07 15:19:01  set
 * Fixed: [Win32] X11 library path.
 
