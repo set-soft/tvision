@@ -1,4 +1,7 @@
 $Log$
+Revision 1.231  2001/10/17 22:35:55  set
+* Fixed: Now clean target also deletes the configure.cache.
+
 Revision 1.230  2001/10/17 22:32:57  set
 * Fixed: Now "make clean" really cleans the example objects and executables.
 * Added: A makefile for the examples, mostly to make the clean but can be
@@ -6,7 +9,7 @@ used to generate all the examples.
 * Added: An examples target to the makefile.
 * Added: Now the configure script says if the configuration header was
 replaced or not.
-.
+
 Revision 1.229  2001/10/17 21:52:58  set
 * Added: A #undef gettext in intl.h for DOS. I hope it solve collisions with
 conio.h that are popping again (with old gettext versions).
