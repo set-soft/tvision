@@ -1,4 +1,18 @@
 $Log$
+Revision 1.203  2001/09/21 02:30:20  set
+* Fixed: New standards seems to enforce a \n at the end of all sources. At
+least gcc 3.0 says that. I added it to all the tests in the configuration
+scripts.
+* Fixed: [DOS] GCC 3.0 doesn't compile C++ code using the C compiler. The
+configure script can detect it, but as it only happened with very old gcc
+versions the scripts were looking for gxx and currently the C++ compiler is
+inoked using gpp.
+* Added: More MSS details (from last change).
+* Added: More packed details (from last change).
+* Added: no_mss.h and yes_mss.h to the distribution list.
+* Fixed: glob.c had text after a #endif, gcc 3.0 detects it.
+* Fixed: isrelpath.c didn't end with \n, gcc 3.0 detects it.
+
 Revision 1.202  2001/09/21 01:20:43  set
 * Added: Now the library is `MSS aware'. Laurynas sent me some patches for
 it and I adapted them. MSS is a memory debugger.
