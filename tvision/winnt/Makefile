@@ -118,6 +118,9 @@ tvex.exe: objs\tvex.obj rhtv.lib
 {..\classes\qnxrtp}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
+{..\classes\qnx4}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
 {..\classes\unix}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
