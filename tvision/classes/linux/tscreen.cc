@@ -253,7 +253,22 @@ void startcurses()
      exit(-1);
     }
   // SET: open it as a different file because we don't want to mix both
-  tty_file=fopen(ttyname(fileno(stdout)),"w+b");
+  char *tty_name=ttyname(fileno(stdout));
+  if (!tty_name)
+    {
+     fprintf(stderr,"Failed to get the name of the current terminal used for output!\r\n"
+                    "Please e-mail to salvador@inti.gov.ar giving details about your setup\r\n"
+                    "and the output of the tty command\r\n");
+     exit(-1);
+    }
+  tty_file=fopen(tty_name,"w+b");
+  if (!tty_file)
+    {
+     fprintf(stderr,"Failed to open the %s terminal!\r\n"
+                    "Please e-mail to salvador@inti.gov.ar giving details about your setup\r\n"
+                    "and the output of the tty command\r\n",tty_name);
+     exit(-1);
+    }
   tty_fd=fileno(tty_file);
 
   // old buggy code: if (!newterm(terminal,stdin,tty_file))
