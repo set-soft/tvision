@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.189  2004/09/17 19:10:26  set
+* Fixed: [NetBSD] libintl isn't part of libc.
+
 Revision 2.399.2.188  2004/09/17 18:57:40  set
 * Fixed: [MSVC] Missing return value in tdirlist.cc:
 ListDirectory( char *path, char *end ). Introduced by last TDirListBox
