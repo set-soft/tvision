@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.116  2003/08/06 15:28:44  set
+* Fixed: The snprintf replacement wrote to NULL pointers.
+
 Revision 2.399.2.115  2003/07/30 14:41:43  set
 * Fixed: [BC++] A warning about using unsigned mixed with signed in the
 demo example. Solution by ric <ric@mpcnet.com.br>.
