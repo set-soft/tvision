@@ -27,7 +27,7 @@
   #pragma alloca
 #endif
 
-#if defined(TVCompf_MinGW) || defined(TVComp_BCPP)
+#if defined(TVCompf_MinGW) || defined(TVComp_BCPP) || defined(TVComp_MSC)
 #define STDC_HEADERS 1
 #endif
 
@@ -55,7 +55,7 @@
 
 /* We used to test for `BSTRING' here, but only GCC and Emacs define
    `BSTRING', as far as I know, and neither of them use this code.  */
-#if HAVE_STRING_H || STDC_HEADERS || defined(TVComp_MSC)
+#if HAVE_STRING_H || STDC_HEADERS
 #include <string.h>
 #ifndef bcmp
 #define bcmp(s1, s2, n) memcmp ((s1), (s2), (n))
@@ -210,7 +210,12 @@ init_syntax_once ()
 #include <alloca.h>
 #else /* not TVComp_GCC or HAVE_ALLOCA_H */
 #ifndef _AIX /* Already did AIX, up at the top.  */
-char *alloca ();
+ #if defined(TVComp_MSC)
+  #include <malloc.h>
+  #define  alloca(a) _alloca(a)
+ #else
+  char *alloca();
+ #endif
 #endif /* not _AIX */
 #endif /* not HAVE_ALLOCA_H */ 
 #endif /* not TVComp_GCC */
