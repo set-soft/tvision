@@ -151,6 +151,7 @@ elsif ($OS eq 'DOS')
   }
 elsif ($OS eq 'Win32')
   {
+   $MakeDefsRHIDE[0]='RHIDE_STDINC=';
    $MakeDefsRHIDE[2].=' gdi32'; # Needed for WinGr driver
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
