@@ -31,7 +31,7 @@ public:
 
     virtual int do_sputn( const char *s, int count );
 
-    void bufInc( uint32& val );
+    void bufInc(uint32& val) { if (++val>=bufSize) val=0; }
     Boolean canInsert( uint32 amount );
     short calcWidth();
     virtual void draw();
@@ -44,7 +44,7 @@ protected:
     uint32 bufSize;
     char *buffer;
     uint32 queFront, queBack;
-    void bufDec(uint32& val);
+    void bufDec(uint32& val) { if (val==0) val=bufSize - 1; else val--; }
 };
 
 #endif  // Uses_TTerminal
