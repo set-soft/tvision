@@ -35,6 +35,8 @@ Braille Terminals.
 
 Vadim Beloborodov: MinGW and Win32 code.
 
+WintiX: Miscrosoft C compiler help and test.
+
 
 The following users also contributed with small patches, testing and bug
 reports:
