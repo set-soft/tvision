@@ -86,7 +86,8 @@ MISC_OBJS_ = +fixpath.obj +fnmatch.obj +glob.obj +globfree.obj +unc.obj \
 +getopt.obj +yieldpro.obj +ticks.obj +releasec.obj +filelength.obj \
 +expandpath.obj +fexpand.obj +isrelpath.obj +drivevalid.obj +isdir.obj \
 +pathvalid.obj +validfilename.obj +iswild.obj +fileexists.obj +getopt1.obj \
-+regex.obj +getcurdir.obj +ntdirent.obj +beep.obj +fileattrs.obj +mkstemp.obj
++regex.obj +getcurdir.obj +ntdirent.obj +beep.obj +fileattrs.obj +mkstemp.obj \
++unc_nt.obj +unc_95.obj
 MISC_OBJS = $(MISC_OBJS_:+=objs\)
 
 OBJS = $(TV_OBJS) $(TVN_OBJS) $(TVS_OBJS) $(TVM_OBJS) $(MISC_OBJS)

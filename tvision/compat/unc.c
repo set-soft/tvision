@@ -6,17 +6,19 @@
 
 #ifdef NEEDS_UNC
 #define WIN32_LEAN_AND_MEAN
-/* UNICODE must be defined because all Net APIs are UNICODE */
-#define UNICODE
 #include <windows.h>
-#include <lmcons.h>
-#include <lmshare.h>
-#include <lmapibuf.h>
 #include <malloc.h>
+
+int CLY_isUNC_helper_NT(const char* server, const char* share);
+int CLY_isUNC_helper_95(const char* server, const char* share);
 
 #define is_slash(c) (c == '/' || c == '\\')
 #define is_term(c) (c == '/' || c == '\\' || c == '\0')
 
+/*
+ * isUNC returns 1 if passed path looks like a UNC name.
+ * That is it starts with //server
+ */
 int CLY_IsUNC(const char* path)
 {
   if (!is_slash(path[0]) || !is_slash(path[1]) || is_term(path[2]))
@@ -24,9 +26,15 @@ int CLY_IsUNC(const char* path)
   return 1;
 }
 
+/*
+ * isUNCShare returns 1 if passed path refers to a network share.
+ * That is the path matches //server/share[/[.]] mask and
+ * the share really exists.
+ */
 int CLY_IsUNCShare(const char* path)
 {
-  char* path2 = alloca(strlen(path) + 1);
+  static int nt = -1;
+  char* path2 = (char*)alloca(strlen(path) + 1);
   char* p;
   const char *server, *share;
 
@@ -48,28 +56,20 @@ int CLY_IsUNCShare(const char* path)
   p = strchr(share, '/');
   if (!p)
     p = strchr(share, '\\');
-  if (!p || p[1] == '\0')
+  if (!p || p[1] == '\0' || (p[1] == '.' && p[2] == '\0'))
   {
-    SHARE_INFO_1* pshi;
-    NET_API_STATUS status;
-    int serverlen, sharelen;
-    WCHAR *wserver, *wshare;
     int ret;
-
     if (p) *p = '\0';
-    serverlen = strlen(server);
-    sharelen = strlen(share);
-    wserver = (WCHAR*)alloca((serverlen + 1) * sizeof(WCHAR));
-    wshare = (WCHAR*)alloca((sharelen + 1) * sizeof(WCHAR));
-
-    MultiByteToWideChar(CP_ACP, 0, server, serverlen, wserver, serverlen);
-    MultiByteToWideChar(CP_ACP, 0, share, sharelen, wshare, sharelen);
-    wserver[serverlen] = 0;
-    wshare[sharelen] = 0;
-
-    status = NetShareGetInfo(wserver, wshare, 1, (LPBYTE*)&pshi);
-    ret = (status == 0) && (pshi->shi1_type == STYPE_DISKTREE);
-    NetApiBufferFree(pshi);
+    if (nt == -1 || nt == 1)
+    {
+      ret = CLY_isUNC_helper_NT(server, share);
+      nt = !(ret == -1);
+    }
+    if (nt == 0)
+    {
+      ret = CLY_isUNC_helper_95(server, share);
+      if (ret == -1) nt = -1, ret = 0;
+    }
     return ret;
   }
 

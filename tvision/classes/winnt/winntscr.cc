@@ -263,7 +263,7 @@ void TScreen::setCharacter(unsigned offset,ushort value)
     
   COORD dwBufferSize = {1, 1};
   COORD dwBufferCoord = {0, 0};
-  SMALL_RECT rcWriteRegion = {coord.X, coord.Y, coord.X + 1, coord.Y + 1};
+  SMALL_RECT rcWriteRegion = {coord.X, coord.Y, coord.X, coord.Y};
   WriteConsoleOutput(
     __tvWin32ConOut,
     outBufCI,
@@ -301,7 +301,7 @@ void TScreen::setCharacter(unsigned offset,ushort *values,unsigned count)
    
   COORD dwBufferSize = {count, 1};
   COORD dwBufferCoord = {0, 0};
-  SMALL_RECT rcWriteRegion = {coord.X, coord.Y, coord.X + count, coord.Y + 1};
+  SMALL_RECT rcWriteRegion = {coord.X, coord.Y, coord.X + count - 1, coord.Y};
   WriteConsoleOutput(
     __tvWin32ConOut,
     outBufCI,
