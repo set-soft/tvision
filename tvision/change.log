@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399  2003/02/05 13:43:51  set
+* Modified: The default TMouse::resume behavior to restore the buttonsCount
+member. It allows calling suspend/resume when using drivers that doesn't
+implement it. This is needed for legacy applications as reported by Andris.
+
 Revision 2.398  2003/02/05 12:27:19  set
 * Fixed: [DOS] The Windows clipboard paste requested plain text instead of
 OEM text. This skipped the code page translation. Reported by Thiago.
