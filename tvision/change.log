@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.75  2002/05/16 21:21:12  set
+* Modified: [Linux] Added Scroll-Lock to the patch list, it freezies the
+application and some people thinks it hanged. To make it worst some idiots
+put the S-L key very close to Home just to insert a stupid key to make
+the machine sleep and hence is quite easy to press S-L instead of Home. So
+now TV remaps S-L to Home. From a report by David A. Capello
+<dacap@users.sourceforge.net>.
+
 Revision 2.74  2002/05/16 21:04:53  set
 * Fixed: [X11] The code failed to track key-up events when other
 application had the focus becoming out of sync. Now I added code to sync
