@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to compile for 64 bits architectures.
 
  *
  *
@@ -59,9 +60,9 @@ Boolean TMonoSelector::mark( int item )
 void TMonoSelector::newColor()
 {
     message( owner, evBroadcast, cmColorForegroundChanged,
-        (void *)(value & 0x0F) );
+        (void *)(long)(value & 0x0F) );
     message( owner, evBroadcast, cmColorBackgroundChanged,
-        (void *)((value >> 4) & 0x0F));
+        (void *)(long)((value >> 4) & 0x0F));
 }
 
 void TMonoSelector::press( int item )

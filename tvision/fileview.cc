@@ -8,6 +8,7 @@
 Modified by Robert H”hne to be used for RHIDE.
 Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
 Andris Pavenis.
+Modified by Salvador E. Tropea to compile for 64 bits architectures.
 
  *
  *
@@ -169,7 +170,7 @@ void TFileViewer::readFile( const char *fName )
     fileLines->count = count;
     for (i=0,start = buffer;i<count;i++)
     {
-      fileLines->items[i] = (void *)((int)start-(int)buffer);
+      fileLines->items[i] = (void *)(start-buffer);
       while (*start++);
     }
     isValid = True;
@@ -234,7 +235,7 @@ void TFileViewer::insertLine(const char *line)
   int len = strlen(line)+1;
   buffer = (char *)realloc(buffer,real_bufsize+len);
   memcpy(buffer+real_bufsize,line,len);
-  fileLines->insert((void*)real_bufsize);
+  fileLines->insert((void*)(long)real_bufsize);
   real_bufsize += len;
   count++;
   len--;
@@ -257,7 +258,7 @@ Boolean TFileViewer::valid( ushort )
 const char * const TFileViewer::operator [](int index)
 {
   if (index >= count) return NULL;
-  return (const char *)(buffer + (int)fileLines->at(index));
+  return (const char *)(buffer + (long)fileLines->at(index));
 }
 
 

@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.77  2003/05/21 16:31:12  set
+* Fixed: [Linux] The debug log mechanism to compile with gcc 3.x.
+
 Revision 2.399.2.76  2003/05/21 14:24:30  set
 * Fixed: [Linux] Moved the UTF-8 detection to be done after saving the
 screen contents.
