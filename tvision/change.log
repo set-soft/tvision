@@ -1,4 +1,8 @@
 $Log$
+Revision 1.193  2001/09/09 19:58:18  set
+* Modified: version to 1.1.1.
+* Added: Comments about the modification of the cursor behavior.
+
 Revision 1.192  2001/09/08 20:16:14  set
 * Added: itoa to the compatlayer. This function is fast for converting
 integers into strings and seems to be suitable for calling from an async
@@ -141,7 +145,8 @@ gives the impression that we eat all the CPU.
 Revision 1.173  2001/08/28 16:22:48  set
 * Added: A dummy libintl.a library. This is provided for people that have
 configured the library with international support but want to create one or
-more executables without it.
+more executables without it. I created it after some mails from Laurynas
+Biveinis <lauras@softhome.net>.
 * Added: An explanation of it to the readme.txt file and also some
 explanation about the impact of libiconv.a.
 .
