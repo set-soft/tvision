@@ -1,5 +1,6 @@
 rhtvision (1.0.9-3) unstable; urgency=low
 
+  * -v-0.1 Personal use unofficial version
   * Standards version 3.1.0.
   * Added Build-Depends.
   * Architecture set to "any" instead of "i386 alpha" as requested by
