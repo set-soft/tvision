@@ -1114,6 +1114,12 @@ typedef unsigned long  ulong;
    #undef  NEW_HEADER
    #define NEW_HEADER      <new.h>
    #undef Include_ioctl
+   // bool isn't defined
+   #if defined(__cplusplus) && !defined(CLY_BOOL_TRUE_FALSE)
+    #define CLY_BOOL_TRUE_FALSE
+    typedef int bool;
+    const int true=1, false=0;
+   #endif
  #endif
  #ifndef CLY_BooleanDefined
   #define CLY_BooleanDefined 1

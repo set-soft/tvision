@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.550  2004/06/25 14:17:32  set
+* Fixed: [MSVC] the WinGr driver can't be compiled with 4.0 because it uses
+too much features only available in newer versions.
+* Fixed: [MSVC] the lack of snprintf request in cl/needs.h.
+* Both from Arnold Wiegert reports.
+.
 Revision 2.549  2004/06/24 20:47:46  set
 * Fixed: [MSVC] Cast to (char *) for alloca return value in ntdirent.c.
 * Fixed: K&R 1 prototypes in regex.c.
