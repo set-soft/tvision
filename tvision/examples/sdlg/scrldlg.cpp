@@ -12,7 +12,7 @@
 #define Uses_TKeys
 // =================================================
 #include <tv.h>
-#include "Dlg.h"
+#include "dlg.h"
 // =================================================
 
 ScrollDialog::ScrollDialog(const TRect& bounds, const char* aTitle, ushort f) :

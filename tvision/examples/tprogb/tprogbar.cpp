@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <mem.h>                       // memset
+#include <unistd.h>
 
 #define Uses_TStaticText
 #define Uses_TStatusDef
@@ -25,7 +25,6 @@ __link( RView )
 __link( RDialog )
 __link( RButton )
 
-#include <dos.h>
 #include "tprogbar.h"
 
 const int sampleIterations = 21 ;
@@ -92,9 +91,9 @@ void TProgressBar::mainProcess( void )
 	 for( int x = 0; x < sampleIterations; x++ )
 	 {
 		  setCurIter( ++cnt );         // set the current iteration count & update
-		  delay(500);
+		  usleep(500000);
 	 }
-	 delay(500);
+	 usleep(500000);
 	 message(owner,evCommand,cmOK,this);// close dialog box
 }
 

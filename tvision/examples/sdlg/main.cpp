@@ -18,7 +18,7 @@ ScrollGroup) classes. Released to the public domain. Use at your own risk <g>.
 #define Uses_TApplication
 #define Uses_TDeskTop
 #include <tv.h>
-	#include "Dlg.h"
+#include "dlg.h"
 
 class TApp : public TApplication
 {

@@ -9,8 +9,8 @@ also find instructions on how to include the source in your TV.LIB and simply
 By: Barnaby W. Falls
 CIS: 70662,1523
 -------------------------------------------------------------------------*/
-#include <mem.h>         // memset
-#include <stdlib.h>      // itoa()
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define Uses_TProgressBar
@@ -67,7 +67,7 @@ TProgressBar::~TProgressBar(){
 
 void TProgressBar::draw() {
    char string[4];
-   itoa(curPercent,string,10);
+   sprintf(string,"%d",curPercent);
    string[3] = '\0';
    if(curPercent<10) {
       string[2] = string[0];
