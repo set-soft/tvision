@@ -229,6 +229,7 @@ TMenuBar *TVDemo::initMenuBar(TRect r)
 
     TSubMenu& sub2 =
       *new TSubMenu( "~F~ile", 0, hcFile ) +
+      //*new TSubMenu( "~ๆ~มสฬ", 0, hcFile ) + // KOI8 test
         *new TMenuItem( "~O~pen...", cmOpenCmd, kbF3, hcFOpen, "F3" ) +
         *new TMenuItem( "~C~hange Dir...", cmChDirCmd, kbNoKey, hcFChangeDir ) +
          newLine() +

@@ -6,6 +6,8 @@
 #define WIN32KEY_HEADER_INCLUDED
 struct TEvent;
 
+const int eventKeyboardQSize=16;
+
 // A class to encapsulate the globals, all is static!
 class TGKeyWin32 : public TGKey
 {
@@ -33,11 +35,13 @@ protected:
  // Translate Win32 shift state values to TV equivalents
  static ushort transShiftState(DWORD state);
  // Translate Win32 key events to TV equivalents
- static int    transKeyEvent(KeyDownEvent &dst, KEY_EVENT_RECORD& src)
+ static int    transKeyEvent(KeyDownEvent &dst, KEY_EVENT_RECORD& src);
  // Add a key to the queue
  static void   putConsoleKeyboardEvent(KeyDownEvent &key);
  // Remove a key event from the queue
  static int    getConsoleKeyboardEvent(KeyDownEvent &key);
+ // Process a Win32 key event and put it in the queue
+ static void   HandleKeyEvent();
 
  // Last value recieved for the shift modifiers
  static ushort LastControlKeyState;
@@ -53,9 +57,8 @@ protected:
  static CRITICAL_SECTION lockKeyboard;
 
  friend class THWMouseWin32;
+ friend class TScreenWin32;
 };
-
-#define eventKeyboardQSize 16
 
 #endif // WIN32KEY_HEADER_INCLUDED
 
