@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.69  2003/05/16 18:35:51  set
+* Fixed: Forgot to remove debug print in scripts and to put some code in
+djgpp version.
+
 Revision 2.399.2.68  2003/05/16 18:24:11  set
 * Added: Workaround for problems when using CVS RHIDE, it generates
 absolute paths for items in subprojects that doesn't have a target. I added
