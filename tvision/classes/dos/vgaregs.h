@@ -1,7 +1,12 @@
-/* Copyright 1998-1999 (c) by Salvador Eduardo Tropea
+/* Copyright 1998-2002 (c) by Salvador Eduardo Tropea
    This code is part of the port of Turbo Vision to gcc, please see the rest
  of the file for copying information.
  */
+
+#if defined(TVCompf_djgpp) && !defined(VGAREGS_HEADER_INCLUDED)
+#define VGAREGS_HEADER_INCLUDED
+
+#include <pc.h>
 
 /*  CRT (Cathode Rays Tube) Controller Registers
     They control the sync signals.
@@ -310,3 +315,6 @@ void RPF_GetPalRange(unsigned char *_pal_ptr, int color, int cant)
 );
 }
 #endif // NO_INLINE
+
+#endif // defined(TVCompf_djgpp) && !defined(VGAREGS_HEADER_INCLUDED)
+

@@ -1,7 +1,11 @@
-/* Copyright 1998-1999 (c) by Salvador Eduardo Tropea
+/* Copyright 1998-2002 (c) by Salvador Eduardo Tropea
    This code is part of the port of Turbo Vision to gcc, please see the rest
  of the file for copying information.
  */
+ 
+#if defined(TVCompf_djgpp) && !defined(VGASTATE_HEADER_INCLUDED)
+#define VGASTATE_HEADER_INCLUDED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -12,3 +16,4 @@ int VGAStateLoad(void *buffer);
 }
 #endif
 
+#endif

@@ -8,14 +8,12 @@
 */
 #include <tv/configtv.h>
 
-#ifdef TVCompf_djgpp
-
-#include <pc.h>
 #define NO_INLINE
-#include "vgaregs.h"
-
 typedef unsigned char uchar;
 typedef unsigned short ushort;
+#include "vgaregs.h"
+
+#ifdef TVCompf_djgpp
 
 #ifdef SAFE_IO
 /* C approach, safier than my assembler ;-) */

@@ -1,11 +1,13 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
+/* Copyright 1998-2002 Salvador E. Tropea */
 #include <tv/configtv.h>
 
-#ifdef TVCompf_djgpp
 #define Uses_TScreen
 #include <tv.h>
 
+// I delay the check to generate as much dependencies as possible
+#ifdef TVCompf_djgpp
 #include <sys/types.h>
 #include <sys/movedata.h>
 #include <sys/farptr.h>
@@ -246,6 +248,6 @@ void rh_RestoreVideo()
 
 #else
 
-// SET: Linux versions moved to TScreen and thinking about integrate it to
-// TDisplay.
+#include <tv/dos/screen.h>
+
 #endif

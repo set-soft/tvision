@@ -1,13 +1,14 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
+/* Copyright 1998-2002 Salvador E. Tropea */
 #include <tv/configtv.h>
 
-#ifdef TVCompf_djgpp
-// SET: Moved the Linux code to tscreen.cc
+#define Uses_stdlib
 #define Uses_TScreen
 #include <tv.h>
-#include <stdlib.h>
 
+// I delay the check to generate as much dependencies as possible
+#ifdef TVCompf_djgpp
 ushort user_mode;
 
 #define MODE_SET 1 // Use the routines from SET
