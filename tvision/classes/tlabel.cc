@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea: added i18n support.
 
  *
  *
@@ -28,10 +29,22 @@ Modified by Robert H”hne to be used for RHIDE.
 #define cpLabel "\x07\x08\x09\x09"
 
 TLabel::TLabel( const TRect& bounds, const char *aText, TView* aLink) :
-    TStaticText( bounds, aText ),
-    link( aLink ),
-    light( False )
+    TStaticText( bounds, aText )
 {
+    init( aLink );
+}
+
+TLabel::TLabel( const TRect& bounds, const char *aText, TView *aLink,
+                stTVIntl *aIntlText ) :
+    TStaticText( bounds, aText, aIntlText )
+{
+    init( aLink );
+}
+
+void TLabel::init( TView *aLink )
+{
+    link = aLink;
+    light = False;
     options |= ofPreProcess | ofPostProcess;
     eventMask |= evBroadcast;
     // This class can be "Braille friendly"
@@ -65,7 +78,7 @@ void TLabel::draw()
     b.moveChar( 0, ' ', color, size.x );
     if( text != 0 )
         {
-        b.moveCStr( 1, text, color );
+        b.moveCStr( 1, getText(), color );
         if( light )
             {// Usually this will do nothing because the focus is in the linked
              // object
@@ -98,7 +111,7 @@ void TLabel::handleEvent( TEvent& event )
         }
     else if( event.what == evKeyDown )
         {
-        char c = hotKey( text );
+        char c = hotKey( getText() );
         if( TGKey::GetAltCode(c) == event.keyDown.keyCode ||
                 ( c != 0 && owner->phase == TGroup::phPostProcess &&
                 TGKey::CompareASCII(uctoupper(event.keyDown.charScan.charCode),c) )
