@@ -118,7 +118,14 @@ XSizeHints *TScreenX11::sizeHints=NULL;
 XClassHint *TScreenX11::classHint=NULL;
 
 
-TScreenX11::~TScreenX11() {}
+TScreenX11::~TScreenX11()
+{
+ if(!disp) return; //no X11 resources acquired.
+ XDestroyIC(xic);
+ XCloseIM(xim);
+ XDestroyWindow(disp,mainWin);
+ XCloseDisplay(disp); //This could do all of the above for us, but anyway...
+}
 
 void TScreenX11::clearScreen()
 {
@@ -1206,12 +1213,6 @@ void TScreenX11::ProcessGenericEvents()
          {
           if ((Atom)event.xclient.data.l[0]==theProtocols)
             {
-             /*printf("Bye, bye!\n");
-             XDestroyIC(xic);
-             XCloseIM(xim);
-             XDestroyWindow(disp,mainWin);
-             XCloseDisplay(disp);
-             exit(0);*/
              TGKeyX11::sendQuit=1;
             }
          }

@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.299  2002/09/11 18:50:26  set
+* Added: __ppc__ as a PPC identifier
+
 Revision 2.298  2002/09/11 18:25:17  set
 * Added: Darwin to the list of known OSs, is just to test.
 * Verified compilation and functionality for:

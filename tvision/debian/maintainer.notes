@@ -1,61 +1,30 @@
 How to unpack and prepare the files:
-  Make sure that the debian/rules file is executable (chmod 755 debian/rules).
-  In the file called version.txt in the root directory where you unpacked the
-library, is the version number. If the debian/changelog file has a different
-version number in the topmost change, then add a new change by running
-dch -v 1.0.8-0.1 -p "unofficial personal package" (replacing 1.0.8 by the
-current version number. Then modify the versions in the debian/control file to
-match those of the library.
+    Make sure that the debian/rules file is executable
+(chmod 755 debian/rules).
+    In the file called version.txt in the root directory where you unpacked
+the library, is the version number. If the debian/changelog file has a
+different version number in the topmost change, then add a new change by
+running dch -v 1.0.8-0.1 -p "unofficial personal package" (replacing 1.0.8 by
+the current version number. Then modify the versions in the debian/control
+file to match those of the library.
 
 How to make the .deb, .tar.gz, .dsc and .changes files:
-   cd rhtvision-directory
-   dpkg-buildpackage
-or
-   dpkg-buildpackage -sa (for including the upstream .tar.gz in the upload).
+    cd rhtvision-directory
+    dpkg-buildpackage -rfakeroot
 
-Optionally, you can add the -vVERSION switch which indicates that the changes
-listed in the .changes file are from version "VERSION" wich it is a version
-listed in the debian changelog file up to the end of the changelog file.
+To check the package (binary and source):
+    cd ..
+    lintian -i *.deb *.dsc
 
-
-How to make the .deb, .tar.gz, .dsc and .changes files (and other things)
-step by step (this is usefull for development):
-
-1) To clean the unnecessary previously generated files:
-   cd rhtvision-version
-   debian/rules clean
-
-2) To generate the .deb files:
-   cd rhtvision-version
-   debian/rules binary-arch
-
-3) To generate the source package:
-   dpkg-source -b rhtvision-version (creates .dsc and .diff file, if
-                                     maintainer version is 1 or 0, it adds
-                                     the .tar.gz file of the original).
-   dpkg-source -b -su rhtvision-version (creates .dsc, .diff and .tar.gz
-                                         file of the original).
-
-4) To check the package (binary and source):
-   lintian --allow-root -i *.deb *.dsc
-
-5) To generate the .changes file (when uploading the package):
-   dpkg-genchanges (this don't works... I have to see how I have to do to
-                    make it work yet...).
-
-
-
+To clean everything after building:
+    cd rhtvision-directory
+    fakeroot debian/rules clean
+    
 Other notes:
-   - There is a clean-debian target on the debian/rules file, it only cleans
-     Debian specific files and not upstream build files.
+    - There is a clean-debian target on the debian/rules file, it only cleans
+      Debian specific files and not upstream build files. It is useful when
+      you just want for example to rebuild the package without recompiling
+      the sources (use debian/rules clean-debian).
+    - To rebuild the packages without recompiling the sources, use the binary
+      target on the debian/rules file (debian/rules binary).
 
-
-Source dependencies:
-    - Perl
-    - Make
-    - C/C++ compiling environment.
-    - NCurses development.
-    - GPM development.
-    - Debhelpers (try to use a recent version) and some other Debian
-      development utilities.
-    - GZip and other standard utilities.
