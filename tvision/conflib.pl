@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2003 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2004 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # Common configuration routines.
@@ -805,7 +805,7 @@ sub DetectOS
        $defaultCXX='qcc -Y_gpp';
        $supportDir='linux';
       }
-      else
+    else
       {
        $OS='UNIX';
        $OSf='QNX4';
@@ -814,6 +814,15 @@ sub DetectOS
        $defaultCXX='g++';
        $supportDir='linux';
       }
+   }
+ elsif ($os=~/HP-UX/)
+   {
+    $OS='UNIX';
+    $OSf='HP-UX';
+    $Compf='';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='linux';
    }
  elsif ($os=~/Darwin/)
    {
@@ -1330,7 +1339,7 @@ sub LookForGNUar
     print "gar\n";
     return 'gar';
    }
- if ($OSf eq 'Darwin')
+ if (($OSf eq 'Darwin') || ($OSf eq 'HP-UX')
    {
     $conf{'GNU_AR'}='ar';
     $conf{'UseRanLib'}=1;
