@@ -21,6 +21,7 @@
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_TVOSClipboard
+#define Uses_TVCodePage
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -41,6 +42,9 @@
 #include <tv/dos/screen.h>
 #include <tv/dos/key.h>
 #include <tv/dos/mouse.h>
+
+#define GET_DOS_VERSION            0x3000
+#define GET_GLOBAL_CODE_PAGE_TABLE 0x6601
 
 int TScreenDOS::wasBlink=0;
 int TScreenDOS::slowScreen=0;
@@ -89,6 +93,20 @@ TScreenDOS::TScreenDOS()
  TVDOSClipboard::Init();
  THWMouseDOS::Init();
  TGKeyDOS::Init();
+
+ // Set the code page
+ int dosCodePage=437; // United States code page, for all versions before 3.3
+ // get DOS version number, in the form of a normal number
+ AX=GET_DOS_VERSION;
+ dosInt();
+ unsigned ver=AH | ((AL & 0xff)<<8);
+ if (ver>=0x31E)
+   {
+    AX=GET_GLOBAL_CODE_PAGE_TABLE;
+    dosInt();
+    dosCodePage=BX;
+   }
+ codePage=new TVCodePage(dosCodePage);
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver;
  user_mode=screenMode=startupMode=getCrtMode();
@@ -244,6 +262,14 @@ int TScreenDOS::System(const char *command, pid_t *pidChild)
 
 #define WINOLDAP_Errors    5
 
+#define IDENTIFY_WinOldAp_VERSION 0x1700
+#define OPEN_CLIPBOARD            0x1701
+#define EMPTY_CLIPBOARD           0x1702
+#define SET_CLIPBOARD_DATA        0x1703
+#define GET_CLIPBOARD_DATA_SIZE   0x1704
+#define GET_CLIPBOARD_DATA        0x1705
+#define CLOSE_CLIPBOARD           0x1708
+
 // Strings for the errors
 const char *TVDOSClipboard::dosNameError[]=
 {
@@ -260,12 +286,10 @@ int TVDOSClipboard::Version;
 
 int TVDOSClipboard::Init(void)
 {
- __dpmi_regs r;
-
- r.x.ax=0x1700;
- __dpmi_int(0x2F,&r);
- Version=r.x.ax;
- isValid=r.x.ax!=0x1700;
+ AX=IDENTIFY_WinOldAp_VERSION;
+ MultiplexInt();
+ Version=AX;
+ isValid=AX!=IDENTIFY_WinOldAp_VERSION;
  if (!isValid)
     TVOSClipboard::error=WINOLDAP_NoPresent;
  else
@@ -282,7 +306,6 @@ int TVDOSClipboard::Init(void)
 
 int TVDOSClipboard::AllocateDOSMem(unsigned long size,unsigned long *BaseAddress)
 {
- __dpmi_regs r;
  #ifdef USE_TB
  unsigned long tbsize=_go32_info_block.size_of_transfer_buffer;
 
@@ -297,74 +320,71 @@ int TVDOSClipboard::AllocateDOSMem(unsigned long size,unsigned long *BaseAddress
     TVOSClipboard::error=WINOLDAP_TooBig;
     return 0;
    }
- r.h.ah=0x48;
- r.x.bx=(size>>4)+(size & 0xF ? 1 : 0);
- __dpmi_int(0x21,&r);
+ AH=0x48;
+ BX=(size>>4)+(size & 0xF ? 1 : 0);
+ MultiplexInt();
  if (r.x.flags & 1)
    {
     TVOSClipboard::error=WINOLDAP_TooBig;
     return 0;
    }
- *BaseAddress=r.x.ax<<4;
+ *BaseAddress=AX<<4;
  return 1;
 }
 
 void TVDOSClipboard::FreeDOSMem(unsigned long Address)
 {
- __dpmi_regs r;
  #ifdef USE_TB
  if (Address==__tb)
     return;
  #endif
- r.h.ah=0x49;
- r.x.es=Address>>4;
- __dpmi_int(0x21,&r);
+ AH=0x49;
+ ES=Address>>4;
+ TDisplayDOS::dosInt();
 }
 
 int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
 {
  if (!isValid || id!=0) return 0;
 
- __dpmi_regs r;
  unsigned long dataoff;
  char cleaner[32];
  int winLen;
+ int ret=1;
 
- r.x.ax=0x1701;
- __dpmi_int(0x2F,&r);
- if (r.x.ax==0)
+ AX=OPEN_CLIPBOARD;
+ MultiplexInt();
+ if (AX==0)
    {
     TVOSClipboard::error=WINOLDAP_ClpInUse;
     return 0;
    }
  // Erase the current contents of the clipboard
- r.x.ax=0x1702;
- __dpmi_int(0x2F,&r);
+ AX=EMPTY_CLIPBOARD;
+ MultiplexInt();
  winLen=((len+1)+0x1F) & ~0x1F;
  memset(cleaner,0,32);
  if (AllocateDOSMem(winLen,&dataoff))
    {
     dosmemput(buffer,len,dataoff);
     dosmemput(cleaner,winLen-len,dataoff+len);
-    r.x.ax=0x1703;
-    r.x.dx=7; // OEM text
-    r.x.bx=dataoff & 0x0f;
-    r.x.es=(dataoff>>4) & 0xffff;
-    r.x.si=winLen>>16;
-    r.x.cx=winLen & 0xffff;
-    __dpmi_int(0x2F,&r);
+    AX=SET_CLIPBOARD_DATA;
+    DX=7; // OEM text
+    BX=dataoff & 0x0f;
+    ES=(dataoff>>4) & 0xffff;
+    SI=winLen>>16;
+    CX=winLen & 0xffff;
+    MultiplexInt();
     FreeDOSMem(dataoff);
-    if (r.x.ax==0)
+    if (AX==0)
       {
        TVOSClipboard::error=WINOLDAP_WinErr;
-       r.x.ax=0x1708;
-       __dpmi_int(0x2F,&r);
-       return 0;
+       ret=0;
       }
-    r.x.ax=0x1708;
-    __dpmi_int(0x2F,&r);
    }
- return 1;
+ AX=CLOSE_CLIPBOARD;
+ MultiplexInt();
+ return ret;
 }
 
 char *TVDOSClipboard::paste(int id, unsigned &len)
@@ -374,19 +394,18 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
  char *p=NULL;
  unsigned long BaseAddress;
  unsigned long size;
- __dpmi_regs r;
 
- r.x.ax=0x1701;
- __dpmi_int(0x2F,&r);
- if (r.x.ax==0)
+ AX=OPEN_CLIPBOARD;
+ MultiplexInt();
+ if (AX==0)
    {
     TVOSClipboard::error=WINOLDAP_ClpInUse;
     return NULL;
    }
- r.x.ax=0x1704;
- r.x.dx=1;
- __dpmi_int(0x2F,&r);
- size=r.x.ax+(r.x.dx<<16);
+ AX=GET_CLIPBOARD_DATA_SIZE;
+ DX=1;
+ MultiplexInt();
+ size=AX+(DX<<16);
  if (size)
    {
     if (AllocateDOSMem(size,&BaseAddress))
@@ -394,11 +413,11 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
        p=new char[size];
        if (p)
          {
-          r.x.dx=1;
-          r.x.bx=BaseAddress & 0x0f;
-          r.x.es=(BaseAddress>>4) & 0xffff;
-          r.x.ax=0x1705;
-          __dpmi_int(0x2F,&r);
+          DX=1;
+          BX=BaseAddress & 0x0f;
+          ES=(BaseAddress>>4) & 0xffff;
+          AX=GET_CLIPBOARD_DATA;
+          MultiplexInt();
           dosmemget(BaseAddress,size,p);
           len=strlen(p);
          }
@@ -412,8 +431,8 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
     p=new char[1];
     *p=0;
    }
- r.x.ax=0x1708;
- __dpmi_int(0x2F,&r);
+ AX=CLOSE_CLIPBOARD;
+ MultiplexInt();
  return p;
 }
 
