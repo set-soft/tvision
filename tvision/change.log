@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.121  2003/09/02 13:34:57  set
+* Updated: QNX configuration. Patch from Mike.
+* Fixed: configset script to cut lines propperly.
+
 Revision 2.399.2.120  2003/08/13 18:46:03  set
 * Added: Link to the BC++ and pure DOS fix release to the web page.
 

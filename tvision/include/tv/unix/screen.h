@@ -74,7 +74,7 @@ protected:
  static void sigWindowSizeChanged(int sig);
  static void SpecialKeysDisable(int file);
  static void SpecialKeysRestore(int file);
- static void startcurses();
+ static void startcurses(int &terminalCodePage);
  static void mapColor(char *&p, int col);
  static void writeBlock(int dst, int len, ushort *old, ushort *src);
  static void RestoreScreen();
