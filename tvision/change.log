@@ -1,4 +1,9 @@
 $Log$
+Revision 2.280  2002/09/02 13:50:46  set
+* Fixed: [WinGr] When I patched the code to avoid the unsigned use as
+signed in setCharacters I didn't noticed JASC was using it to force a
+redraw. So now I replaced the hiden trick using an explicit variable.
+.
 Revision 2.279  2002/08/29 20:45:44  set
 * Fixed: [Win32] wingrdis needed stdlib to compile using MinGW. I noticed
 I must add gdi32 library, but is 1 AM and I'm really tired. It only
