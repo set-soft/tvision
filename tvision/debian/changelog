@@ -1,3 +1,17 @@
+rhtvision (2.0.3-1) unstable; urgency=low
+
+  * New upstream version! CVS release 2.573 2004/09/22 21:26:40.
+  * Its been so long... I don't remember almost anything about Debian
+    packaging; I was very quiet all this time, without doing testing releases
+    and without testing developer versions. I am extremely lazy since then,
+    not only for this but for many other things of life in general, my home
+    computer isn't very well maintained neither and I am not very aware about
+    Debian as I was before. Anyway, lets try to be a bit useful and at the
+    same time thankful of this superb software.
+  * Bumped Standards-Version to 3.6.1.0 (and I hope it complies!).
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Sun, 26 Sep 2004 21:12:11 -0200
+
 rhtvision (2.0.2-1) unstable; urgency=low
 
   * Upstream released a new fixed version! CVS release 2.493 2003/07/30
