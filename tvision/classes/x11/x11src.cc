@@ -116,7 +116,7 @@ void TScreenX11::clearScreen()
 }
 
 inline
-void TScreenX11::drawChar(unsigned x, unsigned y, uchar aChar, uchar aAttr)
+void TScreenX11::drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr)
 {
  if (useSecondaryFont && (aAttr & 0x8))
     XPutImage(disp,mainWin,gc,ximgSecFont[aChar],0,0,x,y,fontW,fontH);
@@ -138,7 +138,7 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
  XSetBackground(disp,gc,colorMap[newAttr>>4]);
  XSetForeground(disp,gc,colorMap[newAttr&0xF]);
  UnDrawCursor();
- drawChar(x,y,newChar,newAttr);
+ drawChar(gc,x,y,newChar,newAttr);
  DrawCursor();
  XFlush(disp);
 }
@@ -167,7 +167,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
           XSetForeground(disp,gc,colorMap[newAttr&0xF]);
           oldAttr=newAttr;
          }
-       drawChar(x,y,newChar,newAttr);
+       drawChar(gc,x,y,newChar,newAttr);
       }
     x+=fontW; b+=2; sb+=2;
    }
@@ -782,7 +782,7 @@ void TScreenX11::UnDrawCursor()
 
  XSetBackground(disp,cursorGC,colorMap[bg]);
  XSetForeground(disp,cursorGC,colorMap[fg]);
- drawChar(cursorX,cursorY,newChar,newAttr);
+ drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
  cursorInScreen=0;
  return;
 }
