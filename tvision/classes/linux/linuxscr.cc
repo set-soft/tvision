@@ -18,6 +18,7 @@ is explained.
   AppCP
   ScrCP
   InpCP
+  LoadSecondFont
   ScreenPalette
 
 *****************************************************************************/
@@ -896,6 +897,21 @@ TScreenLinux::TScreenLinux()
     if (font)
        DeleteArray(font->data);
     delete font;
+
+    #if 1
+    long sec=0;
+    TScreenFont256 *font2=NULL;
+    if (optSearch("LoadSecondaryFont",sec) && sec)
+      {
+       font2=frCB(1,linuxFont.width,linuxFont.height);
+       if (font2)
+         {
+          SetFont(0,NULL,1,font2);
+          DeleteArray(font2->data);
+          delete font2;
+         }
+      }
+    #endif
    }
 }
 
@@ -1581,7 +1597,8 @@ int TScreenLinux::SetFont(int changeP, TScreenFont256 *fontP,
     if (fontS)
       {
        ourFont.charcount=512;
-       memcpy(ourFont.data,linuxFont.data,256*bytes);
+       if (!primaryFontSet)
+          memcpy(ourFont.data,linuxFont.data,256*bytes);
        ExpandFont(ourFont.data+256*bytes,fontS);
        newSecondaryFontSet=1;
       }

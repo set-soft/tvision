@@ -17,6 +17,7 @@
    ScreenPalette
    FontWidth
    FontHeight
+   LoadSecondaryFont
    AppCP
    ScrCP
    InpCP
@@ -858,6 +859,11 @@ TScreenX11::TScreenX11()
  fontWb=(useFont->w+7)/8;
  uchar *fontData=useFont->data;
 
+ aux=0;
+ TScreenFont256 *secFont=NULL;
+ if (frCB && optSearch("LoadSecondaryFont",aux) && aux)
+    secFont=frCB(1,fontW,fontH);
+
  /* Setting to fine tune this driver */
  aux=1;
  if (optSearch("HideCursorWhenNoFocus",aux))
@@ -906,6 +912,12 @@ TScreenX11::TScreenX11()
    {/* Provided by the call back */
     DeleteArray(useFont->data);
     delete useFont;
+   }
+ if (secFont)
+   {
+    CreateXImageFont(1,secFont->data,fontW,fontH);
+    DeleteArray(secFont->data);
+    delete secFont;
    }
 
  /* Create the cursor image */
