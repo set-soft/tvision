@@ -35,6 +35,7 @@ char      TDisplayX11::windowSizeChanged=0;
 int       TDisplayX11::maxX;
 int       TDisplayX11::maxY;
 unsigned  TDisplayX11::fontW;
+unsigned  TDisplayX11::fontWb;
 unsigned  TDisplayX11::fontH;
 
 TDisplayX11::~TDisplayX11() {}

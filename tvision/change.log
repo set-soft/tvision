@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.223  2002/07/19 14:02:28  set
+* Updated: DOS project.
+* Fixed: Compilation of dosscr.cc, I forgot one debug macro.
+
 Revision 2.222  2002/07/17 17:14:49  set
 * Added: TVFontCollection class. It handles 8xN bitmap fonts. Also added
 an example.
