@@ -29,6 +29,10 @@ public:
  static void        freeSt(stTVIntl *&) { };
  static stTVIntl   *emptySt() { return NULL; };
  static stTVIntl   *dontTranslateSt() { return NULL; };
+ static int         snprintf(char *dest, size_t sz, const char *fmt, ...);
+ #ifdef Uses_intl_fprintf
+ static int         fprintf(FILE *f, const char *fmt, ...);
+ #endif
 };
 #endif /* __cplusplus */
 
