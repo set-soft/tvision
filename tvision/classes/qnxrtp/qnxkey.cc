@@ -86,6 +86,22 @@ ushort TGKeyQNXRtP::lowtranstable[0x0100]=
    kbX,        kbY,        kbZ,          kbOpenCurly, kbOr,          kbCloseCurly,  kbTilde,       kbBackSpace  // 0x0078
 };
 
+QNXRtPArtKeys TGKeyQNXRtP::shifttranstable[]=
+{
+   {kbLeft,  kbShLeft},
+   {kbRight, kbShRight},
+   {kbUp,    kbShUp},
+   {kbDown,  kbShDown},
+   {0xFFFF,  0xFFFF} // end of shift artificial keys list
+};
+
+QNXRtPArtKeys TGKeyQNXRtP::alttranstable[]=
+{
+};
+
+QNXRtPArtKeys TGKeyQNXRtP::ctrltranstable[]=
+{
+};
 
 void TGKeyQNXRtP::Resume()
 {
@@ -137,7 +153,36 @@ ushort TGKeyQNXRtP::GKey()
       }
    } while(1);
 
-   
+   // artificial keys.
+
+   if (sFlags==0)
+   {
+      return rawkey;  // no artificial keys available.
+   }
+
+   if (sFlags==kbShift) // processing only shift keys (nor Alt, nor Ctrl)
+   {
+      int eachkey=0;
+
+      do {
+
+         if ((shifttranstable[eachkey].rawkey==0xFFFF) &&
+             (shifttranstable[eachkey].transkey==0xFFFF))
+         {
+            break;
+         }
+
+         if (rawkey==shifttranstable[eachkey].rawkey)
+         {
+            rawkey=shifttranstable[eachkey].transkey;
+            break;
+         }
+
+         eachkey++;
+
+      } while(1);
+   }
+
    return rawkey;
 }
 
@@ -148,6 +193,8 @@ unsigned TGKeyQNXRtP::GetShiftState()
    int DieStatus;
 
    devctl(fileno(stdin), DCMD_CHR_LINESTATUS, &QNXShift, sizeof(QNXShift), &DieStatus);
+   
+   QNXShift&=0x7F;
    
    if (QNXShift & _LINESTATUS_CON_ALT)
    {
@@ -209,19 +256,6 @@ ushort TGKeyQNXRtP::GetRaw()
    }
 
    sFlags=GetShiftState();
-
-   // artificial keys.
-
-   do
-   {
-      if (sFlags==0)
-      {
-         break;                 // no artificial keys available.
-      }
-
-      break;
-
-   } while(1);
 
    return code;
 }
