@@ -1,4 +1,10 @@
 $Log$
+Revision 1.6  1999/01/10 16:04:05  root
+Added demo to the Linux distribution.
+
+Revision 1.6  1999/01/10 00:47:21  set
+Added the Borland's TVision demo. I taked it from the Sigala's port.
+
 Revision 1.5  1999/01/09 20:13:10  set
 Incorporated nine examples that implements various widgets. They are very
 small applications so the user can see how a simple TVision application can
