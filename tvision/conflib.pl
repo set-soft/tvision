@@ -10,7 +10,7 @@ $MakeDefsRHIDE={};
 $ExtraModifyMakefiles={};
 # DOS, UNIX, Win32
 $OS='';
-# Linux, FreeBSD, Solaris
+# Linux, FreeBSD, Solaris, QNXRtP
 $OSf='';
 # x86, Alpha, SPARC64, SPARC, PPC, HPPA, MIPS, Unknown
 $CPU='';
@@ -734,6 +734,15 @@ sub DetectOS
     $Compf='';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
+    $supportDir='linux';
+   }
+ elsif ($os=~/QNX/)
+   {
+    $OS='UNIX';
+    $OSf='QNXRtP';
+    $Compf='';
+    $stdcxx='';
+    $defaultCXX='qcc -Y_gpp';
     $supportDir='linux';
    }
  else
