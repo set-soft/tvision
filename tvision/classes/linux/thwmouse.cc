@@ -138,6 +138,11 @@ void THWMouse::resume()
        LOG("gpm server version " << Gpm_GetServerVersion(NULL));
        handlerInstalled=True;
        buttonCount=3;
+       /*Gpm_Event mev; Just draw the cursor, no way to move it, a really
+                        huge limitation.
+       Gpm_GetEvent(&mev);
+       mev.x=mev.y=0;
+       GPM_DRAWPOINTER (&mev);*/
       }
    }
   show();
