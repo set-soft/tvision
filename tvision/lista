@@ -620,6 +620,7 @@ win32/obj/delete.me
 win32/obj_demo/delete.me
 win32/readme.txt
 win32/trans.cc
+winnt/bccmake.in
 winnt/gkeyw32.cc
 winnt/include/msvc/dir.h
 winnt/include/msvc/dirent.h

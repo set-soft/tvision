@@ -7,4 +7,26 @@ extra/doskeys/kextend.asm
 extra/doskeys/kextend.txt
 configure.bat
 configset.bat
+win32/Makefile
+win32/Makefile.ms
+win32/console.cc
+win32/demo.mak
+win32/demo.ms
+win32/gkey.cc
+win32/obj/delete.me
+win32/obj_demo/delete.me
+win32/readme.txt
+win32/trans.cc
+winnt/bccmake.in
+winnt/gkeyw32.cc
+winnt/include/msvc/dir.h
+winnt/include/msvc/dirent.h
+winnt/include/msvc/strstream.h
+winnt/include/tv/configtv.h
+winnt/Makefile
+winnt/misc/codes.cpp
+winnt/misc/vk2kk.pl
+winnt/objs/delete.me
+winnt/readme.txt
+winnt/tvex.cc
 
