@@ -1759,11 +1759,6 @@ CodePage *TVCodePage::CodePageOfID(int id)
  return (CodePage *)(CodePages->at(IDToIndex(id)));
 }
 
-struct stIntCodePairs
-{
- uint16 unicode,code;
-};
-
 stIntCodePairs TVCodePage::InternalMap[]=
 {
  { 0x0020,   32 },
