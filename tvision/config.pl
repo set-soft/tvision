@@ -80,8 +80,8 @@ $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
-# be added for things like FreeBSD or SunOS.
-$MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSf eq 'Linux'));
+# be added for things like FreeBSD or SunOS. But not for QNX.
+$MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSf eq 'Linux') || ($OSf eq 'QNXRtP'));
 $OSUSesIntl=($OS eq 'DOS') || ($OS eq 'Win32');
 if ($OSUSesIntl)
   {
@@ -708,6 +708,11 @@ sub GenerateMakefile
    {
     $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/linux\n";
     $rep.="\tinstall -m 0644 include/tv/linux/*.h \$(prefix)/include/rhtvision/tv/linux\n";
+   }
+ if ($OSf eq 'QNXRtP')
+   {
+    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/qnxrtp\n";
+    $rep.="\tinstall -m 0644 include/tv/qnxrtp/*.h \$(prefix)/include/rhtvision/tv/qnxrtp\n";
    }
  if ($OS eq 'Win32')
    {
