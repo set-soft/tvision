@@ -35,6 +35,7 @@
 #endif
 
 #define Uses_string
+#define Uses_unistd
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
@@ -181,7 +182,7 @@ TScreenDOS::TScreenDOS()
     primaryFontSet=1;
     appFonts[0].h=0;
     long aux=0;
-    if (optSearch("LoadSecondaryFont",sec) && sec)
+    if (optSearch("LoadSecondaryFont",aux) && aux)
       {
        secondaryFontSet=1;
        appFonts[1].h=0;
