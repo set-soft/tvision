@@ -145,6 +145,7 @@ compat/fnmatch.c
 compat/getopt1.c
 compat/glob.c
 compat/globfree.c
+compat/nl_langinfo.c
 compat/regex.c
 compat/rhide.env
 compat/ticks.c

@@ -354,13 +354,19 @@ sub CheckGCCcanXX
  my ($ret,$test);
 
  print "$cc can compile C++ code: ";
- $test='#include <iostream.h>
+ $test='
+#if __GNUC__>=3
+ #include <iostream>
+ #define STD(a) std::a
+#else
+ #include <iostream.h>
+ #define STD(a) a
+#endif
 int main(void)
 {
- cout << "OK" << endl;
+ STD(cout) << "OK" << STD(endl);
  return 0;
-}
-';
+}';
  $test=RunGCCTest($cc,'cc',$test,$stdcxx);
  if ($test eq "OK\n")
    {
@@ -426,13 +432,19 @@ sub CheckGXXReal
  my ($test,$res,@list,$i);
 
  print 'Looking for the C++ compiler: ';
- $test='#include <iostream.h>
+ $test='
+#if __GNUC__>=3
+ #include <iostream>
+ #define STD(a) std::a
+#else
+ #include <iostream.h>
+ #define STD(a) a
+#endif
 int main(void)
 {
- cout << "OK" << endl;
+ STD(cout) << "OK" << STD(endl);
  return 0;
-}
-';
+}';
  @list=split(/:/,$defaultCXX);
  foreach $i (@list)
    {
