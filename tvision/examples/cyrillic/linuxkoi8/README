@@ -1,0 +1,43 @@
+This is a small test program for the KOI8-R support on Linux consoles.
+This test needs full access to the console to work properly. It means: run
+the program from the shell, don't use midnight commander nor screen, nor
+other application in the middle. Also ensure the user you use can write to
+/dev/vcsa* devices. I didn't test it using frame buffer. It won't work from
+an X console, nor in native X mode. Just pure console access, if in doubt try
+it as root.
+
+
+How to run the test?
+
+1) Compile it using "make -f test.mak" as with other examples.
+2) Load a KOI8-R font and a russian keyboard map. The setkoi8.sh script is
+what I use for it. If you use KOI8-R in your machine you probably won't need
+it at all.
+3) Run the test "./test.exe".
+4) Do the testings (screen and keyboard tests).
+5) Go back to your original encodings. I use setlat1.sh for this.
+
+What can be tested?
+
+  The first thing to test is the detection of the encoding. The background
+should look as a regular TV background and the file menu entry should show
+the russian equivalent for file. Note I know nothing about russian, a user
+provided the traslation so I trust this is the correct one ;-). According to
+the traslitaration table of my dictionary this is "fail", the pronunciation
+of the english word file.
+  The second thing to test is the keyboard. If you know how ru1 map works you
+can skeep the following explanation.
+  The ru1 key map uses the right alt key to switch between two modes:
+cyrillic and latin. The key is a toggle key. To test it just press the right
+alt, release it and then press the A key, you should get the cyrillic letter
+whose translitaration is F (looks like a greek phi). Pressing the right alt
+again you'll go back to the latin mode, needed to enter command line commands
+;-)
+  Now you should test the "File" menu. Press Alt+a and you'll get the menu.
+Then test the same but in the cyrillic mode.
+
+Note: The lat1-16.psf.gz font included here is a real latin 1 font, not the
+damaged one included in a lot of console-tools packages. Debian Potato and
+Woody have broken lat1-* fonts, they are in fact copies of lat1u-* fonts.
+
+SET
