@@ -8,8 +8,9 @@ The small sections are:
 4. Linux dynamic libraries
 5. Libraries and tools needed
 6. Examples
-7. How to submit a patch
-8. Contact information
+7. Targets supported, limitations
+8. How to submit a patch
+9. Contact information
 
 ****** Important! for old users: the library generated is now called ******
 ****** librhtv.a this change in the name is to avoid confusion with  ******
@@ -221,13 +222,150 @@ you are in DOS, Linux of course have it by default.
 6. Examples:
 -----------
 
-  I included a collection of nine examples I got from the net and ported to
+  I included a collection of 13 examples I got from the net and ported to
 this TVision. The examples are shipped only with the sources distribution.
 
 
 
 
-7. How to submit a patch:
+7. Examples:
+-----------
+
+  The library compiles and runs in DOS and Linux, but there are some
+important things to note, specially what is supported in each case:
+
+[Sorted alphabetically]
+
+DOS:
+ Keyboard:
+   Almost all the keyboard combinations are supported. Some keyboard
+  combinations aren't reported by BIOS, they are:
+  Control + `1457890=;,./
+  Macro key (I have it in one of my keyboards)
+   To workaround it I created a small TSR (hacking another TSR and rewriting
+  the code inside the ISR ;-). This TSR is included with the sources
+  distribution in the extra/doskeys directory, you can distribute it with
+  your program if you want, just don't remove my copyright.
+ Screen:
+   Any text mode fully supported by BIOS and that is compatible with mode 3
+  (VGA color) is supported, VESA modes are supported too, if you have
+  problems please report it. If you use a program that sets the video mode
+  by tweaking the VGA registers it will also set the BIOS data area to
+  reflect the new screen size or it won't work.
+   Additionally the library supports some build in modes:
+  82x25, 80x28, 80x30, 90x30, 94x30, 80x34, 90x34, 94x34, 80x35, 80x40,
+  80x43 and 80x50.
+   Note: if you wonder why 82x25 that's a mode where the characters have 8
+  pixels of width and is very good for fonts with strange layouts like
+  ISO-Latin-1.
+   The hercules monochrome mode should be supported but I didn't test it for
+  a long time so perhaps something is broken, please report your experience
+  if you try it.
+ Mouse
+   Full support for drivers compatible with MSMouse v6.0.
+
+Linux console for users with access to /dev/vcs* devices:
+  Keyboard:
+    If you are running in the console (ttyN, not ttypN for example) the
+   support is excellent. The library uses TIOCLINUX function #6 to get the
+   Alt, Ctrl, Shift, etc. and ncurses for the keys. Combining this
+   information almost anything is supported. As some keys are used by Linux
+   kernel the library patchs the keyboard tables to fool kernel, so things
+   like Alt+Fn won't change console, or Shift+PgUp won't scroll up. To
+   switch consoles use Ctrl+Alt+Fn wich, by the way, is the combination used
+   by X.
+    An interesting limitation is that Ctrl+I is Tab and you can't avoid it.
+  Screen:
+    You need at least write access to the /dev/vcs* devices, if not you'll
+   lose performance and some characters. The best is having read and write
+   access, if you only have write access TScreen::suspend/resume doesn't
+   work properly.
+    The current video mode is used, no functions to change the video mode are
+   provided. Currently the library is limited to the standard fonts (VGA)
+   I'm working to fix it. The library supports 16 foreground and 16
+   background colors.
+  Mouse:
+    Full support for gpm 1.x, pressing Alt+mouse releases the mouse to gpm.
+   It alows copying from a Turbo Vision application to other application, but
+   not the reverse, why? because gpm will simply type the keys and as you are
+   holding Alt all will be received as Alt+key. But there are a solution ;-)
+   if you configure the library to use the left alt key for the menues
+   (see TGKey::SetAltSettings(value)) you can use the right alt for the
+   mouse paste.
+
+Linux using telnet:
+  Keyboard:
+    It means when you are running in a remote mode (ttypN for example), note
+   that midnight commander runs the applications in this way!
+    In this case you are at the mercy of ncurses wich uses some arcaic
+   standards. You'll lose: Shift+Special keys and Ctrl+Special keys (and
+   more). Special keys are arrows, home, end, insert, etc. This limitation is
+   in the protocols and standards used and I can't do anything to workaround
+   it, the system is broken.
+  Screen:
+    The support is slow (1/3.5 compared with vcsN) and if you are using a
+   network the speed is of course limited by the transmision, wich could
+   make the application too slow. As not all the characters are supported
+   some things like the arrows of the scroll bars will be replaced by ASCII
+   values. 16 foreground and 8 background colors.
+  Mouse:
+    Not supported, don't know if possible, in fact kmous is not defined in
+   the terminfo file for Linux.
+
+Linux using xterm:
+  Keyboard:
+    The same limitations that "Linux using telnet" because xterms and ncurses
+   can't do more.
+  Screen:
+    Good support, the library supports SIGWINCH so changing the size of the
+   window will resize the application. 8 foreground and 8 background colors
+   are supported, but using bold/normal the library gets 16 foreground
+   colors.
+  Mouse:
+    Supported, lamentably isn't very interactive because xterm only reports
+   when you press or release a button, but not mouse movement. You must get
+   acustomed, but works.
+
+Linux using Xterm: That's the way to go if we want very good support for X,
+                   currently I don't have time to do it so if you can help
+                   please volunteer. I have all the information needed.
+
+Windows 3.1: Currently I don't test under this platform, tell me if you have
+             problems, I tested in the past and worked OK. Most of the W9x
+             restrictions applies.
+
+Windows 9x:
+  Keyboard:
+    Almost the same as DOS so read the DOS section first. The TSR works at
+   least in Windows '95. Some keys are used by the GUI so not all are
+   available I include a .pif example showing how to avoid W9x take control
+   of Alt+Space and other keys. The example is in extra/pifexamp.
+  Screen:
+    The support is similar to the one found in DOS, but I know some video
+   drivers have bugs in the VESA handling so perhaps it could make problems.
+   If you face such a problem please contact me, in the past I fixed VESA
+   problems with S3 boards thanks to the help of a user.
+    Usually isn't a good idea to run applications that change the video mode
+   inside a window, so if your program does it recommend not running in a
+   window to your users. One way to avoid it is using a .pif file, it will
+   prevent 98% of the people from "windowizing" the program. See the
+   extra/pifexamp example for it, it instructs W95 to run the program in full
+   screen and disable Alt+Enter, the example also gives up to 64Mb to the
+   application (the maximun W95 will give to a DOS task).
+  Mouse:
+    Full support.
+  Note: I think all of it applies to Windows 98, if you see any difference
+        please tell me.
+
+Windows NT: This platform isn't supported, I know the mouse fails to work and
+            you should disable it. I think NT's support of DOS applications
+            is completly broken so I don't care about it. If you have patches
+            I'll receive it.
+
+
+
+
+8. How to submit a patch:
 ------------------------
 
   The simplest way is running a diff between your current directory and a
@@ -238,7 +376,7 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-8. Contact information:
+9. Contact information:
 ----------------------
 
 Salvador E. Tropea (SET)
