@@ -10,6 +10,7 @@ for SETEdit and not a full set.
 
 ***************************************************************************/
 
+#define CLY_DoNotDefineUTypes
 #define Uses_CLYFileAttrs
 #include <compatlayer.h>
 
