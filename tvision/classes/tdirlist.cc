@@ -389,7 +389,7 @@ void TDirListBox::newDirectory( const char *str )
            dir[i]='/';
        }
     #endif
-    char *drives = _("Drives");
+    const char *drives = _("Drives");
     dirs->insert( new TDirEntry( drives, drives ) );
     if( strcmp( dir, drives ) == 0 )
         showDrives( dirs );

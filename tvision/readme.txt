@@ -60,7 +60,7 @@ must install some GNU tools.
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TV for short) v2.0.1.
+  That's the Turbo Vision distribution (TV for short) v2.0.2.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 

@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.32  2003/04/08 18:51:33  set
+* Added: Now added support to TButton and TWindow/TDialog.
+
 Revision 2.399.2.31  2003/04/08 15:22:41  set
 * Added: parttree.cc/h to the distribution list.
 
