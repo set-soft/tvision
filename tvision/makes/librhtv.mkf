@@ -1,6 +1,6 @@
 #!/usr/bin/make
 #
-# Copyright (c) 2003 by Salvador E. Tropea.
+# Copyright (c) 2003-2004 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
 
@@ -22,6 +22,7 @@ vpath_obj=obj
 INCLUDE_DIR=../include
 CLASSES_DIR=../classes
 EXTRA_SRC_DIR=..
+COMMON_IMK=common.imk
 
 ##########################################################################################
 #
@@ -33,18 +34,13 @@ EXTRA_SRC_DIR=..
 # Common rules used by RHIDE.
 # It also includes rhide.env.
 #
-include common.imk
+include $(COMMON_IMK)
 
 INCLUDE_DIRS=$(INCLUDE_DIR) $(EXTRA_INCLUDE_DIRS)
 
 #
 # All the RHIDE data should come from here.
 #
-ifdef MAINTAINER_MODE
- ExIMK=.imk
-else
- ExIMK=.umk
-endif
 include librhtv$(ExIMK)
 
 #

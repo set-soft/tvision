@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.191  2004/09/20 14:45:20  set
+* Fixed: [gcc 3.x] Warning in compat/snprintf.c. Reported by Nicola Asuni.
+
 Revision 2.399.2.190  2004/09/20 14:17:17  set
 * Added: [Config] A command line option to specify a path for includes.
 This path is used for the configuration tests and for the library.
