@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.9  2003/02/18 18:33:26  set
+* Added: [X11] cursor support for the driver when using X11 fonts.
+* Added: A new field in TEvent to hold the key in unicode, not used ... yet.
+
 Revision 2.399.2.8  2003/02/18 14:53:37  set
 * Added: [X11] Configuration options to use X11 fonts instead of internal
 fonts. Only available for Unicode16 mode. Documented.

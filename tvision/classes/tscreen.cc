@@ -140,7 +140,7 @@ ushort TScreen::defaultGetCharacter(unsigned offset)
 {
  if (drawingMode==unicode16)
     offset*=2;
- return screenBuffer[offset*2];
+ return screenBuffer[offset];
 }
 
 void TScreen::defaultGetCharacters(unsigned offset, ushort *buf, unsigned count)
