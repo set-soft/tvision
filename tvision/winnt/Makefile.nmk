@@ -34,8 +34,9 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/unc_95.o $(OBJDIR)/unc_nt.o $(OBJDIR)/validfilename.o $(OBJDIR)/yieldpro.o $(OBJDIR)/calcdisp.o $(OBJDIR)/calculat.o\
 	$(OBJDIR)/codepage.o $(OBJDIR)/configfile.o $(OBJDIR)/dosdis.o $(OBJDIR)/doskey.o $(OBJDIR)/dosmouse.o $(OBJDIR)/dosscr.o\
 	$(OBJDIR)/drivers2.o $(OBJDIR)/dual.o $(OBJDIR)/fileview.o $(OBJDIR)/fpbase.o $(OBJDIR)/fpstream.o $(OBJDIR)/help.o\
-	$(OBJDIR)/helpbase.o $(OBJDIR)/histlist.o $(OBJDIR)/ifpstrea.o $(OBJDIR)/iopstrea.o $(OBJDIR)/ipstream.o $(OBJDIR)/misc.o\
-	$(OBJDIR)/msgbox.o $(OBJDIR)/nbackgro.o $(OBJDIR)/nbutton.o $(OBJDIR)/ncalcdis.o $(OBJDIR)/ncalcula.o $(OBJDIR)/nchdirdi.o\
+	$(OBJDIR)/helpbase.o $(OBJDIR)/histlist.o $(OBJDIR)/ifpstrea.o $(OBJDIR)/iopstrea.o $(OBJDIR)/ipstream.o\
+	$(OBJDIR)/linuxdis.o $(OBJDIR)/linuxkey.o $(OBJDIR)/linuxmouse.o $(OBJDIR)/linuxscr.o $(OBJDIR)/misc.o $(OBJDIR)/msgbox.o\
+	$(OBJDIR)/nbackgro.o $(OBJDIR)/nbutton.o $(OBJDIR)/ncalcdis.o $(OBJDIR)/ncalcula.o $(OBJDIR)/nchdirdi.o\
 	$(OBJDIR)/ncheckbo.o $(OBJDIR)/nclrdisp.o $(OBJDIR)/ncluster.o $(OBJDIR)/ncollect.o $(OBJDIR)/ncolordi.o\
 	$(OBJDIR)/ncolorgr.o $(OBJDIR)/ncolorit.o $(OBJDIR)/ncolorse.o $(OBJDIR)/ndesktop.o $(OBJDIR)/ndialog.o\
 	$(OBJDIR)/ndircoll.o $(OBJDIR)/ndirlist.o $(OBJDIR)/neditor.o $(OBJDIR)/neditwi.o $(OBJDIR)/newstr.o $(OBJDIR)/nfilecol.o\
@@ -45,7 +46,8 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/nmenuvie.o $(OBJDIR)/nmonosel.o $(OBJDIR)/nparamte.o $(OBJDIR)/nradiobu.o $(OBJDIR)/nrangeva.o\
 	$(OBJDIR)/nresourc.o $(OBJDIR)/nscrollb.o $(OBJDIR)/nscrolle.o $(OBJDIR)/nsortedc.o $(OBJDIR)/nsortedl.o\
 	$(OBJDIR)/nstatict.o $(OBJDIR)/nstatusl.o $(OBJDIR)/nstringc.o $(OBJDIR)/nstringl.o $(OBJDIR)/nvalidat.o $(OBJDIR)/nview.o\
-	$(OBJDIR)/nwindow.o $(OBJDIR)/ofpstrea.o $(OBJDIR)/opstream.o $(OBJDIR)/pstream.o $(OBJDIR)/rhscreen.o $(OBJDIR)/sbackgro.o\
+	$(OBJDIR)/nwindow.o $(OBJDIR)/ofpstrea.o $(OBJDIR)/opstream.o $(OBJDIR)/osclipboard.o $(OBJDIR)/pstream.o\
+	$(OBJDIR)/qnxdis.o $(OBJDIR)/qnxkey.o $(OBJDIR)/qnxmouse.o $(OBJDIR)/qnxscr.o $(OBJDIR)/rhscreen.o $(OBJDIR)/sbackgro.o\
 	$(OBJDIR)/sbutton.o $(OBJDIR)/scalcdis.o $(OBJDIR)/scalcula.o $(OBJDIR)/schdirdi.o $(OBJDIR)/scheckbo.o\
 	$(OBJDIR)/sclrdisp.o $(OBJDIR)/scluster.o $(OBJDIR)/scolordi.o $(OBJDIR)/scolorgr.o $(OBJDIR)/scolorit.o\
 	$(OBJDIR)/scolorse.o $(OBJDIR)/screen.o $(OBJDIR)/sdesktop.o $(OBJDIR)/sdialog.o $(OBJDIR)/sdircoll.o $(OBJDIR)/sdirlist.o\
@@ -71,9 +73,11 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/tstrinde.o $(OBJDIR)/tstringc.o $(OBJDIR)/tstringl.o $(OBJDIR)/tstrlist.o $(OBJDIR)/tstrmcla.o\
 	$(OBJDIR)/tstrmtyp.o $(OBJDIR)/tsubmenu.o $(OBJDIR)/ttermina.o $(OBJDIR)/ttextdev.o $(OBJDIR)/tvalidat.o\
 	$(OBJDIR)/tvedit1.o $(OBJDIR)/tvedit2.o $(OBJDIR)/tvedit3.o $(OBJDIR)/tview.o $(OBJDIR)/tvtext1.o $(OBJDIR)/tvtext2.o\
-	$(OBJDIR)/twindow.o     $(OBJDIR)/win32dis.o\
-	$(OBJDIR)/win32key.o $(OBJDIR)/win32mouse.o $(OBJDIR)/win32scr.o $(OBJDIR)/winntdis.o $(OBJDIR)/winntkey.o\
-	$(OBJDIR)/winntmouse.o $(OBJDIR)/winntscr.o
+	$(OBJDIR)/twindow.o $(OBJDIR)/unixdis.o $(OBJDIR)/unixkey.o $(OBJDIR)/unixmouse.o $(OBJDIR)/unixscr.o \
+	   $(OBJDIR)/win32dis.o $(OBJDIR)/win32key.o $(OBJDIR)/win32mouse.o\
+	$(OBJDIR)/win32scr.o $(OBJDIR)/winntdis.o $(OBJDIR)/winntkey.o $(OBJDIR)/winntmouse.o $(OBJDIR)/winntscr.o\
+	$(OBJDIR)/x11dis.o $(OBJDIR)/x11key.o $(OBJDIR)/x11mouse.o $(OBJDIR)/x11src.o $(OBJDIR)/xtermdis.o $(OBJDIR)/xtermkey.o\
+	$(OBJDIR)/xtermmouse.o $(OBJDIR)/xtermscr.o
 
 {$(SRC1)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o

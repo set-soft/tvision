@@ -13,6 +13,14 @@ intersting information.
 
 #include <tv/configtv.h>
 
+#define Uses_ctype
+#define Uses_TEvent
+#define Uses_TGKey
+#define Uses_FullSingleKeySymbols
+#define Uses_string
+#include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
 #ifdef TVCompf_djgpp
 
 #include <go32.h>
@@ -28,12 +36,6 @@ intersting information.
 #define AH         r.h.ah
 #define AX         r.x.ax
 
-#define Uses_ctype
-#define Uses_TEvent
-#define Uses_TGKey
-#define Uses_FullSingleKeySymbols
-#define Uses_string
-#include <tv.h>
 #include <tv/dos/key.h>
 
 #define GET_ENHANCED_KEYSTROKE          0x0010
@@ -529,7 +531,11 @@ int main(int argc, char *argv[])
 }
 #endif
 
-#endif // TVCompf_djgpp
+#else // TVCompf_djgpp
+
+#include <tv/dos/key.h>
+
+#endif // else TVCompf_djgpp
 
 /*
  That's a gkey function that is supposed to:

@@ -15,13 +15,14 @@ added some routines and adapted it to the new architecture.
 ***************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
-
 #define Uses_stdlib
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -289,6 +290,12 @@ TScreen *TV_WinNTDriverCheck()
    }
  return drv;
 }
+#else
+
+#include <tv/winnt/screen.h>
+#include <tv/winnt/mouse.h>
+#include <tv/winnt/key.h>
+
 #endif // TVOSf_WIN32
 
 

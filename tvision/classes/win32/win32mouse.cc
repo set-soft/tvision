@@ -14,14 +14,15 @@ here an events handler with a queue.
 
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
-
-#include <stdlib.h>
+#define Uses_stdlib
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TGKey
 #define Uses_TScreen
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -107,6 +108,11 @@ void THWMouseWin32::HandleMouseEvent()
     TGKeyWin32::ProcessControlKeyState(&ir);
    }
 }
+#else
+
+#include <tv/win32/screen.h>
+#include <tv/win32/mouse.h>
+#include <tv/win32/key.h>
 
 #endif // TVOS_Win32
 

@@ -1,7 +1,7 @@
 /* Linux keyboard handler routines header.
    Copyright by Salvador E. Tropea (SET) (2001-2002)
    Covered by the GPL license. */
-#ifndef LINUXSCREEN_HEADER_INCLUDED
+#if defined(TVOSf_Linux) && !defined(LINUXSCREEN_HEADER_INCLUDED)
 #define LINUXSCREEN_HEADER_INCLUDED
 
 // Modes you can pass to Init

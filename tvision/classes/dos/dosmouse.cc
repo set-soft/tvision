@@ -17,16 +17,18 @@ H”hne.
 #include <tv/configtv.h>
 
 #ifdef TVCompf_djgpp
-
+ #include <conio.h>
+#endif
 #define Uses_stdlib
 #define Uses_stdio
-#include <conio.h>
-#include <dos.h>
-
 #define Uses_TEvent
 #define Uses_TEventQueue
 #include <tv.h>
 
+// I delay the check to generate as much dependencies as possible
+#ifdef TVCompf_djgpp
+
+#include <dos.h>
 #include <dpmi.h>
 #include <sys/farptr.h>
 #include <go32.h>
@@ -470,5 +472,9 @@ void THWMouseDOS::Init()
     registerHandler(0xFFFF,TEventQueue::mouseInt);
 }
 
-#endif // DJGPP
+#else // DJGPP
+
+#include <tv/dos/mouse.h>
+
+#endif // else DJGPP
 

@@ -16,8 +16,6 @@ needed.
 
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
-
 #define Uses_string
 #define Uses_stdlib
 
@@ -29,6 +27,9 @@ needed.
 #define Uses_TEvent
 #define Uses_TGKey
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -355,5 +356,11 @@ void TScreenWin32::setVideoMode( char *mode )
    ZeroMemory(screenBuffer, getRows()*getCols()*sizeof(ushort));
 }
 */
+#else
+
+#include <tv/win32/screen.h>
+#include <tv/win32/mouse.h>
+#include <tv/win32/key.h>
+
 #endif // TVOS_Win32
 

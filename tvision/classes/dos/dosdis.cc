@@ -18,14 +18,15 @@
 
 #include <tv/configtv.h>
 
-#ifdef TVCompf_djgpp
-
 #define Uses_stdlib
 #define Uses_string
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TFrame
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVCompf_djgpp
 
 #include <conio.h>
 #include <dos.h>
@@ -766,5 +767,11 @@ void TDisplayDOS::updateIntlChars()
         TFrame::frameChars[30] = 'Í';
 }
 #endif
-#endif // DJGPP
+
+#else // DJGPP
+
+#include <tv/dos/screen.h>
+#include <tv/dos/mouse.h>
+
+#endif // else DJGPP
 

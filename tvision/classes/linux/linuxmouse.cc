@@ -8,10 +8,6 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#if defined(TVOSf_Linux) && defined(HAVE_GPM)
-
-//---------------- GPM version -----------------
-
 #define Uses_stdlib
 #define Uses_string
 #define Uses_stdio
@@ -20,6 +16,12 @@
 #define Uses_TEventQueue
 #define Uses_TScreen
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOSf_Linux) && defined(HAVE_GPM)
+
+//---------------- GPM version -----------------
+
 #include <termios.h>
 #include <signal.h>
 #include <tv/linux/screen.h>
@@ -120,4 +122,10 @@ THWMouseGPM::~THWMouseGPM()
 {
 }
 
-#endif // defined(TVOSf_Linux) && defined(HAVE_GPM)
+#else // defined(TVOSf_Linux) && defined(HAVE_GPM)
+
+#include <tv/linux/screen.h>
+#include <tv/linux/mouse.h>
+#include <tv/linux/log.h>
+
+#endif // else defined(TVOSf_Linux) && defined(HAVE_GPM)

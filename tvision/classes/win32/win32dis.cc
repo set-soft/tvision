@@ -15,11 +15,13 @@ needed.
 
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
 #define Uses_stdio
 #define Uses_TDisplay
 #define Uses_TScreen
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -209,5 +211,9 @@ ushort TDisplay::getCrtMode()
 }
 */
 
-#endif // TVOS_Win32
+#else // TVOS_Win32
+
+#include <tv/win32/screen.h>
+
+#endif // else TVOS_Win32
 

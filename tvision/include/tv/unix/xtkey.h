@@ -1,7 +1,7 @@
 /* XTerm keyboard handler routines header.
    Copyright by Salvador E. Tropea (SET) (2002)
    Covered by the GPL license. */
-#ifndef XTERMKEY_HEADER_INCLUDED
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(XTERMKEY_HEADER_INCLUDED)
 #define XTERMKEY_HEADER_INCLUDED
 struct TEvent;
 struct node;

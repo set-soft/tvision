@@ -16,13 +16,14 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
-
 #define Uses_stdio
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TScreen
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <tv/unix/mouse.h>
 #include <tv/unix/xtmouse.h>
@@ -83,4 +84,10 @@ void THWMouseXTermFull::Init(int aMode)
 THWMouseXTermFull::~THWMouseXTermFull()
 {
 }
-#endif // TVOS_UNIX && !TVOSf_QNXRtP
+#else // TVOS_UNIX && !TVOSf_QNXRtP
+
+#include <tv/unix/mouse.h>
+#include <tv/unix/xtmouse.h>
+#include <tv/linux/log.h>
+
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP

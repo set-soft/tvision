@@ -4,8 +4,6 @@
 
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && defined(TVOSf_QNXRtP)
-
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TDrawBuffer
@@ -20,6 +18,10 @@
 #define Uses_sys_stat
 
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && defined(TVOSf_QNXRtP)
+
 #include <termios.h>
 #include <tv/qnxrtp/screen.h>
 #include <tv/qnxrtp/key.h>
@@ -542,4 +544,5 @@ void TScreenQNXRtP::writeBlock(int dst, int len, ushort *old, ushort *src)
 #else
 // Here to generate the dependencies in RHIDE
 #include <tv/qnxrtp/screen.h>
+#include <tv/qnxrtp/key.h>
 #endif // TVOS_UNIX && TVOSf_QNXRtP

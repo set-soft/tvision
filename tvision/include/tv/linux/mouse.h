@@ -1,7 +1,11 @@
-#ifndef LINUXMOUSE_INCLUDED
-#define LINUXMOUSE_INCLUDED
+/* Linux keyboard handler routines header.
+   Copyright by Salvador E. Tropea (SET) (2001-2002)
+   Covered by the GPL license. */
 
 #include <tv/unix/mouse.h>
+
+#if defined(TVOSf_Linux) && !defined(LINUXMOUSE_INCLUDED)
+#define LINUXMOUSE_INCLUDED
 
 #ifdef HAVE_GPM
 class THWMouseGPM : public THWMouseUNIX

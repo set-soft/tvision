@@ -2,8 +2,8 @@
 
   DOS Screen (TScreenDOS) functions.
 
-  Copyright (c) 1996-1998 by Robert H”hne.
   Copyright (c) 1998-2002 by Salvador E. Tropea (SET)
+  Contains code Copyright (c) 1996-1998 by Robert H”hne.
 
   Description:
   This module implements the low level DOS screen access.
@@ -13,13 +13,18 @@
 #include <tv/configtv.h>
 
 #ifdef TVCompf_djgpp
+ #include <conio.h>
+#endif
 
-#include <conio.h>
-
+#define Uses_string
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
+#define Uses_TVOSClipboard
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVCompf_djgpp
 
 #include <dos.h>
 #include <malloc.h>
@@ -81,6 +86,7 @@ TScreenDOS::TScreenDOS()
  TScreen::setCharacters=setCharacters;
  TScreen::System=System;
 
+ TVDOSClipboard::Init();
  THWMouseDOS::Init();
  TGKeyDOS::Init();
 
@@ -223,5 +229,200 @@ int TScreenDOS::System(const char *command, pid_t *pidChild)
  return system(command);
 }
 
-#endif // DJGPP
+/*****************************************************************************
+  Windows clipboard implementation using WinOldAp API.
+*****************************************************************************/
+
+#define USE_TB
+
+// Numbers for the errors
+#define WINOLDAP_NoPresent 1
+#define WINOLDAP_ClpInUse  2
+#define WINOLDAP_TooBig    3
+#define WINOLDAP_Memory    4
+#define WINOLDAP_WinErr    5
+
+#define WINOLDAP_Errors    5
+
+// Strings for the errors
+const char *TVDOSClipboard::dosNameError[]=
+{
+ NULL,
+ __("Windows not present"),
+ __("Clipboard in use by other application"),
+ __("Clipboard too big for the transfer buffer"),
+ __("Not enough memory"),
+ __("Windows reports error")
+};
+
+int TVDOSClipboard::isValid=0;
+int TVDOSClipboard::Version;
+int TVDOSClipboard::Error=0;
+
+int TVDOSClipboard::Init(void)
+{
+ __dpmi_regs r;
+
+ r.x.ax=0x1700;
+ __dpmi_int(0x2F,&r);
+ Version=r.x.ax;
+ isValid=r.x.ax!=0x1700;
+ if (!isValid)
+    Error=WINOLDAP_NoPresent;
+ else
+   {
+    TVOSClipboard::copy=copy;
+    TVOSClipboard::paste=paste;
+    TVOSClipboard::available=1; // We have 1 clipboard
+    TVOSClipboard::name="Windows";
+    TVOSClipboard::errors=WINOLDAP_Errors;
+    TVOSClipboard::nameErrors=dosNameError;
+   }
+ return isValid;
+}
+
+int TVDOSClipboard::AllocateDOSMem(unsigned long size,unsigned long *BaseAddress)
+{
+ __dpmi_regs r;
+ #ifdef USE_TB
+ unsigned long tbsize=_go32_info_block.size_of_transfer_buffer;
+
+ if (size<=tbsize)
+   {
+    *BaseAddress=__tb;
+    return 1;
+   }
+ #endif
+ if (size>0x100000)
+   {
+    Error=WINOLDAP_TooBig;
+    return 0;
+   }
+ r.h.ah=0x48;
+ r.x.bx=(size>>4)+(size & 0xF ? 1 : 0);
+ __dpmi_int(0x21,&r);
+ if (r.x.flags & 1)
+   {
+    Error=WINOLDAP_TooBig;
+    return 0;
+   }
+ *BaseAddress=r.x.ax<<4;
+ return 1;
+}
+
+void TVDOSClipboard::FreeDOSMem(unsigned long Address)
+{
+ __dpmi_regs r;
+ #ifdef USE_TB
+ if (Address==__tb)
+    return;
+ #endif
+ r.h.ah=0x49;
+ r.x.es=Address>>4;
+ __dpmi_int(0x21,&r);
+}
+
+int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
+{
+ if (!isValid || id!=0) return 0;
+
+ __dpmi_regs r;
+ unsigned long dataoff;
+ char cleaner[32];
+ int winLen;
+
+ r.x.ax=0x1701;
+ __dpmi_int(0x2F,&r);
+ if (r.x.ax==0)
+   {
+    Error=WINOLDAP_ClpInUse;
+    return 0;
+   }
+ // Erase the current contents of the clipboard
+ r.x.ax=0x1702;
+ __dpmi_int(0x2F,&r);
+ winLen=((len+1)+0x1F) & ~0x1F;
+ memset(cleaner,0,32);
+ if (AllocateDOSMem(winLen,&dataoff))
+   {
+    dosmemput(buffer,len,dataoff);
+    dosmemput(cleaner,winLen-len,dataoff+len);
+    r.x.ax=0x1703;
+    r.x.dx=7; // OEM text
+    r.x.bx=dataoff & 0x0f;
+    r.x.es=(dataoff>>4) & 0xffff;
+    r.x.si=winLen>>16;
+    r.x.cx=winLen & 0xffff;
+    __dpmi_int(0x2F,&r);
+    FreeDOSMem(dataoff);
+    if (r.x.ax==0)
+      {
+       Error=WINOLDAP_WinErr;
+       r.x.ax=0x1708;
+       __dpmi_int(0x2F,&r);
+       return 0;
+      }
+    r.x.ax=0x1708;
+    __dpmi_int(0x2F,&r);
+   }
+ return 1;
+}
+
+char *TVDOSClipboard::paste(int id, unsigned &len)
+{
+ if (!isValid || id!=0) return NULL;
+
+ char *p=NULL;
+ unsigned long BaseAddress;
+ unsigned long size;
+ __dpmi_regs r;
+
+ r.x.ax=0x1701;
+ __dpmi_int(0x2F,&r);
+ if (r.x.ax==0)
+   {
+    Error=WINOLDAP_ClpInUse;
+    return NULL;
+   }
+ r.x.ax=0x1704;
+ r.x.dx=1;
+ __dpmi_int(0x2F,&r);
+ size=r.x.ax+(r.x.dx<<16);
+ if (size)
+   {
+    if (AllocateDOSMem(size,&BaseAddress))
+      {
+       p=new char[size];
+       if (p)
+         {
+          r.x.dx=1;
+          r.x.bx=BaseAddress & 0x0f;
+          r.x.es=(BaseAddress>>4) & 0xffff;
+          r.x.ax=0x1705;
+          __dpmi_int(0x2F,&r);
+          dosmemget(BaseAddress,size,p);
+          len=strlen(p);
+         }
+       else
+          Error=WINOLDAP_Memory;
+       FreeDOSMem(BaseAddress);
+      }
+   }
+ else
+   {
+    p=new char[1];
+    *p=0;
+   }
+ r.x.ax=0x1708;
+ __dpmi_int(0x2F,&r);
+ return p;
+}
+
+#else // DJGPP
+
+#include <tv/dos/screen.h>
+#include <tv/dos/key.h>
+#include <tv/dos/mouse.h>
+
+#endif // else DJGPP
 

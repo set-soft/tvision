@@ -2,7 +2,7 @@
    Copyright (c) 2002 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // This headers needs windows header
-#ifndef WIN32KEY_HEADER_INCLUDED
+#if defined(TVOS_Win32) && !defined(WIN32KEY_HEADER_INCLUDED)
 #define WIN32KEY_HEADER_INCLUDED
 struct TEvent;
 
