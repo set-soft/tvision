@@ -24,6 +24,7 @@ public:
                  ushort cmd,
                  TStatusItem *aNext = 0
                 );
+    ~TStatusItem() { DeleteArray(text); };
 
     TStatusItem *next;
     const char *text;
@@ -37,8 +38,12 @@ inline TStatusItem::TStatusItem( const char *aText,
                                  ushort cmd,
                                  TStatusItem *aNext
                                 ) :
-    next( aNext ), text( aText ), keyCode( key ), command( cmd )
+    next( aNext ), keyCode( key ), command( cmd )
 {
+ // SET: If we don't allocate a copy is imposible to have dynamic status
+ // lines loaded from disk files or other similar stuff. Or if we does it
+ // we leak.
+ text=newStr(aText);
 }
 
 #endif  // Uses_TStatusItem

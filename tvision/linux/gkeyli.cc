@@ -19,9 +19,6 @@ the keyboard combinations. We lose some important things like Ctrl+Function
 key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 
 *****************************************************************************/
-#ifdef __linux__
-
-#include <configtv.h>
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
@@ -870,5 +867,4 @@ void suspend_keyboard()
 
 
 ushort TGKey::AltSet=0;  // Default: Left and right key are different ones
-#endif // __linux__
 

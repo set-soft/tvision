@@ -1,4 +1,14 @@
 $Log$
+Revision 1.132  2000/02/03 00:17:48  set
+* Added: Win32 target to the configure process. I must admit the user needs a
+very UNIXified system to run it joining Mingw32 with some goodies from Cygwin
+and Perl from djgpp but works as well as the DOS and Linux process.
+* Added: [Win32] A readme and a reference to it in the main readme.
+* Modified: [Win32] The Makefile to generate the demo.exe from it and be
+configured in a more common way. Also to name the library in the same way
+used under DOS and Linux. I think that's the Right Thing(TM) because in this
+ways programs can be ported from one platform to another without changes.
+.
 Revision 1.131  2000/02/01 01:51:36  set
 * Changed: Now tv.h is located in $prefix/include/rhtvision and the rest in
 $prefix/include/rhtvision/tv. It will avoid collisions with headers from
