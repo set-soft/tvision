@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.56  2003/05/05 13:28:08  set
+* Added: A warning to configset as I did for DOS' batch.
+
 Revision 2.399.2.55  2003/05/05 13:24:52  set
 * Added: A warning to configset.bat because people thinks thats "set
 configuration" and not "configuration for SET" ;-)

@@ -739,6 +739,7 @@ change_entry changes[]=
  { kblNormal,SCAN_SCRL, kblNormal, SCAN_HOME, 0, 0},
  { kblAltL,  SCAN_SCRL, kblNormal, SCAN_HOME, 0, 0},
  { kblAltR,  SCAN_SCRL, kblNormal, SCAN_HOME, 0, 0},
+ { kblCtrl,  SCAN_TAB,  kblNormal, SCAN_TAB,  0, 0},
  { kblCtrl | kblShift,  SCAN_TAB, kblNormal, SCAN_TAB, 0, 0}
 };
 
