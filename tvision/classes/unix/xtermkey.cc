@@ -12,11 +12,12 @@
   TODO:
   Move the code that overlaps with Linux driver to a base class. Lets say
   TGKeyEscapeSequences.
+  When the list is big (>8?) us bsearch
 
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOS_UNIX
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #define Uses_stdio
 #define Uses_string
@@ -48,6 +49,7 @@ int            TGKeyXTerm::lastModifiers;
 int            TGKeyXTerm::translatedModifiers;
 char           TGKeyXTerm::ascii;
 node          *TGKeyXTerm::Keys=NULL;
+int            TGKeyXTerm::MouseButtons=0;
 
 /* Linux IOCTL values found experimentally */
 const int kblNormal=0,kblShift=1,kblAltR=2,kblCtrl=4,kblAltL=8;
@@ -93,7 +95,9 @@ int TGKeyXTerm::InitOnce()
    }
  // Don't block
  oldInFlags=fcntl(hIn,F_GETFL,0);
- newInFlags=oldInFlags | O_NONBLOCK;
+ // Currently disabled, it makes xterm lose output data and the
+ // stream is already character oriented and hence doesn't block.
+ newInFlags=oldInFlags;// | O_NONBLOCK;
  fcntl(hIn,F_SETFL,newInFlags);
 
  // We don't need to call Resume
@@ -407,14 +411,58 @@ void TGKeyXTerm::AddKey(const uchar *key, uchar code, uchar modifiers)
        else
          {
           if (pk->next)
-             printf("Error, tecla que se confunde\n");
+             LOG("Error, this key is confusing");
           else
-             printf("Warning, tecla que ya estaba [%s]\n",key);
+             LOG("Warning, this key was already defined [" << key << "]");
          }
       }
     s++;
    }
 }
+
+#ifdef DEBUGTREE
+static
+int maxKeys=0;
+
+static
+void Indent(int level)
+{
+ while (level--)
+    fputc(' ',stderr);
+}
+
+static
+void PrintTree(node *p, int level)
+{
+ int i,c;
+
+ c=p->keys;
+ Indent(level);
+ fprintf(stderr,"Keys: %d\n",c);
+ if (c>maxKeys)
+    maxKeys=c;
+ for (i=1; i<=c; i++)
+    {
+     Indent(level);
+     fprintf(stderr,"Key %c ",p[i].value);
+     if (p[i].next)
+       {
+        Indent(level);
+        fprintf(stderr,"Ramification\n");
+        PrintTree(p[i].next,level+1);
+       }
+     else
+       {
+        Indent(level);
+        fprintf(stderr,"KeyCode %s\n",TGKey::NumberToKeyName(p[i].code));
+       }
+    }
+ if (level==0)
+    fprintf(stderr,"Max keys: %d\n",maxKeys);
+}
+#else
+ #define PrintTree(a,b)
+#endif
 
 void TGKeyXTerm::PopulateTree()
 {
@@ -512,7 +560,12 @@ void TGKeyXTerm::PopulateTree()
  AddKey((uchar *)"[33^",kbF9,kblCtrl | kblShift);
  AddKey((uchar *)"[34^",kbF10,kblCtrl | kblShift);
  AddKey((uchar *)"[23@",kbF11,kblCtrl | kblShift);
- AddKey((uchar *)"[242",kbF12,kblCtrl | kblShift);
+ AddKey((uchar *)"[24@",kbF12,kblCtrl | kblShift);
+
+ // The mouse reporting mechanism:
+ AddKey((uchar *)"[M",kbMouse,0);
+
+ PrintTree(Keys,0);
 }
 /*********************** End of escape sequences tree ***********************/
 
@@ -566,6 +619,7 @@ int TGKeyXTerm::ProcessEscape()
              }
            lastKeyCode=p[i].code;
            lastModifiers=p[i].modifiers | extraModifiers;
+           bufferKeys[keysInBuffer]=0;
            keysInBuffer=0;
            return 1;
           }
@@ -713,6 +767,8 @@ unsigned TGKeyXTerm::GetShiftState()
  return translatedModifiers;
 }
 
+const int MouseB1Down=0x20,MouseB2Down=0x21,MouseB3Down=0x22,MouseUp=0x23,
+          MouseB4Down=0x60,MouseB5Down=0x61;
 
 /**[txh]********************************************************************
 
@@ -724,6 +780,47 @@ unsigned TGKeyXTerm::GetShiftState()
 void TGKeyXTerm::FillTEvent(TEvent &e)
 {
  GKey();
+ if ((lastKeyCode & kbKeyMask)==kbMouse)
+   { // Mouse events are traslated to keyboard sequences:
+    int event=fgetc(stdin);
+    int x=fgetc(stdin)-0x21; // They are 0x20+ and the corner is 1,1
+    int y=fgetc(stdin)-0x21;
+    // Filter the modifiers:
+    event&= ~0x1C;
+    // B4 and B5 behaves in a particular way
+    MouseButtons&= ~(MouseB4Down | MouseB5Down);
+    if (event>=0x60)
+      {// B4 and B5, they seems to report a press and never a release
+       if (event==MouseB4Down)
+          MouseButtons|=mbButton4;
+       else
+         if (event==MouseB5Down)
+            MouseButtons|=mbButton5;
+      }
+    else
+      {
+       if (event>=0x40) event-=0x20; // Translate motion values
+       switch (event)
+         {
+          case MouseB1Down:
+               MouseButtons|=mbLeftButton;
+               break;
+          case MouseB2Down:
+               MouseButtons|=mbMiddleButton;
+               break;
+          case MouseB3Down:
+               MouseButtons|=mbRightButton;
+               break;
+          case MouseUp: // fuzzy, which one?
+               MouseButtons=0;
+               break;
+         }
+      }
+    THWMouse::forceEvent(x,y,MouseButtons);
+    e.what=evMouseUp; // Acts like a "key"
+    return;
+   }
+
  e.keyDown.charScan.charCode=lastModifiers & kblAltL ? 0 : ascii;
  e.keyDown.charScan.scanCode=ascii;
  e.keyDown.raw_scanCode=ascii;
@@ -745,4 +842,4 @@ void TGKeyXTerm::Init()
     PopulateTree();
 }
 
-#endif // TVOS_UNIX
+#endif // TVOS_UNIX && !TVOSf_QNXRtP

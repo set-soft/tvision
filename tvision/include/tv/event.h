@@ -84,6 +84,7 @@ protected:
  // SET: Data used to force an event externally
  static MouseEventType forcedME;
  static char forced;
+ static uchar btBeforeForce;
 
  // SET: Moved to the protected section
  static Boolean handlerInstalled;

@@ -117,12 +117,17 @@ classes/linux/linuxdis.cc
 classes/linux/linuxkey.cc
 classes/linux/linuxmouse.cc
 classes/linux/linuxscr.cc
+classes/qnxrtp/qnxdis.cc
+classes/qnxrtp/qnxkey.cc
+classes/qnxrtp/qnxmouse.cc
+classes/qnxrtp/qnxscr.cc
 classes/unix/unixdis.cc
 classes/unix/unixkey.cc
 classes/unix/unixmouse.cc
 classes/unix/unixscr.cc
 classes/unix/xtermdis.cc
 classes/unix/xtermkey.cc
+classes/unix/xtermmouse.cc
 classes/unix/xtermscr.cc
 classes/win32/win32dis.cc
 classes/win32/win32key.cc
@@ -371,6 +376,9 @@ examples/tutorial/tvguid16.gpr
 examples/tvedit/tvedit.cc
 examples/tvedit/tvedit.gpr
 examples/tvedit/rhide.env
+examples/xterm/XTerm.res
+examples/xterm/menus.cfg
+examples/xterm/theme.cfg
 extra/doskeys/kextend.asm
 -extra/doskeys/kextend.com
 extra/doskeys/kextend.txt
@@ -494,6 +502,9 @@ include/tv/preadobj.h
 include/tv/program.h
 include/tv/pstream.h
 include/tv/pwritobj.h
+include/tv/qnxrtp/key.h
+include/tv/qnxrtp/mouse.h
+include/tv/qnxrtp/screen.h
 include/tv/radiobtn.h
 include/tv/rect.h
 include/tv/rescoll.h
@@ -527,6 +538,7 @@ include/tv/unix/key.h
 include/tv/unix/mouse.h
 include/tv/unix/screen.h
 include/tv/unix/xtkey.h
+include/tv/unix/xtmouse.h
 include/tv/unix/xtscreen.h
 include/tv/view.h
 include/tv/win32/key.h

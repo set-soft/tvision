@@ -1,4 +1,8 @@
 $Log$
+Revision 2.83  2002/05/27 12:26:30  set
+* Fixed: [UNIX] The makemak.pl script created a link to a no longer
+existant linux/gkeyli.cc file. Pointed out by Mike.
+.
 Revision 2.82  2002/05/24 20:13:29  set
 * Added: The first test classes for the XTerm driver. They aren't tested
 yet but I think they will work much better than the ncurses version.

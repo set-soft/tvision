@@ -32,13 +32,13 @@ Boolean TEventQueue::mouseEvents  = False;
 Boolean TEventQueue::mouseReverse = False;
 ushort TEventQueue::doubleDelay = 8;
 ushort TEventQueue::repeatDelay = 8;
-ushort TEventQueue::autoTicks	= 0;
-ushort TEventQueue::autoDelay	= 0;
+ushort TEventQueue::autoTicks = 0;
+ushort TEventQueue::autoDelay = 0;
 
-MouseEventType	TEventQueue::lastMouse;
-MouseEventType	TEventQueue::curMouse;
-MouseEventType	TEventQueue::downMouse;
-ushort TEventQueue::downTicks	= 0;
+MouseEventType TEventQueue::lastMouse;
+MouseEventType TEventQueue::curMouse;
+MouseEventType TEventQueue::downMouse;
+ushort TEventQueue::downTicks = 0;
 
 TEventQueue::TEventQueue()
 {
@@ -51,32 +51,32 @@ static int TEventQueue_suspended = 1;
 
 void TEventQueue::resume()
 {
-	 if (!TEventQueue_suspended) return;
+    if (!TEventQueue_suspended) return;
     TGKey::resume();
-	 mouseEvents =	False;
+    mouseEvents = False;
     if (!mouse)
       mouse = new TMouse();
-	 if( mouse->present()	==	False	)
-		  mouse->resume();
-	 if( mouse->present()	==	False	)
-		  return;
-	 mouse->getEvent( curMouse );
-	 lastMouse = curMouse;
-	 
-	 mouseEvents =	True;
-	 mouse->setRange( TScreen::getCols()-1,	TScreen::getRows()-1	);
-	 TEventQueue_suspended = 0;
+    if( mouse->present()   == False )
+        mouse->resume();
+    if( mouse->present()   == False )
+        return;
+    mouse->getEvent( curMouse );
+    lastMouse = curMouse;
+    
+    mouseEvents = True;
+    mouse->setRange( TScreen::getCols()-1,   TScreen::getRows()-1 );
+    TEventQueue_suspended = 0;
 }
 
 void TEventQueue::suspend()
 {
   if (TEventQueue_suspended) return;
-	 if (mouse->present()	==	True)	mouse->suspend();
+    if (mouse->present()   == True) mouse->suspend();
 /* I think here is the right place for clearing the
    buffer */
   TGKey::clear();
   TGKey::suspend();
-  TEventQueue_suspended	= 1;
+  TEventQueue_suspended = 1;
 }
 
 TEventQueue::~TEventQueue()
@@ -94,75 +94,75 @@ TEventQueue::~TEventQueue()
 #define AUTO_DELAY_VAL 1
 #endif
 
-void TEventQueue::getMouseEvent(	TEvent& ev )
+void TEventQueue::getMouseEvent( TEvent& ev )
 {
-	 if( mouseEvents == True )
-		  {
+    if( mouseEvents == True )
+        {
 
-		  getMouseState( ev );
+        getMouseState( ev );
 
-		  if(	ev.mouse.buttons == 0 && lastMouse.buttons != 0	)
-				{
-				ev.what = evMouseUp;
+        if( ev.mouse.buttons == 0 && lastMouse.buttons != 0 )
+            {
+            ev.what = evMouseUp;
 //            int buttons = lastMouse.buttons;
-				lastMouse =	ev.mouse;
+            lastMouse = ev.mouse;
 //            ev.mouse.buttons = buttons;
-				return;
-				}
+            return;
+            }
 
-		  if(	ev.mouse.buttons != 0 && lastMouse.buttons == 0	)
-				{
-				if( ev.mouse.buttons	==	downMouse.buttons	&&
-					 ev.mouse.where == downMouse.where &&
-					 ev.what	- downTicks	<=	doubleDelay	)
-						  ev.mouse.doubleClick = True;
+        if( ev.mouse.buttons != 0 && lastMouse.buttons == 0 )
+            {
+            if( ev.mouse.buttons == downMouse.buttons &&
+                ev.mouse.where == downMouse.where &&
+                ev.what - downTicks <= doubleDelay )
+                    ev.mouse.doubleClick = True;
 
-				downMouse =	ev.mouse;
-				autoTicks =	downTicks =	ev.what;
-				autoDelay =	repeatDelay;
-				ev.what = evMouseDown;
-				lastMouse =	ev.mouse;
-				return;
-				}
+            downMouse = ev.mouse;
+            autoTicks = downTicks = ev.what;
+            autoDelay = repeatDelay;
+            ev.what = evMouseDown;
+            lastMouse = ev.mouse;
+            return;
+            }
 
-		  ev.mouse.buttons =	lastMouse.buttons;
+        ev.mouse.buttons = lastMouse.buttons;
 
-		  if(	ev.mouse.where	!=	lastMouse.where )
-				{
-				ev.what = evMouseMove;
-				lastMouse =	ev.mouse;
-				return;
-				}
+        if( ev.mouse.where != lastMouse.where )
+            {
+            ev.what = evMouseMove;
+            lastMouse = ev.mouse;
+            return;
+            }
 
-		  if(	ev.mouse.buttons != 0 && ev.what	- autoTicks	> autoDelay	)
-				{
-				autoTicks =	ev.what;
-				autoDelay =	AUTO_DELAY_VAL;
-				ev.what = evMouseAuto;
-				lastMouse =	ev.mouse;
-				return;
-				}
-		  }
+        if( ev.mouse.buttons != 0 && ev.what - autoTicks > autoDelay )
+            {
+            autoTicks = ev.what;
+            autoDelay = AUTO_DELAY_VAL;
+            ev.what = evMouseAuto;
+            lastMouse = ev.mouse;
+            return;
+            }
+        }
 
-	 ev.what	= evNothing;
+    ev.what = evNothing;
 }
 
-void TEventQueue::getMouseState(	TEvent &	ev	)
+void TEventQueue::getMouseState( TEvent & ev )
 {
-	 if( eventCount == 0	)
-		  {
-		  TMouse::getEvent(ev.mouse);
-		  ev.what =	CLY_Ticks();
-		  }
-	 else
-		  {
-	ev	= *eventQHead;
-		  if(	++eventQHead >= eventQueue	+ eventQSize )
-				eventQHead = eventQueue;
-		  eventCount--;
-		  }
-	 if( mouseReverse	!=	False	&&	ev.mouse.buttons != 0 && ev.mouse.buttons	!=	3 )
-		  ev.mouse.buttons ^= 3;
+    if( eventCount == 0 )
+        {
+        TMouse::getEvent(ev.mouse);
+        ev.what = CLY_Ticks();
+        }
+    else
+        {
+   ev = *eventQHead;
+        if( ++eventQHead >= eventQueue + eventQSize )
+            eventQHead = eventQueue;
+        eventCount--;
+        }
+    if( mouseReverse != False && ev.mouse.buttons != 0 && ev.mouse.buttons != 3 )
+        ev.mouse.buttons ^= 3;
 }
 
 #ifdef TVCompf_djgpp
