@@ -211,7 +211,7 @@ void TEvent::getKeyEvent()
        getMouseEvent();
     else
       {
-       if (TVCodePage::OnTheFlyRemapInpNeeded())
+       if (TVCodePage::OnTheFlyRemapInpNeeded() && keyDown.charScan.charCode>32)
           keyDown.charScan.charCode=TVCodePage::OnTheFlyInpRemap(keyDown.charScan.charCode);
        TGKey::AltInternat2ASCII(*this);
       }
