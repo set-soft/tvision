@@ -1,4 +1,8 @@
 $Log$
+Revision 1.118  1999/11/04 01:01:52  set
+* Modified: The code used to disable ^Q/^S is now more generic and also
+disables ^C, ^/ and ^Z.
+.
 Revision 1.117  1999/10/30 19:23:43  root (set)
 * Changed: Now TScreen is initialized from the TApplication constructor and
 not from a static variable that triggers the constructor. Suggested by
