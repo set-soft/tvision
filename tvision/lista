@@ -111,10 +111,10 @@ classes/win32/tdisplay.cc
 classes/win32/tfont.cc
 classes/win32/thwmouse.cc
 classes/win32/tscreen.cc
-classes/WinNT/tdisplay.cc
-classes/WinNT/tfont.cc
-classes/WinNT/thwmouse.cc
-classes/WinNT/tscreen.cc
+classes/winnt/tdisplay.cc
+classes/winnt/tfont.cc
+classes/winnt/thwmouse.cc
+classes/winnt/tscreen.cc
 classes/x11/x11dis.cc
 classes/x11/x11key.cc
 classes/x11/x11mouse.cc
