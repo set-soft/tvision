@@ -9,7 +9,8 @@ echo These settings doesn\'t have to be the same you want.
 echo The most common defaults are obtained by just running configure.bat.
 echo If you want to reconfigure the package first delete configure.cache
 echo
-sleep 2
+echo Press the 'ENTER' key to continue.
+read
 rm -f configure.cache
 rm -f Makefile
 perl config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe --with-debug
