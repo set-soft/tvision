@@ -93,7 +93,8 @@ char *TGKey::KeyNames[]=
 "Numeral","Dolar","Percent","Amper","OpenPar",
 "ClosePar","DoubleDot","LessThan","GreaterThan",
 "Question","A_Roba","Or","UnderLine","OpenCurly",
-"CloseCurly","Tilde","Macro","WinLeft","WinRight","WinSel"
+"CloseCurly","Tilde","Macro","WinLeft","WinRight","WinSel",
+"Mouse"
 };
 
 const int NumKeyNames=sizeof(TGKey::KeyNames)/sizeof(char *);
@@ -384,7 +385,6 @@ void TGKey::clear(void)
  // the bios has no function for clearing the key buffer
  // But you can loop until is empty ;-)
 }
-#endif
 
 void TGKey::fillTEvent(TEvent &e)
 {
@@ -395,6 +395,7 @@ void TGKey::fillTEvent(TEvent &e)
  e.keyDown.keyCode=Abstract;
  e.keyDown.shiftState=sFlags;
 }
+#endif
 
 ushort TGKey::AltSet=2;      // Default: Both ALT are the same
 
