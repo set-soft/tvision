@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.152  2002/06/12 17:41:07  set
+* Added: Code to the TVDemo examples that shows how to use the TVCodePage
+class. It remaps the system menu label and the calendar arrows.
+
 Revision 2.151  2002/06/12 16:59:28  set
 * Fixed: The THWMouse class called GetEvent if the mouse wasn't present.
 This was the source of problems when switching consoles under Linux.
