@@ -324,15 +324,26 @@ typedef unsigned long  ulong;
     library. GCC implemented it in version 3.0. BC++ implemented some
     stuff in versions like BC++ 5.5. So that's a real mess. */
  #if __GNUC__>=3
-  // gcc 3.1 needs a special filebuf
-  #define CLY_filebuf       std::filebuf
-  #if __GNUC_MINOR__<1
+  #if __GNUC_MINOR__>=4
+   // gcc 3.4. It have __gnu_cxx::stdio_filebuf class.
+   #define CLY_filebuf       __gnu_cxx::stdio_filebuf<char>
    #define CLY_int_filebuf   CLY_filebuf
    #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
+   #undef  FSTREAM_HEADER
+   #define FSTREAM_HEADER  <ext/stdio_filebuf.h>
   #else
-   #undef  CLY_DefineSpecialFileBuf
-   #define CLY_DefineSpecialFileBuf 1
-   #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(f,ios::in|ios::out|ios::binary)
+   // gcc 3.1 needs a special filebuf
+   #define CLY_filebuf       std::filebuf
+   #if __GNUC_MINOR__<1
+    #define CLY_int_filebuf   CLY_filebuf
+    #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
+   #else
+    #undef  CLY_DefineSpecialFileBuf
+    #define CLY_DefineSpecialFileBuf 1
+    #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(f,ios::in|ios::out|ios::binary)
+   #endif
+   #undef  FSTREAM_HEADER
+   #define FSTREAM_HEADER  <fstream>
   #endif
   #define CLY_streambuf      std::streambuf
   #define CLY_ISOCpp98 1
@@ -365,8 +376,6 @@ typedef unsigned long  ulong;
    #undef  Include_sstream
    #define Include_sstream 1
   #endif
-  #undef  FSTREAM_HEADER
-  #define FSTREAM_HEADER  <fstream>
   #undef  IOMANIP_HEADER
   #define IOMANIP_HEADER  <iomanip>
   #undef  IOSTREAM_HEADER

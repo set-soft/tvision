@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.555  2004/07/29 20:39:29  set
+* Added: When you disable a TLabel the linked object gets disabled. After
+all what other thing could be expected?
+* Added: Disabled TLabels are painted in a different way. Currently using
+the "disabled button" color because we don't have much space in the pal.
+* Added: TRadioButtons have a new member setEnableMask, with it you can
+control the enabled/disabled state of upto 32 TViews without needing to
+inherit a new class.
+
 Revision 2.554  2004/07/03 00:10:39  set
 * Fixed: [X11] Some gcc versions can optimize "while (!safeToUnHook);" to
 an endless loop. Patch by Andris.
