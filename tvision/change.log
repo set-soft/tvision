@@ -1,4 +1,18 @@
 $Log$
+Revision 1.237  2001/10/20 01:02:51  set
+* Merged Debian packaging patches from Ivan:
+  * Now compiles with -D_REENTRANT as Debian Policy mandates.
+  * Now runs ./configure before make clean (reported by Salvador).
+  * Don't eliminate the ldconfig invocation of the upstream Makefile,
+    it seems that upstream has corrected its Makefile now (done after
+    Salvador reported that it didn't work on all systems, because I was
+    overwriting the Makefile while I was reading it, specially on
+    multiprocesor systems).
+  * Added include/tv/configtv.h to files_to_backup.
+* Fixed: The configuration script modified RHIDE Makefiles in the wrong way
+when the original RHIDE variable used more than one line.
+* Modified: Ivan added more log info to the Linux mouse.
+
 Revision 1.236  2001/10/18 00:35:42  set
 * Merged patches for Debian stuff from Ivan.
 
