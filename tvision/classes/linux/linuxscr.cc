@@ -847,9 +847,12 @@ void TScreenLinux::SaveScreen()
  else
    {// First create an empty screen
     // Fill the screenBuffer with spaces
-    unsigned i;
-    for (i=0; i<userBufferSize; i++)
-        screenBuffer[i]=0x0720;
+    unsigned i,size=screenWidth*screenHeight*2;
+    char *s=(char *)screenBuffer;
+    for (i=0; i<size; i+=2)
+       {
+        s[i]=' '; s[i+1]=7;
+       }
 
     // Then we dump the screen to the screenBuffer as reference
     unsigned width=getCols(),height=getRows();
