@@ -943,9 +943,12 @@ sub GenerateMakefile
  $rep= "clean:\n";
  $rep.="\trm -f $makeDir/librhtv.so*\n";
  $rep.="\trm -f $makeDir/obj/*.o\n";
+ $rep.="\trm -f $makeDir/obj/*.lo\n";
  $rep.="\trm -f $makeDir/librhtv.a\n";
  $rep.="\trm -f compat/obj/*.o\n";
+ $rep.="\trm -f compat/obj/*.lo\n";
  $rep.="\trm -f intl/dummy/*.o\n";
+ $rep.="\trm -f intl/dummy/*.lo\n";
  $rep.="\trm -f intl/dummy/*.a\n";
  $rep.="\t-\$(MAKE) -C examples clean\n";
  $rep.="\trm -f configure.cache\n";

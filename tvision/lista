@@ -204,6 +204,7 @@ conflib.pl
 copying
 copying.rh
 debian/.cvsignore
+debian/README
 debian/README.debian
 +debian/buildpackage
 debian/changelog

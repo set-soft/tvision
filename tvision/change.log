@@ -1,4 +1,9 @@
 $Log$
+Revision 2.487  2003/07/16 14:00:57  set
+* Modified: The RPM scripts to support an environment variable to indicate
+where to create the RPMs. I needed it when using S.F. Compiler Farm and
+Red Hat 7.3 which always failed when using a directory mounted with NFS.
+
 Revision 2.486  2003/06/30 14:02:28  set
 * Added: makes/rhide.env to distro.
 * Added: gprexp to the genimk.
@@ -1950,7 +1955,7 @@ trick for cout/cin associated with stdout/stdin ...
 Revision 2.131  2002/06/05 20:24:51  set
 * Fixed: The tutorial number 16 didn't initialize the data for one of the
 input line examples producing random garbage. Reported by Mike.
-.
+
 Revision 2.130  2002/06/05 20:16:48  set
 * Added: [QNX] New patch from Mike to enhance the keyboard handling.
 * Fixed: TInputLine used an archaic ^Y hardcoded symbol instead of kbCtY.
