@@ -169,12 +169,16 @@ void TEventQueue::getMouseState(	TEvent &	ev	)
 
 void TEvent::getKeyEvent()
 {
-  if (!TGKey::kbhit()) what = evNothing;
-  else
-  {
-   TGKey::fillTEvent(*this);
-   what = evKeyDown;
-  }
+ if (TGKey::kbhit())
+   {
+    TGKey::fillTEvent(*this);
+    // SET: That's a special case, when the keyboard indicates the event
+    // is mouse up it means the keyboard forced an event in the mouse module.
+    if (what==evMouseUp)
+       getMouseEvent();
+   }
+ else
+    what=evNothing;
 }
 
 
