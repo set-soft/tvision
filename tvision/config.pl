@@ -108,7 +108,10 @@ if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
    $MakeDefsRHIDE[0].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
-   $MakeDefsRHIDE[3]='TVOBJ=../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3]='TVOBJ=';
+   # QNX 6.2 beta 3 workaround
+   $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
+   $MakeDefsRHIDE[3].='../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib';
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
    ModifyMakefiles('linux/Makefile','compat/compat.mak');
@@ -157,6 +160,8 @@ if ($OS eq 'UNIX')
    $ReplaceTags{'LIB_X11_SWITCH'}=@conf{'HAVE_X11'} eq 'yes' ? "-L".$conf{'X11LibPath'}." -lX11" : '';
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
    $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
+   # QNX 6.2 beta 3 workaround
+   $ReplaceTags{'QNX_LIB_SRCH'}=($OSf eq 'QNXRtP') ? '-L/lib' : '';
    $ReplaceTags{'make'}=$conf{'GNU_Make'};
    $a='-fPIC';
    $a.=' -shared' if ($OSf eq 'QNXRtP');

@@ -26,8 +26,8 @@ $f=&cat('../linux/Makefile');
 &replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
 # We will specify the libraries in the special flags
 &replaceVar($f,'RHIDE_LIBS=(.*)','RHIDE_LIBS=');
-&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
-&replaceVar($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$intver @LIB_X11_SWITCH@ @LIB_GPM_SWITCH@ -lncurses @LIB_STDCXX_SWITCH@ -lm -lc");
+&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=@SHARED_CODE_OPTION@');
+&replaceVar($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=@QNX_LIB_SRCH@ -shared -Wl,-soname,librhtv.so.$intver @LIB_X11_SWITCH@ @LIB_GPM_SWITCH@ -lncurses @LIB_STDCXX_SWITCH@ -lm -lc");
 &replaceVar($f,'MAIN_TARGET=librhtv.a',"MAIN_TARGET=librhtv.so.$intver");
 &replaceVar($f,'librhtv.a:: \$\(DEPS_0\)',"librhtv.so.$intver\:\: \$(DEPS_0)");
 &replaceVar($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');

@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.76  2002/05/17 18:33:20  set
+* Modified: RHIDE project to include QNX sources from Mike.
+
 Revision 2.75  2002/05/16 21:21:12  set
 * Modified: [Linux] Added Scroll-Lock to the patch list, it freezies the
 application and some people thinks it hanged. To make it worst some idiots
