@@ -116,6 +116,7 @@ TScreen::TScreen()
 {
   user_mode = screenMode = startupMode = getCrtMode();
   suspended = 1;
+  initialized = 1;
   resume();
 }
 
