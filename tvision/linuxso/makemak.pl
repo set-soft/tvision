@@ -10,6 +10,7 @@
 #
 require "../miscperl.pl";
 
+SeeCommandLine();
 GetVersion('../');
 
 $destination='/usr/lib';
@@ -47,12 +48,38 @@ print FIL ("ldconfig\n");
 close(FIL);
 system('chmod +x instlib');
 
+if (!$DontShowInstMes)
+  {
 print "
 Running the ./instlib script you can install the libraries in $destination
 you should read and modify it according to your needs.\n\n";
+  }
 
 sub replaceVar
 {
  my $a=\$_[0],$search=$_[1],$repl=$_[2];
  $$a =~ s/$search/$repl/;
+}
+
+sub SeeCommandLine
+{
+ my $i;
+
+ foreach $i (@ARGV)
+   {
+    if ($i eq '--no-inst-message')
+      {
+       $DontShowInstMes=1;
+      }
+    else
+      {
+       if ($i eq '--help')
+         {
+          print "Usage: makemak.pl [--no-inst-message] [--help]\n\n";
+          print "--no-inst-message  omit the installation message\n";
+          print "--help             shows this message\n\n";
+          die "\n";
+         }
+      }
+   }
 }

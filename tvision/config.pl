@@ -599,7 +599,7 @@ sub GenerateMakefile
  if ($OS eq 'linux')
    {
     $rep="linuxso/librhtv.so.$Version";
-    $rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl";
+    $rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl --no-inst-message";
     $text=~s/\@target2_rule\@/$rep/g;
    }
  else
