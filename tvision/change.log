@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.392  2003/01/08 12:49:30  set
+* Fixed: [UNIX] In some cases the headers are included even when a driver
+isn't supported just to keep the propper dependencies. Some of the UNIX
+headers uses sig_atomic_t defined in signal.h, now included. Reported by
+Roman and Dejan Lekic (dejan). It needs more testing.
+
 Revision 2.391  2003/01/07 13:16:26  set
 * Updated: Russian translation. From Roman.
 * Fixed: tvedit3.cc had two messages almost identical, now merged. Pointed

@@ -15,6 +15,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <assert.h>
 #define Uses_string
 
+#define Uses_stdio // just for debug
+
 #define Uses_TMenuItem
 #define Uses_TMenu
 #define Uses_TMenuView
@@ -344,6 +346,7 @@ ushort TMenuView::execute()
 
 TMenuItem *TMenuView::findItem( char ch )
 {
+    if( !ch ) return 0;
     ch = TVCodePage::toUpper(ch);
     TMenuItem *p = menu->items;
     while( p != 0 )
