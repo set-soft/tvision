@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.19  2003/03/18 16:02:15  set
+* Fixed: QNX details, patch from Mike.
+
 Revision 2.399.2.18  2003/02/27 19:22:15  set
 * Fixed: Direct use of data member in TFileInputLine.
 * Fixed: Error in tinputli.cc (setDataFromStr).

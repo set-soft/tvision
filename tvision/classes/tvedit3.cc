@@ -118,7 +118,7 @@ function.
 
 ushort doEditDialogDefault( int dialog, va_list arg )
 {
-    CreateStrStream(os,buf,80);
+    CreateStrStream(os,buf,PATH_MAX+80);
     switch( dialog )
         {
         case edOutOfMemory:
