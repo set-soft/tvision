@@ -44,6 +44,9 @@
 #include <sys/vt.h>
 #include <signal.h>
 
+#include <tv/linux/key.h>
+#include <tv/linux/log.h>
+
 int            TGKeyLinux::hIn=-1;
 FILE          *TGKeyLinux::fIn=NULL;
 int            TGKeyLinux::oldInFlags;

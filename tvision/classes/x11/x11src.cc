@@ -124,6 +124,7 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
  XSetForeground(disp,gc,colorMap[theChar[attrPos]&0xF]);
  UnDrawCursor();
  XPutImage(disp,mainWin,gc,ximgFont[theChar[charPos]],0,0,x,y,fontW,fontH);
+ DrawCursor();
  XFlush(disp);
 }
 
@@ -998,7 +999,7 @@ const char *TVX11Clipboard::x11NameError[]=
  __("No data"),
  __("X11 error"),
  __("Another application holds the clipboard")
-}
+};
 
 void TVX11Clipboard::Init()
 {
@@ -1008,7 +1009,7 @@ void TVX11Clipboard::Init()
  TVOSClipboard::available=2; // We have 2 clipboards
  TVOSClipboard::name="X11";
  TVOSClipboard::errors=x11clipErrors;
- TVOSClipboard::nameError=x11NameError;
+ TVOSClipboard::nameErrors=x11NameError;
 }
 
 /**[txh]********************************************************************
@@ -1033,10 +1034,11 @@ int TVX11Clipboard::copy(int id, const char *b, unsigned len)
  // First create a copy, in X11 the clipboard is held by the application
  if (buffer)
     delete[] buffer;
- length=len+1;
- buffer=new char[length];
+ length=len;
+ buffer=new char[length+1];
  memcpy(buffer,b,len);
  buffer[len]=0;
+ //printf("Copiando: `%s' %d\n",buffer,length);
  XSetSelectionOwner(TScreenX11::disp,clip,TScreenX11::mainWin,CurrentTime);
  XFlush(TScreenX11::disp);
  if (XGetSelectionOwner(TScreenX11::disp,clip)==TScreenX11::mainWin)
@@ -1112,6 +1114,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
  ret[bytes]=0;
  XFree(data);
  lenRet=bytes;
+ //printf("Recibiendo: `%s' %ld\n",ret,bytes);
 
  return ret;
 }
