@@ -102,6 +102,7 @@ print "\nSuccesful configuration!\n\n";
 GiveAdvice();
 CreateCache();
 unlink $ErrorLog;
+unlink 'test.exe';
 
 sub SeeCommandLine
 {
@@ -313,7 +314,7 @@ sub LookForOutB
 #include <stdio.h>
 #include <sys/io.h>
 #ifdef __i386__
-static volatile void Test(void) { outb(0x300,10); }
+static volatile void Test(void) { outb(10,0x300); }
 #endif
 int main(void)
 {
@@ -323,6 +324,7 @@ int main(void)
  $test=RunGCCTest($GCC,'c',$test,'');
  $conf{'HAVE_OUTB_IN_SYS'}=($test eq "OK\n") ? 'yes' : 'no';
  print "@conf{'HAVE_OUTB_IN_SYS'}\n";
+ #print ">$test<\n";
 }
 
 sub LookForGPM
