@@ -11,22 +11,25 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  */
 
+#include <string.h>
 #define Uses_TEventQueue
 #define Uses_TEvent
 #define Uses_TScreen
-#include	<tv.h>
+#include <tv.h>
 #include <gkey.h>
 
 TMouse *TEventQueue::mouse = NULL;
-TEvent TEventQueue::eventQueue[ eventQSize ]	= { {0} };
+// SET: egcs gets upset if we partially initialize structures and egcs
+// 2.91.66 even crash under Linux (not in DOS, but prints "(null)").
+TEvent TEventQueue::eventQueue[eventQSize];
 TEvent *TEventQueue::eventQHead = TEventQueue::eventQueue;
 TEvent *TEventQueue::eventQTail = TEventQueue::eventQueue;
-Boolean TEventQueue::mouseIntFlag =	False;
+Boolean TEventQueue::mouseIntFlag = False;
 
-ushort TEventQueue::eventCount =	0;
+ushort TEventQueue::eventCount = 0;
 
-Boolean TEventQueue::mouseEvents	= False;
-Boolean TEventQueue::mouseReverse =	False;
+Boolean TEventQueue::mouseEvents  = False;
+Boolean TEventQueue::mouseReverse = False;
 ushort TEventQueue::doubleDelay = 8;
 ushort TEventQueue::repeatDelay = 8;
 ushort TEventQueue::autoTicks	= 0;
@@ -39,10 +42,12 @@ ushort TEventQueue::downTicks	= 0;
 
 TEventQueue::TEventQueue()
 {
-	 resume();
+ // SET: Just in case. Note: I can't debug it!
+ memset((void *)&eventQueue[0],0,sizeof(TEvent)*eventQSize);
+ resume();
 }
 
-static int TEventQueue_suspended	= 1;
+static int TEventQueue_suspended = 1;
 
 #ifdef __linux__
 void resume_keyboard();
