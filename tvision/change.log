@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.49  2002/05/03 16:56:22  set
+* Fixed: Invisible cursor in the Linux driver.
+
 Revision 2.48  2002/05/02 19:38:14  set
 * Fixed: Window resize for X11. I didn't notify it to TProgram and the
 window normalization was done before reallocating the screenBuffer.

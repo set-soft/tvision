@@ -1,60 +1,20 @@
-/*****************************************************************************
+/**[txh]********************************************************************
 
- Keyboard handler for DOS by Salvador E. Tropea (SET) (1998)
+  Keyboard handler for DOS.
+  Copyright (c) 1998-2002 by Salvador E. Tropea (SET)
 
- That's a gkey function that is supposed to:
+  Description: 
+  This module implements the low level keyboard routines for DOS.
+  The original comment about the first TGKey class I sent to Robert when was
+the maintainer of TV is located at the end of this file. It have some
+intersting information.
+  
+***************************************************************************/
 
-1) Solve all the problems about multiple translations. That's because it
-generates a unique code for each key. The format is:
-
-bit 10       9       8    7   6-0
-Left-Alt Right-Alt Ctrl Shift Code
-
-  Additionally there are a char value to carry the ASCII.
-  I'm detecting left and right alt but perhaps isn't good. The idea of
-detecting it is that Left Alt could be used for the menu and Right Alt
-(called Alt Gr in some keyboards) can be used for macros.
-  But I think it will confuse to some people, what do you think?
-
-2) Solve the keyboard layout problems. This routines uses a methode that
-works OK with M$ keyb TSR. Keyb is relative smart and translates the Alt-X
-codes, that's needed because the Alt keys are ASCII 0 and we need the scan
-to differenciate one from the others. Keyb translates it.
- I tried with keyb gr and worked perfect.
- The main idea is just use ASCII for the things is possible and scans for
-the rest, keyb takes care about the thing that can't be detected using
-ASCIIs.
-
-3) Solve the problem of the numeric pad. BIOS makes the work.
-
-  The code is very fast because uses a few comparissons and look-up tables,
-we don't need long switchs. The only exception is done to avoid the loose
-of ^H,^I,^J,^M and ^[. For that I suppose some things and guess about what
-key was.
-
-Important!
-i) Some constants have crazy names, take a look I used the first
-name that came to my mind.
-ii) Some ^symbol assigments aren't well mapped by keyb so they are very
-specific cases that I think doesn't mather.
-
-  Now, from the side of the editor:
-
-  This methode generates 2048 key combinations, only a part can be really
-triggered because a lot are like !, is impossible to get other thing that
-Shift-! because you MUST press shift to get it, additionally Shift-1 doesn't
-exist because you'll get Shift-!. That is logic because not all keyboards
-have the relation Shift-1==!. So only some combinations can be used for
-commands, the rest must mean: Insert a character with the ASCII provided.
-  For the rest I think the system can be used.
-
-Note: I did a TSR to detect 19 key combinations that BIOS doesn't report,
-takes only 400 bytes of memory.
-
-*****************************************************************************/
 #include <tv/configtv.h>
 
 #ifdef TVCompf_djgpp
+
 #include <go32.h>
 #include <sys/farptr.h>
 #include <dpmi.h>
@@ -62,7 +22,11 @@ takes only 400 bytes of memory.
 #include <bios.h>
 #define REGS __dpmi_regs
 #define INTR(nr,r) __dpmi_int(nr,&r)
-#endif
+
+#define DEF_REGS   __dpmi_regs r
+#define KEY_INTR() __dpmi_int(0x16,&r)
+#define AH         r.h.ah
+#define AX         r.x.ax
 
 #define Uses_ctype
 #define Uses_TEvent
@@ -70,48 +34,20 @@ takes only 400 bytes of memory.
 #define Uses_FullSingleKeySymbols
 #define Uses_string
 #include <tv.h>
+#include <tv/dos/key.h>
 
-#ifdef TVOSf_Linux
- // Just for testing
- #include <ncurses.h>
- #include <term.h>
-#endif
+#define GET_ENHANCED_KEYSTROKE          0x0010
+#define GET_EXTENDED_SHIFT_STATES       0x0012
 
-int TGKey::useBIOS=1;
-int TGKey::translateKeyPad=1;
-KeyType TGKey::rawCode;
-unsigned short TGKey::sFlags;
-int  TGKey::Abstract;
-char TGKey::ascii;
-// Internal mode
-int TGKey::Mode=0;
+KeyType TGKeyDOS::rawCode;
+int     TGKeyDOS::Abstract;
+char    TGKeyDOS::ascii;
+ushort  TGKeyDOS::sFlags;
+int     TGKeyDOS::useBIOS=0;
+int     TGKeyDOS::translateKeyPad=1;
+void  (*TGKeyDOS::GetRaw)(void)=GetRawDirect;
 
-char *TGKey::KeyNames[]=
-{
-"Unknown",
-"A","B","C","D","E","F","G","H","I","J","K",
-"L","M","N","O","P","Q","R","S","T","U","V",
-"W","X","Y","Z",
-"OpenBrace","BackSlash","CloseBrace","Pause","Esc",
-"0","1","2","3","4","5","6","7","8","9",
-"BackSpace","Tab","Enter","Colon","Quote","Grave",
-"Comma","Stop","Slash","Asterisk","Space","Minus",
-"Plus","PrnScr","Equal","F1","F2","F3","F4","F5",
-"F6","F7","F8","F9","F10","F11","F12","Home",
-"Up","PgUp","Left","Right","End","Down","PgDn",
-"Insert","Delete","Caret","Admid","DobleQuote",
-"Numeral","Dolar","Percent","Amper","OpenPar",
-"ClosePar","DoubleDot","LessThan","GreaterThan",
-"Question","A_Roba","Or","UnderLine","OpenCurly",
-"CloseCurly","Tilde","Macro","WinLeft","WinRight","WinSel",
-"Mouse"
-};
-
-const int NumKeyNames=sizeof(TGKey::KeyNames)/sizeof(char *);
-
-#ifdef TVCompf_djgpp
-static
-unsigned char kbWithASCII0[256] =
+const uchar TGKeyDOS::kbWithASCII0[256]=
 {
  kbPause,kbEsc,kb1,kb2,kb3,kb4,kb5,0,                           // 00-07
  kb7,kb8,kb9,kb0,0,kbEqual,kbBackSpace,kbTab,                   // 08-0F
@@ -149,8 +85,7 @@ unsigned char kbWithASCII0[256] =
 };
 
 // This table uses just some values
-static
-unsigned char kbWithASCIIE0[256] =
+const uchar TGKeyDOS::kbWithASCIIE0[256]=
 {
  0,0,0,0,0,0,0,0, // 00-07
  0,0,0,0,0,0,0,0, // 08-0F
@@ -201,8 +136,7 @@ unsigned char kbWithASCIIE0[256] =
 #define SP5 0x80 | kbOpenBrace
 #endif
 
-static
-unsigned char kbByASCII[128] =
+const uchar TGKeyDOS::kbByASCII[128]=
 {
  0,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
  SP1,SP2,SP3,kbK,kbL,SP4,kbN,kbO,
@@ -222,46 +156,42 @@ unsigned char kbByASCII[128] =
  kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbBackSpace
 };
 
-unsigned short getshiftstate(void)
+unsigned TGKeyDOS::GetShiftStateBIOS(void)
 {
- if (TGKey::useBIOS)
-   {
-    REGS r;
-    r.h.ah = 0x12;
-    INTR(0x16,r);
-    return r.x.ax;
-   }
+ DEF_REGS;
+ AH=GET_EXTENDED_SHIFT_STATES;
+ KEY_INTR();
+ return AX;
+}
+
+unsigned TGKeyDOS::GetShiftStateDirect(void)
+{
  _farsetsel(_dos_ds);
  return _farnspeekw(0x417);
 }
 
 // All the info. from BIOS in one call
-void TGKey::GetRaw(void)
+void TGKeyDOS::GetRawBIOS(void)
 {
- if (useBIOS)
-   {
-    REGS r;
-    r.h.ah = 0x12;
-    INTR(0x16,r);
-    sFlags=r.x.ax;
-    r.h.ah = 0x10;
-    INTR(0x16,r);
-    rawCode.full=r.x.ax;
-   }
- else
-  {
-   _farsetsel(_dos_ds);
-   sFlags=_farnspeekw(0x417);
-   unsigned short keybuf_start = _farnspeekw(0x41a);
-   rawCode.full=_farnspeekw(0x400 + keybuf_start);
-   keybuf_start += 2;
-   if (keybuf_start>0x3d) keybuf_start = 0x1e;
-   _farnspokew(0x41a, keybuf_start);
-  }
+ DEF_REGS;
+ AH=GET_EXTENDED_SHIFT_STATES;
+ KEY_INTR();
+ sFlags=AX;
+ AH=GET_ENHANCED_KEYSTROKE;
+ KEY_INTR();
+ rawCode.full=AX;
 }
 
-
-
+void TGKeyDOS::GetRawDirect(void)
+{
+ _farsetsel(_dos_ds);
+ sFlags=_farnspeekw(0x417);
+ unsigned short keybuf_start = _farnspeekw(0x41a);
+ rawCode.full=_farnspeekw(0x400 + keybuf_start);
+ keybuf_start += 2;
+ if (keybuf_start>0x3d) keybuf_start = 0x1e;
+ _farnspokew(0x41a, keybuf_start);
+}
 
 /*************************** Special keyboards ******************************
 
@@ -281,7 +211,7 @@ Additionally ;/: key is an accent key (q/Q holds ;/:).
 
 ********************************************************/
 // Converts a greek letter to the latin letter used to generate it
-static const uchar PC737[128]=
+const uchar TGKeyDOS::PC737[128]=
 {
  'A','B','G','D','E','Z','H','U','I','K','L','M','N','J','O','P',
  'R','S','T','Y','F','X','C','V','a','b','g','d','e','z','h','u',
@@ -292,11 +222,6 @@ static const uchar PC737[128]=
  'v','a','e','h','i','i','o','y','y','v','A','E','H','I','O','Y',
  'V',241,242,243,'I','Y',246,247,248,249,250,251,252,253,254,255
 };
-
-void TGKey::SetKbdMapping(int mode)
-{
- Mode=mode;
-}
 
 /**[txh]********************************************************************
 
@@ -309,8 +234,7 @@ generated it. Example: alpha to kbA.
 
 ***************************************************************************/
 
-static
-int International_To_Key(uchar ascii)
+int TGKeyDOS::InternationalToKey(uchar ascii)
 {
  if (ascii>=0x80)
    {
@@ -334,17 +258,16 @@ key that generated it. Example: alpha to a.
 
 ***************************************************************************/
 
-static
-char International_To_ASCII(uchar ascii)
+uchar TGKeyDOS::NonASCII2ASCII(uchar ascii)
 {
- if (ascii>=0x80)
+ if (Mode==dosGreek737 && ascii>=0x80)
     return PC737[ascii-0x80];
  return ascii;
 }
 
-int TGKey::CompareASCII(uchar val, uchar code)
+int TGKeyDOS::CompareASCII(uchar val, uchar code)
 {
- if (Mode)
+ if (Mode!=dosUS)
    {
     if (val>=0x80)
        val=PC737[val-0x80];
@@ -360,7 +283,7 @@ int TGKey::CompareASCII(uchar val, uchar code)
 
 
 // The intelligence is here
-unsigned short TGKey::gkey(void)
+unsigned short TGKeyDOS::GKey(void)
 {
  Abstract=0;
 
@@ -403,8 +326,8 @@ unsigned short TGKey::gkey(void)
     else
       { // Generated by Alt-key pad or a TSR
        ascii=rawCode.b.ascii;
-       if (Mode)
-          Abstract|=International_To_Key(ascii);
+       if (Mode!=dosUS)
+          Abstract|=InternationalToKey(ascii);
        else
           Abstract|=kbUnkNown;
       }
@@ -479,94 +402,78 @@ unsigned short TGKey::gkey(void)
  return rawCode.full;
 }
 
-int TGKey::kbhit(void)
+int TGKeyDOS::KbHitBIOS(void)
 {
- if (useBIOS)
-    return bioskey(1);
- else
-    return (_farpeekw(_dos_ds, 0x41a)!=_farpeekw(_dos_ds, 0x41c));
+ return bioskey(1);
 }
 
-void TGKey::clear(void)
+int TGKeyDOS::KbHitDirect(void)
 {
- if (useBIOS)
-    while (::kbhit())
-      gkey();
- else
-    _farpokel(_dos_ds,0x41A,0x001E001EUL);
+ return (_farpeekw(_dos_ds, 0x41a)!=_farpeekw(_dos_ds, 0x41c));
+}
+
+void TGKeyDOS::ClearBIOS(void)
+{
+ while (kbhit())
+   GKey();
  // the bios has no function for clearing the key buffer
  // But you can loop until is empty ;-)
 }
 
-void TGKey::fillTEvent(TEvent &e)
+void TGKeyDOS::ClearDirect(void)
 {
- TGKey::gkey();
+ _farpokel(_dos_ds,0x41A,0x001E001EUL);
+}
+
+void TGKeyDOS::FillTEvent(TEvent &e)
+{
+ GKey();
  e.keyDown.charScan.charCode=ascii;
- e.keyDown.charScan.scanCode=TGKey::rawCode.b.scan;
- e.keyDown.raw_scanCode=TGKey::rawCode.b.scan;
+ e.keyDown.charScan.scanCode=rawCode.b.scan;
+ e.keyDown.raw_scanCode=rawCode.b.scan;
  e.keyDown.keyCode=Abstract;
  e.keyDown.shiftState=sFlags;
  e.what=evKeyDown;
 }
 
-ushort TGKey::AltSet=2;      // Default: Both ALT are the same
-#else
-static inline
-char International_To_ASCII(uchar ascii)
+void TGKeyDOS::SetKbdMapping(int version)
 {
- return ascii;
-}
-#endif
-
-const int CantDef=0x39;
-static const char altCodes[CantDef+1]=
-"\0ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]\0\0""0123456789\0\t\0;'`,./*\xf0-+\0=";
-
-char TGKey::GetAltChar(ushort keyCode, uchar ascii)
-{
- // Only when ALT is present
- if ((keyCode & kbAltLCode)==0)
-    return 0;
- keyCode&=kbKeyMask;
- // If the key is unknown but have an ASCII associated use it!
- if (keyCode==kbUnkNown && ascii)
+ if (version==dosUseBIOS)
    {
-    if (Mode)
-       International_To_ASCII(ascii);
-    else
-       return ascii;
+    useBIOS=1;
+    TGKey::kbhit=KbHitBIOS;
+    TGKey::getShiftState=GetShiftStateBIOS;
+    TGKey::clear=ClearBIOS;
+    GetRaw=GetRawBIOS;
+    return;
    }
- if (keyCode>CantDef-1)
-    return 0;
- return altCodes[keyCode];
+ else if (version==dosUseDirect)
+   {
+    useBIOS=0;
+    TGKey::kbhit=KbHitDirect;
+    TGKey::getShiftState=GetShiftStateDirect;
+    TGKey::clear=ClearDirect;
+    GetRaw=GetRawDirect;
+    return;
+   }
+ Mode=version;
 }
 
-ushort TGKey::GetAltCode(char c)
+void TGKeyDOS::Init()
 {
- int i;
- if (Mode)
-    c=International_To_ASCII(c);
- c=uctoupper(c);
-
- for (i=0; i<CantDef; i++)
-     if (altCodes[i]==c)
-        return i | kbAltLCode; // Report the left one
- return 0;
-}
-
-ushort TGKey::KeyNameToNumber(char *s)
-{
- int i;
- for (i=0; i<NumKeyNames; i++)
-     if (strcmp(KeyNames[i],s)==0)
-        return i;
- return (ushort)-1;
+ AltSet=2;
+ TGKey::gkey=GKey;
+ TGKey::fillTEvent=FillTEvent;
+ TGKey::SetKbdMapping=SetKbdMapping;
+ TGKey::NonASCII2ASCII=NonASCII2ASCII;
+ TGKey::CompareASCII=CompareASCII;
+ // Default to direct mode
+ SetKbdMapping(dosUseDirect);
 }
 
 //---------------- TEST
 #ifdef GKEY
 #include <stdio.h>
-
 
 void InterpretAbstract(void)
 {
@@ -582,7 +489,6 @@ void InterpretAbstract(void)
     printf(" ALT-L");
 }
 
-#ifdef TVCompf_djgpp
 #include <signal.h>
 #include <conio.h>
 /* ungetch() is available only on DJGPP
@@ -596,33 +502,14 @@ void CtrlCOff(void)
  //signal(SIGINT,PasarAC);
  signal(SIGINT,SIG_IGN);
 }
-#endif
 
 int count=0;
 
 int main(int argc, char *argv[])
 {
   unsigned short key=0;
-#ifdef TVOS_UNIX
-  void startcurses();
-  void stopcurses();
-  void resume_keyboard();
-  void suspend_keyboard();
-  startcurses();
-  resume_keyboard();
-  /* Quite good to debug ncurses:
-  for (key=0; key<200; key++)
-     {
-      if (cur_term->type.Strings[key])
-         fprintf(stderr,"%d: `%s'\n",key,cur_term->type.Strings[key]);
-     }*/
-  //meta(0,TRUE);
-  if (argc>1 && strcmp(argv[1],"rh52")==0)
-     TGKey::SetKbdMapping(KBD_REDHAT52_STYLE);
-#else
   TGKey::useBIOS=0;
   CtrlCOff();
-#endif
   // Setup the mode where the alt left/right are different
   TGKey::SetAltSettings(0);
   do
@@ -639,10 +526,58 @@ int main(int argc, char *argv[])
       printf(" ASCII: %c\r\n",TGKey::ascii);
      }
   } while (key!=kbEsc);
-#ifdef TVOSf_Linux
-  suspend_keyboard();
-  stopcurses();
-#endif
 }
 #endif
 
+#endif // TVCompf_djgpp
+
+/*
+ That's a gkey function that is supposed to:
+
+1) Solve all the problems about multiple translations. That's because it
+generates a unique code for each key. The format is:
+
+bit 10       9       8    7   6-0
+Left-Alt Right-Alt Ctrl Shift Code
+
+  Additionally there are a char value to carry the ASCII.
+  I'm detecting left and right alt but perhaps isn't good. The idea of
+detecting it is that Left Alt could be used for the menu and Right Alt
+(called Alt Gr in some keyboards) can be used for macros.
+  But I think it will confuse to some people, what do you think?
+
+2) Solve the keyboard layout problems. This routines uses a methode that
+works OK with M$ keyb TSR. Keyb is relative smart and translates the Alt-X
+codes, that's needed because the Alt keys are ASCII 0 and we need the scan
+to differenciate one from the others. Keyb translates it.
+ I tried with keyb gr and worked perfect.
+ The main idea is just use ASCII for the things is possible and scans for
+the rest, keyb takes care about the thing that can't be detected using
+ASCIIs.
+
+3) Solve the problem of the numeric pad. BIOS makes the work.
+
+  The code is very fast because uses a few comparissons and look-up tables,
+we don't need long switchs. The only exception is done to avoid the loose
+of ^H,^I,^J,^M and ^[. For that I suppose some things and guess about what
+key was.
+
+Important!
+i) Some constants have crazy names, take a look I used the first
+name that came to my mind.
+ii) Some ^symbol assigments aren't well mapped by keyb so they are very
+specific cases that I think doesn't mather.
+
+  Now, from the side of the editor:
+
+  This methode generates 2048 key combinations, only a part can be really
+triggered because a lot are like !, is impossible to get other thing that
+Shift-! because you MUST press shift to get it, additionally Shift-1 doesn't
+exist because you'll get Shift-!. That is logic because not all keyboards
+have the relation Shift-1==!. So only some combinations can be used for
+commands, the rest must mean: Insert a character with the ASCII provided.
+  For the rest I think the system can be used.
+
+Note: I did a TSR to detect 19 key combinations that BIOS doesn't report,
+takes only 400 bytes of memory.
+*/

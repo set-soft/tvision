@@ -19,10 +19,8 @@ public:
  TGKeyDOS() {};
 
  // Function replacements
- static int      KbHitBIOS();
  static unsigned GetShiftStateBIOS();
  static void     ClearBIOS();
- static int      KbHitDirect();
  static unsigned GetShiftStateDirect();
  static void     ClearDirect();
  static ushort   GKey();
@@ -39,6 +37,8 @@ protected:
  static void     GetRawBIOS(void);
  static void     GetRawDirect(void);
  static void   (*GetRaw)(void);
+ static int      KbHitBIOS();
+ static int      KbHitDirect();
  static int      InternationalToKey(uchar ascii);
  static int      Abstract;
  static char     ascii;
