@@ -357,6 +357,7 @@ TStringCollection *ListDirectory( char *path, char *end )
        while( _findnext( res, &ff )==0 );
        _findclose( res );
        }
+    return col;
 }
 
 #else // DJGPP and BC++
