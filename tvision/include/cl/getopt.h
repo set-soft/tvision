@@ -93,14 +93,16 @@ struct CLY_option
 
 extern int CLY_getopt(int argc, char *const *argv, const char *shortopts);
 extern int CLY_getopt_long(int argc, char *const *argv, const char *shortopts,
-                           const struct option *longopts, int *longind);
+                           const struct CLY_option *longopts, int *longind);
 extern int CLY_getopt_long_only(int argc, char *const *argv,
                                 const char *shortopts,
-                                const struct option *longopts, int *longind);
+                                const struct CLY_option *longopts,
+                                int *longind);
 /* Internal only.  Users should not call this directly.  */
 extern int CLY_getopt_internal(int argc, char *const *argv,
                                const char *shortopts,
-                               const struct option *longopts, int *longind,
+                               const struct CLY_option *longopts,
+                               int *longind,
                                int long_only);
 
 #ifdef __cplusplus
