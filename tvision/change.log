@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.379  2002/12/10 14:15:46  set
+* Fixed: [X11] The new code to handle input code page (return value).
+* Fixed: [X11] I relaxed the filter too much in the last patch ;-)
+
 Revision 2.378  2002/12/09 18:21:32  set
 * Modified: [X11] The filter that avoids reporting ASCII values for
 ALT+key. It was too strict making fail the KOI8R mode, so now Alt+A and
