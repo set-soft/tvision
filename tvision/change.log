@@ -1,4 +1,10 @@
 $Log$
+Revision 1.29  1999/03/23 01:01:38  set
+* Added an explanation in the readme.txt about the debian directory that will
+generate warnings when uncompressed in plain DOS.
+* Modified the compress.pl scripts to only replace vX.X.X in the readme and
+not just X.X.X.
+.
 Revision 1.28  1999/03/23 00:50:35  set
 * Changed the name of the library because Sigala's port is older in the Linux
 arena and I think the right thing is to differentiate this port calling it
