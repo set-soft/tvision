@@ -93,6 +93,8 @@ void TEditWindow::sizeLimits( TPoint& min, TPoint& max )
     min = minEditWinSize;
 }
 
+#ifndef NO_STREAM
+
 void TEditWindow::write( opstream& os )
 {
     TWindow::write( os );
@@ -116,6 +118,8 @@ TEditWindow::TEditWindow( StreamableInit ) :
     TWindowInit( NULL )
 {
 }
+
+#endif
 
 const char *TEditWindow::clipboardTitle = __("Clipboard");
 const char *TEditWindow::untitled = __("Untitled");

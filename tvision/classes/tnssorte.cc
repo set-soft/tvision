@@ -55,7 +55,10 @@ Boolean TNSSortedCollection::search( void *key, ccIndex& index )
     ccIndex l = 0;
     ccIndex h = count - 1;
     Boolean res = False;
-    if ( !key ) return False;
+    // The following is good to avoid problems but have a huge draw-back:
+    // keys can't be 0. In some cases 0 *is* a valid key and in this case
+    // the search will be skipped producing nasty bugs.
+    //if ( !key ) return False;
     while( l <= h )
         {
         ccIndex i = (l +  h) >> 1;
