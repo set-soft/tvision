@@ -309,6 +309,10 @@ int TScreenLinux::AnalyzeCodePage()
 
  int i,j;
  fprintf(stderr,"The map have %d entries\n",map.entry_ct);
+ fprintf(stderr,"Raw information:\n");
+ for (i=0; i<map.entry_ct; i++)
+     fprintf(stderr,"0x%02X => 0x%04X\n",map.entries[i].fontpos,map.entries[i].unicode);
+ fprintf(stderr,"\n\nSorted information:\n");
  // Sort the entries
  qsort(map.entries,map.entry_ct,sizeof(struct unipair),compareUni);
  // Print all marking the entries that provides more than a code
