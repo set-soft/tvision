@@ -2,15 +2,16 @@ Hi!
 
 The small sections are:
 
-1. Introduction
-2. Notes about the package
-3. Compilation and use
-4. Linux dynamic libraries
-5. Libraries and tools needed
-6. Examples
-7. Targets supported, limitations
-8. How to submit a patch
-9. Contact information
+1.  Introduction
+2.  Notes about the package
+3.  Compilation and use
+4.  Linux dynamic libraries
+5.  Libraries and tools needed
+6.  Examples
+7.  Targets supported, limitations
+8.  CPU usage (how to get 0% while waiting for keys)
+9.  How to submit a patch
+10. Contact information
 
 ****** Important! for old users: the library generated is now called ******
 ****** librhtv.a this change in the name is to avoid confusion with  ******
@@ -376,7 +377,24 @@ Windows NT: This platform isn't supported, I know the mouse fails to work and
 
 
 
-8. How to submit a patch:
+8.  CPU usage
+-------------
+
+  You'll see some of your programs eats 100% of the CPU while idle, why? the
+answer is very easy: Turbo Vision polls the keyboard and the mouse all the
+time. To solve it you must release the CPU. When no input from the polled
+devices is available the main class calls the idle() member. You should
+override the behavior of idle() and add some instruction to release the CPU.
+The examples/demo/tvdemo3.cc program shows how to do it. Note that you could
+use usleep for both (DOS and Linux) but in this case you should sleep for
+more than 18.2 ms to let djgpp's sleep really release the CPU. I think is
+easier to just call __dpmi_yield() and explicitly release the CPU, in this
+way you sleep the minimal amount of time.
+
+
+
+
+9. How to submit a patch:
 ------------------------
 
   The simplest way is running a diff between your current directory and a
@@ -387,7 +405,7 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-9. Contact information:
+10. Contact information:
 ----------------------
 
 Salvador E. Tropea (SET)
