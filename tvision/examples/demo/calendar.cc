@@ -12,6 +12,8 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified by Salvador E. Tropea to show how to deal with code page
+ * dependent values.
  */
 
 // SET: moved the standard headers before tv.h
@@ -36,6 +38,10 @@ __link( RWindow )
 
 #include "calendar.h"
 
+char TCalendarView::upArrowChar  ='\036';
+char TCalendarView::oupArrowChar ='\036';
+char TCalendarView::downArrowChar ='\037';
+char TCalendarView::odownArrowChar='\037';
 
 static char *monthNames[] = {
     "",
@@ -147,7 +153,8 @@ void TCalendarView::draw()
 
     buf.moveChar(0, ' ', color, size.x);
 
-    sprintf(str, "\036%12s %4d \037", monthNames[month], year); //wsz: to see full year and down arrow
+    sprintf(str, "%c%12s %4d %c", upArrowChar, monthNames[month], year,
+            downArrowChar); //wsz: to see full year and down arrow
     /*ostrstream( str, sizeof str)
       << setw(9) << monthNames[month] << " " << setw(4) << year
       << " " << (char) 30 << "  " << (char) 31 << " " << ends;*/

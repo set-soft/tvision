@@ -14,12 +14,14 @@
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
  * Andris Pavenis.
+ * Added code page example by Salvador E. Tropea (SET)
  */
  
 // SET: moved the standard headers before tv.h
 #include <stdio.h>
 #define Uses_string
 
+#define Uses_TVCodePage
 #define Uses_TView
 #define Uses_TRect
 #define Uses_TStatusLine
@@ -36,6 +38,9 @@
 #define Uses_TScreen
 #define Uses_IOS_BIN
 #define Uses_THelpWindow
+// Needed to remap the "system" menu character
+#define Uses_TVCodePage
+
 #include <tv.h>
 
 #include "tvdemo.h"
@@ -67,14 +72,26 @@ __link(RCalcDisplay);
 
 int main(int argc, char **argv, char **envir)
 {
+    // The following is optional, but helps some low level drivers.
+    // Don't do it if you experiment any side effect in the arguments or you
+    // use these variables in a not so common way.
+    // Note that the Linux console driver will alter argv to be able to change
+    // what ps reports, you'll get the setWindowTitle argument.
     TDisplay::setArgv(argc,argv,envir);
+    
     // Uncommenting the next line the cursor won't be hided.
     // This is a test to get an application a little bit friendly for Braille
     // Terminals.
     //TDisplay::setShowCursorEver(True);
     
+    // We have non-ASCII symbols that depends on the code page. We must
+    // recode them to the screen code page, here is how we hook the code page
+    // change chain.
+    TVDemo::oldCPCallBack=TVCodePage::SetCallBack(TVDemo::cpCallBack);
+    
     TVDemo *demoProgram = new TVDemo(argc,argv);
 
+    // This is new in our port of TV:
     const char *title=TScreen::getWindowTitle();
     TScreen::setWindowTitle("Turbo Vision Demo Program");
     demoProgram->run();

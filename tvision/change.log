@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.151  2002/06/12 16:59:28  set
+* Fixed: The THWMouse class called GetEvent if the mouse wasn't present.
+This was the source of problems when switching consoles under Linux.
+
 Revision 2.150  2002/06/12 16:46:38  set
 * Modified: [X11] the driver now uses ISO-8859-1 fonts instead of PC437.
 

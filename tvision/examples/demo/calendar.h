@@ -24,6 +24,13 @@ public:
     virtual void handleEvent(TEvent& event);
     virtual void draw();
 
+    // The following are code page dependent, take a look at tvdemo3.cc to
+    // see how we handle it
+    static char upArrowChar;
+    static char oupArrowChar;
+    static char downArrowChar;
+    static char odownArrowChar;
+
 private:
 
     unsigned days, month, year;
