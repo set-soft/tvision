@@ -419,7 +419,7 @@ void TGKeyX11::FillTEvent(TEvent &e)
     return;
    }
  ushort Abstract=GKey();
- e.keyDown.charScan.charCode=((Flags & kbAltLCode) && (Symbol<32)) ? 0 : Symbol;
+ e.keyDown.charScan.charCode=((Flags & kbAltLCode) && (Symbol<128)) ? 0 : Symbol;
  e.keyDown.charScan.scanCode=Scan;
  e.keyDown.raw_scanCode=Scan;
  e.keyDown.keyCode=Abstract;
@@ -445,10 +445,10 @@ void TGKeyX11::Init()
 
 int TGKeyX11::SetCodePage(int id)
 {
- TGKey::SetCodePage(id);
  if (!inputCP)
     inputCP=new stIntCodePairs[256];
  TVCodePage::GetUnicodesForCP(id,inputCP);
+ return TGKey::defaultSetCodePage(id);
 }
 #else
 
