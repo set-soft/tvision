@@ -242,7 +242,6 @@ sub LookForPrefix
        if (substr(@ENV{'PATH'},0,1) == '/')
          {
           @lista=split(/:/,@ENV{'PATH'});
-          @conf{'MinGW_under_cygwin'} = 'yes';
          }
        else
          {
@@ -333,6 +332,8 @@ sub CheckGCC
  if (!length($cc))
    {
     $cc='gcc';
+    $cc.=' -mno-cygwin' if ($Compf =~ 'Cygwin.*') &&
+                           ($conf{'MinGW_under_cygwin'} eq 'yes');
    }
  print "$cc ";
  $test='#include <stdio.h>
@@ -343,7 +344,7 @@ int main(void)
 }
 ';
  $test=RunGCCTest($cc,'c',$test,'');
- if ($test ne "OK\n")
+ if ($test =~ "OK\s?\n")
    {
     CreateCache();
     die 'Not working gcc found';
@@ -463,8 +464,10 @@ int main(void)
  @list=split(/:/,$defaultCXX);
  foreach $i (@list)
    {
+    $i.=' -mno-cygwin' if ($Compf =~ 'Cygwin.*') &&
+                          ($conf{'MinGW_under_cygwin'} eq 'yes');
     $res=RunGCCTest($i,'cc',$test,$stdcxx);
-    if ($res eq "OK\n")
+    if ($res =~ "OK\r?\n")
       {
        print "$i\n";
        return $i;

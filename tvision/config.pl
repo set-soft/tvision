@@ -33,6 +33,7 @@ if ($JustSpec)
 print "Configuring Turbo Vision v$Version library\n\n";
 # Determine the OS
 $OS=DetectOS();
+$conf{'MinGW_under_cygwin'}='yes' if ($conf{'alcon'} eq 'yes') && ($Compf =~ 'Cygwin.*');
 # Determine C flags
 $CFLAGS=FindCFLAGS();
 # Determine C++ flags
@@ -171,7 +172,14 @@ elsif ($OS eq 'Win32')
      }
    $MakeDefsRHIDE[3]='TVOBJ=../../makes ';
    $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
-   $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
+   if ($conf{'MinGW_under_cygwin'} eq yes)
+     {
+      $MakeDefsRHIDE[3].=$LDExtraDirs;
+     }
+   else
+     {
+      $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
+     }
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
   }
@@ -285,14 +293,11 @@ sub SeeCommandLine
       }
     elsif ($i eq '--force-mingw')
       {
-       $conf{'GCC'}='gcc -mno-cygwin';
-       $conf{'GXX'}='g++ -mno-cygwin';
+       $conf{'MinGW_under_cygwin'}='yes';
       }
     elsif ($i eq '--with-alcon')
       {
        $conf{'alcon'}='yes';
-       $conf{'GCC'}='gcc -mno-cygwin';
-       $conf{'GXX'}='g++ -mno-cygwin';
       }
     elsif ($i eq '--without-alcon')
       {
