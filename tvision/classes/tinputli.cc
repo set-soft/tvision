@@ -146,7 +146,7 @@ int TInputLine::mousePos( TEvent& event )
     mouse.x = max( mouse.x, 1 );
     int pos = mouse.x + firstPos - 1;
     pos = max( pos, 0 );
-    pos = min( pos, strlen(data) );
+    pos = min( (size_t)pos, strlen(data) );
     return pos;
 }
 

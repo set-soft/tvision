@@ -135,6 +135,5 @@ libtv.lib : $(OBJS)
 	lib /OUT:libtv.lib $(OBJS)
 
 clean:
-	del -f $(OBJS)
-	del -f $(TUTORIAL)
+	-del -f $(OBJS)
 

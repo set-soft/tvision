@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.474  2003/06/05 19:49:00  set
+* Modified: A couple of C++ header requests that Andris pointed out to be
+portable. I'm not sure if they are a side effect of using SSC.
+
 Revision 2.473  2003/06/05 19:44:25  set
 * Fixed: gcc 3.3 compilation problems. Patch from Andris. It solves:
 1) Order of base class constructor calls in initialization.

@@ -211,7 +211,7 @@ ushort inputBoxRect( const TRect &bounds,
     dialog = new TDialog(bounds, Title);
 
     unsigned x = 4 + strlen( aLabel );
-    r = TRect( x, 2, min(x + limit + 2, dialog->size.x - 3), 3 );
+    r = TRect( x, 2, min(x + limit + 2, (unsigned int)dialog->size.x - 3), 3 );
     control = new TInputLine( r, limit );
     dialog->insert( control );
 
