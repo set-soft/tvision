@@ -80,7 +80,7 @@ void TScreenXTerm::Init()
  TScreen::setCrtData=defaultSetCrtData;
  TScreen::setVideoMode=SetVideoMode;
  TScreen::setVideoModeExt=SetVideoModeExt;
- TScreen::System=System;
+ TScreen::System_p=System;
  TScreen::setCharacters=SetCharacters;
  TDisplay::checkForWindowSize=CheckForWindowSize;
 }
@@ -195,7 +195,7 @@ TScreenXTerm::TScreenXTerm()
     // Eterm 0.9.x supports palette setting
     TDisplay::setDisPaletteColors=SetDisPaletteColorsEt;
     ResetPaletteColors=ResetPaletteColorsEt;
-    setCrtModeRes=SetCrtModeEt;
+    setCrtModeRes_p=SetCrtModeEt;
     if (parseUserPalette())
        setPaletteColors(0,16,UserStartPalette);
    }
@@ -211,7 +211,7 @@ TScreenXTerm::TScreenXTerm()
        setPaletteColors(0,16,UserStartPalette);
     else
        SetDisPaletteColorsXT(0,16,ActualPalette);
-    setCrtModeRes=SetCrtModeXT;
+    setCrtModeRes_p=SetCrtModeXT;
    }
  // This is what GNU/Debian Woody uses by default
  fontW=6; fontH=13;
