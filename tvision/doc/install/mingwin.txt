@@ -4,7 +4,7 @@ GNU tools as provided by MinGW package (aka MingWin, MinGW32, etc.).
 $Id$
 
 1. INTRODUCTION
-2. COMPILING
+2. COMPILING AND INSTALLING
 
 
 1. INTRODUCTION
@@ -41,7 +41,7 @@ slow to compile C++ and the Win32 port is even worst.
 bugs not found in the same version compiled with other compilers.
 
 
-2. COMPILING
+2. COMPILING AND INSTALLING
 
   Once you installed all the needed tools your system will become some kind
 of GNU/Win32 system. For this reason you can just follow the instructions found
