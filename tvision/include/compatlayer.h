@@ -32,11 +32,44 @@ and regex.
 
 #include <tv/configtv.h>
 
+/* MSS memory leak debugger */
+#ifdef MSS
+ #include <mss.h>
+#endif
+
 #ifdef __cplusplus
 #define CFunc extern "C"
 #else
 #define CFunc extern
 #endif
+
+#ifndef CLY_DoNotDefineSizedTypes
+/* The following types should be platform independent */
+typedef signed char int8;
+typedef short       int16;
+typedef int         int32;
+typedef unsigned char  uint8;
+typedef unsigned short uint16;
+typedef unsigned int   uint32;
+#if defined(TVComp_GCC)
+typedef unsigned long long uint64;
+typedef          long long int64;
+#elif defined(TVComp_BCPP) || defined(TVComp_MSC)
+typedef unsigned __int64 uint64;
+typedef          __int64 int64;
+#else
+ #error Can not define uint64 type: unknown compiler.
+#endif
+#endif // CLY_DoNotDefineSizedTypes
+
+#ifndef CLY_DoNotDefineUTypes
+/* The following are just aliases and the size is platform dependant */
+typedef unsigned char  uchar;
+typedef unsigned short ushort;
+typedef unsigned int   uint;
+typedef unsigned long  ulong;
+#endif // CLY_DoNotDefineUTypes
+
 
 #ifdef Uses_stdio
   #define Include_sdtio
@@ -104,6 +137,7 @@ and regex.
  #endif
  #define NEVER_RETURNS __attribute__((noreturn))
  #define RETURN_WHEN_NEVER_RETURNS
+ #define CLY_Packed __attribute__((packed))
  // SET: Anything allocated with new[] should be deleted with [].
  // Pointed out by Laurynas Biveinis.
  #define DeleteArray(a) delete[] a
@@ -121,6 +155,14 @@ and regex.
  #ifdef Uses_strstream
   #define Include_strstream
  #endif
+
+ /* Use the internal bool type for Boolean */
+ #undef Boolean
+ #undef False
+ #undef True
+ #define Boolean bool
+ #define True true
+ #define False false
  
  #ifdef TVCompf_MinGW
   #define CLY_HaveDriveLetters 1
@@ -411,6 +453,9 @@ and regex.
 // BC++ 5.5 for Win32 is supported
 #ifdef TVComp_BCPP
  #define CLY_HaveDriveLetters 1
+ #define CLY_Packed
+ /* Simple Boolean type */
+ enum Boolean { False, True };
  #ifdef Uses_string
   #define Include_string
   #define strncasecmp strnicmp
@@ -544,6 +589,9 @@ and regex.
 
 #ifdef TVComp_MSC
  #define CLY_HaveDriveLetters 1
+ #define CLY_Packed
+ /* Simple Boolean type */
+ enum Boolean { False, True };
  #ifdef Uses_string
   #define Include_string
   #define strncasecmp strnicmp
