@@ -436,7 +436,7 @@ char TGKey::GetAltChar(ushort keyCode)
 ushort TGKey::GetAltCode(char c)
 {
  int i;
- c=toupper(c);
+ c=uctoupper(c);
 
  for (i=0; i<CantDef; i++)
      if (altCodes[i]==c)

@@ -162,7 +162,7 @@ static int changeDir( const char *path )
 {
 #if 0 // DJGPP can handle chdir also over drives
     if( path[1] == ':' )
-        setdisk( toupper(path[0]) - 'A' );
+        setdisk( uctoupper(path[0]) - 'A' );
 #endif
     return chdir( path );
 }

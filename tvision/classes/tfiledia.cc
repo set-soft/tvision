@@ -140,7 +140,7 @@ void TFileDialog::shutDown()
 Boolean relativePath( const char *path )
 {
     if( path[0] != EOS && (path[0] == '/' || path[0] == '\\' || 
-                           (isalpha(path[0]) && path[1] == ':')) )
+                           (ucisalpha(path[0]) && path[1] == ':')) )
         return False;
     else
         return True;
@@ -162,7 +162,7 @@ static void noWildChars( char *dest, const char *src )
 static void trim( char *dest, const char *src )
 {
     const char *end = NULL;
-    while( *src != EOS && isspace( *src ) )
+    while( *src != EOS && ucisspace( *src ) )
         src++;
     {
 /* when a filename contains spaces (not tested) */
@@ -170,7 +170,7 @@ static void trim( char *dest, const char *src )
       if (end < src) end = src;
       else
       {
-        while (end > src && isspace(*end)) end--;
+        while (end > src && ucisspace(*end)) end--;
       }
     }
     while( *src != EOS && src <= end )

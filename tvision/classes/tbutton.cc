@@ -198,7 +198,7 @@ void TButton::handleEvent( TEvent& event )
             if( event.keyDown.keyCode == TGKey::GetAltCode(c) ||
                 ( owner->phase == phPostProcess &&
                   c != 0 &&
-                  toupper(event.keyDown.charScan.charCode) == c
+                  uctoupper(event.keyDown.charScan.charCode) == c
                 ) ||
                 ( (state & sfFocused) != 0 &&
                   event.keyDown.charScan.charCode == ' '

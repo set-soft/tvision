@@ -87,7 +87,7 @@ void TLabel::handleEvent( TEvent& event )
         char c = hotKey( text );
         if( TGKey::GetAltCode(c) == event.keyDown.keyCode ||
                 ( c != 0 && owner->phase == TGroup::phPostProcess &&
-                toupper(event.keyDown.charScan.charCode) ==  c )
+                uctoupper(event.keyDown.charScan.charCode) ==  c )
           )
             {
             if (link != 0 )

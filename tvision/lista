@@ -98,6 +98,7 @@ copying.rh
 djgpp/makefile
 +djgpp/sacadeb.bat
 +djgpp/compress.bat
++djgpp/distlist
 drivers2.cc
 dual.cc
 fileview.cc
@@ -151,7 +152,7 @@ include/collectn.h
 include/desktop.h
 include/dialog.h
 include/dircoll.h
-include/direntry.h
+include/direntr.h
 include/dirlibo.h
 include/event.h
 include/eventqu.h

@@ -1,6 +1,6 @@
 cd ../..
 rm -f tvision-1.0.0.source.tar.gz tvision-1.0.0.bin.tar.gz tv100s.zip
-zip -r0 tvision/linux/tmp/tv100s tvision -x "*.o" "*.gdt" "*.bkp" "*.dst" "*.a"
+zip -r0 tvision/linux/tmp/tv100s tvision -x "*.o" "*.gdt" "*.bkp" "*.dst" "*.a" "*cvs/*" "*CVS/*"
 cd tvision/linux/tmp/
 unzip tv100s.zip
 mv tv100s.zip tvision.zip
