@@ -224,59 +224,60 @@ LD_EXTRA_FLAGS=
 C_EXTRA_FLAGS=
 LOCAL_OPT=$(subst ___~~~___, ,$(subst $(notdir $<)___,,$(filter $(notdir\
 	$<)___%,$(LOCAL_OPTIONS))))
-OBJFILES=obj/bc.o obj/drivers2.o obj/dual.o obj/fileview.o obj/fpbase.o\
-	obj/fpstream.o obj/gkey.o obj/gkeyli.o obj/histlist.o\
-	obj/ifpstrea.o obj/iopstrea.o obj/ipstream.o obj/misc.o obj/mouse.o\
-	obj/msgbox.o obj/nbackgro.o obj/nbutton.o obj/nchdirdi.o\
-	obj/ncheckbo.o obj/nclrdisp.o obj/ncluster.o obj/ncollect.o\
-	obj/ncolordi.o obj/ncolorgr.o obj/ncolorit.o obj/ncolorse.o\
-	obj/ndesktop.o obj/ndialog.o obj/ndircoll.o obj/ndirlist.o\
-	obj/neditor.o obj/neditwi.o obj/newstr.o obj/nfilecol.o\
-	obj/nfiledia.o obj/nfiledtr.o obj/nfileinf.o obj/nfileinp.o\
-	obj/nfilelis.o obj/nfilterv.o obj/nframe.o obj/ngroup.o\
-	obj/nhistory.o obj/nindicat.o obj/ninputli.o obj/nlabel.o\
-	obj/nlistbox.o obj/nlistvie.o obj/nmemo.o obj/nmenubar.o\
-	obj/nmenubox.o obj/nmenuvie.o obj/nmonosel.o obj/nparamte.o\
-	obj/nradiobu.o obj/nrangeva.o obj/nresourc.o obj/nscrollb.o\
-	obj/nscrolle.o obj/nsortedc.o obj/nsortedl.o obj/nstatict.o\
-	obj/nstatusl.o obj/nstringc.o obj/nstringl.o obj/nvalidat.o\
-	obj/nview.o obj/nwindow.o obj/ofpstrea.o obj/opstream.o\
-	obj/pstream.o obj/rhscreen.o obj/sbackgro.o obj/sbutton.o\
-	obj/schdirdi.o obj/scheckbo.o obj/sclrdisp.o obj/scluster.o\
-	obj/scolordi.o obj/scolorgr.o obj/scolorit.o obj/scolorse.o\
-	obj/screen.o obj/sdesktop.o obj/sdialog.o obj/sdircoll.o\
-	obj/sdirlist.o obj/seditor.o obj/seditwin.o obj/sescreen.o\
-	obj/sfilecol.o obj/sfiledia.o obj/sfileedi.o obj/sfileinf.o\
-	obj/sfileinp.o obj/sfilelis.o obj/sfilterv.o obj/sframe.o\
-	obj/sgroup.o obj/shistory.o obj/sindicat.o obj/sinputli.o\
-	obj/slabel.o obj/slistbox.o obj/slistvie.o obj/smemo.o\
-	obj/smenubar.o obj/smenubox.o obj/smenuvie.o obj/smonosel.o\
-	obj/sparamte.o obj/sradiobu.o obj/srangeva.o obj/sresourc.o\
-	obj/sscrollb.o obj/sscrolle.o obj/sstatict.o obj/sstatusl.o\
-	obj/sstringc.o obj/sstringl.o obj/sview.o obj/swindow.o\
-	obj/tapplica.o obj/tbackgro.o obj/tbutton.o obj/tchdirdi.o\
-	obj/tcheckbo.o obj/tclrdisp.o obj/tcluster.o obj/tcollect.o\
-	obj/tcolordi.o obj/tcolorgr.o obj/tcolorit.o obj/tcolorse.o\
-	obj/tcommand.o obj/tdesktop.o obj/tdialog.o obj/tdircoll.o\
-	obj/tdirlist.o obj/tdisplay.o obj/tdrawbuf.o obj/teditor.o\
-	obj/teditorf.o obj/teditwin.o obj/tevent.o obj/tfilecol.o\
-	obj/tfiledia.o obj/tfileedi.o obj/tfileinf.o obj/tfileinp.o\
-	obj/tfilelis.o obj/tfilterv.o obj/tfont.o obj/tframe.o obj/tgroup.o\
-	obj/thistory.o obj/thistvie.o obj/thistwin.o obj/thwmouse.o\
-	obj/ticks.o obj/tindicat.o obj/tinputli.o obj/tlabel.o\
-	obj/tlistbox.o obj/tlistvie.o obj/tmemo.o obj/tmenubar.o\
-	obj/tmenubox.o obj/tmenuvie.o obj/tmonosel.o obj/tmouse.o\
-	obj/tnscolle.o obj/tnssorte.o obj/tobject.o obj/tpalette.o\
-	obj/tparamte.o obj/tpoint.o obj/tprogini.o obj/tprogram.o\
-	obj/tpwobj.o obj/tpwreado.o obj/tpwritte.o obj/tradiobu.o\
-	obj/trangeva.o obj/trescoll.o obj/tresfile.o obj/tscreen.o\
-	obj/tscrollb.o obj/tscrolle.o obj/tscropts.o obj/tsortedc.o\
-	obj/tsortedl.o obj/tstatict.o obj/tstatusd.o obj/tstatusl.o\
-	obj/tstrinde.o obj/tstringc.o obj/tstringl.o obj/tstrlist.o\
-	obj/tstrmcla.o obj/tstrmtyp.o obj/tsubmenu.o obj/ttermina.o\
-	obj/ttextdev.o obj/tvalidat.o obj/tvedit1.o obj/tvedit2.o\
-	obj/tvedit3.o obj/tview.o obj/tvtext1.o obj/tvtext2.o obj/tweaked.o\
-	obj/twindow.o obj/vesa.o obj/vga.o
+OBJFILES=obj/bc.o obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
+	obj/fileview.o obj/fpbase.o obj/fpstream.o obj/gkey.o obj/gkeyli.o\
+	obj/histlist.o obj/ifpstrea.o obj/iopstrea.o obj/ipstream.o\
+	obj/misc.o obj/mouse.o obj/msgbox.o obj/nbackgro.o obj/nbutton.o\
+	obj/ncalcdis.o obj/ncalcula.o obj/nchdirdi.o obj/ncheckbo.o\
+	obj/nclrdisp.o obj/ncluster.o obj/ncollect.o obj/ncolordi.o\
+	obj/ncolorgr.o obj/ncolorit.o obj/ncolorse.o obj/ndesktop.o\
+	obj/ndialog.o obj/ndircoll.o obj/ndirlist.o obj/neditor.o\
+	obj/neditwi.o obj/newstr.o obj/nfilecol.o obj/nfiledia.o\
+	obj/nfiledtr.o obj/nfileinf.o obj/nfileinp.o obj/nfilelis.o\
+	obj/nfilterv.o obj/nframe.o obj/ngroup.o obj/nhistory.o\
+	obj/nindicat.o obj/ninputli.o obj/nlabel.o obj/nlistbox.o\
+	obj/nlistvie.o obj/nmemo.o obj/nmenubar.o obj/nmenubox.o\
+	obj/nmenuvie.o obj/nmonosel.o obj/nparamte.o obj/nradiobu.o\
+	obj/nrangeva.o obj/nresourc.o obj/nscrollb.o obj/nscrolle.o\
+	obj/nsortedc.o obj/nsortedl.o obj/nstatict.o obj/nstatusl.o\
+	obj/nstringc.o obj/nstringl.o obj/nvalidat.o obj/nview.o\
+	obj/nwindow.o obj/ofpstrea.o obj/opstream.o obj/pstream.o\
+	obj/rhscreen.o obj/sbackgro.o obj/sbutton.o obj/scalcdis.o\
+	obj/scalcula.o obj/schdirdi.o obj/scheckbo.o obj/sclrdisp.o\
+	obj/scluster.o obj/scolordi.o obj/scolorgr.o obj/scolorit.o\
+	obj/scolorse.o obj/screen.o obj/sdesktop.o obj/sdialog.o\
+	obj/sdircoll.o obj/sdirlist.o obj/seditor.o obj/seditwin.o\
+	obj/sescreen.o obj/sfilecol.o obj/sfiledia.o obj/sfileedi.o\
+	obj/sfileinf.o obj/sfileinp.o obj/sfilelis.o obj/sfilterv.o\
+	obj/sframe.o obj/sgroup.o obj/shistory.o obj/sindicat.o\
+	obj/sinputli.o obj/slabel.o obj/slistbox.o obj/slistvie.o\
+	obj/smemo.o obj/smenubar.o obj/smenubox.o obj/smenuvie.o\
+	obj/smonosel.o obj/sparamte.o obj/sradiobu.o obj/srangeva.o\
+	obj/sresourc.o obj/sscrollb.o obj/sscrolle.o obj/sstatict.o\
+	obj/sstatusl.o obj/sstringc.o obj/sstringl.o obj/sview.o\
+	obj/swindow.o obj/tapplica.o obj/tbackgro.o obj/tbutton.o\
+	obj/tchdirdi.o obj/tcheckbo.o obj/tclrdisp.o obj/tcluster.o\
+	obj/tcollect.o obj/tcolordi.o obj/tcolorgr.o obj/tcolorit.o\
+	obj/tcolorse.o obj/tcommand.o obj/tdesktop.o obj/tdialog.o\
+	obj/tdircoll.o obj/tdirlist.o obj/tdisplay.o obj/tdrawbuf.o\
+	obj/teditor.o obj/teditorf.o obj/teditwin.o obj/tevent.o\
+	obj/tfilecol.o obj/tfiledia.o obj/tfileedi.o obj/tfileinf.o\
+	obj/tfileinp.o obj/tfilelis.o obj/tfilterv.o obj/tfont.o\
+	obj/tframe.o obj/tgroup.o obj/thistory.o obj/thistvie.o\
+	obj/thistwin.o obj/thwmouse.o obj/ticks.o obj/tindicat.o\
+	obj/tinputli.o obj/tlabel.o obj/tlistbox.o obj/tlistvie.o\
+	obj/tmemo.o obj/tmenubar.o obj/tmenubox.o obj/tmenuvie.o\
+	obj/tmonosel.o obj/tmouse.o obj/tnscolle.o obj/tnssorte.o\
+	obj/tobject.o obj/tpalette.o obj/tparamte.o obj/tpoint.o\
+	obj/tprogini.o obj/tprogram.o obj/tpwobj.o obj/tpwreado.o\
+	obj/tpwritte.o obj/tradiobu.o obj/trangeva.o obj/trescoll.o\
+	obj/tresfile.o obj/tscreen.o obj/tscrollb.o obj/tscrolle.o\
+	obj/tscropts.o obj/tsortedc.o obj/tsortedl.o obj/tstatict.o\
+	obj/tstatusd.o obj/tstatusl.o obj/tstrinde.o obj/tstringc.o\
+	obj/tstringl.o obj/tstrlist.o obj/tstrmcla.o obj/tstrmtyp.o\
+	obj/tsubmenu.o obj/ttermina.o obj/ttextdev.o obj/tvalidat.o\
+	obj/tvedit1.o obj/tvedit2.o obj/tvedit3.o obj/tview.o obj/tvtext1.o\
+	obj/tvtext2.o obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o
 LIBRARIES=
 SOURCE_NAME=$<
 OUTFILE=$@
@@ -296,40 +297,41 @@ endif
 endif
 
 MAIN_TARGET=librhtv.a
-PROJECT_ITEMS=bc.cc drivers2.cc dual.cc fileview.cc fpbase.cc fpstream.cc\
-	gkey.cc gkeyli.cc histlist.cc ifpstrea.cc iopstrea.cc ipstream.cc\
-	misc.cc mouse.cc msgbox.cc nbackgro.cc nbutton.cc nchdirdi.cc\
-	ncheckbo.cc nclrdisp.cc ncluster.cc ncollect.cc ncolordi.cc\
-	ncolorgr.cc ncolorit.cc ncolorse.cc ndesktop.cc ndialog.cc\
-	ndircoll.cc ndirlist.cc neditor.cc neditwi.cc newstr.cc nfilecol.cc\
-	nfiledia.cc nfiledtr.cc nfileinf.cc nfileinp.cc nfilelis.cc\
-	nfilterv.cc nframe.cc ngroup.cc nhistory.cc nindicat.cc ninputli.cc\
-	nlabel.cc nlistbox.cc nlistvie.cc nmemo.cc nmenubar.cc nmenubox.cc\
+PROJECT_ITEMS=bc.cc calcdisp.cc calculat.cc drivers2.cc dual.cc fileview.cc\
+	fpbase.cc fpstream.cc gkey.cc gkeyli.cc histlist.cc ifpstrea.cc\
+	iopstrea.cc ipstream.cc misc.cc mouse.cc msgbox.cc nbackgro.cc\
+	nbutton.cc ncalcdis.cc ncalcula.cc nchdirdi.cc ncheckbo.cc\
+	nclrdisp.cc ncluster.cc ncollect.cc ncolordi.cc ncolorgr.cc\
+	ncolorit.cc ncolorse.cc ndesktop.cc ndialog.cc ndircoll.cc\
+	ndirlist.cc neditor.cc neditwi.cc newstr.cc nfilecol.cc nfiledia.cc\
+	nfiledtr.cc nfileinf.cc nfileinp.cc nfilelis.cc nfilterv.cc\
+	nframe.cc ngroup.cc nhistory.cc nindicat.cc ninputli.cc nlabel.cc\
+	nlistbox.cc nlistvie.cc nmemo.cc nmenubar.cc nmenubox.cc\
 	nmenuvie.cc nmonosel.cc nparamte.cc nradiobu.cc nrangeva.cc\
 	nresourc.cc nscrollb.cc nscrolle.cc nsortedc.cc nsortedl.cc\
 	nstatict.cc nstatusl.cc nstringc.cc nstringl.cc nvalidat.cc\
 	nview.cc nwindow.cc ofpstrea.cc opstream.cc pstream.cc rhscreen.cc\
-	sbackgro.cc sbutton.cc schdirdi.cc scheckbo.cc sclrdisp.cc\
-	scluster.cc scolordi.cc scolorgr.cc scolorit.cc scolorse.cc\
-	screen.cc sdesktop.cc sdialog.cc sdircoll.cc sdirlist.cc seditor.cc\
-	seditwin.cc sescreen.cc sfilecol.cc sfiledia.cc sfileedi.cc\
-	sfileinf.cc sfileinp.cc sfilelis.cc sfilterv.cc sframe.cc sgroup.cc\
-	shistory.cc sindicat.cc sinputli.cc slabel.cc slistbox.cc\
-	slistvie.cc smemo.cc smenubar.cc smenubox.cc smenuvie.cc\
-	smonosel.cc sparamte.cc sradiobu.cc srangeva.cc sresourc.cc\
-	sscrollb.cc sscrolle.cc sstatict.cc sstatusl.cc sstringc.cc\
-	sstringl.cc sview.cc swindow.cc tapplica.cc tbackgro.cc tbutton.cc\
-	tchdirdi.cc tcheckbo.cc tclrdisp.cc tcluster.cc tcollect.cc\
-	tcolordi.cc tcolorgr.cc tcolorit.cc tcolorse.cc tcommand.cc\
-	tdesktop.cc tdialog.cc tdircoll.cc tdirlist.cc tdisplay.cc\
-	tdrawbuf.cc teditor.cc teditorf.cc teditwin.cc tevent.cc\
-	tfilecol.cc tfiledia.cc tfileedi.cc tfileinf.cc tfileinp.cc\
-	tfilelis.cc tfilterv.cc tfont.cc tframe.cc tgroup.cc thistory.cc\
-	thistvie.cc thistwin.cc thwmouse.cc ticks.cc tindicat.cc\
-	tinputli.cc tlabel.cc tlistbox.cc tlistvie.cc tmemo.cc tmenubar.cc\
-	tmenubox.cc tmenuvie.cc tmonosel.cc tmouse.cc tnscolle.cc\
-	tnssorte.cc tobject.cc tpalette.cc tparamte.cc tpoint.cc\
-	tprogini.cc tprogram.cc tpwobj.cc tpwreado.cc tpwritte.cc\
+	sbackgro.cc sbutton.cc scalcdis.cc scalcula.cc schdirdi.cc\
+	scheckbo.cc sclrdisp.cc scluster.cc scolordi.cc scolorgr.cc\
+	scolorit.cc scolorse.cc screen.cc sdesktop.cc sdialog.cc\
+	sdircoll.cc sdirlist.cc seditor.cc seditwin.cc sescreen.cc\
+	sfilecol.cc sfiledia.cc sfileedi.cc sfileinf.cc sfileinp.cc\
+	sfilelis.cc sfilterv.cc sframe.cc sgroup.cc shistory.cc sindicat.cc\
+	sinputli.cc slabel.cc slistbox.cc slistvie.cc smemo.cc smenubar.cc\
+	smenubox.cc smenuvie.cc smonosel.cc sparamte.cc sradiobu.cc\
+	srangeva.cc sresourc.cc sscrollb.cc sscrolle.cc sstatict.cc\
+	sstatusl.cc sstringc.cc sstringl.cc sview.cc swindow.cc tapplica.cc\
+	tbackgro.cc tbutton.cc tchdirdi.cc tcheckbo.cc tclrdisp.cc\
+	tcluster.cc tcollect.cc tcolordi.cc tcolorgr.cc tcolorit.cc\
+	tcolorse.cc tcommand.cc tdesktop.cc tdialog.cc tdircoll.cc\
+	tdirlist.cc tdisplay.cc tdrawbuf.cc teditor.cc teditorf.cc\
+	teditwin.cc tevent.cc tfilecol.cc tfiledia.cc tfileedi.cc\
+	tfileinf.cc tfileinp.cc tfilelis.cc tfilterv.cc tfont.cc tframe.cc\
+	tgroup.cc thistory.cc thistvie.cc thistwin.cc thwmouse.cc ticks.cc\
+	tindicat.cc tinputli.cc tlabel.cc tlistbox.cc tlistvie.cc tmemo.cc\
+	tmenubar.cc tmenubox.cc tmenuvie.cc tmonosel.cc tmouse.cc\
+	tnscolle.cc tnssorte.cc tobject.cc tpalette.cc tparamte.cc\
+	tpoint.cc tprogini.cc tprogram.cc tpwobj.cc tpwreado.cc tpwritte.cc\
 	tradiobu.cc trangeva.cc trescoll.cc tresfile.cc tscreen.cc\
 	tscrollb.cc tscrolle.cc tscropts.cc tsortedc.cc tsortedl.cc\
 	tstatict.cc tstatusd.cc tstatusl.cc tstrinde.cc tstringc.cc\
@@ -415,59 +417,60 @@ PASCAL_TYPE=GPC
 %.s: %.C
 	$(RHIDE_COMPILE.C.s)
 all::
-DEPS_0= obj/bc.o obj/drivers2.o obj/dual.o obj/fileview.o obj/fpbase.o\
-	obj/fpstream.o obj/gkey.o obj/gkeyli.o obj/histlist.o\
-	obj/ifpstrea.o obj/iopstrea.o obj/ipstream.o obj/misc.o obj/mouse.o\
-	obj/msgbox.o obj/nbackgro.o obj/nbutton.o obj/nchdirdi.o\
-	obj/ncheckbo.o obj/nclrdisp.o obj/ncluster.o obj/ncollect.o\
-	obj/ncolordi.o obj/ncolorgr.o obj/ncolorit.o obj/ncolorse.o\
-	obj/ndesktop.o obj/ndialog.o obj/ndircoll.o obj/ndirlist.o\
-	obj/neditor.o obj/neditwi.o obj/newstr.o obj/nfilecol.o\
-	obj/nfiledia.o obj/nfiledtr.o obj/nfileinf.o obj/nfileinp.o\
-	obj/nfilelis.o obj/nfilterv.o obj/nframe.o obj/ngroup.o\
-	obj/nhistory.o obj/nindicat.o obj/ninputli.o obj/nlabel.o\
-	obj/nlistbox.o obj/nlistvie.o obj/nmemo.o obj/nmenubar.o\
-	obj/nmenubox.o obj/nmenuvie.o obj/nmonosel.o obj/nparamte.o\
-	obj/nradiobu.o obj/nrangeva.o obj/nresourc.o obj/nscrollb.o\
-	obj/nscrolle.o obj/nsortedc.o obj/nsortedl.o obj/nstatict.o\
-	obj/nstatusl.o obj/nstringc.o obj/nstringl.o obj/nvalidat.o\
-	obj/nview.o obj/nwindow.o obj/ofpstrea.o obj/opstream.o\
-	obj/pstream.o obj/rhscreen.o obj/sbackgro.o obj/sbutton.o\
-	obj/schdirdi.o obj/scheckbo.o obj/sclrdisp.o obj/scluster.o\
-	obj/scolordi.o obj/scolorgr.o obj/scolorit.o obj/scolorse.o\
-	obj/screen.o obj/sdesktop.o obj/sdialog.o obj/sdircoll.o\
-	obj/sdirlist.o obj/seditor.o obj/seditwin.o obj/sescreen.o\
-	obj/sfilecol.o obj/sfiledia.o obj/sfileedi.o obj/sfileinf.o\
-	obj/sfileinp.o obj/sfilelis.o obj/sfilterv.o obj/sframe.o\
-	obj/sgroup.o obj/shistory.o obj/sindicat.o obj/sinputli.o\
-	obj/slabel.o obj/slistbox.o obj/slistvie.o obj/smemo.o\
-	obj/smenubar.o obj/smenubox.o obj/smenuvie.o obj/smonosel.o\
-	obj/sparamte.o obj/sradiobu.o obj/srangeva.o obj/sresourc.o\
-	obj/sscrollb.o obj/sscrolle.o obj/sstatict.o obj/sstatusl.o\
-	obj/sstringc.o obj/sstringl.o obj/sview.o obj/swindow.o\
-	obj/tapplica.o obj/tbackgro.o obj/tbutton.o obj/tchdirdi.o\
-	obj/tcheckbo.o obj/tclrdisp.o obj/tcluster.o obj/tcollect.o\
-	obj/tcolordi.o obj/tcolorgr.o obj/tcolorit.o obj/tcolorse.o\
-	obj/tcommand.o obj/tdesktop.o obj/tdialog.o obj/tdircoll.o\
-	obj/tdirlist.o obj/tdisplay.o obj/tdrawbuf.o obj/teditor.o\
-	obj/teditorf.o obj/teditwin.o obj/tevent.o obj/tfilecol.o\
-	obj/tfiledia.o obj/tfileedi.o obj/tfileinf.o obj/tfileinp.o\
-	obj/tfilelis.o obj/tfilterv.o obj/tfont.o obj/tframe.o obj/tgroup.o\
-	obj/thistory.o obj/thistvie.o obj/thistwin.o obj/thwmouse.o\
-	obj/ticks.o obj/tindicat.o obj/tinputli.o obj/tlabel.o\
-	obj/tlistbox.o obj/tlistvie.o obj/tmemo.o obj/tmenubar.o\
-	obj/tmenubox.o obj/tmenuvie.o obj/tmonosel.o obj/tmouse.o\
-	obj/tnscolle.o obj/tnssorte.o obj/tobject.o obj/tpalette.o\
-	obj/tparamte.o obj/tpoint.o obj/tprogini.o obj/tprogram.o\
-	obj/tpwobj.o obj/tpwreado.o obj/tpwritte.o obj/tradiobu.o\
-	obj/trangeva.o obj/trescoll.o obj/tresfile.o obj/tscreen.o\
-	obj/tscrollb.o obj/tscrolle.o obj/tscropts.o obj/tsortedc.o\
-	obj/tsortedl.o obj/tstatict.o obj/tstatusd.o obj/tstatusl.o\
-	obj/tstrinde.o obj/tstringc.o obj/tstringl.o obj/tstrlist.o\
-	obj/tstrmcla.o obj/tstrmtyp.o obj/tsubmenu.o obj/ttermina.o\
-	obj/ttextdev.o obj/tvalidat.o obj/tvedit1.o obj/tvedit2.o\
-	obj/tvedit3.o obj/tview.o obj/tvtext1.o obj/tvtext2.o obj/tweaked.o\
-	obj/twindow.o obj/vesa.o obj/vga.o 
+DEPS_0= obj/bc.o obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
+	obj/fileview.o obj/fpbase.o obj/fpstream.o obj/gkey.o obj/gkeyli.o\
+	obj/histlist.o obj/ifpstrea.o obj/iopstrea.o obj/ipstream.o\
+	obj/misc.o obj/mouse.o obj/msgbox.o obj/nbackgro.o obj/nbutton.o\
+	obj/ncalcdis.o obj/ncalcula.o obj/nchdirdi.o obj/ncheckbo.o\
+	obj/nclrdisp.o obj/ncluster.o obj/ncollect.o obj/ncolordi.o\
+	obj/ncolorgr.o obj/ncolorit.o obj/ncolorse.o obj/ndesktop.o\
+	obj/ndialog.o obj/ndircoll.o obj/ndirlist.o obj/neditor.o\
+	obj/neditwi.o obj/newstr.o obj/nfilecol.o obj/nfiledia.o\
+	obj/nfiledtr.o obj/nfileinf.o obj/nfileinp.o obj/nfilelis.o\
+	obj/nfilterv.o obj/nframe.o obj/ngroup.o obj/nhistory.o\
+	obj/nindicat.o obj/ninputli.o obj/nlabel.o obj/nlistbox.o\
+	obj/nlistvie.o obj/nmemo.o obj/nmenubar.o obj/nmenubox.o\
+	obj/nmenuvie.o obj/nmonosel.o obj/nparamte.o obj/nradiobu.o\
+	obj/nrangeva.o obj/nresourc.o obj/nscrollb.o obj/nscrolle.o\
+	obj/nsortedc.o obj/nsortedl.o obj/nstatict.o obj/nstatusl.o\
+	obj/nstringc.o obj/nstringl.o obj/nvalidat.o obj/nview.o\
+	obj/nwindow.o obj/ofpstrea.o obj/opstream.o obj/pstream.o\
+	obj/rhscreen.o obj/sbackgro.o obj/sbutton.o obj/scalcdis.o\
+	obj/scalcula.o obj/schdirdi.o obj/scheckbo.o obj/sclrdisp.o\
+	obj/scluster.o obj/scolordi.o obj/scolorgr.o obj/scolorit.o\
+	obj/scolorse.o obj/screen.o obj/sdesktop.o obj/sdialog.o\
+	obj/sdircoll.o obj/sdirlist.o obj/seditor.o obj/seditwin.o\
+	obj/sescreen.o obj/sfilecol.o obj/sfiledia.o obj/sfileedi.o\
+	obj/sfileinf.o obj/sfileinp.o obj/sfilelis.o obj/sfilterv.o\
+	obj/sframe.o obj/sgroup.o obj/shistory.o obj/sindicat.o\
+	obj/sinputli.o obj/slabel.o obj/slistbox.o obj/slistvie.o\
+	obj/smemo.o obj/smenubar.o obj/smenubox.o obj/smenuvie.o\
+	obj/smonosel.o obj/sparamte.o obj/sradiobu.o obj/srangeva.o\
+	obj/sresourc.o obj/sscrollb.o obj/sscrolle.o obj/sstatict.o\
+	obj/sstatusl.o obj/sstringc.o obj/sstringl.o obj/sview.o\
+	obj/swindow.o obj/tapplica.o obj/tbackgro.o obj/tbutton.o\
+	obj/tchdirdi.o obj/tcheckbo.o obj/tclrdisp.o obj/tcluster.o\
+	obj/tcollect.o obj/tcolordi.o obj/tcolorgr.o obj/tcolorit.o\
+	obj/tcolorse.o obj/tcommand.o obj/tdesktop.o obj/tdialog.o\
+	obj/tdircoll.o obj/tdirlist.o obj/tdisplay.o obj/tdrawbuf.o\
+	obj/teditor.o obj/teditorf.o obj/teditwin.o obj/tevent.o\
+	obj/tfilecol.o obj/tfiledia.o obj/tfileedi.o obj/tfileinf.o\
+	obj/tfileinp.o obj/tfilelis.o obj/tfilterv.o obj/tfont.o\
+	obj/tframe.o obj/tgroup.o obj/thistory.o obj/thistvie.o\
+	obj/thistwin.o obj/thwmouse.o obj/ticks.o obj/tindicat.o\
+	obj/tinputli.o obj/tlabel.o obj/tlistbox.o obj/tlistvie.o\
+	obj/tmemo.o obj/tmenubar.o obj/tmenubox.o obj/tmenuvie.o\
+	obj/tmonosel.o obj/tmouse.o obj/tnscolle.o obj/tnssorte.o\
+	obj/tobject.o obj/tpalette.o obj/tparamte.o obj/tpoint.o\
+	obj/tprogini.o obj/tprogram.o obj/tpwobj.o obj/tpwreado.o\
+	obj/tpwritte.o obj/tradiobu.o obj/trangeva.o obj/trescoll.o\
+	obj/tresfile.o obj/tscreen.o obj/tscrollb.o obj/tscrolle.o\
+	obj/tscropts.o obj/tsortedc.o obj/tsortedl.o obj/tstatict.o\
+	obj/tstatusd.o obj/tstatusl.o obj/tstrinde.o obj/tstringc.o\
+	obj/tstringl.o obj/tstrlist.o obj/tstrmcla.o obj/tstrmtyp.o\
+	obj/tsubmenu.o obj/ttermina.o obj/ttextdev.o obj/tvalidat.o\
+	obj/tvedit1.o obj/tvedit2.o obj/tvedit3.o obj/tview.o obj/tvtext1.o\
+	obj/tvtext2.o obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o 
 NO_LINK=
 LINK_FILES=$(filter-out $(NO_LINK),$(DEPS_0))
 librhtv.a:: $(DEPS_0)
@@ -475,22 +478,47 @@ librhtv.a:: $(DEPS_0)
 DEPS_1=bc.cc ../include/ttypes.h ../include/tvutil.h
 obj/bc.o:: $(DEPS_1)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_2=drivers2.cc ../include/intl.h ../include/ipstream.h\
+DEPS_2=calcdisp.cc ../include/button.h ../include/calc.h\
+	../include/dialogs.h ../include/drawbuf.h ../include/event.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/palette.h\
+	../include/point.h ../include/pstream.h ../include/rect.h\
+	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
+	../include/system.h ../include/tkeyext.h ../include/tkeys.h\
+	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
+	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
+	../include/view.h ../include/views.h
+obj/calcdisp.o:: $(DEPS_2)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_3=calculat.cc ../include/button.h ../include/calc.h\
+	../include/dialog.h ../include/dialogs.h ../include/drawbuf.h\
+	../include/event.h ../include/group.h ../include/intl.h\
+	../include/ipstream.h ../include/object.h ../include/objects.h\
+	../include/opstream.h ../include/point.h ../include/pstream.h\
+	../include/rect.h ../include/stddlg.h ../include/streambl.h\
+	../include/strmblcl.h ../include/system.h ../include/tkeyext.h\
+	../include/tkeys.h ../include/tobjstrm.h ../include/ttypes.h\
+	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
+	../include/tvutil.h ../include/view.h ../include/views.h\
+	../include/window.h
+obj/calculat.o:: $(DEPS_3)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_4=drivers2.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tkeys.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/drivers2.o:: $(DEPS_2)
+obj/drivers2.o:: $(DEPS_4)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_3=dual.cc ../include/event.h ../include/eventqu.h ../include/intl.h\
+DEPS_5=dual.cc ../include/event.h ../include/eventqu.h ../include/intl.h\
 	../include/ipstream.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/screen.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/dual.o:: $(DEPS_3)
+obj/dual.o:: $(DEPS_5)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_4=fileview.cc ../include/app.h ../include/collectn.h\
+DEPS_6=fileview.cc ../include/app.h ../include/collectn.h\
 	../include/desktop.h ../include/dialog.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/filedlg.h\
 	../include/fileview.h ../include/group.h ../include/intl.h\
@@ -503,87 +531,87 @@ DEPS_4=fileview.cc ../include/app.h ../include/collectn.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/fileview.o:: $(DEPS_4)
+obj/fileview.o:: $(DEPS_6)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_5=fpbase.cc ../include/fpbase.h ../include/intl.h\
+DEPS_7=fpbase.cc ../include/fpbase.h ../include/intl.h\
 	../include/ipstream.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/fpbase.o:: $(DEPS_5)
+obj/fpbase.o:: $(DEPS_7)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_6=fpstream.cc ../include/fpbase.h ../include/fpstream.h\
+DEPS_8=fpstream.cc ../include/fpbase.h ../include/fpstream.h\
 	../include/intl.h ../include/iopstrm.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/fpstream.o:: $(DEPS_6)
+obj/fpstream.o:: $(DEPS_8)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_7=gkey.cc ../include/event.h ../include/gkey.h ../include/intl.h\
+DEPS_9=gkey.cc ../include/event.h ../include/gkey.h ../include/intl.h\
 	../include/ipstream.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/gkey.o:: $(DEPS_7)
+obj/gkey.o:: $(DEPS_9)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_8=gkeyli.cc ../include/event.h ../include/gkey.h ../include/intl.h\
+DEPS_10=gkeyli.cc ../include/event.h ../include/gkey.h ../include/intl.h\
 	../include/ipstream.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/unctrl.h ../include/views.h
-obj/gkeyli.o:: $(DEPS_8)
+obj/gkeyli.o:: $(DEPS_10)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_9=histlist.cc ../include/intl.h ../include/ipstream.h\
+DEPS_11=histlist.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/histlist.o:: $(DEPS_9)
+obj/histlist.o:: $(DEPS_11)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_10=ifpstrea.cc ../include/fpbase.h ../include/ifpstrm.h\
+DEPS_12=ifpstrea.cc ../include/fpbase.h ../include/ifpstrm.h\
 	../include/intl.h ../include/ipstream.h ../include/opstream.h\
 	../include/pstream.h ../include/stddlg.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvutil.h ../include/views.h
-obj/ifpstrea.o:: $(DEPS_10)
+obj/ifpstrea.o:: $(DEPS_12)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_11=iopstrea.cc ../include/intl.h ../include/iopstrm.h\
+DEPS_13=iopstrea.cc ../include/intl.h ../include/iopstrm.h\
 	../include/ipstream.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/iopstrea.o:: $(DEPS_11)
+obj/iopstrea.o:: $(DEPS_13)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_12=ipstream.cc ../include/intl.h ../include/ipstream.h\
+DEPS_14=ipstream.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
 	../include/opstream.h ../include/preadobj.h ../include/pstream.h\
 	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
 	../include/strmblty.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/ipstream.o:: $(DEPS_12)
+obj/ipstream.o:: $(DEPS_14)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_13=misc.cc ../include/drawbuf.h ../include/event.h ../include/intl.h\
+DEPS_15=misc.cc ../include/drawbuf.h ../include/event.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
 	../include/stddlg.h ../include/streambl.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/misc.o:: $(DEPS_13)
+obj/misc.o:: $(DEPS_15)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_14=mouse.cc ../include/event.h ../include/eventqu.h ../include/intl.h\
+DEPS_16=mouse.cc ../include/event.h ../include/eventqu.h ../include/intl.h\
 	../include/ipstream.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/mouse.o:: $(DEPS_14)
+obj/mouse.o:: $(DEPS_16)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_15=msgbox.cc ../include/app.h ../include/button.h\
+DEPS_17=msgbox.cc ../include/app.h ../include/button.h\
 	../include/checkbox.h ../include/cluster.h ../include/desktop.h\
 	../include/dialog.h ../include/dialogs.h ../include/drawbuf.h\
 	../include/event.h ../include/group.h ../include/inputln.h\
@@ -596,200 +624,206 @@ DEPS_15=msgbox.cc ../include/app.h ../include/button.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/msgbox.o:: $(DEPS_15)
+obj/msgbox.o:: $(DEPS_17)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_16=nbackgro.cc ../include/ttypes.h ../include/tvutil.h
-obj/nbackgro.o:: $(DEPS_16)
+DEPS_18=nbackgro.cc ../include/ttypes.h ../include/tvutil.h
+obj/nbackgro.o:: $(DEPS_18)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_17=nbutton.cc ../include/ttypes.h ../include/tvutil.h
-obj/nbutton.o:: $(DEPS_17)
+DEPS_19=nbutton.cc ../include/ttypes.h ../include/tvutil.h
+obj/nbutton.o:: $(DEPS_19)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_18=nchdirdi.cc ../include/ttypes.h ../include/tvutil.h
-obj/nchdirdi.o:: $(DEPS_18)
+DEPS_20=ncalcdis.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncalcdis.o:: $(DEPS_20)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_19=ncheckbo.cc ../include/ttypes.h ../include/tvutil.h
-obj/ncheckbo.o:: $(DEPS_19)
+DEPS_21=ncalcula.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncalcula.o:: $(DEPS_21)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_20=nclrdisp.cc ../include/ttypes.h ../include/tvutil.h
-obj/nclrdisp.o:: $(DEPS_20)
+DEPS_22=nchdirdi.cc ../include/ttypes.h ../include/tvutil.h
+obj/nchdirdi.o:: $(DEPS_22)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_21=ncluster.cc ../include/ttypes.h ../include/tvutil.h
-obj/ncluster.o:: $(DEPS_21)
+DEPS_23=ncheckbo.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncheckbo.o:: $(DEPS_23)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_22=ncollect.cc ../include/ttypes.h ../include/tvutil.h
-obj/ncollect.o:: $(DEPS_22)
+DEPS_24=nclrdisp.cc ../include/ttypes.h ../include/tvutil.h
+obj/nclrdisp.o:: $(DEPS_24)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_23=ncolordi.cc ../include/ttypes.h ../include/tvutil.h
-obj/ncolordi.o:: $(DEPS_23)
+DEPS_25=ncluster.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncluster.o:: $(DEPS_25)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_24=ncolorgr.cc ../include/ttypes.h ../include/tvutil.h
-obj/ncolorgr.o:: $(DEPS_24)
+DEPS_26=ncollect.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncollect.o:: $(DEPS_26)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_25=ncolorit.cc ../include/ttypes.h ../include/tvutil.h
-obj/ncolorit.o:: $(DEPS_25)
+DEPS_27=ncolordi.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncolordi.o:: $(DEPS_27)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_26=ncolorse.cc ../include/ttypes.h ../include/tvutil.h
-obj/ncolorse.o:: $(DEPS_26)
+DEPS_28=ncolorgr.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncolorgr.o:: $(DEPS_28)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_27=ndesktop.cc ../include/ttypes.h ../include/tvutil.h
-obj/ndesktop.o:: $(DEPS_27)
+DEPS_29=ncolorit.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncolorit.o:: $(DEPS_29)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_28=ndialog.cc ../include/ttypes.h ../include/tvutil.h
-obj/ndialog.o:: $(DEPS_28)
+DEPS_30=ncolorse.cc ../include/ttypes.h ../include/tvutil.h
+obj/ncolorse.o:: $(DEPS_30)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_29=ndircoll.cc ../include/ttypes.h ../include/tvutil.h
-obj/ndircoll.o:: $(DEPS_29)
+DEPS_31=ndesktop.cc ../include/ttypes.h ../include/tvutil.h
+obj/ndesktop.o:: $(DEPS_31)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_30=ndirlist.cc ../include/ttypes.h ../include/tvutil.h
-obj/ndirlist.o:: $(DEPS_30)
+DEPS_32=ndialog.cc ../include/ttypes.h ../include/tvutil.h
+obj/ndialog.o:: $(DEPS_32)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_31=neditor.cc ../include/ttypes.h ../include/tvutil.h
-obj/neditor.o:: $(DEPS_31)
+DEPS_33=ndircoll.cc ../include/ttypes.h ../include/tvutil.h
+obj/ndircoll.o:: $(DEPS_33)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_32=neditwi.cc ../include/ttypes.h ../include/tvutil.h
-obj/neditwi.o:: $(DEPS_32)
+DEPS_34=ndirlist.cc ../include/ttypes.h ../include/tvutil.h
+obj/ndirlist.o:: $(DEPS_34)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_33=newstr.cc ../include/intl.h ../include/ipstream.h\
+DEPS_35=neditor.cc ../include/ttypes.h ../include/tvutil.h
+obj/neditor.o:: $(DEPS_35)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_36=neditwi.cc ../include/ttypes.h ../include/tvutil.h
+obj/neditwi.o:: $(DEPS_36)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_37=newstr.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/newstr.o:: $(DEPS_33)
+obj/newstr.o:: $(DEPS_37)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_34=nfilecol.cc ../include/ttypes.h ../include/tvutil.h
-obj/nfilecol.o:: $(DEPS_34)
+DEPS_38=nfilecol.cc ../include/ttypes.h ../include/tvutil.h
+obj/nfilecol.o:: $(DEPS_38)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_35=nfiledia.cc ../include/ttypes.h ../include/tvutil.h
-obj/nfiledia.o:: $(DEPS_35)
+DEPS_39=nfiledia.cc ../include/ttypes.h ../include/tvutil.h
+obj/nfiledia.o:: $(DEPS_39)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_36=nfiledtr.cc ../include/ttypes.h ../include/tvutil.h
-obj/nfiledtr.o:: $(DEPS_36)
+DEPS_40=nfiledtr.cc ../include/ttypes.h ../include/tvutil.h
+obj/nfiledtr.o:: $(DEPS_40)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_37=nfileinf.cc ../include/ttypes.h ../include/tvutil.h
-obj/nfileinf.o:: $(DEPS_37)
+DEPS_41=nfileinf.cc ../include/ttypes.h ../include/tvutil.h
+obj/nfileinf.o:: $(DEPS_41)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_38=nfileinp.cc ../include/ttypes.h ../include/tvutil.h
-obj/nfileinp.o:: $(DEPS_38)
+DEPS_42=nfileinp.cc ../include/ttypes.h ../include/tvutil.h
+obj/nfileinp.o:: $(DEPS_42)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_39=nfilelis.cc ../include/ttypes.h ../include/tvutil.h
-obj/nfilelis.o:: $(DEPS_39)
+DEPS_43=nfilelis.cc ../include/ttypes.h ../include/tvutil.h
+obj/nfilelis.o:: $(DEPS_43)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_40=nfilterv.cc ../include/ttypes.h ../include/tvutil.h
-obj/nfilterv.o:: $(DEPS_40)
+DEPS_44=nfilterv.cc ../include/ttypes.h ../include/tvutil.h
+obj/nfilterv.o:: $(DEPS_44)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_41=nframe.cc ../include/ttypes.h ../include/tvutil.h
-obj/nframe.o:: $(DEPS_41)
+DEPS_45=nframe.cc ../include/ttypes.h ../include/tvutil.h
+obj/nframe.o:: $(DEPS_45)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_42=ngroup.cc ../include/ttypes.h ../include/tvutil.h
-obj/ngroup.o:: $(DEPS_42)
+DEPS_46=ngroup.cc ../include/ttypes.h ../include/tvutil.h
+obj/ngroup.o:: $(DEPS_46)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_43=nhistory.cc ../include/ttypes.h ../include/tvutil.h
-obj/nhistory.o:: $(DEPS_43)
+DEPS_47=nhistory.cc ../include/ttypes.h ../include/tvutil.h
+obj/nhistory.o:: $(DEPS_47)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_44=nindicat.cc ../include/ttypes.h ../include/tvutil.h
-obj/nindicat.o:: $(DEPS_44)
+DEPS_48=nindicat.cc ../include/ttypes.h ../include/tvutil.h
+obj/nindicat.o:: $(DEPS_48)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_45=ninputli.cc ../include/ttypes.h ../include/tvutil.h
-obj/ninputli.o:: $(DEPS_45)
+DEPS_49=ninputli.cc ../include/ttypes.h ../include/tvutil.h
+obj/ninputli.o:: $(DEPS_49)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_46=nlabel.cc ../include/ttypes.h ../include/tvutil.h
-obj/nlabel.o:: $(DEPS_46)
+DEPS_50=nlabel.cc ../include/ttypes.h ../include/tvutil.h
+obj/nlabel.o:: $(DEPS_50)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_47=nlistbox.cc ../include/ttypes.h ../include/tvutil.h
-obj/nlistbox.o:: $(DEPS_47)
+DEPS_51=nlistbox.cc ../include/ttypes.h ../include/tvutil.h
+obj/nlistbox.o:: $(DEPS_51)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_48=nlistvie.cc ../include/ttypes.h ../include/tvutil.h
-obj/nlistvie.o:: $(DEPS_48)
+DEPS_52=nlistvie.cc ../include/ttypes.h ../include/tvutil.h
+obj/nlistvie.o:: $(DEPS_52)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_49=nmemo.cc ../include/ttypes.h ../include/tvutil.h
-obj/nmemo.o:: $(DEPS_49)
+DEPS_53=nmemo.cc ../include/ttypes.h ../include/tvutil.h
+obj/nmemo.o:: $(DEPS_53)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_50=nmenubar.cc ../include/ttypes.h ../include/tvutil.h
-obj/nmenubar.o:: $(DEPS_50)
+DEPS_54=nmenubar.cc ../include/ttypes.h ../include/tvutil.h
+obj/nmenubar.o:: $(DEPS_54)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_51=nmenubox.cc ../include/ttypes.h ../include/tvutil.h
-obj/nmenubox.o:: $(DEPS_51)
+DEPS_55=nmenubox.cc ../include/ttypes.h ../include/tvutil.h
+obj/nmenubox.o:: $(DEPS_55)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_52=nmenuvie.cc ../include/ttypes.h ../include/tvutil.h
-obj/nmenuvie.o:: $(DEPS_52)
+DEPS_56=nmenuvie.cc ../include/ttypes.h ../include/tvutil.h
+obj/nmenuvie.o:: $(DEPS_56)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_53=nmonosel.cc ../include/ttypes.h ../include/tvutil.h
-obj/nmonosel.o:: $(DEPS_53)
+DEPS_57=nmonosel.cc ../include/ttypes.h ../include/tvutil.h
+obj/nmonosel.o:: $(DEPS_57)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_54=nparamte.cc ../include/ttypes.h ../include/tvutil.h
-obj/nparamte.o:: $(DEPS_54)
+DEPS_58=nparamte.cc ../include/ttypes.h ../include/tvutil.h
+obj/nparamte.o:: $(DEPS_58)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_55=nradiobu.cc ../include/ttypes.h ../include/tvutil.h
-obj/nradiobu.o:: $(DEPS_55)
+DEPS_59=nradiobu.cc ../include/ttypes.h ../include/tvutil.h
+obj/nradiobu.o:: $(DEPS_59)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_56=nrangeva.cc ../include/ttypes.h ../include/tvutil.h
-obj/nrangeva.o:: $(DEPS_56)
+DEPS_60=nrangeva.cc ../include/ttypes.h ../include/tvutil.h
+obj/nrangeva.o:: $(DEPS_60)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_57=nresourc.cc ../include/ttypes.h ../include/tvutil.h
-obj/nresourc.o:: $(DEPS_57)
+DEPS_61=nresourc.cc ../include/ttypes.h ../include/tvutil.h
+obj/nresourc.o:: $(DEPS_61)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_58=nscrollb.cc ../include/ttypes.h ../include/tvutil.h
-obj/nscrollb.o:: $(DEPS_58)
+DEPS_62=nscrollb.cc ../include/ttypes.h ../include/tvutil.h
+obj/nscrollb.o:: $(DEPS_62)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_59=nscrolle.cc ../include/ttypes.h ../include/tvutil.h
-obj/nscrolle.o:: $(DEPS_59)
+DEPS_63=nscrolle.cc ../include/ttypes.h ../include/tvutil.h
+obj/nscrolle.o:: $(DEPS_63)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_60=nsortedc.cc ../include/ttypes.h ../include/tvutil.h
-obj/nsortedc.o:: $(DEPS_60)
+DEPS_64=nsortedc.cc ../include/ttypes.h ../include/tvutil.h
+obj/nsortedc.o:: $(DEPS_64)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_61=nsortedl.cc ../include/ttypes.h ../include/tvutil.h
-obj/nsortedl.o:: $(DEPS_61)
+DEPS_65=nsortedl.cc ../include/ttypes.h ../include/tvutil.h
+obj/nsortedl.o:: $(DEPS_65)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_62=nstatict.cc ../include/ttypes.h ../include/tvutil.h
-obj/nstatict.o:: $(DEPS_62)
+DEPS_66=nstatict.cc ../include/ttypes.h ../include/tvutil.h
+obj/nstatict.o:: $(DEPS_66)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_63=nstatusl.cc ../include/ttypes.h ../include/tvutil.h
-obj/nstatusl.o:: $(DEPS_63)
+DEPS_67=nstatusl.cc ../include/ttypes.h ../include/tvutil.h
+obj/nstatusl.o:: $(DEPS_67)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_64=nstringc.cc ../include/ttypes.h ../include/tvutil.h
-obj/nstringc.o:: $(DEPS_64)
+DEPS_68=nstringc.cc ../include/ttypes.h ../include/tvutil.h
+obj/nstringc.o:: $(DEPS_68)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_65=nstringl.cc ../include/ttypes.h ../include/tvutil.h
-obj/nstringl.o:: $(DEPS_65)
+DEPS_69=nstringl.cc ../include/ttypes.h ../include/tvutil.h
+obj/nstringl.o:: $(DEPS_69)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_66=nvalidat.cc ../include/ttypes.h ../include/tvutil.h
-obj/nvalidat.o:: $(DEPS_66)
+DEPS_70=nvalidat.cc ../include/ttypes.h ../include/tvutil.h
+obj/nvalidat.o:: $(DEPS_70)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_67=nview.cc ../include/ttypes.h ../include/tvutil.h
-obj/nview.o:: $(DEPS_67)
+DEPS_71=nview.cc ../include/ttypes.h ../include/tvutil.h
+obj/nview.o:: $(DEPS_71)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_68=nwindow.cc ../include/ttypes.h ../include/tvutil.h
-obj/nwindow.o:: $(DEPS_68)
+DEPS_72=nwindow.cc ../include/ttypes.h ../include/tvutil.h
+obj/nwindow.o:: $(DEPS_72)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_69=ofpstrea.cc ../include/fpbase.h ../include/intl.h\
+DEPS_73=ofpstrea.cc ../include/fpbase.h ../include/intl.h\
 	../include/ipstream.h ../include/ofpstrm.h ../include/opstream.h\
 	../include/pstream.h ../include/stddlg.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvutil.h ../include/views.h
-obj/ofpstrea.o:: $(DEPS_69)
+obj/ofpstrea.o:: $(DEPS_73)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_70=opstream.cc ../include/intl.h ../include/ipstream.h\
+DEPS_74=opstream.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
 	../include/opstream.h ../include/pstream.h ../include/pwritobj.h\
 	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
 	../include/strmblty.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/opstream.o:: $(DEPS_70)
+obj/opstream.o:: $(DEPS_74)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_71=pstream.cc ../include/intl.h ../include/ipstream.h\
+DEPS_75=pstream.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/streambl.h ../include/strmblcl.h ../include/strmblty.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/views.h
-obj/pstream.o:: $(DEPS_71)
+obj/pstream.o:: $(DEPS_75)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_72=rhscreen.cc
-obj/rhscreen.o:: $(DEPS_72)
+DEPS_76=rhscreen.cc
+obj/rhscreen.o:: $(DEPS_76)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_73=sbackgro.cc ../include/app.h ../include/backgrnd.h\
+DEPS_77=sbackgro.cc ../include/app.h ../include/backgrnd.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -797,9 +831,9 @@ DEPS_73=sbackgro.cc ../include/app.h ../include/backgrnd.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sbackgro.o:: $(DEPS_73)
+obj/sbackgro.o:: $(DEPS_77)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_74=sbutton.cc ../include/button.h ../include/dialogs.h\
+DEPS_78=sbutton.cc ../include/button.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -807,9 +841,19 @@ DEPS_74=sbutton.cc ../include/button.h ../include/dialogs.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sbutton.o:: $(DEPS_74)
+obj/sbutton.o:: $(DEPS_78)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_75=schdirdi.cc ../include/chdirdlg.h ../include/dialog.h\
+DEPS_79=scalcdis.cc ../include/calc.h ../include/drawbuf.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/point.h\
+	../include/pstream.h ../include/stddlg.h ../include/streambl.h\
+	../include/strmblcl.h ../include/system.h ../include/tobjstrm.h\
+	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
+	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
+	../include/views.h
+obj/scalcdis.o:: $(DEPS_79)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_80=scalcula.cc ../include/calc.h ../include/dialog.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
@@ -818,9 +862,20 @@ DEPS_75=schdirdi.cc ../include/chdirdlg.h ../include/dialog.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/schdirdi.o:: $(DEPS_75)
+obj/scalcula.o:: $(DEPS_80)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_76=scheckbo.cc ../include/checkbox.h ../include/cluster.h\
+DEPS_81=schdirdi.cc ../include/chdirdlg.h ../include/dialog.h\
+	../include/dialogs.h ../include/drawbuf.h ../include/group.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/point.h\
+	../include/pstream.h ../include/rect.h ../include/stddlg.h\
+	../include/streambl.h ../include/strmblcl.h ../include/system.h\
+	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
+	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
+	../include/view.h ../include/views.h ../include/window.h
+obj/schdirdi.o:: $(DEPS_81)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_82=scheckbo.cc ../include/checkbox.h ../include/cluster.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -828,9 +883,9 @@ DEPS_76=scheckbo.cc ../include/checkbox.h ../include/cluster.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/scheckbo.o:: $(DEPS_76)
+obj/scheckbo.o:: $(DEPS_82)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_77=sclrdisp.cc ../include/clrdisp.h ../include/colorsel.h\
+DEPS_83=sclrdisp.cc ../include/clrdisp.h ../include/colorsel.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -838,9 +893,9 @@ DEPS_77=sclrdisp.cc ../include/clrdisp.h ../include/colorsel.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sclrdisp.o:: $(DEPS_77)
+obj/sclrdisp.o:: $(DEPS_83)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_78=scluster.cc ../include/cluster.h ../include/dialogs.h\
+DEPS_84=scluster.cc ../include/cluster.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -848,9 +903,9 @@ DEPS_78=scluster.cc ../include/cluster.h ../include/dialogs.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/scluster.o:: $(DEPS_78)
+obj/scluster.o:: $(DEPS_84)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_79=scolordi.cc ../include/clrdlg.h ../include/colorsel.h\
+DEPS_85=scolordi.cc ../include/clrdlg.h ../include/colorsel.h\
 	../include/dialog.h ../include/dialogs.h ../include/drawbuf.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -860,9 +915,9 @@ DEPS_79=scolordi.cc ../include/clrdlg.h ../include/colorsel.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/scolordi.o:: $(DEPS_79)
+obj/scolordi.o:: $(DEPS_85)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_80=scolorgr.cc ../include/clrgrpli.h ../include/colorsel.h\
+DEPS_86=scolorgr.cc ../include/clrgrpli.h ../include/colorsel.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/lstviewr.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -870,9 +925,9 @@ DEPS_80=scolorgr.cc ../include/clrgrpli.h ../include/colorsel.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/scolorgr.o:: $(DEPS_80)
+obj/scolorgr.o:: $(DEPS_86)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_81=scolorit.cc ../include/clriteml.h ../include/colorsel.h\
+DEPS_87=scolorit.cc ../include/clriteml.h ../include/colorsel.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/lstviewr.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -880,9 +935,9 @@ DEPS_81=scolorit.cc ../include/clriteml.h ../include/colorsel.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/scolorit.o:: $(DEPS_81)
+obj/scolorit.o:: $(DEPS_87)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_82=scolorse.cc ../include/clrselct.h ../include/colorsel.h\
+DEPS_88=scolorse.cc ../include/clrselct.h ../include/colorsel.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -890,12 +945,12 @@ DEPS_82=scolorse.cc ../include/clrselct.h ../include/colorsel.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/scolorse.o:: $(DEPS_82)
+obj/scolorse.o:: $(DEPS_88)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_83=screen.cc
-obj/screen.o:: $(DEPS_83)
+DEPS_89=screen.cc
+obj/screen.o:: $(DEPS_89)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_84=sdesktop.cc ../include/app.h ../include/desktop.h\
+DEPS_90=sdesktop.cc ../include/app.h ../include/desktop.h\
 	../include/drawbuf.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -904,9 +959,9 @@ DEPS_84=sdesktop.cc ../include/app.h ../include/desktop.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/sdesktop.o:: $(DEPS_84)
+obj/sdesktop.o:: $(DEPS_90)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_85=sdialog.cc ../include/dialog.h ../include/dialogs.h\
+DEPS_91=sdialog.cc ../include/dialog.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -915,9 +970,9 @@ DEPS_85=sdialog.cc ../include/dialog.h ../include/dialogs.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h ../include/window.h
-obj/sdialog.o:: $(DEPS_85)
+obj/sdialog.o:: $(DEPS_91)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_86=sdircoll.cc ../include/collectn.h ../include/dircoll.h\
+DEPS_92=sdircoll.cc ../include/collectn.h ../include/dircoll.h\
 	../include/direntr.h ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
@@ -925,9 +980,9 @@ DEPS_86=sdircoll.cc ../include/collectn.h ../include/dircoll.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/sdircoll.o:: $(DEPS_86)
+obj/sdircoll.o:: $(DEPS_92)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_87=sdirlist.cc ../include/dialogs.h ../include/dirlibo.h\
+DEPS_93=sdirlist.cc ../include/dialogs.h ../include/dirlibo.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/listbox.h ../include/lstviewr.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
@@ -936,9 +991,9 @@ DEPS_87=sdirlist.cc ../include/dialogs.h ../include/dirlibo.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/sdirlist.o:: $(DEPS_87)
+obj/sdirlist.o:: $(DEPS_93)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_88=seditor.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_94=seditor.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -946,9 +1001,9 @@ DEPS_88=seditor.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/seditor.o:: $(DEPS_88)
+obj/seditor.o:: $(DEPS_94)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_89=seditwin.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_95=seditwin.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/palette.h ../include/point.h\
@@ -957,12 +1012,12 @@ DEPS_89=seditwin.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/seditwin.o:: $(DEPS_89)
+obj/seditwin.o:: $(DEPS_95)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_90=sescreen.cc
-obj/sescreen.o:: $(DEPS_90)
+DEPS_96=sescreen.cc
+obj/sescreen.o:: $(DEPS_96)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_91=sfilecol.cc ../include/collectn.h ../include/filecoll.h\
+DEPS_97=sfilecol.cc ../include/collectn.h ../include/filecoll.h\
 	../include/intl.h ../include/ipstream.h ../include/nscoll.h\
 	../include/nssorcol.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/pstream.h ../include/searchrc.h\
@@ -970,9 +1025,9 @@ DEPS_91=sfilecol.cc ../include/collectn.h ../include/filecoll.h\
 	../include/strmblcl.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/sfilecol.o:: $(DEPS_91)
+obj/sfilecol.o:: $(DEPS_97)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_92=sfiledia.cc ../include/dialog.h ../include/dialogs.h\
+DEPS_98=sfiledia.cc ../include/dialog.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/filedlg.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
@@ -981,9 +1036,9 @@ DEPS_92=sfiledia.cc ../include/dialog.h ../include/dialogs.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/sfiledia.o:: $(DEPS_92)
+obj/sfiledia.o:: $(DEPS_98)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_93=sfileedi.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_99=sfileedi.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -991,9 +1046,9 @@ DEPS_93=sfileedi.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/sfileedi.o:: $(DEPS_93)
+obj/sfileedi.o:: $(DEPS_99)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_94=sfileinf.cc ../include/drawbuf.h ../include/filinfpn.h\
+DEPS_100=sfileinf.cc ../include/drawbuf.h ../include/filinfpn.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/searchrc.h ../include/stddlg.h\
@@ -1001,9 +1056,9 @@ DEPS_94=sfileinf.cc ../include/drawbuf.h ../include/filinfpn.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sfileinf.o:: $(DEPS_94)
+obj/sfileinf.o:: $(DEPS_100)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_95=sfileinp.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_101=sfileinp.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/filinpln.h ../include/inputln.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -1011,9 +1066,9 @@ DEPS_95=sfileinp.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/sfileinp.o:: $(DEPS_95)
+obj/sfileinp.o:: $(DEPS_101)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_96=sfilelis.cc ../include/collectn.h ../include/dialogs.h\
+DEPS_102=sfilelis.cc ../include/collectn.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/filecoll.h ../include/filelist.h\
 	../include/intl.h ../include/ipstream.h ../include/listbox.h\
 	../include/lstviewr.h ../include/nscoll.h ../include/nssorcol.h\
@@ -1024,46 +1079,17 @@ DEPS_96=sfilelis.cc ../include/collectn.h ../include/dialogs.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sfilelis.o:: $(DEPS_96)
+obj/sfilelis.o:: $(DEPS_102)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_97=sfilterv.cc ../include/intl.h ../include/ipstream.h\
+DEPS_103=sfilterv.cc ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/validate.h ../include/views.h
-obj/sfilterv.o:: $(DEPS_97)
+obj/sfilterv.o:: $(DEPS_103)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_98=sframe.cc ../include/drawbuf.h ../include/frame.h ../include/intl.h\
-	../include/ipstream.h ../include/object.h ../include/objects.h\
-	../include/opstream.h ../include/point.h ../include/pstream.h\
-	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
-	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
-	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
-	../include/tvutil.h ../include/view.h ../include/views.h
-obj/sframe.o:: $(DEPS_98)
-	$(RHIDE_COMPILE.cc.o)
-DEPS_99=sgroup.cc ../include/drawbuf.h ../include/group.h ../include/intl.h\
-	../include/ipstream.h ../include/object.h ../include/objects.h\
-	../include/opstream.h ../include/point.h ../include/pstream.h\
-	../include/rect.h ../include/stddlg.h ../include/streambl.h\
-	../include/strmblcl.h ../include/system.h ../include/tobjstrm.h\
-	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
-	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
-	../include/views.h
-obj/sgroup.o:: $(DEPS_99)
-	$(RHIDE_COMPILE.cc.o)
-DEPS_100=shistory.cc ../include/dialogs.h ../include/drawbuf.h\
-	../include/history.h ../include/intl.h ../include/ipstream.h\
-	../include/object.h ../include/objects.h ../include/opstream.h\
-	../include/point.h ../include/pstream.h ../include/stddlg.h\
-	../include/streambl.h ../include/strmblcl.h ../include/system.h\
-	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
-	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
-	../include/view.h ../include/views.h
-obj/shistory.o:: $(DEPS_100)
-	$(RHIDE_COMPILE.cc.o)
-DEPS_101=sindicat.cc ../include/drawbuf.h ../include/indicato.h\
+DEPS_104=sframe.cc ../include/drawbuf.h ../include/frame.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/stddlg.h ../include/streambl.h\
@@ -1071,9 +1097,39 @@ DEPS_101=sindicat.cc ../include/drawbuf.h ../include/indicato.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/sindicat.o:: $(DEPS_101)
+obj/sframe.o:: $(DEPS_104)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_102=sinputli.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_105=sgroup.cc ../include/drawbuf.h ../include/group.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/point.h\
+	../include/pstream.h ../include/rect.h ../include/stddlg.h\
+	../include/streambl.h ../include/strmblcl.h ../include/system.h\
+	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
+	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
+	../include/view.h ../include/views.h
+obj/sgroup.o:: $(DEPS_105)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_106=shistory.cc ../include/dialogs.h ../include/drawbuf.h\
+	../include/history.h ../include/intl.h ../include/ipstream.h\
+	../include/object.h ../include/objects.h ../include/opstream.h\
+	../include/point.h ../include/pstream.h ../include/stddlg.h\
+	../include/streambl.h ../include/strmblcl.h ../include/system.h\
+	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
+	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
+	../include/view.h ../include/views.h
+obj/shistory.o:: $(DEPS_106)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_107=sindicat.cc ../include/drawbuf.h ../include/indicato.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/point.h\
+	../include/pstream.h ../include/stddlg.h ../include/streambl.h\
+	../include/strmblcl.h ../include/system.h ../include/tobjstrm.h\
+	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
+	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
+	../include/views.h
+obj/sindicat.o:: $(DEPS_107)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_108=sinputli.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/inputln.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -1081,9 +1137,9 @@ DEPS_102=sinputli.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sinputli.o:: $(DEPS_102)
+obj/sinputli.o:: $(DEPS_108)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_103=slabel.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_109=slabel.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/intl.h ../include/ipstream.h ../include/label.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -1091,9 +1147,9 @@ DEPS_103=slabel.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/slabel.o:: $(DEPS_103)
+obj/slabel.o:: $(DEPS_109)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_104=slistbox.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_110=slistbox.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/intl.h ../include/ipstream.h ../include/listbox.h\
 	../include/lstviewr.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -1101,9 +1157,9 @@ DEPS_104=slistbox.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/slistbox.o:: $(DEPS_104)
+obj/slistbox.o:: $(DEPS_110)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_105=slistvie.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_111=slistvie.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/lstviewr.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/stddlg.h ../include/streambl.h\
@@ -1111,9 +1167,9 @@ DEPS_105=slistvie.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/slistvie.o:: $(DEPS_105)
+obj/slistvie.o:: $(DEPS_111)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_106=smemo.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_112=smemo.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -1121,9 +1177,9 @@ DEPS_106=smemo.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/smemo.o:: $(DEPS_106)
+obj/smemo.o:: $(DEPS_112)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_107=smenubar.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_113=smenubar.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/menubar.h ../include/menus.h\
 	../include/menuview.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -1131,9 +1187,9 @@ DEPS_107=smenubar.cc ../include/drawbuf.h ../include/intl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/smenubar.o:: $(DEPS_107)
+obj/smenubar.o:: $(DEPS_113)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_108=smenubox.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_114=smenubox.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/menubox.h ../include/menus.h\
 	../include/menuview.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -1141,9 +1197,9 @@ DEPS_108=smenubox.cc ../include/drawbuf.h ../include/intl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/smenubox.o:: $(DEPS_108)
+obj/smenubox.o:: $(DEPS_114)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_109=smenuvie.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_115=smenuvie.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/menus.h ../include/menuview.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -1151,9 +1207,9 @@ DEPS_109=smenuvie.cc ../include/drawbuf.h ../include/intl.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/smenuvie.o:: $(DEPS_109)
+obj/smenuvie.o:: $(DEPS_115)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_110=smonosel.cc ../include/cluster.h ../include/colorsel.h\
+DEPS_116=smonosel.cc ../include/cluster.h ../include/colorsel.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/mnoselct.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
@@ -1162,9 +1218,9 @@ DEPS_110=smonosel.cc ../include/cluster.h ../include/colorsel.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/smonosel.o:: $(DEPS_110)
+obj/smonosel.o:: $(DEPS_116)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_111=sparamte.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_117=sparamte.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/parmtext.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -1172,9 +1228,9 @@ DEPS_111=sparamte.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/sparamte.o:: $(DEPS_111)
+obj/sparamte.o:: $(DEPS_117)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_112=sradiobu.cc ../include/cluster.h ../include/dialogs.h\
+DEPS_118=sradiobu.cc ../include/cluster.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/radiobtn.h\
@@ -1182,17 +1238,17 @@ DEPS_112=sradiobu.cc ../include/cluster.h ../include/dialogs.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/sradiobu.o:: $(DEPS_112)
+obj/sradiobu.o:: $(DEPS_118)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_113=srangeva.cc ../include/intl.h ../include/ipstream.h\
+DEPS_119=srangeva.cc ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/validate.h ../include/views.h
-obj/srangeva.o:: $(DEPS_113)
+obj/srangeva.o:: $(DEPS_119)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_114=sresourc.cc ../include/collectn.h ../include/intl.h\
+DEPS_120=sresourc.cc ../include/collectn.h ../include/intl.h\
 	../include/ipstream.h ../include/nscoll.h ../include/nssorcol.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/pstream.h ../include/rescoll.h ../include/resource.h\
@@ -1201,9 +1257,9 @@ DEPS_114=sresourc.cc ../include/collectn.h ../include/intl.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/sresourc.o:: $(DEPS_114)
+obj/sresourc.o:: $(DEPS_120)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_115=sscrollb.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_121=sscrollb.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
 	../include/scrlbar.h ../include/stddlg.h ../include/streambl.h\
@@ -1211,9 +1267,9 @@ DEPS_115=sscrollb.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/sscrollb.o:: $(DEPS_115)
+obj/sscrollb.o:: $(DEPS_121)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_116=sscrolle.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_122=sscrolle.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
 	../include/scroller.h ../include/stddlg.h ../include/streambl.h\
@@ -1221,9 +1277,9 @@ DEPS_116=sscrolle.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/sscrolle.o:: $(DEPS_116)
+obj/sscrolle.o:: $(DEPS_122)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_117=sstatict.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_123=sstatict.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/stddlg.h ../include/streambl.h\
@@ -1231,9 +1287,9 @@ DEPS_117=sstatict.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sstatict.o:: $(DEPS_117)
+obj/sstatict.o:: $(DEPS_123)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_118=sstatusl.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_124=sstatusl.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/menus.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/statslin.h ../include/stddlg.h\
@@ -1241,9 +1297,9 @@ DEPS_118=sstatusl.cc ../include/drawbuf.h ../include/intl.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/sstatusl.o:: $(DEPS_118)
+obj/sstatusl.o:: $(DEPS_124)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_119=sstringc.cc ../include/collectn.h ../include/intl.h\
+DEPS_125=sstringc.cc ../include/collectn.h ../include/intl.h\
 	../include/ipstream.h ../include/nscoll.h ../include/nssorcol.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/pstream.h ../include/resource.h ../include/sortcoll.h\
@@ -1251,27 +1307,27 @@ DEPS_119=sstringc.cc ../include/collectn.h ../include/intl.h\
 	../include/strncoll.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/sstringc.o:: $(DEPS_119)
+obj/sstringc.o:: $(DEPS_125)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_120=sstringl.cc ../include/intl.h ../include/ipstream.h\
+DEPS_126=sstringl.cc ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/opstream.h ../include/pstream.h\
 	../include/resource.h ../include/stddlg.h ../include/streambl.h\
 	../include/strilist.h ../include/strmblcl.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/sstringl.o:: $(DEPS_120)
+obj/sstringl.o:: $(DEPS_126)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_121=sview.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_127=sview.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
 	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/sview.o:: $(DEPS_121)
+obj/sview.o:: $(DEPS_127)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_122=swindow.cc ../include/drawbuf.h ../include/group.h\
+DEPS_128=swindow.cc ../include/drawbuf.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/rect.h ../include/stddlg.h\
@@ -1279,9 +1335,9 @@ DEPS_122=swindow.cc ../include/drawbuf.h ../include/group.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/swindow.o:: $(DEPS_122)
+obj/swindow.o:: $(DEPS_128)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_123=tapplica.cc ../include/app.h ../include/applictn.h\
+DEPS_129=tapplica.cc ../include/app.h ../include/applictn.h\
 	../include/drawbuf.h ../include/event.h ../include/eventqu.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1291,9 +1347,9 @@ DEPS_123=tapplica.cc ../include/app.h ../include/applictn.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tapplica.o:: $(DEPS_123)
+obj/tapplica.o:: $(DEPS_129)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_124=tbackgro.cc ../include/app.h ../include/backgrnd.h\
+DEPS_130=tbackgro.cc ../include/app.h ../include/backgrnd.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -1301,9 +1357,9 @@ DEPS_124=tbackgro.cc ../include/app.h ../include/backgrnd.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tbackgro.o:: $(DEPS_124)
+obj/tbackgro.o:: $(DEPS_130)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_125=tbutton.cc ../include/button.h ../include/dialogs.h\
+DEPS_131=tbutton.cc ../include/button.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/gkey.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1312,9 +1368,9 @@ DEPS_125=tbutton.cc ../include/button.h ../include/dialogs.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tbutton.o:: $(DEPS_125)
+obj/tbutton.o:: $(DEPS_131)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_126=tchdirdi.cc ../include/button.h ../include/chdirdlg.h\
+DEPS_132=tchdirdi.cc ../include/button.h ../include/chdirdlg.h\
 	../include/collectn.h ../include/dialog.h ../include/dialogs.h\
 	../include/dircoll.h ../include/direntr.h ../include/dirlibo.h\
 	../include/drawbuf.h ../include/event.h ../include/group.h\
@@ -1328,9 +1384,9 @@ DEPS_126=tchdirdi.cc ../include/button.h ../include/chdirdlg.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/tchdirdi.o:: $(DEPS_126)
+obj/tchdirdi.o:: $(DEPS_132)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_127=tcheckbo.cc ../include/checkbox.h ../include/cluster.h\
+DEPS_133=tcheckbo.cc ../include/checkbox.h ../include/cluster.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -1338,9 +1394,9 @@ DEPS_127=tcheckbo.cc ../include/checkbox.h ../include/cluster.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tcheckbo.o:: $(DEPS_127)
+obj/tcheckbo.o:: $(DEPS_133)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_128=tclrdisp.cc ../include/clrdisp.h ../include/colorsel.h\
+DEPS_134=tclrdisp.cc ../include/clrdisp.h ../include/colorsel.h\
 	../include/drawbuf.h ../include/event.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
@@ -1349,9 +1405,9 @@ DEPS_128=tclrdisp.cc ../include/clrdisp.h ../include/colorsel.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tclrdisp.o:: $(DEPS_128)
+obj/tclrdisp.o:: $(DEPS_134)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_129=tcluster.cc ../include/cluster.h ../include/collectn.h\
+DEPS_135=tcluster.cc ../include/cluster.h ../include/collectn.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/event.h\
 	../include/gkey.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/nscoll.h ../include/nssorcol.h\
@@ -1363,18 +1419,18 @@ DEPS_129=tcluster.cc ../include/cluster.h ../include/collectn.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tcluster.o:: $(DEPS_129)
+obj/tcluster.o:: $(DEPS_135)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_130=tcollect.cc ../include/collectn.h ../include/intl.h\
+DEPS_136=tcollect.cc ../include/collectn.h ../include/intl.h\
 	../include/ipstream.h ../include/nscoll.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/streambl.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/tcollect.o:: $(DEPS_130)
+obj/tcollect.o:: $(DEPS_136)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_131=tcolordi.cc ../include/app.h ../include/button.h\
+DEPS_137=tcolordi.cc ../include/app.h ../include/button.h\
 	../include/clrdisp.h ../include/clrdlg.h ../include/clrgroup.h\
 	../include/clrgrpli.h ../include/clritem.h ../include/clriteml.h\
 	../include/clrselct.h ../include/cluster.h ../include/colorsel.h\
@@ -1390,9 +1446,9 @@ DEPS_131=tcolordi.cc ../include/app.h ../include/button.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/tcolordi.o:: $(DEPS_131)
+obj/tcolordi.o:: $(DEPS_137)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_132=tcolorgr.cc ../include/clrgroup.h ../include/clrgrpli.h\
+DEPS_138=tcolorgr.cc ../include/clrgroup.h ../include/clrgrpli.h\
 	../include/clritem.h ../include/colorsel.h ../include/drawbuf.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/lstviewr.h ../include/object.h ../include/objects.h\
@@ -1402,9 +1458,9 @@ DEPS_132=tcolorgr.cc ../include/clrgroup.h ../include/clrgrpli.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tcolorgr.o:: $(DEPS_132)
+obj/tcolorgr.o:: $(DEPS_138)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_133=tcolorit.cc ../include/clritem.h ../include/clriteml.h\
+DEPS_139=tcolorit.cc ../include/clritem.h ../include/clriteml.h\
 	../include/colorsel.h ../include/drawbuf.h ../include/event.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/lstviewr.h ../include/object.h ../include/objects.h\
@@ -1414,9 +1470,9 @@ DEPS_133=tcolorit.cc ../include/clritem.h ../include/clriteml.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tcolorit.o:: $(DEPS_133)
+obj/tcolorit.o:: $(DEPS_139)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_134=tcolorse.cc ../include/clrselct.h ../include/colorsel.h\
+DEPS_140=tcolorse.cc ../include/clrselct.h ../include/colorsel.h\
 	../include/drawbuf.h ../include/event.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
@@ -1425,16 +1481,16 @@ DEPS_134=tcolorse.cc ../include/clrselct.h ../include/colorsel.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tcolorse.o:: $(DEPS_134)
+obj/tcolorse.o:: $(DEPS_140)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_135=tcommand.cc ../include/cmdset.h ../include/intl.h\
+DEPS_141=tcommand.cc ../include/cmdset.h ../include/intl.h\
 	../include/ipstream.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/tcommand.o:: $(DEPS_135)
+obj/tcommand.o:: $(DEPS_141)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_136=tdesktop.cc ../include/app.h ../include/backgrnd.h\
+DEPS_142=tdesktop.cc ../include/app.h ../include/backgrnd.h\
 	../include/desktop.h ../include/drawbuf.h ../include/event.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1443,9 +1499,9 @@ DEPS_136=tdesktop.cc ../include/app.h ../include/backgrnd.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tdesktop.o:: $(DEPS_136)
+obj/tdesktop.o:: $(DEPS_142)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_137=tdialog.cc ../include/dialog.h ../include/dialogs.h\
+DEPS_143=tdialog.cc ../include/dialog.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/palette.h\
@@ -1455,18 +1511,18 @@ DEPS_137=tdialog.cc ../include/dialog.h ../include/dialogs.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/tdialog.o:: $(DEPS_137)
+obj/tdialog.o:: $(DEPS_143)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_138=tdircoll.cc ../include/collectn.h ../include/dircoll.h\
+DEPS_144=tdircoll.cc ../include/collectn.h ../include/dircoll.h\
 	../include/direntr.h ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/streambl.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/tdircoll.o:: $(DEPS_138)
+obj/tdircoll.o:: $(DEPS_144)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_139=tdirlist.cc ../include/button.h ../include/chdirdlg.h\
+DEPS_145=tdirlist.cc ../include/button.h ../include/chdirdlg.h\
 	../include/collectn.h ../include/dialog.h ../include/dialogs.h\
 	../include/dircoll.h ../include/direntr.h ../include/dirlibo.h\
 	../include/drawbuf.h ../include/event.h ../include/group.h\
@@ -1478,23 +1534,23 @@ DEPS_139=tdirlist.cc ../include/button.h ../include/chdirdlg.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/tdirlist.o:: $(DEPS_139)
+obj/tdirlist.o:: $(DEPS_145)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_140=tdisplay.cc ../include/intl.h ../include/ipstream.h\
+DEPS_146=tdisplay.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/screen.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/tdisplay.o:: $(DEPS_140)
+obj/tdisplay.o:: $(DEPS_146)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_141=tdrawbuf.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_147=tdrawbuf.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/tdrawbuf.o:: $(DEPS_141)
+obj/tdrawbuf.o:: $(DEPS_147)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_142=teditor.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_148=teditor.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/event.h ../include/findrepl.h\
 	../include/gkey.h ../include/indicato.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
@@ -1505,9 +1561,9 @@ DEPS_142=teditor.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/teditor.o:: $(DEPS_142)
+obj/teditor.o:: $(DEPS_148)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_143=teditorf.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_149=teditorf.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -1515,9 +1571,9 @@ DEPS_143=teditorf.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/teditorf.o:: $(DEPS_143)
+obj/teditorf.o:: $(DEPS_149)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_144=teditwin.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_150=teditwin.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/event.h ../include/frame.h\
 	../include/group.h ../include/indicato.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
@@ -1527,18 +1583,18 @@ DEPS_144=teditwin.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/teditwin.o:: $(DEPS_144)
+obj/teditwin.o:: $(DEPS_150)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_145=tevent.cc ../include/event.h ../include/eventqu.h\
+DEPS_151=tevent.cc ../include/event.h ../include/eventqu.h\
 	../include/gkey.h ../include/intl.h ../include/ipstream.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/screen.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/tevent.o:: $(DEPS_145)
+obj/tevent.o:: $(DEPS_151)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_146=tfilecol.cc ../include/collectn.h ../include/filecoll.h\
+DEPS_152=tfilecol.cc ../include/collectn.h ../include/filecoll.h\
 	../include/intl.h ../include/ipstream.h ../include/nscoll.h\
 	../include/nssorcol.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/pstream.h ../include/searchrc.h\
@@ -1546,9 +1602,9 @@ DEPS_146=tfilecol.cc ../include/collectn.h ../include/filecoll.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/views.h
-obj/tfilecol.o:: $(DEPS_146)
+obj/tfilecol.o:: $(DEPS_152)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_147=tfiledia.cc ../include/button.h ../include/collectn.h\
+DEPS_153=tfiledia.cc ../include/button.h ../include/collectn.h\
 	../include/dialog.h ../include/dialogs.h ../include/drawbuf.h\
 	../include/event.h ../include/filecoll.h ../include/filedlg.h\
 	../include/filelist.h ../include/filinfpn.h ../include/filinpln.h\
@@ -1564,9 +1620,9 @@ DEPS_147=tfiledia.cc ../include/button.h ../include/collectn.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h ../include/window.h
-obj/tfiledia.o:: $(DEPS_147)
+obj/tfiledia.o:: $(DEPS_153)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_148=tfileedi.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_154=tfileedi.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/event.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/palette.h\
@@ -1575,9 +1631,9 @@ DEPS_148=tfileedi.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tfileedi.o:: $(DEPS_148)
+obj/tfileedi.o:: $(DEPS_154)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_149=tfileinf.cc ../include/dialog.h ../include/dialogs.h\
+DEPS_155=tfileinf.cc ../include/dialog.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/filedlg.h\
 	../include/filinfpn.h ../include/filinpln.h ../include/group.h\
 	../include/inputln.h ../include/intl.h ../include/ipstream.h\
@@ -1588,9 +1644,9 @@ DEPS_149=tfileinf.cc ../include/dialog.h ../include/dialogs.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h ../include/window.h
-obj/tfileinf.o:: $(DEPS_149)
+obj/tfileinf.o:: $(DEPS_155)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_150=tfileinp.cc ../include/dialog.h ../include/dialogs.h\
+DEPS_156=tfileinp.cc ../include/dialog.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/filedlg.h\
 	../include/filinpln.h ../include/group.h ../include/inputln.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
@@ -1600,9 +1656,9 @@ DEPS_150=tfileinp.cc ../include/dialog.h ../include/dialogs.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/tfileinp.o:: $(DEPS_150)
+obj/tfileinp.o:: $(DEPS_156)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_151=tfilelis.cc ../include/collectn.h ../include/dialogs.h\
+DEPS_157=tfilelis.cc ../include/collectn.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/filecoll.h\
 	../include/filelist.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/listbox.h ../include/lstviewr.h\
@@ -1614,24 +1670,24 @@ DEPS_151=tfilelis.cc ../include/collectn.h ../include/dialogs.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tfilelis.o:: $(DEPS_151)
+obj/tfilelis.o:: $(DEPS_157)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_152=tfilterv.cc ../include/intl.h ../include/ipstream.h\
+DEPS_158=tfilterv.cc ../include/intl.h ../include/ipstream.h\
 	../include/msgbox.h ../include/object.h ../include/opstream.h\
 	../include/pstream.h ../include/stddlg.h ../include/streambl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/validate.h ../include/views.h
-obj/tfilterv.o:: $(DEPS_152)
+obj/tfilterv.o:: $(DEPS_158)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_153=tfont.cc ../include/intl.h ../include/ipstream.h\
+DEPS_159=tfont.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/screen.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/tfont.o:: $(DEPS_153)
+obj/tfont.o:: $(DEPS_159)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_154=tframe.cc ../include/drawbuf.h ../include/event.h\
+DEPS_160=tframe.cc ../include/drawbuf.h ../include/event.h\
 	../include/frame.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/palette.h ../include/point.h\
@@ -1640,9 +1696,9 @@ DEPS_154=tframe.cc ../include/drawbuf.h ../include/event.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/tframe.o:: $(DEPS_154)
+obj/tframe.o:: $(DEPS_160)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_155=tgroup.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_161=tgroup.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/event.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
@@ -1651,9 +1707,9 @@ DEPS_155=tgroup.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tgroup.o:: $(DEPS_155)
+obj/tgroup.o:: $(DEPS_161)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_156=thistory.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_162=thistory.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/event.h ../include/group.h ../include/history.h\
 	../include/histwind.h ../include/inputln.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
@@ -1663,9 +1719,9 @@ DEPS_156=thistory.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/thistory.o:: $(DEPS_156)
+obj/thistory.o:: $(DEPS_162)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_157=thistvie.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_163=thistvie.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/event.h ../include/histvwer.h ../include/intl.h\
 	../include/ipstream.h ../include/lstviewr.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/palette.h\
@@ -1674,9 +1730,9 @@ DEPS_157=thistvie.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tkeys.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/thistvie.o:: $(DEPS_157)
+obj/thistvie.o:: $(DEPS_163)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_158=thistwin.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_164=thistwin.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/group.h ../include/histvwer.h ../include/histwind.h\
 	../include/intl.h ../include/ipstream.h ../include/lstviewr.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1686,20 +1742,20 @@ DEPS_158=thistwin.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/thistwin.o:: $(DEPS_158)
+obj/thistwin.o:: $(DEPS_164)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_159=thwmouse.cc ../include/event.h ../include/eventqu.h\
+DEPS_165=thwmouse.cc ../include/event.h ../include/eventqu.h\
 	../include/intl.h ../include/ipstream.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
 	../include/screen.h ../include/stddlg.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvutil.h ../include/views.h
-obj/thwmouse.o:: $(DEPS_159)
+obj/thwmouse.o:: $(DEPS_165)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_160=ticks.cc
-obj/ticks.o:: $(DEPS_160)
+DEPS_166=ticks.cc
+obj/ticks.o:: $(DEPS_166)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_161=tindicat.cc ../include/drawbuf.h ../include/event.h\
+DEPS_167=tindicat.cc ../include/drawbuf.h ../include/event.h\
 	../include/indicato.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -1707,9 +1763,9 @@ DEPS_161=tindicat.cc ../include/drawbuf.h ../include/event.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tindicat.o:: $(DEPS_161)
+obj/tindicat.o:: $(DEPS_167)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_162=tinputli.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_168=tinputli.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/event.h ../include/inputln.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/palette.h ../include/point.h\
@@ -1718,9 +1774,9 @@ DEPS_162=tinputli.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/validate.h ../include/view.h ../include/views.h
-obj/tinputli.o:: $(DEPS_162)
+obj/tinputli.o:: $(DEPS_168)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_163=tlabel.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_169=tlabel.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/event.h ../include/gkey.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/label.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1730,9 +1786,9 @@ DEPS_163=tlabel.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tlabel.o:: $(DEPS_163)
+obj/tlabel.o:: $(DEPS_169)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_164=tlistbox.cc ../include/collectn.h ../include/dialogs.h\
+DEPS_170=tlistbox.cc ../include/collectn.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/intl.h\
 	../include/ipstream.h ../include/listbox.h ../include/lstviewr.h\
 	../include/nscoll.h ../include/object.h ../include/objects.h\
@@ -1741,9 +1797,9 @@ DEPS_164=tlistbox.cc ../include/collectn.h ../include/dialogs.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tlistbox.o:: $(DEPS_164)
+obj/tlistbox.o:: $(DEPS_170)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_165=tlistvie.cc ../include/drawbuf.h ../include/event.h\
+DEPS_171=tlistvie.cc ../include/drawbuf.h ../include/event.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/lstviewr.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/palette.h ../include/point.h\
@@ -1753,9 +1809,9 @@ DEPS_165=tlistvie.cc ../include/drawbuf.h ../include/event.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tlistvie.o:: $(DEPS_165)
+obj/tlistvie.o:: $(DEPS_171)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_166=tmemo.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_172=tmemo.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/editors.h ../include/event.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/palette.h ../include/point.h\
@@ -1764,9 +1820,9 @@ DEPS_166=tmemo.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tmemo.o:: $(DEPS_166)
+obj/tmemo.o:: $(DEPS_172)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_167=tmenubar.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_173=tmenubar.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/menu.h ../include/menubar.h\
 	../include/menuitem.h ../include/menus.h ../include/menuview.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1775,9 +1831,9 @@ DEPS_167=tmenubar.cc ../include/drawbuf.h ../include/intl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tmenubar.o:: $(DEPS_167)
+obj/tmenubar.o:: $(DEPS_173)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_168=tmenubox.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_174=tmenubox.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/menu.h ../include/menubox.h\
 	../include/menuitem.h ../include/menus.h ../include/menuview.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1786,9 +1842,9 @@ DEPS_168=tmenubox.cc ../include/drawbuf.h ../include/intl.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tmenubox.o:: $(DEPS_168)
+obj/tmenubox.o:: $(DEPS_174)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_169=tmenuvie.cc ../include/drawbuf.h ../include/event.h\
+DEPS_175=tmenuvie.cc ../include/drawbuf.h ../include/event.h\
 	../include/gkey.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/menu.h ../include/menubox.h\
 	../include/menuitem.h ../include/menus.h ../include/menuview.h\
@@ -1799,9 +1855,9 @@ DEPS_169=tmenuvie.cc ../include/drawbuf.h ../include/event.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tmenuvie.o:: $(DEPS_169)
+obj/tmenuvie.o:: $(DEPS_175)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_170=tmonosel.cc ../include/cluster.h ../include/colorsel.h\
+DEPS_176=tmonosel.cc ../include/cluster.h ../include/colorsel.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/event.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/mnoselct.h ../include/object.h ../include/objects.h\
@@ -1811,47 +1867,47 @@ DEPS_170=tmonosel.cc ../include/cluster.h ../include/colorsel.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tmonosel.o:: $(DEPS_170)
+obj/tmonosel.o:: $(DEPS_176)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_171=tmouse.cc ../include/event.h ../include/intl.h\
+DEPS_177=tmouse.cc ../include/event.h ../include/intl.h\
 	../include/ipstream.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/tmouse.o:: $(DEPS_171)
+obj/tmouse.o:: $(DEPS_177)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_172=tnscolle.cc ../include/intl.h ../include/ipstream.h\
+DEPS_178=tnscolle.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/object.h ../include/opstream.h\
 	../include/pstream.h ../include/stddlg.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/tnscolle.o:: $(DEPS_172)
+obj/tnscolle.o:: $(DEPS_178)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_173=tnssorte.cc ../include/intl.h ../include/ipstream.h\
+DEPS_179=tnssorte.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/views.h
-obj/tnssorte.o:: $(DEPS_173)
+obj/tnssorte.o:: $(DEPS_179)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_174=tobject.cc ../include/intl.h ../include/ipstream.h\
+DEPS_180=tobject.cc ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/tobject.o:: $(DEPS_174)
+obj/tobject.o:: $(DEPS_180)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_175=tpalette.cc ../include/intl.h ../include/ipstream.h\
+DEPS_181=tpalette.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/palette.h ../include/pstream.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/tpalette.o:: $(DEPS_175)
+obj/tpalette.o:: $(DEPS_181)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_176=tparamte.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_182=tparamte.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/parmtext.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -1859,16 +1915,16 @@ DEPS_176=tparamte.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tparamte.o:: $(DEPS_176)
+obj/tparamte.o:: $(DEPS_182)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_177=tpoint.cc ../include/intl.h ../include/ipstream.h\
+DEPS_183=tpoint.cc ../include/intl.h ../include/ipstream.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/stddlg.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvutil.h ../include/views.h
-obj/tpoint.o:: $(DEPS_177)
+obj/tpoint.o:: $(DEPS_183)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_178=tprogini.cc ../include/app.h ../include/desktop.h\
+DEPS_184=tprogini.cc ../include/app.h ../include/desktop.h\
 	../include/drawbuf.h ../include/event.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/menubar.h\
 	../include/menus.h ../include/menuview.h ../include/object.h\
@@ -1878,9 +1934,9 @@ DEPS_178=tprogini.cc ../include/app.h ../include/desktop.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tprogini.o:: $(DEPS_178)
+obj/tprogini.o:: $(DEPS_184)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_179=tprogram.cc ../include/app.h ../include/desktop.h\
+DEPS_185=tprogram.cc ../include/app.h ../include/desktop.h\
 	../include/drawbuf.h ../include/event.h ../include/eventqu.h\
 	../include/gkey.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/menu.h ../include/menubar.h\
@@ -1893,34 +1949,34 @@ DEPS_179=tprogram.cc ../include/app.h ../include/desktop.h\
 	../include/tkeys.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tprogram.o:: $(DEPS_179)
+obj/tprogram.o:: $(DEPS_185)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_180=tpwobj.cc ../include/intl.h ../include/ipstream.h\
+DEPS_186=tpwobj.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
 	../include/opstream.h ../include/pstream.h ../include/pwritobj.h\
 	../include/stddlg.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/tpwobj.o:: $(DEPS_180)
+obj/tpwobj.o:: $(DEPS_186)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_181=tpwreado.cc ../include/intl.h ../include/ipstream.h\
+DEPS_187=tpwreado.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/object.h ../include/opstream.h\
 	../include/preadobj.h ../include/pstream.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/views.h
-obj/tpwreado.o:: $(DEPS_181)
+obj/tpwreado.o:: $(DEPS_187)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_182=tpwritte.cc ../include/intl.h ../include/ipstream.h\
+DEPS_188=tpwritte.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
 	../include/opstream.h ../include/pstream.h ../include/pwritobj.h\
 	../include/stddlg.h ../include/strmblcl.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/tpwritte.o:: $(DEPS_182)
+obj/tpwritte.o:: $(DEPS_188)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_183=tradiobu.cc ../include/cluster.h ../include/dialogs.h\
+DEPS_189=tradiobu.cc ../include/cluster.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/pstream.h ../include/radiobtn.h\
@@ -1928,17 +1984,17 @@ DEPS_183=tradiobu.cc ../include/cluster.h ../include/dialogs.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tradiobu.o:: $(DEPS_183)
+obj/tradiobu.o:: $(DEPS_189)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_184=trangeva.cc ../include/intl.h ../include/ipstream.h\
+DEPS_190=trangeva.cc ../include/intl.h ../include/ipstream.h\
 	../include/msgbox.h ../include/object.h ../include/opstream.h\
 	../include/pstream.h ../include/stddlg.h ../include/streambl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/validate.h ../include/views.h
-obj/trangeva.o:: $(DEPS_184)
+obj/trangeva.o:: $(DEPS_190)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_185=trescoll.cc ../include/collectn.h ../include/intl.h\
+DEPS_191=trescoll.cc ../include/collectn.h ../include/intl.h\
 	../include/ipstream.h ../include/nscoll.h ../include/nssorcol.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/pstream.h ../include/rescoll.h ../include/resitem.h\
@@ -1947,9 +2003,9 @@ DEPS_185=trescoll.cc ../include/collectn.h ../include/intl.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/trescoll.o:: $(DEPS_185)
+obj/trescoll.o:: $(DEPS_191)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_186=tresfile.cc ../include/collectn.h ../include/fpbase.h\
+DEPS_192=tresfile.cc ../include/collectn.h ../include/fpbase.h\
 	../include/fpstream.h ../include/intl.h ../include/iopstrm.h\
 	../include/ipstream.h ../include/nscoll.h ../include/nssorcol.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
@@ -1959,18 +2015,18 @@ DEPS_186=tresfile.cc ../include/collectn.h ../include/fpbase.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/views.h
-obj/tresfile.o:: $(DEPS_186)
+obj/tresfile.o:: $(DEPS_192)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_187=tscreen.cc ../include/drawbuf.h ../include/event.h\
+DEPS_193=tscreen.cc ../include/drawbuf.h ../include/event.h\
 	../include/gkey.h ../include/intl.h ../include/ipstream.h\
 	../include/objects.h ../include/opstream.h ../include/point.h\
 	../include/pstream.h ../include/screen.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/unctrl.h ../include/views.h
-obj/tscreen.o:: $(DEPS_187)
+obj/tscreen.o:: $(DEPS_193)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_188=tscrollb.cc ../include/drawbuf.h ../include/event.h\
+DEPS_194=tscrollb.cc ../include/drawbuf.h ../include/event.h\
 	../include/group.h ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -1979,9 +2035,9 @@ DEPS_188=tscrollb.cc ../include/drawbuf.h ../include/event.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tscrollb.o:: $(DEPS_188)
+obj/tscrollb.o:: $(DEPS_194)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_189=tscrolle.cc ../include/drawbuf.h ../include/event.h\
+DEPS_195=tscrolle.cc ../include/drawbuf.h ../include/event.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/palette.h\
 	../include/point.h ../include/pstream.h ../include/rect.h\
@@ -1990,21 +2046,21 @@ DEPS_189=tscrolle.cc ../include/drawbuf.h ../include/event.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/tscrolle.o:: $(DEPS_189)
+obj/tscrolle.o:: $(DEPS_195)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_190=tscropts.cc
-obj/tscropts.o:: $(DEPS_190)
+DEPS_196=tscropts.cc
+obj/tscropts.o:: $(DEPS_196)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_191=tsortedc.cc ../include/collectn.h ../include/intl.h\
+DEPS_197=tsortedc.cc ../include/collectn.h ../include/intl.h\
 	../include/ipstream.h ../include/nscoll.h ../include/nssorcol.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/pstream.h ../include/sortcoll.h ../include/stddlg.h\
 	../include/streambl.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/views.h
-obj/tsortedc.o:: $(DEPS_191)
+obj/tsortedc.o:: $(DEPS_197)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_192=tsortedl.cc ../include/collectn.h ../include/dialogs.h\
+DEPS_198=tsortedl.cc ../include/collectn.h ../include/dialogs.h\
 	../include/drawbuf.h ../include/event.h ../include/intl.h\
 	../include/ipstream.h ../include/listbox.h ../include/lstviewr.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
@@ -2014,9 +2070,9 @@ DEPS_192=tsortedl.cc ../include/collectn.h ../include/dialogs.h\
 	../include/tkeys.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h
-obj/tsortedl.o:: $(DEPS_192)
+obj/tsortedl.o:: $(DEPS_198)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_193=tstatict.cc ../include/dialogs.h ../include/drawbuf.h\
+DEPS_199=tstatict.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/palette.h\
 	../include/point.h ../include/pstream.h ../include/stddlg.h\
@@ -2024,17 +2080,17 @@ DEPS_193=tstatict.cc ../include/dialogs.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tstatict.o:: $(DEPS_193)
+obj/tstatict.o:: $(DEPS_199)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_194=tstatusd.cc ../include/intl.h ../include/ipstream.h\
+DEPS_200=tstatusd.cc ../include/intl.h ../include/ipstream.h\
 	../include/menus.h ../include/opstream.h ../include/pstream.h\
 	../include/statsdef.h ../include/statsitm.h ../include/stddlg.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvutil.h\
 	../include/views.h
-obj/tstatusd.o:: $(DEPS_194)
+obj/tstatusd.o:: $(DEPS_200)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_195=tstatusl.cc ../include/drawbuf.h ../include/event.h\
+DEPS_201=tstatusl.cc ../include/drawbuf.h ../include/event.h\
 	../include/intl.h ../include/ipstream.h ../include/menus.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/palette.h ../include/point.h ../include/pstream.h\
@@ -2043,16 +2099,16 @@ DEPS_195=tstatusl.cc ../include/drawbuf.h ../include/event.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tstatusl.o:: $(DEPS_195)
+obj/tstatusl.o:: $(DEPS_201)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_196=tstrinde.cc ../include/intl.h ../include/ipstream.h\
+DEPS_202=tstrinde.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/resource.h\
 	../include/stddlg.h ../include/strinrec.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvutil.h ../include/views.h
-obj/tstrinde.o:: $(DEPS_196)
+obj/tstrinde.o:: $(DEPS_202)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_197=tstringc.cc ../include/collectn.h ../include/intl.h\
+DEPS_203=tstringc.cc ../include/collectn.h ../include/intl.h\
 	../include/ipstream.h ../include/nscoll.h ../include/nssorcol.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/pstream.h ../include/resource.h ../include/sortcoll.h\
@@ -2060,51 +2116,51 @@ DEPS_197=tstringc.cc ../include/collectn.h ../include/intl.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/views.h
-obj/tstringc.o:: $(DEPS_197)
+obj/tstringc.o:: $(DEPS_203)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_198=tstringl.cc ../include/intl.h ../include/ipstream.h\
+DEPS_204=tstringl.cc ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/opstream.h ../include/pstream.h\
 	../include/resource.h ../include/stddlg.h ../include/streambl.h\
 	../include/strilist.h ../include/strinrec.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/tstringl.o:: $(DEPS_198)
+obj/tstringl.o:: $(DEPS_204)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_199=tstrlist.cc ../include/intl.h ../include/ipstream.h\
+DEPS_205=tstrlist.cc ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/opstream.h ../include/pstream.h\
 	../include/resource.h ../include/stddlg.h ../include/streambl.h\
 	../include/strilist.h ../include/strinrec.h ../include/strlistm.h\
 	../include/system.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/views.h
-obj/tstrlist.o:: $(DEPS_199)
+obj/tstrlist.o:: $(DEPS_205)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_200=tstrmcla.cc ../include/intl.h ../include/ipstream.h\
+DEPS_206=tstrmcla.cc ../include/intl.h ../include/ipstream.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/strmblcl.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/tstrmcla.o:: $(DEPS_200)
+obj/tstrmcla.o:: $(DEPS_206)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_201=tstrmtyp.cc ../include/intl.h ../include/ipstream.h\
+DEPS_207=tstrmtyp.cc ../include/intl.h ../include/ipstream.h\
 	../include/nscoll.h ../include/nssorcol.h ../include/object.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/strmblcl.h ../include/strmblty.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/views.h
-obj/tstrmtyp.o:: $(DEPS_201)
+obj/tstrmtyp.o:: $(DEPS_207)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_202=tsubmenu.cc ../include/intl.h ../include/ipstream.h\
+DEPS_208=tsubmenu.cc ../include/intl.h ../include/ipstream.h\
 	../include/menu.h ../include/menuitem.h ../include/menus.h\
 	../include/opstream.h ../include/pstream.h ../include/stddlg.h\
 	../include/submenu.h ../include/system.h ../include/tobjstrm.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvutil.h ../include/views.h
-obj/tsubmenu.o:: $(DEPS_202)
+obj/tsubmenu.o:: $(DEPS_208)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_203=ttermina.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_209=ttermina.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/otstream.h ../include/point.h\
 	../include/pstream.h ../include/scroller.h ../include/stddlg.h\
@@ -2113,9 +2169,9 @@ DEPS_203=ttermina.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h
-obj/ttermina.o:: $(DEPS_203)
+obj/ttermina.o:: $(DEPS_209)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_204=ttextdev.cc ../include/drawbuf.h ../include/intl.h\
+DEPS_210=ttextdev.cc ../include/drawbuf.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/point.h ../include/pstream.h\
 	../include/scroller.h ../include/stddlg.h ../include/streambl.h\
@@ -2123,17 +2179,17 @@ DEPS_204=ttextdev.cc ../include/drawbuf.h ../include/intl.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/ttextdev.o:: $(DEPS_204)
+obj/ttextdev.o:: $(DEPS_210)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_205=tvalidat.cc ../include/intl.h ../include/ipstream.h\
+DEPS_211=tvalidat.cc ../include/intl.h ../include/ipstream.h\
 	../include/object.h ../include/opstream.h ../include/pstream.h\
 	../include/stddlg.h ../include/streambl.h ../include/system.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/validate.h ../include/views.h
-obj/tvalidat.o:: $(DEPS_205)
+obj/tvalidat.o:: $(DEPS_211)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_206=tvedit1.cc ../include/app.h ../include/applictn.h\
+DEPS_212=tvedit1.cc ../include/app.h ../include/applictn.h\
 	../include/chdirdlg.h ../include/cmdset.h ../include/desktop.h\
 	../include/dialog.h ../include/dialogs.h ../include/drawbuf.h\
 	../include/editors.h ../include/event.h ../include/filedlg.h\
@@ -2145,9 +2201,9 @@ DEPS_206=tvedit1.cc ../include/app.h ../include/applictn.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvedit.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/tvedit1.o:: $(DEPS_206)
+obj/tvedit1.o:: $(DEPS_212)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_207=tvedit2.cc ../include/app.h ../include/applictn.h\
+DEPS_213=tvedit2.cc ../include/app.h ../include/applictn.h\
 	../include/button.h ../include/checkbox.h ../include/cluster.h\
 	../include/cmdset.h ../include/desktop.h ../include/dialog.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/editors.h\
@@ -2162,9 +2218,9 @@ DEPS_207=tvedit2.cc ../include/app.h ../include/applictn.h\
 	../include/tvconfig.h ../include/tvedit.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/tvedit2.o:: $(DEPS_207)
+obj/tvedit2.o:: $(DEPS_213)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_208=tvedit3.cc ../include/app.h ../include/applictn.h\
+DEPS_214=tvedit3.cc ../include/app.h ../include/applictn.h\
 	../include/cmdset.h ../include/desktop.h ../include/dialog.h\
 	../include/dialogs.h ../include/drawbuf.h ../include/editors.h\
 	../include/event.h ../include/filedlg.h ../include/group.h\
@@ -2179,9 +2235,9 @@ DEPS_208=tvedit3.cc ../include/app.h ../include/applictn.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvedit.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h ../include/window.h
-obj/tvedit3.o:: $(DEPS_208)
+obj/tvedit3.o:: $(DEPS_214)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_209=tview.cc ../include/cmdset.h ../include/drawbuf.h\
+DEPS_215=tview.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/event.h ../include/eventqu.h ../include/group.h\
 	../include/intl.h ../include/ipstream.h ../include/object.h\
 	../include/objects.h ../include/opstream.h ../include/palette.h\
@@ -2191,9 +2247,9 @@ DEPS_209=tview.cc ../include/cmdset.h ../include/drawbuf.h\
 	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
 	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
 	../include/view.h ../include/views.h
-obj/tview.o:: $(DEPS_209)
+obj/tview.o:: $(DEPS_215)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_210=tvtext1.cc ../include/app.h ../include/button.h\
+DEPS_216=tvtext1.cc ../include/app.h ../include/button.h\
 	../include/checkbox.h ../include/clrdlg.h ../include/clrselct.h\
 	../include/cluster.h ../include/cmdset.h ../include/colorsel.h\
 	../include/desktop.h ../include/dialog.h ../include/dialogs.h\
@@ -2211,15 +2267,15 @@ DEPS_210=tvtext1.cc ../include/app.h ../include/button.h\
 	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
 	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
 	../include/views.h ../include/window.h
-obj/tvtext1.o:: $(DEPS_210)
+obj/tvtext1.o:: $(DEPS_216)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_211=tvtext2.cc
-obj/tvtext2.o:: $(DEPS_211)
+DEPS_217=tvtext2.cc
+obj/tvtext2.o:: $(DEPS_217)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_212=tweaked.c
-obj/tweaked.o:: $(DEPS_212)
+DEPS_218=tweaked.c
+obj/tweaked.o:: $(DEPS_218)
 	$(RHIDE_COMPILE.c.o)
-DEPS_213=twindow.cc ../include/drawbuf.h ../include/event.h\
+DEPS_219=twindow.cc ../include/drawbuf.h ../include/event.h\
 	../include/frame.h ../include/group.h ../include/intl.h\
 	../include/ipstream.h ../include/object.h ../include/objects.h\
 	../include/opstream.h ../include/palette.h ../include/point.h\
@@ -2229,12 +2285,12 @@ DEPS_213=twindow.cc ../include/drawbuf.h ../include/event.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
 	../include/tvutil.h ../include/view.h ../include/views.h\
 	../include/window.h
-obj/twindow.o:: $(DEPS_213)
+obj/twindow.o:: $(DEPS_219)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_214=vesa.cc
-obj/vesa.o:: $(DEPS_214)
+DEPS_220=vesa.cc
+obj/vesa.o:: $(DEPS_220)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_215=vga.cc
-obj/vga.o:: $(DEPS_215)
+DEPS_221=vga.cc
+obj/vga.o:: $(DEPS_221)
 	$(RHIDE_COMPILE.cc.o)
 all:: librhtv.a
