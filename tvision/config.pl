@@ -80,6 +80,10 @@ if (!$here && ($OS ne 'UNIX'))
    $here=`cd`;
    chop($here);
   }
+if ($Compf eq 'MinGW')
+  {
+   $here=~s/\\/\//g;
+  }
 # Path for the includes
 $MakeDefsRHIDE[1]='TVSRC=../../include '.$here.'/include '.@conf{'prefix'}.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
