@@ -1,3 +1,6 @@
+/* Keyboard handler routines header.
+   Copyright by Salvador E. Tropea (SET) (1998,1999,2001)
+   Covered by the GPL license. */
 #ifndef __GKEY_H__
 #define __GKEY_H__
 // A type for the BIOS ASCII/Scan
@@ -6,8 +9,13 @@ typedef union
  unsigned short full;
  struct
  {
+   #ifdef TV_BIG_ENDIAN
+   unsigned char scan;
+   unsigned char ascii;
+   #else
    unsigned char ascii;
    unsigned char scan;
+   #endif
  } b;
 } KeyType;
 
