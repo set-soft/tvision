@@ -778,10 +778,8 @@ void TScreenX11::AdjustCursorImage()
 
 TScreenX11::TScreenX11()
 {
- int col;
-
  /* Try to connect to the X server */
- disp=XOpenDisplay("");
+ disp=XOpenDisplay(NULL);
  /* If we fail just return */
  if (!disp)
     return;
@@ -974,7 +972,7 @@ TScreenX11::TScreenX11()
  cMap=DefaultColormap(disp,screen);
  XColor query;
  TScreenColor *pal=parseUserPalette() ? UserStartPalette : PC_BIOSPalette;
- for (col=0; col<16; col++)
+ for (int col=0; col<16; col++)
     {
      query.red  =pal[col].R*256;
      query.green=pal[col].G*256;
