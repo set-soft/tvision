@@ -1,7 +1,13 @@
 $Log$
+Revision 1.233  2001/10/17 23:28:18  set
+* Fixed: Not all of the configured values were transfered to the makefile.
+They were correctly put in the *.env files but not in the makefile. It
+included the GNU ar name.
+* Fixed: The compat layer makefile wasn't configured.
+
 Revision 1.232  2001/10/17 22:38:51  set
 * Fixed: [UNIX] Unconditional request for definekey()
-.
+
 Revision 1.231  2001/10/17 22:35:55  set
 * Fixed: Now clean target also deletes the configure.cache.
 
