@@ -277,7 +277,7 @@ OBJFILES=obj/bc.o obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/tstrlist.o obj/tstrmcla.o obj/tstrmtyp.o obj/tsubmenu.o\
 	obj/ttermina.o obj/ttextdev.o obj/tvalidat.o obj/tvedit1.o\
 	obj/tvedit2.o obj/tvedit3.o obj/tview.o obj/tvtext1.o obj/tvtext2.o\
-	obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o
+	obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o obj/vgastate.o
 LIBRARIES=
 SOURCE_NAME=$<
 OUTFILE=$@
@@ -337,8 +337,9 @@ PROJECT_ITEMS=bc.cc calcdisp.cc calculat.cc drivers2.cc dual.cc fileview.cc\
 	tstatusd.cc tstatusl.cc tstrinde.cc tstringc.cc tstringl.cc\
 	tstrlist.cc tstrmcla.cc tstrmtyp.cc tsubmenu.cc ttermina.cc\
 	ttextdev.cc tvalidat.cc tvedit1.cc tvedit2.cc tvedit3.cc tview.cc\
-	tvtext1.cc tvtext2.cc tweaked.c twindow.cc vesa.cc vga.cc
-DEFAULT_MASK=*.cc
+	tvtext1.cc tvtext2.cc tweaked.c twindow.cc vesa.cc vga.cc\
+	vgastate.c
+DEFAULT_MASK=*
 RHIDE_BIN_DIR=e:/dj/bin
 PASCAL_TYPE=GPC
 %.o: %.c
@@ -469,7 +470,7 @@ DEPS_0= obj/bc.o obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/tstrlist.o obj/tstrmcla.o obj/tstrmtyp.o obj/tsubmenu.o\
 	obj/ttermina.o obj/ttextdev.o obj/tvalidat.o obj/tvedit1.o\
 	obj/tvedit2.o obj/tvedit3.o obj/tview.o obj/tvtext1.o obj/tvtext2.o\
-	obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o 
+	obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o obj/vgastate.o 
 NO_LINK=
 LINK_FILES=$(filter-out $(NO_LINK),$(DEPS_0))
 librhtv.a:: $(DEPS_0)
@@ -2292,7 +2293,10 @@ obj/twindow.o:: $(DEPS_217)
 DEPS_218=vesa.cc
 obj/vesa.o:: $(DEPS_218)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_219=vga.cc
+DEPS_219=vga.cc vgastate.h
 obj/vga.o:: $(DEPS_219)
 	$(RHIDE_COMPILE.cc.o)
+DEPS_220=vgastate.c vgaregs.h
+obj/vgastate.o:: $(DEPS_220)
+	$(RHIDE_COMPILE.c.o)
 all:: librhtv.a
