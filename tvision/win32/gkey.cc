@@ -2,25 +2,7 @@
 
  Keyboard handler for DOS by Salvador E. Tropea (SET) (1998)
 
- That's a gkey function that is supposed to:
-
-1) Solve all the problems about multiple translations. That's because it
-generates a unique code for each key. The format is:
-
-bit 10       9       8    7   6-0
-Left-Alt Right-Alt Ctrl Shift Code
-
-  Additionally there are a char value to carry the ASCII.
-  I'm detecting left and right alt but perhaps isn't good. The idea of
-detecting it is that Left Alt could be used for the menu and Right Alt
-(called Alt Gr in some keyboards) can be used for macros.
-  But I think it will confuse to some people, what do you think?
-
-2) Solve the keyboard layout problems. This routines uses a methode that
-/* Modified by Vadim Beloborodov to be used on WIN32 console */
-/*****************************************************************************
-
- Keyboard handler for DOS by Salvador E. Tropea (SET) (1998)
+ Modified by Vadim Beloborodov to be used on WIN32 console
 
  That's a gkey function that is supposed to:
 
