@@ -18,6 +18,7 @@ classes/dos/vgaregs.c
 classes/dos/vgaregs.h
 classes/dos/vgastate.c
 classes/dos/vgastate.h
+classes/fontcoll.cc
 classes/fpbase.cc
 classes/fpstream.cc
 classes/ifpstrea.cc
@@ -283,6 +284,10 @@ examples/dyntxt/readme
 examples/dyntxt/rhide.env
 examples/dyntxt/testdyn.cpp
 -examples/fonts/font.016
+examples/fonts/genraw.cc
+-examples/fonts/genraw.gpr
+examples/fonts/genraw.mak
+-examples/fonts/ocr.sft
 examples/fonts/rhide.env
 examples/fonts/test.cc
 -examples/fonts/test.gpr
@@ -490,6 +495,7 @@ include/tv/filedlg.h
 include/tv/filelist.h
 include/tv/filinfpn.h
 include/tv/filinpln.h
+include/tv/fontcoll.h
 include/tv/fpbase.h
 include/tv/fpstream.h
 include/tv/frame.h

@@ -101,6 +101,12 @@ Modified by Salvador E. Tropea
 #endif
 // SET: End of the THelp* classes
 
+#if defined( Uses_TVFontCollection )
+ #define Uses_TNSCollection
+ #define Uses_stdio
+ #define INCLUDE_FONTCOLL_H
+#endif
+
 #if defined( Uses_TGKey )
 #define INCLUDE_GKEY_H
 #endif
@@ -733,6 +739,10 @@ Modified by Salvador E. Tropea
 
 #if defined( INCLUDE_FILEVIEW_H )
 #include <tv/fileview.h>
+#endif
+
+#ifdef INCLUDE_FONTCOLL_H
+ #include <tv/fontcoll.h>
 #endif
 
 // SET: Start of the THelp* classes incorporated in 2.0

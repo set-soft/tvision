@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.221  2002/07/17 12:27:19  set
+* Added: Options to compile the DOS+WinOldAp clipboard routines with a lot
+of verbosity. It looks like the code is failing in Win2K and I need to
+test it.
+
 Revision 2.220  2002/07/16 19:22:00  set
 * Added: Default code page concept.
 * Fixed:(?) Remapping problem when the "similar" was outside the ASCII

@@ -17,7 +17,7 @@ examples=demo/demo desklogo/desklogo desklogo/set-logo \
 	tutorial/tvguid11 tutorial/tvguid12 tutorial/tvguid13 \
 	tutorial/tvguid14 tutorial/tvguid15 tutorial/tvguid16 \
 	tvedit/tvedit tvhc/tvhc clipboard/test fonts/test \
-	helpdemo/test
+	helpdemo/test fonts/genraw
 
 all: $(addsuffix .exe,$(examples))
 
@@ -36,6 +36,8 @@ dlgdsn/libtest.exe: dlgdsn/libtest.gpr
 dyntxt/dyntext.exe: dyntxt/dyntext.gpr
 
 fonts/test.exe: fonts/test.gpr
+
+fonts/genraw.exe: fonts/genraw.gpr
 
 helpdemo/helpdemo.exe: helpdemo/helpdemo.gpr
 
