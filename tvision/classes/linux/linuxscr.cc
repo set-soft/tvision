@@ -588,7 +588,7 @@ int TScreenLinux::InitOnce()
  optSearch("ScrCP",forcedScrCP);
  optSearch("InpCP",forcedInpCP);
  // Try to figure out which code page is loaded
- if (forcedAppCP==-1 && forcedScrCP==-1)
+ if (forcedAppCP==-1 || forcedScrCP==-1)
     if (!tioclinuxOK || !AnalyzeCodePage())
        GuessCodePageFromLANG();
  // User settings have more priority than detected settings

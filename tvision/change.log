@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.284  2002/09/04 13:11:34  set
+* Added: Insert with middle button to the TinputLine class. It works for
+any OS supporting an auxiliar clipboard. Currently that's only for X11. To
+achieve it I added a new member called insertChar and another called
+makeVisible. They reuse the keyboard char input code.
+
 Revision 2.283  2002/09/03 13:44:24  set
 * Fixed: TVConfigFile::AddString added integers, I found it when the editor
 failed to set the palette as a string ;-)

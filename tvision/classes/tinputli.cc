@@ -335,6 +335,10 @@ void  TInputLine::handleEvent( TEvent& event )
                         *data = EOS;
                         curPos = 0;
                         break;
+                    // Let them pass even if these contains a strange ASCII (SET)
+                    case kbEnter:
+                    case kbTab:
+                         return;
                     default:
                         if( event.keyDown.charScan.charCode >= ' ' )
                           {
