@@ -658,11 +658,17 @@ TScreenUNIX::TScreenUNIX()
   for (i=0;i<len;i++)
       screenBuffer[i] = 0x0720;
 
+  // Look for user settings
+  optSearch("AppCP",forcedAppCP);
+  optSearch("ScrCP",forcedScrCP);
+  optSearch("InpCP",forcedInpCP);
+  // User settings have more priority than detected settings
   // That's the most common case and I don't know anout any reliable way to
   // find a better default.
-  codePage=new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
-                          TVCodePage::ISOLatin1Linux);
-                         
+  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::ISOLatin1Linux,
+                          forcedScrCP!=-1 ? forcedScrCP : TVCodePage::ISOLatin1Linux,
+                          forcedInpCP!=-1 ? forcedInpCP : TVCodePage::ISOLatin1Linux);
+
   startcurses();
   setVideoMode(screenMode);
   suspended = 0;

@@ -8,6 +8,7 @@
 #define Uses_TEvent
 #define Uses_TDrawBuffer
 #define Uses_TGKey
+#define Uses_TVCodePage
 #define Uses_string
 #define Uses_ctype
 #define Uses_iostream
@@ -91,6 +92,16 @@ TScreenQNXRtP::TScreenQNXRtP()
    TGKeyQNXRtP::Init();
 
 //   THWMouseQNXRtP::Init();
+
+   // Added by SET:
+   // Look for user settings
+   optSearch("AppCP",forcedAppCP);
+   optSearch("ScrCP",forcedScrCP);
+   optSearch("InpCP",forcedInpCP);
+   // User settings have more priority than detected settings
+   codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::PC437,
+                           forcedScrCP!=-1 ? forcedScrCP : TVCodePage::PC437,
+                           forcedInpCP!=-1 ? forcedInpCP : TVCodePage::PC437);
 
    initialized=1;
    suspended=0;

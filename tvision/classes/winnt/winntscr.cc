@@ -13,6 +13,9 @@ added some routines and adapted it to the new architecture.
   Configuration variables:
   ScreenWidth
   ScreenHeight
+  AppCP
+  ScrCP
+  InpCP
 
   Notes:
   1) I saw a problem in W98SE, it looks like a bug in Windows: If I
@@ -144,8 +147,16 @@ int TScreenWinNT::InitOnce()
  GetCursorShapeLow(curStart,curEnd);
  GetCursorPosLow(currentCursorX,currentCursorY);
 
- UINT cp=GetConsoleOutputCP();
- codePage=new TVCodePage(cp,cp,GetConsoleCP());
+ UINT outCP=GetConsoleOutputCP();
+ UINT  inCP=GetConsoleCP();
+ // Look for user settings
+ optSearch("AppCP",forcedAppCP);
+ optSearch("ScrCP",forcedScrCP);
+ optSearch("InpCP",forcedInpCP);
+ // User settings have more priority than detected settings
+ codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : outCP,
+                         forcedScrCP!=-1 ? forcedScrCP : outCP,
+                         forcedInpCP!=-1 ? forcedInpCP : inCP);
 
  return 1;
 }

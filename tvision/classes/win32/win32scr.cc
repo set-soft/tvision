@@ -15,6 +15,9 @@ needed.
  Configuration variables:
  ScreenWidth
  ScreenHeight
+ AppCP
+ ScrCP
+ InpCP
 
  Notes:
 1) I changed all the code related to the save/restore state using a new
@@ -145,8 +148,16 @@ int TScreenWin32::InitConsole()
  DWORD EventThreadID;
  EventThreadHandle=CreateThread(NULL,0,HandleEvents,NULL,0,&EventThreadID);
 
- UINT cp=GetConsoleOutputCP();
- codePage=new TVCodePage(cp,cp,GetConsoleCP());
+ UINT outCP=GetConsoleOutputCP();
+ UINT  inCP=GetConsoleCP();
+ // Look for user settings
+ optSearch("AppCP",forcedAppCP);
+ optSearch("ScrCP",forcedScrCP);
+ optSearch("InpCP",forcedInpCP);
+ // User settings have more priority than detected settings
+ codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : outCP,
+                         forcedScrCP!=-1 ? forcedScrCP : outCP,
+                         forcedInpCP!=-1 ? forcedInpCP : inCP);
 
  return 1;
 }

@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.260  2002/08/16 13:06:13  set
+* Fixed: DOS, WinNT and Win32 drivers, last changes were incomplete.
+
 Revision 2.259  2002/08/16 12:58:55  set
 * Modified: [MSVC] the way I define close, open, etc. replacements. The
 inline keyword only works for C++ and I must use __inline. I also moved

@@ -44,6 +44,9 @@ const char
         *TScreen::currentDriverShortName=NULL;
 TVScreenFontRequestCallBack
          TScreen::frCB=NULL;
+long     TScreen::forcedAppCP=-1,
+         TScreen::forcedScrCP=-1,
+         TScreen::forcedInpCP=-1;
 
 /*****************************************************************************
   Function pointer members initialization

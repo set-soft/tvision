@@ -15,6 +15,9 @@ is explained.
   UseMDA=1
   PatchKeys=1
   UseSecondaryFont=0
+  AppCP
+  ScrCP
+  InpCP
 
 *****************************************************************************/
 /*
@@ -575,10 +578,18 @@ int TScreenLinux::InitOnce()
     SetDisPaletteColors(0,16,ActualPalette);
    }
 
+ // Look for user settings
+ optSearch("AppCP",forcedAppCP);
+ optSearch("ScrCP",forcedScrCP);
+ optSearch("InpCP",forcedInpCP);
  // Try to figure out which code page is loaded
- if (!tioclinuxOK || !AnalyzeCodePage())
-    GuessCodePageFromLANG();
- codePage=new TVCodePage(installedACM,installedSFM,installedACM);
+ if (forcedAppCP==-1 && forcedScrCP==-1)
+    if (!tioclinuxOK || !AnalyzeCodePage())
+       GuessCodePageFromLANG();
+ // User settings have more priority than detected settings
+ codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : installedACM,
+                         forcedScrCP!=-1 ? forcedScrCP : installedSFM,
+                         forcedInpCP!=-1 ? forcedInpCP : installedACM);
  if (tioclinuxOK && GetLinuxFontGeometry())
    {
     canSetFonts=1;
