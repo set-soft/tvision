@@ -74,10 +74,10 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/tstrmtyp.o $(OBJDIR)/tsubmenu.o $(OBJDIR)/ttermina.o $(OBJDIR)/ttextdev.o $(OBJDIR)/tvalidat.o\
 	$(OBJDIR)/tvedit1.o $(OBJDIR)/tvedit2.o $(OBJDIR)/tvedit3.o $(OBJDIR)/tview.o $(OBJDIR)/tvtext1.o $(OBJDIR)/tvtext2.o\
 	$(OBJDIR)/twindow.o $(OBJDIR)/unixdis.o $(OBJDIR)/unixkey.o $(OBJDIR)/unixmouse.o $(OBJDIR)/unixscr.o \
-	   $(OBJDIR)/win32dis.o $(OBJDIR)/win32key.o $(OBJDIR)/win32mouse.o\
-	$(OBJDIR)/win32scr.o $(OBJDIR)/winntdis.o $(OBJDIR)/winntkey.o $(OBJDIR)/winntmouse.o $(OBJDIR)/winntscr.o\
-	$(OBJDIR)/x11dis.o $(OBJDIR)/x11key.o $(OBJDIR)/x11mouse.o $(OBJDIR)/x11src.o $(OBJDIR)/xtermdis.o $(OBJDIR)/xtermkey.o\
-	$(OBJDIR)/xtermmouse.o $(OBJDIR)/xtermscr.o
+	   $(OBJDIR)/win32clip.o $(OBJDIR)/win32dis.o $(OBJDIR)/win32key.o\
+	$(OBJDIR)/win32mouse.o $(OBJDIR)/win32scr.o $(OBJDIR)/winntdis.o $(OBJDIR)/winntkey.o $(OBJDIR)/winntmouse.o\
+	$(OBJDIR)/winntscr.o $(OBJDIR)/x11dis.o $(OBJDIR)/x11key.o $(OBJDIR)/x11mouse.o $(OBJDIR)/x11src.o $(OBJDIR)/xtermdis.o\
+	$(OBJDIR)/xtermkey.o $(OBJDIR)/xtermmouse.o $(OBJDIR)/xtermscr.o
 
 {$(SRC1)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o

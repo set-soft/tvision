@@ -1041,7 +1041,7 @@ int TVX11Clipboard::copy(int id, const char *b, unsigned len)
  XFlush(TScreenX11::disp);
  if (XGetSelectionOwner(TScreenX11::disp,clip)==TScreenX11::mainWin)
     return 1;
- error=x11clipAnother;
+ TVOSClipboard::error=x11clipAnother;
  // The rest is done by TScreenX11
  return 0;
 }
@@ -1072,7 +1072,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
  owner=XGetSelectionOwner(TScreenX11::disp,clip);
  if (owner==None)
    {
-    error=x11clipNoSelection;
+    TVOSClipboard::error=x11clipNoSelection;
     return NULL;
    }
  // What a hell should I use as property here? I use XA_STRING because it was
@@ -1086,7 +1086,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
 
  if (property!=XA_STRING)
    {
-    error=x11clipWrongType;
+    TVOSClipboard::error=x11clipWrongType;
     return NULL;
    }
  // Check the size
@@ -1095,7 +1095,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
                     AnyPropertyType,&type,&format,&len,&bytes,&data);
  if (bytes<=0)
    {
-    error=x11clipNoData;
+    TVOSClipboard::error=x11clipNoData;
     return NULL;
    }
  result=XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,
@@ -1104,7 +1104,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
  if (result!=Success)
    {
     XFree(data);
-    error=x11clipX11Error;
+    TVOSClipboard::error=x11clipX11Error;
     return NULL;
    }
  char *ret=new char[bytes+1];
