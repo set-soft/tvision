@@ -109,7 +109,10 @@ $MakeDefsRHIDE[2].=' intl' if (($OSf eq 'FreeBSD') && ($conf{'intl'} eq 'yes'));
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
-   $MakeDefsRHIDE[0].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
+   if (@conf{'HAVE_X11'} eq 'yes')
+     {
+      $MakeDefsRHIDE[0].=$conf{'X11IncludePath'} ? ' '.$conf{'X11IncludePath'} : ' /usr/X11R6/include';
+     }
    $MakeDefsRHIDE[3]='TVOBJ='.$LDExtraDirs.' ';
    # QNX 6.2 beta 3 workaround
    $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
@@ -472,7 +475,7 @@ int main(void)
 
 sub LookForXlib()
 {
- my $test;
+ my ($test,$o);
 
  print 'Looking for X11 libs: ';
  if (@conf{'HAVE_X11'})
@@ -494,9 +497,11 @@ int main(void)
 }
 ';
  $conf{'X11LibPath'}='/usr/X11R6/lib' unless $conf{'X11LibPath'};
- $conf{'X11IncludePath'}='/usr/X11R6/include' unless $conf{'X11IncludePath'};
  $conf{'X11Lib'}='X11' unless $conf{'X11Lib'};
- $test=RunGCCTest($GCC,'c',$test,"-I$conf{'X11IncludePath'} -L$conf{'X11LibPath'} -l$conf{'X11Lib'}");
+ $o='';
+ $o.='-I'.$conf{'X11IncludePath'} if $conf{'X11IncludePath'};
+ $o.=" -L$conf{'X11LibPath'} -l$conf{'X11Lib'}";
+ $test=RunGCCTest($GCC,'c',$test,$o);
  if ($test=~/OK, (\d+)\.(\d+)/)
    {
     $conf{'HAVE_X11'}='yes';
@@ -504,6 +509,17 @@ int main(void)
    }
  else
    {
+    if (!$conf{'X11IncludePath'})
+      {
+       $conf{'X11IncludePath'}='/usr/X11R6/include';
+       $o.="-I$conf{'X11IncludePath'} -L$conf{'X11LibPath'} -l$conf{'X11Lib'}";
+       if ($test=~/OK, (\d+)\.(\d+)/)
+         {
+          $conf{'HAVE_X11'}='yes';
+          print "yes OK (X$1 rev $2)\n";
+          return;
+         }
+      }
     $conf{'HAVE_X11'}='no';
     print "no, disabling X11 version\n";
    }
