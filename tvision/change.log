@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.254  2002/08/12 17:52:52  set
+* Fixed: Example target for helpdemo is helpdemo and not test. Patch by
+Igor Gnip <gnipi@digitalsystem.co.yu>
+
 Revision 2.253  2002/08/12 17:47:12  set
 * Fixed: [MinGW] GNU install doesn't support mixed \ and /. Patch by Igor
 Gnip <gnipi@digitalsystem.co.yu>

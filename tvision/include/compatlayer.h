@@ -973,18 +973,38 @@ typedef unsigned long  ulong;
   #undef  Include_io
   #define Include_io 1
   /* close, dup, dup2, read, write and lseek is defined here */
-  #undef  close
-  #define close _close
-  #undef  dup
-  #define dup _dup
-  #undef  dup2
-  #define dup2 _dup2
-  #undef  read
-  #define read _read
-  #undef  write
-  #define write _write
-  #undef  lseek
-  #define lseek _lseek
+  /* Note we must avoid macros here or we risk to collide with TV read/write
+     C++ members. */
+  #ifndef CLY_close_inline_defined
+   #define CLY_close_inline_defined 1
+   inline int close(int FILEDES)
+    { return _close(FILEDES); }
+  #endif
+  #ifndef CLY_dup_inline_defined
+   #define CLY_dup_inline_defined 1
+   inline int dup(int OLD)
+    { return _dup(OLD); }
+  #endif
+  #ifndef CLY_dup2_inline_defined
+   #define CLY_dup2_inline_defined 1
+   inline int dup2(int OLD, int NEW)
+    { return _dup2(OLD,NEW); }
+  #endif
+  #ifndef CLY_read_inline_defined
+   #define CLY_read_inline_defined 1
+   inline long read(int FILEDES, void *BUFFER, unsigned long SIZE)
+    { return _read(FILEDES,BUFFER,SIZE); }
+  #endif
+  #ifndef CLY_write_inline_defined
+   #define CLY_write_inline_defined 1
+   inline long write(int FILEDES, void *BUFFER, unsigned long SIZE)
+    { return _write(FILEDES,BUFFER,SIZE); }
+  #endif
+  #ifndef CLY_lseek_inline_defined
+   #define CLY_lseek_inline_defined 1
+   inline long lseek(int FILEDES, long OFFSET, int WHENCE)
+    { return _lseek(FILEDES,OFFSET,WHENCE); }
+  #endif
   /* Standard file descriptors.  */
   #ifndef STDIN_FILENO
    #define STDIN_FILENO  0 /* Standard input.  */

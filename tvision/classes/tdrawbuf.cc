@@ -34,7 +34,7 @@ void TDrawBuffer::moveBuf(unsigned indent, const void *source,
 
   if (attr)
   {
-    while (count--)
+    while (*s && count--)
     {
       ((uchar *)dest)[0] = *s++;
       ((uchar *)dest++)[1] = (uchar)attr;
@@ -42,7 +42,7 @@ void TDrawBuffer::moveBuf(unsigned indent, const void *source,
   }
   else
   {
-    while (count--)
+    while (*s && count--)
     {
       *(uchar *)dest++ = *s++;
     }
