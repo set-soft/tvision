@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML>
+<HEAD>
+   <TITLE>Turbo Vision port to the GNU compiler</TITLE>
+   <meta name="description" content="Turbo Vision port to the GNU compiler">
+   <meta name="keywords" content="Turbo Vision, TVision, tvision, rhtvision, turbo, vision, TUI, tui, linux, djgpp, library, download, rhide, setedit, SET">
+   <meta name="resource-type" content="document">
+   <meta name="distribution" content="global">
+   <meta name="Author" content="Salvador E. Tropea, set@users.sourceforge.net">
+   <meta http-equiv="Content-Style-Type" content="text/css">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <link rel=stylesheet type="text/css" href="sf.css">
+</HEAD>
+<BODY>
+
+<p><div class=cent>
+<table>
+<tr>
+<td>
+ <div class=s4>Turbo Vision</div>
+ <div class=s3>port to the GNU compiler</div>
+</td>
+<td align=right>
+ <A class=invis href="http://sourceforge.net">
+ <IMG src="http://sourceforge.net/sflogo.php?group_id=49571"
+  width="88" height="31" alt="SourceForge Logo"></A>
+</td>
+</tr>
+</table>
+</div>
+
+<p>
+<ul>
+ <li> <a href="#intro">Introduction and information</a>.
+  <ul>
+   <li> <a href="#wtv">What's Turbo Vision?</a>
+   <li> <a href="#wctv">Who created TVision?</a>
+   <li> <a href="#wpl">What platforms are supported?</a>
+   <li> <a href="#wcp">What about copyrights?</a>
+  </ul>
+</ul>
+<ul>
+ <li> <A href="http://sourceforge.net/projects/tvision/">Project summary on Source Forge (statistics, cvs, downloads, mailing list, etc.)</A>.
+</ul>
+<ul>
+ <li> <a href="#down">Download</a>.
+  <ul>
+   <li> <a href="#ddjgpp">DJGPP (DOS) TVision</a>
+   <li> <a href="#dlinux">Linux TVision</a>
+  </ul>
+</ul>
+<ul>
+ <li> <a href="history.html">Small release history</a>.
+ <li> <a href="contrib.html">Contributors</a>.
+ <li> <a href="#mail">E-mail contact</a>.
+</ul>
+
+
+<p><hr><p>
+<b class=nuevo>New</b>
+<a href="tv2-QNX-tvscreen.jpg">Screenshot</a> of Turbo Vision running on QNX (+Photon). It was
+taked by Mike Gorchak who is working on the QNX port.<p>
+In the <a href="http://setedit.sourceforge.net">SETEdit</a> site you'll find screenshots of
+a Turbo Vision application running as a native X application. They are from Linux and
+Solaris.<p>
+<p><hr><p>
+
+<a name="intro"></a><h2>Introduction and information</h2><p>
+<a name="wtv"></a><h3>What's Turbo Vision?</h3>
+<p>Turbo Vision (TVision for short) is a TUI (Text User Interface) that
+implements the well known CUA widgets. With TVision you can create an
+<i>intuitive</i> text mode application, intuitive means it will have CUA like
+interface (check boxes, radio buttons, push buttons, input lines, pull-down
+menues, status bars, etc.). All the people acustomed to the Windows, MacOS,
+OS/2, Motif, GTK, etc. interfaces will understand the interface at first
+sight.
+<p>
+
+<a name="wctv"></a><h3>Who created TVision?</h3>
+<p>TVision was developed by Borland (now Imprise) in 1992 (v1.03) as a tool
+for your TurboC and TurboPascal compilers. Around 1997 the masive use of the
+Window GUI make the product relative obsolete for commercialization and
+Borland put the sources in your ftp site, only the C++ version was released.
+Later they even authorized to the FPC group to use the Pascal sources.<br>
+<a href="mailto:robert.hoehne@gmx.net">Robert H&ouml;hne</a> ported it to
+the <a href="http://www.delorie.com">djgpp</a>
+toolkit to develope an IDE (Integrated Development Environment) similar to
+the Borland's BC++ 3.1 but for djgpp. DJGPP is based on the GNU compiler gcc.<br>
+I contributed some classes (the editor and help system) to the RHIDE project
+and made some modifications to the TVision sources.
+<p>
+
+<a name="wpl"></a><h3>What platforms are supported?</h3>
+<p>This port is a port of the C++ version for the DOS and Linux platforms.
+The port isn't 100% compatible with the original version from Borland because
+we want a library better than the original and not with the limititations
+imposed by the original 16 bits version and the huge security holes that are
+unacceptable.<br>
+<a href="mailto:ssigala@globalnet.it">Sergio Sigala</a> made a port to Linux and
+FreeBSD with "100% of compatibility with the old version" as goal. The v0.6
+of this port can be found in <a href="ftp://sunsite.unc.edu/pub/Linux/devel/lang/c++/tvision-0.6.tar.gz">Sunsite</a>.<br>
+<p>
+
+<a name="wpl"></a><h3>What about copyrights?</h3>
+<p>The original code is copyrighted by Borland but is freely available from
+the net. Try <a href="ftp://ftp.borland.com/pub/borlandcpp/devsupport/archive/turbovision/tv.zip">here</a>.<br>
+This port is distributed under the GPL license and the Sigala's port under
+a BSD like license.<br>
+According to a FAQ entry in the Borland's site (was in http://www.inprise.com/devsupport/bcppbuilder/faq/QNA906.html
+when I saw it) the code is public domain. I also asked in the Borland's
+newsgroup and the TeamB people (not official people but they are who give
+technical support in the net) said me the FAQ was right.
+<p>
+
+
+<p><hr><p>
+<a name="down"></a><h2>Download</h2>
+
+<p><b>Important!</b> I'm not providing pre-compiled versions because that's
+usually a source of problems. Libraries compiled with one version of the
+compiler fails to link with others, etc. If you think I should provide
+binaries and have a really good reason just tell me.<p>
+
+<a name="ddjgpp"></a><h3>DJGPP (DOS) TVision</h3>
+<p>The 1.1.4 release can be downloaded from here (Attention: if the link
+fails is because I didn't have time to upload yet, please try again later)
+<p>Sources distribution: <a href="http://prdownloads.sourceforge.net/tvision/tv114s.zip">tv114s.zip</a><br>
+or in the Simtelnet servers like: <a href="ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp/v2tk/tv114s.zip">ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp/v2tk/tv114s.zip</a>
+<p>
+
+<a name="dlinux"></a><h3>Linux TVision</h3>
+
+<p><b>Important</b>: ncurses and gpm are needed for the Linux port.<p>
+
+The 1.1.4 release can be downloaded from here (Attention: if the link
+fails is because I didn't have time to upload yet, please try again later)
+<p>
+Sources distribution: 699k <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-1.1.4.src.tar.gz">rhtvision-1.1.4.src.tar.gz</a><br>
+
+<!-- Linux Software Map entry: <a href="rhtvision.txt">rhtvision.txt</a><br> -->
+<p>
+<b>The following RPMs were provided by a volunteer: <a href="mailto:anamorphose@users.sourceforge.net">Dominique</a>
+(aka Anamorphose) and needs testing, please give us some feedback</b>. I can't test the
+RPMs in my Debian system. The version for the RPMs is 1.1.4.<br>
+Binary RPM: <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-1.1.4-2.i386.rpm">rhtvision-1.1.4-2.i386.rpm</a><br>
+Source RPM: <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-1.1.4-2.src.rpm">rhtvision-1.1.4-2.src.rpm</a><br>
+Development RPM: <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-devel-1.1.4-1.i386.rpm">rhtvision-devel-1.1.4-1.i386.rpm</a><br>
+
+<p>
+<b>Previous version (1.0.10)</b>: Needed for Setedit 0.4.41 and RHIDE 1.4.7.<br>
+DOS <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-1.0.10.src.tar.gz">sources</a><br>
+Linux <a href="http://prdownloads.sourceforge.net/tvision/tv1010s.zip">sources</a><p>
+
+<p><hr><p>
+<a name="mail"></a><h2>E-mail contact</h2>
+<p><img src="envelp.gif" width=14 height=15 alt=mail>You can contact me by e-mail <a href="mailto:set@users.sourceforge.net">set@users.sourceforge.net</a>
+<p>
+
+<div class=cent>
+<a href="http://validator.w3.org/check?uri=http://tvision.sourceforge.net/index.html;outline=1" class=invis>
+<img src="http://www.w3.org/Icons/valid-html401.gif" alt="Valid HTML 4.01!" height="31" width="88"></a>
+<a class=invis href="http://jigsaw.w3.org/css-validator/validator?uri=http://tvision.sourceforge.net/index.html">
+<img src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!" height=31 width=88></a>
+<a class=invis href="http://www.anybrowser.org/campaign/">
+<img src="bvucs-n1.jpg" alt="Any browser!" height=30 width=100></a>
+</div>
+
+<p><hr><p>
+<div class=sm1>Last update: mar may 28 11:23:10 ART 2002</div>
+</BODY></HTML>

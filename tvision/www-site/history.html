@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML>
+<HEAD>
+   <TITLE>Turbo Vision port to the GNU compiler - History</TITLE>
+   <meta name="description" content="Turbo Vision port to the GNU compiler">
+   <meta name="keywords" content="Turbo Vision, TVision, tvision, rhtvision, turbo, vision, TUI, tui, linux, djgpp, library, download, rhide, setedit, SET">
+   <meta name="resource-type" content="document">
+   <meta name="distribution" content="global">
+   <meta name="Author" content="Salvador E. Tropea, set@users.sourceforge.net">
+   <meta http-equiv="Content-Style-Type" content="text/css">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <link rel=stylesheet type="text/css" href="sf.css">
+</HEAD>
+<BODY>
+
+<p><div class=cent>
+<table>
+<tr>
+<td>
+ <div class=s4>Turbo Vision</div>
+ <div class=s3>port to the GNU compiler</div>
+</td>
+<td align=right>
+ <A class=invis href="http://sourceforge.net">
+ <IMG src="http://sourceforge.net/sflogo.php?group_id=49571"
+  width="88" height="31" alt="SourceForge Logo"></A>
+</td>
+</tr>
+</table>
+</div>
+
+<h2>Release History</h2>
+
+<p><b>Important!</b> These are only the most relevant things, for a detailed
+list of fixes/additions look in the change.log file.<p>
+
+<B>Release 1.1.4</B><BR>
+Added support for RHIDE 1.4.9 and MSS 1.2.1.<BR>
+Fixed compatlayer issues when including it more than once.<BR>
+Added a mechanism to easily enable/disable international support without recompiling.<BR>
+Fixed 100% CPU usage in the BC++ 5.5 version.<BR>
+Fixed some Solaris problems.<BR>
+Fixed desklogo and listvi examples.<BR>
+<p>
+<b>Release 1.1.3</b><br>
+Added gcc 3.1 support.<br>
+Fixed TRangeValidator.<br>
+<p>
+<b>Release 1.1.2</b><br>
+Added gcc 3.0 support.<br>
+Added support for CygWin (Win32).<br>
+DOS: Keyboard using BIOS by default.<br>
+Fixed problems to compile examples.<br>
+Fixed keypad under X.<br>
+Fixed endianess details, now the demo works for Power PC and SPARC (Linux).<br>
+Fixed compile problems in FreeBSD and Linux/Alpha.<br>
+<p>
+<b>Release 1.1.1</b><br>
+Fixed cursor updated jumping when desktop locked.<br>
+Fixed TSortedCollection incremental search issues.<br>
+Added option to configure TFileCollection.<br>
+Added new color for disabled TCluster objects.<br>
+Fixed endianess problems in the TView draw member.<br>
+Added better support for Linux terminals, including ISO-8859-1 accents support.<br>
+Added a dummy internationalization library.<br>
+Fixed compiling issues in Linux.<br>
+Added a dialog editor program.<br>
+<p>
+<b>Release 1.1.0</b><br>
+Added BC++ 5.5 support (Win32).<br>
+Added MinGW support (Win32).<br>
+Added a `library' called compat layer to abstract the OS/compiler dependent things.<br>
+Fixed some details to make the library compilable with FreeBSD and other UNIXes.<br>
+Moved headers to a subdirectory (tv/*.h).<br>
+Added TButton callback.<br>
+Added 32 bits TRadioButtons and TCheckBoxes.<br>
+Added Add and Done buttons to the FileOpenDialog.<br>
+Fixed TStatusItem now uses copies of the strings passed.<br>
+<p>
+<b>Release 1.0.10</b><br>
+Disable ^Q, ^S, ^C, ^/ and ^Z when using terminals.<br>
+TFileDialog is now "growable".<br>
+Now the initialization of the TScreen is called from TProgInit.<br>
+<p>
+<b>Release 1.0.9</b><br>
+Added configure/make/make install mechanism.<br>
+Added support for DOS greek keyboards.<br>
+Fixed wrong broadcast in TListView.<br>
+Fixed compilation problems with gcc 2.95 under DOS.<br>
+Fixed bug in the TFileList vertical scroll bar.<br>
+<p>
+<b>Release 1.0.8</b><br>
+Around 28 bugfixes collected from the net by Laurynas Biveinis.<br>
+Added some new broadcasts to make more clean some process that were ugly.<br>
+Added low level (register level) save/restore VGA mode for DOS, it
+workarounds bugs in some broken BIOSes.<br>
+Added TFileCollection sorting options.<br>
+Added TDesktop now can also tile windows partitioning first vertically.<br>
+Now the library releases the CPU by default.<br>
+<p>
+<b>Release 1.0.7</b><br>
+Added Eterm 0.8.10 support (excellent keyboard under X!).<br>
+Added a couple of new members to TCommandSet to re/set ranges of commands.<br>
+Added example to avoid 100% CPU usage.<br>
+Added the calculator to the library.<br>
+Ported TChdirDialog to Linux version.<br>
+Modifications in the TFileDialog scroll bars, other small changes to this class (no double dir read, no .. in DOS' root, etc.).<br>
+Fixed warnings in examples when using egcs.<br>
+Fixed bug in TFileInfoPane.<br>
+Fixed now ^Z is disabled.<br>
+Fixed many calls to delete without [] and passing void pointers.<br>
+<p>
+<b>Release 1.0.6</b><br>
+Added much better support for xterm, including mouse and window resize.<br>
+Added mouse support for NT.<br>
+Added a function to recycle the doEditDialog.<br>
+Added some support for Alpha/Linux (experimental).<br>
+Added support for readonly /dev/vcsa devices.<br>
+Added some nice things in TMenuBar and TStatusLine (resize and 1 space around).<br>
+Ported TParamText.<br>
+Reduced the ESC delay.<br>
+Fixed bugs in TEditor and TSortedListBox.<br>
+Fixed leak in TResourceFile.<br>
+<p>
+<b>Release 1.0.5</b><br>
+Added files to generate a .deb package.<br>
+Fixed memory leaks and modified to release all the allocated memory when
+exiting. I debugged my editor with YAMD and it was needed to detect leaks in
+the editor.<br>
+Added support for VESA modes from TDisplay::setCrtMode.<br>
+Changed the name of the library to avoid potential collisions with the
+Sigala's port. No body reported problems but I'm thinking about making the
+library part of the main Debian distribution.<br>
+<p>
+<b>Release 1.0.4</b><br>
+Added TEditor, TFileEditor, TEditorWindow and TMemo classes. They were lost
+when we incorporated my TCEditor class to RHIDE.<br>
+Fixed problems with VESA modes in S3 boards.<br>
+Added support for ACS_xxxx ncurses macros. It makes the program look much
+better when using xterm.<br>
+<p>
+<b>Release 1.0.3</b><br>
+Dynamic version for Linux.<br>
+Fixed some problems in the make process.<br>
+<p>
+<b>Release 1.0.2</b><br>
+Fixes for the keyboard mappings used in Red Hat 5.2.<br>
+Added nine examples, a 16 steps tutorial and a demo program.<br>
+<p>
+<b>Release 1.0.1</b><br>
+First public standalone release.<br>
+<p>
+<b>Release 1.0.0</b><br>
+First release, not public. Only sent to Robert.<br>
+<p>
+
+<p><hr><p>
+<a name="mail"></a><h2>E-mail contact</h2>
+<p><img src="envelp.gif" width=14 height=15 alt=mail>You can contact me by e-mail <a href="mailto:set@users.sourceforge.net">set@users.sourceforge.net</a>
+<p>
+
+<div class=cent>
+<a href="http://validator.w3.org/check?uri=http://tvision.sourceforge.net/history.html;outline=1" class=invis>
+<img src="http://www.w3.org/Icons/valid-html401.gif" alt="Valid HTML 4.01!" height="31" width="88"></a>
+<a class=invis href="http://jigsaw.w3.org/css-validator/validator?uri=http://tvision.sourceforge.net/history.html">
+<img src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!" height=31 width=88></a>
+<a class=invis href="http://www.anybrowser.org/campaign/">
+<img src="bvucs-n1.jpg" alt="Any browser!" height=30 width=100></a>
+</div>
+
+<p><hr><p>
+<div class=sm1>Last update: mar may 28 11:23:10 ART 2002</div>
+</BODY></HTML>

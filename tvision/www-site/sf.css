@@ -1,0 +1,16 @@
+BODY      { background: #A0D0FF; color: black; text-decoration: none }
+A:link    { background: #A0D0FF; color: #FF0000; text-decoration: none }
+A:visited { background: #A0D0FF; color: #202060; text-decoration: none }
+A:active  { background: #A0D0FF; color: #FF0000; text-decoration: none }
+A.invis:link    { background: #A0D0FF; color: #A0D0FF; text-decoration: none }
+A.invis:visited { background: #A0D0FF; color: #A0D0FF; text-decoration: none }
+A.invis:active  { background: #A0D0FF; color: #A0D0FF; text-decoration: none }
+H1.cent  { text-align: center }
+H2       { font-weight: bold; font-size: large }
+H3       { font-weight: bold; font-size: medium }
+B.nuevo  { text-decoration: blink; font-weight: bold }
+DIV.cent { text-align: center }
+DIV.s4   { text-align: center; font-size: xx-large; font-weight: bold }
+DIV.s3   { text-align: center; font-size: large; font-weight: bold }
+DIV.sm1  { font-size: small }
+TD.com   { color: black; background: #A0A0FF}
