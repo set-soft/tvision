@@ -45,6 +45,8 @@ void TDisplayX11::Init()
  setCursorShape=SetCursorShape;
  getRows=GetRows;
  getCols=GetCols;
+ setCrtMode=SetCrtMode;
+ setCrtModeExt=SetCrtModeExt;
  checkForWindowSize=CheckForWindowSize;
 }
 
@@ -97,6 +99,18 @@ int TDisplayX11::CheckForWindowSize(void)
  int ret=windowSizeChanged!=0;
  windowSizeChanged=0;
  return ret;
+}
+
+void TDisplayX11::SetCrtMode(ushort )
+{// After setting a video mode the cursor is reset to a known value
+ cShapeFrom=14;
+ cShapeTo=16;
+}
+
+void TDisplayX11::SetCrtModeExt(char * )
+{
+ cShapeFrom=14;
+ cShapeTo=16;
 }
 #endif // defined(TVOS_UNIX) && defined(HAVE_X11)
 

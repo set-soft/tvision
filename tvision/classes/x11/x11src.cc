@@ -501,12 +501,10 @@ TScreenX11::TScreenX11()
  /* Initialize common variables */
  cShapeFrom=14;
  cShapeTo=16;
- cursorLines=startupCursor=getCursorType();
- screenMode=startupMode=getCrtMode();
- screenWidth =GetCols();
- screenHeight=GetRows();
+ setCrtData();
+ startupCursor=cursorLines;
+ startupMode=screenMode;
  screenBuffer=new ushort[screenWidth*screenHeight];
- SetCursorShape(0,0);
 
  /* Get screen and graphic context */
  screen=DefaultScreen(disp);
