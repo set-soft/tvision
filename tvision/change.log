@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.80  2002/05/20 15:27:29  set
+* Added: QNX files to RHIDE project and hence Makefile.
+
 Revision 2.79  2002/05/20 15:23:57  set
 * Added: QNX skeleton files from Mike. I changed the code a little bit to
 generate the most important dependencies even when using Linux's RHIDE.

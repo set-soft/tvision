@@ -615,6 +615,10 @@ TScreenUNIX::TScreenUNIX()
   cursesInitialized=1;
   // ************* If all went ok we can use this driver
 
+  /* Don't need special rights anymore */
+  seteuid(getuid());
+  setegid(getgid());
+  
   initialized=1;
 
   TDisplayUNIX::Init();

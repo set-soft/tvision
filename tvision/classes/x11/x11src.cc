@@ -483,6 +483,10 @@ TScreenX11::TScreenX11()
  if (!disp)
     return;
 
+ /* Don't need special rights anymore */
+ seteuid(getuid());
+ setegid(getgid());
+ 
  /* Initialize driver */
  initialized=1;
 
@@ -546,9 +550,11 @@ TScreenX11::TScreenX11()
  hints.flags=InputHint;
  hints.input=True;
  XSetWMHints(disp,mainWin,&hints);*/
+ /* This is how we provide a title for the window.
+    If the application wants it should call setWindowTitle.
  XTextProperty name;
  char *s="Test";
- XStringListToTextProperty(&s,1,&name);
+ XStringListToTextProperty(&s,1,&name);*/
 
  XClassHint aClass;
  aClass.res_name="tvapp";   /* Take resources for tvapp */
@@ -561,13 +567,14 @@ TScreenX11::TScreenX11()
  shints->height_inc=fontH;
 
  XSetWMProperties(disp,mainWin,
-                  &name,   /* Visible title */
-                  &name,   /* Icon title */
+                  NULL,    /* Visible title, i.e. &name */
+                  NULL,    /* Icon title, i.e. &name */
                   NULL,0,  /* Command line */
                   shints,  /* Normal size hints, resize increments */
                   NULL,    /* Window manager hints, nothing (i.e. icon) */
                   &aClass);/* Resource name and class of window */
- XFree((char *)name.value);
+ /* This is needed to release the memory used for the title
+ XFree((char *)name.value);*/
 
  /* Ask to be notified when they kill the window */
  theProtocols=XInternAtom(disp,"WM_DELETE_WINDOW",True);
