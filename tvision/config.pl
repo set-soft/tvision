@@ -103,7 +103,7 @@ $MakeDefsRHIDE[2].=' '.$conf{'NameCurses'}.' m' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[2].=' '.$conf{'X11Lib'} if ($conf{'HAVE_X11'} eq 'yes');
 $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
-$MakeDefsRHIDE[2].=' intl' if (($OSf eq 'FreeBSD') && ($conf{'intl'} eq 'yes');
+$MakeDefsRHIDE[2].=' intl' if (($OSf eq 'FreeBSD') && ($conf{'intl'} eq 'yes'));
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
@@ -698,6 +698,26 @@ sub GenerateMakefile
  $rep.="\tinstall -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
  $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv\n";
  $rep.="\tinstall -m 0644 include/tv/*.h \$(prefix)/include/rhtvision/tv\n";
+ if ($OS eq 'DOS')
+   {
+    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/dos\n";
+    $rep.="\tinstall -m 0644 include/tv/dos/*.h \$(prefix)/include/rhtvision/tv/dos\n";
+   }
+ if ($OS eq 'UNIX')
+   {
+    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/linux\n";
+    $rep.="\tinstall -m 0644 include/tv/linux/*.h \$(prefix)/include/rhtvision/tv/linux\n";
+   }
+ if ($OS eq 'Win32')
+   {
+    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/win32\n";
+    $rep.="\tinstall -m 0644 include/tv/win32/*.h \$(prefix)/include/rhtvision/tv/win32\n";
+   }
+ if (@conf{'HAVE_X11'} eq 'yes')
+   {
+    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/x11\n";
+    $rep.="\tinstall -m 0644 include/tv/x11/*.h \$(prefix)/include/rhtvision/tv/x11\n";
+   }
  $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/cl\n";
  $rep.="\tinstall -m 0644 include/cl/*.h \$(prefix)/include/rhtvision/cl\n";
  $text=~s/\@install_headers\@/$rep/g;
