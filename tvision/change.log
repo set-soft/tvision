@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.172  2004/06/28 16:23:39  set
+* Modified: [MSVC] It looks like all MSVC versions have _snprintf and
+_vsnprintf, but only some of them the snprintf alias. In order to make
+things more clear I'm trying to use the _* versions for all MSVC versions.
+
 Revision 2.399.2.171  2004/06/25 19:27:36  set
 * Added: [MSVC] a simple bool/true/false replacement to compatlayer.
 

@@ -3019,7 +3019,7 @@ re_search_2 ( struct re_pattern_buffer *bufp,
 
 //static int bcmp_translate ();
 static int
-bcmp_translate ( unsigned char *s1, unsigned char *s2,
+bcmp_translate ( const char *s1, const char *s2,
      register int len, char *translate );
 
 //static boolean alt_match_null_string_p (),
@@ -4622,10 +4622,11 @@ common_op_match_null_string_p ( unsigned char **p, unsigned char *end,
    bytes; nonzero otherwise.  */
    
 static int
-bcmp_translate ( unsigned char *s1, unsigned char *s2,
-     register int len, char *translate )
+bcmp_translate ( const char *s1, const char *s2, register int len,
+                 char *translate )
 {
-  register unsigned char *p1 = s1, *p2 = s2;
+  register unsigned char *p1 = (unsigned char *)s1,
+                         *p2 = (unsigned char *)s2;
   while (len)
     {
       if (translate[*p1++] != translate[*p2++]) return 1;
