@@ -227,6 +227,9 @@ void TVDemo::puzzle()
 // retrieveDesktop() function ( restores the previously stored Desktop )
 //
 
+// SET: Mike modified it to lowercase, is less annoying on POSIX systems
+static const char *TVDemoFile="tvdemo.dst";
+
 void TVDemo::retrieveDesktop()
 {
 	/* SS: changed */
@@ -235,12 +238,12 @@ void TVDemo::retrieveDesktop()
 
 //    if (findfirst("TVDEMO.DST", &ffblk, 0))
 	FILE *fp;
-	if ((fp = fopen("TVDEMO.DST", "r")) == NULL)
+	if ((fp = fopen(TVDemoFile, "r")) == NULL)
         messageBox("Could not find desktop file", mfOKButton | mfError);
         else
         {
 	fclose(fp);
-        fpstream *f = new fpstream("TVDEMO.DST", ios::in|CLY_IOSBin);
+        fpstream *f = new fpstream(TVDemoFile, ios::in|CLY_IOSBin);
         if( !f )
             messageBox("Could not open desktop file", mfOKButton | mfError);
         else
@@ -259,16 +262,16 @@ void TVDemo::retrieveDesktop()
 
 void TVDemo::saveDesktop()
 {
-    fpstream *f = new fpstream("TVDEMO.DST", ios::out|CLY_IOSBin);
+    fpstream *f = new fpstream(TVDemoFile, ios::out|CLY_IOSBin);
 
     if( f )
         {
         TVDemo::storeDesktop(*f);
         if( !f )
             {
-            messageBox("Could not create TVDEMO.DST.", mfOKButton | mfError);
+            messageBox("Could not create tvdemo.dst.", mfOKButton | mfError);
             delete f;
-            ::remove("TVDEMO.DST");
+            ::remove(TVDemoFile);
             return;
             }
         }

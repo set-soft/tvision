@@ -44,13 +44,17 @@
 #include "calendar.h"
 
 //
-//  DOS Shell Command.
+//  DOS/UNIX Shell Command.
 //
 
 void TVDemo::shell()
 {
 	/* SS: this simulates a Ctrl-Z */
 	/*raise(SIGTSTP);*/		/* stop the process */
+    suspend();
+    TScreen::System(CLY_GetShellName());
+    resume();
+    redraw();
 }
 
 
@@ -88,7 +92,8 @@ void TVDemo::handleEvent(TEvent &event)
                 break;
 
             case cmOpenCmd:             //  View a file
-                openFile("*.*");
+                // SET: Even DOS port needs it.
+                openFile("*");
                 break;
 
             case cmChDirCmd:            //  Change directory

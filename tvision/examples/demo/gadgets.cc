@@ -19,6 +19,7 @@
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
  * Andris Pavenis.
+ * Modified by Mike Gorchak <mike@malva.ua> to report free memory on QNX.
  */
 
 // SET: moved the standard headers before tv.h
@@ -27,6 +28,10 @@
 #define Uses_ctype
 #define Uses_time
 #define Uses_iomanip
+#ifdef TVOSf_QNXRtP
+ #define Uses_stdio
+ #define Uses_sys_stat
+#endif // TVOSf_QNXRtP
 
 #define Uses_TRect
 #define Uses_TView
@@ -74,9 +79,37 @@ void THeapView::update()
 
 long THeapView::heapSize()
 {
+ #ifdef TVOSf_QNXRtP
+   struct stat st;
+   long rval=0;
+
+   if (stat("/proc", &st)==0)
+   {
+      rval=st.st_size;
+   }
+
+   if (rval>1024UL*512UL) // one half megabyte !
+   {
+      if (rval>1024UL*1024UL*32UL) // if above 32Mb free
+      {
+         sprintf(heapStr, "%10dMb", rval/1024UL/1024UL);
+      }
+      else
+      {
+         sprintf(heapStr, "%10dKb", rval/1024UL);
+      }
+   }
+   else
+   {
+      sprintf(heapStr, "%12d", rval);
+   }
+
+   return rval;
+ #else
 	/* SS: changed */
 	strcpy(heapStr, "Hello world!");
 	return -1;
+ #endif // TVOSf_QNXRtP
 }
 
 
