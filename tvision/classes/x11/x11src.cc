@@ -793,6 +793,7 @@ TScreenX11::TScreenX11()
  
  /* Initialize driver */
  initialized=1;
+ if (dCB) dCB();
 
  maxX=80; maxY=25;
  fontW=8; fontH=16;

@@ -87,6 +87,7 @@ public:
  static char   *Search(const char *section, const char *variable);
  static int     Add(const char *key, const char *name, long value);
  static int     Add(const char *key, const char *name, const char *value);
+ static void    Print(FILE *f) { config->Print(f); };
 
 protected:
  static TVConfigFile *config;

@@ -661,7 +661,7 @@ int TVMainConfigFile::Load()
     config->Load(name);
     delete[] name;
    }
- config->Print(stderr);
+ //config->Print(stderr);
  return config->ErrorStatus;
 }
 

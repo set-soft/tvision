@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.269  2002/08/26 13:35:58  set
+* Added: atReplace to the TNSCollection class.
+* Added: "Add" facilities to the TVMainConfigFile class.
+* Added: TDisplay::getDefaultPalette() to find what's the default palette.
+
 Revision 2.268  2002/08/26 13:35:29  set
 * Added: The test code I use for Linux/Console cyrillic support.
 

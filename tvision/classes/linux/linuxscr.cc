@@ -732,6 +732,7 @@ TScreenLinux::TScreenLinux()
    }
  // Ok, if we are here this driver is usable.
  initialized=1;
+ if (dCB) dCB();
 
  // Determine which subdriver to use (VCS R/W, VCS W or plain terminal)
  {

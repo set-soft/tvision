@@ -80,8 +80,8 @@ public:
  int    GetError() { return error; }
  const char *GetFileName() { return fileName; }
  const char *GetFontName() { return fontName; }
- static TVBitmapFontDescCol *CreateListOfFonts(const char *dir, unsigned wmin,
-          unsigned wmax, unsigned hmin, unsigned hmax);
+ static TVBitmapFontDescCol *CreateListOfFonts(const char *dir, unsigned wmin=0,
+          unsigned wmax=256, unsigned hmin=0, unsigned hmax=256);
  static void Size2Str(char *buffer, unsigned w, unsigned h);
  static void Str2Size(const char *buffer, unsigned &w, unsigned &h);
 

@@ -156,6 +156,7 @@ TScreenXTerm::TScreenXTerm()
    }
  // Ok, if we are here this driver is usable.
  initialized=1;
+ if (dCB) dCB();
 
  // Don't need special rights anymore
  seteuid(getuid());
