@@ -79,6 +79,8 @@ void TDisplayQNXRtP::SetCursorShape(unsigned start, unsigned end)
    {
       if (end-start>15)
       {
+         // It is hack for now. cursor_visible is empty string. Why ???
+         safeput(p, tparm(cursor_normal));
          safeput(p, tparm(cursor_visible));
          write(tty_fd, out, p-out);
       }
