@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.532  2004/04/19 20:41:58  set
+* Added: Code needed to test with the AlCon branch.
+.
 Revision 2.531  2004/04/14 15:41:12  set
 * Fixed: Oops! the patch from the Unicode branch didn't apply propperly,
 now is fixed and the code compiles.
