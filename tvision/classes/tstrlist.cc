@@ -34,8 +34,7 @@ TStrListMaker::TStrListMaker( ushort aStrSize, ushort aIndexSize ) :
 TStrListMaker::~TStrListMaker()
 {
     delete strings;
-    int i;
-    for (i=indexSize;i>0;i--) delete (index+(i-1));
+    delete [] index;
 }
 
 

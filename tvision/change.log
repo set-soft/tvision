@@ -1,4 +1,21 @@
 $Log$
+Revision 1.47  1999/05/16 22:09:14  root (set)
+* Added: My DOS TSR to enhance the keyboard to the distribution.
+* Added: A .pif example showing how to prevent using the program in a window
+and recover some keys like Alt+Space.
+* Moved the Linux code from screen.cc to classes/linux/tscreen.cc.
+* Added: The ability to use VCSAs even if they are write only.
+* Removed the tcget/setattr calls from TScreen because that's done by ncurses.
+* Added: A variable to fine tune the video driver called
+TurboVision_screenOptions, by now only have meaning under Linux and is used
+to tell the TScreen class to not use VCSAs if they are write only (because
+then suspend/resume doesn't work properly).
+* Modified: Now Alt+key doesn't have any ASCII value associated so if you
+press Alt+8 the program won't display 8 if there is no action for Alt+8.
+* Added: Documentation in the readmes about the limitations and
+particularities of each platform. For example: what doesn't work when using
+telnet, how can you paste using gpm, etc.
+
 Revision 1.46  1999/05/15 23:51:09  root (set)
 * Good news for xterm funs:
 * Fixed: A bug in the startcurses() that made xterm report the wrong codes

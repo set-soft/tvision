@@ -394,6 +394,7 @@ void TGKey::fillTEvent(TEvent &e)
  e.keyDown.raw_scanCode=TGKey::rawCode.b.scan;
  e.keyDown.keyCode=Abstract;
  e.keyDown.shiftState=sFlags;
+ e.what=evKeyDown;
 }
 #endif
 
