@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.143  2002/06/11 14:56:57  set
+* Fixed: [XTerm] The suspend member needed a flush, without it calling a
+shell didn't restore the shell screen.
+
 Revision 2.142  2002/06/11 14:34:29  set
 * Fixed: TEventQueue::resume() didn't indicate it was resumed if mouse
 initialization failed.
