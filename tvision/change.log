@@ -1,4 +1,8 @@
 $Log$
+Revision 1.26  1999/02/23 00:06:25  set
+* Added an example of how to change the desktop appearance. Contributed by
+Joel <jso@europay.com>.
+.
 Revision 1.25  1999/02/22 23:04:30  set
 * Included the debian directory for the debianization but yet not included in
 the distribution package. Debian package by Ivan Baldo <lubaldo@adinet.com.uy>
