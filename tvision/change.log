@@ -1,4 +1,13 @@
 $Log$
+Revision 1.150  2000/05/16 02:08:05  set
+* Added: A new constructor for TListBox and TSortedListBox that accepts two
+scroll bars. I don't know why original TV lacks it when TListViewer have it
+(base class).
+* Modified: The behavior of the TListViewer class, now when you press the
+left or right key and the viewer have and horizontal scroll bar and there is
+just one column the handleEvent calls to the scroll bar handleEvent instead
+of just return. I think that's very sensitive.
+.
 Revision 1.149  2000/05/13 16:02:39  set
 * Fixed: Yet another call to delete without []. Pointed out by Laurynas.
 .

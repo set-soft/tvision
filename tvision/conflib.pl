@@ -7,6 +7,7 @@
 
 $ErrorLog='errormsg.txt';
 $MakeDefsRHIDE={};
+$ExtraModifyMakefiles={};
 $OSflavor='';
 
 sub GetCache
@@ -677,7 +678,7 @@ sub DetectOS
 
 sub ModifyMakefiles
 {
- my $a,$text,$rep;
+ my $a,$text,$rep,$repv;
 
  print 'Configuring makefiles: ';
  foreach $a (@_)
@@ -691,10 +692,11 @@ sub ModifyMakefiles
        $text=~s/RHIDE_LD=(.*)\n/RHIDE_LD=$GXX\n/;
        $text=~s/RHIDE_OS_CFLAGS=(.*)\n/RHIDE_OS_CFLAGS=$CFLAGS\n/;
        $text=~s/RHIDE_OS_CXXFLAGS=(.*)\n/RHIDE_OS_CXXFLAGS=$CXXFLAGS\n/;
-       #foreach $rep (MakeDefsRHIDE)
-       #  {
-       #   $text=~s/$rep[0]\n/$rep[1]\n/;
-       #  }
+       foreach $rep (%ExtraModifyMakefiles)
+         {
+          $repv="$rep=@ExtraModifyMakefiles{$rep}\n";
+          $text=~s/$rep=(.*)\n/$repv/;
+         }
        replace($a,$text);
       }
    }
@@ -847,6 +849,21 @@ sub ParentDir
  chop $parent;
  chdir($cur);
  $parent;
+}
+
+sub ReplaceText
+{
+ my $Text,$Dest=$_[1],$i,$se,$re;
+
+ print "Processing $_[0] => $_[1]\n";
+ $Text=cat($_[0]);
+ foreach $i (%ReplaceTags)
+   {
+    $se='@'.$i.'@';
+    $re=@ReplaceTags{$i};
+    $Text =~ s/$se/$re/g;
+   }
+ replace($Dest,$Text);
 }
 
 1;

@@ -2,6 +2,8 @@ prefix=@prefix@
 libdir=$(prefix)/lib
 OS=@OS@
 
+.PHONY: @targets@
+
 all: @targets@
 
 @target1_rule@
