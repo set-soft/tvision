@@ -2,10 +2,11 @@ Source: rhtvision
 Section: libs
 Priority: optional
 Maintainer: Ivan Baldo <lubaldo@adinet.com.uy>
-Standards-Version: 3.0.1
+Build-Depends: perl5, make, libncurses4-dev, libgpmg1-dev, gzip, debhelper
+Standards-Version: 3.1.0
 
 Package: rhtvision@version@-dev
-Architecture: i386 alpha
+Architecture: any
 Section: devel
 Depends: rhtvision@version@, libc6-dev, libstdc++-dev, libgpmg1-dev, libncurses4-dev
 Provides: rhtvision-dev
@@ -16,7 +17,7 @@ Description: Development files for the RHTVision library - a TUI interface.
  only if you want to develop or compile programs using the RHTVision library.
 
 Package: rhtvision@version@
-Architecture: i386 alpha
+Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
 Conflicts: rhtvision1
