@@ -122,6 +122,8 @@ void Usage(void)
  fprintf(stderr,"\t--slibs   [for linking static]\n");
  fprintf(stderr,"\t--dlibs   [for linking dynamic]\n");
  fprintf(stderr,"\t--dir-libs\n");
+ fprintf(stderr,"\t--cflags\n");
+ fprintf(stderr,"\t--cppflags\n");
 }
 
 static
@@ -163,6 +165,10 @@ int main(int argc, char *argv[])
     DLibs();
  else if (strcmp(op,"dir-libs")==0)
     DirLibs();
+ else if (strcmp(op,"cflags")==0)
+    fputs(TVCONFIG_CFLAGS,stdout);
+ else if (strcmp(op,"cppflags")==0)
+    fputs(TVCONFIG_CXXFLAGS,stdout);
  else
    {
     UnknowOp(op);

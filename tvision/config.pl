@@ -803,12 +803,13 @@ sub GenerateMakefile
    }
  $internac=@conf{'xgettext'} ne 'no';
  $rep='static-lib';
- $rep.=' rhtv-config.exe';
+ $rep.=' rhtv-config$(EXE_EXT)';
  $rep.=' dynamic-lib' if ($OS eq 'UNIX');
  $rep.=' internac' if ($internac);
  $text=~s/\@targets\@/$rep/g;
  $text=~s/\@OS\@/$OS/g;
  $text=~s/\@prefix\@/@conf{'prefix'}/g;
+ $text=~s/\@exe_ext\@/$ExeExt/g;
 
  $makeDir='linux' if ($OS eq 'UNIX');
  $makeDir='djgpp' if ($OS eq 'DOS');
@@ -923,6 +924,7 @@ sub GenerateMakefile
  $rep.="\trm -f intl/dummy/*.a\n";
  $rep.="\t-\$(MAKE) -C examples clean\n";
  $rep.="\trm -f configure.cache\n";
+ $rep.="\trm -f rhtv-config\$(EXE_EXT)\n";
  $text=~s/\@clean\@/$rep/g;
 
  replace('Makefile',$text);
@@ -962,7 +964,9 @@ sub CreateConfigH
        $text.="#define TVCONFIG_$1 \"$4\"\n";
       }
    }
- $text.="#define TVCONFIG_REF_DIR \"$here\"\n\n";
+ $text.="#define TVCONFIG_CFLAGS   \"$CFLAGS\"\n";
+ $text.="#define TVCONFIG_CXXFLAGS \"$CXXFLAGS\"\n";
+ $text.="#define TVCONFIG_REF_DIR  \"$here\"\n\n";
 
  $old=cat('include/tv/configtv.h');
  if ($text eq $old)
