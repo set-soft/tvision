@@ -1,2 +1,2 @@
-libintl.a: intldummy.o
-	ar -rv libintl.a intldummy.o
+libtvfintl.a: intldummy.o
+	ar -rv libtvfintl.a intldummy.o
