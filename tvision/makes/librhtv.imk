@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2004-10-14 16:40
+# 2004-10-18 12:06
 #
 
 OBJFILES=\
@@ -615,8 +615,7 @@ librhtv$(ExLIB):: \
 
 INCLUDE00=../compat/compat$(ExIMK)
 
-obj/calcdisp$(ExOBJ):: calcdisp.cc \
-	$(CLASSES_DIR)/calcdisp.cc \
+obj/calcdisp$(ExOBJ):: ../classes/calcdisp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/button.h \
@@ -650,8 +649,7 @@ obj/calcdisp$(ExOBJ):: calcdisp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/calculat$(ExOBJ):: calculat.cc \
-	$(CLASSES_DIR)/calculat.cc \
+obj/calculat$(ExOBJ):: ../classes/calculat.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/button.h \
@@ -687,8 +685,7 @@ obj/calculat$(ExOBJ):: calculat.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/codepage$(ExOBJ):: codepage.cc \
-	$(CLASSES_DIR)/codepage.cc \
+obj/codepage$(ExOBJ):: ../classes/codepage.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -760,8 +757,7 @@ obj/codepage$(ExOBJ):: codepage.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/configfile$(ExOBJ):: configfile.cc \
-	$(CLASSES_DIR)/configfile.cc \
+obj/configfile$(ExOBJ):: ../classes/configfile.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configfile.h \
@@ -780,8 +776,7 @@ obj/configfile$(ExOBJ):: configfile.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/dosdis$(ExOBJ):: dosdis.cc \
-	$(CLASSES_DIR)/dos/dosdis.cc \
+obj/dosdis$(ExOBJ):: ../classes/dos/dosdis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -811,8 +806,7 @@ obj/dosdis$(ExOBJ):: dosdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/doskey$(ExOBJ):: doskey.cc \
-	$(CLASSES_DIR)/dos/doskey.cc \
+obj/doskey$(ExOBJ):: ../classes/dos/doskey.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -838,8 +832,7 @@ obj/doskey$(ExOBJ):: doskey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/dosmouse$(ExOBJ):: dosmouse.cc \
-	$(CLASSES_DIR)/dos/dosmouse.cc \
+obj/dosmouse$(ExOBJ):: ../classes/dos/dosmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -863,8 +856,7 @@ obj/dosmouse$(ExOBJ):: dosmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/dosscr$(ExOBJ):: dosscr.cc \
-	$(CLASSES_DIR)/dos/dosscr.cc \
+obj/dosscr$(ExOBJ):: ../classes/dos/dosscr.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -894,8 +886,7 @@ obj/dosscr$(ExOBJ):: dosscr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/drivers2$(ExOBJ):: drivers2.cc \
-	$(EXTRA_SRC_DIR)/drivers2.cc \
+obj/drivers2$(ExOBJ):: ../drivers2.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -914,8 +905,7 @@ obj/drivers2$(ExOBJ):: drivers2.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/dual$(ExOBJ):: dual.cc \
-	$(EXTRA_SRC_DIR)/dual.cc \
+obj/dual$(ExOBJ):: ../dual.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -938,8 +928,7 @@ obj/dual$(ExOBJ):: dual.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/fileview$(ExOBJ):: fileview.cc \
-	$(EXTRA_SRC_DIR)/fileview.cc \
+obj/fileview$(ExOBJ):: ../fileview.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -984,8 +973,7 @@ obj/fileview$(ExOBJ):: fileview.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/fontcoll$(ExOBJ):: fontcoll.cc \
-	$(CLASSES_DIR)/fontcoll.cc \
+obj/fontcoll$(ExOBJ):: ../classes/fontcoll.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -1025,8 +1013,7 @@ obj/fontcoll$(ExOBJ):: fontcoll.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/fpbase$(ExOBJ):: fpbase.cc \
-	$(CLASSES_DIR)/fpbase.cc \
+obj/fpbase$(ExOBJ):: ../classes/fpbase.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1045,8 +1032,7 @@ obj/fpbase$(ExOBJ):: fpbase.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/fpstream$(ExOBJ):: fpstream.cc \
-	$(CLASSES_DIR)/fpstream.cc \
+obj/fpstream$(ExOBJ):: ../classes/fpstream.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1067,8 +1053,7 @@ obj/fpstream$(ExOBJ):: fpstream.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/help$(ExOBJ):: help.cc \
-	$(CLASSES_DIR)/help.cc \
+obj/help$(ExOBJ):: ../classes/help.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1106,8 +1091,7 @@ obj/help$(ExOBJ):: help.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/helpbase$(ExOBJ):: helpbase.cc \
-	$(CLASSES_DIR)/helpbase.cc \
+obj/helpbase$(ExOBJ):: ../classes/helpbase.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1136,8 +1120,7 @@ obj/helpbase$(ExOBJ):: helpbase.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/histlist$(ExOBJ):: histlist.cc \
-	$(EXTRA_SRC_DIR)/histlist.cc \
+obj/histlist$(ExOBJ):: ../histlist.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1157,8 +1140,7 @@ obj/histlist$(ExOBJ):: histlist.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ifpstrea$(ExOBJ):: ifpstrea.cc \
-	$(CLASSES_DIR)/ifpstrea.cc \
+obj/ifpstrea$(ExOBJ):: ../classes/ifpstrea.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1178,8 +1160,7 @@ obj/ifpstrea$(ExOBJ):: ifpstrea.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/iopstrea$(ExOBJ):: iopstrea.cc \
-	$(CLASSES_DIR)/iopstrea.cc \
+obj/iopstrea$(ExOBJ):: ../classes/iopstrea.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1198,8 +1179,7 @@ obj/iopstrea$(ExOBJ):: iopstrea.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ipstream$(ExOBJ):: ipstream.cc \
-	$(CLASSES_DIR)/ipstream.cc \
+obj/ipstream$(ExOBJ):: ../classes/ipstream.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1227,8 +1207,7 @@ obj/ipstream$(ExOBJ):: ipstream.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/linuxdis$(ExOBJ):: linuxdis.cc \
-	$(CLASSES_DIR)/linux/linuxdis.cc \
+obj/linuxdis$(ExOBJ):: ../classes/linux/linuxdis.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -1254,8 +1233,7 @@ obj/linuxdis$(ExOBJ):: linuxdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/linuxkey$(ExOBJ):: linuxkey.cc \
-	$(CLASSES_DIR)/linux/linuxkey.cc \
+obj/linuxkey$(ExOBJ):: ../classes/linux/linuxkey.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -1284,8 +1262,7 @@ obj/linuxkey$(ExOBJ):: linuxkey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/linuxmouse$(ExOBJ):: linuxmouse.cc \
-	$(CLASSES_DIR)/linux/linuxmouse.cc \
+obj/linuxmouse$(ExOBJ):: ../classes/linux/linuxmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1312,8 +1289,7 @@ obj/linuxmouse$(ExOBJ):: linuxmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/linuxscr$(ExOBJ):: linuxscr.cc \
-	$(CLASSES_DIR)/linux/linuxscr.cc \
+obj/linuxscr$(ExOBJ):: ../classes/linux/linuxscr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -1344,7 +1320,7 @@ obj/linuxscr$(ExOBJ):: linuxscr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/misc$(ExOBJ):: misc.cc \
+obj/misc$(ExOBJ):: ../misc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1367,11 +1343,10 @@ obj/misc$(ExOBJ):: misc.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/misc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/msgbox$(ExOBJ):: msgbox.cc \
+obj/msgbox$(ExOBJ):: ../msgbox.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -1411,163 +1386,143 @@ obj/msgbox$(ExOBJ):: msgbox.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/msgbox.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nbackgro$(ExOBJ):: nbackgro.cc \
+obj/nbackgro$(ExOBJ):: ../names/nbackgro.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nbackgro.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nbutton$(ExOBJ):: nbutton.cc \
+obj/nbutton$(ExOBJ):: ../names/nbutton.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nbutton.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncalcdis$(ExOBJ):: ncalcdis.cc \
+obj/ncalcdis$(ExOBJ):: ../names/ncalcdis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncalcdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncalcula$(ExOBJ):: ncalcula.cc \
+obj/ncalcula$(ExOBJ):: ../names/ncalcula.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncalcula.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nchdirdi$(ExOBJ):: nchdirdi.cc \
+obj/nchdirdi$(ExOBJ):: ../names/nchdirdi.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nchdirdi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncheckbo$(ExOBJ):: ncheckbo.cc \
+obj/ncheckbo$(ExOBJ):: ../names/ncheckbo.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncheckbo.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nclrdisp$(ExOBJ):: nclrdisp.cc \
+obj/nclrdisp$(ExOBJ):: ../names/nclrdisp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nclrdisp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncluster$(ExOBJ):: ncluster.cc \
+obj/ncluster$(ExOBJ):: ../names/ncluster.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncluster.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncollect$(ExOBJ):: ncollect.cc \
+obj/ncollect$(ExOBJ):: ../names/ncollect.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncollect.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncolordi$(ExOBJ):: ncolordi.cc \
+obj/ncolordi$(ExOBJ):: ../names/ncolordi.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncolordi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncolorgr$(ExOBJ):: ncolorgr.cc \
+obj/ncolorgr$(ExOBJ):: ../names/ncolorgr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncolorgr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncolorit$(ExOBJ):: ncolorit.cc \
+obj/ncolorit$(ExOBJ):: ../names/ncolorit.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncolorit.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ncolorse$(ExOBJ):: ncolorse.cc \
+obj/ncolorse$(ExOBJ):: ../names/ncolorse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ncolorse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ndesktop$(ExOBJ):: ndesktop.cc \
+obj/ndesktop$(ExOBJ):: ../names/ndesktop.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ndesktop.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ndialog$(ExOBJ):: ndialog.cc \
+obj/ndialog$(ExOBJ):: ../names/ndialog.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ndialog.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ndircoll$(ExOBJ):: ndircoll.cc \
+obj/ndircoll$(ExOBJ):: ../names/ndircoll.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ndircoll.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ndirlist$(ExOBJ):: ndirlist.cc \
+obj/ndirlist$(ExOBJ):: ../names/ndirlist.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ndirlist.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/neditor$(ExOBJ):: neditor.cc \
+obj/neditor$(ExOBJ):: ../names/neditor.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/neditor.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/neditwi$(ExOBJ):: neditwi.cc \
+obj/neditwi$(ExOBJ):: ../names/neditwi.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/neditwi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/newstr$(ExOBJ):: newstr.cc \
+obj/newstr$(ExOBJ):: ../newstr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1582,292 +1537,255 @@ obj/newstr$(ExOBJ):: newstr.cc \
 	$(INCLUDE_DIR)/tv/tvconfig.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/newstr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nfilecol$(ExOBJ):: nfilecol.cc \
+obj/nfilecol$(ExOBJ):: ../names/nfilecol.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nfilecol.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nfiledia$(ExOBJ):: nfiledia.cc \
+obj/nfiledia$(ExOBJ):: ../names/nfiledia.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nfiledia.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nfiledtr$(ExOBJ):: nfiledtr.cc \
+obj/nfiledtr$(ExOBJ):: ../names/nfiledtr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nfiledtr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nfileinf$(ExOBJ):: nfileinf.cc \
+obj/nfileinf$(ExOBJ):: ../names/nfileinf.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nfileinf.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nfileinp$(ExOBJ):: nfileinp.cc \
+obj/nfileinp$(ExOBJ):: ../names/nfileinp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nfileinp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nfilelis$(ExOBJ):: nfilelis.cc \
+obj/nfilelis$(ExOBJ):: ../names/nfilelis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nfilelis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nfilterv$(ExOBJ):: nfilterv.cc \
+obj/nfilterv$(ExOBJ):: ../names/nfilterv.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nfilterv.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nframe$(ExOBJ):: nframe.cc \
+obj/nframe$(ExOBJ):: ../names/nframe.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nframe.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ngroup$(ExOBJ):: ngroup.cc \
+obj/ngroup$(ExOBJ):: ../names/ngroup.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ngroup.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nhistory$(ExOBJ):: nhistory.cc \
+obj/nhistory$(ExOBJ):: ../names/nhistory.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nhistory.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nindicat$(ExOBJ):: nindicat.cc \
+obj/nindicat$(ExOBJ):: ../names/nindicat.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nindicat.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ninputli$(ExOBJ):: ninputli.cc \
+obj/ninputli$(ExOBJ):: ../names/ninputli.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/ninputli.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nlabel$(ExOBJ):: nlabel.cc \
+obj/nlabel$(ExOBJ):: ../names/nlabel.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nlabel.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nlistbox$(ExOBJ):: nlistbox.cc \
+obj/nlistbox$(ExOBJ):: ../names/nlistbox.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nlistbox.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nlistvie$(ExOBJ):: nlistvie.cc \
+obj/nlistvie$(ExOBJ):: ../names/nlistvie.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nlistvie.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nmemo$(ExOBJ):: nmemo.cc \
+obj/nmemo$(ExOBJ):: ../names/nmemo.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nmemo.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nmenubar$(ExOBJ):: nmenubar.cc \
+obj/nmenubar$(ExOBJ):: ../names/nmenubar.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nmenubar.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nmenubox$(ExOBJ):: nmenubox.cc \
+obj/nmenubox$(ExOBJ):: ../names/nmenubox.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nmenubox.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nmenuvie$(ExOBJ):: nmenuvie.cc \
+obj/nmenuvie$(ExOBJ):: ../names/nmenuvie.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nmenuvie.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nmonosel$(ExOBJ):: nmonosel.cc \
+obj/nmonosel$(ExOBJ):: ../names/nmonosel.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nmonosel.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nparamte$(ExOBJ):: nparamte.cc \
+obj/nparamte$(ExOBJ):: ../names/nparamte.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nparamte.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nradiobu$(ExOBJ):: nradiobu.cc \
+obj/nradiobu$(ExOBJ):: ../names/nradiobu.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nradiobu.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nrangeva$(ExOBJ):: nrangeva.cc \
+obj/nrangeva$(ExOBJ):: ../names/nrangeva.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nrangeva.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nresourc$(ExOBJ):: nresourc.cc \
+obj/nresourc$(ExOBJ):: ../names/nresourc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nresourc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nscrollb$(ExOBJ):: nscrollb.cc \
+obj/nscrollb$(ExOBJ):: ../names/nscrollb.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nscrollb.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nscrolle$(ExOBJ):: nscrolle.cc \
+obj/nscrolle$(ExOBJ):: ../names/nscrolle.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nscrolle.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nsortedc$(ExOBJ):: nsortedc.cc \
+obj/nsortedc$(ExOBJ):: ../names/nsortedc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nsortedc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nsortedl$(ExOBJ):: nsortedl.cc \
+obj/nsortedl$(ExOBJ):: ../names/nsortedl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nsortedl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nstatict$(ExOBJ):: nstatict.cc \
+obj/nstatict$(ExOBJ):: ../names/nstatict.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nstatict.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nstatusl$(ExOBJ):: nstatusl.cc \
+obj/nstatusl$(ExOBJ):: ../names/nstatusl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nstatusl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nstringc$(ExOBJ):: nstringc.cc \
+obj/nstringc$(ExOBJ):: ../names/nstringc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nstringc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nstringl$(ExOBJ):: nstringl.cc \
+obj/nstringl$(ExOBJ):: ../names/nstringl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nstringl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nvalidat$(ExOBJ):: nvalidat.cc \
+obj/nvalidat$(ExOBJ):: ../names/nvalidat.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nvalidat.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nview$(ExOBJ):: nview.cc \
+obj/nview$(ExOBJ):: ../names/nview.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nview.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/nwindow$(ExOBJ):: nwindow.cc \
+obj/nwindow$(ExOBJ):: ../names/nwindow.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(EXTRA_SRC_DIR)/names/nwindow.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ofpstrea$(ExOBJ):: ofpstrea.cc \
-	$(CLASSES_DIR)/ofpstrea.cc \
+obj/ofpstrea$(ExOBJ):: ../classes/ofpstrea.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1887,8 +1805,7 @@ obj/ofpstrea$(ExOBJ):: ofpstrea.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/opstream$(ExOBJ):: opstream.cc \
-	$(CLASSES_DIR)/opstream.cc \
+obj/opstream$(ExOBJ):: ../classes/opstream.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1916,8 +1833,7 @@ obj/opstream$(ExOBJ):: opstream.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/osclipboard$(ExOBJ):: osclipboard.cc \
-	$(CLASSES_DIR)/osclipboard.cc \
+obj/osclipboard$(ExOBJ):: ../classes/osclipboard.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1936,8 +1852,7 @@ obj/osclipboard$(ExOBJ):: osclipboard.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/pstream$(ExOBJ):: pstream.cc \
-	$(CLASSES_DIR)/pstream.cc \
+obj/pstream$(ExOBJ):: ../classes/pstream.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1964,8 +1879,7 @@ obj/pstream$(ExOBJ):: pstream.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnx4dis$(ExOBJ):: qnx4dis.cc \
-	$(CLASSES_DIR)/qnx4/qnx4dis.cc \
+obj/qnx4dis$(ExOBJ):: ../classes/qnx4/qnx4dis.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -1986,8 +1900,7 @@ obj/qnx4dis$(ExOBJ):: qnx4dis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnx4key$(ExOBJ):: qnx4key.cc \
-	$(CLASSES_DIR)/qnx4/qnx4key.cc \
+obj/qnx4key$(ExOBJ):: ../classes/qnx4/qnx4key.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -2015,16 +1928,14 @@ obj/qnx4key$(ExOBJ):: qnx4key.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnx4mouse$(ExOBJ):: qnx4mouse.cc \
-	$(CLASSES_DIR)/qnx4/qnx4mouse.cc \
+obj/qnx4mouse$(ExOBJ):: ../classes/qnx4/qnx4mouse.cc \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/qnx4/mouse.h \
 	$(INCLUDE_DIR)/tv/qnx4/screen.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnx4scr$(ExOBJ):: qnx4scr.cc \
-	$(CLASSES_DIR)/qnx4/qnx4scr.cc \
+obj/qnx4scr$(ExOBJ):: ../classes/qnx4/qnx4scr.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -2053,8 +1964,7 @@ obj/qnx4scr$(ExOBJ):: qnx4scr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnxdis$(ExOBJ):: qnxdis.cc \
-	$(CLASSES_DIR)/qnxrtp/qnxdis.cc \
+obj/qnxdis$(ExOBJ):: ../classes/qnxrtp/qnxdis.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -2075,8 +1985,7 @@ obj/qnxdis$(ExOBJ):: qnxdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnxkey$(ExOBJ):: qnxkey.cc \
-	$(CLASSES_DIR)/qnxrtp/qnxkey.cc \
+obj/qnxkey$(ExOBJ):: ../classes/qnxrtp/qnxkey.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -2104,16 +2013,14 @@ obj/qnxkey$(ExOBJ):: qnxkey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnxmouse$(ExOBJ):: qnxmouse.cc \
-	$(CLASSES_DIR)/qnxrtp/qnxmouse.cc \
+obj/qnxmouse$(ExOBJ):: ../classes/qnxrtp/qnxmouse.cc \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/qnxrtp/mouse.h \
 	$(INCLUDE_DIR)/tv/qnxrtp/screen.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/qnxscr$(ExOBJ):: qnxscr.cc \
-	$(CLASSES_DIR)/qnxrtp/qnxscr.cc \
+obj/qnxscr$(ExOBJ):: ../classes/qnxrtp/qnxscr.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -2142,8 +2049,7 @@ obj/qnxscr$(ExOBJ):: qnxscr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/rhscreen$(ExOBJ):: rhscreen.cc \
-	$(CLASSES_DIR)/dos/rhscreen.cc \
+obj/rhscreen$(ExOBJ):: ../classes/dos/rhscreen.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2163,7 +2069,7 @@ obj/rhscreen$(ExOBJ):: rhscreen.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sbackgro$(ExOBJ):: sbackgro.cc \
+obj/sbackgro$(ExOBJ):: ../stream/sbackgro.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -2188,11 +2094,10 @@ obj/sbackgro$(ExOBJ):: sbackgro.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sbackgro.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sbutton$(ExOBJ):: sbutton.cc \
+obj/sbutton$(ExOBJ):: ../stream/sbutton.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/button.h \
@@ -2217,11 +2122,10 @@ obj/sbutton$(ExOBJ):: sbutton.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sbutton.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scalcdis$(ExOBJ):: scalcdis.cc \
+obj/scalcdis$(ExOBJ):: ../stream/scalcdis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/calc.h \
@@ -2245,11 +2149,10 @@ obj/scalcdis$(ExOBJ):: scalcdis.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/scalcdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scalcula$(ExOBJ):: scalcula.cc \
+obj/scalcula$(ExOBJ):: ../stream/scalcula.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/calc.h \
@@ -2278,11 +2181,10 @@ obj/scalcula$(ExOBJ):: scalcula.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/stream/scalcula.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/schdirdi$(ExOBJ):: schdirdi.cc \
+obj/schdirdi$(ExOBJ):: ../stream/schdirdi.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/chdirdlg.h \
@@ -2311,11 +2213,10 @@ obj/schdirdi$(ExOBJ):: schdirdi.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/stream/schdirdi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scheckbo$(ExOBJ):: scheckbo.cc \
+obj/scheckbo$(ExOBJ):: ../stream/scheckbo.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/checkbox.h \
@@ -2341,11 +2242,10 @@ obj/scheckbo$(ExOBJ):: scheckbo.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/scheckbo.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sclrdisp$(ExOBJ):: sclrdisp.cc \
+obj/sclrdisp$(ExOBJ):: ../stream/sclrdisp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clrdisp.h \
@@ -2370,11 +2270,10 @@ obj/sclrdisp$(ExOBJ):: sclrdisp.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sclrdisp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scluster$(ExOBJ):: scluster.cc \
+obj/scluster$(ExOBJ):: ../stream/scluster.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cluster.h \
@@ -2399,11 +2298,10 @@ obj/scluster$(ExOBJ):: scluster.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/scluster.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scolordi$(ExOBJ):: scolordi.cc \
+obj/scolordi$(ExOBJ):: ../stream/scolordi.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clrdlg.h \
@@ -2433,11 +2331,10 @@ obj/scolordi$(ExOBJ):: scolordi.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/stream/scolordi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scolorgr$(ExOBJ):: scolorgr.cc \
+obj/scolorgr$(ExOBJ):: ../stream/scolorgr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clrgrpli.h \
@@ -2463,11 +2360,10 @@ obj/scolorgr$(ExOBJ):: scolorgr.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/scolorgr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scolorit$(ExOBJ):: scolorit.cc \
+obj/scolorit$(ExOBJ):: ../stream/scolorit.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clriteml.h \
@@ -2493,11 +2389,10 @@ obj/scolorit$(ExOBJ):: scolorit.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/scolorit.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/scolorse$(ExOBJ):: scolorse.cc \
+obj/scolorse$(ExOBJ):: ../stream/scolorse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clrselct.h \
@@ -2522,12 +2417,10 @@ obj/scolorse$(ExOBJ):: scolorse.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/scolorse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/screen$(ExOBJ):: screen.cc \
-	$(CLASSES_DIR)/dos/screen.cc \
+obj/screen$(ExOBJ):: ../classes/dos/screen.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2546,7 +2439,7 @@ obj/screen$(ExOBJ):: screen.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sdesktop$(ExOBJ):: sdesktop.cc \
+obj/sdesktop$(ExOBJ):: ../stream/sdesktop.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -2573,11 +2466,10 @@ obj/sdesktop$(ExOBJ):: sdesktop.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sdesktop.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sdialog$(ExOBJ):: sdialog.cc \
+obj/sdialog$(ExOBJ):: ../stream/sdialog.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2605,11 +2497,10 @@ obj/sdialog$(ExOBJ):: sdialog.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/stream/sdialog.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sdircoll$(ExOBJ):: sdircoll.cc \
+obj/sdircoll$(ExOBJ):: ../stream/sdircoll.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -2635,11 +2526,10 @@ obj/sdircoll$(ExOBJ):: sdircoll.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
-	$(EXTRA_SRC_DIR)/stream/sdircoll.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sdirlist$(ExOBJ):: sdirlist.cc \
+obj/sdirlist$(ExOBJ):: ../stream/sdirlist.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2666,11 +2556,10 @@ obj/sdirlist$(ExOBJ):: sdirlist.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sdirlist.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/seditor$(ExOBJ):: seditor.cc \
+obj/seditor$(ExOBJ):: ../stream/seditor.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -2696,11 +2585,10 @@ obj/seditor$(ExOBJ):: seditor.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/seditor.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/seditwin$(ExOBJ):: seditwin.cc \
+obj/seditwin$(ExOBJ):: ../stream/seditwin.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -2729,12 +2617,10 @@ obj/seditwin$(ExOBJ):: seditwin.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/stream/seditwin.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sescreen$(ExOBJ):: sescreen.cc \
-	$(CLASSES_DIR)/dos/sescreen.cc \
+obj/sescreen$(ExOBJ):: ../classes/dos/sescreen.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2753,7 +2639,7 @@ obj/sescreen$(ExOBJ):: sescreen.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sfilecol$(ExOBJ):: sfilecol.cc \
+obj/sfilecol$(ExOBJ):: ../stream/sfilecol.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -2781,11 +2667,10 @@ obj/sfilecol$(ExOBJ):: sfilecol.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
-	$(EXTRA_SRC_DIR)/stream/sfilecol.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sfiledia$(ExOBJ):: sfiledia.cc \
+obj/sfiledia$(ExOBJ):: ../stream/sfiledia.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2814,11 +2699,10 @@ obj/sfiledia$(ExOBJ):: sfiledia.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/stream/sfiledia.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sfileedi$(ExOBJ):: sfileedi.cc \
+obj/sfileedi$(ExOBJ):: ../stream/sfileedi.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -2844,11 +2728,10 @@ obj/sfileedi$(ExOBJ):: sfileedi.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sfileedi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sfileinf$(ExOBJ):: sfileinf.cc \
+obj/sfileinf$(ExOBJ):: ../stream/sfileinf.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2873,11 +2756,10 @@ obj/sfileinf$(ExOBJ):: sfileinf.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sfileinf.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sfileinp$(ExOBJ):: sfileinp.cc \
+obj/sfileinp$(ExOBJ):: ../stream/sfileinp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2903,11 +2785,10 @@ obj/sfileinp$(ExOBJ):: sfileinp.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sfileinp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sfilelis$(ExOBJ):: sfilelis.cc \
+obj/sfilelis$(ExOBJ):: ../stream/sfilelis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -2943,11 +2824,10 @@ obj/sfilelis$(ExOBJ):: sfilelis.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
-	$(EXTRA_SRC_DIR)/stream/sfilelis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sfilterv$(ExOBJ):: sfilterv.cc \
+obj/sfilterv$(ExOBJ):: ../stream/sfilterv.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2967,11 +2847,10 @@ obj/sfilterv$(ExOBJ):: sfilterv.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/validate.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sfilterv.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sframe$(ExOBJ):: sframe.cc \
+obj/sframe$(ExOBJ):: ../stream/sframe.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -2995,11 +2874,10 @@ obj/sframe$(ExOBJ):: sframe.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sframe.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sgroup$(ExOBJ):: sgroup.cc \
+obj/sgroup$(ExOBJ):: ../stream/sgroup.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3024,11 +2902,10 @@ obj/sgroup$(ExOBJ):: sgroup.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sgroup.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/shistory$(ExOBJ):: shistory.cc \
+obj/shistory$(ExOBJ):: ../stream/shistory.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3053,11 +2930,10 @@ obj/shistory$(ExOBJ):: shistory.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/shistory.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sindicat$(ExOBJ):: sindicat.cc \
+obj/sindicat$(ExOBJ):: ../stream/sindicat.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3081,11 +2957,10 @@ obj/sindicat$(ExOBJ):: sindicat.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sindicat.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sinputli$(ExOBJ):: sinputli.cc \
+obj/sinputli$(ExOBJ):: ../stream/sinputli.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3110,11 +2985,10 @@ obj/sinputli$(ExOBJ):: sinputli.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sinputli.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/slabel$(ExOBJ):: slabel.cc \
+obj/slabel$(ExOBJ):: ../stream/slabel.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3140,11 +3014,10 @@ obj/slabel$(ExOBJ):: slabel.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/slabel.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/slistbox$(ExOBJ):: slistbox.cc \
+obj/slistbox$(ExOBJ):: ../stream/slistbox.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3170,11 +3043,10 @@ obj/slistbox$(ExOBJ):: slistbox.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/slistbox.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/slistvie$(ExOBJ):: slistvie.cc \
+obj/slistvie$(ExOBJ):: ../stream/slistvie.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3198,11 +3070,10 @@ obj/slistvie$(ExOBJ):: slistvie.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/slistvie.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/smemo$(ExOBJ):: smemo.cc \
+obj/smemo$(ExOBJ):: ../stream/smemo.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -3228,11 +3099,10 @@ obj/smemo$(ExOBJ):: smemo.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/smemo.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/smenubar$(ExOBJ):: smenubar.cc \
+obj/smenubar$(ExOBJ):: ../stream/smenubar.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3258,11 +3128,10 @@ obj/smenubar$(ExOBJ):: smenubar.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/smenubar.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/smenubox$(ExOBJ):: smenubox.cc \
+obj/smenubox$(ExOBJ):: ../stream/smenubox.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3288,11 +3157,10 @@ obj/smenubox$(ExOBJ):: smenubox.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/smenubox.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/smenuvie$(ExOBJ):: smenuvie.cc \
+obj/smenuvie$(ExOBJ):: ../stream/smenuvie.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3317,11 +3185,10 @@ obj/smenuvie$(ExOBJ):: smenuvie.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/smenuvie.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/smonosel$(ExOBJ):: smonosel.cc \
+obj/smonosel$(ExOBJ):: ../stream/smonosel.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cluster.h \
@@ -3348,11 +3215,10 @@ obj/smonosel$(ExOBJ):: smonosel.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/smonosel.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sparamte$(ExOBJ):: sparamte.cc \
+obj/sparamte$(ExOBJ):: ../stream/sparamte.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3378,11 +3244,10 @@ obj/sparamte$(ExOBJ):: sparamte.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sparamte.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sradiobu$(ExOBJ):: sradiobu.cc \
+obj/sradiobu$(ExOBJ):: ../stream/sradiobu.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cluster.h \
@@ -3408,11 +3273,10 @@ obj/sradiobu$(ExOBJ):: sradiobu.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sradiobu.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/srangeva$(ExOBJ):: srangeva.cc \
+obj/srangeva$(ExOBJ):: ../stream/srangeva.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3432,11 +3296,10 @@ obj/srangeva$(ExOBJ):: srangeva.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/validate.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/srangeva.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sresourc$(ExOBJ):: sresourc.cc \
+obj/sresourc$(ExOBJ):: ../stream/sresourc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -3465,11 +3328,10 @@ obj/sresourc$(ExOBJ):: sresourc.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
-	$(EXTRA_SRC_DIR)/stream/sresourc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sscrollb$(ExOBJ):: sscrollb.cc \
+obj/sscrollb$(ExOBJ):: ../stream/sscrollb.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3493,11 +3355,10 @@ obj/sscrollb$(ExOBJ):: sscrollb.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sscrollb.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sscrolle$(ExOBJ):: sscrolle.cc \
+obj/sscrolle$(ExOBJ):: ../stream/sscrolle.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3521,11 +3382,10 @@ obj/sscrolle$(ExOBJ):: sscrolle.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sscrolle.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sstatict$(ExOBJ):: sstatict.cc \
+obj/sstatict$(ExOBJ):: ../stream/sstatict.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3550,11 +3410,10 @@ obj/sstatict$(ExOBJ):: sstatict.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sstatict.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sstatusl$(ExOBJ):: sstatusl.cc \
+obj/sstatusl$(ExOBJ):: ../stream/sstatusl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3579,11 +3438,10 @@ obj/sstatusl$(ExOBJ):: sstatusl.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sstatusl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sstringc$(ExOBJ):: sstringc.cc \
+obj/sstringc$(ExOBJ):: ../stream/sstringc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -3611,11 +3469,10 @@ obj/sstringc$(ExOBJ):: sstringc.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
-	$(EXTRA_SRC_DIR)/stream/sstringc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sstringl$(ExOBJ):: sstringl.cc \
+obj/sstringl$(ExOBJ):: ../stream/sstringl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3636,11 +3493,10 @@ obj/sstringl$(ExOBJ):: sstringl.cc \
 	$(INCLUDE_DIR)/tv/tvobjs.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sstringl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/sview$(ExOBJ):: sview.cc \
+obj/sview$(ExOBJ):: ../stream/sview.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3663,11 +3519,10 @@ obj/sview$(ExOBJ):: sview.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
-	$(EXTRA_SRC_DIR)/stream/sview.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/swindow$(ExOBJ):: swindow.cc \
+obj/swindow$(ExOBJ):: ../stream/swindow.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -3693,12 +3548,10 @@ obj/swindow$(ExOBJ):: swindow.cc \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/window.h \
-	$(EXTRA_SRC_DIR)/stream/swindow.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tapplica$(ExOBJ):: tapplica.cc \
-	$(CLASSES_DIR)/tapplica.cc \
+obj/tapplica$(ExOBJ):: ../classes/tapplica.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -3731,8 +3584,7 @@ obj/tapplica$(ExOBJ):: tapplica.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tbackgro$(ExOBJ):: tbackgro.cc \
-	$(CLASSES_DIR)/tbackgro.cc \
+obj/tbackgro$(ExOBJ):: ../classes/tbackgro.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -3765,8 +3617,7 @@ obj/tbackgro$(ExOBJ):: tbackgro.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tbutton$(ExOBJ):: tbutton.cc \
-	$(CLASSES_DIR)/tbutton.cc \
+obj/tbutton$(ExOBJ):: ../classes/tbutton.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/button.h \
@@ -3801,8 +3652,7 @@ obj/tbutton$(ExOBJ):: tbutton.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tchdirdi$(ExOBJ):: tchdirdi.cc \
-	$(CLASSES_DIR)/tchdirdi.cc \
+obj/tchdirdi$(ExOBJ):: ../classes/tchdirdi.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -3852,8 +3702,7 @@ obj/tchdirdi$(ExOBJ):: tchdirdi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcheckbo$(ExOBJ):: tcheckbo.cc \
-	$(CLASSES_DIR)/tcheckbo.cc \
+obj/tcheckbo$(ExOBJ):: ../classes/tcheckbo.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/checkbox.h \
@@ -3881,8 +3730,7 @@ obj/tcheckbo$(ExOBJ):: tcheckbo.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tclrdisp$(ExOBJ):: tclrdisp.cc \
-	$(CLASSES_DIR)/tclrdisp.cc \
+obj/tclrdisp$(ExOBJ):: ../classes/tclrdisp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clrdisp.h \
@@ -3913,8 +3761,7 @@ obj/tclrdisp$(ExOBJ):: tclrdisp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcluster$(ExOBJ):: tcluster.cc \
-	$(CLASSES_DIR)/tcluster.cc \
+obj/tcluster$(ExOBJ):: ../classes/tcluster.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cluster.h \
@@ -3958,8 +3805,7 @@ obj/tcluster$(ExOBJ):: tcluster.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcollect$(ExOBJ):: tcollect.cc \
-	$(CLASSES_DIR)/tcollect.cc \
+obj/tcollect$(ExOBJ):: ../classes/tcollect.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -3985,8 +3831,7 @@ obj/tcollect$(ExOBJ):: tcollect.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcolordi$(ExOBJ):: tcolordi.cc \
-	$(CLASSES_DIR)/tcolordi.cc \
+obj/tcolordi$(ExOBJ):: ../classes/tcolordi.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -4038,8 +3883,7 @@ obj/tcolordi$(ExOBJ):: tcolordi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcolorgr$(ExOBJ):: tcolorgr.cc \
-	$(CLASSES_DIR)/tcolorgr.cc \
+obj/tcolorgr$(ExOBJ):: ../classes/tcolorgr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clrgroup.h \
@@ -4072,8 +3916,7 @@ obj/tcolorgr$(ExOBJ):: tcolorgr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcolorit$(ExOBJ):: tcolorit.cc \
-	$(CLASSES_DIR)/tcolorit.cc \
+obj/tcolorit$(ExOBJ):: ../classes/tcolorit.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clritem.h \
@@ -4106,8 +3949,7 @@ obj/tcolorit$(ExOBJ):: tcolorit.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcolorse$(ExOBJ):: tcolorse.cc \
-	$(CLASSES_DIR)/tcolorse.cc \
+obj/tcolorse$(ExOBJ):: ../classes/tcolorse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/clrselct.h \
@@ -4138,8 +3980,7 @@ obj/tcolorse$(ExOBJ):: tcolorse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tcommand$(ExOBJ):: tcommand.cc \
-	$(CLASSES_DIR)/tcommand.cc \
+obj/tcommand$(ExOBJ):: ../classes/tcommand.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -4158,8 +3999,7 @@ obj/tcommand$(ExOBJ):: tcommand.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tdesktop$(ExOBJ):: tdesktop.cc \
-	$(CLASSES_DIR)/tdesktop.cc \
+obj/tdesktop$(ExOBJ):: ../classes/tdesktop.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -4193,8 +4033,7 @@ obj/tdesktop$(ExOBJ):: tdesktop.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tdialog$(ExOBJ):: tdialog.cc \
-	$(CLASSES_DIR)/tdialog.cc \
+obj/tdialog$(ExOBJ):: ../classes/tdialog.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -4230,8 +4069,7 @@ obj/tdialog$(ExOBJ):: tdialog.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tdircoll$(ExOBJ):: tdircoll.cc \
-	$(CLASSES_DIR)/tdircoll.cc \
+obj/tdircoll$(ExOBJ):: ../classes/tdircoll.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -4259,8 +4097,7 @@ obj/tdircoll$(ExOBJ):: tdircoll.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tdirlist$(ExOBJ):: tdirlist.cc \
-	$(CLASSES_DIR)/tdirlist.cc \
+obj/tdirlist$(ExOBJ):: ../classes/tdirlist.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/button.h \
@@ -4303,8 +4140,7 @@ obj/tdirlist$(ExOBJ):: tdirlist.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tdisplay$(ExOBJ):: tdisplay.cc \
-	$(CLASSES_DIR)/tdisplay.cc \
+obj/tdisplay$(ExOBJ):: ../classes/tdisplay.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -4325,8 +4161,7 @@ obj/tdisplay$(ExOBJ):: tdisplay.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tdrawbuf$(ExOBJ):: tdrawbuf.cc \
-	$(CLASSES_DIR)/tdrawbuf.cc \
+obj/tdrawbuf$(ExOBJ):: ../classes/tdrawbuf.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4345,8 +4180,7 @@ obj/tdrawbuf$(ExOBJ):: tdrawbuf.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/teditor$(ExOBJ):: teditor.cc \
-	$(CLASSES_DIR)/teditor.cc \
+obj/teditor$(ExOBJ):: ../classes/teditor.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -4384,8 +4218,7 @@ obj/teditor$(ExOBJ):: teditor.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/teditorf$(ExOBJ):: teditorf.cc \
-	$(CLASSES_DIR)/teditorf.cc \
+obj/teditorf$(ExOBJ):: ../classes/teditorf.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -4413,8 +4246,7 @@ obj/teditorf$(ExOBJ):: teditorf.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/teditwin$(ExOBJ):: teditwin.cc \
-	$(CLASSES_DIR)/teditwin.cc \
+obj/teditwin$(ExOBJ):: ../classes/teditwin.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -4449,8 +4281,7 @@ obj/teditwin$(ExOBJ):: teditwin.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tevent$(ExOBJ):: tevent.cc \
-	$(CLASSES_DIR)/tevent.cc \
+obj/tevent$(ExOBJ):: ../classes/tevent.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -4476,8 +4307,7 @@ obj/tevent$(ExOBJ):: tevent.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tfilecol$(ExOBJ):: tfilecol.cc \
-	$(CLASSES_DIR)/tfilecol.cc \
+obj/tfilecol$(ExOBJ):: ../classes/tfilecol.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -4507,8 +4337,7 @@ obj/tfilecol$(ExOBJ):: tfilecol.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tfiledia$(ExOBJ):: tfiledia.cc \
-	$(CLASSES_DIR)/tfiledia.cc \
+obj/tfiledia$(ExOBJ):: ../classes/tfiledia.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/button.h \
@@ -4562,8 +4391,7 @@ obj/tfiledia$(ExOBJ):: tfiledia.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tfileedi$(ExOBJ):: tfileedi.cc \
-	$(CLASSES_DIR)/tfileedi.cc \
+obj/tfileedi$(ExOBJ):: ../classes/tfileedi.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -4596,8 +4424,7 @@ obj/tfileedi$(ExOBJ):: tfileedi.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tfileinf$(ExOBJ):: tfileinf.cc \
-	$(CLASSES_DIR)/tfileinf.cc \
+obj/tfileinf$(ExOBJ):: ../classes/tfileinf.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4634,8 +4461,7 @@ obj/tfileinf$(ExOBJ):: tfileinf.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tfileinp$(ExOBJ):: tfileinp.cc \
-	$(CLASSES_DIR)/tfileinp.cc \
+obj/tfileinp$(ExOBJ):: ../classes/tfileinp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4670,8 +4496,7 @@ obj/tfileinp$(ExOBJ):: tfileinp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tfilelis$(ExOBJ):: tfilelis.cc \
-	$(CLASSES_DIR)/tfilelis.cc \
+obj/tfilelis$(ExOBJ):: ../classes/tfilelis.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -4718,8 +4543,7 @@ obj/tfilelis$(ExOBJ):: tfilelis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tfilterv$(ExOBJ):: tfilterv.cc \
-	$(CLASSES_DIR)/tfilterv.cc \
+obj/tfilterv$(ExOBJ):: ../classes/tfilterv.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4742,8 +4566,7 @@ obj/tfilterv$(ExOBJ):: tfilterv.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tframe$(ExOBJ):: tframe.cc \
-	$(CLASSES_DIR)/tframe.cc \
+obj/tframe$(ExOBJ):: ../classes/tframe.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4775,8 +4598,7 @@ obj/tframe$(ExOBJ):: tframe.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tgkey$(ExOBJ):: tgkey.cc \
-	$(CLASSES_DIR)/tgkey.cc \
+obj/tgkey$(ExOBJ):: ../classes/tgkey.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -4800,8 +4622,7 @@ obj/tgkey$(ExOBJ):: tgkey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tgroup$(ExOBJ):: tgroup.cc \
-	$(CLASSES_DIR)/tgroup.cc \
+obj/tgroup$(ExOBJ):: ../classes/tgroup.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -4831,8 +4652,7 @@ obj/tgroup$(ExOBJ):: tgroup.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/thistory$(ExOBJ):: thistory.cc \
-	$(CLASSES_DIR)/thistory.cc \
+obj/thistory$(ExOBJ):: ../classes/thistory.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4867,8 +4687,7 @@ obj/thistory$(ExOBJ):: thistory.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/thistvie$(ExOBJ):: thistvie.cc \
-	$(CLASSES_DIR)/thistvie.cc \
+obj/thistvie$(ExOBJ):: ../classes/thistvie.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4900,8 +4719,7 @@ obj/thistvie$(ExOBJ):: thistvie.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/thistwin$(ExOBJ):: thistwin.cc \
-	$(CLASSES_DIR)/thistwin.cc \
+obj/thistwin$(ExOBJ):: ../classes/thistwin.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4934,8 +4752,7 @@ obj/thistwin$(ExOBJ):: thistwin.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/thwmouse$(ExOBJ):: thwmouse.cc \
-	$(CLASSES_DIR)/thwmouse.cc \
+obj/thwmouse$(ExOBJ):: ../classes/thwmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4957,8 +4774,7 @@ obj/thwmouse$(ExOBJ):: thwmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tindicat$(ExOBJ):: tindicat.cc \
-	$(CLASSES_DIR)/tindicat.cc \
+obj/tindicat$(ExOBJ):: ../classes/tindicat.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -4987,8 +4803,7 @@ obj/tindicat$(ExOBJ):: tindicat.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tinputli$(ExOBJ):: tinputli.cc \
-	$(CLASSES_DIR)/tinputli.cc \
+obj/tinputli$(ExOBJ):: ../classes/tinputli.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5021,8 +4836,7 @@ obj/tinputli$(ExOBJ):: tinputli.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tlabel$(ExOBJ):: tlabel.cc \
-	$(CLASSES_DIR)/tlabel.cc \
+obj/tlabel$(ExOBJ):: ../classes/tlabel.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -5059,8 +4873,7 @@ obj/tlabel$(ExOBJ):: tlabel.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tlistbox$(ExOBJ):: tlistbox.cc \
-	$(CLASSES_DIR)/tlistbox.cc \
+obj/tlistbox$(ExOBJ):: ../classes/tlistbox.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -5094,8 +4907,7 @@ obj/tlistbox$(ExOBJ):: tlistbox.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tlistvie$(ExOBJ):: tlistvie.cc \
-	$(CLASSES_DIR)/tlistvie.cc \
+obj/tlistvie$(ExOBJ):: ../classes/tlistvie.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5128,8 +4940,7 @@ obj/tlistvie$(ExOBJ):: tlistvie.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tmemo$(ExOBJ):: tmemo.cc \
-	$(CLASSES_DIR)/tmemo.cc \
+obj/tmemo$(ExOBJ):: ../classes/tmemo.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -5159,8 +4970,7 @@ obj/tmemo$(ExOBJ):: tmemo.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tmenubar$(ExOBJ):: tmenubar.cc \
-	$(CLASSES_DIR)/tmenubar.cc \
+obj/tmenubar$(ExOBJ):: ../classes/tmenubar.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5193,8 +5003,7 @@ obj/tmenubar$(ExOBJ):: tmenubar.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tmenubox$(ExOBJ):: tmenubox.cc \
-	$(CLASSES_DIR)/tmenubox.cc \
+obj/tmenubox$(ExOBJ):: ../classes/tmenubox.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5226,8 +5035,7 @@ obj/tmenubox$(ExOBJ):: tmenubox.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tmenuvie$(ExOBJ):: tmenuvie.cc \
-	$(CLASSES_DIR)/tmenuvie.cc \
+obj/tmenuvie$(ExOBJ):: ../classes/tmenuvie.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -5265,8 +5073,7 @@ obj/tmenuvie$(ExOBJ):: tmenuvie.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tmonosel$(ExOBJ):: tmonosel.cc \
-	$(CLASSES_DIR)/tmonosel.cc \
+obj/tmonosel$(ExOBJ):: ../classes/tmonosel.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cluster.h \
@@ -5300,8 +5107,7 @@ obj/tmonosel$(ExOBJ):: tmonosel.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tmouse$(ExOBJ):: tmouse.cc \
-	$(CLASSES_DIR)/tmouse.cc \
+obj/tmouse$(ExOBJ):: ../classes/tmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5322,8 +5128,7 @@ obj/tmouse$(ExOBJ):: tmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tnscolle$(ExOBJ):: tnscolle.cc \
-	$(CLASSES_DIR)/tnscolle.cc \
+obj/tnscolle$(ExOBJ):: ../classes/tnscolle.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5346,8 +5151,7 @@ obj/tnscolle$(ExOBJ):: tnscolle.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tnssorte$(ExOBJ):: tnssorte.cc \
-	$(CLASSES_DIR)/tnssorte.cc \
+obj/tnssorte$(ExOBJ):: ../classes/tnssorte.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5371,8 +5175,7 @@ obj/tnssorte$(ExOBJ):: tnssorte.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tobject$(ExOBJ):: tobject.cc \
-	$(CLASSES_DIR)/tobject.cc \
+obj/tobject$(ExOBJ):: ../classes/tobject.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5392,8 +5195,7 @@ obj/tobject$(ExOBJ):: tobject.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tpalette$(ExOBJ):: tpalette.cc \
-	$(CLASSES_DIR)/tpalette.cc \
+obj/tpalette$(ExOBJ):: ../classes/tpalette.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5412,8 +5214,7 @@ obj/tpalette$(ExOBJ):: tpalette.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tparamte$(ExOBJ):: tparamte.cc \
-	$(CLASSES_DIR)/tparamte.cc \
+obj/tparamte$(ExOBJ):: ../classes/tparamte.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5441,8 +5242,7 @@ obj/tparamte$(ExOBJ):: tparamte.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tpoint$(ExOBJ):: tpoint.cc \
-	$(CLASSES_DIR)/tpoint.cc \
+obj/tpoint$(ExOBJ):: ../classes/tpoint.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5462,8 +5262,7 @@ obj/tpoint$(ExOBJ):: tpoint.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tprogini$(ExOBJ):: tprogini.cc \
-	$(CLASSES_DIR)/tprogini.cc \
+obj/tprogini$(ExOBJ):: ../classes/tprogini.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -5500,8 +5299,7 @@ obj/tprogini$(ExOBJ):: tprogini.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tprogram$(ExOBJ):: tprogram.cc \
-	$(CLASSES_DIR)/tprogram.cc \
+obj/tprogram$(ExOBJ):: ../classes/tprogram.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -5547,8 +5345,7 @@ obj/tprogram$(ExOBJ):: tprogram.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tpwobj$(ExOBJ):: tpwobj.cc \
-	$(CLASSES_DIR)/tpwobj.cc \
+obj/tpwobj$(ExOBJ):: ../classes/tpwobj.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5573,8 +5370,7 @@ obj/tpwobj$(ExOBJ):: tpwobj.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tpwreado$(ExOBJ):: tpwreado.cc \
-	$(CLASSES_DIR)/tpwreado.cc \
+obj/tpwreado$(ExOBJ):: ../classes/tpwreado.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5598,8 +5394,7 @@ obj/tpwreado$(ExOBJ):: tpwreado.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tpwritte$(ExOBJ):: tpwritte.cc \
-	$(CLASSES_DIR)/tpwritte.cc \
+obj/tpwritte$(ExOBJ):: ../classes/tpwritte.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5625,8 +5420,7 @@ obj/tpwritte$(ExOBJ):: tpwritte.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tradiobu$(ExOBJ):: tradiobu.cc \
-	$(CLASSES_DIR)/tradiobu.cc \
+obj/tradiobu$(ExOBJ):: ../classes/tradiobu.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cluster.h \
@@ -5655,8 +5449,7 @@ obj/tradiobu$(ExOBJ):: tradiobu.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/trangeva$(ExOBJ):: trangeva.cc \
-	$(CLASSES_DIR)/trangeva.cc \
+obj/trangeva$(ExOBJ):: ../classes/trangeva.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5679,8 +5472,7 @@ obj/trangeva$(ExOBJ):: trangeva.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/trescoll$(ExOBJ):: trescoll.cc \
-	$(CLASSES_DIR)/trescoll.cc \
+obj/trescoll$(ExOBJ):: ../classes/trescoll.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -5712,8 +5504,7 @@ obj/trescoll$(ExOBJ):: trescoll.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tresfile$(ExOBJ):: tresfile.cc \
-	$(CLASSES_DIR)/tresfile.cc \
+obj/tresfile$(ExOBJ):: ../classes/tresfile.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -5749,8 +5540,7 @@ obj/tresfile$(ExOBJ):: tresfile.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tscreen$(ExOBJ):: tscreen.cc \
-	$(CLASSES_DIR)/tscreen.cc \
+obj/tscreen$(ExOBJ):: ../classes/tscreen.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -5772,8 +5562,7 @@ obj/tscreen$(ExOBJ):: tscreen.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tscrollb$(ExOBJ):: tscrollb.cc \
-	$(CLASSES_DIR)/tscrollb.cc \
+obj/tscrollb$(ExOBJ):: ../classes/tscrollb.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5805,8 +5594,7 @@ obj/tscrollb$(ExOBJ):: tscrollb.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tscrolle$(ExOBJ):: tscrolle.cc \
-	$(CLASSES_DIR)/tscrolle.cc \
+obj/tscrolle$(ExOBJ):: ../classes/tscrolle.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5837,8 +5625,7 @@ obj/tscrolle$(ExOBJ):: tscrolle.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tsortedc$(ExOBJ):: tsortedc.cc \
-	$(CLASSES_DIR)/tsortedc.cc \
+obj/tsortedc$(ExOBJ):: ../classes/tsortedc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -5866,8 +5653,7 @@ obj/tsortedc$(ExOBJ):: tsortedc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tsortedl$(ExOBJ):: tsortedl.cc \
-	$(CLASSES_DIR)/tsortedl.cc \
+obj/tsortedl$(ExOBJ):: ../classes/tsortedl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -5904,8 +5690,7 @@ obj/tsortedl$(ExOBJ):: tsortedl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstatict$(ExOBJ):: tstatict.cc \
-	$(CLASSES_DIR)/tstatict.cc \
+obj/tstatict$(ExOBJ):: ../classes/tstatict.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5933,8 +5718,7 @@ obj/tstatict$(ExOBJ):: tstatict.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstatusd$(ExOBJ):: tstatusd.cc \
-	$(CLASSES_DIR)/tstatusd.cc \
+obj/tstatusd$(ExOBJ):: ../classes/tstatusd.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5955,8 +5739,7 @@ obj/tstatusd$(ExOBJ):: tstatusd.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstatusl$(ExOBJ):: tstatusl.cc \
-	$(CLASSES_DIR)/tstatusl.cc \
+obj/tstatusl$(ExOBJ):: ../classes/tstatusl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -5987,8 +5770,7 @@ obj/tstatusl$(ExOBJ):: tstatusl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstrinde$(ExOBJ):: tstrinde.cc \
-	$(CLASSES_DIR)/tstrinde.cc \
+obj/tstrinde$(ExOBJ):: ../classes/tstrinde.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6008,8 +5790,7 @@ obj/tstrinde$(ExOBJ):: tstrinde.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstringc$(ExOBJ):: tstringc.cc \
-	$(CLASSES_DIR)/tstringc.cc \
+obj/tstringc$(ExOBJ):: ../classes/tstringc.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
@@ -6039,8 +5820,7 @@ obj/tstringc$(ExOBJ):: tstringc.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstringl$(ExOBJ):: tstringl.cc \
-	$(CLASSES_DIR)/tstringl.cc \
+obj/tstringl$(ExOBJ):: ../classes/tstringl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6064,8 +5844,7 @@ obj/tstringl$(ExOBJ):: tstringl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstrlist$(ExOBJ):: tstrlist.cc \
-	$(CLASSES_DIR)/tstrlist.cc \
+obj/tstrlist$(ExOBJ):: ../classes/tstrlist.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6090,8 +5869,7 @@ obj/tstrlist$(ExOBJ):: tstrlist.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstrmcla$(ExOBJ):: tstrmcla.cc \
-	$(CLASSES_DIR)/tstrmcla.cc \
+obj/tstrmcla$(ExOBJ):: ../classes/tstrmcla.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6110,8 +5888,7 @@ obj/tstrmcla$(ExOBJ):: tstrmcla.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tstrmtyp$(ExOBJ):: tstrmtyp.cc \
-	$(CLASSES_DIR)/tstrmtyp.cc \
+obj/tstrmtyp$(ExOBJ):: ../classes/tstrmtyp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6137,8 +5914,7 @@ obj/tstrmtyp$(ExOBJ):: tstrmtyp.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tsubmenu$(ExOBJ):: tsubmenu.cc \
-	$(CLASSES_DIR)/tsubmenu.cc \
+obj/tsubmenu$(ExOBJ):: ../classes/tsubmenu.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6160,8 +5936,7 @@ obj/tsubmenu$(ExOBJ):: tsubmenu.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ttermina$(ExOBJ):: ttermina.cc \
-	$(CLASSES_DIR)/ttermina.cc \
+obj/ttermina$(ExOBJ):: ../classes/ttermina.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6191,8 +5966,7 @@ obj/ttermina$(ExOBJ):: ttermina.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/ttextdev$(ExOBJ):: ttextdev.cc \
-	$(CLASSES_DIR)/ttextdev.cc \
+obj/ttextdev$(ExOBJ):: ../classes/ttextdev.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6220,8 +5994,7 @@ obj/ttextdev$(ExOBJ):: ttextdev.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tvalidat$(ExOBJ):: tvalidat.cc \
-	$(CLASSES_DIR)/tvalidat.cc \
+obj/tvalidat$(ExOBJ):: ../classes/tvalidat.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6243,8 +6016,7 @@ obj/tvalidat$(ExOBJ):: tvalidat.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tvedit1$(ExOBJ):: tvedit1.cc \
-	$(CLASSES_DIR)/tvedit1.cc \
+obj/tvedit1$(ExOBJ):: ../classes/tvedit1.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -6286,8 +6058,7 @@ obj/tvedit1$(ExOBJ):: tvedit1.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tvedit2$(ExOBJ):: tvedit2.cc \
-	$(CLASSES_DIR)/tvedit2.cc \
+obj/tvedit2$(ExOBJ):: ../classes/tvedit2.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -6335,8 +6106,7 @@ obj/tvedit2$(ExOBJ):: tvedit2.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tvedit3$(ExOBJ):: tvedit3.cc \
-	$(CLASSES_DIR)/tvedit3.cc \
+obj/tvedit3$(ExOBJ):: ../classes/tvedit3.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -6386,8 +6156,7 @@ obj/tvedit3$(ExOBJ):: tvedit3.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tview$(ExOBJ):: tview.cc \
-	$(CLASSES_DIR)/tview.cc \
+obj/tview$(ExOBJ):: ../classes/tview.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/cmdset.h \
@@ -6423,8 +6192,7 @@ obj/tview$(ExOBJ):: tview.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tvintl$(ExOBJ):: tvintl.cc \
-	$(CLASSES_DIR)/tvintl.cc \
+obj/tvintl$(ExOBJ):: ../classes/tvintl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -6443,8 +6211,7 @@ obj/tvintl$(ExOBJ):: tvintl.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tvtext1$(ExOBJ):: tvtext1.cc \
-	$(CLASSES_DIR)/tvtext1.cc \
+obj/tvtext1$(ExOBJ):: ../classes/tvtext1.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -6502,13 +6269,11 @@ obj/tvtext1$(ExOBJ):: tvtext1.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/tvtext2$(ExOBJ):: tvtext2.cc \
-	$(CLASSES_DIR)/tvtext2.cc \
+obj/tvtext2$(ExOBJ):: ../classes/tvtext2.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/twindow$(ExOBJ):: twindow.cc \
-	$(CLASSES_DIR)/twindow.cc \
+obj/twindow$(ExOBJ):: ../classes/twindow.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -6543,8 +6308,7 @@ obj/twindow$(ExOBJ):: twindow.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/unixdis$(ExOBJ):: unixdis.cc \
-	$(CLASSES_DIR)/unix/unixdis.cc \
+obj/unixdis$(ExOBJ):: ../classes/unix/unixdis.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -6565,8 +6329,7 @@ obj/unixdis$(ExOBJ):: unixdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/unixkey$(ExOBJ):: unixkey.cc \
-	$(CLASSES_DIR)/unix/unixkey.cc \
+obj/unixkey$(ExOBJ):: ../classes/unix/unixkey.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -6592,8 +6355,7 @@ obj/unixkey$(ExOBJ):: unixkey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/unixmouse$(ExOBJ):: unixmouse.cc \
-	$(CLASSES_DIR)/unix/unixmouse.cc \
+obj/unixmouse$(ExOBJ):: ../classes/unix/unixmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6618,8 +6380,7 @@ obj/unixmouse$(ExOBJ):: unixmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/unixscr$(ExOBJ):: unixscr.cc \
-	$(CLASSES_DIR)/unix/unixscr.cc \
+obj/unixscr$(ExOBJ):: ../classes/unix/unixscr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -6649,36 +6410,31 @@ obj/unixscr$(ExOBJ):: unixscr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/vesa$(ExOBJ):: vesa.cc \
-	$(CLASSES_DIR)/dos/vesa.cc \
+obj/vesa$(ExOBJ):: ../classes/dos/vesa.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/vga$(ExOBJ):: vga.cc \
-	$(CLASSES_DIR)/dos/vga.cc \
+obj/vga$(ExOBJ):: ../classes/dos/vga.cc \
 	$(CLASSES_DIR)/dos/vgastate.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/vgaregs$(ExOBJ):: vgaregs.c \
-	$(CLASSES_DIR)/dos/vgaregs.c \
+obj/vgaregs$(ExOBJ):: ../classes/dos/vgaregs.c \
 	$(CLASSES_DIR)/dos/vgaregs.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
-obj/vgastate$(ExOBJ):: vgastate.c \
+obj/vgastate$(ExOBJ):: ../classes/dos/vgastate.c \
 	$(CLASSES_DIR)/dos/vgaregs.h \
-	$(CLASSES_DIR)/dos/vgastate.c \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
-obj/win32clip$(ExOBJ):: win32clip.cc \
-	$(CLASSES_DIR)/win32/win32clip.cc \
+obj/win32clip$(ExOBJ):: ../classes/win32/win32clip.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6698,8 +6454,7 @@ obj/win32clip$(ExOBJ):: win32clip.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/win32dis$(ExOBJ):: win32dis.cc \
-	$(CLASSES_DIR)/win32/win32dis.cc \
+obj/win32dis$(ExOBJ):: ../classes/win32/win32dis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6719,8 +6474,7 @@ obj/win32dis$(ExOBJ):: win32dis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/win32key$(ExOBJ):: win32key.cc \
-	$(CLASSES_DIR)/win32/win32key.cc \
+obj/win32key$(ExOBJ):: ../classes/win32/win32key.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -6749,8 +6503,7 @@ obj/win32key$(ExOBJ):: win32key.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/win32mouse$(ExOBJ):: win32mouse.cc \
-	$(CLASSES_DIR)/win32/win32mouse.cc \
+obj/win32mouse$(ExOBJ):: ../classes/win32/win32mouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -6779,8 +6532,7 @@ obj/win32mouse$(ExOBJ):: win32mouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/win32scr$(ExOBJ):: win32scr.cc \
-	$(CLASSES_DIR)/win32/win32scr.cc \
+obj/win32scr$(ExOBJ):: ../classes/win32/win32scr.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -6810,8 +6562,7 @@ obj/win32scr$(ExOBJ):: win32scr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/wingrdis$(ExOBJ):: wingrdis.cc \
-	$(CLASSES_DIR)/wingr/wingrdis.cc \
+obj/wingrdis$(ExOBJ):: ../classes/wingr/wingrdis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/app.h \
@@ -6859,8 +6610,7 @@ obj/wingrdis$(ExOBJ):: wingrdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/wingrkey$(ExOBJ):: wingrkey.cc \
-	$(CLASSES_DIR)/wingr/wingrkey.cc \
+obj/wingrkey$(ExOBJ):: ../classes/wingr/wingrkey.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -6890,8 +6640,7 @@ obj/wingrkey$(ExOBJ):: wingrkey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/wingrmouse$(ExOBJ):: wingrmouse.cc \
-	$(CLASSES_DIR)/wingr/wingrmouse.cc \
+obj/wingrmouse$(ExOBJ):: ../classes/wingr/wingrmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -6920,8 +6669,7 @@ obj/wingrmouse$(ExOBJ):: wingrmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/wingrscr$(ExOBJ):: wingrscr.cc \
-	$(CLASSES_DIR)/wingr/wingrscr.cc \
+obj/wingrscr$(ExOBJ):: ../classes/wingr/wingrscr.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -6950,8 +6698,7 @@ obj/wingrscr$(ExOBJ):: wingrscr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/winntdis$(ExOBJ):: winntdis.cc \
-	$(CLASSES_DIR)/winnt/winntdis.cc \
+obj/winntdis$(ExOBJ):: ../classes/winnt/winntdis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -6980,8 +6727,7 @@ obj/winntdis$(ExOBJ):: winntdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/winntkey$(ExOBJ):: winntkey.cc \
-	$(CLASSES_DIR)/winnt/winntkey.cc \
+obj/winntkey$(ExOBJ):: ../classes/winnt/winntkey.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -7008,8 +6754,7 @@ obj/winntkey$(ExOBJ):: winntkey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/winntmouse$(ExOBJ):: winntmouse.cc \
-	$(CLASSES_DIR)/winnt/winntmouse.cc \
+obj/winntmouse$(ExOBJ):: ../classes/winnt/winntmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -7034,8 +6779,7 @@ obj/winntmouse$(ExOBJ):: winntmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/winntscr$(ExOBJ):: winntscr.cc \
-	$(CLASSES_DIR)/winnt/winntscr.cc \
+obj/winntscr$(ExOBJ):: ../classes/winnt/winntscr.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -7065,8 +6809,7 @@ obj/winntscr$(ExOBJ):: winntscr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/x11dis$(ExOBJ):: x11dis.cc \
-	$(CLASSES_DIR)/x11/x11dis.cc \
+obj/x11dis$(ExOBJ):: ../classes/x11/x11dis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -7086,8 +6829,7 @@ obj/x11dis$(ExOBJ):: x11dis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/x11key$(ExOBJ):: x11key.cc \
-	$(CLASSES_DIR)/x11/x11key.cc \
+obj/x11key$(ExOBJ):: ../classes/x11/x11key.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
@@ -7114,8 +6856,7 @@ obj/x11key$(ExOBJ):: x11key.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/x11mouse$(ExOBJ):: x11mouse.cc \
-	$(CLASSES_DIR)/x11/x11mouse.cc \
+obj/x11mouse$(ExOBJ):: ../classes/x11/x11mouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -7140,8 +6881,7 @@ obj/x11mouse$(ExOBJ):: x11mouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/x11src$(ExOBJ):: x11src.cc \
-	$(CLASSES_DIR)/x11/x11src.cc \
+obj/x11src$(ExOBJ):: ../classes/x11/x11src.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -7171,8 +6911,7 @@ obj/x11src$(ExOBJ):: x11src.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/xtermdis$(ExOBJ):: xtermdis.cc \
-	$(CLASSES_DIR)/unix/xtermdis.cc \
+obj/xtermdis$(ExOBJ):: ../classes/unix/xtermdis.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -7198,8 +6937,7 @@ obj/xtermdis$(ExOBJ):: xtermdis.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/xtermkey$(ExOBJ):: xtermkey.cc \
-	$(CLASSES_DIR)/unix/xtermkey.cc \
+obj/xtermkey$(ExOBJ):: ../classes/unix/xtermkey.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
@@ -7226,8 +6964,7 @@ obj/xtermkey$(ExOBJ):: xtermkey.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/xtermmouse$(ExOBJ):: xtermmouse.cc \
-	$(CLASSES_DIR)/unix/xtermmouse.cc \
+obj/xtermmouse$(ExOBJ):: ../classes/unix/xtermmouse.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -7253,8 +6990,7 @@ obj/xtermmouse$(ExOBJ):: xtermmouse.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
-obj/xtermscr$(ExOBJ):: xtermscr.cc \
-	$(CLASSES_DIR)/unix/xtermscr.cc \
+obj/xtermscr$(ExOBJ):: ../classes/unix/xtermscr.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
