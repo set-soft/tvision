@@ -9,19 +9,19 @@
 # It generates the installation script too.
 #
 
-$destination='/lib';
-$intver='1.0.4';
+$destination='/usr/lib';
+$intver='1.0.5';
 $extver='1';
 unlink('tcedit.dst',glob('*.bkp'));
 $f=&cat('../linux/Makefile');
 &replace($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
 &replace($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
 &replace($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
-&replace($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,libtv.so.$extver");
-&replace($f,'MAIN_TARGET=libtv.a','MAIN_TARGET=libtv.so.1.0');
-&replace($f,'libtv.a:: \$\(DEPS_0\)',"libtv.so.$intver\:\: \$(DEPS_0)");
+&replace($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$extver");
+&replace($f,'MAIN_TARGET=librhtv.a','MAIN_TARGET=librhtv.so.1.0');
+&replace($f,'librhtv.a:: \$\(DEPS_0\)',"librhtv.so.$intver\:\: \$(DEPS_0)");
 &replace($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');
-&replace($f,'all:: libtv.a',"all\:\: libtv.so.$intver");
+&replace($f,'all:: librhtv.a',"all\:\: librhtv.so.$intver");
 &replace($f,'-Wall','');
 &replace($f,'-Werror','');
 #&replace($f,'-gstabs3','');
@@ -33,13 +33,13 @@ system("make");
 # Generate a small installation script
 #
 open(FIL,'>instlib') || die "Can't create the installation script";
-print FIL ("rm -f $destination/libtv.so\n");
-print FIL ("rm -f $destination/libtv.so.$extver\n");
-print FIL ("rm -f $destination/libtv.so.$intver\n");
-print FIL ("ln -s $destination/libtv.so.$intver $destination/libtv.so\n");
-print FIL ("ln -s $destination/libtv.so.$intver $destination/libtv.so.$extver\n");
-print FIL ("cp libtv.so.$intver $destination/\n");
-print FIL ("strip --strip-debug $destination/libtv.so.$intver\n");
+print FIL ("rm -f $destination/librhtv.so\n");
+print FIL ("rm -f $destination/librhtv.so.$extver\n");
+print FIL ("rm -f $destination/librhtv.so.$intver\n");
+print FIL ("ln -s $destination/librhtv.so.$intver $destination/librhtv.so\n");
+print FIL ("ln -s $destination/librhtv.so.$intver $destination/librhtv.so.$extver\n");
+print FIL ("cp librhtv.so.$intver $destination/\n");
+print FIL ("strip --strip-debug $destination/librhtv.so.$intver\n");
 print FIL ("ldconfig\n");
 close(FIL);
 system('chmod +x instlib');
