@@ -1,4 +1,10 @@
 $Log$
+Revision 1.106  1999/09/23 23:55:42  root (set)
+* Fixed: Relative symlinks for dynamic libraries [Linux]. Patch by Ivan.
+* Fixed: Pemission 644 and not 755 for libraries [Linux]. Patch by Ivan.
+* Added: Now the Linux compress updates the debian/control file.
+* Modified: The Debian scripts (by Ivan).
+
 Revision 1.105  1999/09/17 03:38:30  root (set)
 * Added: Support for the FHS in the configure script (not used for the
 library).
