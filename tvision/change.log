@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.188  2002/06/28 20:21:46  set
+* Fixed: [MSVC] More details, only 2 or 3 files needs adjustments to get
+the code compiled. Errors from WintiX.
+
 Revision 2.187  2002/06/28 20:06:30  set
 * Added: A new class called TVOSClipboard it gives access to the OS
 clipboard/s in a neutral way.

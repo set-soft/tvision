@@ -10,7 +10,6 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_unistd
@@ -19,6 +18,9 @@
 #define Uses_string
 #define Uses_TGKey
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
 #include <term.h>
@@ -234,5 +236,11 @@ void TDisplayXTerm::ResetPaletteColorsEt()
 {
  fputs("\E]R",stdout);
 }
+#else
+
+#include <tv/unix/xtscreen.h>
+#include <tv/unix/xtkey.h>
+#include <tv/linux/log.h>
+
 #endif // TVOS_UNIX && !TVOSf_QNXRtP
 

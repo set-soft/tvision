@@ -11,12 +11,13 @@ adapted it to the new architecture.
 ***************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
-
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TScreen
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -54,5 +55,10 @@ void THWMouseWinNT::Init()
  THWMouse::GetEvent=THWMouseWinNT::GetEvent;
  buttonCount=2;
 }
+#else
+
+#include <tv/winnt/screen.h>
+#include <tv/winnt/mouse.h>
+
 #endif // TVOS_Win32
 

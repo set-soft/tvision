@@ -3,10 +3,12 @@
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && defined(HAVE_X11)
 #define Uses_TDisplay
 #define Uses_TScreen
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && defined(HAVE_X11)
 
 // X11 defines their own values
 #undef True
@@ -15,7 +17,6 @@
 
 #include <tv/x11/screen.h>
 
-#include <stdio.h>
 /*****************************************************************************
 
   TDisplayX11 display stuff, that's very easy because we control all the
@@ -100,5 +101,9 @@ int TDisplayX11::CheckForWindowSize(void)
  windowSizeChanged=0;
  return ret;
 }
+#else
+
+#include <tv/x11/screen.h>
+
 #endif // defined(TVOS_UNIX) && defined(HAVE_X11)
 

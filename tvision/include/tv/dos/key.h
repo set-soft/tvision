@@ -8,7 +8,7 @@
   
 ***************************************************************************/
 
-#ifndef DOSKEY_HEADER_INCLUDED
+#if defined(TVCompf_djgpp) && !defined(DOSKEY_HEADER_INCLUDED)
 #define DOSKEY_HEADER_INCLUDED
 struct TEvent;
 

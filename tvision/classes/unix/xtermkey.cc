@@ -18,8 +18,6 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
-
 #define Uses_stdio
 #define Uses_string
 #define Uses_stdlib
@@ -28,6 +26,9 @@
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
 #include <fcntl.h>
@@ -863,4 +864,9 @@ void TGKeyXTerm::Init()
     PopulateTree();
 }
 
-#endif // TVOS_UNIX && !TVOSf_QNXRtP
+#else // TVOS_UNIX && !TVOSf_QNXRtP
+
+#include <tv/unix/xtkey.h>
+#include <tv/linux/log.h>
+
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP

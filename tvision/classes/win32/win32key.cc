@@ -16,7 +16,7 @@ here an events handler with a queue.
 
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
+#define Uses_string
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_TKeys
@@ -25,7 +25,9 @@ here an events handler with a queue.
 #define Uses_TDisplay
 #define Uses_TScreen
 #include <tv.h>
-#include <string.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -453,5 +455,10 @@ void TGKeyWin32::ProcessControlKeyState(INPUT_RECORD *ir)
 {
  LastControlKeyState=transShiftState(ir->Event.KeyEvent.dwControlKeyState);
 }
+#else
+
+#include <tv/win32/screen.h>
+#include <tv/win32/key.h>
+
 #endif // TVOS_Win32
 

@@ -1,7 +1,7 @@
 /* XTerm display handler routines header.
    Copyright by Salvador E. Tropea (SET) (2002)
    Covered by the GPL license. */
-#ifndef XTERMSCREEN_HEADER_INCLUDED
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(XTERMSCREEN_HEADER_INCLUDED)
 #define XTERMSCREEN_HEADER_INCLUDED
 
 // virtual to avoid problems with multiple inheritance
@@ -117,7 +117,6 @@ protected:
  static const uchar Code[256];
  static const uchar Modifier[256];
 };
-
 
 #endif // XTERMSCREEN_HEADER_INCLUDED
 

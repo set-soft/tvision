@@ -65,8 +65,6 @@ set_selection code using mode 16. This is far from usable.
 */
 #include <tv/configtv.h>
 
-#ifdef TVOSf_Linux
-
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TDrawBuffer
@@ -76,6 +74,9 @@ set_selection code using mode 16. This is far from usable.
 #define Uses_ctype
 #define Uses_iostream
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOSf_Linux
 
 #include <fcntl.h>
 #include <signal.h>
@@ -1260,7 +1261,14 @@ uint32 adler32(uint32 adler, const char *buf, unsigned len)
    }
  return (s2 << 16) | s1;
 }
-#endif // TVOSf_Linux
+#else // TVOSf_Linux
+
+#include <tv/linux/screen.h>
+#include <tv/linux/key.h>
+#include <tv/linux/mouse.h>
+#include <tv/linux/log.h>
+
+#endif // else TVOSf_Linux
 /*****************************************************************************
 
      This code was in the constructor and commented, it could help in the

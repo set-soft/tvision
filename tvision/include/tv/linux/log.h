@@ -8,7 +8,7 @@
   
 ***************************************************************************/
 
-#ifndef LOGLINUXDEBUG_INCLUDED
+#if defined(TVOSf_Linux) && !defined(LOGLINUXDEBUG_INCLUDED)
 #define LOGLINUXDEBUG_INCLUDED
 
 //#define DEBUG
@@ -19,5 +19,7 @@
  #define LOG(s) do {;} while(0)
 #endif
 
+#else
+ #define LOG(s) do {;} while(0)
 #endif // LOGLINUXDEBUG_INCLUDED
 

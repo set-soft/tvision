@@ -1,3 +1,10 @@
+/* UNIX screen handler routines header.
+   Copyright by Salvador E. Tropea (SET) (2001-2002)
+   Covered by the GPL license. */
+
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(UNIXSCREEN_HEADER_INCLUDED)
+#define UNIXSCREEN_HEADER_INCLUDED
+
 // virtual to avoid problems with multiple inheritance
 class TDisplayUNIX : virtual public TDisplay
 {
@@ -122,4 +129,5 @@ protected:
  #endif
 };
 
+#endif
 

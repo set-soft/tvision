@@ -3,7 +3,6 @@
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && defined(HAVE_X11)
 #define Uses_stdio // debug
 #define Uses_TDisplay
 #define Uses_TScreen
@@ -11,6 +10,9 @@
 #define Uses_FullSingleKeySymbols
 #define Uses_TEvent
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && defined(HAVE_X11)
 
 // X11 defines their own values
 #undef True
@@ -375,5 +377,10 @@ void TGKeyX11::Init()
  for (int i=0; XEquiv[i].symbol; i++)
      KeyCodeByKeySym[XEquiv[i].symbol & 0xFF]=XEquiv[i].key;
 }
+#else
+
+#include <tv/x11/screen.h>
+#include <tv/x11/key.h>
+
 #endif // defined(TVOS_UNIX) && defined(HAVE_X11)
 

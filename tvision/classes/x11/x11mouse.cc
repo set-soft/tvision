@@ -1,15 +1,17 @@
 /* X11 mouse routines.
-   Copyright (c) 2001 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && defined(HAVE_X11)
 //#define Uses_stdio
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TEventQueue
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && defined(HAVE_X11)
 
 // X11 defines their own values
 #undef True
@@ -86,5 +88,10 @@ void THWMouseX11::Init()
 THWMouseX11::~THWMouseX11()
 {
 }
+#else
+
+#include <tv/x11/screen.h>
+#include <tv/x11/mouse.h>
+
 #endif // defined(TVOS_UNIX) && defined(HAVE_X11)
 

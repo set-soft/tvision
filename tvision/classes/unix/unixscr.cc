@@ -14,8 +14,6 @@ Mouse reporting not disabled at exit!!!
 */
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
-
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TDrawBuffer
@@ -24,6 +22,9 @@ Mouse reporting not disabled at exit!!!
 #define Uses_ctype
 #define Uses_iostream
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <fcntl.h>
 #include <signal.h>
@@ -948,6 +949,13 @@ int TScreenUNIX::System(const char *command, pid_t *pidChild)
  *pidChild=cpid;
  return 0;
 }
+
+#else
+
+#include <tv/unix/screen.h>
+#include <tv/unix/key.h>
+#include <tv/unix/mouse.h>
+#include <tv/linux/mouse.h>
 
 #endif // TVOS_UNIX && !TVOSf_QNXRtP
 /*****************************************************************************

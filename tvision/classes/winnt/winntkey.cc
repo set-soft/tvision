@@ -17,13 +17,14 @@ some routines and adapted it to the new architecture.
 ***************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
 #define Uses_TScreen
 #include <tv.h>
 
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOS_Win32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
@@ -143,6 +144,11 @@ void TGKeyWinNT::Init()
  TGKey::fillTEvent=FillTEvent;
  TGKey::clear=Clear;
 }
+#else
+
+#include <tv/winnt/screen.h>
+#include <tv/winnt/key.h>
+
 #endif // TVOS_Win32
 
 /*

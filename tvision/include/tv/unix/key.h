@@ -1,7 +1,7 @@
-/* Linux keyboard handler routines header.
-   Copyright by Salvador E. Tropea (SET) (2001)
+/* UNIX keyboard handler routines header.
+   Copyright by Salvador E. Tropea (SET) (2001-2002)
    Covered by the GPL license. */
-#ifndef LINUXKEY_HEADER_INCLUDED
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(LINUXKEY_HEADER_INCLUDED)
 #define LINUXKEY_HEADER_INCLUDED
 struct TEvent;
 

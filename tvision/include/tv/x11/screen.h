@@ -2,7 +2,7 @@
    Copyright (c) 2001 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // X headers are needed to include it
-#ifndef X11SCR_HEADER_INCLUDED
+#if defined(TVOS_UNIX) && defined(HAVE_X11) && !defined(X11SCR_HEADER_INCLUDED)
 #define X11SCR_HEADER_INCLUDED
 
 class TVX11Clipboard;
@@ -141,16 +141,28 @@ public:
 
 protected:
  static int   copy(int id, const char *buffer, unsigned len);
- static char *paste(int id);
+ static char *paste(int id, unsigned &len);
  static void  destroy();
+
+ static void  Init();
 
  static char    *buffer;
  static unsigned length;
  static Atom     property;
  static int      waiting;
+ static const
+           char *x11NameError[];
 
  friend class TScreenX11;
 };
+
+const int x11clipNoSelection=1,
+          x11clipWrongType=2,
+          x11clipNoData=3,
+          x11clipX11Error=4,
+          x11clipAnother=5,
+
+          x11clipErrors=5;
 
 #define aMouseEvent (ButtonPressMask | ButtonReleaseMask | ButtonMotionMask)
 #define aKeyEvent   (KeyPressMask | KeyReleaseMask)

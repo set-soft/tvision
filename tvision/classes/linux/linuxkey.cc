@@ -24,8 +24,6 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOSf_Linux
-
 #define Uses_stdio
 #define Uses_string
 #define Uses_unistd
@@ -35,6 +33,9 @@
 #define Uses_TScreen
 #include <tv.h>
 
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOSf_Linux
+
 #include <termios.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -42,9 +43,6 @@
 #include <sys/kd.h>
 #include <sys/vt.h>
 #include <signal.h>
-
-#include <tv/linux/key.h>
-#include <tv/linux/log.h>
 
 int            TGKeyLinux::hIn=-1;
 FILE          *TGKeyLinux::fIn=NULL;
@@ -928,4 +926,9 @@ int TGKeyLinux::KOI8_CompareASCII(uchar val, uchar code)
  return val==code;
 }
 
-#endif // TVOSf_Linux
+#else // TVOSf_Linux
+
+#include <tv/linux/key.h>
+#include <tv/linux/log.h>
+
+#endif // else TVOSf_Linux

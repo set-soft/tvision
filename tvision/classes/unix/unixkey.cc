@@ -24,8 +24,6 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
-
 #define Uses_stdio
 #define Uses_unistd
 #define Uses_ctype
@@ -35,6 +33,10 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #define Uses_FullSingleKeySymbols
 #define Uses_string
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+
 #include <tv/unix/key.h>
 
 // New curses (ncurses) headers
@@ -540,5 +542,9 @@ void TGKeyUNIX::Init()
  TGKey::fillTEvent   =FillTEvent;
  TGKey::SetKbdMapping=TGKeyUNIX::SetKbdMapping;
 }
-#endif // TVOS_UNIX && !TVOSf_QNXRtP
+#else // TVOS_UNIX && !TVOSf_QNXRtP
+
+#include <tv/unix/key.h>
+
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP
 

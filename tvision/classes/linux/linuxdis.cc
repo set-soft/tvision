@@ -16,7 +16,6 @@ colors and restore them.
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOSf_Linux
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_unistd
@@ -26,6 +25,9 @@ colors and restore them.
 #define Uses_TGKey
 #define Uses_TVCodePage
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#ifdef TVOSf_Linux
 
 #include <termios.h>
 #include <term.h>
@@ -380,5 +382,11 @@ void TDisplayLinux::SetCursorShapeMDA(unsigned start, unsigned end)
 }
 #endif // h386LowLevel
 
-#endif // TVOSf_Linux
+#else // TVOSf_Linux
+
+#include <tv/linux/screen.h>
+#include <tv/linux/key.h>
+#include <tv/linux/log.h>
+
+#endif // else TVOSf_Linux
 

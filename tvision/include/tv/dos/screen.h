@@ -7,7 +7,7 @@
   
 ***************************************************************************/
 
-#ifndef DOS_SCREEN_HEADER_INCLUDED
+#if defined(TVCompf_djgpp) && !defined(DOS_SCREEN_HEADER_INCLUDED)
 #define DOS_SCREEN_HEADER_INCLUDED
 class THWMouseDOS;
 
@@ -102,6 +102,30 @@ protected:
 
  // Status before suspending
  static int    wasBlink;
+};
+
+class TVDOSClipboard
+{
+public:
+ TVDOSClipboard() {};
+
+protected:
+ // Replacements for the TVOSClipboard class
+ static int   copy(int id, const char *buffer, unsigned len);
+ static char *paste(int id, unsigned &length);
+
+ // Members fo this class
+ static int   Init();
+ static int   AllocateDOSMem(unsigned long size, unsigned long *BaseAddress);
+ static void  FreeDOSMem(unsigned long Address);
+
+ static const
+        char *dosNameError[];
+ static int   isValid;
+ static int   Version;
+ static int   Error;
+
+ friend class TScreenDOS;
 };
 
 #ifdef TSCREEN_DEFINE_REGISTERS

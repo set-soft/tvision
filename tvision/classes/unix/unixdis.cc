@@ -1,8 +1,7 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
+/* Copyright (C) 1999-2002 Salvador Eduardo Tropea */
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_unistd
@@ -10,6 +9,9 @@
 #define Uses_TScreen
 #define Uses_string
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
 #include <term.h>
@@ -120,5 +122,9 @@ int TDisplayUNIX::CheckForWindowSize(void)
  windowSizeChanged=0;
  return ret;
 }
-#endif // TVOS_UNIX && !TVOSf_QNXRtP
+#else // TVOS_UNIX && !TVOSf_QNXRtP
+
+#include <tv/unix/screen.h>
+
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP
 

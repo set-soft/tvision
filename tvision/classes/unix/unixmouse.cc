@@ -1,8 +1,6 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1999-2001 Salvador Eduardo Tropea */
+/* Copyright (C) 1999-2002 Salvador Eduardo Tropea */
 #include <tv/configtv.h>
-
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #define Uses_stdlib
 #define Uses_string
@@ -12,6 +10,10 @@
 #define Uses_TEventQueue
 #define Uses_TScreen
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+
 #include <termios.h>
 #include <signal.h>
 #include <tv/unix/screen.h>
@@ -135,6 +137,10 @@ void THWMouseXTerm::Init()
 THWMouseXTerm::~THWMouseXTerm()
 {
 }
+#else // TVOS_UNIX && !TVOSf_QNXRtP
 
-#endif // TVOS_UNIX && !TVOSf_QNXRtP
+#include <tv/unix/screen.h>
+#include <tv/unix/mouse.h>
+
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP
 

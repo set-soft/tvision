@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright (c) 2001 by Salvador E. Tropea
+  Copyright (c) 2001-2002 by Salvador E. Tropea
 
   Description: 
   That's the DOS low level mouse class.
@@ -9,6 +9,9 @@
   2) It can let the mouse driver draw the cursor or do it in the class.
   
 ***************************************************************************/
+
+#if defined(TVCompf_djgpp) && !defined(DOSMOUSE_HEADER_INCLUDED)
+#define DOSMOUSE_HEADER_INCLUDED
 
 class THWMouseDOS : public THWMouse
 {
@@ -85,4 +88,7 @@ public:
  // draw the mouse pointer
  static int getRMCB_InfoDraw(int &buttonPress);
 };
+
+#endif // DOSMOUSE_HEADER_INCLUDED
+
 

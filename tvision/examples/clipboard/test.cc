@@ -120,7 +120,8 @@ void TMyApp::testCopy(int clip)
  int res=TVOSClipboard::copy(clip,aMessage,strlen(aMessage)+1);
  if (!res)
    {
-    messageBox("Error copying to clipboard",mfError | mfOKButton);
+    messageBox(mfError | mfOKButton,"Error copying to clipboard: %s",
+               TVOSClipboard::getError());
     return;
    }
  messageBox(mfInformation | mfOKButton,
@@ -140,13 +141,15 @@ void TMyApp::testPaste(int clip)
     messageBox("Sorry but this OS doesn't have such a clipboard",mfError | mfOKButton);
     return;
    }
- char *result=TVOSClipboard::paste(clip);
+ unsigned length;
+ char *result=TVOSClipboard::paste(clip,length);
  if (!result)
    {
-    messageBox("Error pasting from clipboard",mfError | mfOKButton);
+    messageBox(mfError | mfOKButton,"Error pasting from clipboard: %s",
+               TVOSClipboard::getError());
     return;
    }
- if (strlen(result)>80)
+ if (length>80)
    {
     result[80]=0;
     messageBox(mfInformation | mfOKButton,"First 80 characters from clipboard: %s",result);

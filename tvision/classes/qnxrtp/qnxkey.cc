@@ -4,8 +4,6 @@
 
 #include <tv/configtv.h>
 
-#if defined(TVOS_UNIX) && defined(TVOSf_QNXRtP)
-
 #define Uses_stdio
 #define Uses_unistd
 #define Uses_ctype
@@ -16,6 +14,10 @@
 #define Uses_TKeys_Extended
 #define Uses_string
 #include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
+#if defined(TVOS_UNIX) && defined(TVOSf_QNXRtP)
+
 #include <termios.h>
 #include <tv/qnxrtp/key.h>
 

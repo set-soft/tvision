@@ -1,7 +1,7 @@
 /* XTerm mouse handler routines header.
    Copyright (c) 2002 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
-#ifndef XTERMMOUSE_INCLUDED
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(XTERMMOUSE_INCLUDED)
 #define XTERMMOUSE_INCLUDED
 
 class TScreenXTerm;
