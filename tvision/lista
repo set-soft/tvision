@@ -120,6 +120,11 @@ classes/tvedit2.cc
 classes/tvedit3.cc
 classes/tview.cc
 classes/twindow.cc
+classes/alcon/alcon.cc
+classes/alcon/alcondis.cc
+classes/alcon/alconkey.cc
+classes/alcon/alconmouse.cc
+classes/alcon/alconscr.cc
 classes/linux/linuxdis.cc
 classes/linux/linuxkey.cc
 classes/linux/linuxmouse.cc
@@ -647,6 +652,10 @@ include/tv/sttctext.h
 include/tv/submenu.h
 include/tv/terminal.h
 include/tv/textdev.h
+include/tv/alcon/alcon.h
+include/tv/alcon/key.h
+include/tv/alcon/mouse.h
+include/tv/alcon/screen.h
 include/tv/unix/key.h
 include/tv/unix/mouse.h
 include/tv/unix/screen.h
