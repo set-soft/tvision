@@ -27,7 +27,7 @@ $f=&cat('../linux/Makefile');
 # We will specify the libraries in the special flags
 &replaceVar($f,'RHIDE_LIBS=(.*)','RHIDE_LIBS=');
 &replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
-&replaceVar($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$intver -lc -lstdc++ -lncurses -lm -lgpm");
+&replaceVar($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$intver -L/usr/X11R6/lib -lX11 -lgpm -lncurses -lstdc++ -lm -lc");
 &replaceVar($f,'MAIN_TARGET=librhtv.a',"MAIN_TARGET=librhtv.so.$intver");
 &replaceVar($f,'librhtv.a:: \$\(DEPS_0\)',"librhtv.so.$intver\:\: \$(DEPS_0)");
 &replaceVar($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');

@@ -48,7 +48,7 @@ $f=&cat('../compat/compat.mak');
 &replaceVar($f,'vpath_src=','vpath_src=../compat ');
 &replaceVar($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
 &replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
-&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
+&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=@SHARED_CODE_OPTION@');
 &replaceVar($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');
 &replaceVar($f,'-Wall','');
 &replaceVar($f,'-Werror','');
