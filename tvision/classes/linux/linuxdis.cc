@@ -49,6 +49,8 @@ char                 *TDisplayLinux::newEnvir=NULL;
 int                   TDisplayLinux::maxLenTit=0;
 char                  TDisplayLinux::tioclinuxOK=0;
 char                  TDisplayLinux::cMap[16]={0,4,2,6,1,5,3,7,8,12,10,14,9,13,11,15};
+unsigned              TDisplayLinux::oldCurX,
+                      TDisplayLinux::oldCurY;
 
 // All the code is in TScreenLinux, but this is the right moment, by this
 // time TScreenLinux is suspended.
