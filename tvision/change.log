@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.197  2002/07/01 15:58:20  set
+* Updated: [QNX] package file. From Mike.
+* Added: [QNX] small doc about the limitations. From Mike.
+
 Revision 2.196  2002/07/01 15:43:22  set
 * Updated: [MSVC] Makefile to include all the drivers directory. Problems
 reported by WintiX.
