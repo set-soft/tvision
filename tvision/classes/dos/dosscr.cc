@@ -375,6 +375,7 @@ void TVDOSClipboard::FreeDOSMem(unsigned long Address)
  #define DBGMessage2(a,b) messageBox(0x402,a,b)
 #else
  #define DBGMessage(a)
+ #define DBGMessage2(a,b)
 #endif
 
 int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
