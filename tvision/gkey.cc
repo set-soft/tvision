@@ -63,12 +63,12 @@ takes only 400 bytes of memory.
 #define INTR(nr,r) __dpmi_int(nr,&r)
 #endif
 
+#define Uses_ctype
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
+#define Uses_string
 #include <tv.h>
-#include <ctype.h>
-#include <string.h>
 
 int TGKey::useBIOS=0;
 int TGKey::translateKeyPad=1;

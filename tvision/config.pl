@@ -54,13 +54,15 @@ print "\n";
 GenerateMakefile();
 if ($OS eq 'UNIX')
   {
+   $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
    ModifyMakefiles('linux/Makefile');
-   CreateRHIDEenvs('linux/rhide.env','examples/config.env');
+   CreateRHIDEenvs('linux/rhide.env','examples/config.env','compat/rhide.env');
   }
 elsif ($OS eq 'DOS')
   {
+   $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
    ModifyMakefiles('djgpp/makefile');
-   CreateRHIDEenvs('djgpp/rhide.env','examples/config.env');
+   CreateRHIDEenvs('djgpp/rhide.env','examples/config.env','compat/rhide.env');
   }
 elsif ($OS eq 'Win32')
   {

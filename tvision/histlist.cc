@@ -11,9 +11,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  */
 
+#define Uses_string
 #include <tv.h>
 
-#include <string.h>
 #include <stdlib.h>
 
 class HistRec
@@ -40,6 +40,7 @@ void *HistRec::operator new( size_t, HistRec *hr )
 void NEVER_RETURNS *HistRec::operator new( size_t )
 {
     abort();
+    RETURN_WHEN_NEVER_RETURNS;
 }
 
 inline HistRec::HistRec( uchar nId, const char *nStr ) :
@@ -62,7 +63,7 @@ inline HistRec *backup( HistRec *ptr, size_t s )
 
 inline HistRec *next( HistRec *ptr )
 {
-    return advance( ptr, ptr->len );
+    return ::advance( ptr, ptr->len );
 }
 
 inline HistRec *prev( HistRec *ptr )
@@ -107,7 +108,7 @@ void insertString( uchar id, const char *str )
         ushort firstLen = historyBlock->len;
         HistRec *dst = historyBlock;
         HistRec *src = next( historyBlock );
-        movmem( src, dst,  size_t( (char *)lastRec - (char *)src ) );
+        memmove( dst, src,  size_t( (char *)lastRec - (char *)src ) );
         lastRec = backup( lastRec, firstLen );
 	}
     new( lastRec ) HistRec( id, str );

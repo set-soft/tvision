@@ -13,14 +13,15 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#define Uses_string
+#define Uses_stdlib
 #include <ctype.h>
-#include <fcntl.h>
-#include <sys/stat.h>
+#define Uses_fcntl
+#define Uses_sys_stat
+#define Uses_alloca
+#define Uses_filelength
 #ifdef _MSC_VER
 #include <io.h>
-#include <malloc.h> // alloca
 #else
 #include <unistd.h>
 #endif
@@ -144,11 +145,7 @@ void TFileViewer::readFile( const char *fName )
 
   limit.x = 0;
   fileName = newStr( fName );
-#if defined( __DJGPP__ ) || defined(_WIN32)
   int fileToView = open(fName, O_RDONLY | O_TEXT);
-#else
-  int fileToView = open(fName, O_RDONLY);
-#endif
   if (fileToView <= 0)
   {
     messageBox(mfError | mfOKButton ,

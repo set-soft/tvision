@@ -15,7 +15,7 @@ The small sections are:
 10. Contact information
 
 If you are looking for information about the Win32 target please look in the
-win32 directory.
+win32 directory. Windows NT/BC++ have a separated directory!
 
 ****** Important! for old users: the headers now have two levels. In ******
 ****** the first level tv.h is located. The rest of the headers are  ******
@@ -55,7 +55,7 @@ Example:
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TV for short) v1.0.10.
+  That's the Turbo Vision distribution (TV for short) v1.1.0.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -135,6 +135,7 @@ if you want to try generating the .deb packages you *must* have the Linux
 distribution of the library.
   The compress and compress.bat files are used to create the distribution
 packages and are included.
+  Starting with 1.1.0 Win32 platforms are also supported.
 
 
 
@@ -249,7 +250,7 @@ will detect if you have a working gettext installed and modify the configtv.h
 accordingly.
 
 Tools:
-Compiler: I tested with gcc 2.7.x, 2.8.x, egcs 1.1.x and gcc 2.95.
+Compiler: I tested with gcc 2.7.x, 2.8.x, egcs 1.1.x and gcc 2.95.x.
 Binutils: I use binutils 2.8.1, newers should work.
 RHIDE: if you plan to use the project (.gpr) files you'll need the last
 version of RHIDE available. Any older version will crash when loading the

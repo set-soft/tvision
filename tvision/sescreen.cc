@@ -1221,17 +1221,17 @@ void do_it(char *msg, int clip_flag, void (*func)())
 
    if (clip_flag) {
       do {
-	 x1 = (random() & 255) + 32;
-	 x2 = (random() & 255) + 32;
+	 x1 = (rand() & 255) + 32;
+	 x2 = (rand() & 255) + 32;
       } while (abs(x1-x2) < 30);
       do {
-	 y1 = (random() & 127) + 40;
-	 y2 = (random() & 127) + 40;
+	 y1 = (rand() & 127) + 40;
+	 y2 = (rand() & 127) + 40;
       } while (abs(y1-y2) < 20);
       set_clip(screen, xoff+x1, yoff+y1, xoff+x2, yoff+y2);
    }
 
-   drawing_mode(mode, pattern[random()%NUM_PATTERNS], 0, 0);
+   drawing_mode(mode, pattern[rand()%NUM_PATTERNS], 0, 0);
 
    (*func)();
 
@@ -1265,12 +1265,12 @@ void putpix_demo()
 
    while (!next()) {
 
-      x = (random() & 511) + 32;
-      y = (random() & 255) + 40;
+      x = (rand() & 511) + 32;
+      y = (rand() & 255) + 40;
       putpixel(screen, xoff+x, yoff+y, c);
 
       if (mode >= DRAW_MODE_COPY_PATTERN)
-	 drawing_mode(mode, pattern[random()%NUM_PATTERNS], 0, 0);
+	 drawing_mode(mode, pattern[rand()%NUM_PATTERNS], 0, 0);
 
       if (++c >= 16)
 	 c = 0;
@@ -1296,14 +1296,14 @@ void line_demo()
 
    while (!next()) {
 
-      x1 = (random() & 511) + 32;
-      x2 = (random() & 511) + 32;
-      y1 = (random() & 255) + 40;
-      y2 = (random() & 255) + 40;
+      x1 = (rand() & 511) + 32;
+      x2 = (rand() & 511) + 32;
+      y1 = (rand() & 255) + 40;
+      y2 = (rand() & 255) + 40;
       line(screen, xoff+x1, yoff+y1, xoff+x2, yoff+y2, c);
 
       if (mode >= DRAW_MODE_COPY_PATTERN)
-	 drawing_mode(mode, pattern[random()%NUM_PATTERNS], 0, 0);
+	 drawing_mode(mode, pattern[rand()%NUM_PATTERNS], 0, 0);
 
       if (++c >= 16)
 	 c = 0;
