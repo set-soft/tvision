@@ -1,4 +1,9 @@
 $Log$
+Revision 1.17  1999/01/31 20:12:44  set
+* Added support for S3 (buggy) BIOSes in vesa.cc. It helps to support VESA
+text modes when using S3 boards. Reported and tested by Jerzy Witkowski
+<jwi@pl.ibm.com>.
+
 Revision 1.16  1999/01/31 19:20:14  root
 * Adjusted the examples for Linux (some used dos.h).
 * Cleaned the /usr/... dependencies in the example gprs.
