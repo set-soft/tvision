@@ -128,6 +128,9 @@ protected:
  static void   SetCharactersVCS(unsigned dst,ushort *src,unsigned len);
  static void   SetCharactersMDA(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild);
+ static int    GetFontGeometry(unsigned &w, unsigned &h);
+ static int    SetFont(int which, TScreenFont256 *font, int encoding);
+ static void   RestoreFonts();
 
  // Initialization code executed just once
  static int InitOnce();
@@ -155,6 +158,12 @@ protected:
  static int  AnalyzeCodePage();
  // A guess about the code page using the language
  static int  GuessCodePageFromLANG();
+ // Tries to find the geometry of loaded fonts
+ static int  GetLinuxFontGeometry();
+ static void FreeFontsMemory();
+ static int  AllocateFontsMemory();
+ static int  GetLinuxFont();
+ static void ExpandFont(uchar *dest, TScreenFont256 *font);
  // Terminal state before starting
  static struct termios outTermiosOrig;
  // Our terminal state
@@ -186,6 +195,11 @@ protected:
  static struct stCodePageLang langCodePages[];
  // Used when the loaded maps are unknown
  static CodePage unknownACM, unknownSFM;
+ // Fonts stuff
+ static uchar  canSetFonts,primaryFontSet,secondaryFontSet;
+ static struct console_font_op linuxFont;
+ static struct console_font_op ourFont;
+ static int    origCPScr, origCPApp;
 };
 
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't

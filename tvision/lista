@@ -282,6 +282,11 @@ examples/dyntxt/dyntext.h
 examples/dyntxt/readme
 examples/dyntxt/rhide.env
 examples/dyntxt/testdyn.cpp
+-examples/fonts/font.016
+examples/fonts/rhide.env
+examples/fonts/test.cc
+-examples/fonts/test.gpr
+examples/fonts/test.mak
 -examples/inplis/implis.gpr
 examples/inplis/inplist.cpp
 examples/inplis/inplist.h
@@ -727,9 +732,9 @@ winnt/obj_ms/delete.me
 winnt/objs/delete.me
 winnt/readme.txt
 winnt/tvex.cc
-www-site/bvucs-n1.jpg
+-www-site/bvucs-n1.jpg
 www-site/contrib.html
-www-site/envelp.gif
+-www-site/envelp.gif
 www-site/history.html
 www-site/index.html
 www-site/sf.css

@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.192  2002/07/01 12:57:39  set
+* Fixed: [X11] clipboard code.
+
 Revision 2.191  2002/07/01 12:53:39  set
 * Fixed: More error reporting details in all clipboard implementations.
 * Updated: [DJGPP+Win32] Project and makefiles.

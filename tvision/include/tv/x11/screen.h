@@ -76,6 +76,11 @@ protected:
  static int    setWindowTitle(const char *aName);
  static const char *getWindowTitle(void);
  static int    SetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static int    GetFontGeometry(unsigned &w, unsigned &h);
+ static int    GetFontGeometryRange(unsigned &wmin, unsigned &hmin,
+                                    unsigned &umax, unsigned &hmax);
+ static int    SetFont(int which, TScreenFont256 *font, int encoding=-1);
+ static void   RestoreFonts();
  
 protected:
  // Blinking cursor emulation
@@ -92,6 +97,14 @@ protected:
  static void   writeLine(int x, int y, int w, unsigned char *str, unsigned color);
  // Internal rectangle update
  static void   redrawBuf(int x, int y, unsigned w, unsigned off);
+
+ // Font helpers
+ static void   CreateXImageFont(int which, uchar *font, unsigned w, unsigned h);
+ static void   DestroyXImageFont(int which);
+
+ static void   FullRedraw();
+ inline
+ static void   drawChar(unsigned x, unsigned y, uchar aChar, uchar aAttr);
 
  // Variables for this driver
  // Foreground and background colors
@@ -129,8 +142,13 @@ protected:
  static ulong     colorMap[16];
  // The images that makes our font
  static XImage   *ximgFont[256];
+ static XImage   *ximgSecFont[256];
  // The image for the cursor
  static XImage   *cursorImage;
+ // Hints about our size preferences
+ static XSizeHints *sizeHints;
+ // Window class and resources name
+ static XClassHint *classHint;
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

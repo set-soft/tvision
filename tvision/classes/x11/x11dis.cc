@@ -14,6 +14,7 @@
 #undef True
 #undef False
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 
 #include <tv/x11/screen.h>
 
