@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.440  2003/05/13 15:06:16  set
+* Added: void *getData() member to TInputLine. It return the data member.
+That's needed to compile coded adapted to the Unicode branch where the
+data member is protected.
+
 Revision 2.439  2003/05/12 12:49:50  set
 * Fixed: The TVIntl recode shouldn't recode values in the ASCII range. Not
 at least for the supported code pages.

@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Added palette color and draw code for disabled clusters by Salvador E. Tropea
+Added TSItem::append by Salvador E. Tropea
 
  *
  *
@@ -341,6 +342,21 @@ int TCluster::findSel( TPoint p )
 int TCluster::row( int item )
 {
     return item % size.y;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Appends the provided TMenuItem at the end of the chain.@*
+  Coded by SET. That's a mix between Dean Wakerley and TVTools ideas.
+  
+***************************************************************************/
+
+void TSItem::append( TSItem *aNext )
+{
+    TSItem *item = this;
+    for ( ; item->next; item = item->next );
+    item->next = aNext;
 }
 
 #if !defined( NO_STREAM )
