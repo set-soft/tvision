@@ -82,7 +82,7 @@ void     TGKey::defaultResume() {}
 uchar    TGKey::defaultNonASCII2ASCII(uchar val) { return val; }
 int      TGKey::defaultCompareASCII(uchar val, uchar code) { return val==code; }
 void     TGKey::defaultSetKbdMapping(int version) { Mode=version; }
-int      TGKey::defaultGetKbdMapping(int version) { return Mode; }
+int      TGKey::defaultGetKbdMapping(int /*version*/) { return Mode; }
 void     TGKey::defaultFillTEvent(TEvent &/*e*/) {};
 
 /*****************************************************************************
