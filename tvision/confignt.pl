@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1996,1997,1998,1999,2000 by Salvador E. Tropea (SET),
+# Copyright (C) 1996-2002 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 
@@ -17,7 +17,7 @@ $a=~s/vgaregs.c//;
 $a=~s/vgastate.c//;
 $a=~s/vesa.cc//;
 # 3) Add BC++ specific
-$a.=' gkeyw32.cc';
+#$a.=' gkeyw32.cc';
 $a=~s/(\w+)\.(\w+)/\+$1\.obj/g;
 $a=~s/\t//g;
 # 4) Generate makefile from the template

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2001 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2002 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # Common configuration routines.
@@ -723,6 +723,15 @@ sub DetectOS
     $OS='Win32';
     $OSf='';
     $Compf='Cygwin/MinGW';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='win32';
+   }
+ elsif ($os=~/MINGW/)
+   {
+    $OS='Win32';
+    $OSf='';
+    $Compf='MinGW';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='win32';

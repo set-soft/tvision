@@ -112,7 +112,7 @@ void TScreenWin32::DoneConsole()
  TGKeyWin32::DeInit();
 }
 
-DWORD WINAPI TScreenWin32::HandleEvents(void* p)
+DWORD WINAPI TScreenWin32::HandleEvents(void *)
 {
  INPUT_RECORD ir;
  DWORD dwRead;
@@ -322,6 +322,7 @@ int TScreenWin32::System(const char *command, pid_t *pidChild)
  *pidChild=cpid;
  return 0;
 }
+#endif
 
 TScreen *TV_Win32DriverCheck()
 {
@@ -333,7 +334,6 @@ TScreen *TV_Win32DriverCheck()
    }
  return drv;
 }
-#endif
 
 /*
 void TScreenWin32::setVideoMode( ushort mode )

@@ -1,22 +1,17 @@
-/*
- *      Turbo Vision - Version 2.0
- *
- *      Copyright (c) 1994 by Borland International
- *      All Rights Reserved.
- *
+/**[txh]********************************************************************
 
-Modified by Robert H”hne to be used for RHIDE.
-Modified by Anatoli Soltan to be used under Win32 consoles.
+  Copyright (c) 2002 by Salvador E. Tropea (SET)
+  Based on code contributed by Anatoli Soltan.
 
- *
- *
- */
+  Description:
+  Win32 Display routines.
+  The original implementation was done by Anatoli, I removed some code, added
+some routines and adapted it to the new architecture.
+  
+***************************************************************************/
 #include <tv/configtv.h>
 
 #ifdef TVOS_Win32
-
-// SET: Moved the standard headers here because according to DJ
-// they can inconditionally declare symbols like NULL
 
 #define Uses_TScreen
 #define Uses_TEvent
@@ -26,166 +21,105 @@ Modified by Anatoli Soltan to be used under Win32 consoles.
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-static ushort Equipment;
-static uchar CrtInfo;
-static uchar CrtRows;
+#include <tv/winnt/screen.h>
 
-ushort * TDisplay::equipment = &Equipment;
-uchar  * TDisplay::crtInfo = &CrtInfo;
-uchar  * TDisplay::crtRows = &CrtRows;
-TFont  * TDisplay::font=0;
+HANDLE   TDisplayWinNT::hIn =INVALID_HANDLE_VALUE;
+HANDLE   TDisplayWinNT::hOut=INVALID_HANDLE_VALUE;
+unsigned TDisplayWinNT::currentCursorX,
+         TDisplayWinNT::currentCursorY,
+         TDisplayWinNT::curStart,
+         TDisplayWinNT::curEnd;
 
-HANDLE __tvWin32ConInp = INVALID_HANDLE_VALUE;
-HANDLE __tvWin32ConOut = INVALID_HANDLE_VALUE;
-
-static int currentCursorX;
-static int currentCursorY;
-static ushort currentCursorType;
-
-static void Initialize()
+void TDisplayWinNT::SetCursorPos(unsigned x, unsigned y)
 {
-  //__tvWin32ConInp = CreateFile("CONIN$", GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-  //__tvWin32ConOut = CreateFile("CONOUT$", GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-  __tvWin32ConInp = GetStdHandle(STD_INPUT_HANDLE);
-  __tvWin32ConOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
-  CONSOLE_CURSOR_INFO cursorInf;
-  GetConsoleCursorInfo(__tvWin32ConOut, &cursorInf);
-  currentCursorType = (ushort)(cursorInf.bVisible ? cursorInf.dwSize : 0x2000);
-  
-  CONSOLE_SCREEN_BUFFER_INFO screenInf;
-  GetConsoleScreenBufferInfo(__tvWin32ConOut, &screenInf);
-  currentCursorX = screenInf.dwCursorPosition.X;
-  currentCursorY = screenInf.dwCursorPosition.Y;
-}
-
-void TDisplay::SetPage(uchar /*page*/)
-{
-}
-
-void TDisplay::SetCursor(int x,int y)
-{
-  if (x != currentCursorX || y != currentCursorY)
-  {
+ if (x!=currentCursorX || y!=currentCursorY)
+   {
     COORD coord;
-    coord.X = (SHORT)x;
-    coord.Y = (SHORT)y;
-    SetConsoleCursorPosition(__tvWin32ConOut, coord);
-    currentCursorX = x;
-    currentCursorY = y;
-  }
+    coord.X=(SHORT)x;
+    coord.Y=(SHORT)y;
+    SetConsoleCursorPosition(hOut,coord);
+    currentCursorX=x;
+    currentCursorY=y;
+   }
 }
 
-void TDisplay::GetCursor(int &x,int &y)
+void TDisplayWinNT::GetCursorPos(unsigned &x, unsigned &y)
 {
-  x = currentCursorX;
-  y = currentCursorY;
+ x=currentCursorX;
+ y=currentCursorY;
 }
 
-ushort TDisplay::getCursorType()
+// by SET
+void TDisplayWinNT::GetCursorPosLow(unsigned &x, unsigned &y)
 {
-  return currentCursorType;
+ CONSOLE_SCREEN_BUFFER_INFO screenInf;
+ GetConsoleScreenBufferInfo(hOut,&screenInf);
+ x=screenInf.dwCursorPosition.X;
+ y=screenInf.dwCursorPosition.Y;
 }
 
-void TDisplay::setCursorType( ushort ct )
+// by SET
+void TDisplayWinNT::GetCursorShapeLow(unsigned &start, unsigned &end)
 {
-  if (ct != currentCursorType)
-  {
+ CONSOLE_CURSOR_INFO cursorInf;
+ GetConsoleCursorInfo(hOut,&cursorInf);
+ if (cursorInf.bVisible)
+   {// Visible
+    // Win32API returns a "percent filled" value.
+    start=100-cursorInf.dwSize;
+    // Ever upto the end
+    end  =100;
+   }
+ else
+    // Invisible cursor
+    start=end=0;
+}
+
+void TDisplayWinNT::GetCursorShape(unsigned &start, unsigned &end)
+{
+ start=curStart;
+ end=curEnd;
+}
+
+// by SET
+void TDisplayWinNT::SetCursorShape(unsigned start, unsigned end)
+{
+ if (start>=end && getShowCursorEver())
+    return;
+
+ if (start!=curStart || end!=curEnd)
+   {
     CONSOLE_CURSOR_INFO inf;
-    inf.bVisible = !((ct & 0xFF00) == 0x2000);
-    inf.dwSize = inf.bVisible ? ct : 1;
-    SetConsoleCursorInfo(__tvWin32ConOut, &inf);
-    currentCursorType = ct;
-  }
+    inf.bVisible=start>=end ? False : True;
+    inf.dwSize=inf.bVisible ? end-start : 1;
+    SetConsoleCursorInfo(hOut,&inf);
+    curStart=start;
+    curEnd=end;
+   }
 }
 
-void TDisplay::clearScreen( uchar screenWidth, uchar screenHeight )
+void TDisplayWinNT::ClearScreen(uchar screenWidth, uchar screenHeight)
 {
-  COORD coord = {0, 0};
-  DWORD cWritten;
+ COORD coord={0,0};
+ DWORD cWritten;
 
-  FillConsoleOutputCharacter(
-    __tvWin32ConOut,
-    ' ',
-    screenWidth * screenHeight,
-    coord,
-    &cWritten);
-  FillConsoleOutputAttribute(
-    __tvWin32ConOut,
-    FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
-    screenWidth * screenHeight,
-    coord,
-    &cWritten);
+ FillConsoleOutputCharacter(hOut,' ',screenWidth*screenHeight,coord,&cWritten);
+ FillConsoleOutputAttribute(hOut,FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
+                            screenWidth*screenHeight,coord,&cWritten);
 }
 
-void TDisplay::videoInt()
+ushort TDisplayWinNT::GetRows()
 {
+ CONSOLE_SCREEN_BUFFER_INFO inf;
+ GetConsoleScreenBufferInfo(hOut,&inf);
+ return (ushort)inf.dwSize.Y;
 }
 
-ushort TDisplay::getRows()
+ushort TDisplayWinNT::GetCols()
 {
-  CONSOLE_SCREEN_BUFFER_INFO inf;
-  GetConsoleScreenBufferInfo(__tvWin32ConOut, &inf);
-  return (ushort)inf.dwSize.Y;
-}
-
-ushort TDisplay::getCols()
-{
-  CONSOLE_SCREEN_BUFFER_INFO inf;
-  GetConsoleScreenBufferInfo(__tvWin32ConOut, &inf);
-  return (ushort)inf.dwSize.X;
-}
-
-ushort TDisplay::getCrtMode()
-{
-  if (__tvWin32ConInp == INVALID_HANDLE_VALUE)
-    Initialize();
-  return smCO80;
-  //$todo: implement something
-}
-
-void TDisplay::setCrtMode( ushort /*mode*/ )
-{
-  //$todo: implement something
-}
-
-
-void TDisplay::setCrtMode( char * /*command*/ )
-{
-  //$todo: ???
-}
-
-void TDisplay::updateIntlChars()
-{
- if(GetConsoleOutputCP() != 437 )
-   TFrame::frameChars[30] = 'Í';
-}
-
-int TDisplay::SelectFont(int height, int noForce, int modeRecalculate, int width)
-{
- if (!font)
-    font=new TFont();
- return font->SelectFont(height,width,0,noForce,modeRecalculate);
-}
-
-void TDisplay::SetFontHandler(TFont *f)
-{
- if (font) // The destructor is virtual
-    delete font;
- font=f;
-}
-
-void TDisplay::RestoreDefaultFont(void)
-{
- if (!font)
-    font=new TFont();
- font->RestoreDefaultFont();
-}
-
-int TDisplay::CheckForWindowSize(void)
-{
- //$todo: implement it
- return 0;
+ CONSOLE_SCREEN_BUFFER_INFO inf;
+ GetConsoleScreenBufferInfo(hOut,&inf);
+ return (ushort)inf.dwSize.X;
 }
 
 const int mxTitleSize=256;
@@ -200,7 +134,7 @@ const int mxTitleSize=256;
 
 ***************************************************************************/
 
-char *TDisplay::GetWindowTitle(void)
+const char *TDisplayWinNT::GetWindowTitle(void)
 {
  char buf[mxTitleSize];
  DWORD ret=GetConsoleTitle(buf,mxTitleSize);
@@ -224,10 +158,25 @@ char *TDisplay::GetWindowTitle(void)
 
 ***************************************************************************/
 
-int TDisplay::SetWindowTitle(const char *name)
+int TDisplayWinNT::SetWindowTitle(const char *name)
 {
  return SetConsoleTitle(name);
 }
 
+TDisplayWinNT::~TDisplayWinNT() {}
+
+void TDisplayWinNT::Init()
+{
+ setCursorPos=SetCursorPos;
+ getCursorPos=GetCursorPos;
+ getCursorShape=GetCursorShape;
+ setCursorShape=SetCursorShape;
+ getRows=GetRows;
+ getCols=GetCols;
+ setWindowTitle=SetWindowTitle;
+ getWindowTitle=GetWindowTitle;
+ clearScreen=ClearScreen;
+}
+
 #endif // TVOS_Win32
-// vi: set ts=8 sw=2 et : //
+

@@ -68,7 +68,7 @@ void TDisplayWin32::GetCursorShape(unsigned &start, unsigned &end)
 // by SET
 void TDisplayWin32::SetCursorShape(unsigned start, unsigned end)
 {
- if (start>=end && !getShowCursorEver())
+ if (start>=end && getShowCursorEver())
     return;
 
  GetConsoleCursorInfo(hOut,&ConsoleCursorInfo);
