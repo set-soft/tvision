@@ -45,7 +45,7 @@ $f=~s/\.\.\/compat\///g;
 # Fix the compat.mak file
 #
 $f=&cat('../compat/compat.mak');
-&replaceVar($f,'vpath_src=\$\(RHIDE_STDINC\)','vpath_src=$(RHIDE_STDINC) ../compat');
+&replaceVar($f,'vpath_src=','vpath_src=../compat ');
 &replaceVar($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
 &replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
 &replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
@@ -61,8 +61,6 @@ system("rm -f librhtv.so");
 system("rm -f librhtv.so.$extver");
 system("ln -s librhtv.so.$intver librhtv.so");
 system("ln -s librhtv.so.$intver librhtv.so.$extver");
-# RHIDE 1.4.9 includes rhide.env
-system('ln -s ../linux/rhide.env rhide.env') unless (-s 'rhide.env');
 
 #
 # Generate a small installation script

@@ -32,91 +32,6 @@
 
 /*****************************************************************************
 
-  TDisplayX11 display stuff, that's very easy because we control all the
-  variables involved
-
-*****************************************************************************/
-
-int       TDisplayX11::cursorX;
-int       TDisplayX11::cursorY;
-int       TDisplayX11::cursorPX;
-int       TDisplayX11::cursorPY;
-char      TDisplayX11::cShapeFrom;
-char      TDisplayX11::cShapeTo;
-char      TDisplayX11::windowSizeChanged=0;
-int       TDisplayX11::maxX;
-int       TDisplayX11::maxY;
-unsigned  TDisplayX11::fontW;
-unsigned  TDisplayX11::fontH;
-
-TScreen *TV_XDriverCheck()
-{
- TScreenX11 *drv=new TScreenX11();
- if (!TScreen::initialized)
-   {
-    delete drv;
-    return 0;
-   }
- return drv;
-}
-
-TDisplayX11::~TDisplayX11() {}
-
-void TDisplayX11::Init()
-{
- setCursorPos=SetCursorPos;
- getCursorPos=GetCursorPos;
- getCursorShape=GetCursorShape;
- setCursorShape=SetCursorShape;
- getRows=GetRows;
- getCols=GetCols;
- checkForWindowSize=CheckForWindowSize;
-}
-
-void TDisplayX11::SetCursorPos(unsigned x, unsigned y)
-{
- cursorX=x; cursorY=y;
- cursorPX=x*fontW; cursorPY=y*fontH;
-}
-
-void TDisplayX11::GetCursorPos(unsigned &x, unsigned &y)
-{
- x=cursorX; y=cursorY;
-}
-
-void TDisplayX11::GetCursorShape(unsigned &start, unsigned &end)
-{
- start=100*cShapeFrom/fontH;
- end  =100*cShapeTo/fontH;
-}
-
-void TDisplayX11::SetCursorShape(unsigned start, unsigned end)
-{
- cShapeFrom=start*fontH/100;
- cShapeTo  =end*fontH/100;
- if (cShapeFrom>fontH) cShapeFrom=fontH;
- if (cShapeTo>fontH)   cShapeTo  =fontH;
-}
-
-ushort TDisplayX11::GetRows()
-{
- return maxY;
-}
-
-ushort TDisplayX11::GetCols()
-{
- return maxX;
-}
-
-int TDisplayX11::CheckForWindowSize(void)
-{
- int ret=windowSizeChanged!=0;
- windowSizeChanged=0;
- return ret;
-}
-
-/*****************************************************************************
-
   TScreenX11 screen stuff.
 
 *****************************************************************************/
@@ -746,7 +661,7 @@ void TScreenX11::ProcessGenericEvents()
        /* Process message that doesn't have mask */
        if (XCheckTypedEvent(disp,ClientMessage,&event)==True)
          {
-          if (event.xclient.data.l[0]==theProtocols)
+          if ((Atom)event.xclient.data.l[0]==theProtocols)
             {
              printf("Bye, bye!\n");
              XDestroyIC(xic);
@@ -825,14 +740,14 @@ void TScreenX11::ProcessGenericEvents()
             newPW=fontW*maxX;
             newPH=fontH*maxY;
 
-            if (event.xconfigure.width==newPW &&
-                event.xconfigure.height==newPH)
+            if ((unsigned)event.xconfigure.width==newPW &&
+                (unsigned)event.xconfigure.height==newPH)
                break;
 
             /*printf("Nuevo: %d,%d (%d,%d)\n",maxX,maxY,lastW,lastH);*/
             XResizeWindow(disp,mainWin,newPW,newPH);
 
-            if ((maxX==lastW) && (maxY==lastH))
+            if ((maxX==(int)lastW) && (maxY==(int)lastH))
                break;
 
             screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
@@ -892,6 +807,17 @@ void TScreenX11::redrawBuf(int x, int y, unsigned w, unsigned off)
    }
   
  writeLine(x,y,len,tmp,color);          // Print last block
+}
+
+TScreen *TV_XDriverCheck()
+{
+ TScreenX11 *drv=new TScreenX11();
+ if (!TScreen::initialized)
+   {
+    delete drv;
+    return 0;
+   }
+ return drv;
 }
 #endif // defined(TVOS_UNIX) && defined(HAVE_X11)
 

@@ -13,6 +13,7 @@ Boolean  THWMouse::noMouse         =False;
 uchar    THWMouse::buttonCount     =0;
 char     THWMouse::visible         =0;
 char     THWMouse::forced          =0;
+volatile
 unsigned THWMouse::drawCounter     =0;
 MouseEventType THWMouse::forcedME;
 
@@ -46,7 +47,7 @@ void THWMouse::defaultHide()
 void THWMouse::defaultSuspend() {}
 void THWMouse::defaultResume() {}
 void THWMouse::defaultSetRange(ushort /*rx*/, ushort /*ry*/) {}
-void THWMouse::defaultDrawMouse(int /*x*/, int /*y*/) { return 0; }
+int  THWMouse::defaultDrawMouse(int /*x*/, int /*y*/) { return 0; }
 
 void THWMouse::defaultRegisterHandler(unsigned, void (*)()) {}
 

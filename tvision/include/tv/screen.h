@@ -208,7 +208,7 @@ public:
  // SET: Used to set the video mode using an external program
  static void   (*setVideoModeExt)(char *mode);
  // SET: executes the indicated command
- static int    (*System)(const char *command, pid_t *pidChild);
+ static int    (*System)(const char *command, pid_t *pidChild=0);
 
  // SET: flags capabilities flags
  enum Capabilities1

@@ -116,6 +116,7 @@ int TScreen::defaultSystem(const char *command, pid_t *pidChild)
   Real members
 *****************************************************************************/
 
+static
 drvChecker Drivers[]=
 {
  #ifdef TVOS_DOS

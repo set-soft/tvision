@@ -76,8 +76,10 @@ public:
 
  friend class THWMouseXTerm;
 
-protected:
+ // Fix me: should be protected but right now is used by the editor for the
+ // pal. that should be moved here.
  static void SendToTerminal(const char *value);
+protected:
  static void InitPCCharsMapping();
  static void sigWindowSizeChanged(int sig);
  static void SpecialKeysDisable(int file);
