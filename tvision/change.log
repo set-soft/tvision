@@ -1,4 +1,7 @@
 $Log$
+Revision 2.2  2001/11/24 23:21:19  set
+* Changed version to 2.0.0 because big changes are about to be merged.
+
 Revision 2.1  2001/11/24 23:18:11  set
 * Added: X library detection to the configuration.
 

@@ -1,5 +1,8 @@
 /*****************************************************************************
 
+ Todo:
+ Volar esto: int use_real_keyboard_bios=0;
+
  This code is GPL, see copying file for more details.
  Keyboard handler for Linux Copyright by Salvador E. Tropea (SET) (1998,1999)
 
@@ -19,101 +22,79 @@ the keyboard combinations. We lose some important things like Ctrl+Function
 key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 
 *****************************************************************************/
+#include <tv/configtv.h>
+
+#ifdef TVOS_UNIX
+
+#define Uses_stdio
+#define Uses_unistd
+#define Uses_ctype
+#define Uses_stdlib
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
 #define Uses_string
 #include <tv.h>
-#include <stdio.h>
+#include <tv/linuxkey.h>
 
-#include <unistd.h>
-#include <ctype.h>
+// New curses (ncurses) headers
 #ifdef TVOSf_FreeBSD
-#include <ncurses.h>
+ #include <ncurses.h>
 #else
-#include <curses.h>
+ #include <curses.h>
 #endif
-#include <stdlib.h>
 #include <term.h>
 
 // All of this is needed for the VT switching hook and keyboard patching
 #ifdef TVOSf_Linux
-#include <sys/ioctl.h>
-#include <sys/kd.h>
-#include <sys/vt.h>
-#include <signal.h>
+ #include <sys/ioctl.h>
+ #include <sys/kd.h>
+ #include <sys/vt.h>
+ #include <signal.h>
 #endif
 
 #ifdef HAVE_KEYSYMS
-// X11R6 keysyms list
-#include <X11/keysym.h>
+ // X11R6 keysyms list
+ #include <X11/keysym.h>
 #endif
 
 //#define GKEY
 #define TOSTDERR
 #ifndef GKEY
-#define dbprintf(a...)
+ #define dbprintf(a...)
 #else
-# ifdef TOSTDERR
-#  define dbprintf(a...) fprintf(stderr,a)
-# else
-#  define dbprintf(a...) printf(a)
-# endif
+ #ifdef TOSTDERR
+  #define dbprintf(a...) fprintf(stderr,a)
+ #else
+  #define dbprintf(a...) printf(a)
+ #endif
 #endif
 
 /* Linux IOCTL values found experimentally */
 const int kblNormal=0,kblShift=1,kblAltR=2,kblCtrl=4,kblAltL=8;
+const int MouseB1Down=0x20,MouseB2Down=0x21,MouseB3Down=0x22,MouseUp=0x23;
 
 #define IN_FD fileno(stdin)
-
-int use_real_keyboard_bios = 0;
-int convert_num_pad = 0;
-
-#if 0
-static int timeout_esc = -1;
-#endif
-extern int timer_value;
-
 #define META_MASK 0x8000
+#define NCursesGetCh   getch
+#define NCursesUnGetCh ungetch
+// Who knows what's that?
+#undef clear
 
-#ifdef TVOSf_Linux
-/*
- * Gets information about modifier keys (Alt, Ctrl and Shift).  This can
- * be done only if the program runs on the system console.
- */
+int use_real_keyboard_bios=0;
+// xterm is a crappy terminal and does all in a way too different to the
+// standard.
+static int XtermMode=0;
+static int MouseButtons=0;
 
-unsigned short getshiftstate(void)
-{
- int arg = 6;	/* TIOCLINUX function #6 */
- int shift = 0;
- 
- if (ioctl(IN_FD, TIOCLINUX, &arg) != -1)
-   {
-    dbprintf("Shift flags from IOCTL %X\r\n",arg);
-    shift=arg;
-   }
- return shift;
-}
-#else  // TVOSf_Linux
-// I don't know if other UNIX flavors have an equivalent IOCTL
-inline
-unsigned short getshiftstate(void)
-{
- return 0;
-}
-#endif // TVOSf_Linux
-
-
-unsigned short gkey_shifts_flags;
-unsigned char gkey_raw_value;
-unsigned short gkey_raw_code;
-
-#define _getch_ getch
-#define _ungetch_ ungetch
+int     TGKeyUNIX::Abstract;
+char    TGKeyUNIX::ascii;
+ushort  TGKeyUNIX::sFlags;
+KeyType TGKeyUNIX::rawCode;
 
 // -  9 = Tab tiene conflicto con kbI+Control lo cual es natural, por otro
 // -lado Ctrl+Tab no lo reporta en forma natural
-// -  a = Enter tiene conflicto con ^J, como ^J no lo reporta nauralmente sino
+// -  a = Enter tiene conflicto con ^J, como ^J no lo reporta naturalmente sino
 // -forzado por el keymap lo mejor es definirlo directamente.
 static
 unsigned char kbToName1[128] =
@@ -245,11 +226,6 @@ keyEquiv XEquiv[] =
 };
 #endif // HAVE_KEYSYMS
 
-
-// xterm is a crappy terminal and does all in a way too different to the
-// standard.
-static int XtermMode=0;
-
 static
 void PatchTablesForOldKbdLayout(void)
 {
@@ -292,15 +268,15 @@ void PatchTablesForNewKbdLayout(void)
     }
 }
 
-void TGKey::SetKbdMapping(int version)
+void TGKeyUNIX::SetKbdMapping(int version)
 {
  Mode=version;
  switch (version)
    {
-    case KBD_REDHAT52_STYLE:
+    case linuxRH52:
          PatchTablesForNewKbdLayout();
          break;
-    case KBD_XTERM_STYLE: // It can be combined with others
+    case linuxXterm: // It can be combined with others
          #ifdef HAVE_DEFINE_KEY
          // SET: Here is a temporal workaround for Eterm when the user uses
          // the xterm terminfo file (normal in Debian).
@@ -319,14 +295,14 @@ void TGKey::SetKbdMapping(int version)
          #endif
          XtermMode=1;
          break;
-    case KBD_NO_XTERM_STYLE:
+    case linuxNoXterm:
          #ifdef KEY_MOUSE
          kbToName2[KEY_MOUSE & 0x7F]=kbF7;
          kbExtraFlags2[KEY_MOUSE & 0x7F]=kbShift;
          #endif
          XtermMode=0;
          break;
-    case KBD_ETERM_STYLE:
+    case linuxEterm:
          #if defined(HAVE_KEYSYMS) && defined(HAVE_DEFINE_KEY)
          // SET: I submited a patch to Eterm maintainers for it:
          define_key("\x1B[k",KEY_F(57)); // End
@@ -349,13 +325,8 @@ void TGKey::SetKbdMapping(int version)
    }
 }
 
-int TGKey::CompareASCII(uchar val, uchar code)
-{
- return val==code;
-}
-
 // The intelligence is here
-unsigned short TGKey::gkey(void)
+ushort TGKeyUNIX::GKey(void)
 {
  Abstract=0;
 
@@ -459,20 +430,20 @@ unsigned short TGKey::gkey(void)
 }
 
 // All the info. from BIOS in one call
-void TGKey::GetRaw(void)
+void TGKeyUNIX::GetRaw(void)
 {
  int code;
 
  /* see if there is data available */
- if ((code = _getch_()) != ERR)
+ if ((code=NCursesGetCh())!=ERR)
    {
-    if (code == 27)
+    if (code==27)
       {
        if (kbhit())
          {
-          int code2 = _getch_();
-          if (code2 != 27)
-             code = code2 | META_MASK;
+          int code2=NCursesGetCh();
+          if (code2!=27)
+             code=code2 | META_MASK;
          }
       }
    }
@@ -484,38 +455,36 @@ void TGKey::GetRaw(void)
    }
  rawCode.full=code;
  //printf("0x%04X\r\n",code);
- sFlags=getshiftstate();
+ sFlags=GetShiftState();
 }
 
-int TGKey::kbhit(void)
+int TGKeyUNIX::KbHit(void)
 {
-  int c = _getch_();
-  if (c != ERR) _ungetch_(c);
-  return c != ERR;
+ int c=NCursesGetCh();
+ if (c!=ERR) NCursesUnGetCh(c);
+ return c!=ERR;
 }
 
-// Who knows what's that?
-#undef clear
-void TGKey::clear(void)
+void TGKeyUNIX::Clear(void)
 {
-  tcflush(IN_FD,TCIFLUSH);
+ tcflush(IN_FD,TCIFLUSH);
 }
 
-static int MouseButtons=0;
-const int MouseB1Down=0x20,MouseB2Down=0x21,MouseB3Down=0x22,MouseUp=0x23;
-
-void TGKey::fillTEvent(TEvent &e)
+void TGKeyUNIX::FillTEvent(TEvent &e)
 {
- TGKey::gkey();
+ GKey();
  if (Abstract==kbMouse)
    { // Mouse events are traslated to keyboard sequences:
-    int event=_getch_();
-    int x=_getch_()-0x21; // They are 0x20+ and the corner is 1,1
-    int y=_getch_()-0x21;
+    int event=NCursesGetCh();
+    int x=NCursesGetCh()-0x21; // They are 0x20+ and the corner is 1,1
+    int y=NCursesGetCh()-0x21;
     switch (event)
       {
        case MouseB1Down:
             MouseButtons|=mbLeftButton;
+            break;
+       case MouseB2Down:
+            MouseButtons|=mbMiddleButton;
             break;
        case MouseB3Down:
             MouseButtons|=mbRightButton;
@@ -540,7 +509,7 @@ void TGKey::fillTEvent(TEvent &e)
     c=0; // To avoid hanging
     do
       {
-       key=_getch_();
+       key=NCursesGetCh();
        if (key!=';')
          {
           state<<=4;
@@ -552,7 +521,7 @@ void TGKey::fillTEvent(TEvent &e)
     c=0;
     do
       {
-       key=_getch_();
+       key=NCursesGetCh();
        if (key!='~')
          {
           keysym<<=4;
@@ -588,8 +557,8 @@ void TGKey::fillTEvent(TEvent &e)
  #endif
    {
     e.keyDown.charScan.charCode=sFlags & kblAltL ? 0 : ascii;
-    e.keyDown.charScan.scanCode=TGKey::rawCode.b.scan;
-    e.keyDown.raw_scanCode=TGKey::rawCode.b.scan;
+    e.keyDown.charScan.scanCode=rawCode.b.scan;
+    e.keyDown.raw_scanCode=rawCode.b.scan;
     e.keyDown.keyCode=Abstract;
     e.keyDown.shiftState=sFlags;
     e.what=evKeyDown;
@@ -598,6 +567,24 @@ void TGKey::fillTEvent(TEvent &e)
 }
 
 #ifdef TVOSf_Linux
+
+/*
+ * Gets information about modifier keys (Alt, Ctrl and Shift).  This can
+ * be done only if the program runs on the system console.
+ */
+unsigned TGKeyUNIX::GetShiftState()
+{
+ int arg=6;	/* TIOCLINUX function #6 */
+ unsigned shift=0;
+ 
+ if (ioctl(IN_FD,TIOCLINUX,&arg)!=-1)
+   {
+    dbprintf("Shift flags from IOCTL %X\r\n",arg);
+    shift=arg;
+   }
+ return shift;
+}
+
 typedef struct
 {
   uchar change_table;
@@ -897,21 +884,37 @@ static void unpatch_keyboard()
 void patch_keyboard() {}
 void unpatch_keyboard() {}
 
+// I don't know if other UNIX flavors have an equivalent IOCTL
+unsigned TGKeyUNIX::GetShiftState()
+{
+ return 0;
+}
+
 #endif // else TVOSf_Linux
 
 static struct termios saved_attributes;
 
-void resume_keyboard()
+void TGKeyUNIX::Resume()
 {
-  tcgetattr (STDIN_FILENO, &saved_attributes);
-  patch_keyboard();
+ tcgetattr(STDIN_FILENO,&saved_attributes);
+ patch_keyboard();
 }
 
-void suspend_keyboard()
+void TGKeyUNIX::Suspend()
 {
-  tcsetattr (STDIN_FILENO, TCSANOW, &saved_attributes);
-  unpatch_keyboard();
+ tcsetattr(STDIN_FILENO,TCSANOW,&saved_attributes);
+ unpatch_keyboard();
 }
 
-ushort TGKey::AltSet=0;  // Default: Left and right key are different ones
-
+void TGKeyUNIX::Init()
+{
+ TGKey::Suspend      =TGKeyUNIX::Suspend;
+ TGKey::Resume       =TGKeyUNIX::Resume;
+ TGKey::kbhit        =KbHit;
+ TGKey::clear        =Clear;
+ TGKey::gkey         =GKey;
+ TGKey::getShiftState=GetShiftState;
+ TGKey::fillTEvent   =FillTEvent;
+ TGKey::SetKbdMapping=TGKeyUNIX::SetKbdMapping;
+}
+#endif // TVOS_UNIX

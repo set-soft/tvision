@@ -1,5 +1,25 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* Copyright (C) 1998-2001 Salvador Eduardo Tropea */
+/*
+
+TurboVision_screenOptions
+Un mecanismo para deshabilitar el uso de vcs como opción
+   * Environment variable support.
+   * Date: Wed, 29 Jan 1997 16:51:40 +0100 (MET)
+  char env[PATH_MAX] = "", *p;
+  if ((p = getenv("TVOPT")) != NULL)
+  {
+     LOG("environment variable TVOPT=" << p);
+     for (char *d = env; *p != '\0'; p++)
+       *d++ = uctolower(*p);
+  }
+
+
+*/
+#include <tv/configtv.h>
+
+#ifdef TVOS_UNIX
+
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TDrawBuffer
@@ -14,103 +34,85 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/mman.h>
 #include <stdarg.h>
-
-// SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
-// think it have much sense in non-Intel PCs. In fact looks like it gives
-// some problems when compiling for Alpha (__alpha__).
-//   Also make it only for Linux until I know how to do it for FreeBSD.
-
-#if defined(TVCPU_x86) && defined(TVOSf_Linux)
- // Needed for ioperm, used only by i386.
- // I also noted that glibc 2.1.3 for Alpha, SPARC and PPC doesn't have
- // this header
- #include <sys/perm.h>
- #define h386LowLevel
-#endif
+#include <termios.h>
+#include <sys/mman.h>
+#include <sys/ioctl.h>
 
 // I don't know why it's needed, but it seems to be only known to me way
 // to get rhgdb built so it doesn't mess up terminal settings.
 // Strange but rhide and setedit doesn't have this problem.
 // Andris Pavenis <pavenis@lanet.lv>
 #define SAVE_TERMIOS
-
-int dual_display = 0;
-// SET: Starts as suspended to avoid TScreen::suspend() calls and other
-// similar stuff before initializing
-char TScreen::suspended = 1;
-char TScreen::initialized = 0;
+#include <tv/linuxscr.h>
+#include <tv/linuxkey.h>
+#include <tv/linuxmouse.h>
 
 #ifdef TVOSf_FreeBSD
-#include <ncurses.h>
+ #include <ncurses.h>
 #else
-#include <curses.h>
+ #include <curses.h>
 #endif
 #include <term.h>
-#include <sys/ioctl.h>
 
 //#define DEBUG
 #ifdef DEBUG
-#ifdef TVOS_UNIX
-extern char *program_invocation_short_name;
-#define LOG(s) cerr << program_invocation_short_name << ": " << s << "\r\n"
+ #ifdef TVOSf_Linux
+  extern char *program_invocation_short_name;
+  #define LOG(s) do {cerr << program_invocation_short_name << ": " << s << endl; fflush(stderr);} while(0)
+ #else
+  #define LOG(s) do {cerr << s << endl; fflush(stderr);} while(0)
+ #endif
 #else
-#define LOG(s) cerr << __FILE__": " << s << "\r\n"
-#endif
-#else
-#define LOG(s)
+ #define LOG(s) do {;} while(0)
 #endif
 
-static int use_pc_chars = 1;
-int timeout_wakeup,timer_value;
-#define LINUX_TERMINAL 0
-#define GENER_TERMINAL 1
-#define VCSA_TERMINAL  2
-#define XTERM_TERMINAL 3
-static int TerminalType;
-
-int vcsWfd=-1;          /* virtual console system descriptor */
-int vcsRfd=-1;          /* SET: Same for reading */
-int tty_fd=-1;          /* tty descriptor */
-
-/* can I access the MDA ports ? */
-int port_access=0;
-FILE *tty_file=0;
-unsigned short *mono_mem = NULL; /* mmapped mono video mem */
-int mono_mem_desc=-1;
-extern int cur_x,cur_y;
-
-enum { PAL_MONO, PAL_LOW, PAL_HIGH, PAL_LOW2 };
-static int palette;
-static int force_redraw = 0;
-
-#if 0 // Not needed right now, but I keep it, SET
-/**[txh]********************************************************************
-
-  Description:
-  Sends the string to the terminal using printf like arguments. Is just a
-replacement for fprintf(tty_file,...) but ensures tty_file was initialized
-and does a flush to be sure the characters are flushed to the device.
-(SET)
-
-***************************************************************************/
-
-void TScreen::fSendToTerminal(const char *value, ...)
+inline
+int TScreenUNIX::range(int test, int min, int max)
 {
- if (!tty_file || !value)
-    return;
-    
- va_list ap;
-     
- va_start(ap,value);
- vfprintf(tty_file,value,ap);
- va_end(ap);
- fflush(tty_file);
+ return test<min ? min : test>max ? max : test;
 }
+
+int      TScreenUNIX::use_pc_chars=1;
+int      TScreenUNIX::timeout_wakeup;
+int      TScreenUNIX::timer_value;
+int      TScreenUNIX::TerminalType;
+int      TScreenUNIX::port_access=0; // can I access the MDA ports?
+FILE    *TScreenUNIX::tty_file=0;
+ushort  *TScreenUNIX::mono_mem=NULL; // mmapped mono video mem
+int      TScreenUNIX::mono_mem_desc=-1;
+int      TScreenUNIX::palette;
+int      TScreenUNIX::force_redraw=0;
+cc_t     TScreenUNIX::oldKeys[5];
+int      TScreenUNIX::old_col=-1;
+int      TScreenUNIX::old_fore=-1;
+int      TScreenUNIX::old_back=-1;
+ushort  *TScreenUNIX::user_buffer=0;
+int      TScreenUNIX::user_buffer_size;
+unsigned TScreenUNIX::user_cursor_x;
+unsigned TScreenUNIX::user_cursor_y;
+char    *TScreenUNIX::terminal=0;
+char     TScreenUNIX::cursesInitialized=0;
+char     TScreenUNIX::termAttrsSaved=0;
+#ifdef SAVE_TERMIOS
+struct termios TScreenUNIX::old_term;
+struct termios TScreenUNIX::new_term;
 #endif
 
+TScreen *TV_LinuxDriverCheck()
+{
+ TScreenUNIX *drv=new TScreenUNIX();
+ if (!TScreen::initialized)
+   {
+    delete drv;
+    return 0;
+   }
+ return drv;
+}
+
 /**[txh]********************************************************************
+
+Moverlo a un flag en la inicialización
 
   Description:
   Finds if this terminal have variable code page of that's fixed.
@@ -118,13 +120,13 @@ void TScreen::fSendToTerminal(const char *value, ...)
   Return: 
   True if the terminal have a variable code page.
   
-***************************************************************************/
- 
 Boolean TScreen::codePageVariable()
 {
  return (TerminalType==GENER_TERMINAL ||
          TerminalType==XTERM_TERMINAL) ? False : True;
 }
+***************************************************************************/
+ 
 
 /**[txh]********************************************************************
 
@@ -135,7 +137,7 @@ be sure the characters are flushed to the device. (SET)
 
 ***************************************************************************/
 
-void TScreen::SendToTerminal(const char *value)
+void TScreenUNIX::SendToTerminal(const char *value)
 {
  if (!tty_file || !value)
     return;
@@ -170,8 +172,7 @@ and any ISO2022 terminal (Xterminals and DEC almost sure). (SET)
 
 ***************************************************************************/
 
-static
-void InitPCCharsMapping(int use_pc_chars)
+void TScreenUNIX::InitPCCharsMapping()
 {
  int i;
  // By default take the above translation
@@ -242,40 +243,17 @@ void InitPCCharsMapping(int use_pc_chars)
  // because in some way I managed to break it in Eterm while testing so I
  // think other users could do the same. Explicitly requesting it for G1
  // is the best.
- TScreen::SendToTerminal("\x1B)0"); // Choose DEC characters for G1 set (ISO2022)
+ TScreenUNIX::SendToTerminal("\x1B)0"); // Choose DEC characters for G1 set (ISO2022)
 }
 
-inline int range(int test, int min, int max)
-{
-  return test < min ? min : test > max ? max : test;
-}
-
-inline void safeput(char *&p, char *cap)
-{
-  if (cap != NULL) while (*cap != '\0') *p++ = *cap++;
-}
-
-void TV_WindowSizeChanged(int sig)
+void TScreenUNIX::sigWindowSizeChanged(int sig)
 {
  // Set a flag because we don't know if we can do it right now
- TScreen::windowSizeChanged=1;
- signal(sig,TV_WindowSizeChanged);
+ TScreenUNIX::windowSizeChanged=1;
+ signal(sig,sigWindowSizeChanged);
 }
 
-// SET: That's the job of curses endwin(), additionally it does a much more
-// complete work so I don't see the point of duplicating work, in my system
-// I didn't see any change after removing it, but I left the code just in
-// case
-#ifdef SAVE_TERMIOS
-static struct termios old_term,new_term;
-#endif
-
-// SET: A couple of functions to disable/restore the XON/XOFF control keys
-// and others like ^C, ^\ and ^Z
-static
-cc_t oldKeys[5];
-
-void SpecialKeysDisable(int file)
+void TScreenUNIX::SpecialKeysDisable(int file)
 {
  struct termios term;
  tcgetattr(file,&term);
@@ -292,7 +270,7 @@ void SpecialKeysDisable(int file)
  tcsetattr(file,TCSANOW,&term);
 }
 
-void SpecialKeysRestore(int file)
+void TScreenUNIX::SpecialKeysRestore(int file)
 {
  struct termios term;
  tcgetattr(file,&term);
@@ -304,72 +282,21 @@ void SpecialKeysRestore(int file)
  tcsetattr(file,TCSANOW,&term);
 }
 
-
 // This routine was heavily modified, and I think it needs more work (SET)
-void startcurses()
+void TScreenUNIX::startcurses()
 {
   int xterm=0;
-
-  char *terminal = getenv("TERM");
-  #ifdef SAVE_TERMIOS
-  /* Save the terminal attributes so we can restore them later. */
-  /* for the user screen */
-  tcgetattr (STDOUT_FILENO, &old_term);
-  #endif
-
-  // SET: Original code tried to open a tty at any cost, eg: if stdout was
-  // redirected it tried to open stdin's tty for writing. I don't see the
-  // point of such an effort and in fact crashes the library, so here I just
-  // explain to the user how to run the application in the right way.
-  if (!isatty(fileno(stdout)))
-    {
-     fprintf(stderr,_("\r\nError! that's an interactive application, don't redirect stdout\r\n"
-                      "If you want to collect information redirect stderr like this:\r\n\r\n"
-                      "program 2> file\r\n\r\n"));
-     exit(-1);
-    }
-  // SET: open it as a different file because we don't want to mix both
-  char *tty_name=ttyname(fileno(stdout));
-  if (!tty_name)
-    {
-     fprintf(stderr,"Failed to get the name of the current terminal used for output!\r\n"
-                    "Please e-mail to salvador@inti.gov.ar giving details about your setup\r\n"
-                    "and the output of the tty command\r\n");
-     exit(-1);
-    }
-  tty_file=fopen(tty_name,"w+b");
-  if (!tty_file)
-    {
-     fprintf(stderr,"Failed to open the %s terminal!\r\n"
-                    "Please e-mail to salvador@inti.gov.ar giving details about your setup\r\n"
-                    "and the output of the tty command\r\n",tty_name);
-     tty_file=fopen(tty_name,"wb");
-     if (tty_file)
-        fprintf(stderr,"Also tell me it works only for writing\r\n");
-     exit(-1);
-    }
-  tty_fd=fileno(tty_file);
-
-  // old buggy code: if (!newterm(terminal,stdin,tty_file))
-  // SET: according to man newterm that's the right order! It was a really
-  // hard bug, and produced all kind of wierd behavior (arrow keys failing,
-  // endwin not restoring screen, etc.
-  if (!newterm(terminal,tty_file,stdin))
-    {
-     fprintf(stderr,"Not connected to a terminal (newterm for %s)\n",terminal);
-     exit(-1);
-    }
 
   // SET: If we are under xterm* initialize some special stuff:
   if (strncmp(terminal,"xterm-eterm-tv",14)==0)
     { // Special keyboard treatment
-     TGKey::SetKbdMapping(KBD_ETERM_STYLE);
+     TGKey::SetKbdMapping(TGKey::linuxEterm);
      xterm=1;
     }
   else
   if (strncmp(terminal,"xterm",5)==0)
     { // Special keyboard treatment
-     TGKey::SetKbdMapping(KBD_XTERM_STYLE);
+     TGKey::SetKbdMapping(TGKey::linuxXterm);
      xterm=1;
     }
 
@@ -386,10 +313,10 @@ void startcurses()
   timeout(0);
 
   /* Select the palette and characters handling according to the terminal */
-  if (canWriteVCS)
+  if (canWriteVCS())
     {
      palette = PAL_HIGH;
-     TScreen::screenMode = TScreen::smCO80;
+     TScreenUNIX::screenMode = TScreenUNIX::smCO80;
      use_pc_chars = 1;
      TerminalType=VCSA_TERMINAL;
     }
@@ -399,7 +326,7 @@ void startcurses()
     if (!terminal)
       {
        palette = PAL_MONO;
-       TScreen::screenMode = TScreen::smMono;
+       TScreenUNIX::screenMode = TScreenUNIX::smMono;
        use_pc_chars = 0;
        TerminalType=GENER_TERMINAL;
       }
@@ -407,7 +334,7 @@ void startcurses()
              !strcmp(terminal,"linux"))
       { // Special case where we know the values and that 17 colors are available
        palette = PAL_HIGH;
-       TScreen::screenMode = TScreen::smCO80;
+       TScreenUNIX::screenMode = TScreenUNIX::smCO80;
        use_pc_chars = 1;
        TerminalType=LINUX_TERMINAL;
        LOG("Using high palette");
@@ -417,14 +344,14 @@ void startcurses()
         // attribute can be used for another 8 foreground colors
        //palette = PAL_LOW2; Alternative code
        palette = PAL_HIGH;
-       TScreen::screenMode = TScreen::smCO80;
+       TScreenUNIX::screenMode = TScreenUNIX::smCO80;
        use_pc_chars = 0;
        TerminalType=XTERM_TERMINAL;
       }
     else if (has_colors())
       { // Generic color terminal, that's more a guess than a real thing
        palette = max_colors > 8 ? PAL_HIGH : PAL_LOW;
-       TScreen::screenMode = TScreen::smCO80;
+       TScreenUNIX::screenMode = TScreenUNIX::smCO80;
        use_pc_chars = 0;
        LOG("Using color palette (" << max_colors << "-8 colors)");
        TerminalType=GENER_TERMINAL;
@@ -432,7 +359,7 @@ void startcurses()
     else
       { // No colors available
        palette = PAL_MONO;
-       TScreen::screenMode = TScreen::smMono;
+       TScreenUNIX::screenMode = TScreenUNIX::smMono;
        use_pc_chars = 0;
        TerminalType=GENER_TERMINAL;
       }
@@ -444,16 +371,16 @@ void startcurses()
           // SET: Use G1 charset, set G1 to the loaded video fonts, print control chars.
           // It means the kernel will send what we write directly to screen, just
           // like in the VCSA case.
-          TScreen::SendToTerminal("\e)K\xE");
+          TScreenUNIX::SendToTerminal("\e)K\xE");
           break;
      case XTERM_TERMINAL:
           // SET: I still wondering why I keep using ncurses. The f*ck|ng ncurses
           // puts the keypad in an "application"(?) mode where numbers are never
           // reported.
-          TScreen::SendToTerminal("\e>");
+          TScreenUNIX::SendToTerminal("\e>");
      case GENER_TERMINAL:
           // Select IBM PC chars?
-          TScreen::SendToTerminal(enter_pc_charset_mode);
+          TScreenUNIX::SendToTerminal(enter_pc_charset_mode);
           break;
     }
   #ifdef SAVE_TERMIOS
@@ -463,9 +390,9 @@ void startcurses()
   #endif
 
   // SET: Generate a map to convert special chars into curses values
-  InitPCCharsMapping(use_pc_chars);
+  InitPCCharsMapping();
   // SET: Hook the signal generated when the size of the window changes
-  signal(SIGWINCH,TV_WindowSizeChanged);
+  signal(SIGWINCH,sigWindowSizeChanged);
   #ifdef TVOSf_Linux
   // SET: There is no reason to have 1s of delay for ESC in an interactive
   // program. Now the code supports Alt+Key in xterms so constructing an
@@ -476,44 +403,13 @@ void startcurses()
   #endif
 }
 
-void stopcurses()
-{
- // SET: Enhanced the cleanup
- // 1) Undo this nasty trick or curses will fail to do the rest:
- stdscr->_flags &= ~_ISPAD;
- // 2) Now reset the attributes, there is no "default color", is an atribute
- // I know the name of only some attributes: 0=normal (what we need),
- // 1=bold, 4=underline, 5=blink, 7=inverse and I think they are 9:
- TScreen::SendToTerminal(tparm(set_attributes,0,0,0,0,0,0,0,0,0));
- if (!TScreen::suspended)
-   {
-    // 3) Clear the screen
-    clear();
-    refresh();
-    // 4) Set usable settings (like new line mode)
-    resetterm();
-    // 5) Enable the echo or the user won't see anything
-    echo();
-    // Now we can finally end
-    endwin();
-   }
- fclose(tty_file);
- 
- #ifdef SAVE_TERMIOS
- tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
- #endif
-}
-
 /*
  * Converts colors from the large TV palette (16 foreground colors and
  * 16 background colors) to ncurses small palette (8 foreground colors
  * and 8 background colors).
  */
 
-static int old_col = -1;
-static int old_fore=-1,old_back=-1;
-
-static void mapColor(char *&p, int col)
+void TScreenUNIX::mapColor(char *&p, int col)
 {
   static char map[] = {0, 4, 2, 6, 1, 5, 3, 7};
   int back,fore;
@@ -574,14 +470,14 @@ static void mapColor(char *&p, int col)
  * Writes a block of text.
  */
 
-static void writeBlock(int dst, int len, ushort *old, ushort *src)
+void TScreenUNIX::writeBlock(int dst, int len, ushort *old, ushort *src)
 {
   char out[4096], *p = out;
   int col=-1;
   int altSet=0,needAltSet;
 
-  safeput(p,tparm(cursor_address,dst/TScreen::screenWidth,
-          dst%TScreen::screenWidth));
+  safeput(p,tparm(cursor_address,dst/TScreenUNIX::screenWidth,
+          dst%TScreenUNIX::screenWidth));
   while (len-->0)
     {
      int code  =CLY_Low16(*src);
@@ -671,133 +567,109 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
   write(tty_fd,out,p-out);
 }
 
-ushort TScreen::startupMode = 0xFFFF;
-ushort TScreen::startupCursor = 0;
-ushort TScreen::screenMode = 0xFFFF;
-uchar TScreen::screenWidth = 0;
-uchar TScreen::screenHeight = 0;
-Boolean TScreen::hiResScreen = False;
-Boolean TScreen::checkSnow = True;
-ushort *TScreen::screenBuffer = 0;
-ushort TScreen::cursorLines = 0;
-volatile sig_atomic_t TDisplay::windowSizeChanged=0;
-
-void SaveScreen();
-void RestoreScreen();
-void ScreenUpdate();
-extern ushort user_mode;
-
-#ifdef h386LowLevel
-#include <asm/io.h>
-
-static inline
-unsigned char I(unsigned char i)
+TScreenUNIX::TScreenUNIX()
 {
-  outb(i,0x3b4);
-  return inb(0x3b5);
-}
-
-static inline
-void O(unsigned char i,unsigned char b)
-{
-  outb(i,0x3b4);
-  outb(b,0x3b5);
-}
-#endif
-
-void TScreen::GetCursor(int &x,int &y)
-{
-  if (dual_display)
-  {
-  }
-  else
-  {
-    TDisplay::GetCursor(x,y);
-  }
-}
-
-void TScreen::SetCursor(int x,int y)
-{
- #ifdef h386LowLevel
-  if (dual_display || screenMode == 7)
-  {
-    unsigned short loc = y*80+x;
-    O(0x0e,loc >> 8);
-    O(0x0f,loc & 0xff);
-  }
-  else
- #endif
-  {
-    TDisplay::SetCursor(x,y);
-  }
-}
-
-// static int was_blink = 0;
-void setBlinkState();
-void setIntenseState();
-int getBlinkState();
-
-
-TScreen::TScreen()
-{
+  // ************* First check all the things that can make as fail to work
   // Release ^Q and ^S from Xon/Xoff duties
   SpecialKeysDisable(fileno(stdin));
-  screenMode = startupMode = getCrtMode();
-  /*
-   * ESC ] Ps ND string NP
-   *    ND can be any non-digit Character (it's discarded)
-   *    NP can be any non-printing Character (it's discarded)
-   *    string can be any ASCII printable string (max 511 characters)
-   *    Ps = 0 -> use string as a new icon name and title
-   *    Ps = 1 -> use string is a new icon name only
-   *    Ps = 2 -> use string is a new title only
-   *    Ps = 46 -> use string as a new log file name
-   */
-//  if (getenv("DISPLAY") != NULL) cout << "\033]2;TurboVision\007";
-  
-  /*
-   * Environment variable support.
-   * Date: Wed, 29 Jan 1997 16:51:40 +0100 (MET)
-   */
-  char env[PATH_MAX] = "", *p;
-  if ((p = getenv("TVOPT")) != NULL)
-  {
-     LOG("environment variable TVOPT=" << p);
-     for (char *d = env; *p != '\0'; p++)
-       *d++ = uctolower(*p);
-  }
-  
-  /* acquire screen size */
-  
-  winsize win;
-  ioctl(STDIN_FILENO, TIOCGWINSZ, &win);
-  if (win.ws_col > 0 && win.ws_row > 0)
-  {
-    screenWidth = win.ws_col;
-    screenHeight = win.ws_row;
-  }
+  // SET: Original code tried to open a tty at any cost, eg: if stdout was
+  // redirected it tried to open stdin's tty for writing. I don't see the
+  // point of such an effort and in fact crashes the library, so here I just
+  // explain to the user how to run the application in the right way.
+  if (!isatty(fileno(stdout)))
+    {
+     fprintf(stderr,_("\r\nError! that's an interactive application, don't redirect stdout\r\n"
+                      "If you want to collect information redirect stderr like this:\r\n\r\n"
+                      "program 2> file\r\n\r\n"));
+     return;
+    }
+  // SET: open it as a different file because we don't want to mix both
+  char *tty_name=ttyname(fileno(stdout));
+  if (!tty_name)
+    {
+     fprintf(stderr,"Failed to get the name of the current terminal used for output!\r\n"
+                    "Please e-mail to salvador@inti.gov.ar giving details about your setup\r\n"
+                    "and the output of the tty command\r\n");
+     return;
+    }
+  tty_file=fopen(tty_name,"w+b");
+  if (!tty_file)
+    {
+     fprintf(stderr,"Failed to open the %s terminal!\r\n"
+                    "Please e-mail to salvador@inti.gov.ar giving details about your setup\r\n"
+                    "and the output of the tty command\r\n",tty_name);
+     tty_file=fopen(tty_name,"wb");
+     if (tty_file)
+        fprintf(stderr,"Also tell me it works only for writing\r\n");
+     return;
+    }
+  tty_fd=fileno(tty_file);
+  #ifdef SAVE_TERMIOS
+  /* Save the terminal attributes so we can restore them later. */
+  /* for the user screen */
+  tcgetattr(STDOUT_FILENO,&old_term);
+  termAttrsSaved=1;
+  #endif
+
+  terminal=getenv("TERM");
+  // old buggy code: if (!newterm(terminal,stdin,tty_file))
+  // SET: according to man newterm that's the right order! It was a really
+  // hard bug, and produced all kind of wierd behavior (arrow keys failing,
+  // endwin not restoring screen, etc.
+  if (!newterm(terminal,tty_file,stdin))
+    {
+     fprintf(stderr,"Not connected to a terminal (newterm for %s)\n",terminal);
+     return;
+    }
+  cursesInitialized=1;
+  // ************* If all went ok we can use this driver
+
+  initialized=1;
+
+  TDisplayUNIX::Init();
+
+  TScreen::Resume=Resume;
+  TScreen::Suspend=Suspend;
+  TScreen::setCrtData=setCrtData;
+  TScreen::setVideoMode=setVideoMode;
+  TScreen::setVideoModeExt=setVideoModeExt;
+  TScreen::getCharacters=getCharacters;
+  TScreen::getCharacter=getCharacter;
+  TScreen::setCharacter=setCharacter;
+  TScreen::setCharacters=setCharacters;
+  TScreen::System=System;
+
+  TGKeyUNIX::Init();
+  if (terminal && strncmp(terminal,"xterm",5)==0)
+     THWMouseXTerm::Init();
+  #ifdef HAVE_GPM
   else
-  {
-    LOG("unable to detect screen size");
-    screenWidth = 80;
-    screenHeight = 25;
-  }
+     THWMouseGPM::Init();
+  #endif
+
+  startupCursor=getCursorType();
+  screenMode=startupMode=getCrtMode();
+
+  /* acquire screen size */
+  screenWidth =GetCols();
+  screenHeight=GetRows();
   #ifdef TVOSf_FreeBSD
-  /*
-   * Kludge: until we find a right way to fix the "last-line" display
-   * problem, this is a solution.
-   */
+  // Kludge: until we find a right way to fix the "last-line" display
+  // problem, this is a solution.
   screenHeight--;
   #endif
   LOG("screen size is " << (int)screenWidth << "x" << (int)screenHeight);
-  screenBuffer = new ushort[screenWidth * screenHeight];
+
+  screenBuffer=new ushort[screenWidth * screenHeight];
 
   /* vcs stuff */
   vcsWfd=-1;
   vcsRfd=-1;
+  #if 0
   if (strstr(env,"novcs"))
      LOG("vcs support disabled by user");
   else
+  #endif
    {
     /*
      * This approach was suggested by:
@@ -833,12 +705,14 @@ TScreen::TScreen()
         sprintf(path, "/dev/vcsa%d", dev & 0xff);
         found_vcsa = true;
 
+        #if 0
         if (TurboVision_screenOptions & TurboVision_screenUserScreenNeeded)
           { // SET: Full VCSA or Curses, not half. See screen.h.
            if ((vcsRfd=vcsWfd=open(path,O_RDWR))<0)
               LOG("unable to open " << path << ", running in stdout mode");
           }
         else
+        #endif
           {
            // SET: Open it with two files, one for write and the other for read.
            // Doing it the administrator can give write access to some users,
@@ -861,8 +735,8 @@ TScreen::TScreen()
      }
    }
   // SET: Set the cursor to a known position to avoid reading the postion.
-  if (canOnlyWriteVCS)
-     TDisplay::SetCursor(0,0);
+  if (canOnlyWriteVCS())
+     TDisplay::setCursorPos(0,0);
 
   #ifdef h386LowLevel
   port_access = !ioperm(0x3b4, 7, 1);
@@ -897,7 +771,7 @@ TScreen::TScreen()
   // 1) we can't read VCSs but can write: then the user screen is a fake.
   // 2) we uses curses then the endwin() does the work and we start from
   // blank
-  if (!canReadVCS)
+  if (!canReadVCS())
     {
      // Fill the screenBuffer with spaces
      int i,len = screenWidth*screenHeight;
@@ -909,13 +783,10 @@ TScreen::TScreen()
   SaveScreen();
   setVideoMode(screenMode);
   suspended = 0;
-  initialized=1;
 }
 
-void TScreen::resume()
+void TScreenUNIX::Resume()
 { // Avoid wrong actions
-  if (!initialized || !suspended)
-     return;
   if (!dual_display)
      SaveScreen();
   setVideoMode(screenMode);
@@ -926,7 +797,6 @@ void TScreen::resume()
   tcsetattr(tty_fd, TCSANOW, &new_term);
   #endif
 
-  suspended=0;
   // SET: To go back from a temporal ncurses stop we must use just doupdate
   // or refresh. (see suspend).
   doupdate();
@@ -940,51 +810,92 @@ void TScreen::resume()
     {
      case LINUX_TERMINAL:
           // Use G1 charset, set G1 to the loaded video fonts, print control chars
-          TScreen::SendToTerminal("\e)K\xE");
+          TScreenUNIX::SendToTerminal("\e)K\xE");
           break;
      case XTERM_TERMINAL:
      case GENER_TERMINAL:
           // Select IBM PC chars
-          TScreen::SendToTerminal("\e(U");
+          TScreenUNIX::SendToTerminal("\e(U");
           break;
     }
 }
 
-TScreen::~TScreen()
+TScreenUNIX::~TScreenUNIX()
 {
-  // FIXME: When I know, how to get the cursor state
-  setCursorType(0x0607); // make the cursor visible
-  stopcurses();
+  if (cursesInitialized)
+    {
+     // FIXME: When I know, how to get the cursor state
+     setCursorType(startupCursor); // make the cursor visible
+     // SET: Enhanced the cleanup
+     // 1) Undo this nasty trick or curses will fail to do the rest:
+     stdscr->_flags &= ~_ISPAD;
+     // 2) Now reset the attributes, there is no "default color", is an atribute
+     // I know the name of only some attributes: 0=normal (what we need),
+     // 1=bold, 4=underline, 5=blink, 7=inverse and I think they are 9:
+     TScreenUNIX::SendToTerminal(tparm(set_attributes,0,0,0,0,0,0,0,0,0));
+     if (!TScreenUNIX::suspended)
+       {
+        // 3) Clear the screen
+        clear();
+        refresh();
+        // 4) Set usable settings (like new line mode)
+        resetterm();
+        // 5) Enable the echo or the user won't see anything
+        echo();
+        // Now we can finally end
+        endwin();
+       }
+     cursesInitialized=0;
+    }
+  if (tty_file)
+    {
+     fclose(tty_file);
+     tty_file=0;
+    }
+  
+  #ifdef SAVE_TERMIOS
+  if (termAttrsSaved)
+    {
+     termAttrsSaved=0;
+     tcsetattr(STDOUT_FILENO, TCSANOW, &old_term);
+    }
+  #endif
 
   if (!suspended)
+    {
      RestoreScreen();
-  suspended=1;
+     suspended=1;
+    }
 
-  DeleteArray(screenBuffer);
-  LOG("terminated");
+  if (screenBuffer)
+    {
+     DeleteArray(screenBuffer);
+     screenBuffer=0;
+    }
   if (vcsWfd>=0)
      close(vcsWfd);
   if (vcsRfd>=0)
      close(vcsRfd);
   if (mono_mem)
-  {
-    munmap((char *)mono_mem, 80*25*2);
-    mono_mem = NULL;
-  }
+    {
+     munmap((char *)mono_mem, 80*25*2);
+     mono_mem = NULL;
+    }
   if (mono_mem_desc != -1)
-  {
-    close(mono_mem_desc);
-    mono_mem_desc = -1;
-  }
+    {
+     close(mono_mem_desc);
+     mono_mem_desc = -1;
+    }
  SpecialKeysRestore(fileno(stdin));
+
+ LOG("terminated");
 }
 
-void TScreen::suspend()
+void TScreenUNIX::Suspend()
 {
-  if (suspended) return;
   old_col = old_back = old_fore = -1;
   // FIXME: When I know, how to get the cursor state
-  setCursorType(0x0607); // make the cursor visible
+  setCursorType(startupCursor);
   if (!dual_display)
   {
     // SET: According to "man initscr" we must do endwin() to temporally stop
@@ -999,43 +910,29 @@ void TScreen::suspend()
     
     RestoreScreen();
   }
-  suspended=1;
 }
 
-ushort TScreen::fixCrtMode( ushort mode )
-{
-  return mode;
-}
-
-void TScreen::setCrtData()
+void TScreenUNIX::setCrtData()
 {
   if (dual_display)
   {
-    screenMode = 7;
-    screenWidth = 80;
-    screenHeight = 25;
-    cursorLines = 0x0b0c;
+    screenMode  =7;
+    screenWidth =80;
+    screenHeight=25;
+    cursorLines =getCursorType();
   }
   else
   {
-    screenMode = getCrtMode();
-    screenWidth = getCols();
-    screenHeight = getRows();
-    hiResScreen = Boolean(screenHeight > 25);
-    if (screenMode == 7)
-      cursorLines = 0x0b0c;
-    else
-      cursorLines = 0x0607;
-    setCursorType( 0x2000 );
+    screenMode  =getCrtMode();
+    screenWidth =getCols();
+    screenHeight=getRows();
+    hiResScreen =Boolean(screenHeight > 25);
+    cursorLines =getCursorType();
+    setCursorType(0);
   }
 }
 
-void TScreen::clearScreen()
-{
-  TDisplay::clearScreen( screenWidth, screenHeight );
-}
-
-void TScreen::setVideoMode( ushort mode )
+void TScreenUNIX::setVideoMode( ushort mode )
 {
   int oldWidth=screenWidth;
   int oldHeight=screenHeight;
@@ -1054,11 +951,11 @@ void TScreen::setVideoMode( ushort mode )
   memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
 }
 
-void TScreen::setVideoMode( char *mode )
+void TScreenUNIX::setVideoModeExt( char *mode )
 {
   int oldWidth=screenWidth;
   int oldHeight=screenHeight;
-  setCrtMode( mode );
+  setCrtModeExt( mode );
   setCrtData();
   // allocating a zeroed screenBuffer, because this function
   // is called in most cases (in RHIDE) after a SIGWINCH
@@ -1073,105 +970,57 @@ void TScreen::setVideoMode( char *mode )
   memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
 }
 
-void TScreen::setCursorType(ushort ct)
+void TScreenUNIX::getCharacters(unsigned offset, ushort *buf, unsigned count)
 {
- #ifdef h386LowLevel
-  if (dual_display || screenMode == 7)
-  {
-    if (ct == 0x2000) // cursor off
-    {
-      O(0x0a,0x01);
-      O(0x0b,0x00);
-    }
-    else
-    {
-      O(0x0a,ct >> 8);
-      O(0x0b,ct & 0xff);
-    }
-  }
-  else
- #endif
-    TDisplay::setCursorType(ct);
-}
-
-ushort TScreen::getCursorType()
-{
- #ifdef h386LowLevel
-  if (dual_display || screenMode == 7)
-  {
-    unsigned short ct;
-    ct = (I(0x0a) << 8) | I(0x0b);
-    if (!ct) ct = 0x2000;
-    return ct;
-  }
-  else
- #endif
-    return TDisplay::getCursorType();
-}
-
-ushort TScreen::getRows()
-{
-  return dual_display ? 25 : TDisplay::getRows();
-}
-
-ushort TScreen::getCols()
-{
-  return dual_display ? 80 : TDisplay::getCols();
-}
-
-void TScreen::getCharacter(unsigned offset,ushort *buf,unsigned count)
-{
-  if (dual_display)
-  {
+ if (dual_display)
+   {
     memcpy(buf, mono_mem+offset, count*sizeof(ushort));
     return;
-  }
-  if (canReadVCS)      /* use vcs */
-  {
-    lseek(vcsRfd, offset * sizeof(ushort) + 4, SEEK_SET);
-    read(vcsRfd, buf, count*sizeof(ushort));
-  }    
-  else                  /* standard out */
-  {
+   }
+ if (canReadVCS())      /* use vcs */
+   {
+    lseek(vcsRfd,offset*sizeof(ushort)+4,SEEK_SET);
+    read(vcsRfd,buf,count*sizeof(ushort));
+   }
+ else                  /* standard out */
     memcpy(buf,screenBuffer+offset,count*sizeof(ushort));
-  }
 }
 
-ushort TScreen::getCharacter(unsigned dst)
+ushort TScreenUNIX::getCharacter(unsigned dst)
 {
-  ushort src;
-  getCharacter(dst,&src,1);
-  return src;
+ ushort src;
+ getCharacters(dst,&src,1);
+ return src;
 }
 
-void TScreen::setCharacter(unsigned offset,ushort value)
+void TScreenUNIX::setCharacter(unsigned offset,ushort value)
 {
-  setCharacter(offset,&value,1);
+ setCharacters(offset,&value,1);
 }
 
 /*
  * Draws a line of text on the screen.
  */
 
-void TScreen::setCharacter(unsigned dst,ushort *src,unsigned len)
+void TScreenUNIX::setCharacters(unsigned dst, ushort *src, unsigned len)
 {
-  if (dual_display)
-  {
+ if (dual_display)
+   {
     memcpy(mono_mem+dst, src, len*sizeof(ushort));
     return;
-  }
-  if (canWriteVCS)      /* use vcs */
-  {
+   }
+ if (canWriteVCS())      /* use vcs */
+   {
     unsigned length=len*sizeof(ushort);
 
     lseek(vcsWfd,dst*sizeof(ushort)+4,SEEK_SET);
     write(vcsWfd,src,length);
-    if (!canReadVCS)
+    if (!canReadVCS())
        // SET: cache it to avoid reads that needs special priviledges
        memcpy(screenBuffer+dst,src,length);
-  }
-  else                  /* standard out */
-  {
+   }
+ else                  /* standard out */
+   {
     ushort *old = screenBuffer + dst;
     ushort *old_right = old + len - 1;
     ushort *src_right = src + len - 1;
@@ -1201,7 +1050,7 @@ void TScreen::setCharacter(unsigned dst,ushort *src,unsigned len)
     /* write only middle changed characters */
 
     if (len > 0) writeBlock(dst, len, old, src);
-  }
+   }
 }
 
 /*****************************************************************************
@@ -1210,10 +1059,10 @@ void TScreen::setCharacter(unsigned dst,ushort *src,unsigned len)
 
 *****************************************************************************/
 
-int blink_use_bios = 1;
-int save_text_palette = 0;
+//int blink_use_bios = 1;
+//int save_text_palette = 0;
 
-void setIntenseState()
+/*void setIntenseState()
 {
 }
 
@@ -1224,8 +1073,8 @@ void setBlinkState()
 int getBlinkState()
 { // SET: 1 means blink enabled and hence only 8 colors (was a bug)
   // Report it according to the mode (vcs v.s. tty)
-  return canWriteVCS ? 1 : 0;
-}
+  return canWriteVCS() ? 1 : 0;
+}*/
 
 /*****************************************************************************
 
@@ -1233,17 +1082,12 @@ int getBlinkState()
 
 *****************************************************************************/
 
-static ushort *user_buffer=0;
-static int user_buffer_size;
-static int user_cursor_x,user_cursor_y;
-
-
-void RestoreScreen()
+void TScreenUNIX::RestoreScreen()
 {
- if (canWriteVCS)
+ if (canWriteVCS())
    {
-    TScreen::setCharacter(0,user_buffer,user_buffer_size);
-    TScreen::SetCursor(user_cursor_x,user_cursor_y);
+    setCharacters(0,user_buffer,user_buffer_size);
+    setCursorPos(user_cursor_x,user_cursor_y);
    }
  else
    {
@@ -1255,33 +1099,33 @@ void RestoreScreen()
        case GENER_TERMINAL:
             // Set color to gray over black
             mapColor(p,7); *p=0;
-            TScreen::SendToTerminal(b);
+            SendToTerminal(b);
             // Clear the screen to it
-            TScreen::SendToTerminal(clear_screen);
-            //TScreen::SendToTerminal("\e[2J"); Linux
+            SendToTerminal(clear_screen);
+            //SendToTerminal("\e[2J"); Linux
             break;
       }
    }
 }
 
-void SaveScreen()
+void TScreenUNIX::SaveScreen()
 {
- if (canWriteVCS)
+ if (canWriteVCS())
    {
-    user_buffer_size = TScreen::getCols()*TScreen::getRows();
+    user_buffer_size = getCols()*getRows();
     user_buffer = (ushort *)realloc(user_buffer,user_buffer_size*sizeof(ushort));
-    TScreen::getCharacter(0,user_buffer,user_buffer_size);
-    TScreen::GetCursor(user_cursor_x,user_cursor_y);
+    getCharacters(0,user_buffer,user_buffer_size);
+    getCursorPos(user_cursor_x,user_cursor_y);
    }
 }
 
-void SaveScreenReleaseMemory(void)
+void TScreenUNIX::SaveScreenReleaseMemory(void)
 {
  free(user_buffer);
 }
 
 // SET: Call to an external program, optionally forking
-int TV_System(const char *command, pid_t *pidChild)
+int TScreenUNIX::System(const char *command, pid_t *pidChild)
 {
  if (!pidChild)
     return system(command);
@@ -1318,8 +1162,21 @@ int TV_System(const char *command, pid_t *pidChild)
  return 0;
 }
 
-
+#endif // TVOS_UNIX
 /*****************************************************************************
+
+     This code was in the constructor and commented, it could help in the
+   future.
+   * ESC ] Ps ND string NP
+   *    ND can be any non-digit Character (it's discarded)
+   *    NP can be any non-printing Character (it's discarded)
+   *    string can be any ASCII printable string (max 511 characters)
+   *    Ps = 0 -> use string as a new icon name and title
+   *    Ps = 1 -> use string is a new icon name only
+   *    Ps = 2 -> use string is a new title only
+   *    Ps = 46 -> use string as a new log file name
+  if (getenv("DISPLAY") != NULL) cout << "\033]2;TurboVision\007";
+
 SET:
   Here is some information about the Linux console. I got it from the kernel
 sources, they says that's VT102:

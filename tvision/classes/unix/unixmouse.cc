@@ -1,14 +1,26 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
-#include <stdlib.h>
-#define Uses_string
-#include <time.h>
-#include <stdio.h>
+/* Copyright (C) 1999-2001 Salvador Eduardo Tropea */
+#include <tv/configtv.h>
 
+#ifdef TVOS_UNIX
+
+#define Uses_stdlib
+#define Uses_string
+#define Uses_stdio
+#define Uses_time
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TScreen
 #include <tv.h>
+#include <termios.h>
+#include <tv/linuxscr.h>
+#include <tv/linuxmouse.h>
+
+#ifdef HAVE_GPM
+extern "C" {
+#include <gpm.h>
+}
+#endif
 
 //----------------- Common stuff ---------------
 
@@ -24,27 +36,106 @@
  #define LOG(s) do {;} while(0)
 #endif
 
-uchar THWMouse::buttonCount = 0;
-Boolean THWMouse::handlerInstalled = False;
-Boolean THWMouse::noMouse = False;
+#ifdef TV_BIG_ENDIAN
+ #define MouseAttrMask 0x007F;
+#else
+ #define MouseAttrMask 0x7F00;
+#endif
 
-int use_mouse_handler = 1;
+static int    last_x=0,last_y=0;
+static ushort mouse_char;
 
-void THWMouse::registerHandler( unsigned , void (*)() )
+static
+void get_mouse_char()
+{
+ mouse_char=TScreen::getCharacter(last_x+last_y*TScreen::screenWidth);
+}
+
+static
+void set_mouse_char()
+{
+ ushort c=mouse_char ^ MouseAttrMask;
+ TScreen::setCharacter(last_x+last_y*TScreen::screenWidth,c);
+}
+
+static
+void reset_mouse_char()
+{
+ TScreen::setCharacter(last_x+last_y*TScreen::screenWidth,mouse_char);
+}
+
+static volatile
+void show_mouse_char()
+{
+ if (last_x>TScreen::screenWidth)
+   last_x=0;
+ if (last_y>TScreen::screenHeight)
+   last_y=0;
+ get_mouse_char();
+ set_mouse_char();
+}
+
+void THWMouseUNIX::DrawMouse(int x, int y)
+{
+ if (TScreen::suspended) return;
+ if (x!=last_x || y!=last_y)
+   {
+    if (visible) reset_mouse_char();
+    last_x=x;
+    last_y=y;
+    if (visible) show_mouse_char();
+   }
+}
+
+void THWMouseUNIX::Show()
+{
+ visible=1;
+ show_mouse_char();
+}
+
+void THWMouseUNIX::Hide()
+{
+ reset_mouse_char();
+ visible=0;
+}
+
+void THWMouseUNIX::Init()
+{
+ THWMouse::Show=Show;
+ THWMouse::Hide=Hide;
+ THWMouse::drawMouse=DrawMouse;
+}
+
+THWMouseUNIX::~THWMouseUNIX()
 {
 }
 
-THWMouse::THWMouse()
+//---------------- XTerm version -----------------
+
+void THWMouseXTerm::Resume()
 {
-  resume(); // SET: to avoid duplicating code
+ buttonCount=3; // X uses at least 3 buttons
+ // Save old hilit tracking and enable mouse tracking (GPM_XTERM_ON)
+ TScreenUNIX::SendToTerminal("\x1B[?1001s\x1B[?1000h");
+ LOG("using xterm* mouse");
+ show();
 }
 
-THWMouse::~THWMouse()
+void THWMouseXTerm::Suspend()
 {
-  suspend();
+ // Disable mouse tracking and restore old hilittracking (GPM_XTERM_OFF)
+ TScreenUNIX::SendToTerminal("\x1B[?1000l\x1B[?1001r");
+ LOG("xterm mouse disabled");
 }
 
-void THWMouse::setRange( ushort , ushort )
+void THWMouseXTerm::Init()
+{
+ THWMouseUNIX::Init();
+ THWMouse::Resume=Resume;
+ THWMouse::Suspend=Resume;
+}
+
+THWMouseXTerm::~THWMouseXTerm()
 {
 }
 
@@ -52,68 +143,6 @@ void THWMouse::setRange( ushort , ushort )
 #ifdef HAVE_GPM
 
 #include <linux/keyboard.h>
-
-extern "C" {
-#include <gpm.h>
-}
-
-static int last_x=0,last_y=0,visible=0;
-static unsigned short mouse_char;
-static char XTermDetected=0;
-
-extern int TScreen_suspended;
-
-static
-void get_mouse_char()
-{
-  mouse_char = TScreen::getCharacter(last_x+last_y*TScreen::screenWidth);
-}
-
-#ifdef TV_BIG_ENDIAN
- #define MouseAttrMask 0x007F;
-#else
- #define MouseAttrMask 0x7F00;
-#endif
-
-static
-void set_mouse_char()
-{
-  unsigned short c = mouse_char ^ MouseAttrMask;
-  TScreen::setCharacter(last_x+last_y*TScreen::screenWidth,c);
-}
-
-static
-void reset_mouse_char()
-{
-  TScreen::setCharacter(last_x+last_y*TScreen::screenWidth,mouse_char);
-}
-
-static volatile
-void show_mouse_char()
-{
-  if (!visible) return;
-  if (last_x > TScreen::screenWidth)
-    last_x = 0;
-  if (last_y > TScreen::screenHeight)
-    last_y = 0;
-  get_mouse_char();
-  set_mouse_char();
-}
-
-int draw_mouse(int x,int y)
-{
-  if (TScreen::suspended) return 0;
-  if (x != last_x || y != last_y)
-  {
-    if (visible) reset_mouse_char();
-    last_x = x;
-    last_y = y;
-    show_mouse_char();
-    return 1;
-  }
-  return 0;
-}   
-
 static
 int SetUpGPMConnection()
 {
@@ -131,194 +160,73 @@ int SetUpGPMConnection()
  return Gpm_Open(&conn, 0);
 }
 
-void THWMouse::resume()
+void THWMouseGPM::Resume()
 {
- if (handlerInstalled)
+ if (gpm_fd!=-1)
     return;
- fflush(stderr);
- // SET: Are we in a xterm* ?
- // Note: we can't try gpm first, it mess the xterm mouse, it took me a lot
- // of time to figure out why it worked in a simple example but not in a real
- // Turbo Vision program.
- char *term=getenv("TERM");
- if (term && strncmp(term,"xterm",5)==0)
-   {
-    handlerInstalled=True;
-    XTermDetected=1;
-    buttonCount=3; // X uses 3 buttons
-    // Save old hilit tracking and enable mouse tracking (GPM_XTERM_ON)
-    TScreen::SendToTerminal("\x1B[?1001s\x1B[?1000h");
-    LOG("using xterm* mouse");
-   }
- else
-   { // Try gpm
-    if (gpm_fd!=-1)
-      { // It can happend only if a bug is there
-       handlerInstalled=True;
-       LOG("gpm_fd!=-1 && handlerInstalled==False");
-       return;
-      }
-    if (SetUpGPMConnection()<0)
-       LOG("no gpm, running without mouse");
-    else
-      {
-       LOG("gpm server version " << Gpm_GetServerVersion(NULL));
-       handlerInstalled=True;
-       buttonCount=3;
-       /*Gpm_Event mev; Just draw the cursor, no way to move it, a really
-                        huge limitation.
-       Gpm_GetEvent(&mev);
-       mev.x=mev.y=0;
-       GPM_DRAWPOINTER (&mev);*/
-      }
-   }
-  show();
-}
-
-void THWMouse::suspend()
-{
- if (!handlerInstalled)
-    return;
- handlerInstalled=False;
- hide();
- buttonCount=0;
-
- if (XTermDetected)
-   {
-    XTermDetected=0;
-    // Disable mouse tracking and restore old hilittracking (GPM_XTERM_OFF)
-    TScreen::SendToTerminal("\x1B[?1000l\x1B[?1001r");
-    LOG("xterm mouse disabled");
-   }
+ if (SetUpGPMConnection()<0)
+    LOG("no gpm, running without mouse");
  else
    {
-    if (gpm_fd==-1)
-       return;
-    Gpm_Close();
-    LOG("gpm connection closed");
+    LOG("gpm server version " << Gpm_GetServerVersion(NULL));
+    buttonCount=3;
    }
+ show();
 }
 
-void THWMouse::show()
+void THWMouseGPM::Suspend()
 {
-  if (!present()) return;
-  if (visible) return;
-  visible = 1;
-  show_mouse_char();
-}
-
-void THWMouse::hide()
-{
-  if (!present()) return;
-  if (!visible) return;
-  reset_mouse_char();
-  visible = 0;
+ if (gpm_fd==-1)
+    return;
+ Gpm_Close();
+ LOG("gpm connection closed");
 }
 
 inline
 int range(int test, int min, int max)
 {
-	return test < min ? min : test > max ? max : test;
+ return test < min ? min : test > max ? max : test;
 }
 
-static int m_x=0,m_y=0,m_b=0,m_bOld=0;
-static int forced=0;
-
-/**[txh]********************************************************************
-
-  Description:
-  It forces the state of the mouse externally, the next call to getEvent
-will return this values instead of values from the mouse driver. That's
-used to simuate the mouse with other events like keyboard.@p
-  One interesting problem is that TV expects one event for the position
-change and another for the button change, both can't be provided in one
-step so we must emulate it too. (SET)
-
-***************************************************************************/
-
-void THWMouse::forceEvent(int x, int y, int buttons)
+void THWMouseGPM::GetEvent(MouseEventType &me)
 {
- forced=0;
- if (m_x!=x || m_y!=y)
-    forced++;
- if (m_b!=buttons)
-    forced++;
- m_bOld=m_b;
- m_x=x; m_y=y; m_b=buttons;
+ Gpm_Event mev;
+
+ me.buttons=TEventQueue::curMouse.buttons;
+ me.doubleClick=False;
+ if (!Gpm_Repeat(1) && (Gpm_GetEvent(&mev)==1))
+   {
+    int b=mev.buttons;
+    if ((b & GPM_B_LEFT) && !(mev.type & GPM_UP))
+       me.buttons|= mbLeftButton;
+    else
+       me.buttons&= ~mbLeftButton;
+    if ((b & GPM_B_RIGHT) && !(mev.type & GPM_UP))
+       me.buttons|= mbRightButton;
+    else
+       me.buttons&= ~mbRightButton;
+    me.where.x=range(mev.x,0,TScreen::screenWidth-1);
+    me.where.y=range(mev.y,0,TScreen::screenHeight-1);
+    DrawMouse(me.where.x,me.where.y);
+   }
+ else
+   {
+    me.where.x=TEventQueue::curMouse.where.x;
+    me.where.y=TEventQueue::curMouse.where.y;
+   }
 }
 
-void THWMouse::getEvent( MouseEventType &me )
+void THWMouseGPM::Init()
 {
-  if (!handlerInstalled)
-     return;
-  Gpm_Event mev;
-  me.where.x = m_x;
-  me.where.y = m_y;
-  me.doubleClick = False;
-  if (forced)
-    { // SET: 2 steps, one the movement, other the buttons
-     if (forced==1)
-       {
-        me.buttons=m_b;
-        //draw_mouse(m_x,m_y);
-       }
-     else
-       {
-        me.buttons=m_bOld;
-       }
-     draw_mouse(m_x,m_y);
-     forced--;
-    }
-  else
-    {
-     me.buttons = m_b;
-     if (!XTermDetected && !Gpm_Repeat(1) && (Gpm_GetEvent(&mev) == 1))
-       {
-        int b = mev.buttons;
-        if ((b & GPM_B_LEFT) && !(mev.type & GPM_UP))
-          me.buttons |= mbLeftButton;
-        else
-          me.buttons &= ~mbLeftButton;
-        if ((b & GPM_B_RIGHT) && !(mev.type & GPM_UP))
-          me.buttons |= mbRightButton;
-        else
-          me.buttons &= ~mbRightButton;
-        m_b = me.buttons;
-        m_x = me.where.x = range(mev.x, 0, TScreen::screenWidth - 1);
-        m_y = me.where.y = range(mev.y, 0, TScreen::screenHeight - 1);
-        draw_mouse(m_x,m_y);
-       }
-    }
-  // curMouse must be set, because it is used by other functions
-  TEventQueue::curMouse = me;
+ THWMouseUNIX::Init();
+ THWMouse::Resume=Resume;
+ THWMouse::Suspend=Resume;
+ THWMouse::GetEvent=GetEvent;
 }
 
-#else // HAVE_GPM
-
-// Just some dummies in case we don't have/want mouse
-
-void THWMouse::resume()
+THWMouseGPM::~THWMouseGPM()
 {
 }
-
-void THWMouse::suspend()
-{
-}
-
-void THWMouse::show()
-{
-}
-
-void THWMouse::hide()
-{
-}
-
-void THWMouse::forceEvent(int , int , int )
-{
-}
-
-void THWMouse::getEvent( MouseEventType & )
-{
-}
-
 #endif
+
+#endif // TVOS_UNIX
