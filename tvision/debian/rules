@@ -47,15 +47,16 @@ clean:
 	#-rm -rf static shared
 	# Add here commands to clean up after the build process.
 	#-$(MAKE) clean
-	rm -fr linux/obj
-	mkdir linux/obj
+	# SET: Only .o files should be deleted from this directory, not delete.me
+	# and my CVS repository information ;-)
+	rm -f linux/obj/*.o
 	rm -f linux/libtv.a
 	rm -f linuxso/libtv.so.*
 	rm -f linuxso/Makefile
 	rm -f linuxso/gkeyli.cc
 	rm -f linuxso/instlib
-	rm -fr linuxso/obj
-	mkdir linuxso/obj
+	# SET: Same as linux/obj
+	rm -f linuxso/obj/*.o
 
 	#I should investigate why here dh_clean isn't called with the -k switch...
 	dh_clean
@@ -75,7 +76,8 @@ install-stamp: build-stamp
 	ln -s libtv.so.$(version) debian/tmp/usr/lib/libtv.so.$(version_major)
 	cp linux/libtv.a debian/tmp/usr/lib/libtv_g.a
 	cp linux/libtv.a debian/tmp/usr/lib/libtv.a
-	cp include/* debian/tmp/usr/include/rhtvision
+	# SET: Only header files should be copied, not .bkp and my CVS stuff ;-)
+	cp include/*.h debian/tmp/usr/include/rhtvision
 
 	#dh_movefiles
 	#dh_movefiles -p rhtvision1-dev
