@@ -1,4 +1,11 @@
 $Log$
+Revision 1.49  1999/05/20 02:00:02  root (set)
+* Changed: Now TScreen shows an error message if you redirect stdout in the
+Linux version, that's nicer than the old behavior: SIGSEGVs ;-)
+* Modified: Now TScreen includes sys/io.h instead of sys/perm.h for glibc
+because looks like sys/perm.h isn't included in Alpha/Linux's glibc.
+Sugested by Dim Zegebart <zager@post.comstar.ru>.
+
 Revision 1.48  1999/05/19 23:27:55  set
 * Fixed: a bug in TStrListMaker destructor, ugh! looks like nobody used it
 ;-). Patch by Laurynas Biveinis <lauras@softhome.net>.
