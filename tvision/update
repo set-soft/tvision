@@ -13,4 +13,4 @@
 echo
 echo Updating from CVS. Errors are discarded!
 echo
-cvs update -dP 2> /dev/null
+cvs -z3 update -dP 2> /dev/null
