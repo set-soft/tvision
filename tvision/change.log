@@ -1,11 +1,15 @@
 $Log$
+Revision 1.219  2001/10/08 23:36:18  set
+* Fixed: [gcc 3.x] fpstream(int fd) was creating a text mode stream and not
+binary.
+
 Revision 1.218  2001/10/07 23:30:00  set
 * Fixed: Damn! BC++ 5.5 implementation of ifstream::getline differs from gcc
 v2.x and v3.x. So now I created a compatlayer macro: IfStreamGetLine(object,
 buffer, size). For gcc it expands to object.getline(buffer,size) but for bcc
 is expanded to a function call that makes get for the line and then removes
 the EOL. Now the demo and tutorials seems to work for the three compilers.
-.
+
 Revision 1.217  2001/10/07 22:21:16  set
 * Fixed: The demo to work with gcc 3.x streams. Andris suggested the fix
 according to the following information: C++ standard draft at
