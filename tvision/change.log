@@ -1,4 +1,9 @@
 $Log$
+Revision 1.69  1999/06/24 22:33:53  set
+* Modified: Now the File Dialog uses an horizontal scroll bar and 2 columns
+when only SFNs are available and a vertical scroll bar and 1 column when LFNs
+are available. Ivan complained about the horizontal bar ;-)
+.
 Revision 1.68  1999/06/24 01:55:10  set
 * Added: The Calculator from the TVDemo to the library. I did a lot of
 changes to the class (it was buggy and had portability problems). Now you
