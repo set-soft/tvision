@@ -92,6 +92,7 @@ void THistory::handleEvent( TEvent& event )
                 char rslt[256];
                 historyWindow->getSelection( rslt );
                 strncpy( link->data, rslt, link->maxLen );
+                link->data[link->maxLen] = EOS;
                 link->selectAll( True );
                 link->drawView();
                 }

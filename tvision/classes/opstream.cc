@@ -41,14 +41,14 @@ opstream::~opstream()
 
 opstream& opstream::seekp( streampos pos )
 {
-    objs->removeAll();
+    objs->freeAll();
     bp->seekoff( pos, ios::beg );
     return *this;
 }
 
 opstream& opstream::seekp( streamoff pos, ios::seek_dir dir )
 {
-    objs->removeAll();
+    objs->freeAll();
     bp->seekoff( pos, dir );
     return *this;
 }

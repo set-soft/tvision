@@ -219,12 +219,15 @@ void TProgram::handleEvent( TEvent& event )
         char c = TGKey::GetAltChar( event.keyDown.keyCode );
         if( c >= '1' && c <= '9' )
             {
-            if( message( deskTop,
-                         evBroadcast,
-                         cmSelectWindowNum,
-                         (void *)(c - '0')
-                       ) != 0 )
-                clearEvent( event );
+               if (current->valid(cmReleasedFocus))
+               {
+                   if( message( deskTop,
+                            evBroadcast,
+                            cmSelectWindowNum,
+                            (void *)(c - '0')
+                           ) != 0 )
+                   clearEvent( event );
+               }
             }
         }
 
