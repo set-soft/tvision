@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.246  2002/08/12 16:00:19  set
+* Fixed: [Cygwin] The CLY_GetShellName() function to return the content of
+SHELL environment variable as in UNIX. Found using the "videomode" example
+while testing with Cygwin, now the "Shell" option works ok.
+
 Revision 2.245  2002/08/12 15:58:18  set
 * Fixed: [Win32] Configuration script didn't create compat/rhide.env.
 * Fixed: [Win32] Not all the screen was updated after a window resize.
