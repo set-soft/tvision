@@ -39,6 +39,24 @@ void CLY_ReleaseCPU()
 #endif // Win32
 
 
+#if defined(TVOSf_QNX4)
+   #include <time.h>
+   
+   static void usleep(unsigned long sleeptime)
+   {
+      struct timespec wait;
+
+      wait.tv_nsec=sleeptime;
+      wait.tv_sec=0;
+
+      do {
+         if (nanosleep(&wait, &wait)==0)
+         {
+            break;
+         }
+      } while(1);
+   }
+#endif
 
 #ifdef TVOS_UNIX
 #include <unistd.h>

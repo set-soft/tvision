@@ -10,7 +10,7 @@ $MakeDefsRHIDE={};
 $ExtraModifyMakefiles={};
 # DOS, UNIX, Win32
 $OS='';
-# Linux, FreeBSD, Solaris, QNXRtP
+# Linux, FreeBSD, Solaris, QNXRtP, QNX4
 $OSf='';
 # x86, Alpha, SPARC64, SPARC, PPC, HPPA, MIPS, Itanium, Unknown
 $CPU='';
@@ -548,6 +548,8 @@ sub FindCFLAGS
     $ret.=' -I/usr/local/include' if ($OSf eq 'FreeBSD');
     # Darwin is using a temporal size
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
+    # QNX4 X11 is in /usr/X11R6
+    $ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
@@ -617,6 +619,8 @@ sub FindCXXFLAGS
     $ret.=' -pipe' if ($OS eq 'UNIX');
     $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSf eq 'FreeBSD');
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
+    # QNX4 X11 is in /usr/X11R6
+    $ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
    }
  print "$ret\n";
  $conf{'CXXFLAGS'}=$ret;
@@ -718,7 +722,7 @@ sub FindXCXXFLAGS
 
 sub DetectOS
 {
- my ($os,$OS);
+ my ($os,$release,$OS);
  $os=`uname`;
  if (!$os)
    {
@@ -796,12 +800,25 @@ sub DetectOS
    }
  elsif ($os=~/QNX/)
    {
-    $OS='UNIX';
-    $OSf='QNXRtP';
-    $Compf='';
-    $stdcxx='-lstdc++';
-    $defaultCXX='qcc -Y_gpp';
-    $supportDir='linux';
+    $release=`uname -r`;
+    if ($release =~ /^6/)
+      {
+       $OS='UNIX';
+       $OSf='QNXRtP';
+       $Compf='';
+       $stdcxx='-lstdc++';
+       $defaultCXX='qcc -Y_gpp';
+       $supportDir='linux';
+      }
+      else
+      {
+       $OS='UNIX';
+       $OSf='QNX4';
+       $Compf='';
+       $stdcxx='-lstdc++';
+       $defaultCXX='g++';
+       $supportDir='linux';
+      }
    }
  elsif ($os=~/Darwin/)
    {
@@ -1323,6 +1340,13 @@ sub LookForGNUar
     $conf{'GNU_AR'}='ar';
     $conf{'UseRanLib'}=1;
     print "ar (not GNU but usable!)\n";
+    return 'ar';
+   }
+ if ($OSf eq 'QNX4')
+   {
+    $conf{'GNU_AR'}='ar';
+    $conf{'UseRanLib'}=1;
+    print "ar (WATCOM)\n";
     return 'ar';
    }
  print "Unable to find GNU ar on this system.\n";

@@ -60,7 +60,7 @@ public:
 
     virtual void draw();
     void redraw();
-    void Redraw();
+    void CLY_Redraw();
     void lock();
     void unlock();
     virtual void resetCursor();

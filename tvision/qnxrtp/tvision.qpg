@@ -24,9 +24,9 @@
    <QPG:Values>
       <QPG:Files>
          <QPG:Add file="../copying" install="LicenseUrl/" handling="repdata"/>
-         <QPG:Add permissions="0755" file="../makes/librhtv.so.2.0.2" install="/opt/lib/"/>
-         <QPG:Add filetype="symlink" file="librhtv.so" install="/opt/lib/" linkto="librhtv.so.2.0.2"/>
-         <QPG:Add filetype="symlink" file="librhtv.so.2" install="/opt/lib/" linkto="librhtv.so.2.0.2"/>
+         <QPG:Add permissions="0755" file="../makes/librhtv.so.2.0.3" install="/opt/lib/"/>
+         <QPG:Add filetype="symlink" file="librhtv.so" install="/opt/lib/" linkto="librhtv.so.2.0.3"/>
+         <QPG:Add filetype="symlink" file="librhtv.so.2" install="/opt/lib/" linkto="librhtv.so.2.0.3"/>
          <QPG:Add permissions="0644" file="../makes/librhtv.a" install="/opt/lib/"/>
          <QPG:Add permissions="0644" file="../makes/libtvfintl.a" install="/opt/lib/"/>
          <QPG:Add permissions="0755" file="../rhtv-config" install="/opt/bin/"/>
@@ -91,7 +91,7 @@
                <QPM:ProductDescriptionEmbedURL/>
             </QPM:ProductDescription>
             <QPM:ReleaseDescription>
-               <QPM:ReleaseVersion>2.0.2</QPM:ReleaseVersion>
+               <QPM:ReleaseVersion>2.0.3</QPM:ReleaseVersion>
                <QPM:ReleaseUrgency>High</QPM:ReleaseUrgency>
                <QPM:ReleaseStability>Stable</QPM:ReleaseStability>
                <QPM:ReleaseNoteMinor/>

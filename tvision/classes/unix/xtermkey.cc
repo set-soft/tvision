@@ -1,7 +1,7 @@
 /*****************************************************************************
 
   XTerm keyboard routines.
-  Copyright (c) 2002 by Salvador E. Tropea (SET)
+  Copyright (c) 2002,2003 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
   Module: XTerm Keyboard
@@ -25,6 +25,7 @@
 #define Uses_string
 #define Uses_stdlib
 #define Uses_unistd
+#define Uses_ioctl
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
@@ -35,7 +36,6 @@
 
 #include <termios.h>
 #include <fcntl.h>
-#include <sys/ioctl.h>
 
 #include <tv/unix/xtkey.h>
 #include <tv/linux/log.h>
