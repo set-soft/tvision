@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.169  2004/06/23 20:02:30  set
+* Added: [MSVC] Version 4.0 seems to report version 1000 and lacks
+snprintf. I also needs new.h instead of new.
+
 Revision 2.399.2.168  2004/06/23 19:38:39  set
 * Modified: [MSVC] Use of /Tp<file> instead of /TP in makefiles. It looks
 like MSVC 4.0 only supports it. Reported by by Arnold Wiegert.

@@ -6,8 +6,9 @@
  *  Covered by the GPL license. 
  */
  
-#if defined(TVOS_Win32) && !defined(WINDOWSMOUSE_HEADER_INCLUDED)
-#define WINDOWSMOUSE_HEADER_INCLUDED
+#if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver) \
+    && !defined(WINGRMOUSE_HEADER_INCLUDED)
+#define WINGRMOUSE_HEADER_INCLUDED
 
 struct THWMouseWinGr: virtual public TDisplayWinGr  // Access to display attributes
 		    ,                THWMouse
