@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.572  2004/09/22 19:37:40  set
+* Added: [MSVC] Now UNCs are also supported (previously only BC++ code had
+it). Arnold helped to enable it using MSVC 6.0.
+.
 Revision 2.571  2004/09/21 20:55:12  set
 * Fixed: [Compilation] Problems with the examples when using
 MAINTAINER_MODE.

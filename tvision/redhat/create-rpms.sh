@@ -20,7 +20,7 @@ chmod +x redhat/config-rpm.sh
 redhat/create-dirs.sh
 mv ~/.rpmmacros redhat/.rpmmacros-backup~
 redhat/config-rpm.sh
-cd linux; ./compress --use-bzip2 --dir-version; cd ..
+cd linux; chmod +x compress; ./compress --use-bzip2 --dir-version; cd ..
 mv ../rhtvision-`cat version.txt`.src.tar.bz2 $SET_RPM_DIR/rpm/SOURCES/librhtv-`cat version.txt`.tar.bz2
 rpmbuild -bb redhat/librhtv-`cat version.txt`.spec
 mv redhat/.rpmmacros-backup~ ~/.rpmmacros
