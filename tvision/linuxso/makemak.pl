@@ -8,24 +8,27 @@
 #
 # It generates the installation script too.
 #
+require "../miscperl.pl";
+
+GetVersion('..');
 
 $destination='/usr/lib';
-$intver='1.0.8';
-$extver='1';
+$intver=$Version;
+$extver=$VersionMajor;
 unlink('tcedit.dst',glob('*.bkp'));
 $f=&cat('../linux/Makefile');
-&replace($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
-&replace($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
-&replace($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC -pipe');
-&replace($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$intver -lc -lncurses -lm -lgpm");
-&replace($f,'MAIN_TARGET=librhtv.a','MAIN_TARGET=librhtv.so.1.0');
-&replace($f,'librhtv.a:: \$\(DEPS_0\)',"librhtv.so.$intver\:\: \$(DEPS_0)");
-&replace($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');
-&replace($f,'all:: librhtv.a',"all\:\: librhtv.so.$intver");
-&replace($f,'-Wall','');
-&replace($f,'-Werror','');
-#&replace($f,'-gstabs3','');
-&replaceFile('Makefile',$f);
+&replaceVar($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
+&replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
+&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC -pipe');
+&replaceVar($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$intver -lc -lncurses -lm -lgpm");
+&replaceVar($f,'MAIN_TARGET=librhtv.a','MAIN_TARGET=librhtv.so.1.0');
+&replaceVar($f,'librhtv.a:: \$\(DEPS_0\)',"librhtv.so.$intver\:\: \$(DEPS_0)");
+&replaceVar($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');
+&replaceVar($f,'all:: librhtv.a',"all\:\: librhtv.so.$intver");
+&replaceVar($f,'-Wall','');
+&replaceVar($f,'-Werror','');
+#&replaceVar($f,'-gstabs3','');
+&replace('Makefile',$f);
 system('ln -s ../linux/gkeyli.cc gkeyli.cc') unless (-s 'gkeyli.cc');
 system("make");
 
@@ -48,29 +51,8 @@ print "
 Running the ./instlib script you can install the libraries in $destination
 you should read and modify it according to your needs.\n\n";
 
-sub replace
+sub replaceVar
 {
  my $a=\$_[0],$search=$_[1],$repl=$_[2];
  $$a =~ s/$search/$repl/;
-}
-
-sub replaceFile
-{
- my $b=$_[1];
-
- open(FIL,">$_[0]") || return 0;
- print FIL ($b);
- close(FIL);
-}
-
-sub cat
-{
- local $/;
- my $b;
-
- open(FIL,$_[0]) || return 0;
- $b=<FIL>;
- close(FIL);
-
- $b;
 }
