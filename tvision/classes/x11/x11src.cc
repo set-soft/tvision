@@ -112,13 +112,13 @@ char      TScreenX11::cursorInScreen=0;
 uchar     TScreenX11::curAttr;
 uchar     TScreenX11::primaryFontChanged=0;
 char     *TScreenX11::cursorData=NULL;
-volatile
-char      TScreenX11::cursorChange=0;
 char      TScreenX11::hideCursorWhenNoFocus=1;
 char      TScreenX11::dontResizeToCells=0;
+struct
+timeval   TScreenX11::refCursorTime,
+          TScreenX11::curCursorTime;
 XSizeHints *TScreenX11::sizeHints=NULL;
 XClassHint *TScreenX11::classHint=NULL;
-
 
 TScreenX11::~TScreenX11()
 {
@@ -999,13 +999,7 @@ TScreenX11::TScreenX11()
  cursorGC=XCreateGC(disp,mainWin,0,0);
 
  /* Create the cursor timer */
- struct sigaction action;
- action.sa_handler=sigAlm;
- sigemptyset(&action.sa_mask);
- action.sa_flags=0;
- sigaction(TIMER_ALARM,&action,NULL);
- //signal(SIGALRM,sigAlm); To avoid SVID vs BSD differences
- microAlarm(cursorDelay);
+ gettimeofday(&refCursorTime,0);
 
  XSetBackground(disp,gc,colorMap[0]);
  XSetForeground(disp,gc,colorMap[7]);
@@ -1127,12 +1121,6 @@ void TScreenX11::FullRedraw()
  Routines to create a blinking cursor
 *****************************************************************************/
 
-void TScreenX11::sigAlm(int sig)
-{
- cursorChange=1;
- microAlarm(cursorDelay);
-}
-
 void TScreenX11::UnDrawCursor()
 {
  if (!cursorInScreen)
@@ -1203,13 +1191,26 @@ void TScreenX11::ProcessGenericEvents()
  unsigned lastW, lastH;
  unsigned newPW, newPH;
 
+ // Cursor blinking stuff.
+ // Current time
+ gettimeofday(&curCursorTime,0);
+ // Substract the reference
+ curCursorTime.tv_sec-=refCursorTime.tv_sec;
+ if (curCursorTime.tv_usec<refCursorTime.tv_usec)
+   {
+    curCursorTime.tv_sec--;
+    curCursorTime.tv_usec=curCursorTime.tv_usec-refCursorTime.tv_usec+1000000;
+   }
+ else
+    curCursorTime.tv_usec-=refCursorTime.tv_usec;
+
+ if (curCursorTime.tv_sec>0 || curCursorTime.tv_usec>cursorDelay)
+   {
+    DrawCursor();
+    gettimeofday(&refCursorTime,0);
+   }
  while (1)
    {
-    if (cursorChange)
-      {
-       cursorChange=0;
-       DrawCursor();
-      }
     /* Check if we have generic events in the queue */
     if (XCheckMaskEvent(disp,~(aMouseEvent|aKeyEvent),&event)!=True)
       {
