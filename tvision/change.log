@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.357  2002/11/26 12:52:50  set
+* Added: The new X11 cyrillic example to the readme and the makefile.
+
 Revision 2.356  2002/11/25 15:06:47  set
 * Added: The creation and installation of es.mo and ru.mo files from
 spanish and russian translations.
