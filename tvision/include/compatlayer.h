@@ -1322,6 +1322,8 @@ typedef unsigned long  ulong;
  #undef CLY_IOSGoodBit
  #undef CLY_PubSeekOff
  #undef CLY_PubSync
+ #undef CLY_DefineSpecialFileBuf
+ #undef CLY_ISOCpp98
 
  #define CLY_filebuf        SSC_filebuf
  #define CLY_int_filebuf    SSC_filebuf

@@ -1,4 +1,15 @@
-$Log$.
+$Log$
+Revision 2.428  2003/04/22 15:16:03  set
+* Added: An optional replacement for C++ streams. This is a very small and
+incomplete replacement, but is enough to compile TV and SETEdit. With this
+replacement and some changes added the library can be compiled without
+using even one standard C++ header. I tested it moving the whole C++
+include directory away. The main idea is to reduce the size for target
+using only static libs and also to reduce the compilation time. For gcc
+2.95.4 running on Linux I got a 20% reduction of compilation time.
+To enable it you can use --with-ssc configuration option, but remmember
+that's experimental.
+
 Revision 2.427  2003/04/21 18:03:14  set
 * Added: Some documentation about the new TVIntl API.
 
