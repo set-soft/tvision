@@ -1010,6 +1010,8 @@ typedef unsigned long  ulong;
   // Doesn't work, needs to be fixed.
   #define usleep(microseconds) CLY_YieldProcessor(microseconds)
  #endif
+ // BC++ lacks ioctl.h
+ #undef Include_ioctl
 
  /* ifstream::getline behaves strangely in BC++
     I take the gcc implementation, here is a replacement. */

@@ -15,7 +15,7 @@
 #
 SRCD1=..;../classes;../classes/dos;../classes/linux;../classes/qnxrtp
 SRCD2=../classes/unix;../classes/win32;../classes/wingr;../classes/winnt
-SRCD3=../classes/x11;../compat;../stream;../names
+SRCD3=../classes/x11;../compat;../stream;../names;../classes/qnx4
 SRCDIRS=$(SRCD1);$(SRCD2);$(SRCD3)
 #
 # Include directories
