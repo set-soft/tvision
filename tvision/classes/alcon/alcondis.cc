@@ -30,13 +30,10 @@ void TDisplayAlcon::Init()
 //    TDisplay::setDisPaletteColors=SetDisPaletteColors;
 //    TDisplay::getDisPaletteColors=GetDisPaletteColors;
 //    TDisplay::beep=Beep;
-
 }
 
 TDisplayAlcon::~TDisplayAlcon()
 {
-	// Debug message, to know when the display is destroyed...
-	allegro_message("Bye bye TDisplayAlcon!\n");
 }
 
 void TDisplayAlcon::GetCursorPos(unsigned &x, unsigned &y)

@@ -35,6 +35,8 @@ TScreenAlcon::TScreenAlcon()
     // Jump to top left (1, 1).
     gotoxy(1, 1);
 
+	cputs("Urgh!");
+
     TDisplayAlcon::Init();
 
     TScreen::clearScreen=clearScreen;
@@ -46,13 +48,12 @@ TScreenAlcon::TScreenAlcon()
     TScreen::getFontGeometry=GetFontGeometry;
 //    TScreen::setFont_p=SetFont;
 //    TScreen::restoreFonts=RestoreFonts;
+	initialized=1;
 }
 
 
 TScreenAlcon::~TScreenAlcon()
 {
-	// Debug message, to know when the display is destroyed...
-	allegro_message("Bye bye TScreenAlcon!\n");
     // Deinitialize all.
     AlCon_Exit();
 }
