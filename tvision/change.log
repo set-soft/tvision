@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.591  2004/10/18 15:00:53  set
+* Modified: [Compilation] The dependencies now include a relative path so
+makefiles doesn't need to define a "vpath". That's because nmake doesn't
+have any equivalent.
+
 Revision 2.590  2004/10/15 23:41:53  set
 * Fixed: [Win32][gcc 3.x] gcc 3.3.3 warning in WinGr code (using char as
 array index).

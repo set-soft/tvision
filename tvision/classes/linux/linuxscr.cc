@@ -2,7 +2,7 @@
 
   Linux screen routines.
   Copyright (c) 1996-1998 by Robert Hoehne.
-  Copyright (c) 1999-2002 by Salvador E. Tropea (SET)
+  Copyright (c) 1999-2004 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
   Important note:
@@ -324,11 +324,12 @@ int TScreenLinux::AnalyzeCodePage()
  int i,j;
 
  // GIO_UNIMAP: get unicode-to-font mapping from kernel
- int success=0;
+ int success;
  struct unimapdesc map;
  map.entry_ct=firstTrySize;
  map.entries=new struct unipair[firstTrySize];
- if (ioctl(hOut,GIO_UNIMAP,&map)==-1 && map.entry_ct>firstTrySize)
+ success= ioctl(hOut,GIO_UNIMAP,&map)!=-1;
+ if (!success && map.entry_ct>firstTrySize)
    {
     LOG("The starting size of " << firstTrySize << " wasn't enough, we need " << map.entry_ct);
     delete[] map.entries;
@@ -499,11 +500,12 @@ int TScreenLinux::AnalyzeCodePage()
 {
  // Get the font unicode map (SFM)
  // GIO_UNIMAP: get unicode-to-font mapping from kernel
- int success=0;
+ int success;
  struct unimapdesc map;
  map.entry_ct=firstTrySize;
  map.entries=new struct unipair[firstTrySize];
- if (ioctl(hOut,GIO_UNIMAP,&map)==-1 && map.entry_ct>firstTrySize)
+ success= ioctl(hOut,GIO_UNIMAP,&map)!=-1;
+ if (!success && map.entry_ct>firstTrySize)
    {
     LOG("The starting size of " << firstTrySize << " wasn't enough, we need " << map.entry_ct);
     delete[] map.entries;
@@ -762,6 +764,16 @@ int TScreenLinux::InitOnce()
    {
     GuessCodePageFromLANG();
    }
+
+ #ifdef DEBUG_CODEPAGE
+ fprintf(stderr,"Using: AppCP: 0x%08lX ScrCP: 0x%08lX InpCP: 0x%08lX\n",
+         forcedAppCP!=-1 ? forcedAppCP : installedACM,
+         forcedScrCP!=-1 ? forcedScrCP : installedSFM,
+         forcedInpCP!=-1 ? forcedInpCP : installedACM);
+ fprintf(stderr,"Default: AppCP: 0x%08X ScrCP: 0x%08X InpCP: 0x%08X\n",
+         installedACM,installedSFM,installedACM);
+ #endif
+
  // User settings have more priority than detected settings
  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : installedACM,
                          forcedScrCP!=-1 ? forcedScrCP : installedSFM,
