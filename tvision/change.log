@@ -1,4 +1,11 @@
 $Log$
+Revision 1.153  2000/05/23 01:43:23  set
+* Added: Now the configuration process generates the BC++ makefile. Even when
+people using BC++ won't use it I can use it to update the makefile.
+* Fixed: conflib.pl declared local variables wrongly.
+* Added: A function to conflib.pl to collect project items from a .mak.
+* Added: fileview.cc to the BC++ port.
+.
 Revision 1.152  2000/05/22 23:52:32  set
 * Modified: Now the configtv.h isn't generated if the new one is identical.
 It avoids a masive recompile after configuring.
