@@ -1281,7 +1281,8 @@ void TScreenLinux::GetCharactersVCS(unsigned offset, ushort *buf, unsigned count
    {
     unsigned i;
     uchar *s=(uchar *)buf,aux;
-    for (i=0; i<length; i+=2)
+    count*=2;
+    for (i=0; i<count; i+=2)
        {
         aux=s[i];
         s[i]=s[i+1];
