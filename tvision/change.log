@@ -1,4 +1,7 @@
 $Log$
+Revision 1.236  2001/10/18 00:35:42  set
+* Merged patches for Debian stuff from Ivan.
+
 Revision 1.235  2001/10/18 00:10:06  set
 * Fixed: I forgot to update the linux/Makefile file from the project file.
 It prevented the code to compile for FreeBSD.
