@@ -29,10 +29,5 @@ void THWMouseAlcon::GetEvent(MouseEventType &me)
  AlCon_GetMousePos(&me.where.x, &me.where.y, &buttons);
  me.buttons = uchar(buttons & 255);
  me.doubleClick=False;
- // I get these printfs, but TVision ignores me!
- if (buttons & 1 << 3)
-    printf("Mouse up\n");
- if (buttons & 1 << 4)
-    printf("Mouse down\n");
 }
 
