@@ -1,4 +1,8 @@
 $Log$
+Revision 1.242  2001/11/06 23:31:08  set
+* Fixed: A typo in compatlayer.h, it defined sdtio instead of stdio ;-).
+Reported by "Jerzy Witkowski" <jwi@pl.ibm.com>.
+
 Revision 1.241  2001/10/31 01:00:56  set
 * Added: --no-fhs to the configuration. Patch provided by
 jimmy@ncp.infonet.bg.

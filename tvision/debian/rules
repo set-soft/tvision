@@ -35,9 +35,7 @@ clean: clean-debian debianbackup.tar
 	test -e debianbackup.tar && tar -xf debianbackup.tar
 	rm -f debianbackup.tar
 # FIXME: ask upstream about adding the next 3 files to his clean target:
-	rm -f linuxso/gkeyli.cc
-	rm -f linuxso/makemak.pl
-	rm -f configure.cache
+	rm -f linuxso/gkeyli.cc linuxso/instlib configure.cache
 	rm -f build-stamp
 
 clean-debian:
@@ -61,7 +59,7 @@ install: build
 	dh_testroot
 	dh_clean
 	dh_installdirs -p $(package)$(version)-dev usr/lib usr/include/$(package) usr/share/doc usr/share/doc/$(package)$(version)-dev usr/share/doc/$(package)$(version)-dev/examples
-	dh_installdirs -p $(package)$(version) usr/lib usr/share usr/share/man usr/share/man/man3 usr/share/doc/$(package)$(version) usr/share/doc/$(package)$(version)/eterm
+	dh_installdirs -p $(package)$(version) usr/lib usr/share usr/share/doc/$(package)$(version) usr/share/doc/$(package)$(version)/eterm
 	$(MAKE) install
 # We need to move files for other packages than the first one in the control file:
 	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version)
