@@ -9,7 +9,7 @@
 
 /*
   Modified by Salvador Eduardo Tropea <salvador@inti.gov.ar>
-  <set@ieee.org> <set@computer.org> <set-soft@bigfoot.com>
+  <set@ieee.org> <set@computer.org>
   I ported it from TV 1.03.
  */
 

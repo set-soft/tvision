@@ -9,15 +9,16 @@
 
 /*
   Modified by Salvador Eduardo Tropea <salvador@inti.gov.ar>
-  <set@ieee.org> <set@computer.org> <set-soft@bigfoot.com>
+  <set@ieee.org> <set@computer.org>
   I ported it from TV 1.03.
+  SET: Added locale support for the decimal point.
  */
 
 // SET: moved the standard headers before tv.h
 #define Uses_string
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdio.h> // sprintf
+#define Uses_stdlib
+#define Uses_ctype
+#define Uses_stdio // sprintf
 
 #define Uses_TKeys
 #define Uses_TKeys_Extended
@@ -32,6 +33,8 @@
 #define Uses_TPalette // SET: added
 #define Uses_TCalcDisplay
 #include <tv.h>
+
+#include <langinfo.h>
 
 #define cpCalcPalette   "\x13"
 
@@ -153,6 +156,7 @@ void TCalcDisplay::calcKey(unsigned char key, unsigned code)
 {
     char stub[2] = " ";
     double r;
+    char *decPoint=nl_langinfo(DECIMAL_POINT);
 
     if (code==kbBackSpace)
        key=8;
@@ -178,15 +182,6 @@ void TCalcDisplay::calcKey(unsigned char key, unsigned code)
                 }
             break;
 
-        case '.':
-            checkFirst();
-            if(strchr(number, '.') == NULL)
-                {
-                stub[0] = '.';
-                strcat(number, stub);
-                }
-            break;
-
         case 8:
         case 27:
             int len;
@@ -200,6 +195,12 @@ void TCalcDisplay::calcKey(unsigned char key, unsigned code)
 
         case '_': // +-
             sign = (sign == ' ') ? '-' : ' ';
+            break;
+
+        case '.':
+             checkFirst();
+             if(strstr(number, decPoint) == NULL)
+                 strcat(number, decPoint);
             break;
 
         case '+':   case '-':   case '*':   case '/':

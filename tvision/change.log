@@ -1,4 +1,10 @@
 $Log$
+Revision 1.212  2001/09/30 21:03:31  set
+* Fixed: Now the scripts generate Debian versions with -0.1 as suggested by
+Ivan.
+* Fixed: debian/control.in had extra \n at the end that were passed to
+debian/control every time.
+
 Revision 1.211  2001/09/29 02:11:10  set
 * Modified: I made the library compile with gcc 3.0.1. This new version of
 gcc implments the ISO C++ 1998 standard and hence changes a lot of things
