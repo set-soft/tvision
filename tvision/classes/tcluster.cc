@@ -267,13 +267,13 @@ Boolean TCluster::mark( int )
     return False;
 }
 
-void TCluster::movedTo( int item )
+void TCluster::movedTo( int /*item*/ )
 {
  if (owner && (options & ofBeVerbose))
     message(owner,evBroadcast,cmClusterMovedTo,this);
 }
 
-void TCluster::press( int item )
+void TCluster::press( int /*item*/ )
 {
  if (owner && (options & ofBeVerbose))
     message(owner,evBroadcast,cmClusterPress,this);
