@@ -29,6 +29,7 @@ exlude some particular files by configuration.
 #define Uses_dirent
 #define Uses_getcwd
 
+#define Uses_TGKey
 #define Uses_MsgBox
 #define Uses_TFileList
 #define Uses_TRect
@@ -98,10 +99,11 @@ void* TFileList::getKey( const char *s )
 {
   static TSearchRec sR;
 
-  if ( (shiftState & 0x03) != 0 || *s == '.' )
-    sR.attr = FA_DIREC;
+  if ((TGKey::getShiftState() & (kbLeftShiftDown | kbRightShiftDown)) ||
+      *s=='.')
+    sR.attr=FA_DIREC;
   else
-    sR.attr = 0;
+    sR.attr=0;
   strcpy( sR.name, s );
   return &sR;
 }
