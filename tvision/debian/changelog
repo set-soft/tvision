@@ -1,3 +1,15 @@
+rhtvision (1.0.9-3) unstable; urgency=low
+
+  * Standards version 3.1.0.
+  * Added Build-Depends.
+  * Architecture set to "any" instead of "i386 alpha" as requested by
+    Roman Hodek. This library isn't tested on other architectures other
+    than i386 or alpha, so, testing is needed and reports of success or
+    failures will be apreciated.
+    See bug 50319.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Wed,  1 Dec 1999 00:38:51 -0300
+
 rhtvision (1.0.9-2) unstable; urgency=low
 
   * Don't install manpage (symlink to undocumented(7) manpage).
