@@ -8,6 +8,7 @@
  * Modified by Robert H”hne to be used for RHIDE.
 
 Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
+Modified for Unicode buffers by Salvador E. Tropea (SET)
 
  *
  *
@@ -22,6 +23,7 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 #define Uses_ipstream
 #define Uses_TCommandSet
 #define Uses_TStreamableClass
+#define Uses_TScreen // To know the current screen encoding (codepage/unicode16)
 #include <tv.h>
 
 TView *TheTopView = 0;
@@ -132,7 +134,7 @@ void TGroup::draw()
       redraw();
       lockFlag--;
     }
-    writeBuf( 0, 0, size.x, size.y, buffer );
+    writeNativeBuf( 0, 0, size.x, size.y, buffer );
   }
   else
   {
@@ -142,7 +144,7 @@ void TGroup::draw()
       lockFlag++;
       redraw();
       lockFlag--;
-      writeBuf( 0, 0, size.x, size.y, buffer );
+      writeNativeBuf( 0, 0, size.x, size.y, buffer );
     }
     else
     {
@@ -261,11 +263,7 @@ void TGroup::freeBuffer()
 {
     if( (options & ofBuffered) != 0 && buffer != 0 )
         {
-#if 0
-        TVMemMgr::freeDiscardable( buffer );
-#else
         DeleteArray(buffer);
-#endif
         buffer = 0;
         }
 }
@@ -274,11 +272,12 @@ void TGroup::getBuffer()
 {
     if( (state & sfExposed) != 0 )
         if( (options & ofBuffered) != 0 && (buffer == 0 ))
-#if 0
-            TVMemMgr::allocateDiscardable( (void *&)buffer, size.x * size.y * sizeof(ushort) );
-#else
-            buffer = new ushort[size.x * size.y];
-#endif
+            {
+            if (TDisplay::getDrawingMode()==TDisplay::unicode16)
+               buffer = new ushort[size.x * size.y * 2];
+            else
+               buffer = new ushort[size.x * size.y];
+            }
 }
 
 void TGroup::getData(void *rec)

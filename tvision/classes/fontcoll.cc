@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 1996-2002 by Salvador Eduardo Tropea (SET)
+  Copyright 1996-2003 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
   Module: TVFontCollection
@@ -206,6 +206,57 @@ uchar *TVFontCollection::GetFont(int width, int height)
     EnlargeOne(fontShape,p->font,height,p->wBytes);
  else
     memcpy(fontShape,p->font,size);
+
+ return fontShape;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Returns a newly allocated block of memory containing a font of the
+specified height. This is a full font and not just one for the current code
+page.
+  
+  Return: NULL if the font isn't available.
+  
+***************************************************************************/
+
+uchar *TVFontCollection::GetFontFull(int width, int height, int &first,
+                                     int &last)
+{
+ int oneMore=0,oneLess=0;
+ SizeFont sz={width,height};
+
+ TVBitmapFont *p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
+ // If we can't find a font of the right size look for 1 more and one less
+ if (!p)
+   {
+    sz.height++;
+    p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
+    if (p)
+       oneMore=1;
+    else
+      {
+       sz.height-=2;
+       p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
+       if (p)
+          oneLess=1;
+      }
+   }
+
+ if (!p || !p->fontFull)
+    return NULL;
+
+ first=p->first; last=p->last;
+ unsigned symbols=last-first+1;
+ unsigned size=symbols*height*p->wBytes;
+ uchar *fontShape=new uchar[size];
+ if (oneMore)
+    ReduceOne(fontShape,p->fontFull,height,p->wBytes,symbols);
+ else if (oneLess)
+    EnlargeOne(fontShape,p->fontFull,height,p->wBytes,symbols);
+ else
+    memcpy(fontShape,p->fontFull,size);
 
  return fontShape;
 }

@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Changed classes hierarchy and added new draw buffers by Salvador E. Tropea
+(Changes under GPL as usual).
 
  *
  *
@@ -17,7 +19,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TDrawBufferBase
 {
 public:
- enum Types { codePage, unicode16 };
+ enum Types { codepage=0, unicode16=1 };
  int getType();
  virtual void *getBuffer() = 0;
 
@@ -37,7 +39,7 @@ class TDrawBuffer : public TDrawBufferBase
  friend class TView;
 
 public:
- TDrawBuffer() { type=codePage; }
+ TDrawBuffer() { type=codepage; }
 
   void moveChar( unsigned indent, char c, unsigned attr, unsigned count );
   void moveStr( unsigned indent, const char *str, unsigned attrs );

@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 2001-2002 by Salvador E. Tropea
+  Copyright 2001-2003 by Salvador E. Tropea
   This file is covered by the GPL license.
   
   Module: Display
@@ -62,6 +62,7 @@ char          TDisplay::paletteModified           =0;
 uint32        TDisplay::opts1                     =0;
 TVCodePage   *TDisplay::codePage                  =NULL;
 Boolean       TDisplay::busyState                 =False;
+int           TDisplay::drawingMode               =TDisplay::codepage;
 TVScreenDriverDetectCallBack TDisplay::dCB        =NULL;
 TScreenResolution TDisplay::dosModesRes[TDisplayDOSModesNum]=
 {

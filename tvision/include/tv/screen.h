@@ -1,5 +1,5 @@
 /* TDisplay/TScreen header.
-   Copyright (c) 2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2002-2003 by Salvador E. Tropea (SET)
    Covered by the GPL license.
 
    This driver defines a class compatible with original Turbo Vision but
@@ -158,11 +158,20 @@ public:
  static TVScreenDriverDetectCallBack setDetectCallBack(TVScreenDriverDetectCallBack aCB);
  // Searchs information about a known DOS video mode
  static Boolean searchDOSModeInfo(ushort mode, unsigned &w, unsigned &h, int &fW, int &fH);
+ // Used to know the format needed for buffers passed to setCharacters
+ static int     getDrawingMode() { return drawingMode; }
  
  // Tables for the DOS video modes, used to look for similar modes by other drivers
  static TScreenResolution dosModesRes[];
  static TScreenResolution dosModesCell[];
  static int dosModes[];
+
+ // Drawing modes:
+ // codepage: cells are 8 bits, the first is the character in the current code
+ //           page encoding and the next is the colors attribute.
+ // unicode16: cells are 16 bits, the first is the 16 bits unicode value and
+ //            the next is the colors attribute.
+ enum { codepage=0, unicode16=1 };
 
  // We must remove it
  static int dual_display;
@@ -214,6 +223,8 @@ protected:
  static TVScreenDriverDetectCallBack dCB;
  // Are we showing signs of busy state?
  static Boolean busyState;
+ // Format used for the drawing calls (codepage, unicode16, etc.)
+ static int     drawingMode;
  
  // Default behaviors
  static void        defaultClearScreen(uchar, uchar);
@@ -296,7 +307,7 @@ public:
  // Only used internally by Win32 ports
  static void   (*getCharacters)(unsigned offset, ushort *buf, unsigned count);
  // Used by TView and some mouse handlers, also internally
- static void   (*setCharacter)(unsigned offset, ushort value);
+ static void   (*setCharacter)(unsigned offset, uint32 value);
  static void   (*setCharacters)(unsigned offset, ushort *values, unsigned count);
  // SET: Used to set the video mode using an external program
  static void   (*setVideoModeExt)(char *mode);
@@ -402,7 +413,7 @@ protected:
  static ushort defaultFixCrtMode(ushort mode);
  static ushort defaultGetCharacter(unsigned offset);
  static void   defaultGetCharacters(unsigned offset, ushort *buf, unsigned count);
- static void   defaultSetCharacter(unsigned offset, ushort value);
+ static void   defaultSetCharacter(unsigned offset, uint32 value);
  static void   defaultSetCharacters(unsigned offset, ushort *values, unsigned count);
  static int    defaultSystem(const char *command, pid_t *pidChild, int in, int out,
                              int err);

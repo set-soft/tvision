@@ -2,7 +2,7 @@
 
   Linux screen routines.
   Copyright (c) 1996-1998 by Robert Hoehne.
-  Copyright (c) 1999-2002 by Salvador E. Tropea (SET)
+  Copyright (c) 1999-2003 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
   Important note:
@@ -264,7 +264,6 @@ void TScreenLinux::Init(int mode)
  TScreen::setVideoMode=SetVideoMode;
  TScreen::setVideoModeExt=SetVideoModeExt;
  TScreen::getCharacter=GetCharacter;
- TScreen::setCharacter=SetCharacter;
  TScreen::System=System;
  TDisplay::checkForWindowSize=CheckForWindowSize;
  TScreen::getFontGeometry=GetFontGeometry;
@@ -1150,11 +1149,6 @@ ushort TScreenLinux::GetCharacter(unsigned dst)
  ushort src;
  getCharacters(dst,&src,1);
  return src;
-}
-
-void TScreenLinux::SetCharacter(unsigned offset,ushort value)
-{
- setCharacters(offset,&value,1);
 }
 
 void TScreenLinux::GetCharactersMDA(unsigned offset, ushort *buf, unsigned count)

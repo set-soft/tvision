@@ -1,5 +1,5 @@
 /* X11 screen routines.
-   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
    Covered by the GPL license.
     Thanks to José Ángel Sánchez Caso (JASC). He implemented a first X11
    driver.
@@ -47,6 +47,9 @@
 #define Uses_TEvent   // For THWMouseX11
 #define Uses_TVCodePage
 #define Uses_TVOSClipboard
+// Only for testing purposes
+#define Uses_TVFontCollection
+#define Uses_TVPartitionTree556
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -120,6 +123,10 @@ timeval   TScreenX11::refCursorTime,
           TScreenX11::curCursorTime;
 XSizeHints *TScreenX11::sizeHints=NULL;
 XClassHint *TScreenX11::classHint=NULL;
+void    (*TScreenX11::writeLine)(int x, int y, int w, void *str, unsigned color)=
+                TScreenX11::writeLineCP;
+void    (*TScreenX11::redrawBuf)(int x, int y, unsigned w, unsigned off)=
+                TScreenX11::redrawBufCP;
 
 TScreenX11::~TScreenX11()
 {
@@ -154,7 +161,7 @@ void TScreenX11::drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAtt
     XPutImage(disp,mainWin,gc,ximgFont[aChar],0,0,x,y,fontW,fontH);
 }
 
-void TScreenX11::setCharacter(unsigned offset, ushort value)
+void TScreenX11::setCharacter(unsigned offset, uint32 value)
 {
  screenBuffer[offset]=value;
 
@@ -788,10 +795,125 @@ void TScreenX11::AdjustCursorImage()
 {
  if (cursorImage)
     XDestroyImage(cursorImage);
- cursorData=(char *)malloc(fontH*fontWb);
+ cursorData=(char *)malloc(fontSz);
  cursorImage=XCreateImage(disp,visual,1,XYBitmap,0,cursorData,fontW,fontH,8,0);
  cursorImage->byte_order=cursorImage->bitmap_bit_order=MSBFirst;
 }
+
+
+/************************** Experimental code for testing should be removed */
+static TVFontCollection *uF;
+static int firstGlyph, lastGlyph, numGlyphs;
+static XImage **unicodeGlyphs;
+static TVPartitionTree556 *u2c;
+static uchar *glyphs;
+
+void TScreenX11::LoadFontAsUnicode()
+{// Load an SFT file with plenty of glyphs and sizes
+ uF=new TVFontCollection("/usr/share/setedit/rombios.sft",TVCodePage::ISOLatin1Linux);
+ if (!uF->GetError())
+   {// Get the information for all the available glyphs
+    glyphs=uF->GetFontFull(fontW,fontH,firstGlyph,lastGlyph);
+    if (glyphs)
+      {// Create a table to hold all the XImage pointers
+       numGlyphs=lastGlyph-firstGlyph+1;
+       unicodeGlyphs=new XImage *[numGlyphs];
+       memset(unicodeGlyphs,0,sizeof(XImage *)*numGlyphs);
+       // Create a TVPartitionTree556 to convert Unicode into internal code
+       u2c=new TVPartitionTree556();
+       int i;
+       for (i=0; i<TVCodePage::providedUnicodes; i++)
+           if (TVCodePage::InternalMap[i].code>=firstGlyph &&
+               TVCodePage::InternalMap[i].code<=lastGlyph)
+              u2c->add(TVCodePage::InternalMap[i].unicode,TVCodePage::InternalMap[i].code);
+       drawingMode=unicode16;
+      }
+    /*else
+       printf("Error al obtener la font (%d,%d)\n",fontW,fontH);*/
+   }
+ /*else
+    printf("Error al cargar la font\n");*/
+ printf("Drawing mode: %s\n",drawingMode==unicode16 ? "Unicode 16" : "Code Page");
+}
+
+inline
+void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
+{
+ // Find the internal code and convert it into an index
+ uint16 code=u2c->isearch(aChar);
+ //printf("D U+%04X -> %d |",aChar,code);
+ if (code==0xFFFF)
+   {
+    code=0; // This should be the "unknown"
+    //printf("U+%04X|",aChar);
+   }
+ else
+    code-=firstGlyph;
+ // Find the XImage
+ if (!unicodeGlyphs[code])
+   {// Not yet created, create it
+    char *data=(char *)malloc(fontSz);
+    memcpy(data,glyphs+code*fontSz,fontSz);
+    /* Create a BitMap Image with this data */
+    unicodeGlyphs[code]=XCreateImage(disp,visual,1,XYBitmap,0,data,fontW,fontH,8,0);
+    /* Set the bit order, this is faster */
+    unicodeGlyphs[code]->byte_order=unicodeGlyphs[code]->bitmap_bit_order=MSBFirst;
+   }
+ XPutImage(disp,mainWin,gc,unicodeGlyphs[code],0,0,x,y,fontW,fontH);
+}
+
+void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned count)
+{
+ unsigned x,y;
+ x=(offset%maxX)*fontW;
+ y=(offset/maxX)*fontH;
+
+ uint16 *b=(uint16 *)values,newChar,newAttr;
+ uint16 *sb=screenBuffer+offset*2;
+ unsigned oldAttr=0x10000;
+ UnDrawCursor();
+ while (count--)
+   {
+    newChar=b[charPos];
+    newAttr=b[attrPos];
+    if (newChar!=sb[charPos] || newAttr!=sb[attrPos])
+      {
+       sb[charPos]=newChar;
+       sb[attrPos]=newAttr;
+       if (newAttr!=oldAttr)
+         {
+          XSetBackground(disp,gc,colorMap[newAttr>>4]);
+          XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+          oldAttr=newAttr;
+         }
+       drawCharU16(gc,x,y,newChar);
+      }
+    x+=fontW; b+=2; sb+=2;
+   }
+ DrawCursor();
+ XFlush(disp);
+}
+
+void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
+{
+ uint16 newChar=value;
+ uint16 newAttr=value>>16;
+ offset*=2;
+ screenBuffer[offset]=newChar;
+ screenBuffer[offset+1]=newAttr;
+
+ unsigned x,y;
+ x=(offset%maxX)*fontW;
+ y=(offset/maxX)*fontH;
+
+ XSetBackground(disp,gc,colorMap[newAttr>>4]);
+ XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+ UnDrawCursor();
+ drawCharU16(gc,x,y,newChar);
+ DrawCursor();
+ XFlush(disp);
+}
+/******************* End of experimental code for testing should be removed */
 
 TScreenX11::TScreenX11()
 {
@@ -857,6 +979,7 @@ TScreenX11::TScreenX11()
  fontW=useFont->w;
  fontH=useFont->h;
  fontWb=(useFont->w+7)/8;
+ fontSz=fontWb*fontH;
  uchar *fontData=useFont->data;
 
  aux=0;
@@ -871,13 +994,26 @@ TScreenX11::TScreenX11()
  if (optSearch("DontResizeToCells",aux))
     dontResizeToCells=aux;
 
+ /* Experimental stuff, here just for testing purposes */
+ LoadFontAsUnicode();
+
  TDisplayX11::Init();
 
  TScreen::clearScreen=clearScreen;
- TScreen::getCharacters=getCharacters;
- TScreen::getCharacter=getCharacter;
- TScreen::setCharacter=setCharacter;
- TScreen::setCharacters=setCharacters;
+ if (drawingMode==unicode16)
+   {
+    TScreen::setCharacter=setCharacterU16;
+    TScreen::setCharacters=setCharactersU16;
+    writeLine=writeLineU16;
+    redrawBuf=redrawBufU16;
+   }
+ else
+   {
+    TScreen::setCharacter=setCharacter;
+    TScreen::setCharacters=setCharacters;
+    writeLine=writeLineCP;
+    redrawBuf=redrawBufCP;
+   }
  TScreen::System=System;
  TScreen::setWindowTitle=setWindowTitle;
  TScreen::getWindowTitle=getWindowTitle;
@@ -899,7 +1035,10 @@ TScreenX11::TScreenX11()
  setCrtData();
  startupCursor=cursorLines;
  startupMode=screenMode;
- screenBuffer=new ushort[screenWidth*screenHeight];
+ if (drawingMode==unicode16)
+    screenBuffer=new uint16[screenWidth*screenHeight*2];
+ else
+    screenBuffer=new uint16[screenWidth*screenHeight];
 
  /* Get screen and graphic context */
  screen=DefaultScreen(disp);
@@ -1150,15 +1289,31 @@ void TScreenX11::UnDrawCursor()
  if (!cursorInScreen)
     return;
  unsigned offset=cursorX+cursorY*maxX;
- uchar *theChar=(uchar *)(screenBuffer+offset);
- uchar newChar=theChar[charPos];
- uchar newAttr=theChar[attrPos];
- int bg=newAttr>>4;
- int fg=newAttr & 0xF;
 
- XSetBackground(disp,cursorGC,colorMap[bg]);
- XSetForeground(disp,cursorGC,colorMap[fg]);
- drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
+ if (drawingMode==codepage)
+   {
+    uchar *theChar=(uchar *)(screenBuffer+offset);
+    uchar newChar=theChar[charPos];
+    uchar newAttr=theChar[attrPos];
+    int bg=newAttr>>4;
+    int fg=newAttr & 0xF;
+   
+    XSetBackground(disp,cursorGC,colorMap[bg]);
+    XSetForeground(disp,cursorGC,colorMap[fg]);
+    drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
+   }
+ else
+   {
+    uint16 *buf=screenBuffer+offset*2;
+    uchar newChar=buf[charPos];
+    uchar newAttr=buf[attrPos];
+    int bg=newAttr>>4;
+    int fg=newAttr & 0xF;
+   
+    XSetBackground(disp,cursorGC,colorMap[bg]);
+    XSetForeground(disp,cursorGC,colorMap[fg]);
+    drawCharU16(cursorGC,cursorX*fontW,cursorY*fontH,newChar);
+   }
  cursorInScreen=0;
  return;
 }
@@ -1172,15 +1327,30 @@ void TScreenX11::DrawCursor()
 
     /* Create an image with the character under cursor */
     unsigned offset=cursorX+cursorY*maxX;
-    uchar *theChar=(uchar *)(screenBuffer+offset);
-    int attr=theChar[attrPos];
+    int attr;
+    if (drawingMode==codepage)
+      {
+       uchar *theChar=(uchar *)(screenBuffer+offset);
+       attr=theChar[attrPos];
+       memcpy(cursorData,useSecondaryFont && (attr & 8) ?
+              ximgSecFont[theChar[charPos]]->data :
+              ximgFont[theChar[charPos]]->data,fontSz);
+      }
+    else
+      {
+       uint16 *buf=screenBuffer+offset*2;
+       attr=buf[attrPos];
+       uint16 code=u2c->isearch(buf[charPos]);
+       if (code==0xFFFF)
+          code=0;
+       else
+          code-=firstGlyph;
+       memcpy(cursorData,glyphs+code*fontSz,fontSz);
+      }
     int bg=attr>>4;
     int fg=attr & 0xF;
     XSetBackground(disp,cursorGC,colorMap[bg]);
     XSetForeground(disp,cursorGC,colorMap[fg]);
-    memcpy(cursorData,useSecondaryFont && (attr & 8) ?
-           ximgSecFont[theChar[charPos]]->data :
-           ximgFont[theChar[charPos]]->data,fontH*fontWb);
 
     //fprintf(stderr,"DrawCursor: cursorInScreen=%d from/to %d/%d\n",cursorInScreen,cShapeFrom,cShapeTo);
     /* If the cursor is on draw it over the character */
@@ -1372,7 +1542,7 @@ void TScreenX11::ProcessGenericEvents()
    }
 }
 
-void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned color)
+void TScreenX11::writeLineCP(int x, int y, int w, void *s, unsigned color)
 {
  if (w<=0)
     return; // Nothing to do
@@ -1383,6 +1553,7 @@ void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned col
  x*=fontW; y*=fontH;
  UnDrawCursor();
  XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
+ uchar *str=(uchar *)s;
  while (w--)
    {
     XPutImage(disp,mainWin,gc,f[*str],0,0,x,y,fontW,fontH);
@@ -1391,7 +1562,7 @@ void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned col
    }
 }
 
-void TScreenX11::redrawBuf(int x, int y, unsigned w, unsigned off)
+void TScreenX11::redrawBufCP(int x, int y, unsigned w, unsigned off)
 {
  int len   = 0;         /* longitud a escribir */
  int letra = 0;
@@ -1415,7 +1586,7 @@ void TScreenX11::redrawBuf(int x, int y, unsigned w, unsigned off)
       {
        if (last>=0)
          {
-          writeLine(x,y,len,(uchar *)tmp,last);  // Print last same color block
+          writeLine(x,y,len,tmp,last);  // Print last same color block
           dst=(uchar *)tmp; x+=len; len=0;
          }
        last=color;
@@ -1423,7 +1594,68 @@ void TScreenX11::redrawBuf(int x, int y, unsigned w, unsigned off)
     *dst++=letra; b+=2; len++;
    }
   
- writeLine(x,y,len,(uchar *)tmp,color);          // Print last block
+ writeLine(x,y,len,tmp,color);          // Print last block
+}
+
+void TScreenX11::writeLineU16(int x, int y, int w, void *s, unsigned color)
+{
+ if (w<=0)
+    return; // Nothing to do
+
+ XSetBackground(disp,gc,colorMap[color>>4]);
+ XSetForeground(disp,gc,colorMap[color&15]);
+
+ x*=fontW; y*=fontH;
+ UnDrawCursor();
+ uint16 *str=(uint16 *)s;
+ while (w--)
+   {
+    uint16 code=u2c->isearch(*str);
+    if (code==0xFFFF)
+       code=0;
+    else
+       code-=firstGlyph;
+    if (!unicodeGlyphs[code])
+      {
+       char *data=(char *)malloc(fontSz);
+       memcpy(data,glyphs+code*fontSz,fontSz);
+       unicodeGlyphs[code]=XCreateImage(disp,visual,1,XYBitmap,0,data,fontW,fontH,8,0);
+       unicodeGlyphs[code]->byte_order=unicodeGlyphs[code]->bitmap_bit_order=MSBFirst;
+      }
+    XPutImage(disp,mainWin,gc,unicodeGlyphs[code],0,0,x,y,fontW,fontH);
+    str++;
+    x+=fontW;
+   }
+}
+
+void TScreenX11::redrawBufU16(int x, int y, unsigned w, unsigned off)
+{
+ int len   = 0;         /* longitud a escribir */
+ int letra = 0;
+ int color = 0;
+ int last  = -1;
+ AllocLocalUShort(tmp,w*2);
+ uint16 *dst=tmp;
+ uint16 *b=screenBuffer+off*2;
+
+ while (w--)
+   {
+    letra=b[charPos];
+    color=b[attrPos];
+    
+    if (color!=last)
+      {
+       if (last>=0)
+         {
+          writeLine(x,y,len,tmp,last);
+          dst=tmp; x+=len; len=0;
+         }
+       last=color;
+      }
+    *dst++=letra; b+=2; len++;
+   }
+  
+ writeLine(x,y,len,tmp,color);
 }
 
 TScreen *TV_XDriverCheck()
@@ -1722,6 +1954,7 @@ void TScreenX11::DoResize(unsigned w, unsigned h)
     fontW=w;
     fontWb=(w+7)/8;
     fontH=h;
+    fontSz=fontWb*h;
     AdjustCursorImage();
     /* Change the cursor shape */
     SetCursorShape(start,end);
