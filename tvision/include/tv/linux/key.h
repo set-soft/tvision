@@ -27,6 +27,7 @@ public:
  static void     Init();
 
  friend class TScreenLinux;
+ friend class TDisplayLinux;
 
 protected:
  // Specific for this driver

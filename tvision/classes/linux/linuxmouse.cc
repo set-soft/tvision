@@ -51,7 +51,10 @@ int SetUpGPMConnection()
 void THWMouseGPM::Resume()
 {
  if (gpm_fd!=-1)
+   {
+    buttonCount=3;
     return;
+   }
  if (SetUpGPMConnection()<0)
     LOG("no gpm, running without mouse");
  else
@@ -67,6 +70,7 @@ void THWMouseGPM::Suspend()
  if (gpm_fd==-1)
     return;
  Gpm_Close();
+ gpm_fd=-1;
  LOG("gpm connection closed");
 }
 
@@ -108,7 +112,7 @@ void THWMouseGPM::Init()
 {
  THWMouseUNIX::Init();
  THWMouse::Resume=Resume;
- THWMouse::Suspend=Resume;
+ THWMouse::Suspend=Suspend;
  THWMouse::GetEvent=GetEvent;
 }
 

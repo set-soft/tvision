@@ -542,7 +542,7 @@ void TScreenLinux::SaveScreen()
        sel.xe=width;
        sel.ye=height;       // The whole screen
        sel.sel_mode=0;      // Character by character
-       fflush(stdin);       // Be sure we don't mix stuff
+       fflush(TGKeyLinux::fIn);       // Be sure we don't mix stuff
        if (ioctl(hOut,TIOCLINUX,&sel)!=-1)
          {// Ok, now we get the screen content, but no the colors
           char val[2];
@@ -559,7 +559,7 @@ void TScreenLinux::SaveScreen()
           ushort *end=screenBuffer+userBufferSize;
           do
             {
-             character=fgetc(stdin);
+             character=fgetc(TGKeyLinux::fIn);
              if (character!=-1)
                {
                 if (character==10)

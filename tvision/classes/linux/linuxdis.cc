@@ -23,6 +23,7 @@ colors and restore them.
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_string
+#define Uses_TGKey
 #include <tv.h>
 
 #include <termios.h>
@@ -33,6 +34,7 @@ colors and restore them.
 #include <signal.h>
 
 #include <tv/linux/screen.h>
+#include <tv/linux/key.h>
 #include <tv/linux/log.h>
 
 int                   TDisplayLinux::curX=0;
@@ -131,7 +133,7 @@ void TDisplayLinux::GetCursorPos(unsigned &x, unsigned &y)
  char s[40];
 
  fputs("\E[6n",stdout);
- fgets(s,sizeof(s)-1,stdin); // Response is \E[y;xR
+ fgets(s,sizeof(s)-1,TGKeyLinux::fIn); // Response is \E[y;xR
  
  y=atoi(s+2)-1;
  x=atoi(strchr(s,';')+1)-1;
