@@ -257,6 +257,8 @@ colors.
 * AppCP, ScrCP and InpCP. The point 3 explains the first two. The InpCP is to
 force the encoding of the keyboard and isn't usually needed.
 * UseSecondaryFont explained in 4.
+* LoadSecondaryFont: Request a secondary font to the application (must
+provide a call back).
 * UseVCS. This is one by default and can be used to disable the use of
 /dev/vcsa* devices.
 * UseMDA. This is one by default and can be used to disable the use of the

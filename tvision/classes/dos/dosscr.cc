@@ -18,6 +18,7 @@
   AppCP
   ScrCP
   InpCP
+  LoadSecondaryFont
   ExtProgVideoMode
   VideoMode
   VGABIOSState      0 use registers, 1 use BIOS (default)
@@ -179,6 +180,12 @@ TScreenDOS::TScreenDOS()
    {// Give a chance to the call back.
     primaryFontSet=1;
     appFonts[0].h=0;
+    long aux=0;
+    if (optSearch("LoadSecondaryFont",sec) && sec)
+      {
+       secondaryFontSet=1;
+       appFonts[1].h=0;
+      }
    }
  char *ext=optSearch("ExtProgVideoMode");
  if (optSearch("VideoMode",aux))

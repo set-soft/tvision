@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.367  2002/12/03 12:29:34  set
+* Added: TListView now does PageUp/Down with the mouse wheel.
+* Added: Text selected in TInputLines is copied to the selection clipboard.
+
 Revision 2.366  2002/12/03 12:28:29  set
 * Modified: The GetKbdMapping behavior. Now it must be called for each
 setting individually and can be redefined by each driver.

@@ -115,15 +115,18 @@ drivers. All the TScreen things are supported:
 
 * The standard configuration options are supported:
 
-ScreenWidth     Columns of the window.
-ScreenHeight    Rows of the window.
-ScreenPalette   Color palette, that's a string containing the 16 RGB values.
-                "0,0,0,0,0,168,..."
-FontWidth       Width of the font in pixels.
-FontHeight      Height of the font in pixels.
-AppCP           Application encoding.
-ScrCP           Screen encoding, this should be 885901.
-InpCP           Input encoding.
+ScreenWidth       Columns of the window.
+ScreenHeight      Rows of the window.
+ScreenPalette     Color palette, that's a string containing the 16 RGB
+                  values.
+                  "0,0,0,0,0,168,..."
+FontWidth         Width of the font in pixels.
+FontHeight        Height of the font in pixels.
+LoadSecondaryFont Request a secondary font to the application (must provide a
+                  call back).
+AppCP             Application encoding.
+ScrCP             Screen encoding, this should be 885901.
+InpCP             Input encoding.
 
   Plus the following options:
 
