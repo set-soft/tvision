@@ -60,7 +60,7 @@ endif
 debianbackup.tar:
 	dh_testdir
 # Backup upstream provided regenerated files:
-	tar -cf debianbackup.tar --files-from=debian/files_to_backup
+	-tar -cf debianbackup.tar --files-from=debian/files_to_backup
 
 
 # Copy needed files to the temporary directories for the packages:
