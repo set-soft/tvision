@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.411  2003/04/08 15:19:43  set
+* Added: A dummy include/tv/parttree.h file to avoid dependencie problems.
+
 Revision 2.410  2003/04/08 14:05:45  set
 * Added: Support for the new i18n features to TStaticText it affects
 TLabel and TParamText(partially).

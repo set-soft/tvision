@@ -118,14 +118,14 @@ void TAppWindow::setStatusLine(TStatusLine * aStatusLine)
 
 int lmessageBox(const char * msg, TGroup * aOwner)
 {
-   TDialog * d = new TDialog( TRect(0, 0, 40, 9), _("Confirm") );
+   TDialog * d = new TDialog( TRect(0, 0, 40, 9), __("Confirm") );
    d->insert( new TStaticText( TRect(3, 2, d->size.x - 2, d->size.y - 3), msg) );
    d->options |= ofCentered;
    TRect r = TRect(0, 0, 10, 2);
    r.move((d->size.x / 2) - 11, d->size.y - 3);
-   d->insert( new TButton( r, _("~Y~es"), cmYes, 0) );
+   d->insert( new TButton( r, __("~Y~es"), cmYes, 0) );
    r.a.x += 11; r.b.x+= 11;
-   d->insert( new TButton( r, _("~C~ancel"), cmCancel, 0) );
+   d->insert( new TButton( r, __("~C~ancel"), cmCancel, 0) );
    d->selectNext(false);
    int rst = aOwner->execView(d);
    TObject::destroy( d );

@@ -40,7 +40,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv.h>
 
 TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
-    TDialog( TRect( 0, 0, 61, 18 ), _("Colors") )
+    TDialog( TRect( 0, 0, 61, 18 ), __("Colors") )
     , TWindowInit( &TColorDialog::initFrame )
 {
     const char *tmp;
@@ -96,11 +96,11 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
         display->setColor( (uchar *)&pal->data[ aGroups->items->index ] );
 
     insert( new TButton( TRect( 24 - 10*ib, 15, 34 - 10*ib, 17 ),
-                         _("~T~ry"), cmTryColors, bfNormal ) );
+                         __("~T~ry"), cmTryColors, bfNormal ) );
     insert( new TButton( TRect( 36 - 10*ib, 15, 46 - 10*ib, 17 ),
-                         _("~O~K"), cmOK, bfDefault ) );
+                         __("~O~K"), cmOK, bfDefault ) );
     insert( new TButton( TRect( 48 - 10*ib, 15, 58 - 10*ib, 17 ),
-                         _("Cancel"),
+                         __("Cancel"),
                          cmCancel,
                          bfNormal ) );
     selectNext( False );

@@ -2,7 +2,7 @@
 
   Copyright (c) 1999 by Andreas F. Gorup von Besanez <besanez@compuserve.de>
   Copyright (c) 2002 by Jan Van Buggenhout <Chipzz@ULYSSIS.Org>
-  Copyright (c) 2002 by Salvador E. Tropea <set@ieee.org>
+  Copyright (c) 2002-2003 by Salvador E. Tropea <set@ieee.org>
 
   Covered by the GPL license.
 
@@ -114,7 +114,7 @@ class TSearchDialog : public TDialog
     r.a.x--;
     r.a.y = r.b.y + 1;
     r.b.y += 3;
-    insert(new TButton(r, "~V~iew", cmOK, bfDefault));
+    insert(new TButton(r, __("~V~iew"), cmOK, bfDefault));
     setCurrent(resultList, normalSelect);
   };
 };

@@ -1,6 +1,7 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
 /* Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
    Andris Pavenis. */
+/* Modified for i18n support by Salvador Eduardo Tropea. */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -23,7 +24,6 @@
 #define Uses_THistory
 #define Uses_TRect
 #define Uses_TCheckBoxes
-#define Uses_TButton
 #define Uses_TButton
 #define Uses_MsgBox
 #define Uses_TSItem
@@ -51,7 +51,7 @@ ushort execDialog( TDialog *d, void *data )
 
 TDialog *createFindDialog()
 {
-    TDialog *d = new TDialog( TRect( 0, 0, 38, 12 ), _("Find") );
+    TDialog *d = new TDialog( TRect( 0, 0, 38, 12 ), __("Find") );
 
     d->options |= ofCentered;
 
@@ -63,13 +63,13 @@ TDialog *createFindDialog()
         new THistory( TRect( 32, 3, 35, 4 ), control, 10 ) );
 
     d->insert( new TCheckBoxes( TRect( 3, 5, 35, 7 ),
-        new TSItem( _("~C~ase sensitive"),
-        new TSItem( _("~W~hole words only"), 0 ))));
+        new TSItem( __("~C~ase sensitive"),
+        new TSItem( __("~W~hole words only"), 0 ))));
 
     d->insert(
-        new TButton( TRect( 14, 9, 24, 11 ), _("O~K~"), cmOK, bfDefault ) );
+        new TButton( TRect( 14, 9, 24, 11 ), __("O~K~"), cmOK, bfDefault ) );
     d->insert(
-        new TButton( TRect( 26, 9, 36, 11 ), _("Cancel"), cmCancel, bfNormal ) );
+        new TButton( TRect( 26, 9, 36, 11 ), __("Cancel"), cmCancel, bfNormal ) );
 
     d->selectNext( False );
     return d;
@@ -77,7 +77,7 @@ TDialog *createFindDialog()
 
 TDialog *createReplaceDialog()
 {
-    TDialog *d = new TDialog( TRect( 0, 0, 40, 16 ), _("Replace") );
+    TDialog *d = new TDialog( TRect( 0, 0, 40, 16 ), __("Replace") );
 
     d->options |= ofCentered;
 
@@ -93,15 +93,15 @@ TDialog *createReplaceDialog()
     d->insert( new THistory( TRect( 34, 6, 37, 7 ), control, 11 ) );
 
     d->insert( new TCheckBoxes( TRect( 3, 8, 37, 12 ),
-        new TSItem(_("~C~ase sensitive"),
-        new TSItem(_("~W~hole words only"),
-        new TSItem(_("~P~rompt on replace"),
-        new TSItem(_("~R~eplace all"), 0 ))))));
+        new TSItem(__("~C~ase sensitive"),
+        new TSItem(__("~W~hole words only"),
+        new TSItem(__("~P~rompt on replace"),
+        new TSItem(__("~R~eplace all"), 0 ))))));
 
     d->insert(
-        new TButton( TRect( 17, 13, 27, 15 ), _("O~K~"), cmOK, bfDefault ) );
+        new TButton( TRect( 17, 13, 27, 15 ), __("O~K~"), cmOK, bfDefault ) );
     d->insert( new TButton( TRect( 28, 13, 38, 15 ),
-                            _("Cancel"), cmCancel, bfNormal ) );
+                            __("Cancel"), cmCancel, bfNormal ) );
 
     d->selectNext( False );
 

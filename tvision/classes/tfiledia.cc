@@ -91,18 +91,18 @@ TFileDialog::TFileDialog( const char *aWildCard,
     TButton *bt;
     #define AddButton(flag,name,command)\
     if (aOptions & flag) {\
-        bt=new TButton(r,_(name),command,opt); \
+        bt=new TButton(r,name,command,opt); \
         bt->growMode=gfGrowLoX | gfGrowHiX; \
         insert(bt); opt=bfNormal; r.a.y+=2; r.b.y+=2; }
 
-    AddButton(fdOpenButton,"~O~pen",cmFileOpen)
-    AddButton(fdOKButton,"~O~K",cmFileOpen)
-    AddButton(fdAddButton,"~A~dd",cmFileOpen)
-    AddButton(fdSelectButton,"~S~elect",cmFileSelect)
-    AddButton(fdReplaceButton,"~R~eplace",cmFileReplace)
-    AddButton(fdClearButton,"~C~lear",cmFileClear)
+    AddButton(fdOpenButton,__("~O~pen"),cmFileOpen)
+    AddButton(fdOKButton,__("~O~K"),cmFileOpen)
+    AddButton(fdAddButton,__("~A~dd"),cmFileOpen)
+    AddButton(fdSelectButton,__("~S~elect"),cmFileSelect)
+    AddButton(fdReplaceButton,__("~R~eplace"),cmFileReplace)
+    AddButton(fdClearButton,__("~C~lear"),cmFileClear)
 
-    bt=new TButton(r,aOptions & fdDoneButton ? _("Done") : _("Cancel"),
+    bt=new TButton(r,aOptions & fdDoneButton ? __("Done") : __("Cancel"),
                    cmCancel,bfNormal);
     bt->growMode=gfGrowLoX | gfGrowHiX;
     insert(bt);
@@ -111,7 +111,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
 
     if( (aOptions & fdHelpButton) != 0 )
         {
-        bt=new TButton(r,_("~H~elp"),cmHelp,bfNormal);
+        bt=new TButton(r,__("~H~elp"),cmHelp,bfNormal);
         bt->growMode=gfGrowLoX | gfGrowHiX;
         insert(bt);
         r.a.y += 2;

@@ -37,7 +37,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #include <tv.h>
 
 TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
-    TDialog( TRect( 16, 2, 64, 20 ), _("Change Directory") )
+    TDialog( TRect( 16, 2, 64, 20 ), __("Change Directory") )
     , TWindowInit( &TChDirDialog::initFrame )
 {
     const char *tmp;
@@ -56,13 +56,13 @@ TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     tmp = _("Directory ~t~ree");
     insert( new TLabel( TRect( 2, 5, 3+cstrlen(tmp), 6 ), tmp, dirList ) );
 
-    okButton = new TButton( TRect( 35, 6, 45, 8 ), _("~O~K"), cmOK, bfDefault );
+    okButton = new TButton( TRect( 35, 6, 45, 8 ), __("~O~K"), cmOK, bfDefault );
     insert( okButton );
-    chDirButton = new TButton( TRect( 35, 9, 45, 11 ), _("~C~hdir"), cmChangeDir, bfNormal );
+    chDirButton = new TButton( TRect( 35, 9, 45, 11 ), __("~C~hdir"), cmChangeDir, bfNormal );
     insert( chDirButton );
-    insert( new TButton( TRect( 35, 12, 45, 14 ), _("~R~evert"), cmRevert, bfNormal ) );
+    insert( new TButton( TRect( 35, 12, 45, 14 ), __("~R~evert"), cmRevert, bfNormal ) );
     if( (opts & cdHelpButton) != 0 )
-        insert( new TButton( TRect( 35, 15, 45, 17 ), _("Help"), cmHelp, bfNormal ) );
+        insert( new TButton( TRect( 35, 15, 45, 17 ), __("Help"), cmHelp, bfNormal ) );
     if( (opts & cdNoLoadDir) == 0 )
         setUpDialog();
     selectNext( False );

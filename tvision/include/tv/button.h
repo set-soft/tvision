@@ -8,6 +8,7 @@
 Modified by Robert H”hne to be used for RHIDE.
 Added callback, code page stuff and various details by Salvador Eduardo Tropea.
 Added new class TButtonRef by Salvador Eduardo Tropea.
+Added i18n support by Salvador Eduardo Tropea.
 
  *
  *
@@ -58,8 +59,10 @@ public:
     virtual void press();
     virtual void setState( ushort aState, Boolean enable );
     void setCallBack(TButtonCallBack cb) { callBack=cb; };
+    const char *getText() { return TVIntl::getText(title,intlTitle); };
 
     const char *title;
+    stTVIntl   *intlTitle;
     static char shadows[];
     static char markers[];
     static char oshadows[];

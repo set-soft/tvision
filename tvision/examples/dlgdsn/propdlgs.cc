@@ -215,9 +215,9 @@ TDialog * SelDialog(const char * Title, TView * c)
   c->options |= ofFramed;
   d->insert(c);
   d->insert( new TButton( TRect(1, d->size.y - 3, 12, d->size.y - 1),
-            _("~O~k"), cmOK, bfDefault ) );
+            __("~O~k"), cmOK, bfDefault ) );
   d->insert( new TButton( TRect(12, d->size.y - 3, 23, d->size.y - 1),
-            _("~C~ancel"), cmCancel, 0 ) );
+            __("~C~ancel"), cmCancel, 0 ) );
   d->selectNext(False);
   return d;
 }
@@ -416,7 +416,7 @@ const ushort
   cmCClear = 203;
 
 TItemsEditor::TItemsEditor():
-            TDialog( TRect(0, 0, 45, 16) , _("Items") ),
+            TDialog( TRect(0, 0, 45, 16) , __("Items") ),
             TWindowInit(&TItemsEditor::initFrame)
 {
    TScrollBar * sb;
@@ -428,12 +428,12 @@ TItemsEditor::TItemsEditor():
    insert(sb);
    insert(new TLabel( TRect(1, 1, 15, 2), _("~I~tems list:"), List ) );
    insert(List);
-   insert( new TButton(TRect(31, 2, 43, 4), _("~O~k"), cmOK, 0 ) );
-   insert( new TButton(TRect(31, 4, 43, 6), _("~C~ancel"), cmCancel, 0 ) );
-   insert( new TButton(TRect(31, 6, 43, 8), _("~E~dit"), cmEdit, bfBroadcast ) );
-   insert( new TButton(TRect(31, 8, 43, 10), _("~A~dd"), cmAdd,  bfBroadcast ) );
-   insert( new TButton(TRect(31, 10, 43, 12), _("C~l~ear"), cmCClear, bfBroadcast ) );
-   insert( new TButton(TRect(31, 12, 43, 14), _("~D~elete"), cmDel, bfBroadcast ) );
+   insert( new TButton(TRect(31, 2, 43, 4), __("~O~k"), cmOK, 0 ) );
+   insert( new TButton(TRect(31, 4, 43, 6), __("~C~ancel"), cmCancel, 0 ) );
+   insert( new TButton(TRect(31, 6, 43, 8), __("~E~dit"), cmEdit, bfBroadcast ) );
+   insert( new TButton(TRect(31, 8, 43, 10), __("~A~dd"), cmAdd,  bfBroadcast ) );
+   insert( new TButton(TRect(31, 10, 43, 12), __("C~l~ear"), cmCClear, bfBroadcast ) );
+   insert( new TButton(TRect(31, 12, 43, 14), __("~D~elete"), cmDel, bfBroadcast ) );
    cList = 0;
    selectNext(False);
 }
@@ -530,14 +530,14 @@ TDialog * ItemsEditor()
 
 TDialog * CharPtrEditor()
 {
-   TDialog * d = new TDialog( TRect(0, 0, 40, 20), _("Text editor") );
+   TDialog * d = new TDialog( TRect(0, 0, 40, 20), __("Text editor") );
    TScrollBar * VS = new TScrollBar( TRect(38, 1, 39, 15) );
    TScrollBar * HS = new TScrollBar( TRect(1, 15, 38, 16) );
    d->insert( new TMemo( TRect(1, 1, 39, 15), VS, HS, 0, 1024 ) );
    d->insert(VS);
    d->insert(HS);
-   d->insert( new TButton ( TRect(17, 17, 27, 19), _("~O~k"), cmOK, bfDefault ) );
-   d->insert( new TButton ( TRect(28, 17, 38, 19), _("~C~ancel"), cmCancel, 0 ) );
+   d->insert( new TButton ( TRect(17, 17, 27, 19), __("~O~k"), cmOK, bfDefault ) );
+   d->insert( new TButton ( TRect(28, 17, 38, 19), __("~C~ancel"), cmCancel, 0 ) );
    d->selectNext(False);
    d->options |= ofCentered;
    return d;

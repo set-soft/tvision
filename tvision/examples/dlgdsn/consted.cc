@@ -71,7 +71,7 @@ typedef struct TConstData
 
 TDialog * ConstInputDlg(TValidator * aValid)
 {
-   TDialog * d = new TDialog( TRect(0, 0, 50, 8), _("Values editor") );
+   TDialog * d = new TDialog( TRect(0, 0, 50, 8), __("Values editor") );
    TInputLine * ip_id = new TInputLine(TRect (10, 2, 48, 3), 50);
    TInputLine * ip_vl = new TInputLine(TRect (10, 3, 17, 4), 5);
    if (aValid) ip_vl->SetValidator(aValid);
@@ -79,8 +79,8 @@ TDialog * ConstInputDlg(TValidator * aValid)
    d->insert(ip_id);
    d->insert(new TLabel( TRect(1, 3, 10, 4), _("~V~alue:"), ip_id ) );
    d->insert(ip_vl);
-   d->insert(new TButton( TRect(28, 5, 38, 7), _("~O~k"), cmOK, bfDefault) );
-   d->insert(new TButton( TRect(38, 5, 48, 7), _("~C~ancel"), cmCancel, 0) );
+   d->insert(new TButton( TRect(28, 5, 38, 7), __("~O~k"), cmOK, bfDefault) );
+   d->insert(new TButton( TRect(38, 5, 48, 7), __("~C~ancel"), cmCancel, 0) );
    d->options |= ofCentered;
    d->selectNext(False);
    return d;
@@ -224,7 +224,7 @@ void TConstCollection::sort(int mode)
 
 
 TConstEdit::TConstEdit():
-            TDialog( TRect(0, 0, 45, 16) , _("Constants") ),
+            TDialog( TRect(0, 0, 45, 16) , __("Constants") ),
             TWindowInit(&TConstEdit::initFrame)
 {
    TScrollBar * sb;
@@ -235,10 +235,10 @@ TConstEdit::TConstEdit():
    List = new TIntConstListBox(TRect(2, 2, 30, 13), 1, sb);
    LVal = new TParamText( TRect(33, 12, 43, 14) );
    LVal->options |= ofFramed;
-   EditBtn = new TButton(TRect(31, 2, 43, 4), _("~E~dit"), cmEdit, bfBroadcast );
-   AddBtn = new TButton(TRect(31, 4, 43, 6), _("~A~dd"), cmAdd,  bfBroadcast );
-   ClearBtn = new TButton(TRect(31, 6, 43, 8), _("C~l~ear"), cmCClear, bfBroadcast );
-   DelBtn = new TButton(TRect(31, 8, 43, 10), _("~D~elete"), cmDel, bfBroadcast );
+   EditBtn = new TButton(TRect(31, 2, 43, 4), __("~E~dit"), cmEdit, bfBroadcast );
+   AddBtn = new TButton(TRect(31, 4, 43, 6), __("~A~dd"), cmAdd,  bfBroadcast );
+   ClearBtn = new TButton(TRect(31, 6, 43, 8), __("C~l~ear"), cmCClear, bfBroadcast );
+   DelBtn = new TButton(TRect(31, 8, 43, 10), __("~D~elete"), cmDel, bfBroadcast );
    SortRB = new TRadioButtons(TRect(2, 14, 31, 15), new TSItem(__("None"),
                                                  new TSItem(__("Id"),
                                                  new TSItem(__("Value"), 0))));
