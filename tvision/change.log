@@ -1,4 +1,8 @@
 $Log$
+Revision 1.39  1999/05/02 13:51:09  set
+* Avoided the distribution of the Debian files in the DOS release because
+these files aren't 8+3 clean and will confuse users.
+.
 Revision 1.38  1999/04/28 22:57:09  set
 * Enclosed all the monochrome code that makes I/O access to the MDA registers
 and maps the video memory under Linux with #ifdef __i386__ because looks like

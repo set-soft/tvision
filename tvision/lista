@@ -169,6 +169,13 @@ examples/demo/tvdemo.h
 examples/demo/tvdemo1.cc
 examples/demo/tvdemo2.cc
 examples/demo/tvdemo3.cc
+examples/desklogo/desklogo.cc
+examples/desklogo/desklogo.gpr
+examples/desklogo/rhide.env
+examples/desklogo/set-logo.cc
+examples/desklogo/set-logo.gpr
+examples/desklogo/tv_logo.cc
+examples/desklogo/tv_logo.gpr
 examples/dyntxt/dyntext.cpp
 -examples/dyntxt/dyntext.gpr
 examples/dyntxt/dyntext.h
