@@ -1,7 +1,11 @@
-$Log$.
+$Log$
+Revision 2.435  2003/05/07 19:37:55  set
+* Added: [Linux] Now the Ctrl+Tab is mapped to Tab so TV applications can
+use it.
+
 Revision 2.434  2003/05/05 13:28:59  set
 * Added: A warning to configset as I did for DOS' batch.
-.
+
 Revision 2.433  2003/05/05 13:26:35  set
 * Added: A warning to configset.bat because people thinks thats "set
 configuration" and not "configuration for SET" ;-)

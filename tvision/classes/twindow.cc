@@ -151,10 +151,14 @@ void TWindow::handleEvent( TEvent& event )
             switch (event.keyDown.keyCode)
                 {
                 case  kbTab:
+                case  kbDown:
+                case  kbRight:
                     selectNext(False);
                     clearEvent(event);
                     break;
                 case  kbShiftTab:
+                case  kbUp:
+                case  kbLeft:
                     selectNext(True);
                     clearEvent(event);
                     break;

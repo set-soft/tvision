@@ -41,6 +41,9 @@ TGroup::~TGroup()
 
 void TGroup::shutDown()
 {
+    // Avoid problems if a hidden or unselectable TView was forced to be
+    // selected. Marek Bojarski <bojarski@if.uj.edu.pl>
+    resetCurrent();
     TView* p = last;
     if( p != 0 )
         do  {
@@ -467,14 +470,22 @@ void TGroup::setCurrent( TView* p, selectMode mode )
         {
         lock();
         focusView( current, False );
+        // Test if focus lost was allowed and focus has really been loose
+        if ( (mode == normalSelect) &&
+             current &&
+             (current->state & sfFocused)
+           )
+           {
+            unlock(); 
+            return; 
+           }
         if( mode != enterSelect )
             if( current != 0 )
                 current->setState( sfSelected, False );
         if( mode != leaveSelect )
             if( p != 0 )
                 p->setState( sfSelected, True );
-        if( (state & sfFocused) != 0 && p != 0 )
-            p->setState( sfFocused, True );
+        focusView( p, True );
         current = p;
         unlock();
         }

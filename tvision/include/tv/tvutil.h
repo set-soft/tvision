@@ -32,12 +32,27 @@ Modified by Salvador E. Tropea to avoid macros collisions and make easier to use
 #undef max
 #endif
 
-inline int min( int a, int b )
+inline int min( const int &a, const int &b )
 {
     return (a>b) ? b : a;
 }
 
-inline int max( int a, int b )
+inline int max( const int &a, const int &b )
+{
+    return (a<b) ? b : a;
+}
+
+// The following min/max works for any kind of data type
+// Published by Vincent Van Den Berghe in the Windows/DOS developer's journal April 93
+// But they don't replace the above functions for cases like:
+//   max(int,unsigned int)
+//
+template <class T> inline T min( const T &a, const T &b )
+{
+    return (a>b) ? b : a;
+}
+
+template <class T> inline T max( const T &a, const T &b )
 {
     return (a<b) ? b : a;
 }

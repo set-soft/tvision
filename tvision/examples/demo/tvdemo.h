@@ -54,6 +54,7 @@ private:
     void retrieveDesktop();           //  previously saved desktop
     void storeDesktop(fpstream& s);   // Store the current desktop
     void saveDesktop();               //  in a resource file
+    void testInputBox();              // SET: Just a test to show inputBox use
 
     // In original demo that's a CP 437 specific code. I left it but I use
     // it to show how to solve this using the new code page features of
