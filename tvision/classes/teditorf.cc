@@ -99,7 +99,8 @@ void TEditor::formatLine( void *DrawBuf, uint32 LinePtr, int Width,
   count = bufSize;
   CALL;
   count = Width-offset;
-  if (count<=offset) return;
+  //if (count<=offset) return;
+  if (count<1) return;
   while (count--) ((ushort *)(DrawBuf))[bufptr++] = endianCol(' ', color);
 }
 
