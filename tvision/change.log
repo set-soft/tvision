@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.544  2004/06/11 21:27:05  set
+- From valgrind:
+* Fixed: Leaks in  TVFontCollection::CreateListOfFonts and
+TVConfigFile::FreeList.
+* Added: Clean-up to TVCodePage.
+
 Revision 2.543  2004/06/03 18:47:07  set
 * Added: [config] HP-UX detection. Contributed by Dmitry V. Zavyalov
 (dzavyalov/artezio/ru).

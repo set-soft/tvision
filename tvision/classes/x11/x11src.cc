@@ -2150,6 +2150,7 @@ int     TVX11UpdateThread::initialized=0;
 const int refreshTime=10000; // 10 ms
 static sig_atomic_t mutex;
 static int updates=0;
+static int safeToUnHook;
 
 void TVX11UpdateThread::UpdateThread(int signum)
 {
@@ -2171,6 +2172,8 @@ void TVX11UpdateThread::UpdateThread(int signum)
    {// We still running, set the timer again
     microAlarm(refreshTime);
    }
+ else
+    safeToUnHook=1;
 }
 
 void TVX11UpdateThread::StartUpdateThread()
@@ -2183,6 +2186,7 @@ void TVX11UpdateThread::StartUpdateThread()
     mutex=0;
     initialized=1;
     running=1;
+    safeToUnHook=0;
     // Trap the alarm signal
     struct sigaction s;
     s.sa_handler=UpdateThread;
@@ -2234,6 +2238,7 @@ void TVX11UpdateThread::StopUpdateThread()
     if (DBG_ALM_STATE)
        printf("Stopping update thread for PID=%d\n",getpid());
     running=0;
+    while (!safeToUnHook);
     // Un-Trap the alarm signal
     struct sigaction s;
     s.sa_handler=SIG_IGN;
