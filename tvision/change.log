@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.196  2004/09/29 20:47:43  set
+* Updated: [WWW] adding the RC1
+--------- CVS tag r_2_0_3rc1 and r_2_0_3rc1_nu
+
 Revision 2.399.2.195  2004/09/24 18:02:42  set
 * Fixed: [RPMs] The development RPM must contain the rhtv-config tool.
 Reported by ogi, closes SF bug #974062
