@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <HTML>
 <HEAD>
-   <TITLE>Turbo Vision port to the GNU compiler</TITLE>
-   <meta name="description" content="Turbo Vision port to the GNU compiler">
+   <TITLE>Turbo Vision port to the GNU compiler and more</TITLE>
+   <meta name="description" content="Turbo Vision port to the GNU compiler and more">
    <meta name="keywords" content="Turbo Vision, TVision, tvision, rhtvision, turbo, vision, TUI, tui, linux, djgpp, library, download, rhide, setedit, SET">
    <meta name="resource-type" content="document">
    <meta name="distribution" content="global">
@@ -18,7 +18,7 @@
 <tr>
 <td>
  <div class=s4>Turbo Vision</div>
- <div class=s3>port to the GNU compiler</div>
+ <div class=s3>port to the GNU compiler and more</div>
 </td>
 <td align=right>
  <A class=invis href="http://sourceforge.net">
@@ -45,8 +45,8 @@
 <ul>
  <li> <a href="#down">Download</a>.
   <ul>
-   <li> <a href="#ddjgpp">DJGPP (DOS) TVision</a>
-   <li> <a href="#dlinux">Linux TVision</a>
+   <li> <a href="#ddjgpp">DJGPP, BC++ and MinGW</a>
+   <li> <a href="#dlinux">Linux, FreeBSD, Solaris, Cygwin, etc.</a>
    <li> <a href="#snapSF">Last CVS snapshot</a>
   </ul>
 </ul>
@@ -58,14 +58,6 @@
 
 
 <p><hr><p>
-<b class=nuevo>New</b>
-<a href="tv2-QNX-tvscreen.jpg">Screenshot</a> of Turbo Vision running on QNX (+Photon). It was
-taked by Mike Gorchak who is working on the QNX port.<p>
-In the <a href="http://setedit.sourceforge.net">SETEdit</a> site you'll find screenshots of
-a Turbo Vision application running as a native X application. They are from Linux and
-Solaris.<p>
-<p><hr><p>
-
 <a name="intro"></a><h2>Introduction and information</h2><p>
 <a name="wtv"></a><h3>What's Turbo Vision?</h3>
 <p>Turbo Vision (TVision for short) is a TUI (Text User Interface) that
@@ -97,12 +89,15 @@ Win32 platforms. The port isn't 100% compatible with the original version from B
 because we want a library better than the original and not with the limititations
 imposed by the original 16 bits version and the huge security holes that are
 unacceptable.<br>
-The QNX and native X11 support are available in the v2.0 found in the CVS.<br>
-For Win32 you can use BC++ 5.5, Cygwin, MinGW or MSVC. Some of them are only supported by
-the current CVS code.<br>
+For Win32 you can use BC++ 5.5, Cygwin, MinGW or MSVC.<br>
 <a href="mailto:ssigala@globalnet.it">Sergio Sigala</a> made a port to Linux and
 FreeBSD with "100% of compatibility with the old version" as goal. The v0.8
 of this port can be found in <a href="ftp://sunsite.unc.edu/pub/Linux/devel/lang/c++/tvision-0.8.tar.gz">Sunsite</a>.<br>
+<a href="tv2-QNX-tvscreen.jpg">Screenshot</a> of Turbo Vision running on QNX (+Photon). It was
+taked by Mike Gorchak who is working on the QNX port.<br>
+In the <a href="http://setedit.sourceforge.net">SETEdit</a> site you'll find screenshots of
+a Turbo Vision application running as a native X application. They are from Linux and
+Solaris.<br>
 <p>
 
 <a name="wpl"></a><h3>What about copyrights?</h3>
@@ -125,28 +120,29 @@ usually a source of problems. Libraries compiled with one version of the
 compiler fails to link with others, etc. If you think I should provide
 binaries and have a really good reason just tell me.<p>
 
-<a name="ddjgpp"></a><h3>DJGPP (DOS) TVision</h3>
-<p>The 1.1.4 release can be downloaded from here (Attention: if the link
-fails is because I didn't have time to upload yet, please try again later)
-<p>Sources distribution: <a href="http://prdownloads.sourceforge.net/tvision/tv114s.zip">tv114s.zip</a><br>
-or in the Simtelnet servers like: <a href="ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp/v2tk/tv114s.zip">ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp/v2tk/tv114s.zip</a>
+<a name="ddjgpp"></a><h3>DJGPP, BC++ and MinGW TVision</h3>
+<p>The 2.0.0 release can be downloaded from here:
+<p>Sources distribution: <a href="http://prdownloads.sourceforge.net/tvision/tv200s.zip">tv200s.zip</a><br>
+<!-- or in the Simtelnet servers like: <a href="ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp/v2tk/tv114s.zip">ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp/v2tk/tv114s.zip</a> -->
 <p>
 
-<a name="dlinux"></a><h3>Linux TVision</h3>
+<a name="dlinux"></a><h3>Linux, FreeBSD, Solaris, Cygwin, etc. TVision</h3>
 
-<p><b>Important</b>: ncurses and gpm are needed for the Linux port.<p>
-
-The 1.1.4 release can be downloaded from here (Attention: if the link
-fails is because I didn't have time to upload yet, please try again later)
+<p>The 2.0.0 release can be downloaded from here</p>
 <p>
-Sources distribution: 699k <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-1.1.4.src.tar.gz">rhtvision-1.1.4.src.tar.gz</a><br>
+Sources distribution: 1.1 Mb <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-2.0.0.src.tar.gz">rhtvision-2.0.0.src.tar.gz</a><br>
 
 <!-- Linux Software Map entry: <a href="rhtvision.txt">rhtvision.txt</a><br> -->
 <p>
-<b>For RPMs and work-in-progress versions</b> visit the Source Forge summary site:
+<b>For RPMs, DEBs and work-in-progress versions</b> visit the Source Forge summary site:
 <A href="http://sourceforge.net/projects/tvision/">
 http://sourceforge.net/projects/tvision/
 </a>
+
+<p>
+<b>Previous version (1.1.4)</b>: Needed for Setedit 0.4.54 and RHIDE 1.4.9.<br>
+DOS <a href="http://prdownloads.sourceforge.net/tvision/rhtvision-1.1.4.src.tar.gz">sources</a><br>
+Linux <a href="http://prdownloads.sourceforge.net/tvision/tv114s.zip">sources</a><p>
 
 <p>
 <b>Previous version (1.0.10)</b>: Needed for Setedit 0.4.41 and RHIDE 1.4.7.<br>
@@ -173,5 +169,5 @@ Linux <a href="http://prdownloads.sourceforge.net/tvision/tv1010s.zip">sources</
 </div>
 
 <p><hr><p>
-<div class=sm1>Last update: mar may 28 11:23:10 ART 2002</div>
+<div class=sm1>Last update: mon oct 07 16:40:10 ART 2002</div>
 </BODY></HTML>
