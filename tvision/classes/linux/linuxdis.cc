@@ -1,43 +1,93 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
+#include <tv/configtv.h>
+
+#ifdef TVOS_UNIX
+#define Uses_stdio
+#define Uses_stdlib
+#define Uses_unistd
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_string
 #include <tv.h>
 
-static ushort Equipment;
-static uchar CrtInfo;
-static uchar CrtRows;
-
-#include <stdlib.h>
-#include <unistd.h>
+#include <termios.h>
 #include <term.h>
 #include <sys/ioctl.h>
 
-// SET: By now that isn't used but is requested by the inline destructor so
-// I added it here (even when I could made the destructor different for
-// Linux version).
-TFont *TDisplay::font=0;
+#include <tv/linuxscr.h>
 
-ushort * TDisplay::equipment = &Equipment;
-uchar * TDisplay::crtInfo = &CrtInfo;
-uchar * TDisplay::crtRows = &CrtRows;
-uchar TDisplay::Page = 0;
+// SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
+// think it have much sense in non-Intel PCs. In fact looks like it gives
+// some problems when compiling for Alpha (__alpha__).
+//   Also make it only for Linux until I know how to do it for FreeBSD.
 
-void TDisplay::SetPage(uchar)
+#if defined(TVCPU_x86) && defined(TVOSf_Linux)
+ // Needed for ioperm, used only by i386.
+ // I also noted that glibc 2.1.3 for Alpha, SPARC and PPC doesn't have
+ // this header
+ #include <sys/perm.h>
+ #define h386LowLevel
+#endif
+
+#ifdef h386LowLevel
+#include <asm/io.h>
+
+static inline
+unsigned char I(unsigned char i)
 {
+  outb(i,0x3b4);
+  return inb(0x3b5);
 }
 
-inline void safeput(char *&p, char *cap)
+static inline
+void O(unsigned char i,unsigned char b)
 {
-	if (cap != NULL) while (*cap != '\0') *p++ = *cap++;
+  outb(i,0x3b4);
+  outb(b,0x3b5);
+}
+#endif
+
+int TDisplayUNIX::cur_x=0;
+int TDisplayUNIX::cur_y=0;
+// SET: Current cursor shape
+int TDisplayUNIX::cursorStart=85;  //  85 %
+int TDisplayUNIX::cursorEnd  =100; // 100 %
+
+// SET: 1 when the size of the window where the program is running changed
+volatile sig_atomic_t TDisplayUNIX::windowSizeChanged=0;
+
+int TDisplayUNIX::vcsWfd=-1; // virtual console system descriptor
+int TDisplayUNIX::vcsRfd=-1; // SET: Same for reading
+int TDisplayUNIX::tty_fd=-1; // tty descriptor
+
+TDisplayUNIX::~TDisplayUNIX() {}
+
+void TDisplayUNIX::Init()
+{
+ setCursorPos=SetCursorPos;
+ getCursorPos=GetCursorPos;
+ getCursorShape=GetCursorShape;
+ setCursorShape=SetCursorShape;
+ getRows=GetRows;
+ getCols=GetCols;
+ setCrtModeExt=SetCrtModeExt;
+ checkForWindowSize=CheckForWindowSize;
 }
 
-int cur_x = 0, cur_y = 0;
-
-void TDisplay::SetCursor(int x,int y)
+void TDisplayUNIX::SetCursorPos(unsigned x, unsigned y)
 {
-  if (canWriteVCS)
+ #ifdef h386LowLevel
+  if (dual_display /*|| screenMode == 7*/)
+  {
+    unsigned short loc = y*80+x;
+    O(0x0e,loc >> 8);
+    O(0x0f,loc & 0xff);
+    return;
+  }
+ #endif
+
+  if (canWriteVCS())
   {
     unsigned char where[2] = {x, y};
 
@@ -57,13 +107,15 @@ void TDisplay::SetCursor(int x,int y)
   }
 }
 
-void TDisplay::GetCursor(int &x,int &y)
+void TDisplayUNIX::GetCursorPos(unsigned &x, unsigned &y)
 {
-  if (canWriteVCS) /* use vcs */
+  if (dual_display)
+     return;
+  if (canWriteVCS()) /* use vcs */
     {
      // SET: We need special priviledges to read /dev/vcsaN, but not for
      // writing so avoid the need of reads.
-     if (canReadVCS)
+     if (canReadVCS())
        {
         unsigned char where[2];
     
@@ -90,85 +142,88 @@ void TDisplay::GetCursor(int &x,int &y)
   }
 }
 
-ushort TDisplay::getCursorType()
+void TDisplayUNIX::SetCursorShape(unsigned start, unsigned end)
 {
-  return 0;
-}
-
-void TDisplay::setCursorType( ushort ct)
-{
-  char out[1024], *p = out;
-  if (ct == 0x2000) // hide
+ #ifdef h386LowLevel
+  if (dual_display /*|| screenMode == 7*/)
   {
-    safeput(p, tparm(cursor_invisible));
-    write(tty_fd, out, p - out);
+    if (start>=end) // cursor off
+    {
+      O(0x0a,0x01);
+      O(0x0b,0x00);
+    }
+    else
+    {
+      start=start*16/100;
+      end=end*16/100;
+      O(0x0a,start);
+      O(0x0b,end);
+    }
+   return;
   }
-  else
-  {
-    safeput(p, tparm(cursor_normal));
-    write(tty_fd, out, p - out);
-  }
+ #endif
+ char out[1024], *p=out;
+ if (start>=end) // hide
+   {
+    safeput(p,tparm(cursor_invisible));
+    write(tty_fd,out,p-out);
+   }
+ else
+   {
+    safeput(p,tparm(cursor_normal));
+    write(tty_fd,out,p-out);
+   }
+ cursorStart=start;
+ cursorEnd=end;
 }
 
-void TDisplay::clearScreen( uchar , uchar )
+void TDisplayUNIX::GetCursorShape(unsigned &start, unsigned &end)
 {
+ #ifdef h386LowLevel
+ if (dual_display /*|| screenMode == 7*/)
+   {
+    unsigned short ct;
+    ct = (I(0x0a) << 8) | I(0x0b);
+    if (!ct)
+       start=end=0;
+    else
+       { start=80; end=100; }
+    return;
+   }
+ #endif
+ // Currently we don't know the real state.
+ start=cursorStart;
+ end  =cursorEnd;
 }
 
-void TDisplay::videoInt()
+ushort TDisplayUNIX::GetRows()
 {
+ if (dual_display) return 25;
+ winsize win;
+ win.ws_row=0xFFFF;
+ ioctl(tty_fd,TIOCGWINSZ,&win);
+ return win.ws_row!=0xFFFF ? win.ws_row : 25;
 }
 
-ushort TDisplay::getRows()
+ushort TDisplayUNIX::GetCols()
 {
-  winsize win;
-  ioctl(tty_fd,TIOCGWINSZ,&win);
-  return win.ws_row;
+ if (dual_display) return 80;
+ winsize win;
+ win.ws_col=0xFFFF;
+ ioctl(tty_fd,TIOCGWINSZ,&win);
+ return win.ws_col!=0xFFFF ? win.ws_col : 80;
 }
 
-ushort TDisplay::getCols()
-{
-  winsize win;
-  ioctl(tty_fd,TIOCGWINSZ,&win);
-  return win.ws_col;
-}
-
-ushort TDisplay::getCrtMode()
-{
-  return smCO80;
-}
-
-void TDisplay::setCrtMode( ushort )
-{
-}
-
-// I'm not sure about it check it Robert
-void TDisplay::setCrtMode( char *mode )
+void TDisplayUNIX::SetCrtModeExt(char *mode)
 {
  system(mode);
 }
 
-void TDisplay::updateIntlChars()
-{
-}
-
-void TDisplay::SetFontHandler(TFont *)
-{
-}
-
-int TDisplay::CheckForWindowSize(void)
+int TDisplayUNIX::CheckForWindowSize(void)
 {
  int ret=windowSizeChanged!=0;
  windowSizeChanged=0;
  return ret;
 }
-
-char *TDisplay::GetWindowTitle(void)
-{
- return 0;
-}
-
-int TDisplay::SetWindowTitle(const char *)
-{
- return 0;
-}
+#endif // TVOS_UNIX
 
