@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.68  2002/05/15 01:51:44  terrible
+* Modified: Updates to Debian packaging.
+* Fixed: reordered external library linking for dynamic library (I think
+thats the correct order).
+* Fixed: add -lX11 to the linking of the dynamic library if building with
+X11 support (creates needed dependency between the rhtvision library and
+X11 library, and allows compilation of rhtvision programs without needing
+to specify -lX11).
+
 Revision 2.67  2002/05/14 20:52:31  set
 * Added: [X11] get/set window title.
 
