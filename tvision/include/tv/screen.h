@@ -34,7 +34,7 @@ public:
 // Components are 0-255
 typedef struct
 {
- uchar R,G,B;
+ uchar R,G,B,Alpha;
 } TScreenColor;
 
 /**[txh]********************************************************************
@@ -231,6 +231,7 @@ public:
  // Palette handling, they call the TDisplay members
  static void   getPaletteColors(int from, int number, TScreenColor *colors);
  static void   setPaletteColors(int from, int number, TScreenColor *colors);
+ static void   resetPalette(); // Sets the original palette
 
  // SET: flags capabilities flags
  enum Capabilities1

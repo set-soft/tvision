@@ -173,30 +173,6 @@ int TScreenX11::System(const char *command, pid_t *pidChild)
  return 0;
 }
 
-typedef struct
-{
- unsigned char r,g,b;
-} PalCol;
-
-static
-PalCol BIOSPalette[16]={
-{ 0x00, 0x00, 0x00 },
-{ 0x00, 0x00, 0xA8 },
-{ 0x00, 0xA8, 0x00 },
-{ 0x00, 0xA8, 0xA8 },
-{ 0xA8, 0x00, 0x00 },
-{ 0xA8, 0x00, 0xA8 },
-{ 0xA8, 0x54, 0x00 },
-{ 0xA8, 0xA8, 0xA8 },
-{ 0x54, 0x54, 0x54 },
-{ 0x54, 0x54, 0xFC },
-{ 0x54, 0xFC, 0x54 },
-{ 0x54, 0xFC, 0xFC },
-{ 0xFC, 0x54, 0x54 },
-{ 0xFC, 0x54, 0xFC },
-{ 0xFC, 0xFC, 0x54 },
-{ 0xFC, 0xFC, 0xFC }};
-
 static uchar DefaultFont[]=
 {
  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, // 0
@@ -500,6 +476,7 @@ TScreenX11::TScreenX11()
  TScreen::System=System;
  TScreen::setWindowTitle=setWindowTitle;
  TScreen::getWindowTitle=getWindowTitle;
+ TScreen::setDisPaletteColors=SetDisPaletteColors;
 
  TGKeyX11::Init();
  THWMouseX11::Init();
@@ -612,13 +589,14 @@ TScreenX11::TScreenX11()
  XColor query;
  for (col=0; col<16; col++)
     {
-     query.red  =BIOSPalette[col].r*256;
-     query.green=BIOSPalette[col].g*256;
-     query.blue =BIOSPalette[col].b*256;
+     query.red  =PC_BIOSPalette[col].R*256;
+     query.green=PC_BIOSPalette[col].G*256;
+     query.blue =PC_BIOSPalette[col].B*256;
      query.flags= ~0;
      XAllocColor(disp,cMap,&query);
      colorMap[col]=query.pixel;
     }
+ memcpy(ActualPalette,PC_BIOSPalette,sizeof(ActualPalette));
 
  /* A graphics context for the text cursor */
  cursorGC=XCreateGC(disp,mainWin,0,0);
@@ -635,6 +613,12 @@ TScreenX11::TScreenX11()
  XSetBackground(disp,gc,colorMap[0]);
  XSetForeground(disp,gc,colorMap[7]);
  clearScreen();
+
+ // Setup the driver properties.
+ // Our code page isn't fixed.
+ // We can change the palette
+ // A redraw is needed after setting the palette
+ flags0=CanSetPalette | CanReadPalette | CodePageVar | PalNeedsRedraw;
 }
 
 int TScreenX11::setWindowTitle(const char *aName)
@@ -658,6 +642,33 @@ const char *TScreenX11::getWindowTitle(void)
     return s;
    }
  return 0;
+}
+
+void TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
+{
+ XColor query;
+ int i;
+ ulong newMap[16];
+
+ for (i=0; i<number; i++)
+    {
+     query.red  =colors[i].R*256;
+     query.green=colors[i].G*256;
+     query.blue =colors[i].B*256;
+     query.flags= ~0;
+     if (!XAllocColor(disp,cMap,&query))
+        break;
+     newMap[i]=query.pixel;
+    }
+ if (i>0)
+   {// If we allocated at least one color:
+    // Deallocated the old colors
+    XFreeColors(disp,cMap,colorMap+from,i,0);
+    // Copy the new ones
+    memcpy(colorMap+from,newMap,sizeof(ulong)*i);
+    // Reflect it in the current map
+    memcpy(ActualPalette+from,colors,sizeof(TScreenColor)*i);
+   }
 }
 
 /*****************************************************************************

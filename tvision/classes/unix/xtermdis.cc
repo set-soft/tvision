@@ -200,6 +200,8 @@ terminal state.
 // XTerm code
 void TDisplayXTerm::SetDisPaletteColorsXT(int from, int number, TScreenColor *colors)
 {
+ // Assume all will be ok
+ memcpy(ActualPalette+from,colors,number*sizeof(TScreenColor));
  while (number-- && from<16)
    {
     fprintf(stdout,"\E]4;%d;#%2.2X%2.2X%2.2X\xF",cMap[from++],colors->R,colors->G,colors->B);
@@ -217,6 +219,8 @@ void TDisplayXTerm::ResetPaletteColorsXT()
 // Eterm code, Linux console style
 void TDisplayXTerm::SetDisPaletteColorsEt(int from, int number, TScreenColor *colors)
 {
+ // Assume all will be ok
+ memcpy(ActualPalette+from,colors,number*sizeof(TScreenColor));
  while (number-- && from<16)
    {
     fprintf(stdout,"\E]P%1.1X%2.2X%2.2X%2.2X\xF",cMap[from++],colors->R,colors->G,colors->B);
