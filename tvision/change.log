@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.174  2004/06/28 18:15:58  set
+* Fixed: [BC++] lack of QNX4 rule in "old mechanism" makefile.
+
 Revision 2.399.2.173  2004/06/28 17:52:24  set
 * Fixed: [BC++] warnings in regex.c because of implicit const char * to
 unsigned char * conversion (double error).
