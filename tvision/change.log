@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.344  2002/10/04 00:57:50  terrible
+* Updated: Debian packaging to version 2.0.0-1.
+
 Revision 2.343  2002/09/30 20:08:35  set
 * Updated: The list of strings to translate and the spanish translation.
 
