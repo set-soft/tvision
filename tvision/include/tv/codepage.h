@@ -62,7 +62,7 @@ public:
  static void    CreateCPFromUnicode(CodePage *cp, int id, const char *name,
                                     ushort *unicodes);
  static ccIndex AddCodePage(CodePage *cp);
- static void    GetCodePages(int &idScr, int &idApp) { idApp=CurrentCP; idScr=CurrentScrCP; };
+ static void    GetCodePages(int &idScr, int &idApp);
 
  // Arbitrary names for the supported code pages
  // Just to avoid using the magics, look in codepage.cc for more information

@@ -5,6 +5,9 @@
   Copyright (c) 1998-2002 by Salvador E. Tropea (SET)
   Contains code Copyright (c) 1996-1998 by Robert H”hne.
 
+  Some code for handling 8x10 fonts is adapted from djgpp libc:
+  Copyright (C) 1995-1999 DJ Delorie
+
   Description:
   This module implements the low level DOS screen access.
   
@@ -43,11 +46,24 @@
 #include <tv/dos/key.h>
 #include <tv/dos/mouse.h>
 
-#define GET_DOS_VERSION            0x3000
-#define GET_GLOBAL_CODE_PAGE_TABLE 0x6601
+#define GET_DOS_VERSION                      0x3000
+#define GET_GLOBAL_CODE_PAGE_TABLE           0x6601
+#define CHARGEN_SET_BLOCK_SPECIFIER          0x1103
+#define CHARGEN_LOAD_USER_SPECIFIED_PATTERNS 0x1110
+#define GET_FONT_INFORMATION                 0x1130
+// 0x11xx services (Sets the BIOS Rom)
+#define FONT_8x14                            0x11
+#define FONT_8x8                             0x12
+#define FONT_8x16                            0x14
 
-int TScreenDOS::wasBlink=0;
-int TScreenDOS::slowScreen=0;
+
+int   TScreenDOS::wasBlink=0;
+int   TScreenDOS::slowScreen=0;
+uchar TScreenDOS::primaryFontSet=0,
+      TScreenDOS::secondaryFontSet=0;
+int   TScreenDOS::origCPScr,
+      TScreenDOS::origCPApp;
+int   TScreenDOS::fontSeg=-1;
 
 const unsigned mdaBaseAddress=0xB0000;
 
@@ -89,6 +105,9 @@ TScreenDOS::TScreenDOS()
  TScreen::setCharacter=setCharacter;
  TScreen::setCharacters=setCharacters;
  TScreen::System=System;
+ TScreen::getFontGeometry=GetFontGeometry;
+ TScreen::setFont=SetFont;
+ TScreen::restoreFonts=RestoreFonts;
 
  TVDOSClipboard::Init();
  THWMouseDOS::Init();
@@ -108,7 +127,8 @@ TScreenDOS::TScreenDOS()
    }
  codePage=new TVCodePage(dosCodePage);
 
- flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver;
+ flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
+        CanSetBFont | CanSetSBFont;
  user_mode=screenMode=startupMode=getCrtMode();
  SaveScreen();
  setCrtData();
@@ -435,6 +455,241 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
  MultiplexInt();
  return p;
 }
+
+/*****************************************************************************
+  Fonts routines
+*****************************************************************************/
+
+int TScreenDOS::GetFontGeometry(unsigned &w, unsigned &h)
+{
+ w=8;
+ h=charLines;
+ return 1;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  That selects what fonts are used for no/intense foreground colors.@p
+  The bits of the call are a little tweaked because it's EGA compatible:@*
+---VGA---@*
+ 0,1,4 block selected by characters with attribute bit 3 clear@*
+ 2,3,5 block selected by characters with attribute bit 3 set@*
+
+***************************************************************************/
+
+void TScreenDOS::SetDualCharacter(int b1, int b2)
+{
+ int value;
+ // No intense foreground font
+ value=b1 & 0x3;
+ if (b1 & 0x4)
+    value|=0x10;
+ // intense foreground font
+ value|=(b2 & 0x3)<<2;
+ if (b2 & 0x4)
+    value|=0x20;
+
+ AX=CHARGEN_SET_BLOCK_SPECIFIER;
+ BL=value;
+ videoInt();
+}
+
+void TScreenDOS::SetFontBIOS(int which, unsigned height, uchar *data,
+                             int modeRecalculate)
+{
+ dosmemput(data,256*height,__tb);
+ ES=__tb>>4;    /* pass pointer to our font in ES:BP */
+ BP=__tb & 0xF;
+ DX=0;          /* 1st char: ASCII 0 */
+ CX=256;        /* 256 chars */
+ BH=height;     /* points per char */
+ BL=which;      /* block */
+ AX=CHARGEN_LOAD_USER_SPECIFIED_PATTERNS;
+ if (!modeRecalculate)
+    AL&=0xF;    /* force full mode recalculate, service 0x1100 */
+ videoInt();
+}
+
+int TScreenDOS::SetFont(int which, TScreenFont256 *font, int encoding)
+{
+ // Check if that's just a call to disable the secondary font
+ if (which && !font)
+   {
+    if (!secondaryFontSet) // Protect from bogus calls
+       return 0;
+    secondaryFontSet=0;
+    DisableDualFont();
+    if (!primaryFontSet)
+       TVCodePage::SetCodePage(origCPScr,origCPApp);
+    return 1;
+   }
+
+ if (font->w!=8 || font->h!=charLines)
+    return 0;
+
+ if (!primaryFontSet && !secondaryFontSet)
+    TVCodePage::GetCodePages(origCPScr,origCPApp);
+
+ // Which one?
+ if (which)
+   { // Secondary
+    EnableDualFont();
+    secondaryFontSet=1;
+   }
+ else
+   { // Primary
+    primaryFontSet=1;
+   }
+ SetFontBIOS(which,charLines,font->data,0);
+ if (encoding!=-1)
+    TVCodePage::SetCodePage(encoding);
+ return 1;
+}
+
+void TScreenDOS::RestoreFonts()
+{
+ if (!primaryFontSet && !secondaryFontSet)
+    return; // Protection
+ DisableDualFont();
+ SelectRomFont(charLines,0,0);
+ TVCodePage::SetCodePage(origCPScr,origCPApp);
+ secondaryFontSet=primaryFontSet=0;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Selects a font of the desired size. Currently only 8x8, 8x10, 8x14 and
+8x16 are supported but I did it in this way because nobody knows about the
+future.@p
+  If noForce is != 0 then the routine doesn't set the fonts. This option
+must be used when you know that BIOS already loaded the fonts. Using it
+avoids an extra load. The derived classes takes the desition according to
+the selected font, so if the user selected a font the load is forced.@p
+  If modeRecalculate is 1 the call to set the BIOS font is made using the
+bit 4 on, that means the BIOS will recalculate some things like the number
+of rows and cols in the screen. That's avoided when an external program
+sets the mode because a recalculation can fail.@p
+
+  Return:
+  non-zero if fails, zero if all ok.
+
+***************************************************************************/
+
+int TScreenDOS::SelectRomFont(int height, int which, int modeRecalculate)
+{
+ //UseDefaultFontsNextTime=0;
+ switch (height)
+   {
+    case 8:
+         SetRomFonts(FONT_8x8,which,modeRecalculate);
+         break;
+    case 10:
+         if (Load8x10Font(which,modeRecalculate))
+            return 1;
+         break;
+    case 14:
+         SetRomFonts(FONT_8x14,which,modeRecalculate);
+         break;
+    case 16:
+         SetRomFonts(FONT_8x16,which,modeRecalculate);
+         break;
+    default:
+         return 1;
+   }
+ return 0;
+}
+
+void TScreenDOS::SetRomFonts(int sizeFont, int which, int modeRecalculate)
+{
+ if (!modeRecalculate)
+    sizeFont&=0xF;
+ BL=which;
+ AH=0x11;
+ AL=sizeFont;
+ videoInt();
+}
+
+
+/**[txh]********************************************************************
+
+  Description: 
+  Stretch a 8x8 font to the 8x10 character box.  This is required to
+use 80x40 mode on a VGA or 80x35 mode on an EGA, because the character
+box is 10 lines high, and the ROM BIOS doesn't have an appropriate font.
+So we create one from the 8x8 font by adding an extra blank line
+from each side.
+  
+***************************************************************************/
+
+void TScreenDOS::MaybeCreate8x10Font(void)
+{
+ unsigned char *p;
+ unsigned long src, dest, i, j;
+
+ if (fontSeg!=-1)
+    return;
+ int buf_pm_sel;
+ 
+ /* Allocate buffer in conventional memory. */
+ fontSeg=__dpmi_allocate_dos_memory(160,&buf_pm_sel);
+
+ if (fontSeg==-1)
+    return;
+
+ /* Get the pointer to the 8x8 font table.  */
+ p=(uchar *)malloc(2560); /* 256 chars X 8x10 pixels */
+ if (p==(uchar *)0)
+   {
+    //errno=ENOMEM;
+    __dpmi_free_dos_memory(buf_pm_sel);
+    fontSeg=-1;
+    return;
+   }
+ BH=3;
+ AX=GET_FONT_INFORMATION;
+ videoInt();
+ src=(((unsigned)ES)<<4)+BP;
+ dest=((unsigned)fontSeg)<<4;
+
+ /* Now copy the font to our table, stretching it to 8x10. */
+ _farsetsel(_dos_ds);
+ for (i=0; i<256; i++)
+    {
+     /* Fill first extra scan line with zeroes. */
+     _farnspokeb(dest++, 0);
+
+     for (j=0; j<8; j++)
+        {
+         uchar val=_farnspeekb(src++);
+         _farnspokeb(dest++,val);
+        }
+
+     /* Fill last extra scan line with zeroes. */
+     _farnspokeb(dest++,0);
+    }
+}
+
+/* Load the 8x10 font we created into character generator RAM.  */
+int TScreenDOS::Load8x10Font(int which, int modeRecalculate)
+{
+ MaybeCreate8x10Font();         /* create if needed */
+ if (fontSeg==-1)
+    return 1;
+ ES=fontSeg;              /* pass pointer to our font in ES:BP */
+ BP=0;
+ DX=0;                    /* 1st char: ASCII 0 */
+ CX=256;                  /* 256 chars */
+ BH=10;                   /* 10 points per char */
+ BL=which;                /* block */
+ AX=CHARGEN_LOAD_USER_SPECIFIED_PATTERNS;
+ if (!modeRecalculate)
+    AL&=0xF;
+ videoInt();
+ return 0;
+}
+
 
 #else // DJGPP
 
