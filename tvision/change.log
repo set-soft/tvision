@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.471  2003/06/02 18:26:44  set
+* Fixed: the configuration script generated .env files with lib paths
+pointing to the old locations for the libraries.
+
 Revision 2.470  2003/06/02 15:09:05  set
 * Added: Makefiles for BC++, they doesn't have a main makefile yet, but
 you can compile the library with it. (cd makes; make -f librhtv.bmk).
