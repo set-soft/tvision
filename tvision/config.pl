@@ -8,7 +8,8 @@
 require "miscperl.pl";
 require "conflib.pl";
 
-GetCache();
+# If the script is newer discard the cache.
+GetCache() unless (-M 'config.pl' < -M 'configure.cache');
 GetVersion('');
 
 # I never tested with an older version, you can try reducing it.
