@@ -169,7 +169,7 @@ public:
     THelpFile( fpstream& s );
     virtual ~THelpFile();
 
-    THelpTopic *getTopic( int );
+    virtual THelpTopic *getTopic( int );
     THelpTopic *invalidTopic();
     void recordPositionInIndex( int );
     void putTopic( THelpTopic* );
