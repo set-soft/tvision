@@ -50,9 +50,10 @@ TColorItem& operator + ( TColorItem& i1, TColorItem& i2 )
 
 TColorItemList::TColorItemList( const TRect& bounds,
                                 TScrollBar *aScrollBar,
-                                TColorItem *aItems
+                                TColorItem *aItems,
+                                TScrollBar *aHScrollBar
                               ) :
-    TListViewer( bounds, 1, 0, aScrollBar ),
+    TListViewer( bounds, 1, aHScrollBar, aScrollBar ),
     items( aItems )
 {
     eventMask |= evBroadcast;

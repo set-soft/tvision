@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea: added horizontal scrollbar.
 
  *
  *
@@ -25,9 +26,10 @@ class TColorItemList : public TListViewer
 public:
 
     TColorItemList( const TRect& bounds,
-		    TScrollBar *aScrollBar,
-		    TColorItem *aItems
-		  );
+                    TScrollBar *aScrollBar,
+                    TColorItem *aItems,
+                    TScrollBar *aHScrollBar=0
+                  );
     virtual void focusItem( ccIndex item );
     virtual void getText( char *dest, ccIndex item, short maxLen );
     virtual void handleEvent( TEvent& event );
