@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
+Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
  *
  *
  */
@@ -327,6 +328,7 @@ void TView::draw()
 
 void TView::drawCursor()
 {
+    // SET: do it only if our owner gives permission
     if( (state & sfFocused) != 0 && owner && owner->canShowCursor())
         resetCursor();
 }
@@ -710,6 +712,7 @@ void TView::setState( ushort aState, Boolean enable )
             break;
         case  sfFocused:
             if (owner && owner->canShowCursor())
+               // SET: do it only if our owner gives permission
                resetCursor();
             message( owner,
                      evBroadcast,

@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 
  *
  *
@@ -236,6 +237,7 @@ void  TDeskTop::tileError()
 {
 }
 
+// SET: TViews will ask us if that's good time to draw cursor changes
 Boolean TDeskTop::canShowCursor()
 {
  return lockFlag ? False : True;

@@ -1,4 +1,15 @@
 $Log$
+Revision 1.192  2001/09/08 20:16:14  set
+* Added: itoa to the compatlayer. This function is fast for converting
+integers into strings and seems to be suitable for calling from an async
+point (like a signal). I used djgpp implementation.
+* Fixed: when TDesktop was locked nothing but the cursor was updated. Now
+the cursor isn't updated. I hope it doesn't break anything, I think I did
+it in a clean way. In the past while the editor was loading a big list of
+texts the desktop remained locked but you could see the cursor jumping all
+around the screen as the TCEditors were inserted/selected in the desktop.
+Now the cursor remains still until unlock calls resetCursor().
+
 Revision 1.191  2001/09/08 18:02:01  set
 * Modified: [Linux] Now the TV_system function creates a new session for
 the child process it implies two important things: 1) The child is a leader

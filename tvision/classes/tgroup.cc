@@ -6,6 +6,9 @@
  *
  *
  * Modified by Robert H”hne to be used for RHIDE.
+
+Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
+
  *
  *
  *
@@ -542,6 +545,8 @@ void TGroup::unlock()
     if( lockFlag != 0 && --lockFlag == 0 )
        {
         drawView();
+        // SET: Now is time to hide/show mouse according to
+        // changes while we were locked.
         resetCursor();
        }
 }
@@ -713,6 +718,7 @@ void TGroup::removeView(TView *p)
   if (akt == last) return;
 }
 
+// SET: TViews will ask us if that's good time to draw cursor changes
 Boolean TGroup::canShowCursor()
 {
  if (buffer)
