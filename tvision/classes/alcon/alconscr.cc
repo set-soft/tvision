@@ -58,6 +58,12 @@ TScreenAlcon::TScreenAlcon()
     // buffer on top of Allegro's buffer so that Allegro get's called.
     // Wicked. But works.
     screenBuffer = new uint16[screenWidth * screenHeight];
+
+    // Initialise keyboard.
+    TGKeyAlcon::Init();
+    
+    // Initialise mouse.
+    //THWMouseAlcon::Init();
 }
 
 

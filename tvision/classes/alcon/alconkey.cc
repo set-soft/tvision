@@ -11,13 +11,23 @@
 #include <tv/alcon/alcon.h>
 
 
+/*****************************************************************************
+
+  TGKeyAlcon keyboard stuff.
+
+*****************************************************************************/
+
+unsigned TGKeyAlcon::Symbol;
+uchar    TGKeyAlcon::Scan;
+unsigned TGKeyAlcon::Flags;
+
 void TGKeyAlcon::Init()
 {
     TGKey::kbhit = KbHit;
     TGKey::clear = Clear;
     TGKey::gkey = GKey;
+    TGKey::fillTEvent = FillTEvent;
 //  TGKey::getShiftState=GetShiftState;
-//  TGKey::fillTEvent = FillTEvent;
 }
 
 int TGKeyAlcon::KbHit()
@@ -32,10 +42,22 @@ void TGKeyAlcon::Clear()
 
 ushort TGKeyAlcon::GKey()
 {
-    unsigned aSymbol;
-    uchar aScan;
-    unsigned aFlags;
-    
-    return AlCon_GetKey(&aSymbol, &aScan, &aFlags);
+    return AlCon_GetKey(&Symbol, &Scan, &Flags);
+}
+
+void TGKeyAlcon::FillTEvent(TEvent &e)
+{
+    ushort Abstract=GKey();
+    e.keyDown.charScan.charCode=((Flags & kbAltLCode) && (Symbol<128)) ? 0 : Symbol;
+    e.keyDown.charScan.scanCode=Scan;
+    e.keyDown.raw_scanCode=Scan;
+    e.keyDown.keyCode=Abstract;
+    e.keyDown.shiftState=0;
+    // TODO: fill the shiftState correctly.
+    //e.keyDown.shiftState=kbFlags;
+
+    // TODO: Unicode? Yeah right.
+    //e.keyDown.charCode=Unicode; // Should I do the same as with Symbol?
+    e.what=evKeyDown;
 }
 

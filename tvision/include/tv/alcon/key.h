@@ -41,6 +41,9 @@ public:
 
 protected:
  // Put support routines and variables here
+ static unsigned Symbol;
+ static uchar    Scan;
+ static unsigned Flags;
 };
 #endif // ALCONKEY_HEADER_INCLUDED
 
