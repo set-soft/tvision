@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Salvador E. Tropea (release CPU and other stuff)
+Modified by Salvador E. Tropea to compile for 64 bits architectures.
 
  *
  *
@@ -224,7 +225,7 @@ void TProgram::handleEvent( TEvent& event )
                    if( message( deskTop,
                             evBroadcast,
                             cmSelectWindowNum,
-                            (void *)(c - '0')
+                            (void *)(long)(c - '0')
                            ) != 0 )
                    clearEvent( event );
                }
