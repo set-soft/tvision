@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Salvador E. Tropea: added i18n support.
+Modified by Salvador E. Tropea: added i18n support, added T1StaticText.
 
  *
  *
@@ -73,6 +73,21 @@ inline opstream& operator << ( opstream& os, TStaticText& cl )
 inline opstream& operator << ( opstream& os, TStaticText* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
+
+#ifdef Uses_T1StaticText
+// This is based on TVTools idea, but I think is better to implement it
+// in this way and not like a macro.
+// I was forced to use growTo for the i18n stuff and the fact that
+// base constructors must be called first and that the order in which
+// gcc evaluated the arguments is random when optimizing.
+class T1StaticText : public TStaticText
+{
+public:
+ T1StaticText(int x, int y, const char *aText) :
+   TStaticText(TRect(x,y,x,y),aText)
+   { growTo(cstrlen(TVIntl::getText(aText,intlText))+1,1); };
+}
+#endif // Uses_T1StaticText
 
 #endif  // Uses_TStaticText
 

@@ -6,7 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Salvador E. Tropea: added i18n support.
+Modified by Salvador E. Tropea: added i18n support, T1Label inspired in
+TVTools but reworked.
 
  *
  *
@@ -79,6 +80,16 @@ inline opstream& operator << ( opstream& os, TLabel& cl )
 inline opstream& operator << ( opstream& os, TLabel* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
+
+#ifdef Uses_T1Label
+class T1Label : public TLabel
+{
+public:
+ T1Label(int x, int y, const char *aText, TView *aLink) :
+   TLabel(TRect(x,y,x,y),aText,aLink)
+   { growTo(cstrlen(TVIntl::getText(aText,intlText))+1,1); };
+};
+#endif // Uses_T1Label
 
 #endif  // Uses_TLabel
 

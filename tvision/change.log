@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.399.2.61  2003/05/14 13:52:41  set
+* Added: TSItem::append, TMenuItem::append, operator += (TMenuItem& ,
+TMenuItem&), operator += (TSubMenu& , TSubMenu& ), operator += ( TSubMenu&
+, TMenuItem& ), operator += ( TStatusDef& , TStatusDef& ), operator +=
+( TStatusDef& , TStatusItem& ), operator + ( TSItem& , TSItem& ) and
+operator += ( TSItem& , TSItem&  ). Most of them based on TVTools code or
+inspired and reworked.
+* Added: explanation about BSD code in TV and also code from TVTools to the
+readme.
+
 Revision 2.399.2.60  2003/05/12 12:48:36  set
 * Fixed: The TVIntl recode shouldn't recode values in the ASCII range. Not
 at least for the supported code pages.
