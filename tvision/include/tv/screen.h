@@ -31,6 +31,12 @@ public:
  static  int UseDefaultFontsNextTime;
 };
 
+// Components are 0-255
+typedef struct
+{
+ uchar R,G,B;
+} TScreenColor;
+
 /**[txh]********************************************************************
 
   Description:
@@ -125,6 +131,17 @@ protected:
  static char **argv;
  static char **environ;
 
+ // Hardware Palette handling routines and variables.
+ // This is low level and should be called from TScreen.
+ static void      (*getDisPaletteColors)(int from, int number, TScreenColor *colors);
+ static void      (*setDisPaletteColors)(int from, int number, TScreenColor *colors);
+ // The shell/user palette
+ static TScreenColor OriginalPalette[16];
+ // The palette we are using
+ static TScreenColor ActualPalette[16];
+ // The PC BIOS palette
+ static TScreenColor PC_BIOSPalette[16];
+ 
  // Default behaviors
  static void        defaultClearScreen(uchar, uchar);
  static ushort      defaultGetRows();
@@ -140,6 +157,8 @@ protected:
  static const char *defaultGetWindowTitle(void);
  static int         defaultSetWindowTitle(const char *name);
  static int         defaultGetBlinkState();
+ static void        defaultGetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static void        defaultSetDisPaletteColors(int from, int number, TScreenColor *colors);
 
 private:
  // From original TV 2.0.
@@ -196,16 +215,6 @@ public:
  static void   (*Resume)();
 
  // New functionality
- // Duplicated from TDisplay
- // Robert made them to hide the dual display support, I think this approach is
- // wrong.
- //static void setCursorType( ushort );
- //static ushort getCursorType();
- //static ushort getRows();
- //static ushort getCols();
- //static void GetCursor(int &x, int &y);
- //static void SetCursor(int x, int y);
-
  // Needed by some mouse handlers
  static ushort (*getCharacter)(unsigned offset);
  // Only used internally by Win32 ports
@@ -217,11 +226,20 @@ public:
  static void   (*setVideoModeExt)(char *mode);
  // SET: executes the indicated command
  static int    (*System)(const char *command, pid_t *pidChild=0);
+ // Palette handling, they call the TDisplay members
+ static void   getPaletteColors(int from, int number, TScreenColor *colors);
+ static void   setPaletteColors(int from, int number, TScreenColor *colors);
 
  // SET: flags capabilities flags
  enum Capabilities1
  {
-  CodePageVar=1
+  CodePageVar=1,
+  CanSetPalette=2,  // We can change colors
+  CanReadPalette=4, // We have reliable information about the original colors.
+                    // If this value isn't present the user can set the palette,
+                    // but the original colors want be restored at exit. We will
+                    // try to let them as default for the used display.
+  PalNeedsRedraw=8  // Indicates we must redraw after changing the palette.
  };
 
  // Used internally to avoid nested calls to suspend/resume
@@ -232,6 +250,9 @@ public:
  // SET: It says if we should offer the user to select the code page
  // or the terminal have a fixed encoding and needs things as is.
  static Boolean codePageVariable() { return flags0 & CodePageVar ? True : False; };
+ static Boolean canSetPalette()    { return flags0 & CanSetPalette ? True : False; };
+ static Boolean canReadPalette()   { return flags0 & CanReadPalette ? True : False; };
+ static Boolean palNeedsRedraw()   { return flags0 & PalNeedsRedraw ? True : False; };
 
 protected:
  // SET: Capabilities flags
