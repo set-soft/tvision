@@ -397,6 +397,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStreamable
 #endif
 #define Uses_TStrIndexRec
+#define Uses_TStringList // Forced by TStringList::name!
 #define __INC_RESOURCE_H
 #endif
 
