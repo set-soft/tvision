@@ -85,6 +85,7 @@ classes/tnssorte.cc
 classes/tobject.cc
 classes/tpalette.cc
 classes/tparamte.cc
+classes/parttree.cc
 classes/tpoint.cc
 classes/tprogini.cc
 classes/tprogram.cc
@@ -495,6 +496,7 @@ include/tv/msgbox.h
 include/tv/no_mss.h
 include/tv/objects.h
 include/tv/osclipboard.h
+include/tv/parttree.h
 include/tv/resource.h
 include/tv/stddlg.h
 include/tv/system.h
