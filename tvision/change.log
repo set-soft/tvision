@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.60  2003/05/12 12:48:36  set
+* Fixed: The TVIntl recode shouldn't recode values in the ASCII range. Not
+at least for the supported code pages.
+
 Revision 2.399.2.59  2003/05/09 13:10:01  set
 * Added: A check to determine if the configure script is newer than the
 cache. If that's the case the cache is discarded.

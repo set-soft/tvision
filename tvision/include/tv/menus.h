@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea: Added += operators.
 
  *
  *
@@ -22,57 +23,69 @@ TStatusDef& operator + ( TStatusDef& s1, TStatusItem& s2 );
 TStatusDef& operator + ( TStatusDef& s1, TStatusDef& s2 );
 
 #if defined( Uses_TMenuItem )
-
-#include <tv/menuitem.h>
-
+ #include <tv/menuitem.h>
 #endif
 
 #if defined( Uses_TSubMenu )
-
-#include <tv/submenu.h>
-
+ #include <tv/submenu.h>
 #endif
 
 #if defined( Uses_TMenu )
-
-#include <tv/menu.h>
-
+ #include <tv/menu.h>
 #endif
 
 #if defined( Uses_TMenuView )
-
-#include <tv/menuview.h>
-
+ #include <tv/menuview.h>
 #endif
 
 #if defined( Uses_TMenuBar )
-
-#include <tv/menubar.h>
-
+ #include <tv/menubar.h>
 #endif
 
 #if defined( Uses_TMenuBox )
-
-#include <tv/menubox.h>
-
+ #include <tv/menubox.h>
 #endif
 
 #if defined( Uses_TStatusItem )
-
-#include <tv/statsitm.h>
-
+ #include <tv/statsitm.h>
 #endif
 
 #if defined( Uses_TStatusDef )
-
-#include <tv/statsdef.h>
-
+ #include <tv/statsdef.h>
 #endif
 
 #if defined( Uses_TStatusLine )
-
-#include <tv/statslin.h>
-
+ #include <tv/statslin.h>
 #endif
+
+// SET: The following 4 operator are from TVTools
+// They are simple and adds more coherence.
+#if defined( Uses_TSubMenu )
+inline void operator += ( TSubMenu& s1, TSubMenu& s2 )
+{
+    s1 = s1 + s2;
+}
+
+#if defined( Uses_TMenuItem )
+inline void operator += ( TSubMenu& i1, TMenuItem& i2 )
+{
+    i1 = i1 + i2;
+}
+#endif // Uses_TMenuItem
+#endif // Uses_TSubMenu
+
+#if defined( Uses_TStatusDef )
+inline void operator += ( TStatusDef& s1, TStatusDef& s2 )
+{
+    s1 = s1 + s2;
+}
+
+#if defined( Uses_TStatusItem )
+inline void operator += ( TStatusDef& s1, TStatusItem& s2 )
+{
+    s1 = s1 + s2;
+}
+#endif // Uses_TStatusItem
+#endif // Uses_TStatusDef
 
 
