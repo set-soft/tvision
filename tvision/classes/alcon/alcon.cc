@@ -1,3 +1,5 @@
+// -*- mode:C++; tab-width: 3 -*-
+
 /*
   Copyright (c) 2001 by Salvador E. Tropea (SET) <set@ieee.org>
   This code is covered by the GPL license. A copy of the license should
@@ -13,21 +15,26 @@ be provided in the same package.
 #include <tv.h>
 #include <tv/gkey.h>
 
-FONT sfont;
-FONT_GLYPH *ascii_data[256];
-FONT_MONO_DATA ascii_monofont =
+// Forward declarations.
+static void _AlCon_LoadCustomFont(const char *filename);
+
+// Globals internal to AlCon.
+static FONT *_current_font = 0;
+static FONT _custom_font;
+static FONT_GLYPH *_ascii_data[256];
+static FONT_MONO_DATA _ascii_monofont =
 {
  0x0, 0x100,                 /* begin, end characters */
- ascii_data,                 /* the data set */
+ _ascii_data,                 /* the data set */
  0                           /* next */
 };
 
-FONT cursorFont;
-FONT_GLYPH *cursorData[2];
-FONT_MONO_DATA cursorMonoFont =
+static FONT _cursorFont;
+static FONT_GLYPH *_cursorData[2];
+static FONT_MONO_DATA _cursorMonoFont =
 {
  0x0, 0x2,                   /* begin, end characters */
- cursorData,                 /* the data set */
+ _cursorData,                 /* the data set */
  0                           /* next */
 };
 
@@ -67,6 +74,8 @@ static char cShapeFrom,cShapeTo;
 static int al_text_mode;
 static int al_mouse_buttons = 0;
 static int al_mouse_wheel;
+
+
 
 /*****************************************************************************
 
@@ -259,6 +268,9 @@ void AlCon_NewLine()
 
 void AlCon_PutStr(const char *s)
 {
+ ASSERT(s);
+ ASSERT(_current_font);
+ 
  int l=strlen(s);
  AlCon_DisableAsync();
  while (cursorX+l>maxX)
@@ -268,7 +280,7 @@ void AlCon_PutStr(const char *s)
     unsigned offset;
     strncpy(b,s,count);
     b[count]=0;
-    textout_ex(screen,&sfont,b,cursorPX,cursorPY,colors[fg], colors[bg]);
+    textout_ex(screen,_current_font,b,cursorPX,cursorPY,colors[fg], colors[bg]);
 
     offset=(cursorX-1)+(cursorY-1)*maxX;
     memcpy(chars+offset,b,count);
@@ -281,7 +293,7 @@ void AlCon_PutStr(const char *s)
  if (*s)
    {
     unsigned offset;
-    textout_ex(screen,&sfont,s,cursorPX,cursorPY,colors[fg], colors[bg]);
+    textout_ex(screen,_current_font,s,cursorPX,cursorPY,colors[fg], colors[bg]);
 
     offset=(cursorX-1)+(cursorY-1)*maxX;
     memcpy(chars+offset,s,l);
@@ -343,6 +355,8 @@ void AlCon_CPrintf(AL_CONST char *format, ...)
 
 void AlCon_PutBuf(unsigned offset, uint16 *buffer, int len)
 {
+ ASSERT(buffer);
+ ASSERT(_current_font);
  int i,nBg,nFg;
  unsigned char *b=(unsigned char *)buffer;
  unsigned char aux[2];
@@ -360,7 +374,7 @@ void AlCon_PutBuf(unsigned offset, uint16 *buffer, int len)
      attrs[offset]=b[attrPos];
      nBg=b[attrPos]>>4;
      nFg=b[attrPos] & 0xF;
-     textout_ex(screen,&sfont,(char *)aux,x,y,colors[nFg], colors[nBg]);
+     textout_ex(screen,_current_font,(char *)aux,x,y,colors[nFg], colors[nBg]);
      x+=8;
      if (x>mx)
        {
@@ -391,6 +405,7 @@ void AlCon_GetScrChars(unsigned offset, uint16 *buffer, unsigned count)
 
 void AlCon_PutChar(unsigned offset, uint16 value)
 {
+ ASSERT(_current_font);
  int i,nBg,nFg;
  unsigned char *b=(unsigned char *)&value;
  unsigned char aux[2];
@@ -407,7 +422,7 @@ void AlCon_PutChar(unsigned offset, uint16 value)
  attrs[offset]=b[attrPos];
  nBg=b[attrPos]>>4;
  nFg=b[attrPos] & 0xF;
- textout_ex(screen,&sfont,(char *)aux,x,y,colors[nFg], colors[nBg]);
+ textout_ex(screen,_current_font,(char *)aux,x,y,colors[nFg], colors[nBg]);
 
  AlCon_EnableAsync();
 }
@@ -420,17 +435,19 @@ void AlCon_PutChar(unsigned offset, uint16 value)
 
 void AlCon_UnDrawCursor(int *aFgCol)
 {
+ ASSERT(_current_font);
  unsigned offset=(cursorX-1)+(cursorY-1)*maxX;
  int bg=attrs[offset]>>4;
  int fg=attrs[offset] & 0xF;
  char b[2];
  b[0]=chars[offset]; b[1]=0;
- textout_ex(screen,&sfont,b,cursorPX,cursorPY,colors[fg], colors[bg]);
+ textout_ex(screen,_current_font,b,cursorPX,cursorPY,colors[fg], colors[bg]);
  *aFgCol=colors[fg];
 }
 
 void AlCon_IntCursor()
 {
+ ASSERT(_cursorFont);
  if (cursorEnabled)
    {
     int aFg,prevMode;
@@ -438,7 +455,7 @@ void AlCon_IntCursor()
     cursorInScreen=!cursorInScreen;
     if (cursorInScreen)
       {
-       textout_ex(screen,&cursorFont,"\x1",cursorPX,cursorPY,aFg,-1);
+       textout_ex(screen,&_cursorFont,"\x1",cursorPX,cursorPY,aFg,-1);
       }
     unscare_mouse();
    }
@@ -447,8 +464,8 @@ void AlCon_IntCursor()
 void AlCon_SetCursorShape(int from, int to)
 {
  from&=0xF; to&=0xF;
- memset(cursorData[1]->dat,0,16);
- memset(cursorData[1]->dat+from,0xFF,to-from+1);
+ memset(_cursorData[1]->dat,0,16);
+ memset(_cursorData[1]->dat+from,0xFF,to-from+1);
  cShapeFrom=from;
  cShapeTo=to;
 }
@@ -482,9 +499,6 @@ int AlCon_IsVisCursor()
 
 void AlCon_Init(int w, int h)
 {
- char font_buffer[4096];
- bool font_buffer_loaded = false;
- FILE *f;
  int i;
 
  set_uformat(U_ASCII);
@@ -503,18 +517,7 @@ void AlCon_Init(int w, int h)
  install_timer();
 
  /* Load a binary font */
- f=fopen("rom-PC437.016","rb");
- if (!f)
-   {
-    allegro_message("Unable to load font\n");
-    exit(1);
-   }
- else
-   {
-    fread(font_buffer,4096,1,f);
-    fclose(f);
-    font_buffer_loaded = true;
-   }
+ _AlCon_LoadCustomFont("rom-PC437.016");
 
  /* If we are in a graphic mode and we know the depth use it */
  if (desktop_color_depth())
@@ -535,24 +538,11 @@ void AlCon_Init(int w, int h)
  w = SCREEN_W/8; h = SCREEN_H/16;
  maxX=w; maxY=h;
 
- /* Create an Allegro mono font from it */
- cursorFont.vtable=sfont.vtable=font->vtable;
- cursorFont.height=sfont.height=16;
- sfont.data=&ascii_monofont;
- cursorFont.data=&cursorMonoFont;
-
- for (i=0x0; i<0x100; i++)
-    {
-     ascii_data[i]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+16);
-     ascii_data[i]->w=8;
-     ascii_data[i]->h=16;
-     memcpy(ascii_data[i]->dat,&font_buffer[i*16],16);
-    }
  /* Create default cursor shape */
- cursorData[0]=0;
- cursorData[1]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+16);
- cursorData[1]->w=8;
- cursorData[1]->h=16;
+ _cursorData[0]=0;
+ _cursorData[1]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+16);
+ _cursorData[1]->w=8;
+ _cursorData[1]->h=16;
  AlCon_SetCursorShape(14,15);
 
  /* Create the text mode palette */
@@ -710,3 +700,52 @@ void AlCon_GetMousePos(int *x, int *y, int *buttons)
     *buttons |= 1 << 4;
  al_mouse_wheel = mouse_z;
 }
+
+/**[txh]********************************************************************
+
+  Description: Loads the specified binary format font into an internal
+  structure like Allegro's font and then sets the static global font pointer
+  to that. If the font could not be loaded, the previously loaded custom
+  font will be used. If this was the first custom font call, Allegro's
+  default font will be used if everything fails.
+  
+***************************************************************************/
+
+static void _AlCon_LoadCustomFont(const char *filename)
+{
+   ASSERT(filename);
+   static bool one_custom_font_loaded = false;
+
+   FILE *file = fopen(filename, "rb");
+   if (!file) {
+      // We have to cover up if there was no previous font.
+      if (!one_custom_font_loaded) {
+         _current_font = font;
+      }
+   } else {
+      char font_buffer[4096];
+      
+      fread(font_buffer, 4096, 1, file);
+      fclose(file);
+      one_custom_font_loaded = true;
+
+      // Copy font from buffer to internal structure.
+      for (int i = 0; i < 0x100; i++) {
+         if (!_ascii_data[i]) {
+            // Don't reserve twice the memory.
+            _ascii_data[i] = (FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+16);
+            _ascii_data[i]->w = 8;
+            _ascii_data[i]->h = 16;
+         }
+         memcpy(_ascii_data[i]->dat, &font_buffer[i*16], 16);
+      }
+      _current_font = &_custom_font;
+   }
+
+   // Fill global variables.
+   _cursorFont.vtable = _custom_font.vtable = font->vtable;
+   _cursorFont.height = _custom_font.height = 16;
+   _custom_font.data = &_ascii_monofont;
+   _cursorFont.data = &_cursorMonoFont;
+}
+
