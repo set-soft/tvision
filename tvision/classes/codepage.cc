@@ -2446,3 +2446,16 @@ ccIndex TVCodePage::AddCodePage(CodePage *cp)
     CreateCodePagesCol();
  return CodePages->insert(cp);
 }
+
+void TVCodePage::GetCodePages(int &idScr, int &idApp)
+{
+ if (CurrentScrCP==-1)
+   {
+    idScr=CurrentCP;
+    idApp=CurrentScrCP;
+    return;
+   }
+ idApp=CurrentCP;
+ idScr=CurrentScrCP;
+}
+

@@ -103,6 +103,22 @@ protected:
  static void   setCharacter(unsigned offset,ushort value);
  static void   setCharacters(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild);
+ static int    GetFontGeometry(unsigned &w, unsigned &h);
+ static int    SetFont(int which, TScreenFont256 *font, int encoding);
+ static void   RestoreFonts();
+
+ // Fonts stuff
+ static void   SetDualCharacter(int b1, int b2);
+ static void   EnableDualFont() { SetDualCharacter(0,1); };
+ static void   DisableDualFont() { SetDualCharacter(0,0); };
+ static void   SetFontBIOS(int which, unsigned height, uchar *data, int modeRecalculate);
+ static int    Load8x10Font(int which, int modeRecalculate);
+ static void   MaybeCreate8x10Font(void);
+ static void   SetRomFonts(int sizeFont, int which, int modeRecalculate);
+ static int    SelectRomFont(int height, int which, int modeRecalculate);
+ static uchar  primaryFontSet,secondaryFontSet;
+ static int    origCPScr, origCPApp;
+ static int    fontSeg;           // segment of DOS buffer for 8x10 font
 
  // Status before suspending
  static int    wasBlink;
@@ -148,6 +164,7 @@ protected:
 #define DX (r.x.dx)
 #define DI (r.x.di)
 #define SI (r.x.si)
+#define BP (r.x.bp)
 #define ES (r.x.es)
 #endif // TSCREEN_DEFINE_REGISTERS
 

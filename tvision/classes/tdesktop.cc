@@ -23,6 +23,7 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TScreen
+#define Uses_TVCodePage
 #include <tv.h>
 
 TDeskInit::TDeskInit( TBackground *(*cBackground)( TRect ) ) :
@@ -108,6 +109,12 @@ void TDeskTop::handleEvent(TEvent& event)
         // Helps Braille Terminals to know the object lost the focus.
         TScreen::setCursorPos( origin.x , origin.y + size.y );
     TGroup::handleEvent( event );
+    if( event.what == evBroadcast && event.message.command == cmUpdateCodePage &&
+        background )
+        background->changePattern(TVCodePage::RemapChar(
+                                  TDeskTop::odefaultBkgrnd,
+                                  (ushort *)event.message.infoPtr));
+
     if( event.what == evCommand )
         {
         switch( event.message.command )

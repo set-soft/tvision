@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.211  2002/07/04 20:09:59  set
+* Modified: [BC++/MSVC] these compilers doesn't use the configuration
+mechanism instead a custom configtv.h is used. I unified it for both
+compilers.
+
 Revision 2.210  2002/07/04 19:10:04  set
 * Removed: [DOS] old reference code for code page support.
 
