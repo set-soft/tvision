@@ -16,6 +16,7 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <stdlib.h>
+#include <string.h>
 
 #define Uses_TScreen
 #define Uses_TEvent
@@ -32,6 +33,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <conio.h>
 #include <sys/farptr.h>
 #include <errno.h>
+#include <sys/movedata.h>
 
 static ushort Equipment;
 static uchar CrtInfo;
@@ -493,6 +495,76 @@ void TDisplay::RestoreDefaultFont(void)
  if (!font)
     font=new TFont();
  font->RestoreDefaultFont();
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Finds the main window title if we are running under W95 and windowed.
+
+  Return:
+  A pointer to a newly allocated string (new[]). Or 0 if fail. by SET.
+
+***************************************************************************/
+
+char *TDisplay::GetWindowTitle(void)
+{
+ __dpmi_regs regs;
+
+ // Winoldap Get Title.
+ regs.x.ax=0x168E;
+ regs.x.dx=2;
+ unsigned long tbsize=_go32_info_block.size_of_transfer_buffer;
+ regs.x.cx=tbsize>0xFFFF ? 0xFFFF : tbsize; // Can tbsize be > 64Kb?
+ regs.x.di=__tb & 0x0f;                     // It should be 0
+ regs.x.es=(__tb>>4) & 0xffff;
+
+ __dpmi_int(0x2F,&regs);
+
+ if (regs.x.ax!=1)
+    return 0;
+
+ // Scan to get the length
+ _farsetsel(_dos_ds);
+ unsigned i;
+ for (i=0; i<tbsize && _farnspeekb(i); i++);
+ // Make a copy
+ char *ret=new char[i+1];
+ dosmemget(__tb,i,ret);
+ ret[i]=0;
+ return ret;
+}
+
+const int mxTitleSize=80; // Limited by Windows, yet another silly idea
+
+
+/**[txh]********************************************************************
+
+  Description:
+  Sets the main window title if we are running under W95 and windowed.
+
+  Return:
+  1 successful. by SET.
+
+***************************************************************************/
+
+int TDisplay::SetWindowTitle(const char *name)
+{
+ __dpmi_regs regs;
+ char title[mxTitleSize];
+
+ // Winoldap Set Title.
+ regs.x.ax=0x168E;
+ regs.x.dx=0;
+ regs.x.di=__tb & 0x0f;                     // It should be 0
+ regs.x.es=(__tb>>4) & 0xffff;
+ strncpy(title,name,mxTitleSize);
+ title[mxTitleSize-1]=0;
+ dosmemput(title,mxTitleSize,__tb);
+
+ __dpmi_int(0x2F,&regs);
+
+ return regs.x.ax;
 }
 #endif // __DJGPP__
 
