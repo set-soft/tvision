@@ -1,4 +1,10 @@
 $Log$
+Revision 1.189  2001/09/05 18:40:29  set
+* Fixed: Some problems in the TSortedCollection incremental search. The
+backspace wasn't working (at least on Linux), the `.' didn't show the jump
+to the extension correctly, files with more than one . weren't supported,
+etc. I hope it now works better.
+
 Revision 1.188  2001/09/04 19:23:48  set
 * Fixed: [Win32+BC++] bug when only one key modifier (Shift, Control, Alt)
 was detected. Patch from Anatoli Soltan <anatoli@iname.com>
