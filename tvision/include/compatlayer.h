@@ -47,7 +47,7 @@ and regex.
 #endif
 
 #ifdef __GNUC__
-// GNU c is supported for various OSs:
+// GNU C is supported for various OSs:
 
  #ifdef Uses_string
   #define Include_string
@@ -212,6 +212,7 @@ and regex.
  
  // Under Linux defines it
  #ifdef __linux__
+  #define CLY_Have_UGID 1
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
@@ -263,6 +264,7 @@ and regex.
  
  // Generic UNIX system
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux)
+  #define CLY_Have_UGID 1
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
@@ -762,14 +764,25 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 #include <cl/utime.h>
 #endif
 
-#ifdef Uses_CLYFileAttrs
+#if defined(Uses_CLYFileAttrs) && !defined(Uses_CLYFileAttrsDef)
+#define Uses_CLYFileAttrsDef
 /* Equivalent to mode_t */
+#ifdef CLY_Have_UGID
+// In systems with User and Group ID the mode is an structure
+typedef struct
+{
+ mode_t mode;
+ uid_t  user;
+ gid_t  group;
+} CLY_mode_t;
+#else
 typedef unsigned int CLY_mode_t;
+#endif
 /* Utility function to find the attributes of a file. You must call stat
    first and pass the st_mode member of stat's struct in statVal. */
-CFunc CLY_mode_t CLY_GetFileAttributes(mode_t statVal, const char *fileName);
+CFunc void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal, const char *fileName);
 /* The reverse. The file must be closed! */
-CFunc int CLY_SetFileAttributes(CLY_mode_t newmode, const char *fileName);
+CFunc int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName);
 /* This function alters mode content so the attribute indicates that the
    owner of the file can't read from it */
 CFunc void CLY_FileAttrReadOnly(CLY_mode_t *mode);
@@ -777,11 +790,11 @@ CFunc void CLY_FileAttrReadOnly(CLY_mode_t *mode);
    owner of the file can read from it */
 CFunc void CLY_FileAttrReadWrite(CLY_mode_t *mode);
 /* Returns !=0 if the file is read-only */
-CFunc int  CLY_FileAttrIsRO(CLY_mode_t mode);
+CFunc int  CLY_FileAttrIsRO(CLY_mode_t *mode);
 /* Sets the attribute that indicates the file was modified */
 CFunc void CLY_FileAttrModified(CLY_mode_t *mode);
 /* It returns a mode that can be used for a newly created file */
-CFunc CLY_mode_t CLY_GetDefaulFileAttr(void);
+CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
 #endif
 
 #ifdef DJGPP_HaveLFNs
