@@ -132,6 +132,7 @@ $MakeDefsRHIDE[2].=' m' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[2].=' '.$conf{'X11Lib'} if ($conf{'HAVE_X11'} eq 'yes');
 $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
+$MakeDefsRHIDE[2].=' alleg' if @conf{'alcon'} eq 'yes';
 $MakeDefsRHIDE[2].=' intl' if ((($OSf eq 'FreeBSD') || ($OSf eq 'QNXRtP')) && ($conf{'intl'} eq 'yes'));
 $MakeDefsRHIDE[2].=' pthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
 $MakeDefsRHIDE[2].=' termlib unix' if ($OSf eq 'QNX4');
@@ -278,6 +279,14 @@ sub SeeCommandLine
       {
        $conf{'mss'}='no';
       }
+    elsif ($i eq '--with-alcon')
+      {
+       $conf{'alcon'}='yes';
+      }
+    elsif ($i eq '--without-alcon')
+      {
+       $conf{'alcon'}='no';
+      }
     elsif ($i=~'--x-include=(.*)')
       {
        $conf{'X11IncludePath'}=$1;
@@ -368,6 +377,8 @@ sub ShowHelp
  print "--without-mss    : compiles without MSS [default].\n";
  print "--with-ssc       : compiles using Simple Streams Compatibility.\n";
  print "--without-ssc    : compiles without SSC [default].\n";
+ print "--with-alcon     : compiles with Alcon hack.\n";
+ print "--without-alcon  : compiles without Alcon hack [default].\n";
  print "--with-pthread   : uses pthread for X11 driver.\n";
  print "--without-pthread: avoids pthread for X11 driver [default].\n";
  
@@ -1104,6 +1115,7 @@ sub CreateConfigH
  $text.="#define TVComp_$Comp\n";
  $text.="#define TVCompf_$Compf\n";
  $text.="\n#define MSS\n#include <mss.h>\n" if @conf{'mss'} eq 'yes';
+ $text.="\n#define USING_ALCON\n" if @conf{'alcon'} eq 'yes';
  $text.="\n";
  foreach $line (@MakeDefsRHIDE)
    {

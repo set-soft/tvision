@@ -10,4 +10,4 @@ extern TScreen *TV_Win32DriverCheck();
 extern TScreen *TV_WinNTDriverCheck();
 extern TScreen *TV_XDriverCheck();
 extern TScreen *TV_XTermDriverCheck();
-
+extern TScreen *TV_AlconDriverCheck();

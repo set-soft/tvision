@@ -231,6 +231,9 @@ stDriver Drivers[]=
  #endif
 
  #ifdef TVOS_Win32
+  #ifdef USING_ALCON
+   { TV_AlconDriverCheck, 110, "Alcon" },
+  #endif // USING_ALCON
   #ifdef HAVE_X11
    // This is experimental, but believe it or not Cygwin have X11 support
    { TV_XDriverCheck,     100, "X11" },

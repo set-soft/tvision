@@ -300,6 +300,11 @@ librhtv$(ExLIB):: \
 	obj/winntkey$(ExOBJ) \
 	obj/winntmouse$(ExOBJ) \
 	obj/winntscr$(ExOBJ) \
+	obj/alcondis$(ExOBJ) \
+	obj/alconkey$(ExOBJ) \
+	obj/alconmouse$(ExOBJ) \
+	obj/alconscr$(ExOBJ) \
+	obj/alcon$(ExOBJ) \
 	obj/x11dis$(ExOBJ) \
 	obj/x11key$(ExOBJ) \
 	obj/x11mouse$(ExOBJ) \
@@ -6824,6 +6829,151 @@ obj/winntscr$(ExOBJ):: winntscr.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
+obj/alcondis$(ExOBJ):: alcondis.cc \
+	$(CLASSES_DIR)/alcon/alcondis.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/app.h \
+	$(INCLUDE_DIR)/tv/button.h \
+	$(INCLUDE_DIR)/tv/checkbox.h \
+	$(INCLUDE_DIR)/tv/cluster.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/desktop.h \
+	$(INCLUDE_DIR)/tv/dialog.h \
+	$(INCLUDE_DIR)/tv/dialogs.h \
+	$(INCLUDE_DIR)/tv/drawbuf.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/group.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/label.h \
+	$(INCLUDE_DIR)/tv/object.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/point.h \
+	$(INCLUDE_DIR)/tv/program.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/radiobtn.h \
+	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/sitem.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/sttctext.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/view.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(INCLUDE_DIR)/tv/window.h \
+	$(INCLUDE_DIR)/tv/alcon/key.h \
+	$(INCLUDE_DIR)/tv/alcon/mouse.h \
+	$(INCLUDE_DIR)/tv/alcon/screen.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/alconkey$(ExOBJ):: alconkey.cc \
+	$(CLASSES_DIR)/alcon/alconkey.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/point.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tkeyext.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(INCLUDE_DIR)/tv/alcon/key.h \
+	$(INCLUDE_DIR)/tv/alcon/mouse.h \
+	$(INCLUDE_DIR)/tv/alcon/screen.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/alconmouse$(ExOBJ):: alconmouse.cc \
+	$(CLASSES_DIR)/alcon/alconmouse.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/eventqu.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/point.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(INCLUDE_DIR)/tv/alcon/key.h \
+	$(INCLUDE_DIR)/tv/alcon/mouse.h \
+	$(INCLUDE_DIR)/tv/alcon/screen.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/alconscr$(ExOBJ):: alconscr.cc \
+	$(CLASSES_DIR)/alcon/alconscr.cc \
+	$(INCLUDE_DIR)/cl/unistd.h \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/point.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(INCLUDE_DIR)/tv/alcon/key.h \
+	$(INCLUDE_DIR)/tv/alcon/mouse.h \
+	$(INCLUDE_DIR)/tv/alcon/screen.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/vga$(ExOBJ):: alcon.cc \
+	$(CLASSES_DIR)/alcon/alcon.cc \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
 obj/x11dis$(ExOBJ):: x11dis.cc \
 	$(CLASSES_DIR)/x11/x11dis.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
@@ -7359,6 +7509,10 @@ OBJFILES=\
 	obj/winntkey$(ExOBJ) \
 	obj/winntmouse$(ExOBJ) \
 	obj/winntscr$(ExOBJ) \
+	obj/alcondis$(ExOBJ) \
+	obj/alconkey$(ExOBJ) \
+	obj/alconmouse$(ExOBJ) \
+	obj/alconscr$(ExOBJ) \
 	obj/x11dis$(ExOBJ) \
 	obj/x11key$(ExOBJ) \
 	obj/x11mouse$(ExOBJ) \
