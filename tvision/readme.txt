@@ -29,15 +29,17 @@ file for more information, I explain which differences I found while porting
 the examples there.
   Most of the patches were made by Robert Hoehne. I contributed with various
 patches and modules mainly to extend the original functionality.
-  The library is distributed under the GPL license even when I don't know if
-it is ok, but that's the Robert's wish. The file copying contains the GPL
-license and the file copying.rh contains the RHIDE copyright.
+  The library is distributed under the GPL license even when I seems to be OK
+because according to a FAQ in the Inprise web site the base library is Public
+Domain. The file copying contains the GPL license and the file copying.rh
+contains the RHIDE copyright.
 
   The purpose of this distribution is avoid downloading the whole RHIDE to
 use it. I'm doing the distribution because Robert doesn't have enough time
-to do it.
+to do it. Additionally this distribution will make RHIDE's compilation much
+more simple for people don't familiarized with it.
 
-  Most of the notes aplies only to the source distribution but there are a
+  Most of the notes applies only to the source distribution but there are a
 lot of important information for the binary too.
 
 
@@ -58,6 +60,7 @@ Perl script. The reverse is valid: the DOS package can be used under Linux
 running the fromdos.pl Perl script.
   The compress and compress.bat files are used to create the distribution
 package and are included.
+
 
 
 
