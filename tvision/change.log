@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.535  2004/05/06 19:39:02  set
+* Fixed: Use of delete[] for TVBitmapFontSize * objects. Reported by
+Oswald using valgrind.
+* Fixed: TListViewer::center not initialized. Reported by Oswald using
+valgrind.
+.
 Revision 2.534  2004/05/05 20:11:03  set
 Modified/Fixed/?: In "File Dialogs": Now as soon as the file list is
 selected the focused item is propagated to the other views (input line and

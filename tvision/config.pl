@@ -330,6 +330,14 @@ elsif ($i=~'--real-prefix=(.*)')
       {
        $conf{'no-dynamic'}='yes';
       }
+    elsif ($i eq '--unsafe-memcpy')
+      {
+       $conf{'HAVE_UNSAFE_MEMCPY'}='yes';
+      }
+    elsif ($i eq '--safe-memcpy')
+      {
+       $conf{'HAVE_UNSAFE_MEMCPY'}='no';
+      }
     # For compatibility with autoconf:
     # LinCS/tiger - ignore some autoconf generated params
     elsif (($i=~'--cache-file=(.*)') || ($i=~'--srcdir=(.*)') || ($i=~'--enable-ltdl-convenience'))
@@ -381,6 +389,7 @@ sub ShowHelp
  print "                : enables header dependencies and other stuff needed\n";
  print "                  for developement, not just use the editor.\n";
  print "--just-spec     : update RPMs spec file and exit.\n";
+ print "--unsafe-memcpy : disable the use of memcpy when memory overlaps\n";
  print "--help          : displays this text.\n";
 }
 
@@ -1102,6 +1111,7 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_SSC','Use stream replacements');
  $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
  $text.=ConfigIncDefYes('HAVE_LINUX_PTHREAD','Linux implementation of POSIX threads');
+ $text.=ConfigIncDefYes('HAVE_UNSAFE_MEMCPY','Memcpy doesn\'t support overlaps');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n";
  $text.="#define TVOSf_$OSf\n";
