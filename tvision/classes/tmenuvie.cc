@@ -311,7 +311,7 @@ ushort TMenuView::execute()
                     r.a.x = r.a.x + origin.x;
                     r.a.y = r.b.y + origin.y;
                     r.b = owner->size;
-                    if( size.y == 1 )
+                    if( compactMenu && size.y == 1 ) // SET
                         r.a.x--;
                     target = topMenu()->newSubView(r, current->subMenu,this);
                     result = owner->execView(target);
@@ -410,7 +410,7 @@ Boolean TMenuView::updateMenu( TMenu *menu )
 
 void TMenuView::do_a_select( TEvent& event )
 {
-//    putEvent( event );
+    putEvent( event );
     event.message.command = owner->execView(this);
     if( event.message.command != 0 && commandEnabled(event.message.command) )
         {

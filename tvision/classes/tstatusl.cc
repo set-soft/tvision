@@ -34,6 +34,49 @@ TStatusLine::TStatusLine( const TRect& bounds, TStatusDef& aDefs ) :
     eventMask |= evBroadcast;
     growMode = gfGrowLoY | gfGrowHiX | gfGrowHiY;
     findItems();
+    computeLength();
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  This routine computes the length of the status line, if that's greater than
+the size.x the status line becomes compacted to allow more options.@*
+  Added by SET.
+
+***************************************************************************/
+
+void TStatusLine::computeLength()
+{
+    int l = 0;
+    TStatusItem *p;
+
+    if( items != 0 )
+        {
+        p = items;
+        while( p != 0 )
+            {
+            if( p->text != 0 )
+                l += cstrlen(p->text) + 2;
+            p = p->next;
+            }
+        }
+    compactStatus = l > size.x;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Calls TView::changeBounds, additionally re-computes the length of the
+line to select the no/compact mode.@*
+  Added by SET.
+
+***************************************************************************/
+
+void TStatusLine::changeBounds(const TRect& bounds)
+{
+ TView::changeBounds(bounds);
+ computeLength();
 }
 
 void TStatusLine::disposeItems( TStatusItem *item )
@@ -73,14 +116,14 @@ void TStatusLine::drawSelect( TStatusItem *selected )
     ushort cNormDisabled = getColor(0x0202);
     ushort cSelDisabled = getColor(0x0505);
     b.moveChar( 0, ' ', cNormal, size.x );
-    TStatusItem *T =  items;
-    ushort i = 0;
+    TStatusItem *T = items;
+    int i = 0, inc = (compactStatus ? 1 : 2); // SET
 
     while( T != 0 )
         {
         if( T->text != 0 )
             {
-            ushort l = cstrlen( T->text );
+            int l = cstrlen( T->text );
             if( i + l < size.x )
                 {
                 if( commandEnabled( T->command) )
@@ -98,7 +141,7 @@ void TStatusLine::drawSelect( TStatusItem *selected )
                 b.moveCStr( i+1, T->text, color );
                 b.moveChar( i+l+1, ' ', color, 1 );
                 }
-            i += l+1;
+            i += l + inc;
             }
         T = T->next;
         }
@@ -148,14 +191,14 @@ TStatusItem *TStatusLine::itemMouseIsIn( TPoint mouse )
     if( mouse.y !=  0 )
         return 0;
 
-    ushort i;
+    int i, inc = (compactStatus ? 1 : 2); // SET
     TStatusItem *T;
 
     for( i = 0, T = items; T != 0; T = T->next)
         {
         if( T->text != 0 )
             {
-            ushort k = i + cstrlen(T->text) + 1;
+            int k = i + cstrlen(T->text) + inc;
             if( mouse.x >= i && mouse. x < k )
                 return T;
             i = k;

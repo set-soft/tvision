@@ -28,6 +28,7 @@ TMenuBar::TMenuBar( const TRect& bounds, TMenu *aMenu ) :
     menu = aMenu;
     growMode = gfGrowHiX;
     options |= ofPreProcess;
+    computeLength();
 }
 
 TMenuBar::TMenuBar( const TRect& bounds, TSubMenu& aMenu ) :
@@ -36,17 +37,62 @@ TMenuBar::TMenuBar( const TRect& bounds, TSubMenu& aMenu ) :
     menu = new TMenu( aMenu );
     growMode = gfGrowHiX;
     options |= ofPreProcess;
+    computeLength();
 }
+
 
 TMenuBar::~TMenuBar()
 {
     delete(menu);
 }
 
+
+/**[txh]********************************************************************
+
+  Description:
+  This routine computes the length of the menu bar, if that's greater than
+the size.x the menu becomes compacted to allow more options.@*
+  Added by SET.
+
+***************************************************************************/
+
+void TMenuBar::computeLength()
+{
+    int l = 0;
+    TMenuItem *p;
+
+    if( menu != 0 )
+        {
+        p = menu->items;
+        while( p != 0 )
+            {
+            if( p->name != 0 )
+                l += cstrlen(p->name) + 2;
+            p = p->next;
+            }
+        }
+    compactMenu = l > size.x;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Calls TMenuView::changeBounds, additionally re-computes the length of the
+bar to select the no/compact mode.@*
+  Added by SET.
+
+***************************************************************************/
+
+void TMenuBar::changeBounds(const TRect& bounds)
+{
+ TMenuView::changeBounds(bounds);
+ computeLength();
+}
+
 void TMenuBar::draw()
 {
     ushort color;
-    short x, l;
+    int x, l, inc;
     TMenuItem *p;
     TDrawBuffer b;
 
@@ -55,6 +101,7 @@ void TMenuBar::draw()
     ushort cNormDisabled =  getColor(0x0202);
     ushort cSelDisabled =  getColor(0x0505);
     b.moveChar( 0, ' ', cNormal, size.x );
+    inc = (compactMenu ? 1 : 2); // SET
     if( menu != 0 )
         {
         x = 0;
@@ -81,7 +128,7 @@ void TMenuBar::draw()
                     b.moveCStr( x+1, p->name, color );
                     b.moveChar( x+l+1, ' ', color, 1 );
                     }
-                x += l + 1;
+                x += l + inc;
                 }
             p = p->next;
             }
@@ -91,13 +138,15 @@ void TMenuBar::draw()
 
 TRect TMenuBar::getItemRect( TMenuItem *item )
 {
-    TRect r( 1, 0, 1, 1 );
+    int y = compactMenu ? 1 : 0; // SET
+    TRect r( y, 0, y, 1 );
+    y = compactMenu ? 1 : 2; // SET
     TMenuItem *p = menu->items;
     while( True )
         {
         r.a.x = r.b.x;
         if( p->name != 0 )
-            r.b.x += cstrlen(p->name) + 1;
+            r.b.x += cstrlen(p->name) + y;
         if( p == item )
             return r;
         p = p->next;
