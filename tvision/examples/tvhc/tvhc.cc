@@ -140,7 +140,7 @@ void replaceExt( char *fileName, char *nExt, Boolean force, char *dest )
 {
     char dir[PATH_MAX]; 
     //char name[NAME_MAX];
-    char ext[NAME_MAX];
+    char ext[PATH_MAX]; // NAME_MAX
     CreateStrStream(os,buffer,PATH_MAX);
 
     QNXSplitExt(fileName, dir, ext);

@@ -290,7 +290,6 @@ void TFileList::readDirectory( const char *aWildCard )
 {
   long dir;
   _finddata_t de;
-  int hasparent=0;
   DirSearchRec *p;
   TFileCollection *fileList = new TFileCollection( 10, 10 );
   AllocLocalStr(wildcard,strlen(aWildCard)+1);

@@ -132,11 +132,7 @@ void Shell::Test()
 {
  //postMsg("Hola");
  postInfo(1,"  Chau");
- #ifdef TVCompf_djgpp
- delay(1000);
- #else
- sleep(1);
- #endif
+ CLY_YieldProcessor(1000000);
  postInfo(2,"  Pepe");
 }
 
