@@ -10,11 +10,15 @@
 *linuxso/librhtv*
 *linuxso/instlib
 *linuxso/Makefile
-*linuxso/gkeyli.cc
+tvision/linuxso/gkeyli.cc
 *linuxso/.cvsignore
 *include/curses.h
 *include/ncurses.h
 *include/unctrl.h
 *include/term.h
 configure.cache
-
+*~
+*.so
+*.so.?
+*.so.?.?.?
+*makemak.pl
