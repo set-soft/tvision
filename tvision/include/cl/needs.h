@@ -36,7 +36,6 @@ compiler.@p
   #define NEEDS_FNMATCH
   #define NEEDS_ITOA
   #define NEEDS_GETLINE
-  #define NEEDS_SNPRINTF
  #endif
  
  // DOS djgpp

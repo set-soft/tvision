@@ -485,7 +485,6 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
   #endif
-  #undef CLY_Have_snprintf
  #endif
  
  /* Under DOS djgpp defines it */
