@@ -712,7 +712,7 @@ sub GenerateMakefile
     $text=~s/\@target2_rule\@//g;
    }
  $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy\n";
- $rep.="\tcp intl/dummy/libtvfintl.a $makeDir";
+ $rep.="\tcp intl/dummy/libtvfintl.a $makeDir\n";
  $rep.="\tln -s intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
  $text=~s/\@intl_dummy_rule\@/$rep/g;
 
