@@ -793,8 +793,19 @@ CFunc int  CLY_FileAttrIsRO(CLY_mode_t *mode);
 CFunc void CLY_FileAttrModified(CLY_mode_t *mode);
 /* It returns a mode that can be used for a newly created file */
 CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
+#endif
+
 /* Returns the name of the shell command */
 CFunc char *CLY_GetShellName(void);
+
+#ifdef TV_BIG_ENDIAN
+// Most RISC machines
+#define CLY_High16(a)  ((a) & 0xFF)
+#define CLY_Low16(a)   ((a) >> 8)
+#else
+// Intel machines
+#define CLY_High16(a)  ((a) >> 8)
+#define CLY_Low16(a)   ((a) & 0xFF)
 #endif
 
 #ifdef DJGPP_HaveLFNs
