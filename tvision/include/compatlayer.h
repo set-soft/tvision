@@ -161,6 +161,9 @@ and regex.
   #ifdef Uses_mkstemp
    CFunc int mkstemp(char *_template);
   #endif
+  #ifdef Uses_getcwd
+   #define Include_io
+  #endif
  #endif
  
  // Under DOS djgpp defines it
@@ -201,6 +204,9 @@ and regex.
   #endif
   #ifdef Uses_mkstemp
    #define Include_stdio
+  #endif
+  #ifdef Uses_getcwd
+   #define Include_unistd
   #endif
  #endif
  
@@ -250,6 +256,9 @@ and regex.
    // Is that a bug? shouldn't be sys/stat.h enough?
    #define Include_sys_types
   #endif
+  #ifdef Uses_getcwd
+   #define Include_unistd
+  #endif
  #endif
  
  // Generic UNIX system
@@ -293,6 +302,9 @@ and regex.
   #endif
   #ifdef Uses_mkstemp
    #define Include_stdio
+  #endif
+  #ifdef Uses_getcwd
+   #define Include_unistd
   #endif
  #endif
 #endif // __GNUC__
@@ -405,6 +417,9 @@ and regex.
  #endif
  #ifdef Uses_mkstemp
   CFunc int mkstemp(char *_template);
+ #endif
+ #ifdef Uses_getcwd
+  #define Include_dir
  #endif
 #endif
 
@@ -524,6 +539,9 @@ and regex.
  #endif
  #ifdef Uses_mkstemp
   CFunc int mkstemp(char *_template);
+ #endif
+ #ifdef Uses_getcwd
+  #define Include_io
  #endif
 #endif
 
