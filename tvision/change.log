@@ -1,4 +1,10 @@
 $Log$
+Revision 1.242.2.12  2001/12/30 18:31:09  set
+* Added: Support for MSS 1.2.1 and fixed missing delete [] in demo. Patches
+by Laurynas.
+* Added: Configuration options to use MSS and documentation in the readme.
+* Fixed: Various missing delete [] in the classes.
+
 Revision 1.242.2.11  2001/12/30 16:12:45  set
 * Fixed: I wrongly changed the code used for the BC++ 5.5 target to yield
 the processor to use the MinGW version. It made applications eat 100% of
@@ -1561,7 +1567,7 @@ give just another example on how to use it with TVision.
 Revision 1.11  1999/01/19 22:33:36  set
 * Released the 1.0.3 version and uploaded to DJ's server.
 .
-Revision 1.9  1999/01/18 22:55:18  root (set)
+Revision 1.9  1999/01/18 22:55:18  set
 * Copied the changes from DOS.
 * Added the versions of libraries I use for Linux in the change.log.
 
