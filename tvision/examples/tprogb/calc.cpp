@@ -4,6 +4,7 @@
 // and fixed a small bug.
 //
 // Author: Jay Perez.
+#include <unistd.h>
 
 #define Uses_TBackground
 #define Uses_TListBox
@@ -39,16 +40,11 @@
 __link( RView )
 __link( RDialog )
 __link( RButton )
-#include <mem.h>                       // memset
 
-#include <dos.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <strstrea.h>
-#include <iomanip.h>
-#include <conio.h>
 
 #include "tprogbar.h"
 
@@ -210,10 +206,10 @@ void myProgress::mainProcess( void )
 	 for( int x = 0; x < sampleIterations; x++ )
 	 {
 		  setCurIter( ++cnt );         // set the current iteration count & update
-		  delay(500);
+		  usleep(500000);
 	 }
 
-	 delay(500);
+	 usleep(500000);
 	 message(owner,evCommand,cmOK,this);// close dialog box
 }
 

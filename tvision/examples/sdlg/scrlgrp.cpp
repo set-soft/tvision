@@ -10,7 +10,7 @@
 #define Uses_TEvent
 // ===================================================================
 #include <tv.h>
-#include "Dlg.h"
+#include "dlg.h"
 // ===================================================================
 
 ScrollGroup::ScrollGroup(const TRect& bounds, TScrollBar* hsb, TScrollBar* vsb) :

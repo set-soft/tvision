@@ -21,7 +21,11 @@
 #define Uses_TInputLine
 #define Uses_TButton
 #include <tv.h>
+#ifdef __DJGPP__
 #include <dos.h>
+#else
+#include <unistd.h>
+#endif
 const cmAbout = 100;
 const cmTest  = 101;
 
@@ -128,7 +132,11 @@ void Shell::Test()
 {
  //postMsg("Hola");
  postInfo(1,"  Chau");
+ #ifdef __DJGPP__
  delay(1000);
+ #else
+ sleep(1);
+ #endif
  postInfo(2,"  Pepe");
 }
 

@@ -4,11 +4,11 @@
 // and fixed a small bug.
 //
 // Author: Jay Perez. Modified by Barnaby Falls
-#include <mem.h>                       // memset
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 
 #define Uses_TBackground
 #define Uses_TListBox
@@ -44,11 +44,6 @@
 __link( RView )
 __link( RDialog )
 __link( RButton )
-
-#include <dos.h>
-#include <strstrea.h>
-#include <iomanip.h>
-#include <conio.h>
 
 #include "tprogbar.h"
 
@@ -176,7 +171,7 @@ void TMyApplication::statusDlg()
 	 keepOnGoing=False;
 	 break;
 	 }
-      delay(50);
+      usleep(50000);
       }
    destroy(theMessage);
 
@@ -192,7 +187,7 @@ void TMyApplication::statusDlg()
 	    keepOnGoing=False;
 	    break;
 	    }
-	 delay(50);
+	 usleep(50000);
 	 }
       destroy(theMessage);
       }
@@ -209,7 +204,7 @@ void TMyApplication::statusDlg()
 	    keepOnGoing=False;
 	    break;
 	    }
-	 delay(50);
+	 usleep(50000);
 	 }
       destroy(theMessage); // not necessary since we destroy
 			   // the TDialog also
