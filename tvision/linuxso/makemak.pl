@@ -32,6 +32,11 @@ $f=&cat('../linux/Makefile');
 &replace('Makefile',$f);
 system('ln -s ../linux/gkeyli.cc gkeyli.cc') unless (-s 'gkeyli.cc');
 system("make");
+# Create the links so the library can be used from here
+system("rm -f librhtv.so");
+system("rm -f librhtv.so.$extver");
+system("ln -s librhtv.so.$intver librhtv.so");
+system("ln -s librhtv.so.$intver librhtv.so.$extver");
 
 #
 # Generate a small installation script

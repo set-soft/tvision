@@ -1,4 +1,7 @@
 $Log$
+Revision 1.104  1999/09/16 02:26:54  set
+* Modified: Now the file open dialog have space for 2 more filenames.
+.
 Revision 1.103  1999/09/12 19:47:54  set
 * Moved a lot of code from the config.pl script to conflib.pl to share it
 with the editor.
