@@ -89,6 +89,17 @@ typedef          __int64 int64;
 #endif
 #endif /* CLY_DoNotDefineSizedTypes */
 
+#ifdef HAVE_64BITS_POINTERS
+typedef uint64 uipointer;
+#else
+typedef uint32 uipointer;
+#endif
+/* Macros to cast a pointer into a 64 bits unsigned and viceversa */
+#undef  CLY_PointerToUI64
+#undef  CLY_UI64ToPointer
+#define CLY_UI64ToPointer(a) ((void *)(uipointer)(a))
+#define CLY_PointerToUI64(a) ((uint64)(uipointer)(a))
+
 #if defined(CLY_DefineUTypes) || defined(__cplusplus)
 /* The following are just aliases and the size is platform dependant */
 typedef unsigned char  uchar;

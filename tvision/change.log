@@ -1,4 +1,19 @@
-$Log$
+$Log$.
+Revision 2.601  2004/11/29 16:23:15  set
+* Fixed: [DJGPP][Maintainer dependencies] The path to system headers to be
+excluded from dependencies must include the gcc 3.x dir.
+* Fixed: [DJGPP][RHIDE compilation] RHIDE_LDFLAGS' UNIX settings interfere
+with RHIDE on DOS.
+* Added: [DJGPP] Warning in the docs about conio gettext and intl gettext
+collision. This isn't fixed in current djgpp version even when this issue
+is know for years.
+* Fixed: [Compilation][Examples][gcc 3.x] Missing string.h in thelp.cc
+* Fixed: [Compilation][Examples][gcc 3.x] CLY_OpenModeT to ushort in tvhc.h
+* Fixed: [DOS] Missing useFixKbdBuffer in key.h.
+* Fixed: [DJGPP][Maintainer dependencies] Dependencies for examples when
+they are abolute (even after using gprexp).
+* Updated: [Win32] makefiles.
+
 
 --------- CVS tag r_2_0_3 and r_2_0_3nu
 

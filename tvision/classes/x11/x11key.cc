@@ -343,6 +343,8 @@ ushort TGKeyX11::GKey()
     Symbol=UTF8_2_Symbol(bufferKb);
     if (Symbol==0 && Key==' ')
        name=kbSpace; // Why Ctrl+Space reports it? is my X?
+    else if (Symbol==0 && Key=='2')
+       name=kb2;     // And this one?
     else
       {
        if (Symbol>=32 && Symbol<128)
@@ -363,7 +365,7 @@ ushort TGKeyX11::GKey()
             }
          }
       }
-    //printf("Key of lenght %d: name: %d Symbol %04X Key: 0x%04X\n",lenKb,name,Symbol,Key);
+    //printf("Key of lenght %d: name: %d Symbol %04X Key: 0x%04X\n",lenKb,name,Symbol,(unsigned)Key);
    }
  else
    {/* A key with something else, not handled yet */
