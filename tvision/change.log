@@ -1,4 +1,7 @@
 $Log$
+Revision 1.8  1999/01/13 00:55:43  set
+Passed the changes to DOS.
+.
 Revision 1.7  1999/01/13 00:35:35  root
 Added a linuxso directory to create the dynamically linked version of the
 library.
