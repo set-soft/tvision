@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
         //printf("%s\n",de.cFileName);
         fprintf(f,"%s\\%s ",argv[i],de.cFileName);
        }
-     while (FindNextFile(d,&de))
+     while (FindNextFile(d,&de));
      FindClose(d);
     }
  fprintf(f,"\n");
