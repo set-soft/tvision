@@ -197,7 +197,7 @@ protected:
  void LoadFontAsUnicode();
  char *SearchX11Font(const char *foundry, const char *family, int w, int h);
  char *SearchX11Font(const char *foundry, const char *family);
- char *SearchX11DefaultFont();
+ char *SearchX11Font(const char *pattern);
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

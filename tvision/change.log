@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.10  2003/02/18 19:09:15  set
+* Fixed: a typo in TScreen::defaultGetCharacter (extra *2) it made the
+"match pair on the fly" of SETEdit behave quite crazy.
+
 Revision 2.399.2.9  2003/02/18 18:33:26  set
 * Added: [X11] cursor support for the driver when using X11 fonts.
 * Added: A new field in TEvent to hold the key in unicode, not used ... yet.

@@ -115,7 +115,9 @@ public:
  };
  // Be careful with this table is public just to simplify the code.
  static stIntCodePairs      InternalMap[];
+ static stIntCodePairs      InternalMapBrokenLinux[];
  static const int           providedUnicodes;
+ static const int           providedUnicodesBL;
 
 protected:
  static CodePage *CodePageOfID(int id);
