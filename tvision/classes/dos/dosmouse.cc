@@ -1,3 +1,17 @@
+Recien empiezo.
+1) Hay que ver como hacer para que void TEventQueue::mouseInt() (mouse.cc)
+llame a "draw_mouse" solo cuando es necesario:
+ A) Que exista emulateMouse.
+ B) Que la llame usando un puntero.
+2) Por todo TView usa TEventQueue::mouseIntFlag, es una chanchada.
+3) registerHandler asume que lo unico en la tierra que se puede registrar es
+lo que indica mouseIntInfo, es una garcha.
+4) La idea de lockeo de Robert es otra garcha:
+    _go32_dpmi_lock_code((void *)TEventQueue::mouseInt,500);
+    _go32_dpmi_lock_code((void *)CLY_Ticks,100);
+Deberia saber el largo. Y lo de Ticks si es tan sensitivo hay que moverlo
+aca.
+
 /*
  *      Turbo Vision - Version 2.0
  *
@@ -16,61 +30,54 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #include <stdlib.h>
 #include <conio.h>
+#include <dos.h>
+#include <stdio.h>
 
 #define Uses_TEvent
 #define Uses_TEventQueue
 #include <tv.h>
 
-#include <dos.h>
-#include <stdio.h>
-
-uchar THWMouse::buttonCount = 0;
-Boolean THWMouse::handlerInstalled = False;
-Boolean THWMouse::noMouse = False;
-
-#if defined( DJGPP ) && ( DJGPP > 1 )
 #include <dpmi.h>
-#define REGS __dpmi_regs
-#define INTR(nr,r) __dpmi_int(nr,&r)
-#else
-#define REGS union REGS
-#define INTR(nr,r) int86(nr,&r,&r)
-#endif
 #include <sys/farptr.h>
 #include <go32.h>
 
+#include <dosmouse.h>
+
+#define REGS       __dpmi_regs
+#define INTR(nr,r) __dpmi_int(nr,&r)
 #define AX r.x.ax
 #define BX r.x.bx
 #define CX r.x.cx
 #define DX r.x.dx
 #define ES r.x.es
 
+static char  THWMouseDOS::useMouseHandler=1;
+static ulong THWMouseDOS::screenBase=0xB8000;
+
 static unsigned short mouse_char;
 static int last_x = 0,last_y = 0;
 static int cols;
 static int visible = 0;
-int emulate_mouse = 0;
-int dual_display = 0;
 
 #define SC_BASE (dual_display ? 0xb0000 : ScreenPrimary)
 
 static volatile
 void get_mouse_char()
 {
-  mouse_char = _farpeekw(_dos_ds,SC_BASE+(last_y*cols+last_x)*2);
+  mouse_char = _farpeekw(_dos_ds,screenBase+(last_y*cols+last_x)*2);
 }
 
 static volatile
 void set_mouse_char()
 {
   unsigned short c = mouse_char ^ 0x7F00;
-  _farpokew(_dos_ds,SC_BASE+(last_y*cols+last_x)*2,c);
+  _farpokew(_dos_ds,screenBase+(last_y*cols+last_x)*2,c);
 }
 
 static volatile
 void reset_mouse_char()
 {
-  _farpokew(_dos_ds,SC_BASE+(last_y*cols+last_x)*2,mouse_char);
+  _farpokew(_dos_ds,screenBase+(last_y*cols+last_x)*2,mouse_char);
 }
 
 static volatile
@@ -81,12 +88,13 @@ void show_mouse_char()
   set_mouse_char();
 }
 
+// Aca hay que tener 2 rutinas que dependan de emulateMouse
 volatile
 int draw_mouse(int x,int y)
 {
   if (x != last_x || y != last_y)
   {
-    if (!emulate_mouse) return 1;
+    if (!emulateMouse) return 1;
     if (visible) reset_mouse_char();
     last_x = x;
     last_y = y;
@@ -271,22 +279,20 @@ void THWMouse::resume()
   show();
 }
 
-int use_mouse_handler = 1;
-
 THWMouse::THWMouse()
 {
   char *OS=getenv("OS");
   // SET: NT reacts crashing when we use the mouse handler, don't know why
   // and personally don't care, so just disable the handler.
   if (OS && strcmp(OS,"Windows_NT")==0)
-     use_mouse_handler=0;
+     useMouseHandler=0;
   REGS r;
   AX = 0;
   INTR(0x33,r);
   if (!AX)
       return;
   my_buttonCount = buttonCount = BX & 0x00ff;
-  if (handlerInstalled == False && use_mouse_handler)
+  if (handlerInstalled == False && useMouseHandler)
   {
     LD(mouseIntRegs);
     LD(tempMouse);
@@ -294,9 +300,9 @@ THWMouse::THWMouse()
     LD(last_x);
     LD(last_y);
     LD(visible);
-    LD(emulate_mouse);
+    LD(emulateMouse);
     LD(cols);
-    LD(dual_display);
+    LD(screenBase);
     LD(TEventQueue::eventCount);
     LD(TEventQueue::curMouse);
     LD(TEventQueue::eventQueue);
@@ -343,7 +349,7 @@ void THWMouse::show()
   if (!present()) return;
   if (mouse_is_shown) return;
   mouse_is_shown = 1;
-  if (!emulate_mouse)
+  if (!emulateMouse)
   {
     REGS r;
     if ( present() )
@@ -365,7 +371,7 @@ void THWMouse::hide()
   if (!present()) return;
   if (!mouse_is_shown) return;
   mouse_is_shown = 0;
-  if (!emulate_mouse)
+  if (!emulateMouse)
   {
     REGS r;
     if ( buttonCount != 0 )
@@ -446,6 +452,10 @@ void THWMouse::getEvent( MouseEventType& me )
     draw_mouse(x,y);
   }
 }
+
+::Init
+screenBase=ScreenPrimary;
+
 
 #endif // DJGPP
 
