@@ -137,6 +137,10 @@ typedef unsigned long  ulong;
 #ifdef TVComp_GCC
 /* GNU C is supported for various OSs: */
 
+ #ifdef Uses_chdir
+  #undef  Uses_unistd
+  #define Uses_unistd
+ #endif
  #ifdef Uses_string
   #undef  Include_string
   #define Include_string 1
@@ -880,6 +884,18 @@ typedef unsigned long  ulong;
   #define strncasecmp strnicmp
   #undef  strcasecmp
   #define strcasecmp  stricmp
+ #endif
+ #ifdef Uses_chdir
+  #undef  Include_direct
+  #define Include_direct 1
+  #undef chdir(a)
+  #define chdir(a) _chdir(a)
+ #endif
+ #ifdef Uses_getcwd
+  #undef  Include_direct
+  #define Include_direct 1
+  #undef getcwd(a)
+  #define getcwd(a) _getcwd(a)
  #endif
  #ifdef Uses_stdlib
   #undef  Include_stdlib

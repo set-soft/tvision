@@ -16,6 +16,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #define Uses_stdio
 #define Uses_string
 #define Uses_unistd
+#define Uses_chdir
 
 #define Uses_MsgBox
 #define Uses_TChDirDialog
