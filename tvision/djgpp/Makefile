@@ -2278,16 +2278,16 @@ obj/tvtext2.o:: $(DEPS_215)
 DEPS_216=tweaked.c
 obj/tweaked.o:: $(DEPS_216)
 	$(RHIDE_COMPILE.c.o)
-DEPS_217=twindow.cc ../include/drawbuf.h ../include/event.h\
-	../include/frame.h ../include/group.h ../include/intl.h\
-	../include/ipstream.h ../include/object.h ../include/objects.h\
-	../include/opstream.h ../include/palette.h ../include/point.h\
-	../include/pstream.h ../include/rect.h ../include/scrlbar.h\
-	../include/stddlg.h ../include/streambl.h ../include/system.h\
-	../include/tkeys.h ../include/tobjstrm.h ../include/ttypes.h\
-	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
-	../include/tvutil.h ../include/view.h ../include/views.h\
-	../include/window.h
+DEPS_217=twindow.cc ../include/app.h ../include/drawbuf.h\
+	../include/event.h ../include/frame.h ../include/group.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/palette.h\
+	../include/point.h ../include/program.h ../include/pstream.h\
+	../include/rect.h ../include/scrlbar.h ../include/stddlg.h\
+	../include/streambl.h ../include/system.h ../include/tkeys.h\
+	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
+	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
+	../include/view.h ../include/views.h ../include/window.h
 obj/twindow.o:: $(DEPS_217)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_218=vesa.cc
