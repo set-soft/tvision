@@ -107,10 +107,10 @@ classes/win32/tdisplay.cc
 classes/win32/tfont.cc
 classes/win32/thwmouse.cc
 classes/win32/tscreen.cc
-classes/winnt/tdisplay.cc
-classes/winnt/tfont.cc
-classes/winnt/thwmouse.cc
-classes/winnt/tscreen.cc
+classes/WinNT/tdisplay.cc
+classes/WinNT/tfont.cc
+classes/WinNT/thwmouse.cc
+classes/WinNT/tscreen.cc
 compat/beep.c
 compat/drivevalid.c
 compat/expandpath.c
@@ -190,7 +190,6 @@ djgpp/vgastate.c
 djgpp/vgastate.h
 drivers2.cc
 dual.cc
-examples/autoconf/example.txt
 +examples/clean.bat
 +examples/clean
 examples/patchenv.pl
@@ -500,7 +499,6 @@ include/tv/window.h
 intl/dummy/intldummy.c
 intl/dummy/Makefile
 +linux/compress
-linux/exclude.txt
 linux/gkeyli.cc
 linux/inclubin.txt
 linux/includbi.txt

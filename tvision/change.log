@@ -1,4 +1,8 @@
 $Log$
+Revision 1.222  2001/10/13 21:40:20  set
+* Fixed: The BC++ 5.5 makefile lacked a rule to make C++ components of
+compatlayer (currently just a file). Patch by Owen Rudge <owen@osplus.co.uk>.
+.
 Revision 1.221  2001/10/12 02:54:44  set
 -----------------------------------------------------------------------------
 v1.1.3 release. Switching to stable.
