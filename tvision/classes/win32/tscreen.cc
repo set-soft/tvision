@@ -282,5 +282,19 @@ void SaveScreenReleaseMemory(void)
 	buffer = NULL;
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Finds if this terminal have variable code page of that's fixed.
+  
+  Return: 
+  True if the terminal have a variable code page.
+  
+***************************************************************************/
+ 
+Boolean TScreen::codePageVariable()
+{
+ return True;
+}
 #endif // _WIN32
 

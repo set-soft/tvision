@@ -1,4 +1,20 @@
 $Log$
+Revision 1.179  2001/08/31 01:13:44  set
+* Modified: I cleaned the writeBlock() function of tscreen.cc. It became a
+mess. I removed the C_, C__ and C___ macros and the __SAVECURSOR_OK option.
+Also removed some redundant checks and reindented the code.
+* Fixed: Now writeBlock() is Endian safe. I got reports from David Nock
+<nockdg@es.co.nz> who was working in a Linux PPC. I used code ideas from
+the version that José Angel Sánchez Caso (JASC) <jasanchez@polar.es> sent
+me but I couldn't find time to merge.
+* Added: Two functions to compat layer library to get the high and low
+nibble of 16 bits values (according to the endianess of the platform).
+* Fixed: Some times after a suspend/resume of the keyboard ttyname failed
+to return the name of the terminal (who knows why?). Now if the name was
+already known and the new calls fails the old information is used. It was
+part of an Andris patch that I applied but not enabled because I have
+doubts about a line that now I left commented.
+
 Revision 1.178  2001/08/30 20:58:23  set
 * Modified: [Linux] A lot of low level details in the TScreen class:
 * Added: An internal variable TerminalType to hold the type of terminal, it

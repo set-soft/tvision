@@ -103,6 +103,21 @@ void TScreen::fSendToTerminal(const char *value, ...)
 /**[txh]********************************************************************
 
   Description:
+  Finds if this terminal have variable code page of that's fixed.
+  
+  Return: 
+  True if the terminal have a variable code page.
+  
+***************************************************************************/
+ 
+Boolean TScreen::codePageVariable()
+{
+ return TerminalType==GENER_TERMINAL ? False : True;
+}
+
+/**[txh]********************************************************************
+
+  Description:
   Sends the string to the terminal. Is just a replacement for
 fputs(tty_file,...) but ensures tty_file was initialized and does a flush to
 be sure the characters are flushed to the device. (SET)

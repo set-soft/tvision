@@ -392,6 +392,20 @@ int TV_System(const char *command)
   return rc;
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Finds if this terminal have variable code page of that's fixed.
+  
+  Return: 
+  True if the terminal have a variable code page.
+  
+***************************************************************************/
+ 
+Boolean TScreen::codePageVariable()
+{
+ return True;
+}
 #endif // _WIN32
 // vi: set ts=8 sw=2 et : //
 
