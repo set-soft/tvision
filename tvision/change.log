@@ -1,4 +1,7 @@
 $Log$
+Revision 1.80  1999/07/21 01:15:14  set
+* Added: A script to create snap-shots as diffs.
+.
 Revision 1.79  1999/07/17 22:03:37  root (set)
 * Fixed: When exiting and the screen is already suspended I avoid cleaning
 it because it is supposed to be already cleaned. Not sure is the best, I

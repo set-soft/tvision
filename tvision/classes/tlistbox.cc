@@ -22,12 +22,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStreamableClass
 #include <tv.h>
 
-struct TListBoxRec
-{
-    TCollection *items;
-    ccIndex selection;
-};
-
 TListBox::TListBox( const TRect& bounds,
                     ushort aNumCols,
                     TScrollBar *aScrollBar ) :
