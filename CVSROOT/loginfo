@@ -24,9 +24,9 @@
 #DEFAULT (echo ""; id; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
-#CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
-# CVSROOT ls -la $CVSROOT/CVSROOT/
-CVSROOT cp /cvsroot/tvision/tvision/include/tv/x11key.h,v /cvsroot/tvision/tvision/include/tv/x11/key.h,v; cp /cvsroot/tvision/tvision/include/tv/x11mouse.h,v /cvsroot/tvision/tvision/include/tv/x11/mouse.h,v;  cp /cvsroot/tvision/tvision/include/tv/x11scr.h,v /cvsroot/tvision/tvision/include/tv/x11/screen.h,v; echo Copiado
+CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
+#CVSROOT ls -la $CVSROOT/CVSROOT/
+#CVSROOT cp /cvsroot/tvision/tvision/include/tv/x11key.h,v /cvsroot/tvision/tvision/include/tv/x11/key.h,v; cp /cvsroot/tvision/tvision/include/tv/x11mouse.h,v /cvsroot/tvision/tvision/include/tv/x11/mouse.h,v;  cp /cvsroot/tvision/tvision/include/tv/x11scr.h,v /cvsroot/tvision/tvision/include/tv/x11/screen.h,v; echo Copiado
 DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} tvision-checkins@lists.sourceforge.net
 #DEFAULT chmod +x /cvsroot/tvision/tvision/configure,v /cvsroot/tvision/tvision/configset,v
 #DEFAULT whoami; ls -la /cvsroot/tvision/tvision; ls -la /cvsroot/tvision
