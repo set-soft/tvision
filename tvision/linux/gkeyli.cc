@@ -596,6 +596,7 @@ typedef struct
 #define SCAN_PGDN 109
 #define SCAN_BKSP 14
 #define SCAN_SPAC 57
+#define SCAN_TAB  15
 
 change_entry changes[] = {
   { kblAltL,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
@@ -646,7 +647,8 @@ change_entry changes[] = {
   { kblShift, SCAN_PGUP, kblNormal, SCAN_PGUP, 0, 0},
   { kblShift, SCAN_PGDN, kblNormal, SCAN_PGDN, 0, 0},
   { kblCtrl,  SCAN_BKSP, kblNormal, SCAN_BKSP, 0, 0},
-  { kblCtrl,  SCAN_SPAC, kblNormal, SCAN_SPAC, 0, 0}
+  { kblCtrl,  SCAN_SPAC, kblNormal, SCAN_SPAC, 0, 0},
+  { kblCtrl | kblShift,  SCAN_TAB, kblNormal, SCAN_TAB, 0, 0}
 };
 
 #define change_size (sizeof(changes)/sizeof(change_entry))
