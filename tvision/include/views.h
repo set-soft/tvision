@@ -65,6 +65,10 @@ const ushort
     ofCenterX       = 0x100,
     ofCenterY       = 0x200,
     ofCentered      = 0x300,
+    // SET: I added it, it means we want the object to send more broadcast
+    // than the original TV did. Currently I plan to do it only for a few
+    // classes and enable it by default, see TCluster as example.
+    ofBeVerbose     = 0x400,
 
 // TView GrowMode masks 
 
@@ -169,6 +173,14 @@ const ushort
 // track of closed windows
 
     cmClosingWindow     = 57,
+
+// SET: Usually the owner doesn't have any information about the state of
+// your TCluster members. I added this to change the situation so you don't
+// need to create a specialized TCluster for it.
+// I think that's how an event/message system should work.
+
+    cmClusterMovedTo    = 58,
+    cmClusterPress      = 59,
 
 //  Event masks
 

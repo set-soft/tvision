@@ -49,8 +49,12 @@ public:
     virtual void movedTo( int item );
     virtual void setData( void *rec );
     virtual void setState( ushort aState, Boolean enable );
+    // SET: see tcluster.cc for more information
+    unsigned getExtraOptions() { return extraOptions; }
+    void setExtraOptions(unsigned ops) { extraOptions=ops; }
 
 protected:
+    static unsigned extraOptions;
 
     uint32 value;
     int sel;
