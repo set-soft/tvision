@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.490  2003/07/29 13:22:33  set
+* Fixed: fileview.cc used destroy instead of CLY_destroy. Looks like some
+patch from my home CVS was missing. I also adapted all examples to use
+CLY_destroy. Reported by abx@abx.art.pl
+.
 Revision 2.489  2003/07/28 18:05:17  set
 * Fixed: The configure script to accept command line optins like:
 --cflags="..." without breaking the options. Reported by Ivan.
