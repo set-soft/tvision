@@ -35,6 +35,7 @@ different.
 const int cmTestFont=100;
 const int cmTestRestore=101;
 const int cmTestFontSecondary=102;
+const int cmShell=103;
 
 class TMyApp : public TApplication
 {
@@ -46,6 +47,7 @@ public:
  void testFont();
  void testRestore();
  void testFontSecondary();
+ void shell();
 
  uchar *fontData;
  int quit;
@@ -120,6 +122,10 @@ void TMyApp::handleEvent(TEvent &event)
        case cmTestRestore:
             testRestore();
             break;
+
+       case cmShell:
+            shell();
+            break;
       }
     clearEvent(event);
    }
@@ -140,6 +146,8 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
        *new TMenuItem("Test ~f~ont",cmTestFont,kbNoKey,hcNoContext,"")+
        *new TMenuItem("Test ~f~ont as secondary",cmTestFontSecondary,kbNoKey,hcNoContext,"")+
        *new TMenuItem("~R~estore font",cmTestRestore,kbNoKey,hcNoContext,"")+
+        newLine() +
+       *new TMenuItem("S~h~ell",cmShell,kbNoKey,hcNoContext)+
        *new TMenuItem("E~x~it",cmQuit,kbNoKey,hcNoContext,"Alt-X")
      );
 }
@@ -152,6 +160,14 @@ TStatusLine *TMyApp::initStatusLine(TRect r)
      *new TStatusItem(0,kbF10,cmMenu) +
      *new TStatusItem("~Alt-X~ Exit",kbAltX,cmQuit)
    );
+}
+
+void TMyApp::shell()
+{
+ suspend();
+ TScreen::System(CLY_GetShellName());
+ resume();
+ redraw();
 }
 
 void TMyApp::testFont()
@@ -170,6 +186,11 @@ void TMyApp::testFont()
     messageBox("\03Font successfuly changed",mfInformation | mfOKButton);
     changed1=1;
    }
+ #ifdef TVOS_DOS
+ /* Test for DOS driver mode switch when the font have the same size */
+ messageBox("\03Now I'll change the video mode, fonts should survive",mfInformation | mfOKButton);
+ setScreenMode(0x903);
+ #endif
 }
 
 void TMyApp::testRestore()

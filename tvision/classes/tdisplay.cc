@@ -176,21 +176,14 @@ int TDisplay::defaultGetBlinkState()
 
 TDisplay::TDisplay()
 {
- //updateIntlChars();
 }
 
 TDisplay::TDisplay(const TDisplay&)
 {
- //updateIntlChars();
 }
 
 TDisplay::~TDisplay()
 {
- if (font)
-   {
-    delete font;
-    font=NULL;
-   }
  if (codePage)
    {
     delete codePage;
@@ -230,47 +223,6 @@ void TDisplay::setArgv(int aArgc, char **aArgv, char **aEnvir)
  argc=aArgc;
  argv=aArgv;
  environment=aEnvir;
-}
-
-/*****************************************************************************
-
-  I originally added it to support fonts under DOS. The idea is that the
-original TFont is just a "do nothing" class but can be changed by a class
-that really does the job. It should be changed to functionality inside the
-TDisplay class.
-
-*****************************************************************************/
-
-TFont *TDisplay::font=0;
-
-int TDisplay::SelectFont(int height, int noForce, int modeRecalculate, int width)
-{
- if (!font)
-    font=new TFont();
- return font->SelectFont(height,width,0,noForce,modeRecalculate);
-}
-
-void TDisplay::SetFontHandler(TFont *f)
-{
- if (font) // The destructor is virtual
-    delete font;
- font=f;
-}
-
-void TDisplay::RestoreDefaultFont(void)
-{
- if (!font)
-    font=new TFont();
- font->RestoreDefaultFont();
-}
-
-int TFont::UseDefaultFontsNextTime=0;
-
-// SET: That's a dummy because I don't have an easy way to change fonts in
-// Linux
-int TFont::SelectFont(int , int, int, int, int )
-{
- return 1;
 }
 
 /*****************************************************************************

@@ -16,20 +16,6 @@ classes, but doesn't have much in common.
 
 class TVCodePage;
 
-// SET: That's a wrapper to enclose the DOS fonts stuff.
-// Under Linux can't be used and just returns error.
-class TFont
-{
-public:
- TFont() {};
- virtual ~TFont() {}; // The class is destroyed
- virtual int SelectFont(int height, int width=8, int bank=0, int noForce=0, int modeRecalculate=1);
- virtual void RestoreDefaultFont(void) {};
- // This flag indicates that the next call must use the BIOS fonts or the
- // original fonts. Lamentably the last is very complicated.
- static  int UseDefaultFontsNextTime;
-};
-
 // Components are 0-255
 struct TScreenColor
 {
@@ -105,10 +91,11 @@ public:
  // mode setting.
  static void   (*setCrtModeExt)(char *mode);
  // SET: Fonts handling
- static int      SelectFont(int height, int noForce=0, int modeRecalculate=1, int width=8);
- static TFont   *GetFontHandler(void) { return font; }
- static void     SetFontHandler(TFont *f);
- static void     RestoreDefaultFont(void);
+ // I changed it for a new approach, see TScreen
+ //static int      SelectFont(int height, int noForce=0, int modeRecalculate=1, int width=8);
+ //static TFont   *GetFontHandler(void) { return font; }
+ //static void     SetFontHandler(TFont *f);
+ //static void     RestoreDefaultFont(void);
  // SET: Checks if screen size was changed by an external "force"
  static int    (*checkForWindowSize)(void);
  // SET: For windowed cases
@@ -132,7 +119,6 @@ protected:
  // We will use casts to base classes, destructors must be pointers
  virtual ~TDisplay();
 
- static TFont *font;
  // A copy of the command line arguments, old applications doesn't
  // provide it.
  static int    argc;

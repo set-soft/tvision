@@ -75,22 +75,22 @@ TV_OBJS_ =  +beep.obj +drivevalid.obj +expandpath.obj +fexpand.obj +fileattrs.ob
 +tcolorit.obj +tcolorse.obj +tcommand.obj +tdesktop.obj +tdialog.obj\
 +tdircoll.obj +tdirlist.obj +tdisplay.obj +tdrawbuf.obj +teditor.obj\
 +teditorf.obj +teditwin.obj +tevent.obj +tfilecol.obj +tfiledia.obj +tfileedi.obj\
-+tfileinf.obj +tfileinp.obj +tfilelis.obj +tfilterv.obj +tfont.obj +tframe.obj\
-+tgkey.obj +tgroup.obj +thistory.obj +thistvie.obj +thistwin.obj +thwmouse.obj\
-+tindicat.obj +tinputli.obj +tlabel.obj +tlistbox.obj +tlistvie.obj +tmemo.obj\
-+tmenubar.obj +tmenubox.obj +tmenuvie.obj +tmonosel.obj +tmouse.obj +tnscolle.obj\
-+tnssorte.obj +tobject.obj +tpalette.obj +tparamte.obj +tpoint.obj +tprogini.obj\
-+tprogram.obj +tpwobj.obj +tpwreado.obj +tpwritte.obj +tradiobu.obj +trangeva.obj\
-+trescoll.obj +tresfile.obj +tscreen.obj +tscrollb.obj +tscrolle.obj\
-+tsortedc.obj +tsortedl.obj +tstatict.obj +tstatusd.obj +tstatusl.obj\
-+tstrinde.obj +tstringc.obj +tstringl.obj +tstrlist.obj +tstrmcla.obj\
-+tstrmtyp.obj +tsubmenu.obj +ttermina.obj +ttextdev.obj +tvalidat.obj\
-+tvedit1.obj +tvedit2.obj +tvedit3.obj +tview.obj +tvtext1.obj +tvtext2.obj\
-+twindow.obj +unixdis.obj +unixkey.obj +unixmouse.obj +unixscr.obj \
-   +win32clip.obj +win32dis.obj +win32key.obj\
-+win32mouse.obj +win32scr.obj +winntdis.obj +winntkey.obj +winntmouse.obj\
-+winntscr.obj +x11dis.obj +x11key.obj +x11mouse.obj +x11src.obj +xtermdis.obj\
-+xtermkey.obj +xtermmouse.obj +xtermscr.obj
++tfileinf.obj +tfileinp.obj +tfilelis.obj +tfilterv.obj +tframe.obj +tgkey.obj\
++tgroup.obj +thistory.obj +thistvie.obj +thistwin.obj +thwmouse.obj +tindicat.obj\
++tinputli.obj +tlabel.obj +tlistbox.obj +tlistvie.obj +tmemo.obj +tmenubar.obj\
++tmenubox.obj +tmenuvie.obj +tmonosel.obj +tmouse.obj +tnscolle.obj +tnssorte.obj\
++tobject.obj +tpalette.obj +tparamte.obj +tpoint.obj +tprogini.obj +tprogram.obj\
++tpwobj.obj +tpwreado.obj +tpwritte.obj +tradiobu.obj +trangeva.obj +trescoll.obj\
++tresfile.obj +tscreen.obj +tscrollb.obj +tscrolle.obj +tsortedc.obj\
++tsortedl.obj +tstatict.obj +tstatusd.obj +tstatusl.obj +tstrinde.obj\
++tstringc.obj +tstringl.obj +tstrlist.obj +tstrmcla.obj +tstrmtyp.obj\
++tsubmenu.obj +ttermina.obj +ttextdev.obj +tvalidat.obj +tvedit1.obj +tvedit2.obj\
++tvedit3.obj +tview.obj +tvtext1.obj +tvtext2.obj +twindow.obj +unixdis.obj\
++unixkey.obj +unixmouse.obj +unixscr.obj   \
+ +win32clip.obj +win32dis.obj +win32key.obj +win32mouse.obj\
++win32scr.obj +winntdis.obj +winntkey.obj +winntmouse.obj +winntscr.obj\
++x11dis.obj +x11key.obj +x11mouse.obj +x11src.obj +xtermdis.obj +xtermkey.obj\
++xtermmouse.obj +xtermscr.obj
 OBJS = $(TV_OBJS_:+=objs\)
 
 all: rhtv.lib tvex.exe

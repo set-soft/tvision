@@ -61,7 +61,6 @@ classes/tfileinf.cc
 classes/tfileinp.cc
 classes/tfilelis.cc
 classes/tfilterv.cc
-classes/tfont.cc
 classes/tframe.cc
 classes/tgkey.cc
 classes/tgroup.cc

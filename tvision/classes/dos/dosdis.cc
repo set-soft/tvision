@@ -61,6 +61,8 @@ char        TDisplayDOS::colorsMap[17];
 #define READ_ALL_PALETTE_REGISTERS_AND_OVERSCAN_REGISTER 0x1009
 #define SET_INDIVIDUAL_DAC_REGISTER                      0x1010
 #define READ_INDIVIDUAL_DAC_REGISTER                     0x1015
+#define ALTERNATE_FUNCTION_SELECT                        0x12
+#define SELECT_VERTICAL_RESOLUTION                       0x30
 
 const int crtIndex=0x3B4,crtData=0x3B5;
 const int mdaCursorLocationHigh=0x0E,mdaCursorLocationLow=0x0F;
@@ -384,14 +386,13 @@ int TDisplayDOS::setTweakedMode(int tmode)
 
  if (height[tmode]==34)
    {
-    SelectFont(14,0); // load 8x14 font for 34 line modes
+    TScreenDOS::SelectFont(14,True); // load 8x14 font for 34 line modes
     charLines=14;
    }
  else
-   {
-    // Tweaked uses BIOS and hence have the 8/9x16 fonts loaded so avoid a
+   {// Tweaked uses BIOS and hence have the 8/9x16 fonts loaded so avoid a
     // reload
-    SelectFont(16,1); // That's redundant if TFont isn't overrided
+    TScreenDOS::SelectFont(16);
     charLines=16;
    }
 
@@ -446,28 +447,28 @@ const int scl200=0, scl350=1, scl400=2;
 void TDisplayDOS::setExtendedMode(int mode)
 {
  // Default mode is almost mode 0
- int scan_lines=scl400;
+ int scanLines=scl400;
  charLines=16;
- int noForce=0;
+ Boolean Force=True;
 
  switch (mode)
    {
     case 0: // 25 lines
          // EGA: setScanLinesAndFont(scl350,14,1);
-         noForce=1;
+         Force=False;
          break;
     case 1: // 28 lines VGA only
          charLines=14;
          break;
     case 2: // 35 lines EGA or VGA
-         scan_lines=scl350;
+         scanLines=scl350;
          charLines=10;
          break;
     case 3: // 40 lines VGA only
          charLines=10;
          break;
     case 4: // 43 lines EGA or VGA
-         scan_lines=scl350;
+         scanLines=scl350;
          charLines=8;
          break;
     case 5: // 50 lines VGA only
@@ -475,16 +476,16 @@ void TDisplayDOS::setExtendedMode(int mode)
          break;
    }
  // Set 200/350/400 scan lines.
- AH=0x12;
- AL=scan_lines;
- BL=0x30;
+ AH=ALTERNATE_FUNCTION_SELECT;
+ AL=scanLines;
+ BL=SELECT_VERTICAL_RESOLUTION;
  videoInt();
 
  // Scan lines setting only takes effect when video mode is set.
  AX=0x83;
  setVideoModeInt();
 
- SelectFont(charLines,noForce);
+ TScreenDOS::SelectFont(charLines,Force);
 }
 /****************************************************************************/
 
@@ -548,8 +549,8 @@ void TDisplayDOS::SetCrtMode(ushort mode)
     TMouse::hide();
 
  // Extended and tweaked modes are numbered Mode<<8 | smCO80
- // 0-6 are tweaked modes.
- // 7-13 are extended modes.
+ // 0-6 are extended modes.
+ // 7-13 are tweaked modes.
  if ((mode & 0xFF)==smCO80)
    {
     int hmode=mode>>8;
@@ -568,7 +569,7 @@ void TDisplayDOS::SetCrtMode(ushort mode)
    {
     setTextMode(mode);
     testForSupport();
-    SelectFont(charLines,1);
+    TScreenDOS::SelectFont(charLines);
    }
 
  if (TMouse::present())
@@ -591,7 +592,7 @@ void TDisplayDOS::SetCrtModeExt(char *command)
  system(command);
  testForSupport();
  charLines=getCharLines();
- SelectFont(charLines,1);
+ TScreenDOS::SelectFont(charLines);
  // Don't trust in the driver [Added TV 2.0.0]
  emulateMouse=1;
 

@@ -93,6 +93,8 @@ public:
  // Is that really used?
  static int    slowScreen;
 
+ friend class TDisplayDOS; // *=-P
+
 protected:
  static void   Resume();
  static void   Suspend();
@@ -116,9 +118,16 @@ protected:
  static void   MaybeCreate8x10Font(void);
  static void   SetRomFonts(int sizeFont, int which, int modeRecalculate);
  static int    SelectRomFont(int height, int which, int modeRecalculate);
+ static void   ReleaseMemFonts();
+ static int    MemorizeFont(int which, TScreenFont256 *font);
+ static void   SuspendFonts();
+ static void   ResumeFonts();
+ static void   SelectFont(unsigned height, Boolean Force=False);
  static uchar  primaryFontSet,secondaryFontSet;
+ static uchar  fontsSuspended;
  static int    origCPScr, origCPApp;
  static int    fontSeg;           // segment of DOS buffer for 8x10 font
+ static TScreenFont256 appFonts[2];
 
  // Status before suspending
  static int    wasBlink;
