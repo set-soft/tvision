@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.504  2003/10/06 17:01:42  set
+* Modified: To avoid remapping ASCII values under 32 for the input code
+page. Reported by Alex Lozano.
+
 Revision 2.503  2003/09/29 16:04:38  set
 * Added: Some code to detect KOI-8 FreeBSD terminals and avoid damaging
 some cyrillic characters. It must be tested. From a report by Nikolai
