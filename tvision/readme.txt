@@ -12,9 +12,10 @@ The small sections are:
 7.  Dialog editor
 8.  Targets supported, limitations
 9.  CPU usage
-10.  How to submit a patch
-11. Special thanks
-12. Contact information
+10. Notes about international support
+11. How to submit a patch
+12. Special thanks
+13. Contact information
 
 If you are looking for information about the Win32 target please look in the
 win32 (MingW) directory and winnt directory (BC++).
@@ -466,17 +467,48 @@ Windows NT:
 some reason you want to eat 100% of the CPU or you want to use a methode
 different than the used by this function just set TProgram::doNotReleaseCPU
 to 1 and the class won't release the CPU.
-  For Linux I just do a usleep(1000), that's sleep for 1 ms. For djgpp I call
-to the __dpmi_yield() function. Note that you could use usleep for both
-(DOS and Linux) but in this case you should sleep for more than 18.2 ms to
-let djgpp's sleep really release the CPU. I think is easier to just call
+  For Linux I just do a usleep(10), that's sleep for 10 micro s. For djgpp
+I call to the __dpmi_yield() function. Note that you could use usleep for
+both (DOS and Linux) but in this case you should sleep for more than 18.2 ms
+to let djgpp's sleep really release the CPU. I think is easier to just call
 __dpmi_yield() and explicitly release the CPU, in this way you sleep the
 minimal amount of time.
 
 
 
 
-10. How to submit a patch:
+10. Notes about international support:
+-------------------------------------
+
+  The configuration script detects if the internationalization support is
+available in your system.
+  For Linux that's part of the standard C library and all is provided as
+dynamic libraries so it doesn't impact the memory use.
+  For DOS that's provided by the gettext package (gtxtXXXb.zip). Versions of
+gettext prior to 0.10.37 are relative small and I think the memory used by it
+is small and you should try to use it. Since 0.10.37 libintl.a recodes the
+strings on the fly, for that it needs libiconv (licvXXb.zip). This library is
+a huge set of conversion tables, those tables include chinese, japanese and
+korean codes, it makes the tables really huge and the size of programs linked
+with it increases more than 800 Kb (more than 600 Kb using UPX). In this case
+you could:
+a) Just use an old version of gettext, very recommendable.
+b) Generate programs with international support only if really needed.
+If you choose the second option you must configure the library to use
+international support. In the intl/dummy directory you'll find a small
+library intended as a replacement for libintl.a. Then when you want to create
+a program with the internationalization disabled just make sure this dummy
+library is used. You can do it by specifying the libraries path (-L option of
+gcc or Options|Directories|Libraries in RHIDE), make it point to the
+directory where the dummy library is located and the internationalization
+support will be disabled.
+Note: to compile the dummy library just go to the intl/dummy directory and
+run the make command.
+
+
+
+
+11. How to submit a patch:
 -------------------------
 
   The simplest way is running a diff between your current directory and a
@@ -487,7 +519,7 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-11. Special thanks:
+12. Special thanks:
 ------------------
 
 They goes to (no particular sorting):
@@ -510,7 +542,7 @@ He contributed a lot of patches.
 
 
 
-12. Contact information:
+13. Contact information:
 -----------------------
 
 Salvador E. Tropea (SET)

@@ -1,4 +1,10 @@
 $Log$
+Revision 1.172  2001/08/28 14:26:32  set
+* Added: Support for gettext 0.10.37 and newer that needs libiconv. I tested
+it with 0.10.39 and libiconv 1.7. The detection was enhanced and the examples
+are configured to use -liconv if needed. Thanks to Laurynas for ideas and
+some Perl patches.
+.
 Revision 1.171  2001/08/27 19:57:56  set
 * Modified: Now the yieldproc.c module uses the POSIX sched_yield function
 if available. It must be tested to see if that's good. Sugested by
