@@ -55,7 +55,9 @@ char                  TDisplayLinux::tioclinuxOK=0;
 char                  TDisplayLinux::cMap[16]={0,4,2,6,1,5,3,7,8,12,10,14,9,13,11,15};
 unsigned              TDisplayLinux::oldCurX,
                       TDisplayLinux::oldCurY;
-int                   TDisplayLinux::installedCodePage=TVCodePage::PC437;
+                      // These are the Linux kernel defaults: CP437 font and trivial map
+int                   TDisplayLinux::installedSFM=TVCodePage::PC437;
+int                   TDisplayLinux::installedACM=-1;
 
 // All the code is in TScreenLinux, but this is the right moment, by this
 // time TScreenLinux is suspended.
