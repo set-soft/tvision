@@ -4,13 +4,14 @@
   This file is covered by the GPL license.
 
   Module: TVFontCollection
-  Description:
+  Comments:
   This module handles collections of 8xN bitmaped fonts useful for text
 consoles. The collection is created from a fonts files. Each item is a font
 of certain height. The collection can return interpolated and extrapolated
 fonts in a range of +/- one from the available fonts. The fonts file should
 contain fonts with all the supported symbols.@p
 
+@<pre>
   SFT Files: This is currently platform dependent! It means SFT files should
   be generated in the same platform they are used. It will be fixed in the
   future.
@@ -34,6 +35,7 @@ contain fonts with all the supported symbols.@p
   unsigned: width of the font.
 
   The fonts itself follows the internal code.
+@</pre>
 
 ***************************************************************************/
 

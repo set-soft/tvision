@@ -4,16 +4,19 @@
   Copyright (c) 2002 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
-  This driver is a relatively complex one because:
-  1) Deals with console mode.
-  2) Translates keyboard codes.
-  3) Parses escape sequences.
+  Module: XTerm Keyboard
+  Comments:
+  This driver is a relatively complex one because:@*
+  1) Deals with console mode.@*
+  2) Translates keyboard codes.@*
+  3) Parses escape sequences.@*
+  @p
 
-  TODO:
+  TODO:@*
   * Move the code that overlaps with Linux driver to a base class. Lets say
-  TGKeyEscapeSequences.
-  * When the list is big (>8?) us bsearch
-  * Allow changing MIN and TIME termios values for slow connections.
+  TGKeyEscapeSequences.@*
+  * When the list is big (>8?) us bsearch@*
+  * Allow changing MIN and TIME termios values for slow connections.@*
 
 *****************************************************************************/
 #include <tv/configtv.h>

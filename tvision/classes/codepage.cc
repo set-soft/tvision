@@ -3,9 +3,9 @@
   Copyright 1996-2002 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
-  Module: TVCodePage
+  Module: Code Page
   Include: TVCodePage
-  Description:
+  Comments:
   This module provides code page remapping needed to adapt the special
 character to all the supported terminals.@p
   It was originally designed for SETEdit and moved to Turbo Vision in 2002.@p

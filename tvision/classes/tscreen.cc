@@ -1,7 +1,11 @@
 /**[txh]********************************************************************
 
-  Screen module, Copyright 2001-2002 by Salvador E. Tropea
-  Description:
+  Copyright 2001-2002 by Salvador E. Tropea
+  This file is covered by the GPL license.
+  
+  Module: Screen
+  Include: TScreen
+  Comments:
   This is the base class for medium level screen output.
   Most members are pointers to functions defined by each platform dependent
 driver. Default members are provided.
