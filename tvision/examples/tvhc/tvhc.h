@@ -23,7 +23,7 @@ public:
 
 private:
     char  fileName[MAXSIZE];
-    ushort mode;
+    CLY_OpenModeT mode;
 };
 
 // Topic Reference

@@ -1,11 +1,17 @@
-$Log$.
+$Log$
+
+--------- CVS tag r_2_0_3 and r_2_0_3nu
+
+Revision 2.399.2.221  2004/11/23 12:55:23  terrible
+* Updated: Debian packaging to version 2.0.3-3 (no changes really).
+
 Revision 2.399.2.220  2004/11/02 19:52:15  set
 * Added: [Compilation][MSVC] Option to compile with debug information.
 From information sent by Grzegorz.
 * Fixed: [Compilation][Darwin] libtvfintl.a must be listed "as-is", not
 using -l.
 * Modified: [Configuration] ar and install detection. Now more robust.
-.
+
 Revision 2.399.2.219  2004/10/29 15:54:49  set
 * Fixed: [DOS] The default encoding wasn't CP437. From a report by
 jessehardy/126/com, a chinese user of RHIDE using code page 936.
