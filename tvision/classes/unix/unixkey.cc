@@ -35,7 +35,7 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(TVOSf_QNX4)
+#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <tv/unix/key.h>
 
@@ -558,9 +558,9 @@ void TGKeyUNIX::Init()
  TGKey::SetKbdMapping=TGKeyUNIX::SetKbdMapping;
  TGKey::GetKbdMapping=TGKeyUNIX::GetKbdMapping;
 }
-#else // TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
+#else // TVOS_UNIX && !TVOSf_QNXRtP
 
 #include <tv/unix/key.h>
 
-#endif // else TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP
 

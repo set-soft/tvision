@@ -85,7 +85,7 @@ void TDisplayXTerm::Init()
  winsize win;
  win.ws_col=0xFFFF;
  ioctl(hOut,TIOCGWINSZ,&win);
- if (win.ws_col!=0xFFFF)
+ if ((win.ws_col!=0xFFFF)&&(win.ws_col!=0))
    {// Ok!
     getRows=GetRowsIOCTL;
     getCols=GetColsIOCTL;

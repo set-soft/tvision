@@ -38,6 +38,11 @@
 #include <stdarg.h>
 #include <termios.h>
 
+#if defined(TVOSf_QNX4)
+ #include <process.h>
+ #include <unix.h>
+#endif // TVOSf_QNX4
+
 #include <tv/unix/xtscreen.h>
 #include <tv/unix/xtkey.h>
 #include <tv/unix/mouse.h>

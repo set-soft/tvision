@@ -84,6 +84,10 @@
  #include <pthread.h>
 #endif
 
+#if defined(TVOSf_QNX4)
+ #include <process.h>
+#endif // TVOSf_QNX4
+
 #ifdef TVOSf_Solaris
  // At least in the Solaris 7 box I tested looks like ITIMER_REAL is broken
  // and behaves like ITIMER_VIRTUAL
@@ -2751,7 +2755,11 @@ void TVX11UpdateThread::StartUpdateThread()
     struct sigaction s;
     s.sa_handler=UpdateThread;
     sigemptyset(&s.sa_mask);
-    s.sa_flags=SA_RESTART;
+    #if defined(SA_RESTART)
+        s.sa_flags=SA_RESTART;
+    #else
+        s.sa_flags=0;
+    #endif // SA_RESTART
     sigaction(TIMER_ALARM,&s,NULL);
     // Set the alarm
     microAlarm(refreshTime);
@@ -2798,7 +2806,11 @@ void TVX11UpdateThread::StopUpdateThread()
     struct sigaction s;
     s.sa_handler=SIG_IGN;
     sigemptyset(&s.sa_mask);
-    s.sa_flags=SA_RESTART;
+    #if defined(SA_RESTART)
+        s.sa_flags=SA_RESTART;
+    #else
+        s.sa_flags=0;
+    #endif // SA_RESTART
     sigaction(TIMER_ALARM,&s,NULL);
    }
 }

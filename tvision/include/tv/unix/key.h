@@ -2,7 +2,7 @@
    Copyright by Salvador E. Tropea (SET) (2001-2002)
    Covered by the GPL license. */
 #if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) &&\
-   !defined(LINUXKEY_HEADER_INCLUDED) && !defined(TVOSf_QNX4)
+   !defined(LINUXKEY_HEADER_INCLUDED)
 #define LINUXKEY_HEADER_INCLUDED
 struct TEvent;
 

@@ -20,6 +20,9 @@ Added options to customize the file sorting by Salvador E. Tropea.
 #include <dir.h>
 #endif
 #include <stdio.h>
+#if defined(TVOSf_QNX4)
+ #include <unix.h>
+#endif // TVOSf_QNX4
 
 #define Uses_TFileCollection
 #define Uses_TSearchRec
