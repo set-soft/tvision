@@ -124,6 +124,10 @@ int TDisplayUNIX::CheckForWindowSize(void)
 }
 #else // TVOS_UNIX && !TVOSf_QNXRtP
 
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+ #include <signal.h>
+#endif
+
 #include <tv/unix/screen.h>
 
 #endif // else TVOS_UNIX && !TVOSf_QNXRtP

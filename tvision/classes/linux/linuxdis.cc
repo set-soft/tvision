@@ -391,6 +391,10 @@ void TDisplayLinux::GetCursorShapeMDA(unsigned &start, unsigned &end)
 
 #else // TVOSf_Linux
 
+#if defined(TVOSf_Linux)
+ #include <signal.h>
+#endif
+
 #include <tv/linux/screen.h>
 #include <tv/linux/key.h>
 #include <tv/linux/log.h>

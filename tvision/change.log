@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.391  2003/01/07 13:16:26  set
+* Updated: Russian translation. From Roman.
+* Fixed: tvedit3.cc had two messages almost identical, now merged. Pointed
+out by Roman.
+
 --------------------------- 2.0.1 Release Candidate 2 ----------------------
 Revision 2.390  2002/12/27 12:42:13  set
 * Added: Workaround for problems with SuSE when including libintl.h
