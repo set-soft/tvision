@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.52  2002/05/06 15:04:15  set
+* Added: X11R6 include directory to the configuration script. It looks like
+this directory isn't automagically included in FreeBSD. Also added options
+to configure it -x-include and -x-lib. Reported by miniEleph
+<nyxo@dnuc.polyn.kiae.su>.
+
 Revision 2.51  2002/05/06 13:38:59  set
 * Added: The first step for the Win32 driver. All is supposed to be there
 but I didn't even try to compile.
