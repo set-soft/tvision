@@ -19,7 +19,7 @@
 #define Uses_TVCodePage
 #include <tv.h>
 
-#ifdef TVOS_Win32
+#if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver)
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

@@ -203,6 +203,12 @@ struct stDriver
  const char *name;
 };
 
+#ifdef TV_Disable_WinGr_Driver
+  #define TV_WinGr_Driver_Entry
+#else
+  #define TV_WinGr_Driver_Entry { TV_WinGrDriverCheck,  80, "WinGr" },
+#endif
+
 static
 stDriver Drivers[]=
 {
@@ -237,11 +243,11 @@ stDriver Drivers[]=
   #endif // HAVE_X11
   #ifdef TVOSf_NT
    { TV_WinNTDriverCheck,  90, "WinNT" },
-   { TV_WinGrDriverCheck,  80, "WinGr" },
+   TV_WinGr_Driver_Entry
    { TV_Win32DriverCheck,  50, "Win32" },
   #else
    { TV_Win32DriverCheck,  90, "Win32" },
-   { TV_WinGrDriverCheck,  80, "WinGr" },
+   TV_WinGr_Driver_Entry
    { TV_WinNTDriverCheck,  50, "WinNT" },
   #endif
  #endif

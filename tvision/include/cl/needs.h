@@ -109,7 +109,7 @@ compiler.@p
 // MSVC will be supported if volunteers tests it or Microsoft decides to
 // give it for free ;-). After all Borland released BC++ 5.5.
 #if (defined(_MSVC) || defined(__MSC_VER)) && !defined(_MSC_VER)
-#define _MSC_VER
+ #define _MSC_VER 100
 #endif
 
 #ifdef TVComp_MSC
@@ -123,5 +123,8 @@ compiler.@p
  #define NEEDS_NL_LANGINFO
  #define NEEDS_GETLINE
  #define NEEDS_OPENDIR
+ #if _MSC_VER <= 1000
+  #define NEEDS_SNPRINTF
+ #endif
 #endif
 
