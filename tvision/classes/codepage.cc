@@ -1,4 +1,4 @@
-;/**[txh]********************************************************************
+/**[txh]********************************************************************
 
   Copyright 1996-2003 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
@@ -1651,6 +1651,8 @@ TVCodePage::~TVCodePage()
 {
  CLY_destroy(CodePages);
  CodePages=NULL;
+ if (unicodeToApp)
+    delete unicodeToApp;
 }
 
 /**[txh]********************************************************************
