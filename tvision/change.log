@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.213  2002/07/05 20:28:18  set
+* Added: [MSVC] More compatlayer entries for __inline__, utime and opendir.
+
 Revision 2.212  2002/07/05 13:08:46  set
 * Fixed: GetCodePage, currently it have some complexity that may be is
 better to remove.
