@@ -361,16 +361,20 @@ void TScreenUNIX::startcurses()
           // SET: Use G1 charset, set G1 to the loaded video fonts, print control chars.
           // It means the kernel will send what we write directly to screen, just
           // like in the VCSA case.
-          TScreenUNIX::SendToTerminal("\e)K\xE");
+          SendToTerminal("\e)K\xE");
           break;
      case XTERM_TERMINAL:
           // SET: I still wondering why I keep using ncurses. The f*ck|ng ncurses
           // puts the keypad in an "application"(?) mode where numbers are never
           // reported.
-          TScreenUNIX::SendToTerminal("\e>");
+          SendToTerminal("\e>");
      case GENER_TERMINAL:
           // Select IBM PC chars?
-          TScreenUNIX::SendToTerminal(enter_pc_charset_mode);
+          SendToTerminal(enter_pc_charset_mode);
+          #ifdef TVOSf_FreeBSD
+          // Disable autowrapping
+          SendToTerminal("\e[?7l");
+          #endif
           break;
     }
   #ifdef SAVE_TERMIOS
@@ -642,7 +646,7 @@ TScreenUNIX::TScreenUNIX()
   #ifdef TVOSf_FreeBSD
   // Kludge: until we find a right way to fix the "last-line" display
   // problem, this is a solution.
-  screenHeight--;
+  //screenHeight--;
   #endif
   LOG("screen size is " << (int)screenWidth << "x" << (int)screenHeight);
 
@@ -683,12 +687,16 @@ void TScreenUNIX::Resume()
     {
      case LINUX_TERMINAL:
           // Use G1 charset, set G1 to the loaded video fonts, print control chars
-          TScreenUNIX::SendToTerminal("\e)K\xE");
+          SendToTerminal("\e)K\xE");
           break;
      case XTERM_TERMINAL:
      case GENER_TERMINAL:
           // Select IBM PC chars
-          TScreenUNIX::SendToTerminal("\e(U");
+          SendToTerminal("\e(U");
+          #ifdef TVOSf_FreeBSD
+          // Disable autowrapping
+          SendToTerminal("\e[?7l");
+          #endif
           break;
     }
 }
@@ -699,6 +707,10 @@ TScreenUNIX::~TScreenUNIX()
     {
      // FIXME: When I know, how to get the cursor state
      setCursorType(startupCursor); // make the cursor visible
+     #ifdef TVOSf_FreeBSD
+     // Enable autowrapping
+     SendToTerminal("\e[?7h");
+     #endif
      // SET: Enhanced the cleanup
      // 1) Undo this nasty trick or curses will fail to do the rest:
      stdscr->_flags &= ~_ISPAD;
@@ -767,6 +779,10 @@ void TScreenUNIX::Suspend()
     tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
     #endif
     
+    #ifdef TVOSf_FreeBSD
+    // Enable autowrapping
+    SendToTerminal("\e[?7h");
+    #endif
     RestoreScreen();
   }
 }
