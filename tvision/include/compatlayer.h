@@ -240,7 +240,7 @@ typedef unsigned long  ulong;
   #define CLY_std(a)         std::a
   #define UsingNamespaceStd  using namespace std;
   #define CreateStrStream(os,buf,size) std::string buf; std::ostringstream os(buf)
-  #define GetStrStream(buf) buf.c_str()
+  #define GetStrStream(os,buf) os.str().c_str()
   #ifdef Uses_StrStream
    #undef  Include_sstream
    #define Include_sstream 1
@@ -268,7 +268,7 @@ typedef unsigned long  ulong;
   #define UsingNamespaceStd
   #define CreateStrStream(os,buf,size) char buf[size]; \
                                        ostrstream os(buf,sizeof(buf))
-  #define GetStrStream(buf) buf
+  #define GetStrStream(os,buf) buf
   #ifdef Uses_StrStream
    #undef  Include_strstream
    #define Include_strstream 1
@@ -844,7 +844,7 @@ typedef unsigned long  ulong;
  #define CLY_std(a)         a
  #define CreateStrStream(os,buf,size) char buf[size]; \
                                       ostrstream os(buf,sizeof(buf))
- #define GetStrStream(buf) buf
+ #define GetStrStream(os,buf) buf
  #ifdef Uses_StrStream
   #undef  Include_strstream
   #define Include_strstream 1
@@ -1055,7 +1055,7 @@ typedef unsigned long  ulong;
  #define CLY_std(a)         a
  #define CreateStrStream(os,buf,size) char buf[size]; \
                                       ostrstream os(buf,sizeof(buf))
- #define GetStrStream(buf) buf
+ #define GetStrStream(os,buf) buf
  #ifdef Uses_StrStream
   #undef  Include_strstrea
   #define Include_strstrea 1

@@ -126,28 +126,28 @@ ushort doEditDialogDefault( int dialog, va_list arg )
             os << _("Error reading file ") << va_arg( arg, _charPtr )
                << "." << CLY_std(ends);
             va_end(arg);
-            return messageBox( GetStrStream(buf), mfError | mfOKButton );
+            return messageBox( GetStrStream(os,buf), mfError | mfOKButton );
             }
         case edWriteError:
             {
             os << _("Error writing file ") << va_arg( arg,_charPtr )
                << "." << CLY_std(ends);
             va_end( arg );
-            return messageBox( GetStrStream(buf), mfError | mfOKButton );
+            return messageBox( GetStrStream(os,buf), mfError | mfOKButton );
             }
         case edCreateError:
             {
             os << _("Error creating file ") << va_arg( arg, _charPtr )
                << "." << CLY_std(ends);
             va_end( arg );
-            return messageBox( GetStrStream(buf), mfError | mfOKButton );
+            return messageBox( GetStrStream(os,buf), mfError | mfOKButton );
             }
         case edSaveModify:
             {
             os << va_arg( arg, _charPtr )
                << _(" has been modified. Save?") << CLY_std(ends);
             va_end( arg );
-            return messageBox( GetStrStream(buf), mfInformation | mfYesNoCancel );
+            return messageBox( GetStrStream(os,buf), mfInformation | mfYesNoCancel );
             }
         case edSaveUntitled:
             return messageBox( _("Save untitled file?"),
