@@ -28,6 +28,17 @@
 #include <tv/wingr/mouse.h>
 #include <tv/wingr/key.h>
 
+/* Not always defined */
+#ifndef IDC_ARROW
+ #define IDC_ARROW MAKEINTRESOURCE(32512)
+#endif
+#ifndef IDC_HAND
+ #define IDC_HAND MAKEINTRESOURCE(32649)
+#endif
+#ifndef IDC_SIZENWSE
+ #define IDC_SIZENWSE MAKEINTRESOURCE(32642)
+#endif
+
 const int cursorDelay= 300000;
 
 
@@ -65,6 +76,9 @@ static char * className= "TVISION for windows"; /* Make the classname into a glo
 
   normCursor= LoadCursor(NULL, IDC_ARROW    );
   handCursor= LoadCursor(NULL, IDC_HAND     );
+  /* Not available in 95 and NT */
+  if( handCursor==NULL )
+  { handCursor= LoadCursor(NULL, IDC_ARROW  ); }
   sizeCursor= LoadCursor(NULL, IDC_SIZENWSE );
 
 
