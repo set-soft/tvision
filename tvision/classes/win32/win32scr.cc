@@ -437,6 +437,7 @@ int TScreenWin32::SetVideoModeRes(unsigned w, unsigned h, int fW, int fH)
     screenHeight=ConsoleInfo.dwSize.Y;
     DeleteArray(screenBuffer);
     screenBuffer=new ushort[screenHeight*screenWidth];
+    ZeroMemory(screenBuffer,screenHeight*screenWidth*sizeof(ushort));
     // This is something silly TV code spects: after a video mode change the
     // cursor should go to the "default" state.
     setCursorType(cursorLines);
