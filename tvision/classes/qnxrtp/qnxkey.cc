@@ -18,13 +18,128 @@
 // I delay the check to generate as much dependencies as possible
 #if defined(TVOS_UNIX) && defined(TVOSf_QNXRtP)
 
+/* include main photon header for pterm key modifier support.           */
+/* we must include photon headers before all (GUI vs TUI conflict ;)    */
+#include <Ph.h>
+
 #include <termios.h>
-#include <tv/qnxrtp/key.h>
 
 #include <term.h>
 #include <ncurses.h>
 #include <sys/ioctl.h>
 #include <sys/dcmd_chr.h>
+
+#include <dlfcn.h>
+
+#include <tv/qnxrtp/key.h>
+
+struct dlphoton
+{
+   void* phhandle;
+   struct _Ph_ctrl* phctrl;
+   unsigned short ig;
+   PhCursorInfo_t qcurbuf;
+
+   /* photon functions */
+   struct _Ph_ctrl* (*PhAttach)(char const* name, PhChannelParms_t const* parms);
+   int              (*PhDetach)(struct _Ph_ctrl* Ph);
+   int              (*PhInputGroup)(PhEvent_t* event);
+   int              (*PhQueryCursor)(unsigned short ig, PhCursorInfo_t* buf);
+};
+
+struct dlphoton TGKeyQNXRtP::phcon;
+bool TGKeyQNXRtP::inpterm;
+
+int openph(struct dlphoton* ph);
+int closeph(struct dlphoton* ph);
+int detectph(struct dlphoton* ph);
+unsigned long getkeymodph(struct dlphoton* ph);
+
+int openph(struct dlphoton* ph)
+{
+   ph->phctrl=NULL;
+   ph->ig=0;
+
+   ph->phhandle=dlopen("/usr/lib/libph.so", RTLD_NOW | RTLD_GLOBAL | RTLD_WORLD);
+   
+   if (ph->phhandle==NULL)
+   {
+      return -1;
+   }
+   
+   (void*)(ph->PhAttach)=dlsym(ph->phhandle, "PhAttach");
+   if (ph->PhAttach==NULL)
+   {
+      closeph(ph);
+      return -3;
+   }
+
+   (void*)ph->PhDetach=dlsym(ph->phhandle, "PhDetach");
+   if (ph->PhDetach==NULL)
+   {
+      closeph(ph);
+      return -4;
+   }
+
+   (void*)ph->PhInputGroup=dlsym(ph->phhandle, "PhInputGroup");
+   if (ph->PhInputGroup==NULL)
+   {
+      closeph(ph);
+      return -5;
+   }
+
+   (void*)ph->PhQueryCursor=dlsym(ph->phhandle, "PhQueryCursor");
+   if (ph->PhQueryCursor==NULL)
+   {
+      closeph(ph);
+      return -6;
+   }
+   
+   return 0;
+}
+
+int closeph(struct dlphoton* ph)
+{
+   if (ph->phhandle!=NULL)
+   {
+      if (ph->phctrl!=NULL)
+      {
+         ph->PhDetach(ph->phctrl);
+      }
+      dlclose(ph->phhandle);
+      ph->phhandle=NULL;
+   }
+
+   return 0;
+}
+
+int detectph(struct dlphoton* ph)
+{
+   ph->phctrl=ph->PhAttach(NULL, NULL);
+
+   if(!ph->phctrl)
+   {
+      return -1;
+   }
+
+   ph->ig=ph->PhInputGroup(NULL);
+
+   return 0;
+}
+
+unsigned long getkeymodph(struct dlphoton* ph)
+{
+   int stat;
+
+   stat=ph->PhQueryCursor(ph->ig, &ph->qcurbuf);
+   
+   if (stat==-1)
+   {
+      return 0x00000000UL;
+   }
+   
+   return ph->qcurbuf.key_mods;
+}
 
 #define kbCtrl (kbLeftCtrl | kbRightCtrl)
 #define kbAlt  (kbRightAlt | kbLeftAlt)
@@ -86,7 +201,24 @@ ushort TGKeyQNXRtP::lowtranstable[0x0100]=
    kbQuote,    kbA,        kbB,          kbC,         kbD,           kbE,           kbF,           kbG,         // 0x0060
    kbH,        kbI,        kbJ,          kbK,         kbL,           kbM,           kbN,           kbO,         // 0x0068
    kbP,        kbQ,        kbR,          kbS,         kbT,           kbU,           kbV,           kbW,         // 0x0070
-   kbX,        kbY,        kbZ,          kbOpenCurly, kbOr,          kbCloseCurly,  kbTilde,       kbBackSpace  // 0x0078
+   kbX,        kbY,        kbZ,          kbOpenCurly, kbOr,          kbCloseCurly,  kbTilde,       kbBackSpace, // 0x0078
+   /* add russian or other keys here */
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x0080
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x0088
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x0090
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x0098
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00A0
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00A8
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00B0
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00B8
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00C0
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00C8
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00D0
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00D8
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00E0
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00E8
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000,      // 0x00F0
+   0x0000,     0x0000,     0x0000,       0x0000,      0x0000,        0x0000,        0x0000,        0x0000       // 0x00F8
 };
 
 QNXRtPArtKeys TGKeyQNXRtP::shifttranstable[]=
@@ -229,28 +361,50 @@ unsigned TGKeyQNXRtP::GetShiftState()
    int QNXShiftEx = 0;
    int DieStatus;
 
-   devctl(fileno(stdin), DCMD_CHR_LINESTATUS, &QNXShift, sizeof(QNXShift), &DieStatus);
+   if (!inpterm)
+   {
+      devctl(fileno(stdin), DCMD_CHR_LINESTATUS, &QNXShift, sizeof(QNXShift), &DieStatus);
    
-   QNXShiftEx=QNXShift & 0xFFFFFF00UL;
-   QNXShift&=0x7F;
+      QNXShiftEx=QNXShift & 0xFFFFFF00UL;
+      QNXShift&=0x7F;
 
-   if (QNXShift & _LINESTATUS_CON_ALT)
-   {
-      shift|=(kbRightAlt | kbLeftAlt);
-   }
+      if (QNXShift & _LINESTATUS_CON_ALT)
+      {
+         shift|=(kbRightAlt | kbLeftAlt);
+      }
 
-   if (QNXShift & _LINESTATUS_CON_CTRL)
-   {
-      shift|=(kbRightCtrl | kbLeftCtrl);
-   }
+      if (QNXShift & _LINESTATUS_CON_CTRL)
+      {
+         shift|=(kbRightCtrl | kbLeftCtrl);
+      }
 
-   if (QNXShift & _LINESTATUS_CON_SHIFT)
-   {
-      shift|=(kbRightShift | kbLeftShift);
+      if (QNXShift & _LINESTATUS_CON_SHIFT)
+      {
+         shift|=(kbRightShift | kbLeftShift);
+      }
+      else
+      {
+         if (QNXShiftEx & 0x00000800UL) // grey keys shift modifyier
+         {
+            shift|=(kbRightShift | kbLeftShift);
+         }
+      }
    }
    else
    {
-      if (QNXShiftEx & 0x00000800UL) // grey keys shift modifyier
+      QNXShift=getkeymodph(&phcon);
+
+      if (QNXShift & TVPH_KEY_ALT)
+      {
+         shift|=(kbRightAlt | kbLeftAlt);
+      }
+
+      if (QNXShift & TVPH_KEY_CTRL)
+      {
+         shift|=(kbRightCtrl | kbLeftCtrl);
+      }
+
+      if (QNXShift & TVPH_KEY_SHIFT)
       {
          shift|=(kbRightShift | kbLeftShift);
       }
@@ -265,7 +419,7 @@ void TGKeyQNXRtP::FillTEvent(TEvent &e)
 
    fullcode=GKey();
 
-   if ((undecoded>0x001F)&&(undecoded<0x00FF))
+   if ((undecoded>0x001F)&&(undecoded<0x0100))
    {
       e.keyDown.charScan.charCode=(uchar)undecoded;
    }
@@ -288,6 +442,16 @@ void TGKeyQNXRtP::Init()
    TGKey::gkey         =TGKeyQNXRtP::GKey;
    TGKey::getShiftState=TGKeyQNXRtP::GetShiftState;
    TGKey::fillTEvent   =TGKeyQNXRtP::FillTEvent;
+
+   inpterm=false;
+   if (openph(&phcon)==0)
+   {
+      if (detectph(&phcon)==0)
+      {
+         inpterm=true;
+      }
+   }
+
 }
 
 ushort TGKeyQNXRtP::GetRaw()

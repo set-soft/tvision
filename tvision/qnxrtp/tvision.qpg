@@ -1,0 +1,98 @@
+<QPG:Generation>
+   <QPG:Options>
+      <QPG:User unattended="yes" verbosity="0" listfiles="yes"/>
+      <QPG:Defaults type="qnx_package"/>
+      <QPG:Source></QPG:Source>
+      <QPG:Release date="today" number="+"/>
+      <QPG:Build></QPG:Build>
+      <QPG:FileSorting strip="yes"/>
+      <QPG:Package targets="standart"/>
+      <QPG:Repository generate="yes"/>
+      <QPG:FinalDir></QPG:FinalDir>
+      <QPG:Cleanup></QPG:Cleanup>
+   </QPG:Options>
+
+   <QPG:Responsible>
+      <QPG:Company>QNX.ORG.RU Community</QPG:Company>
+      <QPG:Department></QPG:Department>
+      <QPG:Group></QPG:Group>
+      <QPG:Team>QNX.ORG.RU Team</QPG:Team>
+      <QPG:Employee>Mike Gorchak</QPG:Employee>
+      <QPG:EmailAddress>mike@malva.ua</QPG:EmailAddress>
+   </QPG:Responsible>
+
+   <QPG:Values>
+      <QPG:Files>
+         <QPG:Add permissions="0755" component="dev" type="file" filetype="so" file="../linuxso/librhtv.so.2.0.2" install="/opt/lib/"/>
+         <QPG:Add filetype="symlink" component="dev" file="librhtv.so" install="/usr/lib/" linkto="librhtv.so.2.0.2"/>
+         <QPG:Add filetype="symlink" component="dev" file="librhtv.so.2" install="/usr/lib/" linkto="librhtv.so.2.0.2"/>
+         <QPG:Add permissions="0644" component="dev" type="file" filetype="default" file="../linux/librhtv.a" install="/opt/lib/"/>
+         <QPG:Add permissions="0644" component="dev" type="tree" file="../include/" install="/opt/include/rhtvision/">
+            <QPG:Rule argument="*/CVS/*" match="exclude"/>
+         </QPG:Add>
+         <QPG:Add permissions="0644" file="../copying" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../change.log" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../change1.log" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../borland.txt" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../TODO" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../THANKS" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../version.txt" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../readme.txt" install="/usr/doc/tvision/"/>
+         <QPG:Add permissions="0644" file="../examples/porting.txt" install="/usr/doc/tvision/"/>
+      </QPG:Files>
+
+      <QPG:PackageFilter>
+         <QPM:PackageManifest>
+            <QPM:PackageDescription>
+               <QPM:PackageType>Library</QPM:PackageType>
+               <QPM:PackageName>tvision</QPM:PackageName>
+               <QPM:PackageReleaseNumber>1</QPM:PackageReleaseNumber>
+               <QPM:PackageRepository>http://qnx.org.ru/repository</QPM:PackageRepository>
+               <QPM:FileVersion>1.01</QPM:FileVersion>
+            </QPM:PackageDescription>
+            <QPM:ProductDescription>
+               <QPM:ProductName>Turbo Vision</QPM:ProductName>
+               <QPM:ProductIdentifier>tvision</QPM:ProductIdentifier>
+               <QPM:ProductEmail>salvador@inti.gov.ar</QPM:ProductEmail>
+               <QPM:VendorName>public</QPM:VendorName>
+               <QPM:VendorInstallName>public</QPM:VendorInstallName>
+               <QPM:VendorURL>http://tvision.sf.net</QPM:VendorURL>
+               <QPM:VendorEmbedURL/>
+               <QPM:VendorEmail>salvador@inti.gov.ar</QPM:VendorEmail>
+               <QPM:AuthorName>Borland Inc, Salvador E. Tropea</QPM:AuthorName>
+               <QPM:AuthorURL>http://tvision.sf.net</QPM:AuthorURL>
+               <QPM:AuthorEmbedURL/>
+               <QPM:AuthorEmail>salvador@inti.gov.ar</QPM:AuthorEmail>
+               <QPM:ProductIconSmall/>
+               <QPM:ProductIconLarge/>
+               <QPM:ProductDescriptionShort>The RHTVision library - C++ based TUI interface. The RHTVision library gives an intuitive and user friendly TUI (Textual User Interface) for programs using this library and running in a text console.</QPM:ProductDescriptionShort>
+               <QPM:ProductDescriptionLong>The RHTVision library - C++ TUI interface for console applications. The RHTVision library gives an intuitive and user friendly TUI (Textual User Interface) for programs using this library and running in a text console. This library is based on the Turbo Vision library made by Borland Corporation. It was interpreted by its upstream authors that the original Turbo Vision library was released by Borland Inc. under a Public Domain license.</QPM:ProductDescriptionLong>
+               <QPM:ProductDescriptionURL>http://tvision.sf.net</QPM:ProductDescriptionURL>
+               <QPM:ProductDescriptionEmbedURL/>
+            </QPM:ProductDescription>
+            <QPM:ReleaseDescription>
+               <QPM:ReleaseVersion>2.0.2</QPM:ReleaseVersion>
+               <QPM:ReleaseUrgency>Medium</QPM:ReleaseUrgency>
+               <QPM:ReleaseStability>Stable</QPM:ReleaseStability>
+               <QPM:ReleaseNoteMinor/>
+               <QPM:ReleaseNoteMajor/>
+               <QPM:ReleaseBuild>1</QPM:ReleaseBuild>
+               <QPM:CountryExclude/>
+               <QPM:ReleaseCopyright>Custom License</QPM:ReleaseCopyright>
+            </QPM:ReleaseDescription>
+            <QPM:ContentDescription>
+               <QPM:ContentTopic>Software Development/Libraries and Extensions/C++ Libraries</QPM:ContentTopic>
+               <QPM:ContentKeyword>TUI, Turbo Vision, console</QPM:ContentKeyword>
+               <QPM:Processor/>
+               <QPM:TargetProcessor/>
+               <QPM:DisplayEnvironment>Console</QPM:DisplayEnvironment>
+               <QPM:TargetAudience>Developer</QPM:TargetAudience>
+               <QPM:TargetAudience>User</QPM:TargetAudience>
+            </QPM:ContentDescription>
+            <QPM:ProductInstallationDependencies>
+               <QPM:ProductRequirements/>
+            </QPM:ProductInstallationDependencies>
+         </QPM:PackageManifest>
+      </QPG:PackageFilter>
+   </QPG:Values>
+</QPG:Generation>

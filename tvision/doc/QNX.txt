@@ -3,9 +3,18 @@ Author: Mike Gorchak
 Status: Just a few words
 Revision: $Revision$
 
-Almost all characters are displayed, except for two characters with
+1. Display characters
+
+   Almost all characters are displayed, except for one character with
 code 0x1B - ESC (small left arrow) - instead of this character symbol
-'-' is displayed and code 0x9B - 'cent' symbol - instead of this
-character 'c' is displayed.
+'-' is displayed. Problem with 0x1B code appears in pterm  and in raw
+console mode.
+
+2. Input characters
+
+   Symbols with codes from 0x80 upto 0xFF are reserved  for  national
+characters support, that's why these symbols  are not  decoded. Event
+structure in this case contains  these  character  codes  in keyDown.
+charScan.charCode and field keyDown.keyCode is zero.
 
 // Mike Gorchak.

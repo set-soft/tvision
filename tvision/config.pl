@@ -733,7 +733,7 @@ sub LookForGettextTools
     return;
    }
  #$test=`xgettext --version`;
- RunRedirect('xgettext --version',$ErrorLog);
+ $test=RunRedirect('xgettext --version',$ErrorLog);
  if ($test=~/(\d+\.\d+(\.\d+)?)/)
    {
     print "$1\n";
@@ -757,7 +757,7 @@ sub LookForRecode
     return;
    }
  #$test=`recode --version`;
- RunRedirect('recode --version',$ErrorLog);
+ $test=RunRedirect('recode --version',$ErrorLog);
  if ($test=~/(\d+\.\d+(\.\d+)?)/)
    {
     print "$1\n";
@@ -820,7 +820,7 @@ sub GenerateMakefile
  $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy\n";
  $rep.="\tcp intl/dummy/libtvfintl.a $makeDir\n";
  $rep.="\tranlib $makeDir/libtvfintl.a\n" if $conf{'UseRanLib'};
- $rep.="\trm -f linuxso/libtvfintl.a\n\tln -s intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
+ $rep.="\trm -f linuxso/libtvfintl.a\n\tln -s ../intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
  $text=~s/\@intl_dummy_rule\@/$rep/g;
 
  # Write install stuff
