@@ -19,6 +19,7 @@ $GPMVersionNeeded='1.10';
 $NCursesVersionNeeded='1.8.6';
 $DJGPPVersionNeeded='2.0.2';
 unlink $ErrorLog;
+$UseDummyIntl=0;
 
 SeeCommandLine();
 
@@ -76,11 +77,23 @@ if (!$here && ($OS ne 'UNIX'))
 $MakeDefsRHIDE[1]='TVSRC=../../include '.$here.'/include '.@conf{'prefix'}.'/include/rhtvision';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
- # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
- # be added for things like FreeBSD or SunOS.
+# RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
+# be added for things like FreeBSD or SunOS.
 $MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSf eq 'Linux'));
-$MakeDefsRHIDE[2].=' intl' if (($OS eq 'DOS') || ($OS eq 'Win32')) && (@conf{'intl'} eq 'yes');
-$MakeDefsRHIDE[2].=' iconv' if (@conf{'iconv'} eq 'yes');
+if ((@conf{'intl-force-dummy'} ne 'yes') &&
+    (($OS eq 'DOS') || ($OS eq 'Win32')) && (@conf{'intl'} eq 'yes'))
+  {
+   $MakeDefsRHIDE[2].=' intl';
+  }
+else
+  {# Use the dummy unless the user requested not to use it
+   if ((@conf{'intl-force-dummy'} eq 'yes') || (@conf{'no-intl'} ne 'yes'))
+     {
+      $MakeDefsRHIDE[2].=' tvfintl';
+      $UseDummyIntl=1;
+     }
+  }
+$MakeDefsRHIDE[2].=' iconv' if (@conf{'iconv'} eq 'yes') && !$UseDummyIntl;
 $MakeDefsRHIDE[2].=' '.$conf{'NameCurses'}.' m' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
@@ -88,6 +101,7 @@ if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
    $MakeDefsRHIDE[3]='TVOBJ=../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    ModifyMakefiles('linux/Makefile','compat/compat.mak');
    CreateRHIDEenvs('linux/rhide.env','examples/rhide.env','compat/rhide.env');
   }
@@ -95,12 +109,14 @@ elsif ($OS eq 'DOS')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
    $MakeDefsRHIDE[3]='TVOBJ=../../djgpp '.$here.'/djgpp '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    ModifyMakefiles('djgpp/makefile','compat/compat.mak');
    CreateRHIDEenvs('djgpp/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile','compat/compat.mak');
@@ -115,6 +131,7 @@ if ($OS ne 'Win32')
    $MakeDefsRHIDE[0]='';
    $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2);
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile');
@@ -165,6 +182,10 @@ sub SeeCommandLine
       {
        $conf{'no-intl'}='yes';
       }
+    elsif ($i eq '--force-dummy')
+      {
+       $conf{'intl-force-dummy'}='yes';
+      }
     elsif ($i=~'--cflags=(.*)')
       {
        @conf{'CFLAGS'}=$1;
@@ -203,6 +224,7 @@ sub ShowHelp
  print "--help         : displays this text.\n";
  print "--prefix=path  : defines the base directory for installation.\n";
  print "--no-intl      : don't use international support.\n";
+ print "--force-dummy  : use the dummy intl library even when gettext is detected.\n";
  print "--fhs          : force the FHS layout under UNIX.\n";
  print "--no-fhs       : force to not use the FHS layout under UNIX.\n";
  print "--cflags=val   : normal C flags [default is env. CFLAGS].\n";
@@ -236,6 +258,13 @@ sub GiveAdvice
       {
        print "  Install gettext library.\n";
       }
+   }
+ if ($UseDummyIntl)
+   {
+    print "  [[[[[[[*******************>>>>> IMPORTANT!!! <<<<<*******************]]]]]]]\n";
+    print "  You must link with libtvfintl.a or you'll get undefined symbols. To avoid\n";
+    print "  using this library reconfigure using --no-intl. Read about it in the readme.\n";
+    print "  [[[[[[[*******************>>>>> IMPORTANT!!! <<<<<*******************]]]]]]]\n";
    }
  if ((@conf{'HAVE_GPM'} eq 'no') && ($OSf eq 'Linux'))
    {
@@ -289,6 +318,13 @@ sub LookForIntlSupport
  my ($test,$a,$djdir,$intllib,$intltest);
 
  print 'Checking for international support: ';
+ if (@conf{'intl-force-dummy'} eq 'yes')
+   {
+    print "using dummy by user request.\n";
+    $conf{'intl'}='yes';
+    $conf{'iconv'}='no';
+    return;
+   }
  if (@conf{'no-intl'} eq 'yes')
    {
     print "disabled by user request.\n";
@@ -603,7 +639,7 @@ sub GenerateMakefile
  # Dummy replacement for i8n library
  $rep ="install-intl-dummy: intl-dummy\n";
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
- $rep.="\tinstall -m 0644 intl/dummy/libintl.a \$(libdir)/libtvfintl.a\n";
+ $rep.="\tinstall -m 0644 intl/dummy/libtvfintl.a \$(libdir)/libtvfintl.a\n";
  $text=~s/\@intl_dummy_install_rule\@/$rep/g;
 
  $rep='';
@@ -647,7 +683,8 @@ sub CreateConfigH
 
  $text.=ConfigIncDef('HAVE_DEFINE_KEY','ncurses 4.2 or better have define_key (In Linux)');
  $text.=ConfigIncDefYes('HAVE_KEYSYMS','The X11 keysyms are there');
- $conf{'HAVE_INTL_SUPPORT'}=@conf{'intl'};
+ # Disable i8n only if the user requested, otherwise use gettext or the dummy
+ $conf{'HAVE_INTL_SUPPORT'}=@conf{'no-intl'} eq 'yes' ? 'no' : 'yes';
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
  $text.=ConfigIncDefYes('HAVE_GPM','GPM mouse support');
  $text.=ConfigIncDefYes('HAVE_OUTB_IN_SYS','out/in functions defined by glibc');
