@@ -154,9 +154,18 @@ ushort TGKey::KeyNameToNumber(char *s)
   They are shared by various drivers.
 *****************************************************************************/
 
-// This table maps the Unicode for greek letters with the latin letter for
-// the key that generates it. Example: alpha (with any accent) is generated
-// pressing the key with the latin A letter.
+/* This table maps the Unicode for greek letters with the latin letter for
+ the key that generates it. Example: alpha (with any accent) is generated
+ pressing the key with the latin A letter.
+
+This note is what I wrote for the old DOS code
+ Greek keyboards: That's for code page 737. This
+keyboards have two modes. One mode makes them work just
+as an US keyboard, pressing LShift+Alt enters in the
+greek mode. In this mode a-z and A-Z generates greek
+letters. They are reported without any scan code.
+Additionally ;/: key is an accent key (q/Q holds ;/:).
+*/
 stIntCodePairs TGKey::GreekKeyboard[]=
 {
 // With tonos

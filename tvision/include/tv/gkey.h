@@ -145,8 +145,8 @@ public:
   linuxEnableKeyPatch=2,
   // DOS
   // Should be incorporated to the remapping but I need volunteers
-  dosUS=0,
-  dosGreek737=20,
+  //dosUS=0,
+  //dosGreek737=20, No longer used
   dosUseBIOS=21,
   dosUseDirect=22,
   dosTranslateKeypad=23,

@@ -27,8 +27,6 @@ public:
  static void     FillTEvent(TEvent &e);
  static void     SetKbdMapping(int version);
  static int      GetKbdMapping(int version);
- static uchar    NonASCII2ASCII(uchar val);
- static int      CompareASCII(uchar val, uchar code);
 
  // Setup the pointers to point our members
  static void     Init();
@@ -47,10 +45,8 @@ protected:
  static KeyType  rawCode;
  static int      useBIOS;
  static int      translateKeyPad;
- static int      greekMode;
  static const uchar kbWithASCII0[256];
  static const uchar kbWithASCIIE0[256];
- static const uchar PC737[128];
 };
 #endif // DOSKEY_HEADER_INCLUDED
 
