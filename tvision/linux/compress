@@ -43,7 +43,6 @@ foreach $i (@ARGV)
 $here=`pwd`;
 chop $here;
 $here=~s/linux//;
-print "Here: $here\n";
 print 'Makefile: ';
 if (-M 'Makefile' > -M 'librhtv.gpr')
   {# This fixes some details:

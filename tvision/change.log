@@ -1,4 +1,9 @@
 $Log$
+Revision 2.399.2.68  2003/05/16 18:24:11  set
+* Added: Workaround for problems when using CVS RHIDE, it generates
+absolute paths for items in subprojects that doesn't have a target. I added
+a filter to make them relative.
+
 Revision 2.399.2.67  2003/05/16 14:50:36  set
 * Fixed: [Solaris] The use of size_t needs explicit inclusion of stdio
 header.
@@ -12,7 +17,7 @@ example using: gcc -o tvedit.exe `rhtv-config.exe --include` tvedit.cc
 `rhtv-config.exe --dir-libs` `rhtv-config.exe --dlibs`
 * Modified: To ever include stdc++ as library in the worst case it will be
 listed twice.
-.
+
 Revision 2.399.2.65  2003/05/15 18:37:42  set
 * Fixed(?): msgfmt (gettext) problems:
 1) It didn't reuse ~Alt-X~ Exit and let it commented. A bug.
