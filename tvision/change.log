@@ -1,4 +1,27 @@
 $Log$
+Revision 1.196  2001/09/16 16:52:07  set
+* Added: Architecture detection to the configure. It defines TVCPU_$(Arch).
+* Added: GNU make detection to the configure. It supports gmake as name.
+* Added: GNU ar detection to the configure. It supports gar as name.
+* Fixed: In systems different than Linux and DOS RHIDE makefiles doesn't
+include -lstdc++ (RHIDE_TYPED_LIBS_$(RHIDE_OS).cc is not defined). So now
+the configuration puts them as RHIDE_OS_LIBS. Seen on FreeBSD and Solaris.
+* Added: Support for ncurses installed as -lcurses (I saw it in Solaris).
+* Added: Now CFLAGS and CXXFLAGS can be passed to the configuration in the
+command line (must use the perl script directly, no the shell script!). It
+made the configset script usable with any UNIX shell (/bin/sh isn't bash in
+a lot of UNIX systems).
+* Fixed: When detecting if define_key is available in ncurses the version
+isn't enough. Seen on Solaris.
+* Fixed: Warning about configure.cache not exits in configset.
+* Fixed: When detecting gpm in systems lacking it the config script said
+"too old" instead of "non existent". It was a side effect.
+* Added: SunOS to the list of systems supported by the configuration. It
+doesn't mean the library is working there.
+* Modified: References to __i386__ by TVCPU_x86.
+* Fixed: When creating the dynamic library the list of libraries was listed
+twice.
+
 Revision 1.195  2001/09/16 12:44:19  set
 * Fixed: [Linux] Now <sys/ioperm.h> is included only when needed
 (i386+Linux). After fixing it the code compiled for Linux: Alpha, PPC

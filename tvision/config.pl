@@ -579,6 +579,15 @@ sub GenerateMakefile
    }
  $text=~s/\@install2_rule\@/$rep/g;
 
+ $rep= "clean:\n";
+ $rep.="\trm -f linuxso/librhtv.so*\n";
+ $rep.="\trm -f linuxso/obj/*.o\n";
+ $rep.="\trm -f linux/librhtv.a\n";
+ $rep.="\trm -f linux/obj/*.o\n";
+ $rep.="\trm -f compat/obj/*.o\n";
+ $rep.="\trm -f djgpp/obj/*.o\n";
+ $text=~s/\@clean\@/$rep/g;
+
  replace('Makefile',$text);
 }
 

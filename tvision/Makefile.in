@@ -2,7 +2,7 @@ prefix=@prefix@
 libdir=$(prefix)/lib
 OS=@OS@
 
-.PHONY: @targets@ @installers@ install-headers
+.PHONY: @targets@ @installers@ install-headers clean
 
 all: @targets@
 
@@ -19,3 +19,4 @@ install-headers:
 
 install: @installers@ install-headers
 
+@clean@
