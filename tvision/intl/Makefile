@@ -9,6 +9,8 @@ ifeq ($(msgfmt),)
 msgfmt=msgfmt
 endif
 
+destmo=tvision$(shell cat ../version.txt).mo
+
 clean:
 	rm -f $(addsuffix .mo,$(LANGUAGES))
 
@@ -19,7 +21,7 @@ languages: $(addsuffix .mo,$(LANGUAGES))
 
 install: $(LANG_FILES)
 	install -d -m 0755 $(prefix)/share/locale/es/LC_MESSAGES
-	install -m 0644 $(ES_FILE) $(prefix)/share/locale/es/LC_MESSAGES/tvision.mo
+	install -m 0644 $(ES_FILE) $(prefix)/share/locale/es/LC_MESSAGES/$(destmo)
 	install -d -m 0755 $(prefix)/share/locale/ru/LC_MESSAGES
-	install -m 0644 ru.mo $(prefix)/share/locale/ru/LC_MESSAGES/tvision.mo
+	install -m 0644 ru.mo $(prefix)/share/locale/ru/LC_MESSAGES/$(destmo)
 

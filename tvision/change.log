@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.109  2003/07/16 13:42:34  set
+* Modified: The RPM scripts to support an environment variable to indicate
+where to create the RPMs. I needed it when using S.F. Compiler Farm and
+Red Hat 7.3 which always failed when using a directory mounted with NFS.
+
 Revision 2.399.2.108  2003/07/14 20:59:33  set
 * Fixed: [X11] the "mouse" event mask I used was incomplete. This generated
 problems when using the update thread because in this case the events are

@@ -25,6 +25,8 @@ struct stTVIntl
  int cp;
 };
 
+const int libPackageNameLen=20;
+
 class TVIntl
 {
 public:
@@ -73,6 +75,7 @@ protected:
  static int defaultEncodings[];
  static void *previousCPCallBack;
  static uchar recodeTable[256];
+ static char  packageName[libPackageNameLen];
 
  static void initialize();
  static void codePageCB(ushort *map);

@@ -28,7 +28,7 @@ const char *TVOSClipboard::getError()
 {
  if (error>errors || !error || !nameErrors)
     return NULL;
- return nameErrors[error];
+ return _(nameErrors[error]);
 }
 
 
