@@ -30,18 +30,45 @@ void TRadioButtons::press( int item )
 {
     value = item;
     TCluster::press(item);
+    evaluateMasks();
 }
 
 void TRadioButtons::movedTo( int item )
 {
     value = item;
     TCluster::movedTo(item);
+    evaluateMasks();
 }
 
 void TRadioButtons::setData( void * rec )
 {
     TCluster::setData(rec);
     sel = value;
+    evaluateMasks();
+}
+
+void TRadioButtons::evaluateMasks()
+{
+    if( !enableMasks )
+        return;
+    int i;
+    unsigned mask, theMask;
+
+    theMask = enableMasks[value];
+    for( i = 0, mask = 1; i < enableCViews; mask <<= 1, i++ )
+        {
+        TView *view = enableViews[i];
+        if( theMask & mask )
+           {// Enable this view
+           if( view->state & sfDisabled )
+              view->setState( sfDisabled, False );
+           }
+        else
+           {// Disable this view
+           if( !( view->state & sfDisabled ) )
+              view->setState( sfDisabled, True );
+           }
+        }
 }
 
 uint32 TRadioButtons32::dataSize()
