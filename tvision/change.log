@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.98  2002/05/30 17:42:32  set
+* Fixed: Lack of string header. Reported by Tapio Kelloniemi
+<tappi@thack.org>
+
 Revision 2.97  2002/05/30 17:26:56  set
 * Added: X11 Palette code, completly untested. The Linux driver code seems
 to work.
