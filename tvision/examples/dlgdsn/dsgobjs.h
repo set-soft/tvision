@@ -6,6 +6,9 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Modified by Salvador E. Tropea to compile without warnings.
+    This header allocated a couple of structures in each file that used it.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -71,37 +74,12 @@ enum TViewType { vtNone = -1, vtOther, vtLabel, vtInput, vtMemo, vtStatic,
    vtButton, vtListBox, vtRadioButton, vtCheckBox, vtVScroll, vtHScroll,
    vtDialog };
    
-static char * TheClassName[vtDialog + 1] = { "TUser",
-                                             "TLabel",
-                                             "TInputLine",
-                                             "TMemo",
-                                             "TStaticText",
-                                             "TButton",
-                                             "TListBox",
-                                             "TRadioButtons",
-                                             "TCheckBoxes",
-                                             "TScrollBar",
-                                             "TScrollBar",
-                                             "TDialog" };
-
-static int vtAttrSize[vtDialog + 1] = { sizeof(TDsgObjData),
-                                        sizeof(TDLabelData),
-                                        sizeof(TDInputData),
-                                        sizeof(TDMemoData),
-                                        sizeof(TDStaticData),
-                                        sizeof(TDButtonData),
-                                        sizeof(TDListBoxData),
-                                        sizeof(TDClusterData),
-                                        sizeof(TDClusterData),
-                                        sizeof(TViewData),
-                                        sizeof(TViewData),
-                                        sizeof(TDDialogData) };
 
 class TEditCollection: public TCollection
 {
 public:
    TEditCollection(): TCollection(0, 1) { };
-   virtual void * readItem(ipstream &) { };
+   virtual void * readItem(ipstream &) { return 0; };
    virtual void writeItem(void *, opstream &) { };
 };
 
@@ -144,15 +122,15 @@ protected:
    int nameIndex;
    void buildName(TNameStr * name, int mode);
    virtual void setViewData(TDsgObjData& data);
-   virtual TView * Me() { };
+   virtual TView * Me() { return 0; };
    virtual void setupView(TView * View);
 public:
    TDsgObj(TViewType ViewType);
-   ~TDsgObj();
+   virtual ~TDsgObj();
    char * getScript(ushort ScriptType);
    void setPos(TPoint neworigin, TPoint newsize);
    virtual void dsgUpdate();
-   virtual void * dsgGetData() { };
+   virtual void * dsgGetData() { return 0; };
    virtual TView * createView(TView *) { return 0; };
    int getAttrSize() { return attrSize; };
   
@@ -184,12 +162,12 @@ public:
    virtual void * dsgGetData();
    Boolean saveToFile(char * FileName);
    Boolean Save(int aCommand = cmCancel);
-   Boolean loadFromFile(char * FileName);
+   Boolean loadFromFile(const char * FileName);
    void setModified(Boolean);
    Boolean modified;
 };
 
-class TDsgView: public TView, public TDsgObj { };
+//class TDsgView: public TView, public TDsgObj { };
 
 class TDLabel: public TLabel, public TDsgObj
 {

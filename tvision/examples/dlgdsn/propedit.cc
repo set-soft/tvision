@@ -6,6 +6,9 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Heavily modified by Salvador E. Tropea to compile without warnings.
+    Some warnings were in fact bugs.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -122,7 +125,7 @@ int execDialog(TDialog * dialog, void *data)
 /* TLinkList ============================================================*/
 
 // Sorter func by tabulation order
-static int byTabOrder(void * key1, void * key2)
+static int byTabOrder(const void * key1, const void * key2)
 {
    TDsgObj * d1  = (TDsgObj *)((TDsgLink *&)*key1)->d;
    TDsgObj * d2  = (TDsgObj *)((TDsgLink *&)*key2)->d;
@@ -145,6 +148,7 @@ static int byTabOrder(void * key1, void * key2)
         if (d2 == ObjEdit->object) return -1;
       } else return (t1 > t2) - (t1 < t2);
    }
+   return 0;
 }
 /*
 static int byCreationOrder(void * key1, void * key2)
@@ -183,22 +187,22 @@ static Boolean matchLabel(void * link, void * aLink)
 // Find functions
 TDsgLink * TLinkList::viewFind(void * aView) // by View
 {
-   return firstThat(&matchView, aView);
+   return (TDsgLink *)firstThat(&matchView, aView);
 }
 
 TDsgLink * TLinkList::dsgObjFind(void * aDsgObj) // by DsgObj
 {
-   return firstThat(&matchDsgObj, aDsgObj);
+   return (TDsgLink *)firstThat(&matchDsgObj, aDsgObj);
 }
 
 TDsgLink * TLinkList::linkFind(char * aName) // Look for a label
 {
-   return firstThat(&matchLabel, aName);
+   return (TDsgLink *)firstThat(&matchLabel, aName);
 }
 
 TDsgLink * TLinkList::scrollFind(char * aScroll) // Look for a ScrollBar
 {
-   return firstThat(&matchScroll, aScroll);
+   return (TDsgLink *)firstThat(&matchScroll, aScroll);
 }
 
 // Remove the object from and notificates all others in the list
@@ -271,7 +275,7 @@ void TLinkList::add(TView * aView, TDsgObj * aDsgObj)
 
 void TLinkList::freeItem(void * item)
 {
-   delete item;
+   delete (char *)item;
 }
 
 // To reorganize the views in a correct tabulation order
@@ -353,7 +357,6 @@ void TLinkList::sortForBuild()
 void TLinkList::removeNotify(TCollection * aCollection, int Index)
 {
    int i;
-   char * text;
    TDsgObj * d;
    for (i = 0; i < count; i++)
    {
@@ -582,6 +585,7 @@ TStructMap& operator + ( TStructMap& map1, TStructMap& map2 )
       while ((map->dataSize == 0) && (map->prev)) map = map->prev;
       map2.index = map->index + 1;
    }
+   return map2;
 }
 
 /* Data mappers -----------------------------------------------------------*/
@@ -604,7 +608,7 @@ TStructMap& operator + ( TStructMap& map1, TStructMap& map2 )
      *new TStructMap("DragMode", sizeof(ushort), etDragModeEditor)+\
      *new TStructMap("HelpContext", sizeof(ushort), etHelpCtxEditor)
 
-// TPoint origin;\
+/* TPoint origin;\
    TPoint size;\
    TNameStr className;\
    TNameStr thisName;\
@@ -613,7 +617,7 @@ TStructMap& operator + ( TStructMap& map1, TStructMap& map2 )
    ushort state;\
    ushort growMode;\
    ushort dragMode;\
-   ushort helpCtx\
+   ushort helpCtx\ */
 
 static const TStructMap * TViewMap = &(_viewmap_());
 
@@ -685,7 +689,7 @@ TObjEditView::TObjEditView(const TRect& bounds, TScrollBar * v):
    currentMap=0;
 }
 
-void TObjEditView::setMap(TStructMap * aMap, void * Data)
+void TObjEditView::setMap(const TStructMap * aMap, void * Data)
 {
    data = Data;
    if (!data)
@@ -705,10 +709,8 @@ void TObjEditView::setMap(TStructMap * aMap, void * Data)
    drawView();
 }
 
-void calcPlace(TPoint& p, short column, short line, TStructMap * map)
+void calcPlace(TPoint& p, short column, short line, const TStructMap * map)
 {
-   int incFlag = 0;
-   
    p.x = column + 1;
    p.y = line;
    while (map->next)
@@ -721,19 +723,17 @@ void calcPlace(TPoint& p, short column, short line, TStructMap * map)
 
 int findStr(TCollection * col, const char * cmp)
 {
-   int i, c = col->getCount(), rst = 0;
+   int i, c = col->getCount();
    if (c == 0) return -1;
    for (i = 0; i < c; i++)
      if (strcmp(cmp, (char *)col->at(i)) == 0) return i;
    return 0;
 }
 
-void TObjEditView::editItem(TStructMap * map)
+void TObjEditView::editItem(const TStructMap * map)
 {
-   TRect r;
    ushort Val;
    TListBoxRec rec;
-   TDialog * d;
    void * v;
    TMemoData m;
    char * c;
@@ -764,7 +764,7 @@ void TObjEditView::editItem(TStructMap * map)
        return;
    }
   
-   void * ldata = data + map->offset;
+   void * ldata = (void *)((char *)data + map->offset);
    bool chg = false;
   
    switch(map->editorType)
@@ -836,7 +836,7 @@ void TObjEditView::editItem(TStructMap * map)
               }
               c++;
           }
-          c = v;
+          c = (char *)v;
           m.length = strlen(c);
           chg = (execDialog(CharPtrEditor(), &m) == cmOK);
           if (chg)
@@ -879,7 +879,7 @@ void TObjEditView::editItem(TStructMap * map)
 #undef _do_
 }
 
-const char * TObjEditView::getValueFor(TStructMap * map)
+const char * TObjEditView::getValueFor(const TStructMap * map)
 {
   static char buf[60];
   static ushort ushrtval;
@@ -888,7 +888,7 @@ const char * TObjEditView::getValueFor(TStructMap * map)
   static void * ldata;
   
   ldata = data;
-  ldata += map->offset;
+  ldata = (void *)((char *)ldata + map->offset);
   
   strcpy(buf, "<none>");
 
@@ -948,8 +948,8 @@ public:
 void TObjEditView::draw()
 {
    TLDrawBuffer b;
-   TStructMap * curMap;
-   TStructMap * cur;
+   const TStructMap * curMap;
+   const TStructMap * cur;
    int r, l, tmp, line = 0;
    char lstr[100], rstr[100];
    char lfmt[10], rfmt[10];
@@ -983,7 +983,7 @@ void TObjEditView::draw()
             sprintf(lstr, lfmt, cur->label);
             sprintf(rfmt, "%%-%is", r);
             char *tmp=newStr(getValueFor(cur));
-            if (strlen(tmp)>=r)
+            if (strlen(tmp)>=(size_t)r)
                tmp[r-1]=0;
             sprintf(rstr, rfmt, getValueFor(cur));
             DeleteArray(tmp);
@@ -1011,7 +1011,7 @@ void TObjEditView::draw()
 
 #undef _lo_
 
-TStructMap * itemForLine(int line, TStructMap * Map)
+const TStructMap * itemForLine(int line, const TStructMap * Map)
 {
    ushort i = 1;
    
@@ -1031,7 +1031,7 @@ TStructMap * itemForLine(int line, TStructMap * Map)
 
 void TObjEditView::handleEvent(TEvent& event)
 {
-   TStructMap * t;
+   const TStructMap * t;
    ushort i;
    
    TView::handleEvent(event);
@@ -1114,7 +1114,7 @@ void TObjEditView::handleEvent(TEvent& event)
          case kbDel:
            if (currentMap->editorType == etScrollBarEditor ||
                currentMap->editorType == etLinkEditor)
-               strcpy((char *)(data + currentMap->offset), blank);
+               strcpy((char *)data + currentMap->offset, blank);
            drawView();
            clearEvent(event);
          break;
@@ -1168,7 +1168,7 @@ void TObjEdit::handleEvent(TEvent& event)
 
 void TObjEdit::setObjData(TDsgObj * Obj)
 {
-   TStructMap * Map = 0;
+   const TStructMap * Map = 0;
    
    if ((!Obj) || object == Obj) return;
 

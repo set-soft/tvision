@@ -6,6 +6,9 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Heavily modified by Salvador E. Tropea to compile without warnings.
+    Some warnings were in fact bugs.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -30,6 +33,8 @@
 #define Uses_TEventQueue
 #define Uses_MsgBox
 #define Uses_TStringCollection
+#define Uses_ofpstream
+#define Uses_ifpstream
 
 #include <tv.h>
 
@@ -38,13 +43,40 @@
 #include "dsgdata.h"
 #include "strmoper.h"
 
+static int vtAttrSize[vtDialog + 1] = { sizeof(TDsgObjData),
+                                        sizeof(TDLabelData),
+                                        sizeof(TDInputData),
+                                        sizeof(TDMemoData),
+                                        sizeof(TDStaticData),
+                                        sizeof(TDButtonData),
+                                        sizeof(TDListBoxData),
+                                        sizeof(TDClusterData),
+                                        sizeof(TDClusterData),
+                                        sizeof(TViewData),
+                                        sizeof(TViewData),
+                                        sizeof(TDDialogData) };
+                                        
+static char * TheClassName[vtDialog + 1] = { "TUser",
+                                             "TLabel",
+                                             "TInputLine",
+                                             "TMemo",
+                                             "TStaticText",
+                                             "TButton",
+                                             "TListBox",
+                                             "TRadioButtons",
+                                             "TCheckBoxes",
+                                             "TScrollBar",
+                                             "TScrollBar",
+                                             "TDialog" };
+
+
 #if 0 // A useful visual map of AppPalette indexed by dialog and app
 
-// The palette of an internal view is mapped in the palette of a group view  \
-   which owns it.                                                            \
-   if you need to make an internal view visible out of the group for what    \
-   it was designed then you must to redefine the getPalette() method to      \
-   return a TPalette that is its real palette index in the global palette.
+/* The palette of an internal view is mapped in the palette of a group view
+   which owns it.
+   if you need to make an internal view visible out of the group for what
+   it was designed then you must to redefine the getPalette() method to
+   return a TPalette that is its real palette index in the global palette. */
    
 // app "\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f"
   Attr "\x71\x70\x78\x74\x20\x28\x24\x17\x1F\x1A\x31\x31\x1E\x71\x00"
@@ -104,12 +136,15 @@
     { if (!HandleEventOnEditor(this, event, viewType)) a::handleEvent(event); }
 
 // Common getpalette function code fragment for editable classes
+// SET: Palettes are supposed to be constants, so they should call members
+// like here
 #define _p_(a,b,c)                                                          \
   static TPalette palette( a, sizeof(a) - 1);                               \
   static TPalette pal_sel( b, sizeof(b) - 1);                               \
   if (owner == TProgram::deskTop) return palette;                           \
-  else if ((owner != TProgram::deskTop) && (getState(sfSelected)))          \
-    return pal_sel; else return c::getPalette();
+  else return c::getPalette();
+/*  else if ((owner != TProgram::deskTop) && (getState(sfSelected)))          \
+    return pal_sel; else return c::getPalette();*/
 
 // Commom changeBounds code fragment for editable classes
 #define _chgbnds_(a) a::changeBounds(bounds); \
@@ -190,7 +225,7 @@ TDialog * CreateTool()
    TMemoData buf;
 
    d->flags &= ~wfClose;
-// d->flags |= wfGrow;
+   // d->flags |= wfGrow;
    d->insert(new TDInputLine(TRect(2, 1, 7, 2)));
    d->insert(view = new TDLabel(TRect(8, 1, 13, 2)));
    view->options |= ofSelectable;
@@ -348,6 +383,7 @@ ushort ImOwned(TView * view)
    if (view->owner == TProgram::deskTop) return ByDesktop; else
    if (view->owner == EditDlg) return ByEditor; else
    if (view->owner == ToolDlg) return ByToolDlg;
+   return 0;
 }
 
 /* DsgDragView ----------------------------------------------------------*/
@@ -530,15 +566,17 @@ void readStrings( ipstream& s, TCollection * c, int limit )
 
 TView * LoadObject( ipstream& s )
 {
-   TView * rst;
+   TView * rst=0;
    TDsgObj * obj;
-   static int vt;
-   TStringCollection * items;
+   static TViewType vt;
+   static int auxVt;
+   TStringCollection * items=0;
    ushort Count;
    char * Text;
    TPoint p;
    
-   s >> vt;
+   s >> auxVt;
+   vt=(TViewType)auxVt;
    if (vt == vtNone) return 0;
    void * attr = readDsgInfo(s, vt);
    if (!attr) return 0;
@@ -548,27 +586,27 @@ TView * LoadObject( ipstream& s )
    obj = ObjectLinker()->viewFind(rst)->d;
    memcpy(obj->attributes, attr, vtAttrSize[vt]);
    free(attr);
-   switch (vt)
-   {
-      case vtStatic:
-         s >> Count;
-         if (Count > 0)
-         {
-            Text = malloc(Count);
-            s.readBytes(Text, Count);
-            delete[] ((TDStaticData *)obj->attributes)->text;
-            ((TDStaticData *)obj->attributes)->text = Text;
-         }
-         break;
-      case vtRadioButton...vtCheckBox:
-         s >> Count;
-         if (Count > 0 && Count <= 32)
-         {
-            items = obj->dsgGetData();
-            readStrings(s, items, Count);
-         } else items->freeAll();
-         ((TDClusterData *)obj->attributes)->items = items;
-   }
+   if (vt==vtStatic)
+     {
+      s >> Count;
+      if (Count > 0)
+      {
+         Text = (char *)malloc(Count);
+         s.readBytes(Text, Count);
+         delete[] ((TDStaticData *)obj->attributes)->text;
+         ((TDStaticData *)obj->attributes)->text = Text;
+      }
+     }
+   if (vt>=vtRadioButton && vt<=vtCheckBox)
+     {
+      s >> Count;
+      if (Count > 0 && Count <= 32)
+      {
+         items = (TStringCollection *)obj->dsgGetData();
+         readStrings(s, items, Count);
+      } else items->freeAll();
+      ((TDClusterData *)obj->attributes)->items = items;
+     }
 // obj->dsgUpdate();
    return rst;
 }
@@ -579,7 +617,7 @@ void SaveObject( ofpstream& s, TDsgObj * obj )
    TStringCollection * items;
    char * ch;
    
-   s << obj->viewType;
+   s << (int)obj->viewType;
    s.writeBytes(obj->attributes, vtAttrSize[obj->viewType]);
    switch (obj->viewType)
    {
@@ -594,7 +632,7 @@ void SaveObject( ofpstream& s, TDsgObj * obj )
         else s << Count;
         break;
       case vtRadioButton...vtCheckBox:
-        items = ((TDClusterData *)obj->attributes)->items;
+        items = (TStringCollection *)((TDClusterData *)obj->attributes)->items;
         Count = items->getCount();
         s << Count;
         if (Count > 0)
@@ -605,6 +643,7 @@ void SaveObject( ofpstream& s, TDsgObj * obj )
              s << Count;
              s.writeBytes( ch, Count );
           }
+       default: return;
    }
 }
 
@@ -668,8 +707,8 @@ TDsgObj::TDsgObj(TViewType ViewType)
 #define _allocattr_(t,c) \
          nameIndex = c; \
          attrSize = sizeof(t); \
-         attributes = new t; break //calloc(1, attrSize); \
-         break;
+         attributes = new t; break /* calloc(1, attrSize);
+         break; */
 //       setViewData((TDsgObjData &)*attributes);
    viewType = ViewType;
    switch (viewType)
@@ -686,6 +725,7 @@ TDsgObj::TDsgObj(TViewType ViewType)
       case vtVScroll: _allocattr_(TDVScrollData, VScrollCount);
       case vtHScroll: _allocattr_(TDHScrollData, HScrollCount);
       case vtDialog: _allocattr_(TDDialogData, DialogCount);
+      case vtNone: break;
    }
    dsgObj = this;
 #undef _allocattr_
@@ -693,8 +733,6 @@ TDsgObj::TDsgObj(TViewType ViewType)
 
 void TDsgObj::setViewData(TDsgObjData& data)
 {
-   char * Text[30];
-   
    TView * me = Me();
    
    buildName(&data.className, 0);  // TName
@@ -718,10 +756,10 @@ void TDsgObj::setViewData(TDsgObjData& data)
          ((TDInputData &)data).validatorType = 0;
       break;
       case vtStatic:
-         ((TDStaticData &)data).text = this->dsgGetData();
+         ((TDStaticData &)data).text = (char *)this->dsgGetData();
       break;
       case vtButton:
-         strcpy( ((TDButtonData &)data).title, this->dsgGetData() );
+         strcpy( ((TDButtonData &)data).title, (char *)this->dsgGetData() );
          ((TDButtonData &)data).command =  ((TDButton *)me)->getCommand();
          ((TDButtonData &)data).flags =  ((TDButton *)me)->getFlags();
       break;
@@ -734,6 +772,7 @@ void TDsgObj::setViewData(TDsgObjData& data)
       case vtDialog:
          strcpy( ((TDDialogData &)data).title, ((TDialog *)me)->title);
          ((TDDialogData &)data).flags =  ((TDialog *)me)->flags;
+      default: return;
    }
 }
 
@@ -748,12 +787,13 @@ TDsgObj::~TDsgObj()
 {
    if (this!=EditDlg && ObjEdit->object == this) ObjEdit->setObjData(EditDlg);
    ObjectLinker()->removeMe(this); // <- was DsgObj
-   delete attributes;
+   delete (char *)attributes;
 }
 
 char * TDsgObj::getScript(ushort ScriptType)
 {
 // criar e retorna um texto script conforme o tipo
+ return 0;
 }
 
 void TDsgObj::setupView(TView * View)
@@ -927,7 +967,7 @@ void TDDialog::dsgUpdate()
    setModified(True);
 }
 
-void * TDDialog::dsgGetData() { return title; }
+void * TDDialog::dsgGetData() { return (void *)title; }
 
 Boolean TDDialog::Save(int aCommand)
 {
@@ -954,7 +994,8 @@ Boolean TDDialog::Save(int aCommand)
           case cmNo: return True;
           case cmCancel: return False;
       }
-   } else return True;
+   } //else return True;
+ return True;  
 }
 
 static void saveObject(void * v, void * d)
@@ -983,7 +1024,7 @@ Boolean TDDialog::saveToFile(char * FileName)
         ofpstream& s = *S;
         s << viewType;
         s.writeBytes(attributes, vtAttrSize[viewType]);
-        s << GridState;
+        s << GridState ? (char)1 : (char)0;
         s << LabelCount  << InputCount   << MemoCount
           << StaticCount << ButtonCount  << ListBoxCount << RadioCount
           << CheckCount  << VScrollCount << HScrollCount << UserCount;
@@ -997,9 +1038,10 @@ Boolean TDDialog::saveToFile(char * FileName)
     } else return False;
 }
 
-Boolean TDDialog::loadFromFile(char * FileName)
+Boolean TDDialog::loadFromFile(const char * FileName)
 {
-   static int vt;
+   static int vtAux;
+   static TViewType vt;
    
    if (!Save(cmYes)) return False;
    
@@ -1024,12 +1066,13 @@ Boolean TDDialog::loadFromFile(char * FileName)
    if (S != 0)
    {
       ifpstream& s = *S;
-      s >> vt;
-      if (vt != vtDialog) { s.close; return False; }
+      s >> vtAux; vt = (TViewType)vtAux;
+      if (vt != vtDialog) { s.close(); return False; }
       void * attr = readDsgInfo(s, vt);
       memcpy(attributes, attr, vtAttrSize[vt]);
       free(attr);
-      s >> GridState;
+      char aux;
+      s >> aux; GridState=aux ? True : False;
       s >> LabelCount  >> InputCount   >> MemoCount
         >> StaticCount >> ButtonCount  >> ListBoxCount >> RadioCount
         >> CheckCount  >> VScrollCount >> HScrollCount >> UserCount;
@@ -1049,7 +1092,8 @@ Boolean TDDialog::loadFromFile(char * FileName)
       setModified(False);
       s.close();
       delete S;
-   } else return False;
+   } //else return False;
+ return False;  
 }
 
 /* TDLabel ==============================================================*/
@@ -1084,7 +1128,7 @@ void TDLabel::dsgUpdate()
   TDsgObj::dsgUpdate();
 }
 
-void * TDLabel::dsgGetData() { return text; }
+void * TDLabel::dsgGetData() { return (void *)text; }
 
 TView * TDLabel::createView(TView * aLink)
 {
@@ -1206,7 +1250,7 @@ void TDStaticText::dsgUpdate()
 //  drawView();
 }
 
-void * TDStaticText::dsgGetData() { return text; }
+void * TDStaticText::dsgGetData() { return (void *)text; }
 
 TView * TDStaticText::createView(TView * aOwner)
 {
@@ -1248,7 +1292,7 @@ void TDButton::dsgUpdate()
 //  drawView();
 }
 
-void * TDButton::dsgGetData() { return title; }
+void * TDButton::dsgGetData() { return (void *)title; }
 
 ushort TDButton::getCommand() { return command; }
 ushort TDButton::getFlags() { return flags; }

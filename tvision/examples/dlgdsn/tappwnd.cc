@@ -6,6 +6,8 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Modified by Salvador E. Tropea to compile without warnings.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -44,7 +46,7 @@ TAppWindow::~TAppWindow()
    removeStatusLine();
 }
 
-static TFrame * TAppWindow::initFrame(TRect r)
+TFrame * TAppWindow::initFrame(TRect r)
 {
    return 0;
 }

@@ -6,6 +6,8 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Modified by Salvador E. Tropea to compile without warnings.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -38,7 +40,7 @@ class TDsgObj;
 class TStructMap;
 
 // Sort function prototype
-typedef int (* ccSortFunc)(void *, void *);
+typedef int (* ccSortFunc)(const void *, const void *);
 
 typedef struct TDsgLink
 {
@@ -61,7 +63,7 @@ public:
    void removeMe(TDsgObj * aDsgObj);      // Remove the link for a TDsgObj
    void add(TView * aView, TDsgObj * aDsgObj); // Add new link
    virtual void freeItem(void * item);
-   virtual void * readItem(ipstream &) { };    // It not need be loaded or...
+   virtual void * readItem(ipstream &) { return 0; };    // It not need be loaded or...
    virtual void writeItem(void *, opstream &) { }; // saved
    void sort(ccSortFunc Compare);         // Tabulation
    void doReOrder();                      // methods
@@ -86,18 +88,18 @@ public:
 // A grid style viewer and editor for objects
 class TObjEditView: public TView
 {
-   const char * getValueFor(TStructMap * map);
-   void editItem(TStructMap * map);
+   const char * getValueFor(const TStructMap * map);
+   void editItem(const TStructMap * map);
    int separator;
    TScrollBar * sb;
-   TStructMap * dataMap;
-   TStructMap * currentMap;
+   const TStructMap * dataMap;
+   const TStructMap * currentMap;
    void * data;
 public:
    TObjEditView(const TRect& bounds, TScrollBar * v);
    virtual void handleEvent(TEvent& event);
    virtual void draw();
-   void setMap(TStructMap * aMap, void * Data);
+   void setMap(const TStructMap * aMap, void * Data);
    int vtCurrent;
 };
 

@@ -6,6 +6,8 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Modified by Salvador E. Tropea to compile without warnings.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -24,11 +26,13 @@
 #define Uses_TProgram
 #define Uses_TApplication
 #define Uses_TDeskTop
+#define Uses_ofpstream
+#define Uses_ifpstream
 
 #include <tv.h>
 #include "strmoper.h"
 
-bool fileExists(char * FileName)
+bool fileExists(const char * FileName)
 {
    FILE * test;
    
@@ -61,7 +65,7 @@ char * getFileName(char * aTitle, const char * ext, int Mode)
 }
 
 
-ifpstream * openFile(char * FileName, char * Signature)
+ifpstream * openFile(const char * FileName, char * Signature)
 {
    if (!fileExists(FileName)) return 0;
    ifpstream * rst = new ifpstream( FileName, ios::in|ios::binary );

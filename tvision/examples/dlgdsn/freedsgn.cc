@@ -43,6 +43,7 @@
 #define Uses_TFileDialog
 #define Uses_TChDirDialog
 #define Uses_ofpstream
+#define Uses_ifpstream
 
 #include <tv.h>
 
