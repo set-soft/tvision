@@ -653,6 +653,10 @@ typedef unsigned long  ulong;
    #define _GNU_SOURCE
    #define CLY_getline getline
   #endif
+  // Avoid including libintl.h, we have the prototypes
+  // This is a temporal workaround.
+  #undef  _LIBINTL_H
+  #define _LIBINTL_H 1
  #endif
 
  /* Solaris using gcc but not glibc */
