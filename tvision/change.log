@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.603  2004/12/07 14:48:58  set
+* Added: [config] --debug option to select debug switches.
+
 Revision 2.602  2004/12/06 18:16:40  set
 * Fixed(?): XFree86 reports Ctrl+2 without any symbol (only ASCII).
 Reported by Sergio Núñez (snunez/esquemas/com).
@@ -7,7 +10,9 @@ Reported by Sergio Núñez (snunez/esquemas/com).
 long long if the pointer is 32 bits wide.
 * Updated: Web page to reflect the release.
 * Modified: Version to 2.0.4
-.
+
+--------- CVS tag r_2_0_3DOS and r_2_0_3nuDOS
+
 Revision 2.601  2004/11/29 16:23:15  set
 * Fixed: [DJGPP][Maintainer dependencies] The path to system headers to be
 excluded from dependencies must include the gcc 3.x dir.
@@ -22,7 +27,6 @@ is know for years.
 * Fixed: [DJGPP][Maintainer dependencies] Dependencies for examples when
 they are abolute (even after using gprexp).
 * Updated: [Win32] makefiles.
-
 
 --------- CVS tag r_2_0_3 and r_2_0_3nu
 

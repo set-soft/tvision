@@ -31,6 +31,26 @@ Added TSItem::append by Salvador E. Tropea
 #define Uses_TGKey
 #include <tv.h>
 
+class TStringCollectionCIntl : public TStringCollection
+{
+public:
+ TStringCollectionCIntl( ccIndex aLimit, ccIndex aDelta ) :
+   TStringCollection(aLimit,aDelta) {}
+ virtual void freeItem( void* item );
+ stTVIntl *atI( ccIndex item ) { return (stTVIntl *)at(item); };
+};
+
+void TStringCollectionCIntl::freeItem( void* item )
+{
+    if( item )
+       {
+       stTVIntl *p = (stTVIntl *)item;
+       delete[] p->translation;
+       delete p;
+       }
+}
+
+
 #define cpCluster "\x10\x11\x12\x12\x1F"
 
 // SET: To report the movedTo and press as broadcasts, set it to 0 if you
@@ -50,7 +70,7 @@ TCluster::TCluster( const TRect& bounds, TSItem *aStrings ) :
         i++;
 
     strings = new TStringCollection( i, 0 );
-    intlStrings = new TStringCollection( i, 0 );
+    intlStrings = new TStringCollectionCIntl( i, 0 );
 
     while( aStrings != 0 )
         {
@@ -74,7 +94,7 @@ TCluster::~TCluster()
 const char *TCluster::getItemText( ccIndex item )
 {
     const char *key = (const char *)strings->at( item );
-    stTVIntl *cache = (stTVIntl *)intlStrings->at( item );
+    stTVIntl *cache = intlStrings->atI( item );
     //printf("getText(%s,...) [%d]\n",key,item);
     return TVIntl::getText( key, cache );
 }
