@@ -143,7 +143,7 @@ protected:
  // Hardware Palette handling routines and variables.
  // This is low level and should be called from TScreen.
  static void (*getDisPaletteColors)(int from, int number, TScreenColor *colors);
- static void (*setDisPaletteColors)(int from, int number, TScreenColor *colors);
+ static int  (*setDisPaletteColors)(int from, int number, TScreenColor *colors);
  // The shell/user palette
  static TScreenColor OriginalPalette[16];
  // The palette we are using
@@ -169,7 +169,7 @@ protected:
  static int         defaultSetWindowTitle(const char *name);
  static int         defaultGetBlinkState();
  static void        defaultGetDisPaletteColors(int from, int number, TScreenColor *colors);
- static void        defaultSetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static int         defaultSetDisPaletteColors(int from, int number, TScreenColor *colors);
 
 private:
  // From original TV 2.0.

@@ -50,7 +50,7 @@ protected:
  static const char *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
  
- static void   SetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static int    SetDisPaletteColors(int from, int number, TScreenColor *colors);
  static void   GetDisPaletteColors(int from, int number, TScreenColor *colors);
 
  // Functions and members specific for this driver

@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.105  2002/06/03 12:55:41  set
+* Modified: The X11 palette routines to include the redraw. Tested with
+SETEdit.
+
 Revision 2.104  2002/06/03 12:54:20  set
 * Added: An option to never hide the cursor to TDisplay. The most important
 effect of this variable is how it affects high level classes. When this

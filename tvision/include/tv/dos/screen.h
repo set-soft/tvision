@@ -36,6 +36,8 @@ protected:
  static
  const char   *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
+ static int    SetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static void   GetDisPaletteColors(int from, int number, TScreenColor *colors);
 
  // Function members for this driver
  // Calls the BIOS 0x10 interrupt (Video service)
@@ -57,11 +59,21 @@ protected:
  static void setTextMode(int mode);
  // Sets a tweaked video mode
  static int  setTweakedMode(int mode);
+ // Reads the palette map
+ static void getPaletteMap(char *map);
+ // Low level BIOS calls to get/set one palette index
+ static void setOnePaletteIndex(int index, TScreenColor *col);
+ static void getOnePaletteIndex(int index, TScreenColor *col);
 
  // Data members for this driver
  static __dpmi_regs rDisplay;
  static unsigned    charLines;
  static char        emulateMouse;
+ // The 16 available colors are a subset of the 256 colors the VGA controller
+ // handles. Additionally the border color is defined in this map.
+ // The following map indicates which palette index is associated with
+ // each palette index.
+ static char        colorsMap[17];
 };
 
 

@@ -8,6 +8,11 @@
 
   Description:
   This module implements the low level DOS screen access.
+
+  Todo:
+  * The palette map could be changed by during suspend. Currently not
+  suported. But is a really bizarre case and is restored if VGA state saving
+  is used.
   
 ***************************************************************************/
 
@@ -17,12 +22,12 @@
 
 #define Uses_stdlib
 #define Uses_string
-#include <conio.h>
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TFrame
 #include <tv.h>
 
+#include <conio.h>
 #include <dos.h>
 #include <go32.h>
 #include <dpmi.h>
@@ -46,11 +51,15 @@ unsigned    TDisplayDOS::charLines=16;
 // Flag to indicate if the video mode should ask the mouse class to draw
 // the cursor instead of letting the OS mouse driver do it.
 char        TDisplayDOS::emulateMouse=0;
+char        TDisplayDOS::colorsMap[17];
 
 // Video BIOS services
-#define SET_TEXT_MODE_CURSOR_SHAPE   0x01
-#define SET_CURSOR_POSITION          0x02
-#define GET_CURSOR_POSITION_AND_SIZE 0x03
+#define SET_TEXT_MODE_CURSOR_SHAPE                       0x01
+#define SET_CURSOR_POSITION                              0x02
+#define GET_CURSOR_POSITION_AND_SIZE                     0x03
+#define READ_ALL_PALETTE_REGISTERS_AND_OVERSCAN_REGISTER 0x1009
+#define SET_INDIVIDUAL_DAC_REGISTER                      0x1010
+#define READ_INDIVIDUAL_DAC_REGISTER                     0x1015
 
 const int crtIndex=0x3B4,crtData=0x3B5;
 const int mdaCursorLocationHigh=0x0E,mdaCursorLocationLow=0x0F;
@@ -666,8 +675,55 @@ int TDisplayDOS::SetWindowTitle(const char *name)
  return AX;
 }
 
-void TDisplayDOS::Init()
+void TDisplayDOS::getPaletteMap(char *map)
 {
+ AX=READ_ALL_PALETTE_REGISTERS_AND_OVERSCAN_REGISTER;
+ ES=__tb>>4;
+ DX=__tb & 0xF;
+ videoInt();
+ dosmemget(__tb,17,map);
+}
+
+void TDisplayDOS::setOnePaletteIndex(int index, TScreenColor *col)
+{
+ AX=SET_INDIVIDUAL_DAC_REGISTER;
+ BX=colorsMap[index];
+ DH=col->R>>2; CH=col->G>>2; CL=col->B>>2;
+ videoInt();
+}
+
+void TDisplayDOS::getOnePaletteIndex(int index, TScreenColor *col)
+{
+ AX=READ_INDIVIDUAL_DAC_REGISTER;
+ BL=colorsMap[index];
+ videoInt();
+ col->R=DH<<2;
+ col->G=CH<<2;
+ col->B=CL<<2;
+}
+
+int TDisplayDOS::SetDisPaletteColors(int from, int number, TScreenColor *colors)
+{
+ int ret=number;
+ while (number-- && from<16)
+    setOnePaletteIndex(from++,colors++);
+ return ret;
+}
+
+void TDisplayDOS::GetDisPaletteColors(int from, int number, TScreenColor *colors)
+{
+ while (number-- && from<16)
+    getOnePaletteIndex(from++,colors++);
+}
+
+void TDisplayDOS::Init()
+{// Currently we assume it doesn't change.
+ getPaletteMap(colorsMap);
+ // Memorize original palette
+ GetDisPaletteColors(0,16,OriginalPalette);
+ // That's the current
+ memcpy(ActualPalette,OriginalPalette,sizeof(ActualPalette));
+
  TDisplay::setCursorPos=SetCursorPos;
  TDisplay::getCursorPos=GetCursorPos;
  TDisplay::getCursorShape=GetCursorShape;
@@ -680,6 +736,8 @@ void TDisplayDOS::Init()
  TDisplay::setCrtModeExt=SetCrtModeExt;
  TDisplay::getWindowTitle=GetWindowTitle;
  TDisplay::setWindowTitle=SetWindowTitle;
+ TDisplay::setDisPaletteColors=SetDisPaletteColors;
+ TDisplay::getDisPaletteColors=GetDisPaletteColors;
 }
 
 TDisplayDOS::~TDisplayDOS() {}
