@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.561  2004/08/24 15:19:17  set
+* Added: Horizontal scroll bar to the TDirListBox.
+* Added: Visible cursor to the TDirListBox, it shows the state of the
+incremental search. It should also help for Braille terminals.
+
 Revision 2.560  2004/08/24 13:31:27  set
 * Fixed: Call to drawView() before updating the topItem member in
 TListViewer::focusItem. Patch by Egon Eckert (egon/heaven/industries/cz).

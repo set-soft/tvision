@@ -139,7 +139,10 @@ all:: libtv.lib
 
 libtv.lib : $(OBJS)
 	-del libtv.lib
-	lib /OUT:libtv.lib $(OBJS)
+	lib @<<
+/OUT:libtv.lib
+$(OBJS)
+<<
 
 clean:
 	del -f $(OBJS)

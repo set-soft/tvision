@@ -1113,12 +1113,27 @@ typedef unsigned long  ulong;
 #endif
 
 #ifdef TVComp_MSC
+ // Note: snprintf and vsnprintf seems to be available in some versions but not in others.
+ // But looks like _snprintf and _vsnprintf is available in 1000 and 1300 versions.
+ // So currently I assume the _* versions are available for all versions.
+ //
+ // Note 2: at least MSVC 1200 (6.0) have a wrong implemetation of vsnprintf, it have an
+ // assert checking that the buffer is != NULL and/or size != 0. This is wrong. According
+ // to the IEEE 1003.1 (POSIX 1003.1) standard (Issue 6 2004):
+ // ... "If /n/ is zero, nothing shall be written and /s/ may be a null pointer." ...
+ // And when the result value is explained says:
+ // "Upon successful completion, the /snprintf/() function shall return the number of bytes
+ // that would be written to /s/ had /n/ been sufficiently large excluding the terminating
+ // null byte."
+ //
+ // As I don't know which version fixed this bug I use the replacement that really works.
+ //
+ #undef CLY_Have_snprintf
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
  #if _MSC_VER <= 1000
    // MSVC 4.0 doesn't have it and reports version 10.0
-   #undef CLY_Have_snprintf
    // Only new.h exists
    #undef  NEW_HEADER
    #define NEW_HEADER      <new.h>
@@ -1473,12 +1488,12 @@ typedef unsigned long  ulong;
   #define Include_stdio 1
   #define CLY_snprintf  snprintf
   #ifdef TVComp_MSC
-   #if _MSC_VER>=1300 // from MSVC .NET first release - v13.0.
-      #define CLY_vsnprintf _vsnprintf
-   #else
-      #define CLY_vsnprintf vsnprintf
-   #endif
+   // Note: Currently unused because the implementation is wrong. See notes in
+   // the MSVC section.
+   #define CLY_snprintf  _snprintf
+   #define CLY_vsnprintf _vsnprintf
   #else
+   #define CLY_snprintf  snprintf
    #define CLY_vsnprintf vsnprintf
   #endif
  #else
