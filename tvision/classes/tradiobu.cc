@@ -28,11 +28,13 @@ Boolean TRadioButtons::mark( int item )
 void TRadioButtons::press( int item )
 {
     value = item;
+    TCluster::press(item);
 }
 
 void TRadioButtons::movedTo( int item )
 {
     value = item;
+    TCluster::movedTo(item);
 }
 
 void TRadioButtons::setData( void * rec )
