@@ -233,24 +233,37 @@ void TV_WindowSizeChanged(int sig)
 static struct termios old_term,new_term;
 #endif
 
-// SET: A couple of functions to disable the XON/XOFF control and restore it
-static tcflag_t originalIFlag;
+// SET: A couple of functions to disable/restore the XON/XOFF control keys
+// and others like ^C, ^\ and ^Z
 static
-void XonXoff_Disable(int file)
+cc_t oldKeys[5];
+
+void SpecialKeysDisable(int file)
 {
  struct termios term;
  tcgetattr(file,&term);
- originalIFlag=term.c_iflag;
- term.c_iflag&= ~(IXOFF | IXON);
+ oldKeys[0]=term.c_cc[VSUSP];
+ oldKeys[1]=term.c_cc[VSTART];
+ oldKeys[2]=term.c_cc[VSTOP];
+ oldKeys[3]=term.c_cc[VQUIT];
+ oldKeys[4]=term.c_cc[VINTR];
+ term.c_cc[VSUSP] =0;
+ term.c_cc[VSTART]=0;
+ term.c_cc[VSTOP] =0;
+ term.c_cc[VQUIT] =0;
+ term.c_cc[VINTR] =0;
  tcsetattr(file,TCSANOW,&term);
 }
 
-static
-void XonXoff_Restore(int file)
+void SpecialKeysRestore(int file)
 {
  struct termios term;
  tcgetattr(file,&term);
- term.c_iflag=originalIFlag;
+ term.c_cc[VSUSP] =oldKeys[0];
+ term.c_cc[VSTART]=oldKeys[1];
+ term.c_cc[VSTOP] =oldKeys[2];
+ term.c_cc[VQUIT] =oldKeys[3];
+ term.c_cc[VINTR] =oldKeys[4];
  tcsetattr(file,TCSANOW,&term);
 }
 
@@ -650,7 +663,7 @@ int getBlinkState();
 TScreen::TScreen()
 {
   // Release ^Q and ^S from Xon/Xoff duties
-  XonXoff_Disable(fileno(stdin));
+  SpecialKeysDisable(fileno(stdin));
   screenMode = startupMode = getCrtMode();
   /*
    * ESC ] Ps ND string NP
@@ -851,7 +864,7 @@ TScreen::~TScreen()
     close(mono_mem_desc);
     mono_mem_desc = -1;
   }
- XonXoff_Restore(fileno(stdin));
+ SpecialKeysRestore(fileno(stdin));
 }
 
 void TScreen::suspend()
