@@ -152,7 +152,7 @@ if ($OS ne 'Win32')
    CreateRHIDEenvs('win32/rhide.env');
   }
 # Help BC++ target
-`perl confignt.pl`;
+system("perl confignt.pl");
 
 # UNIX dynamic library
 if ($OS eq 'UNIX')

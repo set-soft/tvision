@@ -60,10 +60,13 @@ tvex.exe: objs\tvex.obj rhtv.lib
 {..\classes}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
-{..\classes\WinNT}.cc{objs}.obj:
+{..\classes\dos}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
-{..\classes\WinNT}.cc{objs}.obj:
+{..\classes\win32}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes\winnt}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
 {..\names}.cc{objs}.obj:
@@ -84,10 +87,10 @@ tvex.exe: objs\tvex.obj rhtv.lib
 {..\compat}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
-objs\tscreen.obj: ..\classes\WinNT\tscreen.cc
-objs\tdsiplay.obj: ..\classes\WinNT\tdsiplay.cc
-objs\tfont.obj: ..\classes\WinNT\tfont.cc
-objs\thwmouse.obj: ..\classes\WinNT\thwmouse.cc
+# objs\tscreen.obj: ..\classes\WinNT\tscreen.cc
+# objs\tdsiplay.obj: ..\classes\WinNT\tdsiplay.cc
+# objs\tfont.obj: ..\classes\WinNT\tfont.cc
+# objs\thwmouse.obj: ..\classes\WinNT\thwmouse.cc
 
 clean:
 	-del objs\*.obj

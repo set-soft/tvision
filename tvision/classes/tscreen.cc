@@ -151,7 +151,13 @@ drvChecker Drivers[]=
   #endif // TVOSf_QNXRtP
  #endif
  #ifdef TVOS_Win32
- TV_Win32DriverCheck,
+  #ifdef TVOSf_NT
+   TV_WinNTDriverCheck,
+   TV_Win32DriverCheck,
+  #else
+   TV_Win32DriverCheck,
+   TV_WinNTDriverCheck,
+  #endif
  #endif
  0
 };
