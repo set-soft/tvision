@@ -1,0 +1,219 @@
+Topics: Code Pages, TVCodePage
+Author: Salvador E. Tropea
+Status: Complete
+Revision: $Revision$
+
+1. INTRODUCTION
+2. CODE PAGES IN TURBO VISION
+3. FROM THE POINT OF VIEW OF THE USER
+4. SUPPORTED ENCODINGS
+5. FROM THE POINT OF VIEW OF THE PROGRAMMER
+5.1 START UP AND CHANGES ON THE FLY
+5.2 OTHER USEFUL INFORMATION
+
+
+1. INTRODUCTION
+
+  Most applications, Turbo Vision applications included, uses 8 bits
+characters. It gives 256 possible combinations, but: what exactly means each
+one? it depends on the system. To avoid problems some standars exists. DOS
+uses some IBM/ANSI encodings like code page 437, 850, 866, etc., Windows uses
+another set of code pages created by Microsoft (code pages 1250, 1251, etc.)
+and most UNIX systems uses enconding described in the ISO 8859 standard.
+  In this way a document is:
+
+1) Compact, each character/letter needs one byte.
+2) Exchangeable, you can use documents from other system just knowing which
+encoding is used.
+
+  Linux users should also read the Linux driver documentation, it have a lot
+of information about the problems found on Linux systems.
+
+
+2. CODE PAGES IN TURBO VISION
+
+  TV uses code pages for four things. Three of them are really important for
+users so we will focus only these three.
+  The first is the "Application code page". This code page indicates how the
+application is encoded. An example of "application" stuff is the text you
+load in TV editor.
+  The second is the "Screen code page". This is how the screen is encoded.
+That's usually the same used for the application, but not always. An
+interesting case is Linux where the screen can have any arbitrary encoding.
+  And the third is the "Input code page". That's how is encoded the text from
+the keyboard. That's usually the same as the screen. An interesting case is
+Win32 console API, it supports a different code page for input, but I never
+saw a system configured like this.
+  Note that the application code page is how things are encoded internally,
+input code pages is the encoding of the input and screen code page is the
+encoding of the output. The center is the application. If any of the other
+two code pages doesn't match a translation table is created. So you could
+have a system where the accented characters from the keyboard are encoded in
+code page 850 (DOS), the application in 1252 (Windows) and the output in ISO
+8859-1 (POSIX). All will work ok.
+
+
+3. FROM THE POINT OF VIEW OF THE USER
+
+  Usually user doesn't have to mess with it. Applications that offer big
+flexibility, code page translations, etc. should do it using friendly
+dialogs. An example is SETEdit text editor. But even in this case the user
+have to know the concepts explained in the first sections of this doc.
+  A special case where users could need to do some configuration is when
+using Linux. A long explanation about it is found in the Linux driver
+documentation. In this documentation Linux users will find a list of
+supported code pages. Please refer to the index.
+
+
+4. SUPPORTED ENCODINGS
+
+  That's a list of supported encodings and the number used for each encoding.
+This number is what you need to use for configuration variables like AppCP.
+
+Name                        ID
+PC 437 ASCII ext.           437
+PC 737 Greek                737
+PC 775 DOS Baltic Rim       775
+PC 850 Latin 1              850
+PC 852 Latin 2              852
+PC 855 Russian 2            855
+PC 857 Turkish              857
+PC 860 Portuguese           860
+PC 861 Icelandic            861
+PC 863 French               863
+PC 865 Nordic               865
+PC 866 Russian              866
+PC 869 Greek 2              869
+CP 1250 Win Latin 2         1250
+CP 1251 Win Russian         1251
+CP 1252 Win Latin 1         1252
+CP 1253 Win Greek           1253
+CP 1254 Win Turkish         1254
+CP 1257 Win Baltic          1257
+Mac Cyr. CP 10007           10007
+ISO 8859-1 Latin 1          88791
+ISO 8859-2 Latin 2          88792
+ISO 8859-3 Latin 3          88593
+ISO 8859-4 Latin 4          88594
+ISO 8859-5 Russian          88595
+ISO 8859-7 Greek            88597
+ISO 8859-9                  88599
+ISO Latin 1 (Linux)         885901
+ISO Latin 1u(Linux)         885911
+ISO 8859-14                 885914
+ISO 8859-15 Icelan.         885915
+ISO Latin 2 (Linux)         885920
+ISO Latin 2u(Linux)         885921
+ISO Latin 2 (Sun)           885922
+ISO Latin 2+Euro (Linux)    885923
+KOI-8r (Russian)            100000
+KOI-8 with CRL/NMSU         100001
+Mac OS Ukrainian            100072
+Osnovnoj Variant Russian    885951
+Alternativnyj Variant RU    885952
+U-code Russian              885953
+Mazovia (polish)            1000000
+ISO 5427 ISO-IR-37 KOI-7    3604494
+ECMA-Cyr.ISO-IR-111         17891342
+JUS_I.B1.003-SERB ISOIR146  21364750
+JUS_I.B1.003-MAC ISO-IR-147 21430286
+Cyrillic ISO-IR-153         22216718
+
+
+5. FROM THE POINT OF VIEW OF THE PROGRAMMER
+
+  The program can force the encodings using the TVMainConfigFile::Add
+mechanism even before the application object is created. Read the
+configuration file documentation for more information.
+  The fourth encoding involved in the process is the code page used for the
+secondary font. But this encoding doesn't really affect TV.
+  You can change the encodings at any time using the TVCodePage::SetCodePage
+member. To use the TVCodePage class use the Uses_TVCodePage request. The
+source file for it is codepage.cc. Read the header for more information.
+  This class also provides members to replace some ctype.h functions. They
+are: toUpper, toLower, toLowerTable, isAlpha, isAlNum, isLower and isUpper.
+Note these members uses information from the current application code page.
+If the value is properly set this information is usually much better than the
+information you can get from C locales system. Also have in mind that a TV
+application could be using a very different application encoding, if things
+are properly configured it will be transparent, but in this case the ctype.h
+functions will fail.
+
+5.1 START UP AND CHANGES ON THE FLY
+
+  The library itself is encoded in the 437 code page. That's only for
+historic reasons (Borland code was for DOS and that's the most common case on
+DOS). The encoding used at run time is selected by the current driver. It
+can be forced from the configuration file or the application as already
+explained.
+  If the library determines the needed code page is different than 437 all
+the internal information is recoded. Applications that uses characters
+outside the ASCII range should provide a call back to be called when a recode
+is needed. You can see an example in the demo program.
+  Here is a basic explanation on how it works:
+
+1) You set a callback *before* creating the application object using
+
+  TVCodePage::SetCallBack(call_back_function)
+
+  A call back prototype could be:
+
+  void cpCallBack(ushort *map)
+
+  The SetCallBack function returns the previous call back you should save it.
+
+2) This call back will be called when an application code page is done. The
+map argument is needed to be passed to the TVCodePage members that does the
+remapping job. They are RemapChar (for a single char), RemapString (for an
+ASCIIZ string) and RemapNString (for a generic buffer).
+  After remapping all the needed stuff you should call the previous call
+back. Note it can be a NULL pointer.
+
+  When you have dynamic text that needs to be recoded, that's text in TView
+objects that are already created and for some reason doesn't use a static
+buffer to hold the special characters, you have to handle a special broadcast
+called cmUpdateCodePage in the handleEvent member. In this case the infoPtr
+event field contains a pointer to the needed map.
+
+5.2 OTHER USEFUL INFORMATION
+
+  You can also create your own code pages providing an unicode table.
+  The library currently supports encondings that covers languages using the
+latin, cyrillic and greek alphabets. If you think you can help with other
+alphabets, enhance the currently supported or add/fix code pages information
+please contact us. Note the library doesn't support a lot of important
+details needed for some languages like: bidirectional writing, vertical
+writings, glyphs composition, variable spacing, encodings that use more than
+256 characters, etc.
+  An internal 16 bits encoding is used for the code pages, you don't have to
+mess with it but routines to convert from and to Unicode are provided.
+
+  TVCodePage also provides a member to convert from any of the known code
+pages to another.
+
+  Is important to understand that the remapping done when input, application
+and output doesn't match takes some CPU, but it is currently implemented in a
+very fast way so the overhead shouldn't be even meassurable. What we
+currently do is to create one to one tables when the code pages changes.
+That's all, no searches are done during the drawing. That's quite different
+to what Linux kernel does, in this case a table converts input values to
+Unicode and then they are searched in some sort of hash to be converted into
+the screen encoding. We still using a code page internally, not Unicode nor
+our internal code, so we don't have to do such a slow thing. The tables uses
+a simple algorithm to find similar symbols when a value can't be represented
+in the target code page, this value is put in the table, so even in this case
+we don't need to search anything. You can know if the remapping is enabled
+and do it using OnTheFlyRemapNeeded(), OnTheFlyRemap(uchar val),
+OnTheFlyRemapInpNeeded and OnTheFlyInpRemap.
+
+  Another important detail is how the keyboard works, note that sometimes the
+keyboard is just a QWERTY keyboard that somehow generates the other alphabet.
+In this case a key usually means more than one symbol and users spect that
+Alt+Key is mapped to *both* things for objects like the menu. This is
+supported, by I need help and testing. Currently the support is only for DOS
+code page 737 and Linux KOI8-R.
+
+  This functionality was introduced in version 2.0.0 of our port. The Borland
+library didn't have it nor any serious equivalent. It just provided a virtual
+member to do some stuff at start up.
+

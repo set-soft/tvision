@@ -1,0 +1,186 @@
+Topics: Configuration file, TVConfigFile, TVMainConfigFile
+Author: Salvador E. Tropea
+Status: Complete
+Revision: $Revision$
+
+1. INTRODUCTION
+2. FROM THE POINT OF VIEW OF THE USER
+2.1 NAME OF THE FILE
+2.2 STRUCTURE OF THE FILE
+2.3 VARIABLES TO CONTROL TV
+2.4 VARIABLES COMMON TO ALL DRIVERS
+3. FROM THE POINT OF VIEW OF THE PROGRAMMER
+
+
+1. INTRODUCTION
+
+  The Turbo Vision library uses what we call "drivers". They aren't pure
+driver as you find in Windows or other programs, but are used for the same.
+The main difference between real drivers and what TV uses is that our drivers
+aren't separated files, intead they are inside the library.
+  These drivers helps to isolate the hardware and system dependent stuff.
+With this and with the help of the "compatlayer" library we can support a
+wide variety of systems (DOS, FreeBSD, Linux, Solaris, Win32, etc.).
+  The drivers defines how to access to the screen, keyboard, mouse and other
+OS stuff.
+  As these drivers are quite different and complex users could need to
+configure some details. These details range from very generic to really
+driver specific.
+  To avoid duplicating code in all applications and simplify the applications
+the configuration can be done using a text file.
+
+
+
+2. FROM THE POINT OF VIEW OF THE USER
+
+  Here I'll explain things that users and programmers needs to know, but not
+information that only programmers needs to know.
+
+2.1 NAME OF THE FILE
+
+  The configuration file is called "tvrc". On systems where hidden files have
+a name starting with a dot (i.e. Linux) the file can be named ".tvrc".
+Applications can use another name, but if the application specific file can't
+be loaded the tvrc file is tried.
+  The file is searched in the following places:
+1) The current directory.
+2) The directory indicated by the HOME environment variable.
+3) The directory indicated by the HOMEDIR environment variable.
+4) The /etc directory.
+5) The /dev/env/DJDIR/etc directory. This is DOS specific and used in djgpp
+environments. This is translated to %DJDIR%/etc, that's the etc directory
+inside the place you installed djgpp.
+
+2.2 STRUCTURE OF THE FILE
+
+  The file is some mix between .ini files and C code. Sections starts with
+the name of the section enclosed with brackets (i.e. [TV]). All the contents
+of a section is enclosed using braces. Sections can be nested.
+  The main section used for TV configuration is called TV. All the
+configuration information related to TV must be inside this section.
+  Each driver have a short name, please read the documentation about the
+drivers to know the names. Here is a the list of currently supported drivers:
+
+DOS    For DOS or compatible systems.
+Linux  For GNU/Linux systems.
+QNX    For QNXRtP systems.
+UNIX   For FreeBSD and other generic UNIX terminals.
+Win32  For Win32 (Windows 95 and newer) systems.
+WinNT  Also for Win32 systems, just a different approach.
+WinGr  For Win32, but uses a graphical approach.
+X11    For X11R6 systems, like XFree86.
+XTerm  For XTerm and Eterm terminal emulators.
+
+  All the settings for a driver must be inside a section named as the driver.
+  Inside the sections you can set the value of the variables that control the
+behavior of the driver or TV itself.
+  The variables must be followed by an equal sign and the value. Integer
+variables can be in decimal, hexadecimal or octal using the C notation.
+String variables must be enclosed using double quotes. Avoid using extra
+spaces others than indentation spaces.
+  Here is a small example:
+
+[TV]
+{
+ [Driver]
+ {
+  IntegerVariable=10
+  StringVariable="Hello"
+ }
+}
+
+  Note that applications could have separated sections to define variables
+specific for the application.
+
+2.3 VARIABLES TO CONTROL TV
+
+  The following variables controls the behavior of TV and should be defined
+inside the TV section.
+
+DontMoveHiddenCursor  Integer Currently TV moves the cursor always, even when
+                              hidden. This is a little bit slow but helps
+                              Braille terminals. When using the library in
+                              slow machines or through slow remote
+                              connections you can set this value to anything
+                              different than 0 and you'll gain a small
+                              speedup.
+ShowCursorEver        Integer If the value isn't 0 the text cursor is always
+                              visible. This is used for development so you
+                              can see where the cursor is located. Braille
+                              terminals use the cursor position to read
+                              information. If you want to know what a Braille
+                              terminal will show you can enable it and
+                              look for changes that can help Braille
+                              terminals.
+
+2.4 VARIABLES COMMON TO ALL DRIVERS
+
+  The following variables are common to all drivers. It doesn't mean all
+drivers will use them, sometimes the driver can't take an action to reflect
+the value. An example are the screen size variables, Linux driver can't
+change the screen size. Most of these variables can be defined in the TV
+section and drivers will use them. So them can be used as defaults for all
+drivers. The Priority variable doesn't have any sense in the TV section.
+
+AppCP            Integer Indicates in which code page is encoded the
+                         application.
+ExtProgVideoMode String  Indicates which external program should be used to
+                         set the video mode. Even when that's generic only
+                         DOS benefits from it.
+FontHeight       Integer Desired font height in pixels.
+FontWidth        Integer Desired font width in pixels.
+InpCP            Integer Indicates in which code page is encoded the
+                         input data from the OS.
+Priority         Integer It selects the priority of the driver. Drivers with
+                         higher priority are tried first. Usually this value
+                         is in the range of 0 to 100. You can use it to force
+                         the use of a driver that currently have less
+                         priority.
+ScrCP            Integer Indicates in which code page is encoded the
+                         screen.
+ScreenWidth      Integer Desired screen width.
+ScreenHeight     Integer Desired screen height.
+ScreenPalette    String  This is used to change the color palette. This
+                         string should contain the red, green and blue
+                         components of the sixteen colors used by TV. Values
+                         must be comma separated. So you should provide 48
+                         values. If some values are omitted the default VGA
+                         BIOS values are used for the rest. The default
+                         palette is usually what the VGA BIOS defines, but
+                         not always.
+VideoMode        Integer Indicates which video mode should be used for the
+                         screen. This is useful for DOS, but other drivers can
+                         translate the most common DOS modes into a size and
+                         try using the size.
+
+
+
+3. FROM THE POINT OF VIEW OF THE PROGRAMMER
+
+  The configuration file is loaded in the constructor of TProgInit. The
+configuration file is controlled by a class called TVMainConfigFile defined
+in the configfile.cc source. This is an specialization of the TVConfigFile
+class.
+  You can define your own sections in the configuration file and look for
+configuration information there.
+  To use the classes use the Uses_TVConfigFile request.
+  You can specify a name for the configuration file, it must be full
+qualified (path included). Use the TVMainConfigFile::SetUserConfigFile member
+for it. It must be called before the application constructor. If this file
+can't be found the library will look for the tvrc/.tvrc file.
+  Is also possible to define variables from the application before loading
+the configuration file. These variable have more priority than the ones from
+the file. Use the TVMainConfigFile::Add members for it. Note this class is
+static and you can use it even before TProgInit constructor. Also note you
+currently can do it only for TV section.
+  The TVMainConfigFile provides a variety of search functions you can use to
+look for settings defined in the configuration file.
+  TScreen provides some search members that looks for variables in the
+section for the current driver, if it fails they search in the TV section.
+That's how defaults for all drivers are implemented.
+  This functionality was introduced in version 2.0.0 of our port. The Borland
+library didn't have it nor any equivalent. The main objetive was to remove
+the need for command line switches in all applications and allow the user to
+set default values for all TV applications.
+
+

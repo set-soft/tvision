@@ -1,5 +1,14 @@
 Driver: Eterm (part of XTerm driver)
 Author: Salvador E. Tropea
+Status: Complete
+Revision: $Revision$
+
+1. INTRODUCTION
+2. FEATURES
+3. IMPORTANT DETAILS
+
+
+1. INTRODUCTION
 
   This driver was designed for Eterm 0.9.x. Previous versions like 0.8.10 are
 no longer supported.
@@ -11,6 +20,10 @@ the XTerm driver too.
   This driver is enabled when the environment variable TERM indicates the
 terminal is called Eterm. Old Linux distros, like Debian GNU/Linux Potato,
 defined Eterm terminals as xterm, that's wrong because they aren't the same.
+
+
+2. FEATURES
+
   The driver supports:
 
 * Window size.
@@ -19,6 +32,9 @@ defined Eterm terminals as xterm, that's wrong because they aren't the same.
 * Window title set/restore.
 * Most keyboard combinations when a special Eterm theme is used.
 * Restore shell screen (limited, you can't nest)
+
+
+3. IMPORTANT DETAILS
 
   In order to get the maximum of key combinations you must install and use an
 Eterm theme specially designed for Turbo Vision applications.

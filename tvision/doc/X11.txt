@@ -1,5 +1,7 @@
 Driver: X11
 Author: Salvador E. Tropea
+Status: Not complete, random suggestions and details
+Revision: $Revision$
 
   This file documents details specific to the X11 driver. By X11 I mean the X
 Window system version 11 release 6 also known as X11R6. The driver was tested

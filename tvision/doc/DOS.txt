@@ -1,0 +1,89 @@
+Driver: DOS
+Author: Salvador E. Tropea, Robert Hoehne
+Status: Not complete
+Revision: $Revision$
+
+  This is the driver used for the djgpp compiled binaries. The driver works
+on DOS systems and any compatible variants. It can be used for any Windows
+system including 3.1 and Win32 systems (95, 98, Me, NT, 2000, XP, etc.) and
+systems like OS/2 that provides DOS emulation.
+
+1. INTRODUCTION
+2. FEATURES
+3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
+
+
+1. INTRODUCTION
+
+  This driver is really complex and the only way to make it work properly is
+to have a good ammount of testers and maintainers. As the driver is currently
+maintained only by me (SET) this driver is in very bad shape.
+  The main complexity of this driver is the need to support the restore of
+the graphic video modes. This is a complex task because BIOSes have a lot of
+bugs in their save/restore state routines. I saw this bugs are becoming more
+and more frequent.
+  We verified such a bug in Matrox boards, it was fixed, but some people
+still have VGA BIOSes with this bug. Then we also saw a similar bug in nVidia
+GeForce VGA BIOS, I think it wasn't fixed by nVidia. These are just two
+examples of popular boards. As I can't have a collection of video boards and
+test the code in each one to see if it works things become quite complex.
+  My policy for TV 2.0.0 is to release the driver with the current problems,
+but disabling some advanced features. These features won't impact on regular
+programs but will most probably be a bad thing for RHIDE. RHIDE is an IDE for
+djgpp that uses TV as TUI.
+  I think the code should be splitted in at least two drivers. One really
+simple driver that doesn't support restoring graphic modes and another more
+complex driver. Then RHIDE could request the second driver when a user knows
+that graphics are needed and the code works ok for the target system. I don't
+plan to do it any time soon unless I get volunteers to help.
+
+
+2. FEATURES
+
+  The driver supports:
+
+* Video mode configuration. Various modes are known and you can provide your
+own mode or use an external program.
+* Palette. The speed for it is high.
+* Window title set/restore when running on Win32 systems.
+* Most keyboard combinations. Some are lost if you use the BIOS strategy.
+* Restore command.com screen.
+* Fonts. Primary and secondary.
+
+
+3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
+
+  Please read the documentation about the configuration file first.
+
+BIOSKey       Integer  By default the driver reads the keystrokes from the
+                       BIOS buffer directly. This is faster and gives more
+                       information. On some systems it fails and you'll need
+                       to enable it. If you have access to such a system
+                       please contact us so we can look for a better
+                       solution. Use a value different than 0 to enable it.
+PollMouse     Integer  The mouse information can be obtained using a periodic
+                       poll or asking the DOS mouse driver to call us when
+                       the mouse is moved or a button is pressed. The second
+                       option is faster and you can't lose information. The
+                       first option is safer. Currently the driver uses a
+                       poll strategy by default. You can try disabling this
+                       option to get better mouse support. Note that it is
+                       always disabled for Windows NT and similar systems
+                       (2000, XP, etc.). Use 0 to disable it.
+SaveVGAState  Integer  In order to save and restore graphic modes you must
+                       save a lot of information. This is achieved using a
+                       standard VGA BIOS call. Some buggy BIOSes doesn't
+                       implement it or implements it wrongly and returns
+                       success. When it happends the result is a mess with
+                       the screen, it usually goes black. Currently the
+                       default value for it is 0, it means the VGA state
+                       isn't saved. If you need to save it try enabling it
+                       using a value different than 0.
+VGABIOSState  Integer  This is related to the SaveVGAState variable. When
+                       enabled we use VGA BIOS for the job. If you disable it
+                       the driver will do it manually. It works for the
+                       boards with buggy BIOSes, but the board must be 100%
+                       VGA compatible at registers level (also the Windows
+                       driver if you are using Windows). This uses very low
+                       level stuff.
+
