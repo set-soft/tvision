@@ -60,7 +60,13 @@ public:
  static char    toLower(char val)
   { return (char)toLowerTable[(uchar)val]; }
  static int     isAlpha(char val)
-  { return AlphaTable[(uchar)val]; }
+  { return AlphaTable[(uchar)val] & alphaChar; }
+ static int     isAlNum(char val)
+  { return AlphaTable[(uchar)val] & (alphaChar | digitChar); }
+ static int     isLower(char val)
+  { return AlphaTable[(uchar)val] & lowerChar; }
+ static int     isUpper(char val)
+  { return AlphaTable[(uchar)val] & upperChar; }
  static int     InternalCodeForUnicode(uint16 unicode);
  static uint16  UnicodeForInternalCode(uint16 code);
  static TVCodePageCallBack SetCallBack(TVCodePageCallBack map);
@@ -74,6 +80,9 @@ public:
  static ccIndex AddCodePage(CodePage *cp);
  static void    GetCodePages(int &idScr, int &idApp, int &idInp)
                 { idApp=curAppCP; idScr=curScrCP; idInp=curInpCP; }
+ static int     GetAppCodePage() { return curAppCP; }
+ static int     GetScrCodePage() { return curScrCP; }
+ static int     GetInpCodePage() { return curInpCP; }
  static void    GetDefaultCodePages(int &idScr, int &idApp, int &idInp)
                 { idApp=defAppCP; idScr=defScrCP; idInp=defInpCP; }
  static int     LookSimilarInRange(int code, int last);
@@ -108,6 +117,7 @@ protected:
  static void      ChangeDefaultCodePages(int idScr, int idApp)
                   { defAppCP=idApp; defScrCP=idScr; }
 
+ static const char alphaChar=1, lowerChar=2, upperChar=4, digitChar=8;
  static TVCodePageCol *CodePages;
  static ushort CPTable[257];
  static int    curAppCP,curScrCP,curInpCP;

@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.293  2002/09/10 20:36:52  set
+* Fixed: The colors dialog used TEvent´s infoByte field, but it was loaded
+from an unsigned value. This is OK for little endian, but in big endian
+machines doesn´t work. I removed all the infoByte code and replaced it by
+infoLong usage loading with long values.
+
 Revision 2.292  2002/09/10 20:14:21  set
 * Added: Support for endian differences in font files. Now the fonts can
 be generated using little or big endian machines, the loading routines
