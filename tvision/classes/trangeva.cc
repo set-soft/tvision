@@ -6,15 +6,17 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Heavily modified by Salvador E. Tropea (SET) to properly accept Hexadecimal
+and octal numbers. Thanks to Andris Pavenis for suggestions.
  *
  *
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
+#define Uses_stdlib
 #define Uses_string
-#include <limits.h>
-#include <stdio.h>
+#define Uses_limits
+#define Uses_stdio
 
 #define Uses_ipstream
 #define Uses_opstream
@@ -22,19 +24,25 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_MsgBox
 #include <tv.h>
 
-TRangeValidator::TRangeValidator() : TFilterValidator("0123456789-+")
+// SET: Added hexadecimal letters
+#define  CT_VALID_CHARS "xX0123456789ABCDEFabcdef"
+const char *ctValidChars="-+" CT_VALID_CHARS;
+const char *ctValidCharsPos=ctValidChars+1;
+const char *ctValidCharsNeg="-" CT_VALID_CHARS;
+
+TRangeValidator::TRangeValidator() : TFilterValidator(ctValidChars)
 {
   Min = LONG_MIN;
   Max = LONG_MAX;
 }
 
 TRangeValidator::TRangeValidator(long aMin,long aMax) :
-  TFilterValidator("xX0123456789+-")
+  TFilterValidator(ctValidChars)
 {
   Min = aMin;
   Max = aMax;
-  if (Min >= 0) strcpy(ValidChars,"xX0123456789+");
-  if (Min < 0 && Max < 0) strcpy(ValidChars,"xX0123456789-");
+  if (Min >= 0) strcpy(ValidChars,ctValidCharsPos);
+  if (Min < 0 && Max < 0) strcpy(ValidChars,ctValidCharsNeg);
 }
 
 void TRangeValidator::Error()
@@ -49,33 +57,15 @@ void TRangeValidator::Error()
 }
 
 static long get_val(const char *buf)
-{
-  long val;
-  if (buf[0] == '0')
-  {
-    if (buf[1] == 'x' || buf[1] == 'X')
-      sscanf(buf+2, "%lx", &val);
-    else
-      sscanf(buf, "%lo", &val);
-  }
-  else
-    sscanf(buf, "%ld", &val);
-  return val;
+{ // SET: Changed to use strtol
+  char *end;
+  return strtol(buf,&end,0);
 }
 
 static unsigned long get_uval(const char *buf)
-{
-  unsigned long val;
-  if (buf[0] == '0')
-  {
-    if (buf[1] == 'x' || buf[1] == 'X')
-      sscanf(buf+2, "%lux", &val);
-    else
-      sscanf(buf, "%luo", &val);
-  }
-  else
-    sscanf(buf, "%lud", &val);
-  return val;
+{ // SET: Changed to use strtoul
+  char *end;
+  return strtoul(buf,&end,0);
 }
 
 
