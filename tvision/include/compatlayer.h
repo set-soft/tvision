@@ -905,8 +905,6 @@ typedef unsigned long  ulong;
  #ifdef Uses_getcwd
   #undef  Include_direct
   #define Include_direct 1
-  #undef getcwd(a)
-  #define getcwd(a) _getcwd(a)
  #endif
  #ifdef Uses_stdlib
   #undef  Include_stdlib
