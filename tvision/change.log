@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.146  2002/06/11 16:15:07  set
+* Fixed: [UNIX] ln error when overwriting the libtvfdummy.a link.
+
 Revision 2.145  2002/06/11 16:05:07  set
 * Fixed: [Solaris+XTerm] The termios MIN and TIME values have a default
 that isn't really good for interactive applications. Now I set to 0 both.

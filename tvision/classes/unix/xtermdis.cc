@@ -4,6 +4,9 @@
   Copyright (c) 2002 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
+  ToDo:
+  * GetWindowTitle can lock until a key is pressed, shouldn't do it.
+
 *****************************************************************************/
 #include <tv/configtv.h>
 
@@ -176,16 +179,22 @@ const char *TDisplayXTerm::GetWindowTitle(void)
 {
  char buffer[256]; // Put a max.
  fputs("\E[21t",stdout);
- fgets(buffer,255,TGKeyXTerm::fIn);
- // OSC l Name ST (\E]lName\0)
+ // This looks dangerous ...
+ // Lamentably Xterm doesn't return it inmediatly
+ while (fgets(buffer,255,TGKeyXTerm::fIn)==NULL);
+ // OSC l Name ST (\E]lName\E\\)
  if (buffer[0]!=27 || buffer[1]!=']' || buffer[2]!='l')
     return 0;
+ // Convert it into something the application can use for other things, not
+ // only for restoring. Read: get rid of the EOS.
+ char *end=strstr(buffer,"\E\\");
+ if (end) *end=0;
  return newStr(buffer+3);
 }
 
 int TDisplayXTerm::SetWindowTitle(const char *name)
 {
- fprintf(stdout,"\E]2;%s\x7",name);
+ fprintf(stdout,"\E]2;%s\E\\",name); // \E\\ is the string terminator
  return 1;
 }
 
