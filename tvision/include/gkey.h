@@ -40,7 +40,7 @@ kbClosePar=87,kbDoubleDot=88,kbLessThan=89,kbGreaterThan=90,
 kbQuestion=91,kbA_Roba=92,kbOr=93,kbUnderLine=94,kbOpenCurly=95,
 kbCloseCurly=96,kbTilde=97,kbMacro=98,kbWinLeft=99,kbWinRight=100,
 kbWinSel=101,
-kbMouse=102
+kbMouse=102,kbEterm=103
 ;
 #endif
 
@@ -71,6 +71,7 @@ public:
  #define KBD_REDHAT52_STYLE 1
  #define KBD_XTERM_STYLE    2
  #define KBD_NO_XTERM_STYLE 3
+ #define KBD_ETERM_STYLE    4
  static void SetKbdMapping(int version);
  #endif
 
