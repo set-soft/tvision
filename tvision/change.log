@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.519  2003/11/28 05:23:32  lmike
+* [QNX6] Added experimental mouse support in text mode.
+
 Revision 2.518  2003/11/24 16:32:51  set
 * Added: A new configuration option: AltKeysSetting. It controls the how
 alt keys are interpreted. From a talk with Frank Liu.

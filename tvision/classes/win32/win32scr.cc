@@ -134,11 +134,11 @@ int TScreenWin32::InitConsole()
  TScreen::clearScreen=clearScreen;
  TScreen::setCharacter=setCharacter;
  TScreen::setCharacters=setCharacters;
- TScreen::System=System;
+ TScreen::System_p=System;
  TScreen::Resume=Resume;
  TScreen::Suspend=Suspend;
- TScreen::setCrtModeRes=SetCrtModeRes;
- TScreen::setVideoModeRes=SetVideoModeRes;
+ TScreen::setCrtModeRes_p=SetCrtModeRes;
+ TScreen::setVideoModeRes_p=SetVideoModeRes;
 
  TVWin32Clipboard::Init();
  TGKeyWin32::Init();

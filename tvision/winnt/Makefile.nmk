@@ -5,7 +5,9 @@
 # Add here -IPATH_TO_MSVC_HEADERS (to both variables)
 # example: -ID:\MVS\VC98\Include
 CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
-CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
+# The /EHsc options seems to be needed by .NET 2003 compiler.
+# I'm not sure if they interfere with older versions, please report about it.
+CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX- /EHsc
 
 OBJDIR=obj_ms
 

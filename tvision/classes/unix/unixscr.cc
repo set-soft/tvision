@@ -641,7 +641,7 @@ TScreenUNIX::TScreenUNIX()
   TScreen::getCharacter=getCharacter;
   TScreen::setCharacter=setCharacter;
   TScreen::setCharacters=setCharacters;
-  TScreen::System=System;
+  TScreen::System_p=System;
 
   TGKeyUNIX::Init();
   if (terminal && (strncmp(terminal,"xterm",5)==0 || strncmp(terminal,"Eterm",5)==0))

@@ -1324,44 +1324,89 @@ typedef unsigned long  ulong;
  #define IfStreamGetLine(istream,buffer,size) \
          istream.getline(buffer,size)
 
- #define CLY_filebuf        filebuf
- #define CLY_int_filebuf    filebuf
- #define CLY_streambuf      streambuf
- #define CLY_OpenModeT      int
- #define CLY_StreamPosT     streampos
- #define CLY_StreamOffT     streamoff
- #define CLY_IOSSeekDir     ios::seek_dir
- #define CLY_FBOpenProtDef  filebuf::openprot
- #define CLY_NewFBFromFD(buf,f) buf=new filebuf(f)
- #define CLY_PubSetBuf(a,b) setbuf(a,b)
- #define CLY_HaveFBAttach   1
- #define CLY_FBOpen(a,b,c)  open(a,b,c)
- #define CLY_IOSBin         ios::binary
- #define CLY_IOSOut         ios::out
- #define CLY_IOSIn          ios::in
- #define CLY_IOSApp         ios::app
- #define CLY_IOSAtE         ios::ate
- #define CLY_IOSBeg         ios::beg
- #define CLY_IOSCur         ios::cur
- #define CLY_IOSEnd         ios::end
- #define CLY_IOSBadBit      ios::badbit
- #define CLY_IOSEOFBit      ios::eofbit
- #define CLY_IOSFailBit     ios::failbit
- #define CLY_IOSGoodBit     ios::goodbit
- #define CLY_PubSeekOff     seekoff
- #define CLY_PubSync        sync
- #define CLY_std(a)         a
- #define CreateStrStream(os,buf,size) char buf[size]; \
-                                      ostrstream os(buf,sizeof(buf))
- #define GetStrStream(os,buf) buf
- #ifdef Uses_StrStream
-  #undef  Include_strstrea
-  #define Include_strstrea 1
- #endif
- #define UsingNamespaceStd
  #undef  CLY_DummyTStreamRW
  #define CLY_DummyTStreamRW(cla) void write(opstream &os) { cla::write(os); }; \
                                  void *read(ipstream &is) { return cla::read(is); };
+ #if _MSC_VER >= 1300
+  // Taked from gcc 3.1 definitions
+  #define CLY_filebuf        std::filebuf
+  #define CLY_int_filebuf    CLY_filebuf
+  #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
+  #define CLY_streambuf      std::streambuf
+  #define CLY_ISOCpp98 1
+  #define CLY_OpenModeT      std::ios::openmode
+  #define CLY_StreamPosT     std::streampos
+  #define CLY_StreamOffT     std::streamoff
+  #define CLY_IOSSeekDir     std::ios::seekdir
+  #define CLY_FBOpenProtDef  0
+  #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
+  #define CLY_FBOpen(a,b,c)  open(a,b)
+  #define CLY_IOSBin         std::ios::binary
+  #define CLY_IOSOut         std::ios::out
+  #define CLY_IOSIn          std::ios::in
+  #define CLY_IOSApp         std::ios::app
+  #define CLY_IOSAtE         std::ios::ate
+  #define CLY_IOSBeg         std::ios::beg
+  #define CLY_IOSCur         std::ios::cur
+  #define CLY_IOSEnd         std::ios::end
+  #define CLY_IOSBadBit      std::ios::badbit
+  #define CLY_IOSEOFBit      std::ios::eofbit
+  #define CLY_IOSFailBit     std::ios::failbit
+  #define CLY_IOSGoodBit     std::ios::goodbit
+  #define CLY_PubSeekOff     pubseekoff
+  #define CLY_PubSync        pubsync
+  #define CLY_std(a)         std::a
+  #define UsingNamespaceStd  using namespace std;
+  #define CreateStrStream(os,buf,size) std::string buf; std::ostringstream os(buf)
+  #define GetStrStream(os,buf) os.str().c_str()
+  #ifdef Uses_StrStream
+   #undef  Include_sstream
+   #define Include_sstream 1
+  #endif
+  // I'm not sure about the version, but .NET 2003 seems to only have the headers without .h
+  #undef  FSTREAM_HEADER
+  #define FSTREAM_HEADER  <fstream>
+  #undef  IOMANIP_HEADER
+  #define IOMANIP_HEADER  <iomanip>
+  #undef  IOSTREAM_HEADER
+  #define IOSTREAM_HEADER <iostream>
+ #else
+  #define CLY_filebuf        filebuf
+  #define CLY_int_filebuf    filebuf
+  #define CLY_streambuf      streambuf
+  #define CLY_OpenModeT      int
+  #define CLY_StreamPosT     streampos
+  #define CLY_StreamOffT     streamoff
+  #define CLY_IOSSeekDir     ios::seek_dir
+  #define CLY_FBOpenProtDef  filebuf::openprot
+  #define CLY_NewFBFromFD(buf,f) buf=new filebuf(f)
+  #define CLY_PubSetBuf(a,b) setbuf(a,b)
+  #define CLY_HaveFBAttach   1
+  #define CLY_FBOpen(a,b,c)  open(a,b,c)
+  #define CLY_IOSBin         ios::binary
+  #define CLY_IOSOut         ios::out
+  #define CLY_IOSIn          ios::in
+  #define CLY_IOSApp         ios::app
+  #define CLY_IOSAtE         ios::ate
+  #define CLY_IOSBeg         ios::beg
+  #define CLY_IOSCur         ios::cur
+  #define CLY_IOSEnd         ios::end
+  #define CLY_IOSBadBit      ios::badbit
+  #define CLY_IOSEOFBit      ios::eofbit
+  #define CLY_IOSFailBit     ios::failbit
+  #define CLY_IOSGoodBit     ios::goodbit
+  #define CLY_PubSeekOff     seekoff
+  #define CLY_PubSync        sync
+  #define CLY_std(a)         a
+  #define UsingNamespaceStd
+  #define CreateStrStream(os,buf,size) char buf[size]; \
+                                       ostrstream os(buf,sizeof(buf))
+  #define GetStrStream(os,buf) buf
+  #ifdef Uses_StrStream
+   #undef  Include_strstrea
+   #define Include_strstrea 1
+  #endif
+ #endif
 #endif
 
 #ifdef Uses_IOS_BIN

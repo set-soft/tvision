@@ -913,15 +913,15 @@ TScreenX11::TScreenX11()
  TScreen::getCharacter=getCharacter;
  TScreen::setCharacter=setCharacter;
  TScreen::setCharacters=setCharacters;
- TScreen::System=System;
+ TScreen::System_p=System;
  TScreen::setWindowTitle=setWindowTitle;
  TScreen::getWindowTitle=getWindowTitle;
  TScreen::setDisPaletteColors=SetDisPaletteColors;
  TScreen::getFontGeometry=GetFontGeometry;
  TScreen::getFontGeometryRange=GetFontGeometryRange;
- TScreen::setFont=SetFont;
+ TScreen::setFont_p=SetFont;
  TScreen::restoreFonts=RestoreFonts;
- TScreen::setCrtModeRes=SetCrtModeRes;
+ TScreen::setCrtModeRes_p=SetCrtModeRes;
  TDisplay::beep=Beep;
 
  TVX11Clipboard::Init();

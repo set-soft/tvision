@@ -131,13 +131,13 @@ TScreenQNX4::TScreenQNX4()
    TScreen::Suspend=Suspend;
    TScreen::setCrtData=SetCrtData;
    TScreen::setVideoMode=SetVideoMode;
-   TScreen::setVideoModeRes=SetVideoModeRes;
+   TScreen::setVideoModeRes_p=SetVideoModeRes;
    TScreen::setVideoModeExt=SetVideoModeExt;
    TScreen::getCharacters=getCharacters;
    TScreen::getCharacter=getCharacter;
    TScreen::setCharacter=setCharacter;
    TScreen::setCharacters=setCharacters;
-   TScreen::System=System;
+   TScreen::System_p=System;
    TScreen::fixCrtMode=FixCrtMode;
 
    TGKeyQNX4::Init();   
