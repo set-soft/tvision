@@ -1,4 +1,33 @@
 $Log$
+* Added: Creation of examples/rhide.env for the Win32 target.
+* Added: Now the config.pl updates the win32 Makefile so MinGW users without
+all the needed tools have a chance to compile.
+* Modified: Now the configuration detects more details and defines
+preprocessor variables acording to it. The definitions are also less
+confusing. Now they are OS, OSf (subtype of OS), Comp (Compiler), Compf
+(subtype of compiler) and CPU. With it I removed almost all magic __*__ tests
+that are usually tricky and not so clear.
+* Added: Cygwin target, with the help of Ronald Landheer
+<ronald@landheer.com>.
+* Added: Better prefix detection for MinGW.
+* Fixed: The version.txt file messed things if ended with \n, now is ok.
+* Added: A definition to compatlayer to identify systems where drive letters
+have any sense (CLY_HaveDriveLetters).
+* Added: More use of compatlayer Uses_* mechanism.
+* Added: Uses_abort to compatlayer (MSVC have it process.h).
+* Added: More code to solve the endian problems with the shadows.
+* Added: Code to solve the endian problem with the mouse attribute.
+* Modified: win32/trans.cc, win32/console.cc and win32/gkey.cc now are just
+one file. It helps to maintain uniform the list of files.
+* Modified: the win32/readme.txt to reflect the changes.
+
+Revision 1.199  2001/09/16 20:05:39  set
+* Updated: Distribution readme and debian/changelog.
+* Fixed: debian/control had extra new line characters.
+* Fixed: Now the scripts of distribution updates debian/changelog with my
+name and stating it was a script. Sugested by Ivan.
+* Added: .exe files to the list of excluded in Linux source distribution.
+
 Revision 1.198  2001/09/16 18:09:00  set
 * Added: Code to solve the endian problem in shadows. Must be tested.
 
