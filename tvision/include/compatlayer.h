@@ -75,7 +75,7 @@ typedef unsigned long  ulong;
 
 
 #ifdef Uses_stdio
-  #define Include_sdtio
+  #define Include_stdio
 #endif
 
 #ifdef Uses_CLYFileAttrs
@@ -1056,7 +1056,7 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
  #include <io.h>
 #endif
 
-#ifdef Include_sdtio
+#ifdef Include_stdio
  #include <stdio.h>
 #endif
 
