@@ -1,9 +1,14 @@
 rhtvision (2.0.0-0.1) unstable; urgency=low
 
-  * New version automatically modified by version update scripts
+  * New alpha upstream release with a lot of changes and improvements,
+    most notably: native X11 suport!
+  * Small changes to debian/rules and debian/files_to_backup regarding
+    removing and backup of some files.
+  * Remove CVS directories from packages.
+  * Use dh_installexamples to install the examples of the -dev package.
 
- -- Salvador E. Tropea (SET) <salvador@inti.gov.ar>  Mon, 10 Dec 2001 22:14:25 -0300
- 
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Tue, 14 May 2002 21:34:46 -0300
+
 rhtvision (1.1.4-1) unstable; urgency=low
 
   * The "Ivan hates computers after having good vacations" release.

@@ -1,5 +1,3 @@
-Makefile
-compat/rhide.env
 compat/compat.mak
 examples/demo/demo.mak
 examples/desklogo/desklogo.mak
@@ -11,7 +9,6 @@ examples/inplis/implis.mak
 examples/listvi/lst_view.mak
 examples/msgcls/msgcls.mak
 examples/progba/test.mak
-examples/rhide.env
 examples/sdlg/test.mak
 examples/sdlg2/test.mak
 examples/tcombo/test.mak
@@ -35,10 +32,4 @@ examples/tutorial/tvguid15.mak
 examples/tutorial/tvguid16.mak
 examples/tvedit/tvedit.mak
 linux/Makefile
-linux/rhide.env
-linuxso/Makefile
-linuxso/compat.mak
 linuxso/makemak.pl
-win32/Makefile
-win32/rhide.env
-include/tv/configtv.h
