@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.90  2002/05/28 18:32:49  set
+* [QNX] Applied patches from Mike:
+- Added more recognized keys.
+- Fixed some bugs in key code translation.
+- Fixed uninitialized suspend variable and esc key delay.
+
 Revision 2.89  2002/05/28 18:20:42  set
 * Added: THelpFile/THelpWindow/THelpViewer and friends to the library.
 Originally from Sigala's port and was only in the demo.
