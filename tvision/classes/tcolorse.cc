@@ -65,7 +65,7 @@ void TColorSelector::colorChanged()
         msg = cmColorForegroundChanged;
     else
         msg = cmColorBackgroundChanged;
-    message( owner, evBroadcast, msg, (void *)(unsigned)color );
+    message( owner, evBroadcast, msg, (void *)(long)color );
 }
  
 void TColorSelector::handleEvent( TEvent& event )
@@ -142,9 +142,9 @@ void TColorSelector::handleEvent( TEvent& event )
             if( event.message.command == cmColorSet )
                 {
                 if( selType == csBackground )
-                    color = event.message.infoByte >> 4;
+                    color = event.message.infoLong >> 4;
                 else
-                    color = event.message.infoByte & 0x0F;
+                    color = event.message.infoLong & 0x0F;
                 drawView();
                 return ;
                 }

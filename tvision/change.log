@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.292  2002/09/10 20:14:21  set
+* Added: Support for endian differences in font files. Now the fonts can
+be generated using little or big endian machines, the loading routines
+detects it and does the needed conversions. Tested on Solaris (in fact I´m
+using the fonts with SETEdit to write it, the editor is running on an Ultra
+60 machine and the output is in mine Linux box :-)
+
 Revision 2.291  2002/09/09 13:31:35  set
 * Fixed: The wheel increment wasn't setup for scroll bars loaded from disk.
 Currently they are just setup with the default value to avoid breaking the

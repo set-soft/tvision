@@ -56,12 +56,12 @@ void TColorDisplay::handleEvent( TEvent& event )
         switch( event.message.command )
             {
             case cmColorBackgroundChanged:
-                *color = (*color & 0x0F) | ((event.message.infoByte << 4) & 0xF0);
+                *color = (*color & 0x0F) | ((event.message.infoLong << 4) & 0xF0);
                 drawView();
                 break;
 
             case cmColorForegroundChanged:
-                *color = (*color & 0xF0) | (event.message.infoByte & 0x0F);
+                *color = (*color & 0xF0) | (event.message.infoLong & 0x0F);
                 drawView();
             }
 }
@@ -69,7 +69,7 @@ void TColorDisplay::handleEvent( TEvent& event )
 void TColorDisplay::setColor( uchar *aColor )
 {
     color = aColor;
-    message( owner, evBroadcast, cmColorSet, (void *)(unsigned)(*color) );
+    message( owner, evBroadcast, cmColorSet, (void *)(long)(*color) );
     drawView();
 }
 
