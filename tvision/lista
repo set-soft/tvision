@@ -30,7 +30,6 @@ classes/ofpstrea.cc
 classes/opstream.cc
 classes/osclipboard.cc
 classes/pstream.cc
-classes/ssc_streams.cc
 classes/tvtext1.cc
 classes/tvtext2.cc
 classes/tapplica.cc
@@ -192,6 +191,7 @@ compat/globfree.c
 compat/nl_langinfo.c
 compat/regex.c
 compat/rhide.env
+compat/ssc_streams.cc
 compat/ticks.c
 config.pl
 confignt.pl

@@ -69,8 +69,9 @@ OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/nl_langinfo.o ../compat/obj/ntdirent.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/snprintf.o\
-	../compat/obj/strlwr.o ../compat/obj/strupr.o ../compat/obj/ticks.o\
-	../compat/obj/unc.o ../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
+	../compat/obj/ssc_streams.o ../compat/obj/strlwr.o\
+	../compat/obj/strupr.o ../compat/obj/ticks.o ../compat/obj/unc.o\
+	../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
 	../compat/obj/validfilename.o ../compat/obj/yieldpro.o\
 	obj/calcdisp.o obj/calculat.o obj/codepage.o obj/configfile.o\
 	obj/dosdis.o obj/doskey.o obj/dosmouse.o obj/dosscr.o\
@@ -151,8 +152,9 @@ ALL_OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/nl_langinfo.o ../compat/obj/ntdirent.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/snprintf.o\
-	../compat/obj/strlwr.o ../compat/obj/strupr.o ../compat/obj/ticks.o\
-	../compat/obj/unc.o ../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
+	../compat/obj/ssc_streams.o ../compat/obj/strlwr.o\
+	../compat/obj/strupr.o ../compat/obj/ticks.o ../compat/obj/unc.o\
+	../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
 	../compat/obj/validfilename.o ../compat/obj/yieldpro.o\
 	obj/calcdisp.o obj/calculat.o obj/codepage.o obj/configfile.o\
 	obj/dosdis.o obj/doskey.o obj/dosmouse.o obj/dosscr.o\
@@ -589,8 +591,9 @@ DEPS_0= ../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/nl_langinfo.o ../compat/obj/ntdirent.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/snprintf.o\
-	../compat/obj/strlwr.o ../compat/obj/strupr.o ../compat/obj/ticks.o\
-	../compat/obj/unc.o ../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
+	../compat/obj/ssc_streams.o ../compat/obj/strlwr.o\
+	../compat/obj/strupr.o ../compat/obj/ticks.o ../compat/obj/unc.o\
+	../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
 	../compat/obj/validfilename.o ../compat/obj/yieldpro.o\
 	obj/calcdisp.o obj/calculat.o obj/codepage.o obj/configfile.o\
 	obj/dosdis.o obj/doskey.o obj/dosmouse.o obj/dosscr.o\
