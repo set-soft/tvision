@@ -80,6 +80,8 @@ tvhc     - Turbo Vision Help Compiler. This is a compiler for the original
            help format. This format is binary and I don't recommend using it.
            You can find a better help system in InfView included in the
            SETEdit project.
+videomode- Shows how to change the screen/window size using RHTV 1.x modes
+           and 2.x resolution style.
 xterm    - Shows how to start a XTerm configured to report most key
            combinations. I also included an Eterm 0.9.x theme with the same
            purpose.

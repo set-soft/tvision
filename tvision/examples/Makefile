@@ -17,7 +17,7 @@ examples=demo/demo desklogo/desklogo desklogo/set-logo \
 	tutorial/tvguid11 tutorial/tvguid12 tutorial/tvguid13 \
 	tutorial/tvguid14 tutorial/tvguid15 tutorial/tvguid16 \
 	tvedit/tvedit tvhc/tvhc clipboard/test fonts/test \
-	helpdemo/test fonts/genraw
+	helpdemo/test fonts/genraw videomode/test
 
 all: $(addsuffix .exe,$(examples))
 
@@ -94,6 +94,8 @@ tutorial/tvguid16.exe: tutorial/tvguid16.gpr
 tvedit/tvedit.exe: tvedit/tvedit.gpr
 
 tvhc/tvhc.exe: tvhc/tvhc.gpr
+
+videomode/test.exe: videomode/test.gpr
 
 %.exe: %.gpr
 	$(MAKE) -C $(dir $<) -f $(addsuffix .mak,$(basename $(notdir $<)))

@@ -119,7 +119,7 @@ int TScreenXTerm::InitOnce()
  // We can change the palette (but can't restore it perfectly).
  //  I assume that's XTerm 4.x or Eterm 0.9.x, this doesn't work
  // for older versions.
- flags0=CanSetPalette;
+ flags0=CanSetPalette | CanSetVideoSize;
  return 0;
 }
 

@@ -948,8 +948,8 @@ TScreenX11::TScreenX11()
  // We can change the palette.
  // A redraw is needed after setting the palette. But currently is in the color setting.
  // We can set the fonts and even change their size.
- flags0=CanSetPalette | CanReadPalette | CodePageVar | CursorShapes /*| PalNeedsRedraw*/ |
-        CanSetBFont | CanSetSBFont | CanSetFontSize;
+ flags0=CanSetPalette | CanReadPalette | CodePageVar    | CursorShapes /*| PalNeedsRedraw*/ |
+        CanSetBFont   | CanSetSBFont   | CanSetFontSize | CanSetVideoSize;
 }
 
 void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h)
