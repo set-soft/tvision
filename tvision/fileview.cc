@@ -54,7 +54,7 @@ void *TFileViewer::read(ipstream& is)
 
     TScroller::read(is);
     fName = is.readString();
-    fileName = 0;
+    fileName = NULL;
     readFile(fName);
     delete fName; 
     return this;
