@@ -1,4 +1,7 @@
 $Log$
+Revision 2.13  2001/11/25 00:41:41  set
+* Added: Definitions for middle mouse button and also buttons 4 and 5.
+
 Revision 2.12  2001/11/25 00:39:38  set
 * Changed: call to new API name in demo example (to set window title).
 

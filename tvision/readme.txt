@@ -63,7 +63,7 @@ install some GNU tools.
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TV for short) v1.1.3.
+  That's the Turbo Vision distribution (TV for short) v2.0.0.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
