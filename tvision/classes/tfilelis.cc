@@ -12,6 +12,8 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 #define Uses_MsgBox
 #define Uses_TFileList
@@ -150,6 +152,9 @@ void TFileList::readDirectory( const char *aWildCard )
   strcpy(wildcard,aWildCard);
   char *slash = strrchr(wildcard,'/');
   char *path;
+  // SET: Added code to remove .. in the root directory
+  int removeParent=0;
+  
   if (slash)
   {
     *slash = 0;
@@ -161,11 +166,20 @@ void TFileList::readDirectory( const char *aWildCard )
       strcat(path,"/");
     }
     slash++;
+    if (strlen(path) == 3 && path[1] == ':')
+       removeParent=1;
   }
   else
   {
     slash = wildcard;
     path = ".";
+    char *cwd=getcwd(0,PATH_MAX);
+    if (cwd)
+      {
+       if (strlen(cwd)==3 && cwd[1] == ':')
+          removeParent=1;
+       free(cwd);
+      }
   }
   dir = opendir(path);
   if (dir) while ((de = readdir(dir)))
@@ -173,6 +187,7 @@ void TFileList::readDirectory( const char *aWildCard )
     struct ffblk &ff = dir->ff;
     if (!(ff.ff_attrib & FA_DIREC) && fnmatch(slash,de->d_name,0)) continue;
     if (strcmp(de->d_name,".") == 0) continue;
+    if (removeParent && strcmp(de->d_name,"..")==0) continue;
     p = new DirSearchRec;
     strcpy(p->name,de->d_name);
     p->attr = ff.ff_attrib;
