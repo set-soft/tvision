@@ -1389,7 +1389,9 @@ sub LookForGNUar
     print "gar\n";
     return 'gar';
    }
- if (($OSf eq 'Darwin') || ($OSf eq 'HP-UX') || ($OSf eq 'Tru64'))
+ # I think all ar tools are usable but ...
+ if (($OSf eq 'Darwin') || ($OSf eq 'HP-UX') || ($OSf eq 'Tru64') ||
+     ($OSf eq 'Solaris'))
    {
     $conf{'GNU_AR'}='ar';
     $conf{'UseRanLib'}=1;

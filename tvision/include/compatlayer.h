@@ -805,6 +805,15 @@ typedef unsigned long  ulong;
    #undef  Include_stdio
    #define Include_stdio 1
   #endif
+  // Solaris 2.7 w/gcc 2.95 doesn't need alloca.h
+  // Solaris 9 w/gcc 3.3.2 does ?!
+  #if defined(Uses_alloca) && (__GNUC__>=3)
+   #undef  Include_alloca
+   #define Include_alloca 1
+  #endif
+  // At least Solaris 9 have a non POSIX snprintf.
+  // It fails to work for NULL pointers as POSIX states.
+  #undef CLY_Have_snprintf
  #endif
 
  #if defined(TVOSf_QNX4) 
@@ -878,6 +887,13 @@ typedef unsigned long  ulong;
    #undef  Include_alloca
    #define Include_alloca 1
   #endif
+ #endif
+
+ /* Darwin (MacOS X) */
+ #ifdef TVOSf_Darwin
+  // At least MacOS X 10.2 have a non POSIX snprintf.
+  // It fails to work for NULL pointers as POSIX states.
+  #undef CLY_Have_snprintf
  #endif
 
  /* Generic UNIX system */
@@ -1782,7 +1798,7 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #endif
 
 #if defined(Include_alloca) && !defined(Included_alloca)
- /* OSF1 (Tru64) */
+ /* OSF1 (Tru64), some combinations of Solaris and gcc too. */
  #define Included_alloca 1
  #include <alloca.h>
 #endif

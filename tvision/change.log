@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.399.2.205  2004/10/08 14:37:40  set
+* Added: Tru64 (OSF1) support. Thanks to HP Test Drive. The system I used
+is an HP Tru64 Unix 5.1b running on a DS20E 2@667 MHz (ev67) [2 Alpha CPUs]
+It have a very buggy port of GNU tools, but is usable.
+* Fixed: [Compilation] Some C libraries (not GNU) declares "struct timeval"
+with a "forward" declaration and you must pull sys/time.h. I saw it before
+but forgot to apply the patch.
+* Added: [DOCs] More information about the UNIX systems where I succesfuly
+compiled.
+
 Revision 2.399.2.204  2004/10/06 19:14:58  terrible
 * [Debian] Updated to 2.0.3-2 (minor changes mostly cosmetic).
 
