@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.104  2002/06/03 12:54:20  set
+* Added: An option to never hide the cursor to TDisplay. The most important
+effect of this variable is how it affects high level classes. When this
+option is enabled some classes sets the cursor as visible and moves the
+hardware cursor. But the low level stuff is needed to debug it.
+* Added: Code to be "Braille friendly" to TMenuBox, TMenuBar and TButton.
+* Added: Example code to the demo program, also added code to restore the
+window title at exit.
+
 Revision 2.103  2002/06/03 12:50:09  set
 * Fixed: MinGW doesn't define ssize_t. Reported by Thiago.
 

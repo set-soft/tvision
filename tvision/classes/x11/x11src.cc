@@ -617,8 +617,8 @@ TScreenX11::TScreenX11()
  // Setup the driver properties.
  // Our code page isn't fixed.
  // We can change the palette
- // A redraw is needed after setting the palette
- flags0=CanSetPalette | CanReadPalette | CodePageVar | PalNeedsRedraw;
+ // A redraw is needed after setting the palette. But currently is in the color setting.
+ flags0=CanSetPalette | CanReadPalette | CodePageVar /*| PalNeedsRedraw*/;
 }
 
 int TScreenX11::setWindowTitle(const char *aName)
@@ -668,6 +668,9 @@ void TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
     memcpy(colorMap+from,newMap,sizeof(ulong)*i);
     // Reflect it in the current map
     memcpy(ActualPalette+from,colors,sizeof(TScreenColor)*i);
+    unsigned y,off;
+    for (y=0,off=0; y<(unsigned)maxY; y++,off+=maxX)
+        redrawBuf(0,y,maxX,off);
    }
 }
 
