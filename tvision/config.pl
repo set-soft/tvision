@@ -50,9 +50,20 @@ LookForIntlSupport();
 
 print "\n";
 GenerateMakefile();
-ModifyMakefiles('linux/Makefile','djgpp/makefile');
-ModifySimpleMakefiles('win32/Makefile');
-CreateRHIDEenvs('linux/rhide.env','djgpp/rhide.env','examples/config.env');
+if ($OS eq 'UNIX')
+  {
+   ModifyMakefiles('linux/Makefile');
+   CreateRHIDEenvs('linux/rhide.env','examples/config.env');
+  }
+elsif ($OS eq 'DOS')
+  {
+   ModifyMakefiles('djgpp/makefile');
+   CreateRHIDEenvs('djgpp/rhide.env','examples/config.env');
+  }
+elsif ($OS eq 'Win32')
+  {
+   ModifySimpleMakefiles('win32/Makefile');
+  }
 CreateConfigH();
 
 print "\nSuccesful configuration!\n\n";
