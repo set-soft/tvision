@@ -1,4 +1,9 @@
 $Log$
+Revision 1.190  2001/09/05 20:10:44  set
+* Added: [Linux] Now I also patch the ^[ key to just return [ (not ESC).
+This enables a needed key for setedit.
+* Fixed: [Linux] gkey.cc to compile with the current library.
+
 Revision 1.189  2001/09/05 18:40:29  set
 * Fixed: Some problems in the TSortedCollection incremental search. The
 backspace wasn't working (at least on Linux), the `.' didn't show the jump
