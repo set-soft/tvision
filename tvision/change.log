@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.500  2003/08/11 14:35:54  set
+* Updated: Russian translation. Patch by Roman Valyushenko <smhs@mail.ru>.
+
 Revision 2.499  2003/08/11 13:59:05  set
 * Modified: [Configuration] to avoid including the compilation directory in
 the headers path when --no-libs-here is specified. Pointed out by Ivan.
