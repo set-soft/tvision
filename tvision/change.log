@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.276  2002/08/29 20:40:20  set
+* Added: showBusyState member to TScreen. That's a way to show the user
+some kind of feadback when the application is busy. Currently only the
+X11 driver implements it showing a different mouse cursor. The idea and
+the X11 code was contributed by Roman Valyushenko.
+* Added: example on how to use it and also window title and code page
+examples to the progress bar example.
+
 Revision 2.275  2002/08/29 20:39:00  set
 * Added: Thanks to JASC for the new driver.
 * Added: The new files to the distribution.

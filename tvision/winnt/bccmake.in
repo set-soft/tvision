@@ -78,6 +78,9 @@ tvex.exe: objs\tvex.obj rhtv.lib
 {..\classes\win32}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
+{..\classes\wingr}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
 {..\classes\winnt}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
