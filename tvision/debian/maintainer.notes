@@ -5,6 +5,7 @@ Then, if the package is not a native Debian package or has some changes from
 the native package, then put the original upstream version in a directory
 called "rhtvision-version.orig". You can have the original upstream version
 in a file called "rhtvision-version.orig.tar.gz" instead if you want.
+Make sure that the debian/rules file is executable (chmod 755 debian/rules).
 
 
 How to make the .deb, .tar.gz, .dsc and .changes files:
