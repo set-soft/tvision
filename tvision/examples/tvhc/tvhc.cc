@@ -5,8 +5,9 @@
 /*            Copyright (c) 1991 by Borland International                */
 /*                                                                       */
 /* Modified: QNX RtP port by Mike Gorchak, 2000                          */
-/* Modified: inclusion mechanism and sign mismatch comparissons by       */
-/*           Salvador E. Tropea (SET) 2002                               */
+/* Modified: 1) Headers mechanism and sign mismatch comparissons.        */
+/*           2) Adapted to use compatlayer (new ISO C++ 1998 and gcc 3.x)*/
+/*           by Salvador E. Tropea (SET) 2002                            */
 /*                                                                       */
 /*-----------------------------------------------------------------------*/
 
@@ -88,16 +89,18 @@
 #define Uses_limits
 #define Uses_stdlib
 #define Uses_fpstream
-#define Uses_strstream
+#define Uses_StrStream
 #define Uses_TSortedCollection
 #define Uses_THelpFile
 #include <tv.h>
 
 #include "tvhc.h"
 
+UsingNamespaceStd
+
 //======================= File Management ===============================//
 
-TProtectedStream::TProtectedStream( char *aFileName, ushort aMode ) :
+TProtectedStream::TProtectedStream( char *aFileName, CLY_OpenModeT aMode ) :
     fstream( aFileName, aMode )
 {
     strcpy(fileName, aFileName);
@@ -133,23 +136,22 @@ void QNXSplitExt(char* PathName, char* Name, char* Ext)
 //  replaced anyway.                                                     //
 //-----------------------------------------------------------------------//
 
-char *replaceExt( char *fileName, char *nExt, Boolean force )
+void replaceExt( char *fileName, char *nExt, Boolean force, char *dest )
 {
     char dir[PATH_MAX]; 
     //char name[NAME_MAX];
     char ext[NAME_MAX];
-    char buffer[PATH_MAX];
-    ostrstream os(buffer, PATH_MAX);
+    CreateStrStream(os,buffer,PATH_MAX);
 
     QNXSplitExt(fileName, dir, ext);
 
     if (force || (strlen(ext) == 0))
     {
        os << dir << nExt << ends;
-       return os.str();
+       strcpy(dest,GetStrStream(os,buffer));
     }
     else
-       return fileName;
+       strcpy(dest,fileName);
 }
 
 //----- fExist(fileName) ------------------------------------------------/
@@ -201,7 +203,7 @@ void unGetLine( char *s )
 //  Used by Error and Warning to print the message.                      //
 //-----------------------------------------------------------------------//
 
-void prntMsg( char *pref, char *text )
+void prntMsg( const char *pref, const char *text )
 {
     if (lineCount > 0)
         cout << pref << ": " << helpName << "("
@@ -225,7 +227,7 @@ void error( char *text )
 //  Used to indicate an warning.                                         //
 //-----------------------------------------------------------------------//
 
-void warning( char *text )
+void warning( const char *text )
 {
     prntMsg("Warning", text);
 }
@@ -856,7 +858,7 @@ void readTopic( fstream& textFile, THelpFile& helpFile )
 void doWriteSymbol(void *p, void *p1)
 {
     int numBlanks, i;
-    ostrstream os(line, MAXSTRSIZE);
+    CreateStrStream(os,line,MAXSTRSIZE);
 
     TProtectedStream *symbFile = (TProtectedStream *)p1;
     if (((TReference *)p)->resolved )
@@ -866,13 +868,13 @@ void doWriteSymbol(void *p, void *p1)
         for (i = 0; i < numBlanks; ++i)
             os << ' ';
         os << " = " << ((TReference *)p)->val.value << ","<< ends;
-        *symbFile << os.str() << "\n";
+        *symbFile << GetStrStream(os,line) << "\n";
         }
     else
         {
         os << "Unresolved forward reference \""
            << ((TReference *)p)->topic << "\"" << ends;
-        warning(os.str());
+        warning(GetStrStream(os,line));
         }
 }
 
@@ -938,7 +940,7 @@ int main(int argc, char **argv)
     fpstream* helpStrm;
 
     char initialText[] = "Help Compiler  Version 1.0  Copyright (c) 1991"
-                         " Borland International.\nQNX RtP port by Mike Gorchak, 2000.\n";
+                         " Borland International.\nQNX RtP port by Mike Gorchak, 2000.\nAdapted to RHTV by SET, 2002.\n";
     char helpText[] =
        "\n  Syntax  tvhc <Help text>[.txt] [<Help file>[.hlp] [<Symbol file>[.h]]\n"
        "\n"
@@ -957,7 +959,7 @@ int main(int argc, char **argv)
         }
 
     //  Calculate file names
-    strcpy(textName,replaceExt(argv[1], ".txt", True));
+    replaceExt(argv[1], ".txt", True, textName);
     if (!fExists(textName))
         {
         strcpy(bufStr,"File ");
@@ -967,16 +969,16 @@ int main(int argc, char **argv)
         }
 
     if (argc >= 3)
-        strcpy(helpName, replaceExt(argv[2], ".hlp", True));
+        replaceExt(argv[2], ".hlp", True, helpName);
     else
-        strcpy(helpName, replaceExt(textName, ".hlp",  True));
+        replaceExt(textName, ".hlp", True, helpName);
 
     checkOverwrite( helpName );
 
     if (argc >= 4)
-        strcpy(symbName, replaceExt(argv[3], ".h", True));
+        replaceExt(argv[3], ".h", True, symbName);
     else
-        strcpy(symbName, replaceExt(helpName, ".h", True));
+        replaceExt(helpName, ".h", True, symbName);
 
     checkOverwrite( symbName );
 
