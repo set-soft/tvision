@@ -1,4 +1,9 @@
 $Log$
+Revision 1.165  2001/08/13 23:31:28  set
+* Added: The Dialog Editor to the distribution and mentioned in the readme.
+* Added: A .po file containing all the messages that can be internationalized
+in Turbo Vision.
+.
 Revision 1.164  2001/08/12 20:56:34  set
 * Added: A check in TCluster::draw to avoid buffer overflows. I don't know if
 it is really needed but a user asked for it and is better to double check

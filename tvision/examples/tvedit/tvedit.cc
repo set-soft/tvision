@@ -13,7 +13,6 @@ because you can do an application based on TEditorApp in a few minutes.
 #define Uses_TApplication
 #define Uses_TEditorApp
 #include <tv.h>
-#include <tvedit.h>
 
 int main()
 {

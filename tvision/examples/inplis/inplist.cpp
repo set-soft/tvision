@@ -92,7 +92,7 @@ ushort TInputBox::inputData( )
   ListBoxItem *v;
   TExecInputLine *te;
   TRect r = getExtent();
-  ushort control;
+  ushort control=0;
   if (list() != 0 )
    {
     v  = (ListBoxItem *)(list()->at(focused));
@@ -111,7 +111,7 @@ ushort TInputBox::inputData( )
 void TInputBox::handleEvent(TEvent& event)
  {
   TEvent e = event;
-  ushort control, item;
+  ushort item;
   TListBox::handleEvent(event);
   item = focused;
   if ( event.what == evKeyDown )

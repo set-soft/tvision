@@ -44,7 +44,7 @@ attributes are swapped to form the highlight color. Thus the highlight will
 always be the inverse of the bar color.
 */
 
-const char * const near TProgressBar::name = "TProgressBar";
+const char * const TProgressBar::name = "TProgressBar";
 
 TProgressBar::TProgressBar(const TRect& bounds, unsigned long aTotal, char abackChar) :
    TView(bounds)
@@ -86,7 +86,8 @@ void TProgressBar::draw() {
    nbuf.moveChar(0,backChar,colorNormal,size.x);
    nbuf.moveStr(numOffset,string,colorNormal);
    nbuf.moveStr(numOffset+3," %",colorNormal);
-   for(int i=0;i<curWidth;i++)
+   unsigned i;
+   for(i=0;i<curWidth;i++)
       nbuf.putAttribute(i,colorHiLite);
    writeLine(0, 0, size.x, 1, nbuf);
 }
@@ -149,8 +150,6 @@ void TProgressBar::setTotal(unsigned long newTotal)
 
 // set a new current iteration & update display
 void TProgressBar::setProgress(unsigned long newProgress) {
-   unsigned int percent;
-   unsigned int width;
    progress = newProgress;
    calcPercent();
    drawView();                       // paint the thermometer bar

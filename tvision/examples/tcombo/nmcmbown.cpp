@@ -19,5 +19,5 @@
 #define Uses_TComboWindow
 #include "tcombobx.h"
 
-const char * const near TComboWindow::name = "TComboWindow";
+const char * const TComboWindow::name = "TComboWindow";
 

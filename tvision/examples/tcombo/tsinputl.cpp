@@ -46,7 +46,7 @@ void *TStaticInputLine::getNextMatch(char testChar)
 
 void TStaticInputLine::handleEvent(TEvent& event)
 {
-   char key, testChar[2];
+   char testChar[2];
    char *tempData;
    ccIndex index;
 

@@ -169,7 +169,7 @@ TlnInfoWindow::TlnInfoWindow( const TRect& bounds,
   TWindow (bounds, aTitle, aNumber),
   TWindowInit(&TlnInfoWindow::initFrame)
 {
-  int i;
+  unsigned i;
 
   // don't allow move, grow, close or zoom
   flags = 0;
@@ -267,7 +267,6 @@ TPalette& TlnInfoWindow::getPalette() const
 void postInfo(int line, const char * text)
 {
    TlnInfoWindow * wPtr;
-   TRect r;
    InfoData data;
 
    wPtr = (TlnInfoWindow *)

@@ -102,7 +102,7 @@ class TComboBox : public TView {
       virtual void *read(ipstream&);
 
    public:
-      static const char * const near name;
+      static const char * const name;
       static TStreamable *build();
 };
 
@@ -148,7 +148,7 @@ class TComboViewer : public TListViewer {
       virtual void *read(ipstream&);
 
    public:
-      static const char * const near name;
+      static const char * const name;
       static TStreamable *build();
 };
 
@@ -190,7 +190,7 @@ class TComboWindow : public TWindow {
       virtual void *read(ipstream&);
 
    public:
-      static const char * const near name;
+      static const char * const name;
       static TStreamable *build();
 };
 

@@ -40,7 +40,7 @@ protected:
   virtual void write( opstream& );
   virtual void *read( ipstream& );
 public:
-  static const char * const near name;
+  static const char * const name;
   static TStreamable *build()
     { return new DynamicText( streamableInit ); }
 };

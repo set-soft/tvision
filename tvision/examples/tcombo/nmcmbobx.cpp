@@ -19,5 +19,5 @@
 #define Uses_TComboBox
 #include "tcombobx.h"
 
-const char * const near TComboBox::name = "TComboBox";
+const char * const TComboBox::name = "TComboBox";
 

@@ -35,7 +35,7 @@ be included in the link with TV.LIB.
 
 */
 
-class far TRect;
+class TRect;
 
 class TProgressBar : public TView
 {
@@ -76,7 +76,7 @@ protected:
    virtual void *read(ipstream&);
 
 public:
-   static const char * const near name;
+   static const char * const name;
    static TStreamable *build();
 };
 
