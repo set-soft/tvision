@@ -18,6 +18,12 @@ class TRect;
 class TScrollBar;
 class TCollection;
 
+struct TListBoxRec
+{
+    TCollection *items;
+    ccIndex selection;
+};
+
 class TListBox : public TListViewer
 {
 

@@ -38,7 +38,7 @@ TSortedListBox::TSortedListBox( const TRect& bounds,
                                 TScrollBar *aScrollBar) :
     TListBox(bounds, aNumCols, aScrollBar),
     shiftState( 0 ),
-    searchPos( (ushort)-1 )
+    searchPos( USHRT_MAX )
 {
     showCursor();
     setCursor(1, 0);
@@ -139,6 +139,6 @@ void* TSortedListBox::getKey( const char *s )
 void TSortedListBox::newList( TSortedCollection *aList )
 {
     TListBox::newList( aList );
-    searchPos = (ushort)-1;
+    searchPos = USHRT_MAX;
 }
 
