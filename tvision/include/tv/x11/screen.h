@@ -165,6 +165,8 @@ protected:
  static uchar primaryFontChanged;
  // Should we hide the cursor when we lose the focus?
  static char  hideCursorWhenNoFocus;
+ // Avoid resizing to a cells multiple if the WM doesn't follow our hints
+ static char  dontResizeToCells;
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

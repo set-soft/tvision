@@ -21,6 +21,9 @@
    ScrCP
    InpCP
    HideCursorWhenNoFocus
+   DontResizeToCells     Doesn't resize the window to a cells multiple size if the WM
+                         fails to follow the hints. This helps to avoid problems found
+                         in KDE 3.1 alpha.
 
 */
 
@@ -109,6 +112,7 @@ char     *TScreenX11::cursorData=NULL;
 volatile
 char      TScreenX11::cursorChange=0;
 char      TScreenX11::hideCursorWhenNoFocus=1;
+char      TScreenX11::dontResizeToCells=0;
 XSizeHints *TScreenX11::sizeHints=NULL;
 XClassHint *TScreenX11::classHint=NULL;
 
@@ -833,9 +837,12 @@ TScreenX11::TScreenX11()
  fontWb=(defaultFont->w+7)/8;
  uchar *fontData=defaultFont->data;
 
+ /* Setting to fine tune this driver */
  aux=1;
  if (optSearch("HideCursorWhenNoFocus",aux))
     hideCursorWhenNoFocus=aux;
+ if (optSearch("DontResizeToCells",aux))
+    dontResizeToCells=aux;
 
  TDisplayX11::Init();
 
@@ -1301,6 +1308,11 @@ void TScreenX11::ProcessGenericEvents()
                screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
                windowSizeChanged=1;
               }
+
+            /* KDE 3.1 alpha maximize doesn't use cell sizes and our resize
+               confuses KDE. */
+            if (dontResizeToCells)
+               break;
 
             /* Force the window to have a size in chars */
             newPW=fontW*maxX;
