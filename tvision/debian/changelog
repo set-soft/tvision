@@ -1,3 +1,9 @@
+rhtvision (1.0.8-3) unstable; urgency=low
+
+  * Previous version had wrong shlibs file.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Sun, 26 Sep 1999 17:53:59 -0300
+
 rhtvision (1.0.8-2) unstable; urgency=low
 
   * Upstream sent newer compilation scripts (bugfixes, enhancements).
