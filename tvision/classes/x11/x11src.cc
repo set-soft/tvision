@@ -30,6 +30,8 @@
 #include <signal.h>
 #include <sys/time.h>
 
+const int cursorDelay=300000;
+
 /*****************************************************************************
 
   TScreenX11 screen stuff.
@@ -87,6 +89,7 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
  uchar *theChar=(uchar *)(screenBuffer+offset);
  XSetBackground(disp,gc,colorMap[theChar[attrPos]>>4]);
  XSetForeground(disp,gc,colorMap[theChar[attrPos]&0xF]);
+ UnDrawCursor();
  XPutImage(disp,mainWin,gc,ximgFont[theChar[charPos]],0,0,x,y,fontW,fontH);
  XFlush(disp);
 }
@@ -101,6 +104,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
 
  uchar *b=(uchar *)values,aux;
  uchar *sb=(uchar *)(screenBuffer+offset);
+ UnDrawCursor();
  while (count--)
    {
     aux=sb[charPos]=b[charPos];
@@ -434,6 +438,17 @@ static uchar DefaultFont[]=
  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00  // 255
 };
 
+static
+void microAlarm(unsigned int usec)
+{
+ struct itimerval newV;
+ newV.it_interval.tv_usec=0;
+ newV.it_interval.tv_sec=0;
+ newV.it_value.tv_usec=(long int)usec;
+ newV.it_value.tv_sec=0;
+ setitimer(ITIMER_REAL,&newV,0);
+}
+
 TScreenX11::TScreenX11()
 {
  int col;
@@ -583,7 +598,7 @@ TScreenX11::TScreenX11()
 
  /* Create the cursor timer */
  signal(SIGALRM,sigAlm);
- alarm(500000);
+ microAlarm(cursorDelay);
 
  XSetBackground(disp,gc,colorMap[0]);
  XSetForeground(disp,gc,colorMap[7]);
@@ -597,11 +612,13 @@ TScreenX11::TScreenX11()
 void TScreenX11::sigAlm(int sig)
 {
  cursorChange=1;
- alarm(500000);
+ microAlarm(cursorDelay);
 }
 
 void TScreenX11::UnDrawCursor()
 {
+ if (!cursorInScreen)
+    return;
  unsigned offset=cursorX+cursorY*maxX;
  uchar *theChar=(uchar *)(screenBuffer+offset);
  int bg=theChar[attrPos]>>4;
@@ -610,11 +627,13 @@ void TScreenX11::UnDrawCursor()
  XSetBackground(disp,cursorGC,colorMap[bg]);
  XSetForeground(disp,cursorGC,colorMap[fg]);
  XPutImage(disp,mainWin,cursorGC,ximgFont[theChar[charPos]],0,0,cursorPX,cursorPY,fontW,fontH);
+ cursorInScreen=0;
  return;
 }
 
 void TScreenX11::DrawCursor()
 {
+ //fprintf(stderr,"DrawCursor: cursorEnabled=%d\n",cursorEnabled);
  if (cursorEnabled)
    {
     cursorInScreen=!cursorInScreen;
@@ -628,6 +647,7 @@ void TScreenX11::DrawCursor()
     XSetForeground(disp,cursorGC,colorMap[fg]);
     memcpy(cursorData,ximgFont[theChar[charPos]]->data,fontH);
 
+    //fprintf(stderr,"DrawCursor: cursorInScreen=%d from/to %d/%d\n",cursorInScreen,cShapeFrom,cShapeTo);
     /* If the cursor is on draw it over the character */
     if (cursorInScreen)
        memset(cursorData+cShapeFrom,0xFF,cShapeTo-cShapeFrom+1);
@@ -636,6 +656,18 @@ void TScreenX11::DrawCursor()
     XPutImage(disp,mainWin,cursorGC,cursorImage,0,0,cursorPX,cursorPY,fontW,fontH);
     XFlush(disp);
    }
+}
+
+void TScreenX11::DisableCursor()
+{
+ cursorEnabled=0;
+ UnDrawCursor();
+}
+
+void TScreenX11::EnableCursor()
+{
+ cursorEnabled=1;
+ //DrawCursor();
 }
 
 /*****************************************************************************
@@ -766,6 +798,7 @@ void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned col
  XSetForeground(disp,gc,colorMap[color&15]);
 
  x*=fontW; y*=fontH;
+ UnDrawCursor();
  while (w--)
    {
     XPutImage(disp,mainWin,gc,ximgFont[*str],0,0,x,y,fontW,fontH);

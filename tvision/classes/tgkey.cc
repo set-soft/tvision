@@ -1,3 +1,16 @@
+/**[txh]********************************************************************
+
+  Keyboard module, Copyright 2001-2002 by Salvador E. Tropea
+  Description:
+  This is the base class for keyboard input.
+  Most members are pointers to functions defined by each platform dependent
+driver. Default members are provided.
+  This is a complete new file created from concepts that José Angel Sanchez
+Caso provide me and coded from scratch. Original Turbo Vision didn't even
+have such a class.
+  
+***************************************************************************/
+
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols

@@ -1,4 +1,8 @@
 $Log$
+Revision 2.40  2002/02/21 01:07:39  set
+* Fixed: Some details to allow compiling under Linux. The code now
+compiles.
+
 Revision 2.39  2002/02/20 01:31:25  set
 * Fixed: gcc 3.x problems with GetStrStream() macro. Reported and solution
 by Andris.
