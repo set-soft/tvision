@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.374  2002/12/09 13:10:26  set
+* Fixed: MinGW doesn't define its version using gcc itself, so we must
+include at least _mingw.h. This is an error in MinGW.
+
 Revision 2.373  2002/12/09 13:04:55  set
 * Fixed: [DOS] The greek mode stuff. It must be moved but right now is
 better to let it work like this until I have some greek tester ;-)
