@@ -218,6 +218,7 @@ djgpp/compress.pl
 +djgpp/distlist
 djgpp/obj/delete.me
 djgpp/tmp/delete.me
+doc/X11.txt
 drivers2.cc
 dual.cc
 examples/Makefile
