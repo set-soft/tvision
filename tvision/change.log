@@ -1,8 +1,13 @@
 $Log$
+Revision 2.122  2002/06/04 18:28:58  set
+* Fixed: When no window was in the desktop and a dialog was executed it
+left the cursor in the last used position. Now TDesktop detects it and
+if the cursor will remain visible is moved to the last line in the screen.
+
 Revision 2.121  2002/06/04 16:01:59  set
 * Fixed: demo file for QNX. When I moved includes to Uses_* forgot to
 include the config header. Reported by Mike.
-.
+
 Revision 2.120  2002/06/04 15:45:22  set
 * Updated: The list of files to convert when using the UNIX tarball.
 

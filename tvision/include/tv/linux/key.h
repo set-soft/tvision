@@ -60,6 +60,8 @@ protected:
  static void doUnHookAndUnPatch();
  // File handle for the input
  static int hIn;
+ // Stream for the input
+ static FILE *fIn;
  // Old mode of the input file handle
  static int oldInFlags;
  // New mode of the input file handle
