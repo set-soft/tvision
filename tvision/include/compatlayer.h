@@ -282,13 +282,12 @@ typedef unsigned long  ulong;
  #define True true
  #define False false
 
- #undef FA_ARCH
- #undef FA_DIREC
- #undef FA_RDONLY
-
  #ifdef TVCompf_MinGW
   #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
+  #undef  FA_ARCH
+  #undef  FA_DIREC
+  #undef  FA_RDONLY
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
@@ -368,6 +367,9 @@ typedef unsigned long  ulong;
  // Win32/Cygwin -- OH!
  #ifdef TVCompf_Cygwin
   #define CLY_Have_UGID 1
+  #undef  FA_ARCH
+  #undef  FA_DIREC
+  #undef  FA_RDONLY
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
@@ -511,6 +513,9 @@ typedef unsigned long  ulong;
  #ifdef TVOS_UNIX
   // Filesystem
   #define CLY_Have_UGID 1
+  #undef  FA_ARCH
+  #undef  FA_DIREC
+  #undef  FA_RDONLY
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
