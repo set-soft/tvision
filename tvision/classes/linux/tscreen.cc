@@ -1278,22 +1278,26 @@ int TV_System(const char *command, pid_t *pidChild)
 
  pid_t cpid=fork();
  if (cpid==0)
-   {// Ok, we are the child, run the command and exit
-    //system(command);
-    //  Exit *without* calling atexit functions.
-    //  The keyboard routines unpatches the keyboard atexit,
-    // if we use exit() this is executed.
-    //_exit(0);
-    //   I think the best is just replace as by the program we
-    // want to run freeing all resources. Is also easiest to
-    // just kill this pid.
+   {// Ok, we are the child
+    //   I'm not sure about it, but is the best I have right now.
+    //   Doing it we can kill this child and all the subprocesses
+    // it creates by killing the group. It also have an interesting
+    // effect that I must evaluate: By doing it this process lose
+    // the controlling terminal and won't be able to read/write
+    // to the parents console. I think that's good.
+    if (setsid()==-1)
+       _exit(127);
     char *argv[4];
    
     argv[0]=getenv("SHELL");
+    if (!argv[0])
+       argv[0]="/bin/sh";
     argv[1]="-c";
     argv[2]=(char *)command;
     argv[3]=0;
     execvp(argv[0],argv);
+    // We get here only if exec failed
+    _exit(127);
    }
  if (cpid==-1)
    {// Fork failed do it manually
