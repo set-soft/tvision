@@ -133,6 +133,9 @@ public:
  // Compares two values according to the associated ASCII
  static int    (*CompareASCII)(uchar val, uchar code);
 
+ // Routine to setup the input code page
+ static int    (*SetCodePage)(int id);
+
  enum keyMode
  {
   // Linux styles
@@ -163,6 +166,13 @@ protected:
  static void     defaultFillTEvent(TEvent &e);
  static void     defaultSuspend();
  static void     defaultResume();
+ static int      defaultSetCodePage(int id);
+
+ // KOI-8r tables:
+ static uchar    KOI8_NonASCII2ASCII(uchar val);
+ static int      KOI8_CompareASCII(uchar val, uchar code);
+ // Table to know which key holds each cyrillic symbol for KOI8
+ static char KOI8Layout[64];
 
  // Needed for configuration.
  static char    *KeyNames[];

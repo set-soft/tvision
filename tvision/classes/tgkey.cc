@@ -13,6 +13,7 @@ have such a class.
 
 #define Uses_TEvent
 #define Uses_TGKey
+#define Uses_TVCodePage
 #define Uses_FullSingleKeySymbols
 #define Uses_ctype
 #define Uses_string
@@ -62,6 +63,7 @@ int      (*TGKey::CompareASCII)(uchar val, uchar code)=defaultCompareASCII;
 void     (*TGKey::SetKbdMapping)(int version)         =defaultSetKbdMapping;
 void     (*TGKey::Suspend)()                          =defaultSuspend;
 void     (*TGKey::Resume)()                           =defaultResume;
+int      (*TGKey::SetCodePage)(int id)                =defaultSetCodePage;
 
 /*****************************************************************************
   Default behaviors for the members
@@ -141,4 +143,45 @@ ushort TGKey::KeyNameToNumber(char *s)
         return i;
  return (ushort)-1;
 }
+
+/*****************************************************************************
+  Here are some generic translation routines for known keyboards/code pages.
+  They are shared by various drivers.
+*****************************************************************************/
+
+int TGKey::defaultSetCodePage(int id)
+{
+ switch (id)
+   {
+    case TVCodePage::KOI8r:
+         NonASCII2ASCII=KOI8_NonASCII2ASCII;
+         CompareASCII=KOI8_CompareASCII;
+         break;
+    default:
+         return 0;
+   }
+ return 1;
+}
+
+/* Linux KOI8 */
+char TGKey::KOI8Layout[64]=
+{
+ '.','f',',','w','L','t','a','u','[','b','q','r','K','v','y','j', // 192 ...
+ 'g','z','h','c','n','e',';','d','m','s','p','i','\'','o','x','}',
+ '>','F','<','W','l','T','A','U','{','B','Q','R','k','V','Y','J',
+ 'G','Z','H','C','N','E',':','D','M','S','P','I','"','O','X',']'
+};
+
+uchar TGKey::KOI8_NonASCII2ASCII(uchar val)
+{
+ return val>=192 ? KOI8Layout[val-192] : val;
+}
+
+int TGKey::KOI8_CompareASCII(uchar val, uchar code)
+{
+ if (val>=0xC0)  val=KOI8Layout[val-0xC0];
+ if (code>=0xC0) code=KOI8Layout[code-0xC0];
+ return val==code;
+}
+
 

@@ -13,7 +13,6 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <assert.h>
-#define Uses_ctype
 #define Uses_string
 
 #define Uses_TMenuItem
@@ -28,6 +27,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_ipstream
 #define Uses_TPalette
 #define Uses_TGKey
+#define Uses_TVCodePage
 #include <tv.h>
 
 #define cpMenuView "\x02\x03\x04\x05\x06\x07"
@@ -344,14 +344,14 @@ ushort TMenuView::execute()
 
 TMenuItem *TMenuView::findItem( char ch )
 {
-    ch = uctoupper(ch);
+    ch = TVCodePage::toUpper(ch);
     TMenuItem *p = menu->items;
     while( p != 0 )
         {
         if( p->name != 0 && !p->disabled )
             {
             const char *loc = strchr( p->name, '~' );
-            if( loc != 0 && TGKey::CompareASCII(ch,uctoupper(loc[1])) )
+            if( loc != 0 && TGKey::CompareASCII(ch,TVCodePage::toUpper(loc[1])) )
                 return p;
             }
         p =  p->next;

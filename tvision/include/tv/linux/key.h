@@ -22,8 +22,6 @@ public:
  static unsigned GetShiftState();
  static void     FillTEvent(TEvent &e);
  static void     SetKbdMapping(int version);
- static uchar    KOI8_NonASCII2ASCII(uchar val);
- static int      KOI8_CompareASCII(uchar val, uchar code);
 
  enum { Default, KOI8 };
 
@@ -111,8 +109,6 @@ protected:
  static char keyPatched;
  // Generic keyboard entry structure used in various places
  static struct kbentry entry;
- // Table to know which key holds each cyrillic symbol for KOI8
- static char KOI8Layout[64];
 };
 
 #endif // LINUXKEY_HEADER_INCLUDED
