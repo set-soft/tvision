@@ -166,6 +166,12 @@ sub GiveAdvice
        print "  That's normal for Win32.\n";
       }
    }
+ if ((@conf{'HAVE_GPM'} eq 'no') && ($OSflavor eq 'Linux'))
+   {
+    print "\n";
+    print "* No mouse support for console! please install the libgpm package needed\n";
+    print "  for development. (i.e. libgpmg1-dev_1.13-5.deb).\n";
+   }
 }
 
 sub LookForIntlSupport
