@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.232  2002/07/23 12:27:50  set
+* Fixed: Lack of Uses_limits in fontcol.cc.
+
 Revision 2.231  2002/07/23 12:27:14  set
 * Fixed: getopt changes were incomplete.
 

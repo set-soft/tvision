@@ -130,7 +130,9 @@ protected:
  static void   SetCharactersMDA(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild);
  static int    GetFontGeometry(unsigned &w, unsigned &h);
- static int    SetFont(int which, TScreenFont256 *font, int fontCP, int appCP=-1);
+ static int    SetFont(int changeP, TScreenFont256 *fontP,
+                       int changeS, TScreenFont256 *fontS,
+                       int fontCP=-1, int appCP=-1);
  static void   RestoreFonts();
 
  // Initialization code executed just once

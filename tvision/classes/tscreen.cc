@@ -70,7 +70,9 @@ int    (*TScreen::getFontGeometry)(unsigned &w, unsigned &h)
 int    (*TScreen::getFontGeometryRange)(unsigned &wmin, unsigned &hmin,
                                        unsigned &umax, unsigned &hmax)
                                                 =TScreen::defaultGetFontGeometryRange;
-int    (*TScreen::setFont)(int which, TScreenFont256 *font, int fontCP, int appCP)
+int    (*TScreen::setFont)(int changeP, TScreenFont256 *fontP,
+                           int changeS, TScreenFont256 *fontS,
+                           int fontCP, int appCP)
                                                 =TScreen::defaultSetFont;
 void   (*TScreen::restoreFonts)()               =TScreen::defaultRestoreFonts;
 
@@ -143,7 +145,8 @@ int TScreen::defaultSystem(const char *command, pid_t *pidChild)
 int  TScreen::defaultGetFontGeometry(unsigned &, unsigned &) { return 0; }
 int  TScreen::defaultGetFontGeometryRange(unsigned &, unsigned &,
                                           unsigned &, unsigned &) { return 0; }
-int  TScreen::defaultSetFont(int , TScreenFont256 *, int, int) { return 0; }
+int  TScreen::defaultSetFont(int , TScreenFont256 *, int , TScreenFont256 *,
+                             int, int) { return 0; }
 void TScreen::defaultRestoreFonts() {}
 
 /*****************************************************************************

@@ -598,37 +598,81 @@ void TScreenDOS::ResumeFonts()
    }
 }
 
-int TScreenDOS::SetFont(int which, TScreenFont256 *font, int fontCP, int appCP)
+int TScreenDOS::SetFont(int changeP, TScreenFont256 *fontP,
+                        int changeS, TScreenFont256 *fontS,
+                        int fontCP, int appCP)
 {
- // Check if that's just a call to disable the secondary font
- if (which && !font)
+ if (!changeP && !changeS) return 1;
+ // Check for restore fonts
+ if (changeP && !fontP && ((!changeS && !secondaryFontSet) || (changeS && !fontS)))
    {
-    if (!secondaryFontSet) // Protect from bogus calls
-       return 0;
-    secondaryFontSet=0;
     DisableDualFont();
-    if (!primaryFontSet)
-       ReleaseMemFonts();
-    return 1;
+    SelectRomFont(charLines,0,0);
+    ReleaseMemFonts();
+    secondaryFontSet=primaryFontSet=0;
+    if (fontCP!=-1)
+      {
+       if (appCP==-1)
+          TVCodePage::SetScreenCodePage(fontCP);
+       else
+          TVCodePage::SetCodePage(appCP,fontCP);
+      }
+   return 1;
    }
-
- if (font->w!=8 || font->h!=charLines || !MemorizeFont(which,font))
+ // Solve the sizes
+ unsigned wP=8,hP=charLines,
+          wS=8,hS=charLines;
+ int newP=changeP && fontP;
+ if (newP)
+   {
+    wP=fontP->w;
+    hP=fontP->h;
+   }
+ int newS=changeS && fontS;
+ if (newS)
+   {
+    wS=fontS->w;
+    hS=fontS->h;
+   }
+ if (wP!=wS || hP!=hS) return 0;
+ // Check if the size is in the range
+ if (wP!=8 || hP!=charLines)
     return 0;
+ // Memorize the new fonts
+ if (newP && !MemorizeFont(0,fontP)) return 0;
+ if (newS && !MemorizeFont(1,fontS)) return 0;
 
- // Which one?
- if (which)
-   { // Secondary
-    EnableDualFont();
-    secondaryFontSet=1;
-   }
- else
-   { // Primary
+ // Change the requested fonts
+ if (changeP)
+   {
     if (!primaryFontSet)
        TVCodePage::GetCodePages(origCPApp,origCPScr);
-    primaryFontSet=1;
+    if (fontP)
+      {
+       SetFontBIOS(0,charLines,fontP->data,0);
+       primaryFontSet=1;
+      }
+    else
+      {
+       SelectRomFont(charLines,0,0);
+       primaryFontSet=0;
+      }
    }
- SetFontBIOS(which,charLines,font->data,0);
- if (which && fontCP!=-1)
+ if (changeS)
+   {
+    if (fontS)
+      {
+       SetFontBIOS(1,charLines,fontS->data,0);
+       EnableDualFont();
+       secondaryFontSet=1;
+      }
+    else
+      {
+       DisableDualFont();
+       secondaryFontSet=0;
+      }
+   }
+ if (changeP && fontCP!=-1)
    {
     if (appCP==-1)
        TVCodePage::SetScreenCodePage(fontCP);
@@ -642,11 +686,7 @@ void TScreenDOS::RestoreFonts()
 {
  if (!primaryFontSet && !secondaryFontSet)
     return; // Protection
- DisableDualFont();
- SelectRomFont(charLines,0,0);
- ReleaseMemFonts();
- TVCodePage::SetCodePage(origCPApp,origCPScr);
- secondaryFontSet=primaryFontSet=0;
+ SetFont(1,NULL,1,NULL,origCPScr,origCPApp);
 }
 
 /**[txh]********************************************************************

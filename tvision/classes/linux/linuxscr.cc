@@ -1378,65 +1378,20 @@ void TScreenLinux::ExpandFont(uchar *dest, TScreenFont256 *font)
      memcpy(dest,b,sizeOrig);
 }
 
-int TScreenLinux::SetFont(int which, TScreenFont256 *font, int fontCP, int appCP)
+int TScreenLinux::SetFont(int changeP, TScreenFont256 *fontP,
+                          int changeS, TScreenFont256 *fontS,
+                          int fontCP, int appCP)
 {
  if (!canSetFonts) return 0;
- // Check if that's just a call to disable the secondary font
- if (which && !font)
-   {
-    if (!secondaryFontSet) // Protect from bogus calls
-       return 0;
-    secondaryFontSet=0;
-    if (primaryFontSet)
-      {
-       ourFont.charcount=256;
-       ourFont.op=KD_FONT_OP_SET;
-       return ioctl(hOut,KDFONTOP,&ourFont)>=0;
-      }
-    // No primary set, restore Linux font
+ if (!changeP && !changeS) return 1;
+ // Check for restore fonts
+ if (changeP && !fontP && ((!changeS && !secondaryFontSet) || (changeS && !fontS)))
+   {// Restore Linux font
     linuxFont.op=KD_FONT_OP_SET;
     int ret=ioctl(hOut,KDFONTOP,&linuxFont)>=0;
     // We no longer have a font loaded
     FreeFontsMemory();
-    return ret;
-   }
-
- if (font->w!=linuxFont.width || font->h!=linuxFont.height)
-    return 0;
-
- // We are about changing the font, we must be sure that Linux font is saved
- if (!primaryFontSet && !secondaryFontSet)
-   {
-    if (!AllocateFontsMemory() || !GetLinuxFont())
-       return 0;
-    ourFont.width=linuxFont.width;
-    ourFont.height=linuxFont.height;
-   }
- unsigned bytes=32*((linuxFont.width+7)/8);
- // Which one?
- if (which)
-   { // Secondary
-    if (!primaryFontSet)
-       // Use Linux font as primary
-       memcpy(ourFont.data,linuxFont.data,256*bytes);
-    ourFont.charcount=512;
-    ExpandFont(ourFont.data+256*bytes,font);
-    ourFont.op=KD_FONT_OP_SET;
-    if (ioctl(hOut,KDFONTOP,&ourFont)<0) return 0;
-    secondaryFontSet=1;
-   }
- else
-   { // Primary
-    if (!secondaryFontSet)
-      { // P but not S
-       ourFont.charcount=256;
-      }
-    if (!primaryFontSet)
-       TVCodePage::GetCodePages(origCPApp,origCPScr);
-    ExpandFont(ourFont.data,font);
-    ourFont.op=KD_FONT_OP_SET;
-    if (ioctl(hOut,KDFONTOP,&ourFont)<0) return 0;
-    primaryFontSet=1;
+    secondaryFontSet=primaryFontSet=0;
     if (fontCP!=-1)
       {
        if (appCP==-1)
@@ -1444,6 +1399,92 @@ int TScreenLinux::SetFont(int which, TScreenFont256 *font, int fontCP, int appCP
        else
           TVCodePage::SetCodePage(appCP,fontCP);
       }
+    return ret;
+   }
+ // Solve the sizes
+ unsigned wP=linuxFont.width,hP=linuxFont.height,
+          wS=linuxFont.width,hS=linuxFont.height;
+ int newP=changeP && fontP;
+ if (newP)
+   {
+    wP=fontP->w;
+    hP=fontP->h;
+   }
+ int newS=changeS && fontS;
+ if (newS)
+   {
+    wS=fontS->w;
+    hS=fontS->h;
+   }
+ if (wP!=wS || hP!=hS) return 0;
+ // Check if the size is in the range
+ if (wP!=linuxFont.width || hP!=linuxFont.height)
+    return 0;
+
+ // We are about changing the font, we must be sure that Linux font is saved
+ if ((newS || newP) && !primaryFontSet && !secondaryFontSet)
+   {
+    if (!AllocateFontsMemory() || !GetLinuxFont())
+       return 0;
+    ourFont.width=linuxFont.width;
+    ourFont.height=linuxFont.height;
+   }
+
+ // Change the requested fonts
+ unsigned bytes=32*((linuxFont.width+7)/8);
+ uchar newSecondaryFontSet=secondaryFontSet,
+       newPrimaryFontSet=primaryFontSet;
+ if (changeP)
+   {
+    if (!secondaryFontSet)
+      { // P but not S
+       ourFont.charcount=256;
+      }
+    if (!primaryFontSet)
+       TVCodePage::GetCodePages(origCPApp,origCPScr);
+    if (fontP)
+      {
+       ExpandFont(ourFont.data,fontP);
+       newPrimaryFontSet=1;
+      }
+    else
+      {
+       // Use Linux font as primary
+       memcpy(ourFont.data,linuxFont.data,256*bytes);
+       newPrimaryFontSet=0;
+      }
+   }
+ if (changeS)
+   {
+    if (fontS)
+      {
+       ourFont.charcount=512;
+       ExpandFont(ourFont.data+256*bytes,fontS);
+       newSecondaryFontSet=1;
+      }
+    else
+      {
+       if (linuxFont.charcount==512)
+         {
+          ourFont.charcount=512;
+          memcpy(ourFont.data+256*bytes,linuxFont.data+256*bytes,256*bytes);
+         }
+       else
+          ourFont.charcount=256;
+       newSecondaryFontSet=0;
+      }
+   }
+ ourFont.op=KD_FONT_OP_SET;
+ if (ioctl(hOut,KDFONTOP,&ourFont)<0) return 0;
+ primaryFontSet=newPrimaryFontSet;
+ secondaryFontSet=newSecondaryFontSet;
+
+ if (changeP && fontCP!=-1)
+   {
+    if (appCP==-1)
+       TVCodePage::SetScreenCodePage(fontCP);
+    else
+       TVCodePage::SetCodePage(appCP,fontCP);
    }
  return 1;
 }
@@ -1452,12 +1493,7 @@ void TScreenLinux::RestoreFonts()
 {
  if (!primaryFontSet && !secondaryFontSet)
     return; // Protection
- linuxFont.op=KD_FONT_OP_SET;
- ioctl(hOut,KDFONTOP,&linuxFont);
- // We no longer have a font loaded
- FreeFontsMemory();
- TVCodePage::SetCodePage(origCPApp,origCPScr);
- secondaryFontSet=primaryFontSet=0;
+ SetFont(1,NULL,1,NULL,origCPScr,origCPApp);
 }
 
 void TScreenLinux::SuspendFont()

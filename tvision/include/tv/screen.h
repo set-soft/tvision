@@ -250,13 +250,19 @@ public:
  // The following are implemented only if CanSetBFont and/or CanSetSBFont
  // are set.
  static int      setPrimaryFont(TScreenFont256 *font, int fontCP=-1, int appCP=-1)
-                   { return setFont(0,font,fontCP,appCP); };
- static int      setSecondaryFont(TScreenFont256 *font) { return setFont(1,font); };
+                   { return setFont(1,font,0,NULL,fontCP,appCP); };
+ static int      setSecondaryFont(TScreenFont256 *font)
+                   { return setFont(0,NULL,1,font); };
+ // That's the real function to set the fonts
+ static int    (*setFont)(int changeP, TScreenFont256 *fontP,
+                          int changeS, TScreenFont256 *fontS,
+                          int fontCP=-1, int appCP=-1);
  static void   (*restoreFonts)();
  static TVScreenFontRequestCallBack
                  setFontRequestCallBack(TVScreenFontRequestCallBack cb);
  // Helpers:
  static int      disableSecondaryFont() { return setSecondaryFont(NULL); };
+ static int      disablePrimaryFont()   { return setPrimaryFont(NULL); };
  static Boolean  isSecondaryFontEnabled() { return useSecondaryFont ? True : False; };
  // It looks for a configuration variable that belongs to the current driver
  static Boolean  optSearch(const char *variable, long &val);
@@ -305,9 +311,6 @@ protected:
  // Font Request Call Back
  static TVScreenFontRequestCallBack frCB;
 
- // That's the real function to set the fonts
- static int  (*setFont)(int which, TScreenFont256 *font, int fontCP=-1, int appCP=-1);
-
  // SET: Default behaviors:
  static void   defaultSetVideoMode(ushort mode);
  static void   defaultSetVideoModeExt(char *mode);
@@ -322,8 +325,9 @@ protected:
  static int    defaultGetFontGeometry(unsigned &w, unsigned &h);
  static int    defaultGetFontGeometryRange(unsigned &wmin, unsigned &hmin,
                                            unsigned &umax, unsigned &hmax);
- static int    defaultSetFont(int which, TScreenFont256 *font, int fontCP=-1,
-                              int appCP=-1);
+ static int    defaultSetFont(int changeP, TScreenFont256 *fontP,
+                              int changeS, TScreenFont256 *fontS,
+                              int fontCP=-1, int appCP=-1);
  static void   defaultRestoreFonts();
 
  // The following members are used to implement a tricky initialization
