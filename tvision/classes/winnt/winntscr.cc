@@ -16,6 +16,7 @@ added some routines and adapted it to the new architecture.
 
 #ifdef TVOS_Win32
 
+#define Uses_stdlib
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey

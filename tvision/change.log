@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.138  2002/06/07 19:11:25  set
+* Modified: [UNIX] the configuration to test if the X11 include directory
+is really needed. It looks like gcc 3.1 gives a warning if this is manually
+specified. Is a test because I don't have gcc 3.1 for Linux. Reported by
+Andris.
+
 Revision 2.137  2002/06/07 18:13:40  set
 * Modified: [X11] Now after a draw the cursor becomes visible inmediatly.
 This is slower but increases the cursor visibility. Ivan reported problems.

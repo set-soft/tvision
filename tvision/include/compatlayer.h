@@ -380,6 +380,8 @@ typedef unsigned long  ulong;
   #ifdef Uses_getline
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
+   // Looks like it isn't defined
+   typedef long ssize_t;
   #endif
  #endif
 

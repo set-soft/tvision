@@ -26,8 +26,10 @@ protected:
  // Not available static ushort getCrtMode();
  // Not available static void   SetCrtModeExt(char *mode);
  static int    CheckForWindowSize(void);
- static const char *getWindowTitle(void);
- static int setWindowTitle(const char *name);
+ static const char *GetWindowTitle(void);
+ static int SetWindowTitle(const char *name);
+ static void SetCrtMode(ushort);
+ static void SetCrtModeExt(char *);
 
  // Variables for this driver
  // Input/output handles
