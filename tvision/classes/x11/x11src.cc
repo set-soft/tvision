@@ -1022,7 +1022,7 @@ void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h
      memcpy(data,font,bytesShape);
      /* Create a BitMap Image with this data */
      f[i]=XCreateImage(disp,visual,1,XYBitmap,0,data,w,h,8,0);
-     /* Set the bit order */
+     /* Set the bit order, this is faster */
      f[i]->byte_order=f[i]->bitmap_bit_order=MSBFirst;
     }
  if (which)
