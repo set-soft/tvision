@@ -140,7 +140,7 @@ void TMyApplication::aboutDlg()
         {
 				deskTop->execView(pd);
  
-            destroy(pd);
+            CLY_destroy(pd);
         }
 	 }
 }

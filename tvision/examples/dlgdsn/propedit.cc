@@ -117,7 +117,7 @@ int execDialog(TDialog * dialog, void *data)
       if (data) d->setData(data);
       rst = TProgram::deskTop->execView(d);
       if ((rst!=cmCancel) && (data)) d->getData(data);
-      TObject::destroy( d );
+      TObject::CLY_destroy( d );
       return rst;
    }
    else return cmCancel;
@@ -502,7 +502,7 @@ bool IntegerEditor(int& value, TPoint place, TGroup * host)
       editor->getData(&strval);
       value = atoi(strval);
    }
-   TObject::destroy( editor );
+   TObject::CLY_destroy( editor );
    return rst;
 }
 
@@ -518,7 +518,7 @@ bool StringEditor(char * string, TPoint place, TGroup * host, ushort aMaxLen)
    editor->setData(string);
    rst = ( host->execView(editor) == cmOK );
    if (rst) editor->getData(string);
-   TObject::destroy( editor );
+   TObject::CLY_destroy( editor );
    return rst;
 }
 

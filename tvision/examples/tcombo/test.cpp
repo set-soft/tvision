@@ -128,8 +128,8 @@ void TMyApp::newDialog()
 
    pd->getData(&data);
 
-   destroy(pd);
-   destroy(list);
+   CLY_destroy(pd);
+   CLY_destroy(list);
 }
 
 int main()

@@ -138,7 +138,7 @@ void TMyApplication::aboutDlg()
 	{
 				deskTop->execView(pd);
 
-	    destroy(pd);
+	    CLY_destroy(pd);
 	}
 	 }
 }
@@ -190,7 +190,7 @@ void TMyApplication::statusDlg()
 	 }
       usleep(50000);
       }
-   destroy(theMessage);
+   CLY_destroy(theMessage);
 
    if(keepOnGoing) {
       // The second 3rd
@@ -206,7 +206,7 @@ void TMyApplication::statusDlg()
 	    }
 	 usleep(50000);
 	 }
-      destroy(theMessage);
+      CLY_destroy(theMessage);
       }
 
    if(keepOnGoing) {
@@ -223,10 +223,10 @@ void TMyApplication::statusDlg()
 	    }
 	 usleep(50000);
 	 }
-      destroy(theMessage); // not necessary since we destroy
+      CLY_destroy(theMessage); // not necessary since we destroy
 			   // the TDialog also
       }
-   destroy(pd);
+   CLY_destroy(pd);
 
    TScreen::showBusyState(oldBusyState);
 }

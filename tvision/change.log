@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.399.2.111  2003/07/28 18:01:49  set
+* Fixed: configset didn't wait for an ENTER because the read command
+required an argument. While I was there I did cosmetic changes.
+* Fixed: debian/README was mising in ./lista!
+* Fixed: clean the .lo files in addition to the .o ones!
+* Updated: Debian packaging to the 2.0.2-0.1 version!!!
+
 Revision 2.399.2.110  2003/07/28 17:50:03  set
 * Fixed: The configure script to accept command line optins like:
 --cflags="..." without breaking the options. Reported by Ivan.

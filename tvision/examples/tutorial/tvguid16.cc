@@ -388,7 +388,7 @@ void TMyApp::newDialog()
                         strtol(demoDialogData->inputLineRangeData,&end,0) );
             }
         }
-    destroy( pd );
+    CLY_destroy( pd );
 }
 
 int main()
