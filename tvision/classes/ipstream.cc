@@ -11,6 +11,9 @@
  * Reworked code for endian stuff (readShort, readInt, readLong, read8,
  * read16, read32 and read64)
  *
+ * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+ * Andris Pavenis and Christoph Bauer.
+ *
  * JASC: Endian compatible files
  *
  */
@@ -37,23 +40,23 @@ ipstream::~ipstream()
     destroy(objs);
 }
 
-streampos ipstream::tellg()
+CLY_StreamPosT ipstream::tellg()
 {
-    return bp->PubSeekOff( 0, ios::cur, ios::in );
+    return bp->CLY_PubSeekOff( 0, ios::cur, ios::in );
 }
 
-ipstream& ipstream::seekg( streampos pos )
+ipstream& ipstream::seekg( CLY_StreamPosT pos )
 {
     objs->removeAll();
-    bp->PubSeekOff( pos, ios::beg );
+    bp->CLY_PubSeekOff( pos, ios::beg );
     clear(); //is added by V.Bugrov for clear eof bit
     return *this;
 }
 
-ipstream& ipstream::seekg( streamoff off, ios::seek_dir dir )
+ipstream& ipstream::seekg( CLY_StreamOffT off, CLY_IOSSeekDir dir )
 {
     objs->removeAll();
-    bp->PubSeekOff( off, dir );
+    bp->CLY_PubSeekOff( off, dir );
     clear(); //is added by V.Bugrov for clear eof bit
     return *this;
 }

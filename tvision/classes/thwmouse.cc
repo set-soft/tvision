@@ -303,10 +303,10 @@ THWMouse::THWMouse()
     LD(TEventQueue::mouseIntFlag);
     LD(TEventQueue::eventQTail);
     _go32_dpmi_lock_data(TEventQueue::eventQueue,eventQSize*sizeof(TEvent));
-    _go32_dpmi_lock_code(get_mouse_char,(int)THWMouse::registerHandler -
-                                        (int)get_mouse_char);
-    _go32_dpmi_lock_code(TEventQueue::mouseInt,500);
-    _go32_dpmi_lock_code(CLY_Ticks,100);
+    _go32_dpmi_lock_code((void*)get_mouse_char,(int)THWMouse::registerHandler -
+                         (int)get_mouse_char);
+    _go32_dpmi_lock_code((void *)TEventQueue::mouseInt,500);
+    _go32_dpmi_lock_code((void *)CLY_Ticks,100);
     mouseIntInfo.pm_offset = (int)TEventQueue::mouseInt;
     _go32_dpmi_allocate_real_mode_callback_retf(&mouseIntInfo,&mouseIntRegs);
     handlerInstalled = True;

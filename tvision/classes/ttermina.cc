@@ -169,6 +169,11 @@ Boolean TTerminal::queEmpty()
 }
 
 otstream::otstream( TTerminal *tt )
+    #ifdef CLY_ISOCpp98
+    // SET: Andris used it. It looks like the new standard doesn't have a
+    // default constructor
+    : std::ostream (tt)
+    #endif
 {
     ios::init( tt );
 }

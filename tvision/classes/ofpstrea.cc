@@ -6,7 +6,10 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Vadim Beloborodov to be used on WIN32 console.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis and Christoph Bauer.
+
  *
  *
  */
@@ -21,8 +24,8 @@ ofpstream::ofpstream()
 {
 }
 
-ofpstream::ofpstream( const char* name, int omode, int prot ) :
-        fpbase( name, omode | ios::out | IOS_BIN, prot )
+ofpstream::ofpstream( const char* name, CLY_OpenModeT omode, int prot ) :
+        fpbase( name, omode | ios::out | CLY_IOSBin, prot )
 {
 }
 
@@ -43,8 +46,8 @@ filebuf *ofpstream::rdbuf()
     return fpbase::rdbuf();
 }
 
-void ofpstream::open( const char *name, int omode, int prot )
+void ofpstream::open( const char *name, CLY_OpenModeT omode, int prot )
 {
-    fpbase::open( name, omode | ios::out | IOS_BIN, prot );
+    fpbase::open( name, omode | ios::out | CLY_IOSBin, prot );
 }
 
