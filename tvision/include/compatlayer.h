@@ -30,7 +30,9 @@ and regex.
 
 ***************************************************************************/
 
-#ifndef CLY_CompatLayerIncluded
+// A global protection isn't suitable for all projects. Collisions should
+// be solved individually.
+//#ifndef CLY_CompatLayerIncluded
 //#define CLY_CompatLayerIncluded
 
 #include <tv/configtv.h>
@@ -41,12 +43,13 @@ and regex.
 #endif
 
 #ifdef __cplusplus
-#define CFunc extern "C"
+ #define CLY_CFunc extern "C"
 #else
-#define CFunc extern
+ #define CLY_CFunc extern
 #endif
 
-#ifndef CLY_DoNotDefineSizedTypes
+#if !defined(CLY_DoNotDefineSizedTypes) && !defined(CLY_SizedTypesDefined)
+#define CLY_SizedTypesDefined 1
 /* The following types should be platform independent */
 typedef signed char int8;
 typedef short       int16;
@@ -75,63 +78,116 @@ typedef unsigned long  ulong;
 
 
 #ifdef Uses_stdio
-  #define Include_stdio
+  #undef  Include_stdio
+  #define Include_stdio 1
 #endif
 
 #ifdef Uses_CLYFileAttrs
  // For mode_t
- #define Uses_sys_stat
+ #undef  Uses_sys_stat
+ #define Uses_sys_stat 1
 #endif
 
+#undef  FSTREAM_HEADER
 #define FSTREAM_HEADER  <fstream.h>
+#undef  IOMANIP_HEADER
 #define IOMANIP_HEADER  <iomanip.h>
+#undef  IOSTREAM_HEADER
 #define IOSTREAM_HEADER <iostream.h>
 
 #ifdef Uses_time
- #define Include_time
+ #undef  Include_time
+ #define Include_time 1
 #endif
+
+/* The following are unconditionally defined for all platforms so here I avoid
+   redefinitions. */
+#undef CLY_Packed
+#undef NEVER_RETURNS
+#undef RETURN_WHEN_NEVER_RETURNS
+#undef DeleteArray
+#undef IfStreamGetLine
+#undef CLY_UseCrLf
+#undef CLY_Have_UGID
+#undef CLY_HaveDriveLetters
+#undef CLY_IsValidDirSep
+#undef PATHSEPARATOR
+#undef PATHSEPARATOR_
+#undef DIRSEPARATOR
+#undef DIRSEPARATOR_
+#undef CLY_ISOCpp98
+#undef CLY_OpenModeT
+#undef CLY_StreamPosT
+#undef CLY_StreamOffT
+#undef CLY_IOSSeekDir
+#undef CLY_FBOpenProtDef
+#undef CLY_NewFBFromFD
+#undef CLY_PubSetBuf
+#undef CLY_HaveFBAttach
+#undef CLY_FBOpen
+#undef CLY_IOSBin
+#undef CLY_PubSeekOff
+#undef CLY_PubSync
+#undef CLY_std
+#undef CreateStrStream
+#undef GetStrStream
+#undef UsingNamespaceStd
 
 #ifdef TVComp_GCC
 // GNU C is supported for various OSs:
 
  #ifdef Uses_string
-  #define Include_string
+  #undef  Include_string
+  #define Include_string 1
  #endif
  #ifdef Uses_limits
-  #define Include_limits
+  #undef  Include_limits
+  #define Include_limits 1
  #endif
  #ifdef Uses_fcntl
-  #define Include_fcntl
+  #undef  Include_fcntl
+  #define Include_fcntl 1
  #endif
  #ifdef Uses_sys_stat
-  #define Include_sys_stat
+  #undef  Include_sys_stat
+  #define Include_sys_stat 1
  #endif
  #ifdef Uses_ctype
-  #define Include_ctype
+  #undef  Include_ctype
+  #define Include_ctype 1
  #endif
  #ifdef Uses_unistd
-  #define Include_unistd
+  #undef  Include_unistd
+  #define Include_unistd 1
  #endif
  #ifdef Uses_access
-  #define Include_unistd
+  #undef  Include_unistd
+  #define Include_unistd 1
  #endif
  #ifdef Uses_alloca
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_free
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_stdlib
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_dirent
-  #define Include_dirent
+  #undef  Include_dirent
+  #define Include_dirent 1
  #endif
  #ifdef Uses_abort
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_AllocLocal
+  #undef  AllocLocalStr
   #define AllocLocalStr(s,l) char s[l]
+  #undef  AllocLocalUShort
   #define AllocLocalUShort(s,l) ushort s[l]
  #endif
  #define NEVER_RETURNS __attribute__((noreturn))
@@ -141,18 +197,23 @@ typedef unsigned long  ulong;
  // Pointed out by Laurynas Biveinis.
  #define DeleteArray(a) delete[] a
  #ifdef Uses_getcurdir
+  #undef  getcurdir
   #define getcurdir CLY_getcurdir
  #endif
  // Not yet supported for Win9x with Ming
  // SET: I guess they can be defined for Win9x, but Anatoli's code seems to
  // be using NETAPI32.DLL functions that only exists under NT.
+ #undef  CLY_IsUNCShare
  #define CLY_IsUNCShare(a) (0)
+ #undef  CLY_IsUNC
  #define CLY_IsUNC(a)      (0)
  #ifdef Uses_ftell
-  #define Include_stdio
+  #undef  Include_stdio
+  #define Include_stdio 1
  #endif
  #ifdef Uses_strstream
-  #define Include_strstream
+  #undef  Include_strstream
+  #define Include_strstream 1
  #endif
  // ifstream::getline behaves strangely in BC++
  // I take the gcc implementation.
@@ -171,7 +232,6 @@ typedef unsigned long  ulong;
   #define CLY_FBOpenProtDef  0
   #define CLY_NewFBFromFD(f) new filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
   #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
-  #undef  CLY_HaveFBAttach
   #define CLY_FBOpen(a,b,c)  open(a,b)
   #define CLY_IOSBin         std::ios::binary
   #define CLY_PubSeekOff     pubseekoff
@@ -181,7 +241,8 @@ typedef unsigned long  ulong;
   #define CreateStrStream(os,buf,size) std::string buf; std::ostringstream os(buf)
   #define GetStrStream(buf) buf.c_str()
   #ifdef Uses_StrStream
-   #define Include_sstream
+   #undef  Include_sstream
+   #define Include_sstream 1
   #endif
   #undef  FSTREAM_HEADER
   #define FSTREAM_HEADER  <fstream>
@@ -208,7 +269,8 @@ typedef unsigned long  ulong;
                                        ostrstream os(buf,sizeof(buf))
   #define GetStrStream(buf) buf
   #ifdef Uses_StrStream
-   #define Include_strstream
+   #undef  Include_strstream
+   #define Include_strstream 1
   #endif
  #endif
  
@@ -219,7 +281,11 @@ typedef unsigned long  ulong;
  #define Boolean bool
  #define True true
  #define False false
- 
+
+ #undef FA_ARCH
+ #undef FA_DIREC
+ #undef FA_RDONLY
+
  #ifdef TVCompf_MinGW
   #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
@@ -227,8 +293,10 @@ typedef unsigned long  ulong;
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
   #ifdef Uses_filelength
+   #undef  filelength
    #define filelength _filelength
-   #define Include_io
+   #undef  Include_io
+   #define Include_io 1
   #endif
   #define PATHSEPARATOR ';'
   #define PATHSEPARATOR_ ";"
@@ -239,48 +307,61 @@ typedef unsigned long  ulong;
   #define DIRSEPARATOR_ "\\"
   #define CLY_IsValidDirSep(a) (a=='/' || a=='\\')
   #ifdef Uses_fixpath
-   CFunc void _fixpath(const char *in, char *out);
+   CLY_CFunc void _fixpath(const char *in, char *out);
   #endif
   #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
+   #undef  OS_HaveLFNs
+   #define OS_HaveLFNs 1
   #endif
   #ifdef Uses_glob
-   #define Include_cl_glob
+   #undef  Include_cl_glob
+   #define Include_cl_glob 1
   #endif
   #ifdef Uses_fnmatch
-   #define Include_cl_fnmatch
+   #undef  Include_cl_fnmatch
+   #define Include_cl_fnmatch 1
   #endif
   #ifdef Uses_regex
-   #define Include_cl_regex
+   #undef  Include_cl_regex
+   #define Include_cl_regex 1
   #endif
   #ifdef Uses_getopt
-   #define Include_cl_getopt
+   #undef  Include_cl_getopt
+   #define Include_cl_getopt 1
   #endif
   #ifdef Uses_io
-   #define Include_io
+   #undef  Include_io
+   #define Include_io 1
   #endif
   #ifdef Uses_utime
    // I can't beleive they forgot the header when the function is there!
-   #define Include_cl_utime
-   #define Include_time
+   #undef  Include_cl_utime
+   #define Include_cl_utime 1
+   #undef  Include_time
+   #define Include_time 1
   #endif
   #ifdef Uses_mkstemp
-   CFunc int mkstemp(char *_template);
+   CLY_CFunc int mkstemp(char *_template);
   #endif
   #ifdef Uses_getcwd
-   #define Include_io
+   #undef  Include_io
+   #define Include_io 1
   #endif
   #ifdef Uses_itoa
-   #define Include_stdlib
+   #undef  Include_stdlib
+   #define Include_stdlib 1
   #endif
   #ifdef Uses_direct
-   #define Include_direct
+   #undef  Include_direct
+   #define Include_direct 1
   #endif
   #ifdef Uses_dir
-   #define Include_dir
+   #undef  Include_dir
+   #define Include_dir 1
   #endif
   #ifdef Uses_nl_langinfo
-   #define Uses_CLY_nl_langinfo
+   #undef  Uses_CLY_nl_langinfo
+   #define Uses_CLY_nl_langinfo 1
   #endif
  #endif
 
@@ -291,6 +372,7 @@ typedef unsigned long  ulong;
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
   #ifdef Uses_filelength
+   #undef  filelength
    #define filelength CLY_filelength
   #endif
   #define PATHSEPARATOR ':'
@@ -299,42 +381,54 @@ typedef unsigned long  ulong;
   #define DIRSEPARATOR_ "/"
   #define CLY_IsValidDirSep(a) (a=='/')
   #ifdef Uses_fixpath
-   CFunc void _fixpath(const char *in, char *out);
+   CLY_CFunc void _fixpath(const char *in, char *out);
   #endif
   #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
+   #undef  OS_HaveLFNs
+   #define OS_HaveLFNs 1
   #endif
   #ifdef Uses_glob
-   #define Include_glob
+   #undef  Include_glob
+   #define Include_glob 1
   #endif
   #ifdef Uses_fnmatch
-   #define Include_cl_fnmatch
+   #undef  Include_cl_fnmatch
+   #define Include_cl_fnmatch 1
   #endif
   #ifdef Uses_regex
-   #define Include_sys_types
-   #define Include_regex
+   #undef  Include_sys_types
+   #define Include_sys_types 1
+   #undef  Include_regex
+   #define Include_regex 1
   #endif
   #ifdef Uses_getopt
-   #define Include_getopt
+   #undef  Include_getopt
+   #define Include_getopt 1
   #endif
   #ifdef Uses_utime
-   #define Include_utime
+   #undef  Include_utime
+   #define Include_utime 1
   #endif
   #ifdef Uses_mkstemp
-   #define Include_stdio
+   #undef  Include_stdio
+   #define Include_stdio 1
   #endif
   #ifdef Uses_getcwd
-   #define Include_unistd
+   #undef  Include_unistd
+   #define Include_unistd 1
   #endif
   #ifdef Uses_itoa
-   CFunc char *itoa(int value, char *string, int radix);
+   CLY_CFunc char *itoa(int value, char *string, int radix);
   #endif
   #ifdef Uses_dir
-   #define Include_dir
-   #define Include_direct
+   #undef  Include_dir
+   #define Include_dir 1
+   #undef  Include_direct
+   #define Include_direct 1
   #endif
   #ifdef Uses_nl_langinfo
-   #define Uses_CLY_nl_langinfo
+   #undef  Uses_CLY_nl_langinfo
+   #define Uses_CLY_nl_langinfo 1
   #endif
  #endif
  
@@ -343,7 +437,8 @@ typedef unsigned long  ulong;
   #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
   #ifdef Uses_filelength
-   #define Include_io
+   #undef  Include_io
+   #define Include_io 1
   #endif
   #define PATHSEPARATOR ';'
   #define PATHSEPARATOR_ ";"
@@ -351,53 +446,70 @@ typedef unsigned long  ulong;
   #define DIRSEPARATOR_ "/"
   #define CLY_IsValidDirSep(a) (a=='/' || a=='\\')
   #ifdef Uses_fixpath
-   #define Include_sys_stat
+   #undef  Include_sys_stat
+   #define Include_sys_stat 1
   #endif
   #ifdef Uses_HaveLFNs
-   #define Include_fcntl
-   #define DJGPP_HaveLFNs
+   #undef  Include_fcntl
+   #define Include_fcntl 1
+   #undef  DJGPP_HaveLFNs
+   #define DJGPP_HaveLFNs 1
   #endif
   #ifdef Uses_glob
-   #define Include_glob
+   #undef  Include_glob
+   #define Include_glob 1
   #endif
   #ifdef Uses_fnmatch
-   #define Include_fnmatch
+   #undef  Include_fnmatch
+   #define Include_fnmatch 1
   #endif
   #ifdef Uses_regex
-   #define Include_sys_types
-   #define Include_regex
+   #undef  Include_sys_types
+   #define Include_sys_types 1
+   #undef  Include_regex
+   #define Include_regex 1
   #endif
   #ifdef Uses_getopt
-   #define Include_cl_getopt
+   #undef  Include_cl_getopt
+   #define Include_cl_getopt 1
   #endif
   #ifdef Uses_io
-   #define Include_io
+   #undef  Include_io
+   #define Include_io 1
   #endif
   #ifdef Uses_utime
-   #define Include_utime
+   #undef  Include_utime
+   #define Include_utime 1
   #endif
   #ifdef Uses_mkstemp
-   #define Include_stdio
+   #undef  Include_stdio
+   #define Include_stdio 1
   #endif
   #ifdef Uses_getcwd
-   #define Include_unistd
+   #undef  Include_unistd
+   #define Include_unistd 1
   #endif
   #ifdef Uses_itoa
-   #define Include_stdlib
+   #undef  Include_stdlib
+   #define Include_stdlib 1
   #endif
   #ifdef Uses_direct
-   #define Include_direct
+   #undef  Include_direct
+   #define Include_direct 1
   #endif
   #ifdef Uses_dir
-   #define Include_dir
+   #undef  Include_dir
+   #define Include_dir 1
   #endif
   #ifdef Uses_nl_langinfo
-   #define Uses_CLY_nl_langinfo
+   #undef  Uses_CLY_nl_langinfo
+   #define Uses_CLY_nl_langinfo 1
   #endif
  #endif
 
  // Common to all UNIX systems
  #ifdef TVOS_UNIX
+  // Filesystem
   #define CLY_Have_UGID 1
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
@@ -407,162 +519,101 @@ typedef unsigned long  ulong;
   #define DIRSEPARATOR '/'
   #define DIRSEPARATOR_ "/"
   #define CLY_IsValidDirSep(a) (a=='/')
+  #ifdef Uses_HaveLFNs
+   #undef  OS_HaveLFNs
+   #define OS_HaveLFNs 1
+  #endif
+  // Non standard
+  #ifdef Uses_string
+   CLY_CFunc char *strlwr(char *s);
+   CLY_CFunc char *strupr(char *s);
+  #endif
+  #ifdef Uses_itoa
+   CLY_CFunc char *itoa(int value, char *string, int radix);
+  #endif
+  #ifdef Uses_filelength
+   #undef  filelength
+   #define filelength CLY_filelength
+  #endif
+  #ifdef Uses_fixpath
+   CLY_CFunc void _fixpath(const char *in, char *out);
+  #endif
+  // POSIX
+  #ifdef Uses_glob
+   #undef  Include_glob
+   #define Include_glob 1
+  #endif
+  #ifdef Uses_fnmatch
+   #undef  Include_fnmatch
+   #define Include_fnmatch 1
+  #endif
+  #ifdef Uses_regex
+   #undef  Include_sys_types
+   #define Include_sys_types 1
+   #undef  Include_regex
+   #define Include_regex 1
+  #endif
+  #ifdef Uses_utime
+   #undef  Include_utime
+   #define Include_utime 1
+  #endif
+  #ifdef Uses_mkstemp
+   #undef  Include_stdio
+   #define Include_stdio 1
+  #endif
+  #ifdef Uses_getcwd
+   #undef  Include_unistd
+   #define Include_unistd 1
+  #endif
+  // Headers
+  #ifdef Uses_direct
+   #undef  Include_direct
+   #define Include_direct 1
+  #endif
+  #ifdef Uses_dir
+   #undef  Include_dir
+   #define Include_dir 1
+  #endif
  #endif
 
  // Linux (glibc)
  #ifdef TVOSf_Linux
-  #ifdef Uses_string
-   CFunc char *strlwr(char *s);
-   CFunc char *strupr(char *s);
-  #endif
-  #ifdef Uses_filelength
-   #define filelength CLY_filelength
-  #endif
-  #ifdef Uses_fixpath
-   CFunc void _fixpath(const char *in, char *out);
-  #endif
-  #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
-  #endif
-  #ifdef Uses_glob
-   #define Include_glob
-  #endif
-  #ifdef Uses_fnmatch
-   #define Include_fnmatch
-  #endif
-  #ifdef Uses_regex
-   #define Include_sys_types
-   #define Include_regex
+  #ifdef Uses_nl_langinfo
+   #undef  Include_langinfo
+   #define Include_langinfo 1
   #endif
   #ifdef Uses_getopt
-   #define Include_getopt
-  #endif
-  #ifdef Uses_utime
-   #define Include_utime
-  #endif
-  #ifdef Uses_mkstemp
-   #define Include_stdio
+   #undef  Include_getopt
+   #define Include_getopt 1
   #endif
   #ifdef Uses_CLYFileAttrs
    // Is that a bug? shouldn't be sys/stat.h enough?
-   #define Include_sys_types
-  #endif
-  #ifdef Uses_getcwd
-   #define Include_unistd
-  #endif
-  #ifdef Uses_itoa
-   CFunc char *itoa(int value, char *string, int radix);
-  #endif
-  #ifdef Uses_direct
-   #define Include_direct
-  #endif
-  #ifdef Uses_dir
-   #define Include_dir
-  #endif
-  #ifdef Uses_nl_langinfo
-   #define Include_langinfo
+   #undef  Include_sys_types
+   #define Include_sys_types 1
   #endif
  #endif
 
  // Solaris using gcc but not glibc
  #ifdef TVOSf_Solaris
-  #ifdef Uses_string
-   CFunc char *strlwr(char *s);
-   CFunc char *strupr(char *s);
-  #endif
-  #ifdef Uses_filelength
-   #define filelength CLY_filelength
-  #endif
-  #ifdef Uses_fixpath
-   CFunc void _fixpath(const char *in, char *out);
-  #endif
-  #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
-  #endif
-  #ifdef Uses_glob
-   #define Include_glob
-  #endif
-  #ifdef Uses_fnmatch
-   #define Include_fnmatch
-  #endif
-  #ifdef Uses_regex
-   #define Include_sys_types
-   #define Include_regex
-  #endif
   #ifdef Uses_getopt
-   #define Include_cl_getopt
-  #endif
-  #ifdef Uses_utime
-   #define Include_utime
-  #endif
-  #ifdef Uses_mkstemp
-   #define Include_stdio
-  #endif
-  #ifdef Uses_getcwd
-   #define Include_unistd
-  #endif
-  #ifdef Uses_itoa
-   CFunc char *itoa(int value, char *string, int radix);
-  #endif
-  #ifdef Uses_direct
-   #define Include_direct
-  #endif
-  #ifdef Uses_dir
-   #define Include_dir
+   #undef  Include_cl_getopt
+   #define Include_cl_getopt 1
   #endif
   #ifdef Uses_nl_langinfo
-   #define Uses_CLY_nl_langinfo
+   #undef  Include_langinfo
+   #define Include_langinfo 1
   #endif
  #endif
 
  // Generic UNIX system
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)
-  #ifdef Uses_string
-   CFunc char *strlwr(char *s);
-   CFunc char *strupr(char *s);
-  #endif
-  #ifdef Uses_filelength
-   #define filelength CLY_filelength
-  #endif
-  #ifdef Uses_fixpath
-   CFunc void _fixpath(const char *in, char *out);
-  #endif
-  #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
-  #endif
-  #ifdef Uses_glob
-   #define Include_glob
-  #endif
-  #ifdef Uses_fnmatch
-   #define Include_fnmatch
-  #endif
-  #ifdef Uses_regex
-   #define Include_sys_types
-   #define Include_regex
-  #endif
   #ifdef Uses_getopt
-   #define Include_getopt
-  #endif
-  #ifdef Uses_utime
-   #define Include_utime
-  #endif
-  #ifdef Uses_mkstemp
-   #define Include_stdio
-  #endif
-  #ifdef Uses_getcwd
-   #define Include_unistd
-  #endif
-  #ifdef Uses_itoa
-   CFunc char *itoa(int value, char *string, int radix);
-  #endif
-  #ifdef Uses_direct
-   #define Include_direct
-  #endif
-  #ifdef Uses_dir
-   #define Include_dir
+   #undef  Include_cl_getopt
+   #define Include_cl_getopt 1
   #endif
   #ifdef Uses_nl_langinfo
-   #define Uses_CLY_nl_langinfo
+   #undef  Uses_CLY_nl_langinfo
+   #define Uses_CLY_nl_langinfo 1
   #endif
  #endif
 #endif // TVComp_GCC
@@ -574,56 +625,79 @@ typedef unsigned long  ulong;
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
- /* Simple Boolean type */
- enum Boolean { False, True };
+ #ifndef CLY_BooleanDefined
+  #define CLY_BooleanDefined 1
+  /* Simple Boolean type */
+  enum Boolean { False, True };
+ #endif
  #ifdef Uses_string
-  #define Include_string
+  #undef  Include_string
+  #define Include_string 1
+  #undef  strncasecmp
   #define strncasecmp strnicmp
+  #undef  strcasecmp
   #define strcasecmp  stricmp
  #endif
  #ifdef Uses_abort
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_limits
-  #define Include_limits
+  #undef  Include_limits
+  #define Include_limits 1
  #endif
  #ifdef Uses_fcntl
-  #define Include_fcntl
+  #undef  Include_fcntl
+  #define Include_fcntl 1
  #endif
  #ifdef Uses_sys_stat
-  #define Include_sys_stat
+  #undef  Include_sys_stat
+  #define Include_sys_stat 1
  #endif
  #ifdef Uses_unistd
-  #define Include_cl_unistd
+  #undef  Include_cl_unistd
+  #define Include_cl_unistd 1
   // Most unistd equivalents are here:
-  #define Include_io
+  #undef  Include_io
+  #define Include_io 1
  #endif
  #ifdef Uses_access
-  #define Include_io
+  #undef  Include_io
+  #define Include_io 1
+  #undef  R_OK
   #define R_OK 4
  #endif
  #ifdef Uses_ctype
-  #define Include_ctype
+  #undef  Include_ctype
+  #define Include_ctype 1
  #endif
  #ifdef Uses_filelength
-  #define Include_io
+  #undef  Include_io
+  #define Include_io 1
  #endif
  #ifdef Uses_getcurdir
-  #define Include_dir
+  #undef  Include_dir
+  #define Include_dir 1
  #endif
  #ifdef Uses_AllocLocal
+  #undef  AllocLocalStr
   #define AllocLocalStr(s,l) char* s = (char*)alloca(l)
+  #undef  AllocLocalUShort
   #define AllocLocalUShort(s,l) ushort *s = (ushort*)alloca(sizeof(ushort) * (l))
-  #define Uses_alloca
+  #undef  Uses_alloca
+  #define Uses_alloca 1
  #endif
  #ifdef Uses_alloca
-  #define Include_malloc
+  #undef  Include_malloc
+  #define Include_malloc 1
  #endif
  #ifdef Uses_free
-  #define Include_malloc
+  #undef  Include_malloc
+  #define Include_malloc 1
  #endif
  #define NEVER_RETURNS
  #define RETURN_WHEN_NEVER_RETURNS return 0
+ #undef  __attribute__
  #define __attribute__( value )
  #define DeleteArray(a) delete[] a
  #define PATHSEPARATOR ';'
@@ -632,62 +706,79 @@ typedef unsigned long  ulong;
  #define DIRSEPARATOR_ "/"
  #define CLY_IsValidDirSep(a) (a=='/' || a=='\\')
  #ifdef Uses_fixpath
-  CFunc void _fixpath(const char *in, char *out);
+  CLY_CFunc void _fixpath(const char *in, char *out);
  #endif
  // Checks for UNCs under NT provided by Anantoli Soltan
- CFunc int CLY_IsUNC(const char* path);
- CFunc int CLY_IsUNCShare(const char* path);
+ CLY_CFunc int CLY_IsUNC(const char* path);
+ CLY_CFunc int CLY_IsUNCShare(const char* path);
  #ifdef Uses_HaveLFNs
-  #define OS_HaveLFNs
+  #undef  OS_HaveLFNs
+  #define OS_HaveLFNs 1
  #endif
  #ifdef Uses_glob
-  #define Include_cl_glob
+  #undef  Include_cl_glob
+  #define Include_cl_glob 1
  #endif
  #ifdef Uses_fnmatch
-  #define Include_cl_fnmatch
+  #undef  Include_cl_fnmatch
+  #define Include_cl_fnmatch 1
  #endif
  #ifdef Uses_regex
-  #define Include_cl_regex
+  #undef  Include_cl_regex
+  #define Include_cl_regex 1
  #endif
  #ifdef Uses_getopt
-  #define Include_cl_getopt
+  #undef  Include_cl_getopt
+  #define Include_cl_getopt 1
  #endif
  #ifdef Uses_io
-  #define Include_io
+  #undef  Include_io
+  #define Include_io 1
  #endif
  #ifdef Uses_dirent
-  #define Include_cl_dirent
+  #undef  Include_cl_dirent
+  #define Include_cl_dirent 1
  #endif
  #ifdef Uses_ftell
-  #define Include_io
-  #define Include_stdio
+  #undef  Include_io
+  #define Include_io 1
+  #undef  Include_stdio
+  #define Include_stdio 1
  #endif
  #ifdef Uses_stdlib
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_utime
-  #define Include_utime
+  #undef  Include_utime
+  #define Include_utime 1
  #endif
  #ifdef Uses_mkstemp
-  CFunc int mkstemp(char *_template);
+  CLY_CFunc int mkstemp(char *_template);
  #endif
  #ifdef Uses_getcwd
-  #define Include_dir
+  #undef  Include_dir
+  #define Include_dir 1
  #endif
  #ifdef Uses_itoa
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_direct
-  #define Include_direct
+  #undef  Include_direct
+  #define Include_direct 1
  #endif
  #ifdef Uses_dir
-  #define Include_dir
+  #undef  Include_dir
+  #define Include_dir 1
  #endif
  #ifdef Uses_strstream
-  #define Include_strstream
+  #undef  Include_strstream
+  #define Include_strstream 1
  #endif
  #ifdef Uses_nl_langinfo
-  #define Uses_CLY_nl_langinfo
+  #undef  Uses_CLY_nl_langinfo
+  #define Uses_CLY_nl_langinfo 1
  #endif
 
  // ifstream::getline behaves strangely in BC++
@@ -695,8 +786,10 @@ typedef unsigned long  ulong;
  #define IfStreamGetLine(istream,buffer,size) \
          CLY_IfStreamGetLine(istream,buffer,size)
  #ifdef Uses_IfStreamGetLine
-  #define Uses_fstream
-  #define Uses_CLY_IfStreamGetLine
+  #undef  Uses_fstream
+  #define Uses_fstream 1
+  #undef  Uses_CLY_IfStreamGetLine
+  #define Uses_CLY_IfStreamGetLine 1
  #endif
 
  #define CLY_OpenModeT      int
@@ -706,7 +799,6 @@ typedef unsigned long  ulong;
  #define CLY_FBOpenProtDef  0666
  #define CLY_NewFBFromFD(f) new filebuf(f)
  #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
- #undef  CLY_HaveFBAttach
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
  #define CLY_IOSBin         ios::binary
  #define CLY_PubSeekOff     pubseekoff
@@ -716,7 +808,8 @@ typedef unsigned long  ulong;
                                       ostrstream os(buf,sizeof(buf))
  #define GetStrStream(buf) buf
  #ifdef Uses_StrStream
-  #define Include_strstream
+  #undef  Include_strstream
+  #define Include_strstream 1
  #endif
  #define UsingNamespaceStd
 #endif
@@ -726,70 +819,95 @@ typedef unsigned long  ulong;
 // MSVC will be supported if volunteers tests it or Microsoft decides to
 // give it for free ;-). After all Borland released BC++ 5.5.
 #if (defined(_MSVC) || defined(__MSC_VER)) && !defined(_MSC_VER)
-#define _MSC_VER
+ #define _MSC_VER
 #endif
 
 #ifdef TVComp_MSC
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
- /* Simple Boolean type */
- enum Boolean { False, True };
+ #ifndef CLY_BooleanDefined
+  #define CLY_BooleanDefined 1
+  /* Simple Boolean type */
+  enum Boolean { False, True };
+ #endif
  #ifdef Uses_string
-  #define Include_string
+  #undef  Include_string
+  #define Include_string 1
+  #undef  strncasecmp
   #define strncasecmp strnicmp
+  #undef  strcasecmp
   #define strcasecmp  stricmp
  #endif
  #ifdef Uses_abort
-  #define Include_process
+  #undef  Include_process
+  #define Include_process 1
  #endif
  #ifdef Uses_limits
-  #define Include_limits
+  #undef  Include_limits
+  #define Include_limits 1
  #endif
  #ifdef Uses_fcntl
-  #define Include_fcntl
+  #undef  Include_fcntl
+  #define Include_fcntl 1
  #endif
  #ifdef Uses_sys_stat
-  #define Include_sys_stat
-  #define Fake_S_IS
+  #undef  Include_sys_stat
+  #define Include_sys_stat 1
+  #undef  Fake_S_IS
+  #define Fake_S_IS 1
  #endif
  #ifdef Uses_unistd
-  #define Include_unistd
+  #undef  Include_unistd
+  #define Include_unistd 1
  #endif
  #ifdef Uses_access
   #error Where is access defined?
  #endif
  #ifdef Uses_ctype
-  #define Include_ctype
+  #undef  Include_ctype
+  #define Include_ctype 1
  #endif
  #ifdef Uses_filelength
+  #undef  filelength
   #define filelength _filelength
-  #define Include_io
+  #undef  Include_io
+  #define Include_io 1
  #endif
  #ifdef Uses_AllocLocal
+  #undef  AllocLocalStr
   #define AllocLocalStr(s,l) char* s = (char*)alloca(l)
+  #undef  AllocLocalUShort
   #define AllocLocalUShort(s,l) ushort *s = (ushort*)alloca(sizeof(ushort) * (l))
-  #define Uses_alloca
+  #undef  Uses_alloca
+  #define Uses_alloca 1
  #endif
  #ifdef Uses_alloca
-  #define Include_malloc
+  #undef  Include_malloc
+  #define Include_malloc 1
  #endif
  #ifdef Uses_free
-  #define Include_malloc
+  #undef  Include_malloc
+  #define Include_malloc 1
  #endif
  #ifdef Uses_getcurdir
+  #undef  getcurdir
   #define getcurdir CLY_getcurdir
  #endif
  #define NEVER_RETURNS
  #define RETURN_WHEN_NEVER_RETURNS return 0
+ #undef  __attribute__
  #define __attribute__( value )
  #pragma warning( disable : 4250 )
  // SET: MSVC have a non-standard delete[] support. It doesn't follow last
  // standard. And which is worst doesn't understand it.
  // Vadim Beloborodov pointed out this missfeature.
  #define DeleteArray(a) delete (void *)a
+ #undef  FA_ARCH
  #define FA_ARCH   0x01
+ #undef  FA_DIREC
  #define FA_DIREC  0x02
+ #undef  FA_RDONLY
  #define FA_RDONLY 0x04
  #define PATHSEPARATOR ';'
  #define PATHSEPARATOR_ ";"
@@ -800,64 +918,82 @@ typedef unsigned long  ulong;
  #define DIRSEPARATOR_ "\\"
  #define CLY_IsValidDirSep(a) (a=='/' || a=='\\')
  #ifdef Uses_fixpath
-  CFunc void _fixpath(const char *in, char *out);
+  CLY_CFunc void _fixpath(const char *in, char *out);
  #endif
  // Not yet supported for Win9x with MSVC
+ #undef  CLY_IsUNCShare
  #define CLY_IsUNCShare(a) (0)
+ #undef  CLY_IsUNC
  #define CLY_IsUNC(a)      (0)
  #ifdef Uses_HaveLFNs
-  #define OS_HaveLFNs
+  #undef  OS_HaveLFNs
+  #define OS_HaveLFNs 1
  #endif
  #ifdef Uses_glob
-  #define Include_cl_glob
+  #undef  Include_cl_glob
+  #define Include_cl_glob 1
  #endif
  #ifdef Uses_fnmatch
-  #define Include_cl_fnmatch
+  #undef  Include_cl_fnmatch
+  #define Include_cl_fnmatch 1
  #endif
  #ifdef Uses_regex
-  #define Include_cl_regex
+  #undef  Include_cl_regex
+  #define Include_cl_regex 1
  #endif
  #ifdef Uses_getopt
-  #define Include_cl_getopt
+  #undef  Include_cl_getopt
+  #define Include_cl_getopt 1
  #endif
  #ifdef Uses_io
-  #define Include_io
+  #undef  Include_io
+  #define Include_io 1
  #endif
  #ifdef Uses_dirent
-  #define Include_dirent
+  #undef  Include_dirent
+  #define Include_dirent 1
  #endif
  #ifdef Uses_ftell
-  #define Include_stdio
+  #undef  Include_stdio
+  #define Include_stdio 1
  #endif
  #ifdef Uses_utime
-  #define Include_utime
+  #undef  Include_utime
+  #define Include_utime 1
  #endif
  #ifdef Uses_mkstemp
-  CFunc int mkstemp(char *_template);
+  CLY_CFunc int mkstemp(char *_template);
  #endif
  #ifdef Uses_getcwd
-  #define Include_io
+  #undef  Include_io
+  #define Include_io 1
  #endif
  #ifdef Uses_itoa
-  #define Include_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
  #endif
  #ifdef Uses_direct
-  #define Include_direct
+  #undef  Include_direct
+  #define Include_direct 1
  #endif
  #ifdef Uses_dir
-  #define Include_dir
+  #undef  Include_dir
+  #define Include_dir 1
  #endif
  #ifdef Uses_strstream
-  #define Include_strstrea
+  #undef  Include_strstrea
+  #define Include_strstrea 1
  #endif
  #ifdef Uses_nl_langinfo
-  #define Uses_CLY_nl_langinfo
+  #undef  Uses_CLY_nl_langinfo
+  #define Uses_CLY_nl_langinfo 1
  #endif
 
  // ifstream::getline behaves strangely in BC++
  // I take the gcc implementation. I hope MSVC is like it.
  #define IfStreamGetLine(istream,buffer,size) \
          istream.getline(buffer,size)
+
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff
@@ -865,7 +1001,7 @@ typedef unsigned long  ulong;
  #define CLY_FBOpenProtDef  filebuf::openprot
  #define CLY_NewFBFromFD(f) new filebuf(f)
  #define CLY_PubSetBuf(a,b) setbuf(a,b)
- #define CLY_HaveFBAttach
+ #define CLY_HaveFBAttach   1
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
  #define CLY_IOSBin         ios::binary
  #define CLY_PubSeekOff     seekoff
@@ -875,100 +1011,111 @@ typedef unsigned long  ulong;
                                       ostrstream os(buf,sizeof(buf))
  #define GetStrStream(buf) buf
  #ifdef Uses_StrStream
-  #define Include_strstrea
+  #undef  Include_strstrea
+  #define Include_strstrea 1
  #endif
  #define UsingNamespaceStd
 #endif
 
 #ifdef Uses_IOS_BIN
+ #undef  IOS_BIN
  #define IOS_BIN CLY_IOSBin
 #endif
 
-CFunc void CLY_YieldProcessor(int micros);
-CFunc void CLY_ReleaseCPU();
+CLY_CFunc void CLY_YieldProcessor(int micros);
+CLY_CFunc void CLY_ReleaseCPU();
 /* Return the number of ticks (on MSDOS 1 tick is 1/18 sec),
    this is used to compute the double click */
-CFunc unsigned short CLY_Ticks(void);
+CLY_CFunc unsigned short CLY_Ticks(void);
 /* An utility to split directory and file components of a path:
    Extracts from path the directory part and filename part.
    if 'dir' and/or 'file' == NULL, it is not filled.
    The directory will have a trailing slash. */
-CFunc void CLY_ExpandPath(const char *path, char *dir, char *file);
+CLY_CFunc void CLY_ExpandPath(const char *path, char *dir, char *file);
 /* An utility function. It makes the path an absolute one and replaces the
    original value passed. Should use fixpath. */
-CFunc void CLY_fexpand(char *rpath);
+CLY_CFunc void CLY_fexpand(char *rpath);
+#undef  fexpand
 #define fexpand(a) CLY_fexpand(a)
 /* Utility function to know if a drive letter is valid. */
-CFunc int  CLY_DriveValid(char drive);
+CLY_CFunc int  CLY_DriveValid(char drive);
 #ifdef __cplusplus
-#define driveValid(a) (CLY_DriveValid(a) ? True : False)
+ #define driveValid(a) (CLY_DriveValid(a) ? True : False)
 #endif
 /* Utility function to know is a file is in fact a directory */
-CFunc int CLY_IsDir(const char *str);
+CLY_CFunc int CLY_IsDir(const char *str);
 #ifdef __cplusplus
-#define isDir(a) (CLY_DriveValid(a) ? True : False)
+ #define isDir(a) (CLY_DriveValid(a) ? True : False)
 #endif
 /* Utility function to know if a path is valid (existing directory or file) */
-CFunc int CLY_PathValid(const char *path);
+CLY_CFunc int CLY_PathValid(const char *path);
 #ifdef __cplusplus
-#define pathValid(a) (CLY_PathValid(a) ? True : False)
+ #define pathValid(a) (CLY_PathValid(a) ? True : False)
 #endif
 /* Utility function to know if a file name is valid to create a new file */
-CFunc int CLY_ValidFileName(const char *fileName);
+CLY_CFunc int CLY_ValidFileName(const char *fileName);
 #ifdef __cplusplus
-#define validFileName(a) (CLY_ValidFileName(a) ? True : False)
+ #define validFileName(a) (CLY_ValidFileName(a) ? True : False)
 #endif
 /* Utility function to know the current directory including a trailing
    slash */
-CFunc void CLY_GetCurDirSlash(char *dir);
+CLY_CFunc void CLY_GetCurDirSlash(char *dir);
+#undef  getCurDir
 #define getCurDir(a) CLY_GetCurDirSlash(a)
 /* Utility function to know if a path contains a supported wildcard */
-CFunc int CLY_IsWild(const char *f);
+CLY_CFunc int CLY_IsWild(const char *f);
 #ifdef __cplusplus
-#define isWild(a) (CLY_IsWild(a) ? True : False)
+ #define isWild(a) (CLY_IsWild(a) ? True : False)
 #endif
 /* Utility function to know if a file exist and we can read from it */
-CFunc int CLY_FileExists(const char *fname);
+CLY_CFunc int CLY_FileExists(const char *fname);
 #ifndef TVCompf_djgpp
-#define __file_exists(a) CLY_FileExists(a)
+ #undef  __file_exists
+ #define __file_exists(a) CLY_FileExists(a)
 #endif
 /* Utility function to know if a path is relative */
-CFunc int CLY_IsRelativePath(const char *path);
+CLY_CFunc int CLY_IsRelativePath(const char *path);
 #ifdef __cplusplus
-#define relativePath(a) (CLY_IsRelativePath(a) ? True : False)
+ #define relativePath(a) (CLY_IsRelativePath(a) ? True : False)
 #endif
 /* Utility function to generated a beep */
-CFunc void CLY_Beep(void);
+CLY_CFunc void CLY_Beep(void);
 /* Used internally, just call filelength prior request */
-CFunc long CLY_filelength(int);
+CLY_CFunc long CLY_filelength(int);
 /* Used internally, just call getcurdir prior request */
-CFunc int  CLY_getcurdir(int drive, char *buffer);
+CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 
 /* cl/unistd.h includes dir.h */
 #ifdef Include_cl_unistd
- #define Include_dir
+ #undef  Include_dir
+ #define Include_dir 1
 #endif
 
 #ifdef Uses_ifsFileLength
- #define Uses_fstream
+ #undef  Uses_fstream
+ #define Uses_fstream 1
 #endif
 
-#ifdef Include_sys_types
+#if defined(Include_sys_types) && !defined(Included_sys_types)
+ #define Included_sys_types 1
  #include <sys/types.h>
 #endif
 
-#ifdef Include_string
-#include <string.h>
+#if defined(Include_string) && !defined(Included_string)
+ #define Included_string 1
+ #include <string.h>
 #endif
 
-#ifdef Include_limits
+#if defined(Include_limits) && !defined(Included_limits)
+ #define Included_limits 1
  #include <limits.h>
  #ifndef PATH_MAX // BC++ and MSVC
   #define PATH_MAX 512
  #endif
 #endif
 
-#ifdef Include_fcntl
+#if defined(Include_fcntl) && !defined(Included_fcntl)
+ #define Included_fcntl 1
  #include <fcntl.h>
  #ifndef O_TEXT // UNIX
   #define O_TEXT (0)
@@ -978,39 +1125,51 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
  #endif
 #endif
 
-#ifdef Include_sys_stat
+#if defined(Include_sys_stat) && !defined(Included_sys_stat)
+ #define Included_sys_stat 1
  #include <sys/stat.h>
  #ifdef Fake_S_IS
+  #undef  S_ISDIR
   #define S_ISDIR(m)  ((m) & S_IFDIR)
+  #undef  S_ISCHR
   #define S_ISCHR(m)  ((m) & S_IFCHR)
+  #undef  S_ISBLK
   #define S_ISBLK(m)  ((m) & S_IFBLK)
+  #undef  S_ISREG
   #define S_ISREG(m)  ((m) & S_IFREG)
+  #undef  S_ISFIFO
   #define S_ISFIFO(m) ((m) & S_IFIFO)
  #endif
 #endif
 
-#ifdef Include_stdlib
+#if defined(Include_stdlib) && !defined(Included_stdlib)
+ #define Included_stdlib 1
  #include <stdlib.h>
 #endif
 
-#ifdef Include_malloc
+#if defined(Include_malloc) && !defined(Included_malloc)
  // BC++ and MSVC defines alloca here
+ #define Included_malloc 1
  #include <malloc.h>
 #endif
 
-#ifdef Include_io
+#if defined(Include_io) && !defined(Included_io)
+ #define Included_io 1
  #include <io.h>
 #endif
 
-#ifdef Include_direct
+#if defined(Include_direct) && !defined(Included_direct)
+ #define Included_direct 1
  #include <direct.h>
 #endif
 
-#ifdef Include_dir
+#if defined(Include_dir) && !defined(Included_dir)
+ #define Included_dir 1
  #include <dir.h>
 #endif
 
-#ifdef Include_langinfo
+#if defined(Include_langinfo) && !defined(Included_langinfo)
+ #define Included_langinfo 1
  #include <langinfo.h>
  // Workaround a bug in glibc
  #if !defined(RADIXCHAR) && defined(DECIMAL_POINT)
@@ -1019,7 +1178,8 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 #endif
 
 
-#ifdef Include_ctype
+#if defined(Include_ctype) && !defined(Included_ctype)
+ #define Included_ctype 1
  #include <ctype.h>
  /* The following macros are defined to avoid passing negative values to
     the ctype functions in the common case: isxxxx(char).
@@ -1041,112 +1201,137 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
  #define uctoupper(a)  toupper((unsigned char)a)
 #endif
 
-#ifdef Include_unistd
+#if defined(Include_unistd) && !defined(Included_unistd)
+ #define Included_unistd 1
  #include <unistd.h>
  #ifndef R_OK
   #define R_OK 4
  #endif
 #endif
 
-#ifdef Include_process
+#if defined(Include_process) && !defined(Included_process)
+ #define Included_process 1
  #include <process.h>
 #endif
 
-#ifdef Include_cl_unistd
+#if defined(Include_cl_unistd) && !defined(Included_cl_unistd)
+ #define Included_cl_unistd 1
  #include <cl/unistd.h>
 #endif
 
-#ifdef Include_glob
+#if defined(Include_glob) && !defined(Included_glob)
+ #define Included_glob 1
  // POSIX
  #include <glob.h>
 #endif
 
-#ifdef Include_cl_glob
+#if defined(Include_cl_glob) && !defined(Included_cl_glob)
+ #define Included_cl_glob 1
  // Replacement
  #include <cl/glob.h>
 #endif
 
-#ifdef Include_fnmatch
+#if defined(Include_fnmatch) && !defined(Included_fnmatch)
+ #define Included_fnmatch 1
  // POSIX
  #include <fnmatch.h>
 #endif
 
-#ifdef Include_cl_fnmatch
+#if defined(Include_cl_fnmatch) && !defined(Included_cl_fnmatch)
+ #define Included_cl_fnmatch 1
  // Replacement
  #include <cl/fnmatch.h>
 #endif
 
-#ifdef Include_sys_types
+#if defined(Include_sys_types) && !defined(Included_sys_types)
+ #define Included_sys_types 1
  #include <sys/types.h>
 #endif
 
-#ifdef Include_regex
+#if defined(Include_regex) && !defined(Included_regex)
+ #define Included_regex 1
  // POSIX
  #include <regex.h>
 #endif
 
-#ifdef Include_cl_regex
+#if defined(Include_cl_regex) && !defined(Included_cl_regex)
+ #define Included_cl_regex 1
  // Replacement
  #include <cl/regex.h>
 #endif
 
-#ifdef Include_getopt
+#if defined(Include_getopt) && !defined(Included_getopt)
+ #define Included_getopt 1
  #include <getopt.h>
 #endif
 
-#ifdef Include_cl_getopt
+#if defined(Include_cl_getopt) && !defined(Included_cl_getopt)
+ #define Included_cl_getopt 1
  #include <cl/getopt.h>
 #endif
 
-#ifdef Include_io
+#if defined(Include_io) && !defined(Included_io)
+ #define Included_io 1
  #include <io.h>
 #endif
 
-#ifdef Include_stdio
+#if defined(Include_stdio) && !defined(Included_stdio)
+ #define Included_stdio 1
  #include <stdio.h>
 #endif
 
-#ifdef Include_dirent
+#if defined(Include_dirent) && !defined(Included_dirent)
+ #define Included_dirent 1
  #include <dirent.h>
 #endif
 
-#ifdef Include_cl_dirent
+#if defined(Include_cl_dirent) && !defined(Included_cl_dirent)
+ #define Included_cl_dirent 1
  #include <cl/dirent.h>
 #endif
 
-#ifdef Include_time
+#if defined(Include_time) && !defined(Included_time)
+ #define Included_time 1
  #include <time.h>
 #endif
 
-#ifdef Include_utime
+#if defined(Include_utime) && !defined(Included_utime)
+ #define Included_utime 1
  #include <utime.h>
 #endif
 
-#ifdef Include_cl_utime
+#if defined(Include_cl_utime) && !defined(Included_cl_utime)
+ #define Included_cl_utime 1
  #include <cl/utime.h>
 #endif
 
-#ifdef Include_strstream
+#if defined(Include_strstream) && !defined(Included_strstream)
+ #define Included_strstream 1
  #include <strstream.h>
 #endif
 
-#ifdef Include_strstrea
+#if defined(Include_strstrea) && !defined(Included_strstrea)
+ #define Included_strstrea 1
  #include <strstrea.h>
 #endif
 
-#ifdef Include_sstream
+#if defined(Include_sstream) && !defined(Included_sstream)
+ #define Included_sstream 1
  #include <sstream>
 #endif
 
-#ifdef Uses_fstream
+#if defined(Uses_fstream) && !defined(Included_fstream)
+ #define Included_fstream 1
  #include FSTREAM_HEADER
 #endif
 
-#ifdef Uses_iomanip
+#if defined(Uses_iomanip) && !defined(Included_iomanip)
+ #define Included_iomanip 1
  #include IOMANIP_HEADER
 #endif
 
-#ifdef Uses_iostream
+#if defined(Uses_iostream) && !defined(Included_iostream)
+ #define Included_iostream 1
  #include IOSTREAM_HEADER
 #endif
 
@@ -1166,25 +1351,25 @@ typedef unsigned int CLY_mode_t;
 #endif
 /* Utility function to find the attributes of a file. You must call stat
    first and pass the st_mode member of stat's struct in statVal. */
-CFunc void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal, const char *fileName);
+CLY_CFunc void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal, const char *fileName);
 /* The reverse. The file must be closed! */
-CFunc int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName);
+CLY_CFunc int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName);
 /* This function alters mode content so the attribute indicates that the
    owner of the file can't read from it */
-CFunc void CLY_FileAttrReadOnly(CLY_mode_t *mode);
+CLY_CFunc void CLY_FileAttrReadOnly(CLY_mode_t *mode);
 /* This function alters mode content so the attribute indicates that the
    owner of the file can read from it */
-CFunc void CLY_FileAttrReadWrite(CLY_mode_t *mode);
+CLY_CFunc void CLY_FileAttrReadWrite(CLY_mode_t *mode);
 /* Returns !=0 if the file is read-only */
-CFunc int  CLY_FileAttrIsRO(CLY_mode_t *mode);
+CLY_CFunc int  CLY_FileAttrIsRO(CLY_mode_t *mode);
 /* Sets the attribute that indicates the file was modified */
-CFunc void CLY_FileAttrModified(CLY_mode_t *mode);
+CLY_CFunc void CLY_FileAttrModified(CLY_mode_t *mode);
 /* It returns a mode that can be used for a newly created file */
-CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
+CLY_CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
 #endif
 
 /* Returns the name of the shell command */
-CFunc char *CLY_GetShellName(void);
+CLY_CFunc char *CLY_GetShellName(void);
 
 #ifdef Uses_ifsFileLength
 extern long CLY_ifsFileLength(CLY_std(ifstream) &f);
@@ -1195,7 +1380,8 @@ extern int CLY_IfStreamGetLine(CLY_std(ifstream) &is, char *buffer, unsigned len
 #endif
 
 /* Internal definition of nl_langinfo */
-#ifdef Uses_CLY_nl_langinfo
+#if defined(Uses_CLY_nl_langinfo) && !defined(CLY_nl_langinfo_Defined)
+#define CLY_nl_langinfo_Defined 1
 typedef int nl_item;
 #define CURRENCY_SYMBOL   0 /*currency_symbol*/
 #define CRNCYSTR          0 /*currency_symbol*/    /*deprecated*/
@@ -1220,27 +1406,32 @@ typedef int nl_item;
 #define P_SEP_BY_SPACE   16 /*p_sep_by_space*/
 
 #define nl_langinfo CLY_nl_langinfo
-CFunc char *CLY_nl_langinfo(nl_item item);
-#endif
+CLY_CFunc char *CLY_nl_langinfo(nl_item item);
+#endif // defined(Uses_CLY_nl_langinfo) && !defined(CLY_nl_langinfo_Defined)
 
+#undef CLY_High16
+#undef CLY_Low16
 #ifdef TV_BIG_ENDIAN
-// Most RISC machines
-#define CLY_High16(a)  ((a) & 0xFF)
-#define CLY_Low16(a)   ((a) >> 8)
+ // Most RISC machines
+ #define CLY_High16(a)  ((a) & 0xFF)
+ #define CLY_Low16(a)   ((a) >> 8)
 #else
-// Intel machines
-#define CLY_High16(a)  ((a) >> 8)
-#define CLY_Low16(a)   ((a) & 0xFF)
+ // Intel machines
+ #define CLY_High16(a)  ((a) >> 8)
+ #define CLY_Low16(a)   ((a) & 0xFF)
 #endif
 
-#ifdef DJGPP_HaveLFNs
+#if defined(DJGPP_HaveLFNs) && !defined(CLY_HaveLFNs_Defined)
+#define CLY_HaveLFNs_Defined 1
 inline
 int CLY_HaveLFNs()
 {
  return _use_lfn(0);
 }
 #endif
-#ifdef OS_HaveLFNs
+
+#if defined(OS_HaveLFNs) && !defined(OS_HaveLFNs_Defined)
+#define OS_HaveLFNs_Defined 1
 inline
 int CLY_HaveLFNs()
 {
@@ -1250,10 +1441,15 @@ int CLY_HaveLFNs()
 
 // Is that an EOL char?
 // Ask for no
+#undef  CLY_IsntEOL
 #define CLY_IsntEOL(a) (a!='\r' && a!='\n')
 // Ask for yes
+#undef  CLY_IsEOL
 #define CLY_IsEOL(a)   (a=='\r' || a=='\n')
 
+#undef CLY_LenEOL
+#undef CLY_crlf
+#undef CLY_IsTrueEOL
 #ifdef CLY_UseCrLf
  #define CLY_LenEOL     2
  // This asks if the EOL is really usable for the OS
@@ -1266,5 +1462,7 @@ int CLY_HaveLFNs()
  #define CLY_IsTrueEOL(a) (a=='\n')
 #endif
 
-#endif // CLY_CompatLayerIncluded
+#undef CLY_CFunc
+
+//#endif // CLY_CompatLayerIncluded
 

@@ -1,4 +1,8 @@
 $Log$
+Revision 1.242.2.9  2001/12/17 00:18:16  set
+* Added: A new URL to the Borland's FAQ that says TV is Public Domain. This
+is supported by all the TeamB people I contacted.
+
 Revision 1.242.2.8  2001/12/11 00:24:28  set
 * Added: Some adjusts to compatlayer for Cygwin target. Needed to compile the
 editor. Patch from Robert.
@@ -1570,7 +1574,7 @@ djgpp.
 .
 Revision 1.8  1999/01/13 00:55:43  set
 Passed the changes to DOS.
-.
+
 Revision 1.7  1999/01/13 00:35:35  root (set)
 Added a linuxso directory to create the dynamically linked version of the
 library.
