@@ -227,11 +227,11 @@ void rh_RestoreVideo()
     dbprintf("Restoring text mode\n");
     if (user_mode != 7)
       rh_restore_vga_state();
-    TFont::UseDefaultFontsNextTime=1;
+    /*TFont::UseDefaultFontsNextTime=1;*/
     if (TScreen::screenMode != user_mode)
       TDisplay::setCrtMode(user_mode);
-    else
-      TDisplay::RestoreDefaultFont();
+    /*else
+      TDisplay::RestoreDefaultFont();*/
     if (user_blink)
       setBlinkState();
     else

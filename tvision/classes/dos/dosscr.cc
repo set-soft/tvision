@@ -52,18 +52,23 @@
 #define CHARGEN_LOAD_USER_SPECIFIED_PATTERNS 0x1110
 #define GET_FONT_INFORMATION                 0x1130
 // 0x11xx services (Sets the BIOS Rom)
-#define FONT_8x14                            0x11
 #define FONT_8x8                             0x12
+#define FONT_8x14                            0x11
 #define FONT_8x16                            0x14
-
+// GET_FONT_INFORMATION values
+#define GET_FONT_8x8                         0x03
+#define GET_FONT_8x14                        0x02
+#define GET_FONT_8x16                        0x06
 
 int   TScreenDOS::wasBlink=0;
 int   TScreenDOS::slowScreen=0;
 uchar TScreenDOS::primaryFontSet=0,
-      TScreenDOS::secondaryFontSet=0;
+      TScreenDOS::secondaryFontSet=0,
+      TScreenDOS::fontsSuspended=0;
 int   TScreenDOS::origCPScr,
       TScreenDOS::origCPApp;
 int   TScreenDOS::fontSeg=-1;
+TScreenFont256 TScreenDOS::appFonts[2]={{0,0,NULL},{0,0,NULL}};
 
 const unsigned mdaBaseAddress=0xB0000;
 
@@ -151,6 +156,7 @@ void TScreenDOS::Resume()
        setBlinkState();
     else
        setIntenseState();
+    ResumeFonts();
     SetDisPaletteColors(0,16,ActualPalette);
    }
  else
@@ -163,11 +169,8 @@ void TScreenDOS::Resume()
 TScreenDOS::~TScreenDOS()
 {
  SaveScreenReleaseMemory();
+ ReleaseMemFonts();
  THWMouseDOS::DeInit();
-//  setCrtMode(startupMode);
-//  textmode(startupMode);
-//  if (startupMode == user_mode)
-//    ScreenUpdate();
 }
 
 void TScreenDOS::Suspend()
@@ -175,6 +178,7 @@ void TScreenDOS::Suspend()
  if (!dual_display)
    {
     wasBlink=getBlinkState();
+    SuspendFonts();
     RestoreScreen();
     SetDisPaletteColors(0,16,OriginalPalette);
    }
@@ -511,6 +515,62 @@ void TScreenDOS::SetFontBIOS(int which, unsigned height, uchar *data,
  videoInt();
 }
 
+void TScreenDOS::ReleaseMemFonts()
+{
+ if (appFonts[0].data)
+   {
+    free(appFonts[0].data);
+    appFonts[0].data=NULL;
+   }
+ if (appFonts[1].data)
+   {
+    free(appFonts[1].data);
+    appFonts[1].data=NULL;
+   }
+}
+
+int TScreenDOS::MemorizeFont(int which, TScreenFont256 *font)
+{
+ // Keep a copy of the user font
+ appFonts[which].w=font->w;
+ appFonts[which].h=font->h;
+ if (appFonts[which].data)
+    free(appFonts[which].data);
+ unsigned size=font->h*256;
+ appFonts[which].data=(uchar *)malloc(size);
+ if (!appFonts[which].data)
+    return 0;
+ memcpy(appFonts[which].data,font->data,size);
+ return 1;
+}
+
+void TScreenDOS::SuspendFonts()
+{
+ if (fontsSuspended)
+    return;
+ fontsSuspended=1;
+ if (!primaryFontSet && !secondaryFontSet)
+    return; // Nothing to do
+ DisableDualFont();
+ SelectRomFont(charLines,0,0);
+}
+
+void TScreenDOS::ResumeFonts()
+{
+ if (!fontsSuspended)
+    return;
+ fontsSuspended=0;
+ if (!primaryFontSet && !secondaryFontSet)
+    return; // Nothing to do
+ if (primaryFontSet)
+    SetFontBIOS(0,charLines,appFonts[0].data,0);
+ if (secondaryFontSet)
+   {
+    SetFontBIOS(1,charLines,appFonts[1].data,0);
+    EnableDualFont();
+   }
+}
+
 int TScreenDOS::SetFont(int which, TScreenFont256 *font, int encoding)
 {
  // Check if that's just a call to disable the secondary font
@@ -521,11 +581,14 @@ int TScreenDOS::SetFont(int which, TScreenFont256 *font, int encoding)
     secondaryFontSet=0;
     DisableDualFont();
     if (!primaryFontSet)
+      {
        TVCodePage::SetCodePage(origCPScr,origCPApp);
+       ReleaseMemFonts();
+      }
     return 1;
    }
 
- if (font->w!=8 || font->h!=charLines)
+ if (font->w!=8 || font->h!=charLines || !MemorizeFont(which,font))
     return 0;
 
  if (!primaryFontSet && !secondaryFontSet)
@@ -553,6 +616,7 @@ void TScreenDOS::RestoreFonts()
     return; // Protection
  DisableDualFont();
  SelectRomFont(charLines,0,0);
+ ReleaseMemFonts();
  TVCodePage::SetCodePage(origCPScr,origCPApp);
  secondaryFontSet=primaryFontSet=0;
 }
@@ -647,7 +711,7 @@ void TScreenDOS::MaybeCreate8x10Font(void)
     fontSeg=-1;
     return;
    }
- BH=3;
+ BH=GET_FONT_8x8;
  AX=GET_FONT_INFORMATION;
  videoInt();
  src=(((unsigned)ES)<<4)+BP;
@@ -688,6 +752,35 @@ int TScreenDOS::Load8x10Font(int which, int modeRecalculate)
     AL&=0xF;
  videoInt();
  return 0;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Used after setting a video mode to load the user font or the BIOS font.
+The force parameter indicates if we must load the BIOS font or if the font
+was already loaded.
+  
+***************************************************************************/
+
+void TScreenDOS::SelectFont(unsigned height, Boolean Force)
+{
+ if (primaryFontSet && !fontsSuspended)
+   {
+    if (height==appFonts[0].h)
+       SetFontBIOS(0,charLines,appFonts[0].data,0);
+    else
+       if (Force)
+          SelectRomFont(height,0,0);
+   }
+ else
+   {
+    if (Force)
+       SelectRomFont(height,0,0);
+   }
+
+ if (!fontsSuspended && secondaryFontSet && height==appFonts[1].h)
+    SetFontBIOS(1,charLines,appFonts[1].data,0);
 }
 
 
