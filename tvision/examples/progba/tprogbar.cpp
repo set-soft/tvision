@@ -9,6 +9,9 @@ also find instructions on how to include the source in your TV.LIB and simply
 By: Barnaby W. Falls
 CIS: 70662,1523
 -------------------------------------------------------------------------*/
+#include <mem.h>         // memset
+#include <stdlib.h>      // itoa()
+#include <string.h>
 
 #define Uses_TProgressBar
 #define Uses_TView
@@ -21,10 +24,7 @@ CIS: 70662,1523
 #define Uses_TPalette
 #include <tv.h>
 
-#include <mem.h>         // memset
-#include <stdlib.h>      // itoa()
 #include <tprogbar.h>
-#include <string.h>
 
 __link( RView )
 

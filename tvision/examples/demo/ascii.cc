@@ -17,6 +17,14 @@
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
 
+// SET: moved the standard headers before tv.h
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+//#include <strstream.h> SET: These two are only to bloat the code.
+//#include <iomanip.h>
+#include <stdio.h>  // SET: printf does the job much simplier
+
 #define Uses_TRect
 #define Uses_TEvent
 #define Uses_TKeys
@@ -28,13 +36,6 @@
 #include <tv.h>
 __link( RView )
 __link( RWindow )
-
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-//#include <strstream.h> SET: These two are only to bloat the code.
-//#include <iomanip.h>
-#include <stdio.h>  // SET: printf does the job much simplier
 
 #include "ascii.h"
 

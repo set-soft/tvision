@@ -8,6 +8,9 @@
 
 */
 
+#include <stdio.h>
+#include <string.h>
+
 #define Uses_TProgram
 #define Uses_TApplication
 #define Uses_TRect
@@ -20,8 +23,6 @@
 #define Uses_TDeskTop
 
 #include "inplist.h"
-#include <stdio.h>
-#include <string.h>
 
 const int cmInputBox  = 100;
 

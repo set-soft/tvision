@@ -13,7 +13,13 @@
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
- 
+
+// SET: moved the standard headers before tv.h
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
 #define Uses_MsgBox
 #define Uses_TKeys
 #define Uses_TScroller
@@ -25,11 +31,6 @@
 #include <tv.h>
 __link(RScroller)
 __link(RScrollBar)
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 
 #include <fstream.h>
 

@@ -13,6 +13,10 @@
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
+ 
+// SET: moved the standard headers before tv.h
+#include <stdio.h>
+#include <string.h>
 
 #define Uses_TView
 #define Uses_TRect
@@ -36,9 +40,6 @@
 #include "puzzle.h"
 #include "demohelp.h"
 #include <help.h>
-
-#include <stdio.h>
-#include <string.h>
 
 /* SS: changed */
 

@@ -14,6 +14,14 @@
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
 
+// SET: moved the standard headers before tv.h
+#include <string.h>
+#include <stdio.h>	/* SS: for sprintf(...) */
+#include <stdlib.h>
+#include <ctype.h>
+#include <sys/time.h>
+#include <unistd.h>
+
 #define Uses_TRect
 #define Uses_TEvent
 #define Uses_TKeys
@@ -27,14 +35,8 @@
 __link( RView )
 __link( RWindow )
 
-#include <string.h>
-#include <stdio.h>	/* SS: for sprintf(...) */
-#include <stdlib.h>
-#include <ctype.h>
 #include <strstream.h>
 #include <iomanip.h>
-#include <sys/time.h>
-#include <unistd.h>
 
 #include "puzzle.h"
 

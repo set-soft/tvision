@@ -15,6 +15,11 @@
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
+ 
+// SET: moved the standard headers before tv.h
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #define Uses_TRect
 #define Uses_TStaticText
@@ -30,9 +35,6 @@
 #define Uses_TPalette
 #include <tv.h>
 
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <strstream.h>
 #include <iomanip.h>
 

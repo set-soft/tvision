@@ -13,6 +13,11 @@
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
+ 
+// SET: moved the standard headers before tv.h 
+#include <stdlib.h>
+#include <signal.h>
+#include <stdlib.h>
 
 #define Uses_TDialog
 #define Uses_TRect
@@ -37,9 +42,6 @@
 #include "ascii.h"
 #include "calendar.h"
 #include "calc.h"
-
-#include <signal.h>
-#include <stdlib.h>
 
 //
 //  DOS Shell Command.

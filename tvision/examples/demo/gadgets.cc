@@ -19,17 +19,19 @@
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
 
+// SET: moved the standard headers before tv.h
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
+
 #define Uses_TRect
 #define Uses_TView
 #define Uses_TDrawBuffer
 #include <tv.h>
 
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <strstream.h>
 #include <iomanip.h>
-#include <time.h>
 
 #include "gadgets.h"
 

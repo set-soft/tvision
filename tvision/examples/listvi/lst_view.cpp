@@ -5,6 +5,8 @@
 //  revised November 27,1993
 //  C.Porter
 // ***********************************************************************
+#include <string.h>
+#include <stdlib.h>
 #define Uses_TListViewer
 #define Uses_TListBox
 #define Uses_TEvent
@@ -17,8 +19,6 @@
 #define Uses_TView
 #define Uses_MsgBox
 #include <tv.h>
-#include <string.h>
-#include <stdlib.h>
 #include "lst_view.h"
 
 const int cmListKeyEnter		   = 59;

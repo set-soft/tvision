@@ -26,6 +26,7 @@
 /*                                                                       */
 /*************************************************************************/
 
+#include <string.h>
 
 #define Uses_TComboBox
 #define Uses_TComboWindow
@@ -33,7 +34,6 @@
 #define Uses_TStreamableClass
 #define Uses_TPalette
 #include "tcombobx.h"
-#include <string.h>
 
 #define cpComboBox "\x16"
 
