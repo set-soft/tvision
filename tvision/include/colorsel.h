@@ -19,7 +19,9 @@ const ushort
   cmColorBackgroundChanged = 72,
   cmColorSet               = 73,
   cmNewColorItem           = 74,
-  cmNewColorIndex          = 75;
+  cmNewColorIndex          = 75,
+  cmTryColors              = 76,
+  cmUpdateColorsChanged    = 77;
 
 #endif  // __COLOR_COMMAND_CODES 
 

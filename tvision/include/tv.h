@@ -160,6 +160,12 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __INC_MENUS_H
 #endif
 
+// SET: Just include the file to get the cm* definitions, it includes a
+// Broadcast for colors changed.
+#ifdef Uses_TColorCommands
+#define __INC_COLORSEL_H
+#endif
+
 #if defined( Uses_TColorDialog )
 #define Uses_TDialog
 #define __INC_COLORSEL_H
