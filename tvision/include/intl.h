@@ -95,7 +95,7 @@ extern "C" {
 #endif
 
 #if !defined( _ )
-#define _(msg) (msg)
+#define _(msg) ((char *)msg)
 #endif
 
 #if !defined( __ )

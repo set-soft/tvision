@@ -47,7 +47,7 @@ Example:
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TV for short) v1.0.8.
+  That's the Turbo Vision distribution (TV for short) v1.0.9.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
