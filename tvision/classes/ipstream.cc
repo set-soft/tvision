@@ -182,7 +182,7 @@ char *ipstream::readString( char *buf, unsigned maxLen )
     {
       strncpy(buf, tmp, maxLen-1);
       buf[maxLen-1] = 0;
-      delete tmp;
+      delete [] tmp;
     }
     else
       *buf = 0;

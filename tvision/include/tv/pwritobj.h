@@ -45,6 +45,7 @@ private:
 
     void *keyOf( void * );
     int compare( void *, void * );
+    void freeItem( void *item ); // Note: Just to use delete instead of delete[]
 
     P_id_type curId;
 

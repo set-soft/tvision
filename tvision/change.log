@@ -1,10 +1,14 @@
-$Log$.
+$Log$
+Revision 2.28  2001/12/30 18:35:46  set
+* Fixed: Compatlayer undefined FA_DIREC even in cases that didn't redefine
+it.
+
 Revision 2.27  2001/12/30 18:33:33  set
 * Added: Support for MSS 1.2.1 and fixed missing delete [] in demo. Patches
 by Laurynas.
 * Added: Configuration options to use MSS and documentation in the readme.
 * Fixed: Various missing delete [] in the classes.
-.
+
 Revision 2.26  2001/12/30 16:15:10  set
 * Fixed: I wrongly changed the code used for the BC++ 5.5 target to yield
 the processor to use the MinGW version. It made applications eat 100% of
