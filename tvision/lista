@@ -656,6 +656,7 @@ makes/librhtv.gpr
 makes/librhtv.imk 
 makes/librhtv.mkf
 makes/librhtv.umk
+makes/maintain.mak
 makes/obj/delete.me                                                             
 misc.cc
 miscperl.pl

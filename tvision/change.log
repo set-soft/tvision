@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.465  2003/06/02 14:44:58  set
+* Modified: The whole compilation mechanism. Now all is concentrated in the
+"makes" directory using the mkf, imk and umk files like I did in setedit
+project (check http://setedit.sf.net/ for more info).
+
 Revision 2.464  2003/05/30 19:38:32  set
 * Modified: Removed recode detection from configure script (no longer used)
 * Added: --real-prefix and --no-libs-here options for cases where the
