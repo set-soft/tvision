@@ -55,7 +55,7 @@ cases.
 #include <stdarg.h>
 #include <stdlib.h>    /* for atoi() */
 #include <ctype.h>
-
+#include <string.h>    /* strlen() and others */
 
 /* 
  * For the FLOATING POINT FORMAT :
