@@ -984,9 +984,9 @@ void TObjEditView::draw()
             sprintf(lstr, lfmt, cur->label);
             sprintf(rfmt, "%%-%is", r);
             char *tmp=newStr(getValueFor(cur));
-            if (strlen(tmp)>=(size_t)r)
+            if (tmp && strlen(tmp)>=(size_t)r)
                tmp[r-1]=0;
-            sprintf(rstr, rfmt, getValueFor(cur));
+            sprintf(rstr, rfmt, tmp ? tmp : "ERROR");
             DeleteArray(tmp);
             if (cur == curMap)
               attr = 0x71; else attr = 0x1f;

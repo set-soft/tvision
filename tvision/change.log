@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.506  2003/10/14 16:02:13  set
+* Added: A flag to TProgram to disable the Alt+N window selection. I need
+it so I can make this key combination configurable in SETEdit.
+
 Revision 2.505  2003/10/14 15:43:11  set
 * Added: A new member called reSort() to the sorted collections. It is
 useful when the sorting criteria and/or key values are changed on the fly.
