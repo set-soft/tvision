@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.511  2003/11/03 19:52:13  set
+* Added: First steps toward QNX 4 support. Contributed by Mike Gorchak and
+Frank Liu.
+
 Revision 2.510  2003/11/03 15:56:31  set
 * Modified: [X11] The default font to have " and ' of the same size.
 Suggested by Oswald.

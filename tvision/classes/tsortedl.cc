@@ -22,6 +22,10 @@ Modified by Salvador E. Tropea to add functionality.
 #define Uses_TSortedCollection
 #include <tv.h>
 
+#if defined(TVOSf_QNX4)
+ #include <unix.h>
+#endif // TVOSf_QNX4
+
 #if 0
  extern unsigned short getshiftstate(void);
  #define shiftKeys (char)(getshiftstate() & 0xff)

@@ -19,6 +19,7 @@ colors and restore them.
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_unistd
+#define Uses_signal
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_string
@@ -34,7 +35,6 @@ colors and restore them.
 #include <sys/ioctl.h>
 // GIO_CMAP ioctl
 #include <linux/kd.h>
-#include <signal.h>
 
 #include <tv/linux/screen.h>
 #include <tv/linux/key.h>
@@ -390,10 +390,6 @@ void TDisplayLinux::GetCursorShapeMDA(unsigned &start, unsigned &end)
 #endif // h386LowLevel
 
 #else // TVOSf_Linux
-
-#if defined(TVOSf_Linux)
- #include <signal.h>
-#endif
 
 #include <tv/linux/screen.h>
 #include <tv/linux/key.h>

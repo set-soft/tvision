@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-11-03 16:37
+# 2003-11-05 11:38
 #
 
 librhtv$(ExLIB):: \
@@ -129,6 +129,7 @@ librhtv$(ExLIB):: \
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
 	obj/qnx4mouse$(ExOBJ) \
+	obj/qnx4scr$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \
@@ -571,6 +572,9 @@ obj/qnx4key$(ExOBJ):: qnx4key.cc
 	$(RHIDE_COMPILE_CC)
 
 obj/qnx4mouse$(ExOBJ):: qnx4mouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4scr$(ExOBJ):: qnx4scr.cc  
 	$(RHIDE_COMPILE_CC)
 
 obj/qnxdis$(ExOBJ):: qnxdis.cc  
@@ -1224,6 +1228,7 @@ OBJFILES=\
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
 	obj/qnx4mouse$(ExOBJ) \
+	obj/qnx4scr$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \

@@ -81,6 +81,10 @@ That's a good use for the input code page.
 
 #include <tv.h>
 
+#if defined(TVOSf_QNX4)
+ #include <unix.h>
+#endif // TVOSf_QNX4
+
 // List of supported code pages
 TVCodePageCol *TVCodePage::CodePages=NULL;
 // The full description of desired code page

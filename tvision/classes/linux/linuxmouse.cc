@@ -12,6 +12,7 @@
 #define Uses_string
 #define Uses_stdio
 #define Uses_time
+#define Uses_signal
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TScreen
@@ -23,7 +24,6 @@
 //---------------- GPM version -----------------
 
 #include <termios.h>
-#include <signal.h>
 #include <tv/linux/screen.h>
 #include <tv/linux/mouse.h>
 #include <tv/linux/log.h>
@@ -126,7 +126,6 @@ THWMouseGPM::~THWMouseGPM()
 
 #if defined(TVOSf_Linux)
  #include <termios.h>
- #include <signal.h>
 #endif
 
 #include <tv/linux/screen.h>

@@ -25,18 +25,23 @@
 #define Uses_TVCodePage
 #define Uses_string
 #define Uses_ctype
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
 #if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <fcntl.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdarg.h>
 #include <termios.h>
+
+#if defined(TVOSf_QNX4)
+ #include <process.h>
+ #include <unix.h>
+#endif // TVOSf_QNX4
 
 #include <tv/unix/xtscreen.h>
 #include <tv/unix/xtkey.h>

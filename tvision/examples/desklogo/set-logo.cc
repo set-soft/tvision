@@ -33,13 +33,10 @@
 
 #ifdef TVOS_UNIX
 #define Uses_TScreen
+#define Uses_signal
 #endif
 
 #include <tv.h>
-
-#ifdef TVOS_UNIX
- #include <signal.h>
-#endif
 
 #define   PATTERN 177
 

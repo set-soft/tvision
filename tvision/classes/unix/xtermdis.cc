@@ -15,6 +15,7 @@
 #define Uses_unistd
 #define Uses_ioctl
 #define Uses_string
+#define Uses_signal
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TGKey
@@ -24,7 +25,6 @@
 #if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
-#include <signal.h>
 
 #include <tv/unix/xtscreen.h>
 #include <tv/unix/xtkey.h>
@@ -85,7 +85,7 @@ void TDisplayXTerm::Init()
  winsize win;
  win.ws_col=0xFFFF;
  ioctl(hOut,TIOCGWINSZ,&win);
- if (win.ws_col!=0xFFFF)
+ if ((win.ws_col!=0xFFFF)&&(win.ws_col!=0))
    {// Ok!
     getRows=GetRowsIOCTL;
     getCols=GetColsIOCTL;

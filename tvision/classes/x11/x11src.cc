@@ -42,6 +42,7 @@
 #define Uses_stdlib
 #define Uses_string
 #define Uses_unistd   // TScreenX11::System
+#define Uses_signal
 #define Uses_AllocLocal
 #define Uses_TDisplay
 #define Uses_TScreen
@@ -71,11 +72,14 @@
 #include <tv/x11/mouse.h>
 
 #include <locale.h>
-#include <signal.h>
 #include <sys/time.h>
 #ifdef HAVE_LINUX_PTHREAD
  #include <pthread.h>
 #endif
+
+#if defined(TVOSf_QNX4)
+ #include <process.h>
+#endif // TVOSf_QNX4
 
 #ifdef TVOSf_Solaris
  // At least in the Solaris 7 box I tested looks like ITIMER_REAL is broken
@@ -2153,7 +2157,11 @@ void TVX11UpdateThread::StartUpdateThread()
     struct sigaction s;
     s.sa_handler=UpdateThread;
     sigemptyset(&s.sa_mask);
-    s.sa_flags=SA_RESTART;
+    #if defined(SA_RESTART)
+        s.sa_flags=SA_RESTART;
+    #else
+        s.sa_flags=0;
+    #endif // SA_RESTART
     sigaction(TIMER_ALARM,&s,NULL);
     // Set the alarm
     microAlarm(refreshTime);
@@ -2200,7 +2208,11 @@ void TVX11UpdateThread::StopUpdateThread()
     struct sigaction s;
     s.sa_handler=SIG_IGN;
     sigemptyset(&s.sa_mask);
-    s.sa_flags=SA_RESTART;
+    #if defined(SA_RESTART)
+        s.sa_flags=SA_RESTART;
+    #else
+        s.sa_flags=0;
+    #endif // SA_RESTART
     sigaction(TIMER_ALARM,&s,NULL);
    }
 }

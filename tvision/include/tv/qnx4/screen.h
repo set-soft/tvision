@@ -22,6 +22,15 @@ class TDisplayQNX4: virtual public TDisplay
       static int    CheckForWindowSize(void);
       static const char* GetWindowTitle(void);
       static int    SetWindowTitle(const char* name);
+
+   protected:
+      static ushort ScreenSizeX;
+      static ushort ScreenSizeY;
+      static ushort CursorLastX;
+      static ushort CursorLastY;
+      static ushort CursorShapeStart;
+      static ushort CursorShapeEnd;
+      static char   ConsoleMode;
 };
 
 class TScreenQNX4: public TDisplayQNX4, public TScreen
@@ -46,8 +55,13 @@ class TScreenQNX4: public TDisplayQNX4, public TScreen
       static ushort getCharacter(unsigned dst);
       static void   setCharacter(unsigned offset, ushort value);
       static void   setCharacters(unsigned dst, ushort* src, unsigned len);
-      static int    System(const char* command, pid_t* pidChild, int in,
-                           int out, int err);
+      static int    System(const char* command, pid_t* pidChild, int in, int out, int err);
+
+   protected:
+      static int    InitTermLib();
+
+   protected:
+      static unsigned char DefaultRadioButton;
 };
 
 #endif // QNX4SCR_HEADER_INCLUDED

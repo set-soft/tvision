@@ -133,6 +133,11 @@ typedef unsigned long  ulong;
  #define Include_time 1
 #endif
 
+#ifdef Uses_signal
+ #undef  Include_signal
+ #define Include_signal 1
+#endif
+
 /* The following are unconditionally defined for all platforms so here I avoid
    redefinitions. */
 #undef CLY_Packed
@@ -788,7 +793,7 @@ typedef unsigned long  ulong;
   #define CLY_Redraw ForcedRedraw
   
   #undef  IOCTL_HEADER
-  #define IOCTL_HEADER    <sys/ioctl.h>
+  #define IOCTL_HEADER    <ioctl.h>
  #endif // TVOSf_QNX4
 
  /* Generic UNIX system */
@@ -1525,9 +1530,6 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #if defined(TVOSf_QNXRtP)
   #include <strings.h> // QNX RtP requires this include for functions strcasecmp, etc.
  #endif // TVOSf_QNXRtP
- #if defined(TVOSf_QNX4)
-  #include <unix.h> // QNX4 requires this include for functions strcasecmp, etc.
- #endif // TVOSf_QNX4
 #endif
 
 #if defined(Include_limits) && !defined(Included_limits)
@@ -1805,6 +1807,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_stdarg) && !defined(Included_stdarg)
  #define Included_stdarg 1
  #include <stdarg.h>
+#endif
+
+#if defined(Include_signal) && !defined(Included_signal)
+ #define Include_signal 1
+ #include <signal.h>
 #endif
 
 #if defined(Include_sys_utime) && !defined(Included_sys_utime)

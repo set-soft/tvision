@@ -210,6 +210,9 @@ stDriver Drivers[]=
   #ifdef TVOSf_QNXRtP
    { TV_QNXRtPDriverCheck, 90, "QNX" },
   #else
+   #ifdef TVOSf_QNX4
+    { TV_QNX4DriverCheck, 90, "QNX4" },
+   #endif // TVOSf_QNX4
    { TV_XTermDriverCheck, 60, "XTerm" },
    #ifdef HAVE_NCURSES
    { TV_UNIXDriverCheck, 10, "UNIX" },

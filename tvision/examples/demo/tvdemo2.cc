@@ -15,10 +15,9 @@
  */
  
 // SET: moved the standard headers before tv.h 
-#include <stdlib.h>
-#include <signal.h>
-#include <stdlib.h>
 
+#define Uses_signal
+#define Uses_stdlib
 #define Uses_TDialog
 #define Uses_TRect
 #define Uses_TStaticText

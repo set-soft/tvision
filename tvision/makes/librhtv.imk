@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-11-03 16:37
+# 2003-11-05 11:38
 #
 
 librhtv$(ExLIB):: \
@@ -129,6 +129,7 @@ librhtv$(ExLIB):: \
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
 	obj/qnx4mouse$(ExOBJ) \
+	obj/qnx4scr$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \
@@ -1714,6 +1715,36 @@ obj/qnx4mouse$(ExOBJ):: qnx4mouse.cc \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/qnx4/mouse.h \
 	$(INCLUDE_DIR)/tv/qnx4/screen.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4scr$(ExOBJ):: qnx4scr.cc \
+	$(CLASSES_DIR)/qnx4/qnx4scr.cc \
+	$(INCLUDE_DIR)/cl/unistd.h \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/drawbuf.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/point.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/qnx4/key.h \
+	$(INCLUDE_DIR)/tv/qnx4/screen.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
@@ -7075,6 +7106,7 @@ OBJFILES=\
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
 	obj/qnx4mouse$(ExOBJ) \
+	obj/qnx4scr$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \

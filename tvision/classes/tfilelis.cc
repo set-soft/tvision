@@ -56,6 +56,10 @@ exlude some particular files by configuration.
 #include <dos.h>
 #endif
 
+#if defined(TVOSf_QNX4)
+ #include <unix.h>
+#endif // TVOSf_QNX4
+
 TFileList::TFileList( const TRect& bounds,
           TScrollBar *aScrollBar) :
     TSortedListBox( bounds, 2, aScrollBar )

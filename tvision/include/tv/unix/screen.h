@@ -3,7 +3,7 @@
    Covered by the GPL license. */
 
 #if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && \
-   !defined(UNIXSCREEN_HEADER_INCLUDED) && !defined(TVOSf_QNX4)
+   !defined(UNIXSCREEN_HEADER_INCLUDED)
 #define UNIXSCREEN_HEADER_INCLUDED
 
 // virtual to avoid problems with multiple inheritance

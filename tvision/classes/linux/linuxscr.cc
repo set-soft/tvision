@@ -101,13 +101,13 @@ are just broken.
 #define Uses_TVCodePage
 #define Uses_string
 #define Uses_ctype
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
 #ifdef TVOSf_Linux
 
 #include <fcntl.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

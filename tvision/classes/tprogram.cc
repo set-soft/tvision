@@ -179,7 +179,7 @@ void TProgram::getEvent(TEvent& event)
                 if (TScreen::checkForWindowSize())
                   {
                    setScreenMode(0xFFFF);
-                   Redraw();
+                   CLY_Redraw();
                   }
                 idle();
                 }

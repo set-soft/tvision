@@ -27,6 +27,7 @@
 #define Uses_stdio
 #define Uses_string
 #define Uses_unistd
+#define Uses_signal
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
@@ -43,7 +44,6 @@
 // For the VT and key patch stuff
 #include <sys/kd.h>
 #include <sys/vt.h>
-#include <signal.h>
 
 #include <tv/linux/key.h>
 #include <tv/linux/screen.h>
