@@ -1,4 +1,8 @@
 $Log$
+Revision 1.242.2.27  2002/05/06 15:18:41  set
+* Added: [FreeBSD] Support for libintl. Changes suggested by miniEleph
+<nyxo@dnuc.polyn.kiae.su>.
+.
 Revision 1.242.2.26  2002/04/30 19:28:58  set
 * Fixed: rhide.env files are now included by .mak files and the old syntax
 to include another .env files isn't valid for make. Using "include" works

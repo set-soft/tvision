@@ -78,6 +78,9 @@ compiler.@p
   #define NEEDS_ITOA
   #define NEEDS_NL_LANGINFO
   #define NEEDS_GETLINE
+  #ifdef TVOSf_FreeBSD
+   #define NEEDS_GETOPT
+  #endif
  #endif
 #endif
 
