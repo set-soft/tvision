@@ -304,10 +304,10 @@ TScreenWinGr::~TScreenWinGr()
  
 
 /* ------------------------------------------------------------------------- */
-   void TScreenWinGr::setCharacter(unsigned offset, ushort value)
+   void TScreenWinGr::setCharacter(unsigned offset, unsigned int value)
 /* ------------------------------------------------------------------------- */
 { setCharacters( offset
-	       , &value
+	       , reinterpret_cast<ushort*>(&value)
 	       , 1 ); }
 
 /* ------------------------------------------------------------------------- */

@@ -144,7 +144,7 @@ protected:
  static void   Suspend();
  static void   clearScreen();
  static void   setCharacter( unsigned offset
-			   , ushort value );
+			   , unsigned int value );
 
  static void   setCharacters( unsigned dst
 			    , ushort  *src

@@ -274,9 +274,9 @@ void TScreenWin32::clearScreen()
  FillConsoleOutputCharacterA(hOut,' ',size,coord,&read);
 }
 
-void TScreenWin32::setCharacter(unsigned offset, ushort value)
+void TScreenWin32::setCharacter(unsigned offset, unsigned int value)
 {
- setCharacters(offset,&value,1);
+ setCharacters(offset,reinterpret_cast<ushort*>(&value),1);
 }
 
 void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)

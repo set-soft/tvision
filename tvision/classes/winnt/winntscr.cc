@@ -301,7 +301,7 @@ void TScreenWinNT::GetCharacters(unsigned offset, ushort *buf, unsigned count)
      *buf=(ushort)(outBufAttr[count]<<8) | (ushort)(uchar)outBuf[count];
 }
 
-void TScreenWinNT::SetCharacter(unsigned offset, ushort value)
+void TScreenWinNT::SetCharacter(unsigned offset, unsigned int value)
 {
  ensureOutBufCapacity(1);
  COORD coord;
