@@ -1409,17 +1409,19 @@ void TVCodePage::FillTables(int id)
      if (i>='a' && i<='z')
        {
         toUpperTable[i]=i-32;
-        AlphaTable[i]=1;
+        AlphaTable[i]=alphaChar | lowerChar;
        }
      else
         toUpperTable[i]=i;
      if (i>='A' && i<='Z')
        {
         toLowerTable[i]=i+32;
-        AlphaTable[i]=1;
+        AlphaTable[i]=alphaChar | upperChar;
        }
      else
         toLowerTable[i]=i;
+     if (i>='0' && i<='9')
+        AlphaTable[i]=digitChar;
     }
  // 2) For this code page
  uchar *s=(uchar *)p->UpLow;
@@ -1428,12 +1430,13 @@ void TVCodePage::FillTables(int id)
        {
         toLowerTable[*(s+1)]=*s;
         toUpperTable[*s]=*(s+1);
-        AlphaTable[*s]=AlphaTable[*(s+1)]=1;
+        AlphaTable[*s]=alphaChar | lowerChar;
+        AlphaTable[*(s+1)]=alphaChar | upperChar;
        }
  s=(uchar *)p->MoreLetters;
  if (s)
     for (; *s; s++)
-        AlphaTable[*s]=1;
+        AlphaTable[*s]=alphaChar;
 }
 
 /**[txh]********************************************************************

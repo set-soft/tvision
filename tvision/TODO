@@ -5,5 +5,5 @@ Biveinis <lauras@softhome.net> contributed some fixes. More work is needed.
 * Add some mode where graphic modes aren't restored. Restoring graphic modes
 is dangerous in machines with buggy Windows video drivers. Reference report:
 0001.txt.
-
+* Move the broadcast for code page remapping to the scroll bars.
 
