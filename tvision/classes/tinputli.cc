@@ -37,7 +37,10 @@ A lot of internal details changed.
 #define Uses_TPalette
 #define Uses_TVOSClipboard
 #define Uses_TGKey
+#define Uses_TGroup
 #include <tv.h>
+
+unsigned TInputLineBase::defaultModeOptions=0;
 
 // TODO: Not used here should be moved away
 char hotKey( const char *s )
@@ -79,6 +82,7 @@ TInputLineBase::TInputLineBase(const TRect& bounds, int aMaxLen) :
 {
  state|=sfCursorVis;
  options|=ofSelectable | ofFirstClick;
+ modeOptions=defaultModeOptions;
 }
 
 template class TInputLineBaseT<char,TDrawBuffer>;
@@ -488,6 +492,18 @@ void TInputLineBaseT<T,D>::setDataFromStr(void *str)
 
 void TInputLineBase::setState(ushort aState, Boolean enable)
 {
+ if (validator &&                           // We have a validator
+     (modeOptions & ilValidatorBlocks)  &&  // We want to block if invalid
+     owner && (owner->state & sfActive) &&  // The owner is visible
+     aState==sfFocused && enable==False)    // We are losing the focus
+   {
+    TValidator *v=validator;
+    validator=NULL;             // Avoid nested tests
+    Boolean ret=v->Valid(data); // Check if we have valid data
+    validator=v;
+    if (!ret)                   // If not refuse the focus change
+       return;
+   }
  TView::setState(aState,enable);
  if (aState==sfSelected ||
      (aState==sfActive && (state & sfSelected)))
