@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.378  2002/12/09 18:21:32  set
+* Modified: [X11] The filter that avoids reporting ASCII values for
+ALT+key. It was too strict making fail the KOI8R mode, so now Alt+A and
+Alt+EF (cyrillic) are a valid shortcuts for a menu with A or EF.
+
 Revision 2.377  2002/12/09 17:49:21  set
 * Modified: [X11] To read the keyboard using Unicode. So now the driver
 uses a conversion from Unicode to the current input code page. With this
