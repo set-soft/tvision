@@ -114,7 +114,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installexamples -v
+	dh_installexamples
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installinit
