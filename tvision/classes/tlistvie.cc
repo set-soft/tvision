@@ -373,8 +373,8 @@ void TListViewer::selectItem( ccIndex )
 void TListViewer::setRange( ccIndex aRange )
 {
     range = aRange;
-    if (focused > aRange)
-       focused = 0;
+    if (focused >= aRange)
+       focused = (aRange - 1 >= 0) ? aRange - 1 : 0;
     if( vScrollBar != 0 )
         {
         vScrollBar->setParams( focused,

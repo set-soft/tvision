@@ -142,3 +142,19 @@ void TSortedListBox::newList( TSortedCollection *aList )
     searchPos = USHRT_MAX;
 }
 
+TStreamable *TSortedListBox::build()
+{
+    return new TSortedListBox( streamableInit );
+}
+
+void *TSortedListBox::read( ipstream& is )
+{
+    TListBox::read(is);
+
+    // Must initialize these or serious memory overwrite
+    // problems can occur!
+    searchPos = (ushort)-1;
+    shiftState = 0;
+
+    return this;
+}

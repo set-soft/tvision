@@ -297,6 +297,13 @@ void TDirListBox::newDirectory( const char *str )
     strcpy( dir, str );
     TDirCollection *dirs = new TDirCollection( 5, 5 );
 #ifdef __DJGPP__
+    // SET: Old programs created for original TV can pass backslashes here
+    // and the code in showDirs assumes they are all forward.
+    for (int i=0; dir[i]; i++)
+       {
+        if (dir[i]=='\\')
+           dir[i]='/';
+       }
     char *drives = _("Drives");
     dirs->insert( new TDirEntry( drives, drives ) );
     if( strcmp( dir, drives ) == 0 )

@@ -348,7 +348,6 @@ void *TInputLine::read( ipstream& is )
     data = new char[maxLen + 1];
     is.readString(data, maxLen+1);
     state |= sfCursorVis;
-    options |= ofSelectable | ofFirstClick;
     is >> validator;
     return this;
 }
