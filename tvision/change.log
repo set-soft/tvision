@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.310  2002/09/13 18:55:58  set
+* Modified: [X11] Now the busy indicator shape is just XC_watch by default,
+using a configuration variable you can select Roman's cursor. Suggested by
+Ivan to allow better integration with the desktop.
+
 Revision 2.309  2002/09/13 17:04:17  set
 * Fixed: X11 detection mechanism. It failed for Darwin.
 * Fixed: other small configuration detail seen on Darwin.
