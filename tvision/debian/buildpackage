@@ -1,0 +1,4 @@
+#!/bin/sh
+chmod +x debian/rules
+dpkg-buildpackage -rfakeroot
+
