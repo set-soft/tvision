@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.172  2002/06/24 15:10:44  set
+* Fixed: dlgdsn example to compile with gcc 3.1. Patch from Andris.
+
 Revision 2.171  2002/06/24 15:04:07  set
 * Modified: Removed linuxso/Makefile and linuxso/compat.mak, they are
 created by Perl scripts and UNIX targets should have Perl anyways.

@@ -15,7 +15,7 @@ class TStringCollection;
 struct stIntCodePairs;
 
 // This is the internal structure used to describe a code page
-typedef struct
+struct CodePage
 {
  char Name[28];       // Descriptive name
  int id;              // Unique ID to identify it
@@ -26,7 +26,7 @@ typedef struct
  int LowRemapNum;     // Most code pages are plain ASCII in the first 128 symbols
  ushort *LowRemap;    // and we don't define them. This information is used when
                       // symbols under 128 needs special treatment.
-} CodePage;
+};
 
 typedef void (*TVCodePageCallBack)(ushort *map);
 
