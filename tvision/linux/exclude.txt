@@ -16,3 +16,5 @@
 *include/ncurses.h
 *include/unctrl.h
 *include/term.h
+configure.cache
+
