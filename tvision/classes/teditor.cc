@@ -266,8 +266,6 @@ void TEditor::clipPaste()
         insertFrom(clipboard);
 }
 
-extern unsigned short getshiftstate(void);
-#define shiftkeys() getshiftstate()
 
 void TEditor::convertEvent( TEvent& event )
 {
@@ -462,7 +460,7 @@ void TEditor::handleEvent( TEvent& event )
     uchar selectMode = 0;
     // SET: This way of getting the shift state is deprecated in our port, by
     // now works.
-    if( selecting == True || (shiftkeys() & 0x03) != 0 )
+    if( selecting == True || (TGKey::getShiftState() & (kbRightShiftDown|kbLeftShiftDown)) != 0 )
         selectMode = smExtend;
 
     switch( event.what )
