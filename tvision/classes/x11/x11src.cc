@@ -818,6 +818,8 @@ TScreenX11::TScreenX11()
  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::ISOLatin1Linux,
                          forcedScrCP!=-1 ? forcedScrCP : TVCodePage::ISOLatin1Linux,
                          forcedInpCP!=-1 ? forcedInpCP : TVCodePage::ISOLatin1Linux);
+ SetDefaultCodePages(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
+                     TVCodePage::ISOLatin1Linux);
 
  long aux;
  if (optSearch("ScreenWidth",aux))

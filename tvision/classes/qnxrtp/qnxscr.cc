@@ -105,6 +105,7 @@ TScreenQNXRtP::TScreenQNXRtP()
    codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::PC437,
                            forcedScrCP!=-1 ? forcedScrCP : TVCodePage::PC437,
                            forcedInpCP!=-1 ? forcedInpCP : TVCodePage::PC437);
+   SetDefaultCodePages(TVCodePage::PC437,TVCodePage::PC437,TVCodePage::PC437);
 
    suspended=0;
 

@@ -447,6 +447,11 @@ TVScreenDriverDetectCallBack TDisplay::setDetectCallBack(TVScreenDriverDetectCal
  return ret;
 }
 
+void TDisplay::SetDefaultCodePages(int idScr, int idApp, int idInp)
+{
+ TVCodePage::SetDefaultCodePages(idScr,idApp,idInp);
+}
+
 /*****************************************************************************
 
   Options routines, they are created to isolate the internal aspects.

@@ -150,6 +150,7 @@ TScreenDOS::TScreenDOS()
  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : dosCodePage,
                          forcedScrCP!=-1 ? forcedScrCP : dosCodePage,
                          forcedInpCP!=-1 ? forcedInpCP : dosCodePage);
+ SetDefaultCodePages(dosCodePage,dosCodePage,dosCodePage);
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
         CanSetBFont | CanSetSBFont  | CanSetVideoSize;
