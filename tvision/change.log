@@ -1,4 +1,9 @@
 $Log$
+Revision 1.242.2.11  2001/12/30 16:12:45  set
+* Fixed: I wrongly changed the code used for the BC++ 5.5 target to yield
+the processor to use the MinGW version. It made applications eat 100% of
+the CPU.
+
 Revision 1.242.2.10  2001/12/18 02:33:16  set
 * Added: Fine grained protection against multiple inclutions in compatlayer
 header. Also back ported some optimizations from 2.x branch.
@@ -1579,7 +1584,7 @@ djgpp.
 Revision 1.8  1999/01/13 00:55:43  set
 Passed the changes to DOS.
 
-Revision 1.7  1999/01/13 00:35:35  root (set)
+Revision 1.7  1999/01/13 00:35:35  set
 Added a linuxso directory to create the dynamically linked version of the
 library.
 

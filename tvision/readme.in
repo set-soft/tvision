@@ -14,8 +14,9 @@ The small sections are:
 9.  CPU usage
 10. Notes about international support
 11. How to submit a patch
-12. Special thanks
-13. Contact information
+12. Memory Debuggers
+13. Special thanks
+14. Contact information
 
 If you are looking for information about the Win32 target please look in the
 win32 (MingW) directory and winnt directory (BC++).
@@ -534,7 +535,21 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-12. Special thanks:
+12. Memory Debuggers:
+--------------------
+
+  The library supports the MSS memory debugger version 1.2.1 for DOS. The
+code have special provisions to workaround some limitations in MSS. To use it
+just configure the library using the --with-mss option. You'll need to link
+with the mss library as explained in the mss documentation and as shown in
+the examples. MSS should work for Linux but I didn't test it.
+  If you know about other memory debugger and you need to introduce some
+changes in the library contact me.
+
+
+
+
+13. Special thanks:
 ------------------
 
 They goes to (no particular sorting):
@@ -557,7 +572,7 @@ He contributed a lot of patches.
 
 
 
-13. Contact information:
+14. Contact information:
 -----------------------
 
 Salvador E. Tropea (SET)

@@ -83,6 +83,7 @@ $MakeDefsRHIDE[2].=' intl' if (($OS eq 'DOS') || ($OS eq 'Win32')) && (@conf{'in
 $MakeDefsRHIDE[2].=' iconv' if (@conf{'iconv'} eq 'yes');
 $MakeDefsRHIDE[2].=' '.$conf{'NameCurses'}.' m' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
+$MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
@@ -180,6 +181,14 @@ sub SeeCommandLine
       {
        $conf{'fhs'}='no';
       }
+    elsif ($i eq '--with-mss')
+      {
+       $conf{'mss'}='yes';
+      }
+    elsif ($i eq '--without-mss')
+      {
+       $conf{'mss'}='no';
+      }
     else
       {
        ShowHelp();
@@ -198,6 +207,8 @@ sub ShowHelp
  print "--no-fhs       : force to not use the FHS layout under UNIX.\n";
  print "--cflags=val   : normal C flags [default is env. CFLAGS].\n";
  print "--cxxflags=val : normal C++ flags [default is env. CXXFLAGS].\n";
+ print "--with-mss     : compiles with MSS memory debugger.\n";
+ print "--without-mss  : compiles without MSS [default].\n";
 }
 
 sub GiveAdvice
@@ -629,7 +640,8 @@ sub GenerateMakefile
 
 sub CreateConfigH
 {
- my $text="/* Generated automatically by the configure script */",$old;
+ my $text="/* Generated automatically by the configure script */";
+ my $old;
 
  print 'Generating configuration header: ';
 
@@ -646,6 +658,7 @@ sub CreateConfigH
  $text.="#define TVCPU_$CPU\n";
  $text.="#define TVComp_$Comp\n";
  $text.="#define TVCompf_$Compf\n";
+ $text.="\n#define MSS\n#include <mss.h>\n" if @conf{'mss'} eq 'yes';
 
  $old=cat('include/tv/configtv.h');
  if ($text eq $old)
