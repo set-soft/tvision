@@ -39,7 +39,7 @@ TNSCollection::TNSCollection() :
 
 TNSCollection::~TNSCollection()
 {
-    delete items;
+    delete[] items;
 }
 
 void TNSCollection::shutDown()
@@ -151,7 +151,7 @@ void TNSCollection::freeAll()
 
 void TNSCollection::freeItem( void *item )
 {
-    delete (char *)item;
+    delete[] (char *)item;
 }
 
 ccIndex TNSCollection::indexOf(void *item)
@@ -208,7 +208,7 @@ void TNSCollection::setLimit(ccIndex aLimit)
 #if 1
         if (items)
 #endif
-        delete items;
+        delete[] items;
         items =  aItems;
         limit =  aLimit;
         }
