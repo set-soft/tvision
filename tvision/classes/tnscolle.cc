@@ -46,6 +46,8 @@ void TNSCollection::shutDown()
 {
     if( shouldDelete )
         freeAll();
+    else
+        count = 0;
     setLimit(0);
     TObject::shutDown();
 }

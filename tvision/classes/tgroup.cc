@@ -531,17 +531,14 @@ void TGroup::unlock()
         drawView();
 }
 
-static ushort cmd;
-
-Boolean isInvalid( TView *p, void * )
+Boolean isInvalid( TView *p, void * commandP)
 {
-    return Boolean( !p->valid( cmd ) );
+    return Boolean( !p->valid( *(ushort *)commandP ) );
 }
 
 Boolean TGroup::valid( ushort command )
 {
-    cmd = command;
-    return Boolean( firstThat( isInvalid, 0 ) == 0 );
+    return Boolean( firstThat( isInvalid, &command ) == 0 );
 }
 
 ushort TGroup::getHelpCtx()

@@ -868,11 +868,14 @@ uint32 TEditor::nextLine( uint32 p )
 
 uint32 TEditor::nextWord( uint32 p )
 {
-    while( p < bufLen && isWordChar(bufChar(p)) != 0 )
-        p = nextChar(p);
-    while( p < bufLen && isWordChar(bufChar(p)) == 0 )
-        p = nextChar(p);
-    return p;
+   if (isWordChar(bufChar(p)))
+      while (p < bufLen && isWordChar(bufChar(p)))
+         p = nextChar(p);
+   else if (p < bufLen)
+      p = nextChar(p);
+   while (p < bufLen && !isWordChar(bufChar(p)))
+      p = nextChar(p);
+   return p;
 }
 
 uint32 TEditor::prevLine( uint32 p )
