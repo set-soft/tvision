@@ -309,7 +309,7 @@ void TGKey::SetKbdMapping(int version)
          XtermMode=0;
          break;
     case KBD_ETERM_STYLE:
-         #ifdef HAVE_DEFINE_KEY
+         #ifdef HAVE_KEYSYMS
          // SET: I submited a patch to Eterm maintainers for it:
          define_key("\x1B[k",KEY_F(57)); // End
          memset(kbX11Keys,0,sizeof(kbX11Keys));
