@@ -1,6 +1,10 @@
-/* X11 screen routines header.
+/* X11 screen routines.
    Copyright (c) 2001 by Salvador E. Tropea (SET)
    Covered by the GPL license.
+    Thanks to José Ángel Sánchez Caso (JASC). He implemented a first X11
+   driver.
+    This implementation is completly different but JASC's code gave me the
+   first notions about how an X11 application works.
 
    ToDo:
    * The SetDisPaletteColors does a redraw, it should be avoided, at least
