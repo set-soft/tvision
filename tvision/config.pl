@@ -165,6 +165,10 @@ elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=';
    $MakeDefsRHIDE[2].=' gdi32'; # Needed for WinGr driver
+   if ($conf{'alcon'} eq 'yes')
+     {
+      $MakeDefsRHIDE[2].=' kernel32 user32 comdlg32 ole32 dinput ddraw dxguid winmm dsound moldname msvcrt';
+     }
    $MakeDefsRHIDE[3]='TVOBJ=../../makes ';
    $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
@@ -179,6 +183,7 @@ $MakeDefsRHIDE[5].=' -shared' if ($OSf eq 'QNXRtP');
 $MakeDefsRHIDE[6]='RHIDE_LDFLAGS=';
 $MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
 $MakeDefsRHIDE[6].=' -shared -Wl,-soname,librhtv.so.'.$Version;
+$MakeDefsRHIDE[6].=' ESTO NO FUNCIONA -L/usr/lib/mingw -L/lib/mingw' if ($conf{'MinGW_under_cygwin'} eq 'yes');
 $libs=$conf{'X11Lib'};
 $libs=~s/(\S+)/-l$1/g;
 $MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';

@@ -242,6 +242,7 @@ sub LookForPrefix
        if (substr(@ENV{'PATH'},0,1) == '/')
          {
           @lista=split(/:/,@ENV{'PATH'});
+          @conf{'MinGW_under_cygwin'} = 'yes';
          }
        else
          {
@@ -1012,7 +1013,14 @@ sub CreateRHIDEenvs
 ";
     $text.="RHIDE_GCC=$GCC\n";
     $text.="RHIDE_GXX=$GXX\n";
-    $text.="RHIDE_LD=$GXX\n";
+    if ($conf{'alcon'} eq 'yes')
+      {
+       $text.="RHIDE_LD=$GXX --subsystem,windows \n";
+      }
+    else
+      {
+       $text.="RHIDE_LD=$GXX\n";
+      }
     $text.="RHIDE_AR=$GAR\n" if ($GAR);
     $rep ='rc';
     $rep.='s' unless $conf{'UseRanLib'};
