@@ -64,6 +64,7 @@ H”hne.
 #define SAVE_DRIVER_STATE                  0x0016
 #define RESTORE_DRIVER_STATE               0x0017
 #define SET_ALTERNATE_MOUSE_USER_HANDLER   0x0018
+#define RETURN_USER_ALTERNATE_INTERRUPT_VECTOR 0x0019
 
 char   THWMouseDOS::useMouseHandler=1;
 char   THWMouseDOS::emulateMouse=0;
@@ -199,7 +200,7 @@ void THWMouseDOS::setEmulation(int emulate)
 // same for both? My doubt is that the v6.0+ is for *alternate* handler and
 // supports upto 3 different.
 // Todo: it never checks the return value!!!
-void THWMouseDOS::RegisterHandler(unsigned mask, void (*func)())
+/*void THWMouseDOS::RegisterHandler(unsigned mask, void (*func)())
 {
  REGS r;
  static int oldes=0;
@@ -224,7 +225,37 @@ void THWMouseDOS::RegisterHandler(unsigned mask, void (*func)())
     oldes=ES;
     olddx=DX;
    }
+}*/
+void THWMouseDOS::RegisterHandler(unsigned mask, void (*func)())
+{
+ REGS r;
+ static int oldes=0;
+ static int olddx=0;
+ 
+ if (func==NULL)
+   { // INT 33 - MS MOUSE v6.0+ - SET ALTERNATE MOUSE USER HANDLER
+    DX=olddx; ES=oldes;
+    AX=SET_ALTERNATE_MOUSE_USER_HANDLER;
+    CX=mask;
+    INTR(0x33,r);
+    return;
+   }
+ else
+   {// INT 33 - MS MOUSE v6.0+ - RETURN USER ALTERNATE INTERRUPT VECTOR
+    AX=RETURN_USER_ALTERNATE_INTERRUPT_VECTOR;
+    CX=mask;
+    INTR(0x33,r);
+    oldes=BX;
+    olddx=DX;
+    // INT 33 - MS MOUSE v6.0+ - SET ALTERNATE MOUSE USER HANDLER
+    DX=mouseIntInfo.rm_offset;
+    ES=mouseIntInfo.rm_segment;
+    AX=SET_ALTERNATE_MOUSE_USER_HANDLER;
+    CX=mask;
+    INTR(0x33,r);
+   }
 }
+
 #else
 // SET: I moved it here to keep the old routine and clean the currently used.
 // I don't know why Robert dropped it. The main drawback is that you kill

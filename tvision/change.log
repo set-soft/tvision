@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.307  2002/09/13 12:25:02  set
+* Fixed: The dummy international library used "gcc" inconditionally. Now is
+configured.
+* Added: Support for ranlib separated of ar. Darwin seems to have a POSIX
+ar that doesn't support -s, untested.
+* Added: -Wno-long-double option when Darwin is detected.
+* Added: Defaults to the AlphaTable, toLowerTable and toUpperTable tables.
+In this way they can be used before initialization when we just need ASCII
+information.
+
 Revision 2.306  2002/09/12 21:08:56  set
 * Fixed: XTerm driver needs UNIX mouse code, changed conditionals.
 
