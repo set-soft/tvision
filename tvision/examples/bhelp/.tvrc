@@ -1,0 +1,6 @@
+[TV]
+{
+ # This is needed because Borland files are encoded in ANSI CP 437
+ AppCP=437
+ Font10x20=1
+}
