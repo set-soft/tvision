@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.81  2002/05/20 15:56:55  set
+* Fixed: UNIX and X11 drivers didn't set uid and gid to the effective
+values after initialization. This is used for Linux console driver, but
+must be done for all.
+* Modified: [X11] no default title is used, it was "Test".
+
 Revision 2.80  2002/05/20 15:27:29  set
 * Added: QNX files to RHIDE project and hence Makefile.
 

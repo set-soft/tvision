@@ -117,10 +117,13 @@ classes/linux/linuxdis.cc
 classes/linux/linuxkey.cc
 classes/linux/linuxmouse.cc
 classes/linux/linuxscr.cc
-classes/unix/linuxdis.cc
-classes/unix/linuxkey.cc
-classes/unix/linuxmouse.cc
-classes/unix/linuxscr.cc
+classes/unix/unixdis.cc
+classes/unix/unixkey.cc
+classes/unix/unixmouse.cc
+classes/unix/unixscr.cc
+classes/unix/xtermdis.cc
+classes/unix/xtermkey.cc
+classes/unix/xtermscr.cc
 classes/win32/win32dis.cc
 classes/win32/win32key.cc
 classes/win32/win32mouse.cc
@@ -523,6 +526,8 @@ include/tv/textdev.h
 include/tv/unix/key.h
 include/tv/unix/mouse.h
 include/tv/unix/screen.h
+include/tv/unix/xtkey.h
+include/tv/unix/xtscreen.h
 include/tv/view.h
 include/tv/win32/key.h
 include/tv/win32/mouse.h

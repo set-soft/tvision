@@ -127,7 +127,8 @@ OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	obj/tvalidat.o obj/tvedit1.o obj/tvedit2.o obj/tvedit3.o\
 	obj/tview.o obj/tvtext1.o obj/tvtext2.o obj/twindow.o obj/unixdis.o\
 	obj/unixkey.o obj/unixmouse.o obj/unixscr.o obj/x11dis.o\
-	obj/x11key.o obj/x11mouse.o obj/x11src.o
+	obj/x11key.o obj/x11mouse.o obj/x11src.o obj/xtermdis.o\
+	obj/xtermkey.o obj/xtermscr.o
 ALL_OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/expandpath.o ../compat/obj/fexpand.o\
 	../compat/obj/fileattrs.o ../compat/obj/fileexists.o\
@@ -200,7 +201,8 @@ ALL_OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	obj/tvalidat.o obj/tvedit1.o obj/tvedit2.o obj/tvedit3.o\
 	obj/tview.o obj/tvtext1.o obj/tvtext2.o obj/twindow.o obj/unixdis.o\
 	obj/unixkey.o obj/unixmouse.o obj/unixscr.o obj/x11dis.o\
-	obj/x11key.o obj/x11mouse.o obj/x11src.o
+	obj/x11key.o obj/x11mouse.o obj/x11src.o obj/xtermdis.o\
+	obj/xtermkey.o obj/xtermscr.o
 LIBRARIES=
 SOURCE_NAME=$<
 OUTFILE=$@
@@ -254,7 +256,8 @@ PROJECT_ITEMS=../compat/compat.gpr calcdisp.cc calculat.cc drivers2.cc\
 	tstrlist.cc tstrmcla.cc tstrmtyp.cc tsubmenu.cc ttermina.cc\
 	ttextdev.cc tvalidat.cc tvedit1.cc tvedit2.cc tvedit3.cc tview.cc\
 	tvtext1.cc tvtext2.cc twindow.cc unixdis.cc unixkey.cc unixmouse.cc\
-	unixscr.cc x11dis.cc x11key.cc x11mouse.cc x11src.cc
+	unixscr.cc x11dis.cc x11key.cc x11mouse.cc x11src.cc xtermdis.cc\
+	xtermkey.cc xtermscr.cc
 DEFAULT_MASK=*
 RHIDE_BIN_DIR=/usr/bin
 PASCAL_TYPE=GPC
@@ -636,7 +639,8 @@ DEPS_0= ../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	obj/tvalidat.o obj/tvedit1.o obj/tvedit2.o obj/tvedit3.o\
 	obj/tview.o obj/tvtext1.o obj/tvtext2.o obj/twindow.o obj/unixdis.o\
 	obj/unixkey.o obj/unixmouse.o obj/unixscr.o obj/x11dis.o\
-	obj/x11key.o obj/x11mouse.o obj/x11src.o 
+	obj/x11key.o obj/x11mouse.o obj/x11src.o obj/xtermdis.o\
+	obj/xtermkey.o obj/xtermscr.o 
 NO_LINK=
 LINK_FILES=$(filter-out $(NO_LINK),$(DEPS_0))
 librhtv.a:: $(DEPS_0)
@@ -3234,5 +3238,41 @@ DEPS_226=x11src.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/x11/key.h ../include/tv/x11/mouse.h\
 	../include/tv/x11/screen.h
 obj/x11src.o:: $(DEPS_226)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_227=xtermdis.cc ../include/compatlayer.h ../include/tv.h\
+	../include/tv/configtv.h ../include/tv/intl.h\
+	../include/tv/ipstream.h ../include/tv/linux/log.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/screen.h ../include/tv/stddlg.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvutil.h ../include/tv/unix/xtscreen.h\
+	../include/tv/views.h
+obj/xtermdis.o:: $(DEPS_227)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_228=xtermkey.cc ../include/compatlayer.h ../include/tv.h\
+	../include/tv/configtv.h ../include/tv/event.h ../include/tv/gkey.h\
+	../include/tv/intl.h ../include/tv/ipstream.h\
+	../include/tv/linux/log.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/point.h\
+	../include/tv/pstream.h ../include/tv/stddlg.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvutil.h ../include/tv/unix/xtkey.h\
+	../include/tv/views.h
+obj/xtermkey.o:: $(DEPS_228)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_229=xtermscr.cc ../include/compatlayer.h ../include/tv.h\
+	../include/tv/configtv.h ../include/tv/drawbuf.h\
+	../include/tv/event.h ../include/tv/gkey.h ../include/tv/intl.h\
+	../include/tv/ipstream.h ../include/tv/linux/log.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h\
+	../include/tv/screen.h ../include/tv/stddlg.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvutil.h ../include/tv/unix/xtkey.h\
+	../include/tv/unix/xtscreen.h ../include/tv/views.h
+obj/xtermscr.o:: $(DEPS_229)
 	$(RHIDE_COMPILE.cc.o)
 all:: librhtv.a
