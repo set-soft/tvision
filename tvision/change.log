@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.492  2003/07/30 14:37:36  set
+* Fixed: [WinNT driver] Asterisk key not reported. Reported by "Warren H.
+Holt" <wHolt@sierra-idt.com>
+* Fixed: Alt+ASCII carried the ASCII value.Reported by "Warren H. Holt"
+<wHolt@sierra-idt.com>
+
 Revision 2.491  2003/07/30 14:18:20  set
 * Updated the web page to list the new packages.
 
