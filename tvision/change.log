@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.399.2.76  2003/05/21 14:24:30  set
+* Fixed: [Linux] Moved the UTF-8 detection to be done after saving the
+screen contents.
+* Fixed: [Linux] The mpaColor to support the new "8 colors" mode. The test
+program successfully run in an UTF-8 console without /dev/vcs* access.
+
 Revision 2.399.2.75  2003/05/21 12:28:24  set
 * Fixed: TVCodePage::CreateCPFromUnicode(...) corrupted the data when
 creating the LowRemap part. It was the reason for some random fails while
