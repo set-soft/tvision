@@ -12,7 +12,9 @@ ftp://ftp.borland.com/pub/borlandcpp/devsupport/archive/turbovision/tv.zip
   Look in the borland.txt file for more information.
   They were heavily patched to work with gcc. Some patch fixes bugs, others
 changes the behavior of things limited to 16 bits values, the resulting
-TVision isn't 100% compatible with the original.
+TVision isn't 100% compatible with the original. See the examples/porting.txt
+file for more information, I explain which differences I found while porting
+the examples there.
   Most of the patches were made by Robert Hoehne. I contributed with various
 patches and modules mainly to extend the original functionality.
   The library is distributed under the GPL license even when I don't know if
