@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.50  2002/05/06 13:32:17  set
+* Modified: A lot of DOS code. Now you can get an usable demo application
+for DOS. Screen, mouse and keyboard seems to be usable.
+
 Revision 2.49  2002/05/03 16:56:22  set
 * Fixed: Invisible cursor in the Linux driver.
 

@@ -74,6 +74,7 @@ protected:
 public:
  // Needed to initialize it.
  static void Init();
+ static void DeInit();
  // Indicates if the initialization will install a Real Mode Callback to
  // hook the mouse. That's enabled by default when the OS isn't Win NT.
  // Set it to 0 before initialization to avoid hooking the mouse.

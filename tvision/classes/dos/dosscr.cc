@@ -81,8 +81,8 @@ TScreenDOS::TScreenDOS()
  TScreen::setCharacters=setCharacters;
  TScreen::System=System;
 
- TGKeyDOS::Init();
  THWMouseDOS::Init();
+ TGKeyDOS::Init();
 
  flags0=CodePageVar;
  user_mode=screenMode=startupMode=getCrtMode();
@@ -117,6 +117,7 @@ void TScreenDOS::Resume()
 TScreenDOS::~TScreenDOS()
 {
  SaveScreenReleaseMemory();
+ THWMouseDOS::DeInit();
 //  setCrtMode(startupMode);
 //  textmode(startupMode);
 //  if (startupMode == user_mode)
