@@ -29,7 +29,6 @@ here an events handler with a queue.
 #include <tv/win32/screen.h>
 #include <tv/win32/mouse.h>
 #include <tv/win32/key.h>
-#include <stdio.h>
 
 MouseEventType  *THWMouseWin32::evMouseIn;
 MouseEventType  *THWMouseWin32::evLastMouseIn=NULL;
@@ -57,16 +56,16 @@ void THWMouseWin32::putConsoleMouseEvent(MouseEventType& mouse)
  EnterCriticalSection(&lockMouse);
  if (evMouseLength<eventMouseQSize)
    {// Compress mouse events
-    /*if (evLastMouseIn && evMouseLength && (evLastMouseIn->buttons==mouse.buttons))
+    if (evLastMouseIn && evMouseLength && (evLastMouseIn->buttons==mouse.buttons))
        *evLastMouseIn=mouse;
     else
-      {*/
+      {
        evMouseLength++;
        *evMouseIn=mouse;
        evLastMouseIn=evMouseIn;
        if (++evMouseIn>=&evMouseQueue[eventMouseQSize])
           evMouseIn=&evMouseQueue[0];
-      //}
+      }
    }
  LeaveCriticalSection(&lockMouse);
 }

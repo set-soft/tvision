@@ -36,8 +36,6 @@ needed.
 #include <tv/win32/mouse.h>
 #include <tv/win32/key.h>
 
-#include <stdio.h>
-
 CHAR_INFO                 *TScreenWin32::buffer=NULL;
 CONSOLE_SCREEN_BUFFER_INFO TScreenWin32::info;
 int                        TScreenWin32::ExitEventThread=0;

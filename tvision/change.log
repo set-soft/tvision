@@ -1,4 +1,15 @@
-$Log$.
+$Log$
+Revision 2.62  2002/05/13 13:14:30  set
+* Fixed: Win32 makefile now needs vpath for the DOS files (now separated).
+* Updated: The files distribution list.
+* Fixed: [Win32] Many typos and missing references in the Win32 code so now
+it compiles.
+* Added: [Win32] the console state and cursor position/shape is restored.
+* Fixed: [Win32] the screen content is now restored, Vadim specified a
+wrong rectangle.
+* Updated: [Win32] the readme.
+* I tested all with Cygwin and seems to quite functional.
+
 Revision 2.61  2002/05/13 13:03:35  set
 * Modified: [UNIX] Now the FHS detection is more strict, the existance of
 share/doc is not enough, share/man and shared/info must exist.
