@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.146  2004/03/03 17:34:15  set
+* Fixed: Typos in big-endian fix.
+
 Revision 2.399.2.145  2004/01/13 14:25:35  set
 * Fixed: [BC++] Missing QNX4 directory.
 * Fixed: [BC++] It doesn't have ioctl.h.
