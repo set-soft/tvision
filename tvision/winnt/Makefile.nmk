@@ -83,6 +83,9 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/winntscr.o $(OBJDIR)/x11dis.o $(OBJDIR)/x11key.o $(OBJDIR)/x11mouse.o $(OBJDIR)/x11src.o $(OBJDIR)/xtermdis.o\
 	$(OBJDIR)/xtermkey.o $(OBJDIR)/xtermmouse.o $(OBJDIR)/xtermscr.o
 
+tvex.exe: libtv.lib
+	$(CXX) $(CXXFLAGS) tvex.cc -link libtv.lib user32.lib
+
 {$(SRC1)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 

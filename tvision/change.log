@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.202  2002/07/02 19:06:16  set
+* Fixed: [Linux] Disabled code in dual.cc, this file must be removed.
+
 Revision 2.201  2002/07/02 18:14:18  set
 * Fixed: dual.cc referenced dual_display that now is temporally inside
 TDisplay.
