@@ -1,127 +1,78 @@
-/* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1999-2001 by Salvador Eduardo Tropea */
+/* Internationalization support routines header.
+   Copyright by Salvador E. Tropea (SET) (2003)
+   Covered by the GPL license. */
 
 #ifdef FORCE_INTL_SUPPORT
-#define HAVE_INTL_SUPPORT 1
+ #define HAVE_INTL_SUPPORT 1
 #else
-#include <tv/configtv.h>
+ #include <tv/configtv.h>
 #endif
 
-#ifdef HAVE_INTL_SUPPORT
+#ifndef TVIntl_Included
+#define TVIntl_Included
 
-#ifdef __DJGPP__
- // Avoid collisions with conio
- #undef gettext
-#endif
-#ifdef __cplusplus
-extern "C" {
-#endif
-// We know the prototypes and it helps with the dummy.
-// Note: Looks like some glibc 2.2.5 copies (not the one used in Debian)
-// defines the prototypes even if the header isn't explicitly included.
-// (Is that a valid behavior? or is just a bug).
-#ifndef textdomain
-char *textdomain(const char *domainname);
-#endif
-#ifndef bindtextdomain
-char *bindtextdomain(const char *domainname, const char *dirname);
-#endif
-#ifndef __DJGPP__
- #ifndef gettext
- char *gettext(const char *msgid);
+class TVIntl
+{
+public:
+ TVIntl() {};
+ // Set the domain or catalog of translations (usually the name of the program)
+ static const char *textDomain(const char *domainname);
+ // Indicate a directory to search for catalogs
+ static const char *bindTextDomain(const char *domainname, const char *dirname);
+ // Translate the message
+ static const char *getText(const char *msgid);
+
+ // Special (and tricky members)
+ // Set the encoding for the catalog
+ static void        setCatalogEncoding(int cp) { forcedCatalogEncoding=cp; };
+ // Dis/Enable translations
+ static void        enableTranslations() { initialize(); };
+ static void        disableTranslations() { translate=0; };
+ // Returns a newly allocated string and translated (if enabled)
+ static char       *getTextNew(const char *msgid);
+
+protected:
+ // Enable translations
+ static char translate;
+ // Class already initialized
+ static char initialized;
+ // Indicates if the catalog must be recoded to match the application code page.
+ static char needsRecode;
+ // Used to change the implicit encoding
+ static int  forcedCatalogEncoding;
+ // Assumed catalog encoding. This is OS independent and is an arbitrary
+ // criteria for TV. It makes easier to create portable programs.
+ static int  catalogEncoding;
+ // Default encodings used for TV. Defined only for the available translations.
+ static const char *defaultEncodingNames[];
+ static int defaultEncodings[];
+ static void *previousCPCallBack;
+ static uchar recodeTable[256];
+
+ static void initialize();
+ static void codePageCB(ushort *map);
+ static void recodeStr(char *str, int len);
+};
+
+#ifndef _
+ #ifdef HAVE_INTL_SUPPORT
+  #define _(msg) TVIntl::getText(msg)
+ #else
+  #define _(msg) (msg)
  #endif
 #endif
-char *gettext__(const char *msgid);
-#ifdef __cplusplus
-}
-#endif
-//#include <libintl.h>
 
-// Must use __DJGPP__ here
-#ifndef __DJGPP__
-# if !defined(__GLIBC__) || __GLIBC__<2
-   // By default use gettext
-#  define gettext__ gettext
-# else
-#  if (__GLIBC__==2 && __GLIBC_MINOR__>0) || __GLIBC__>2
-#   define gettext__ gettext
-#  else
-    // exception: glibc 2.0 needs __gettext
-#   define gettext__ __gettext
-#  endif
-# endif
+#ifndef __
+ #define __(msg) (msg)
 #endif
 
-#if !defined( GETTEXT )
-#define GETTEXT gettext__
+#ifndef BINDTEXTDOMAIN
+ #define BINDTEXTDOMAIN(a,b) TVIntl::bindTextDomain(a,b)
 #endif
 
-#if !defined( gettext_noop )
-#define gettext_noop(msg) msg
+#ifndef TEXTDOMAIN
+ #define TEXTDOMAIN(a) TVIntl::textDomain(a)
 #endif
 
-#if !defined( GETTEXT_NOOP )
-#define GETTEXT_NOOP gettext_noop
-#endif
+#endif // TVIntl_Included
 
-#if !defined( TEXTDOMAIN )
-#define TEXTDOMAIN textdomain
-#endif
-
-#if !defined( BINDTEXTDOMAIN )
-#define BINDTEXTDOMAIN bindtextdomain
-#endif
-
-#if !defined( _ )
-#define _(msg) GETTEXT(msg)
-#endif
-
-#if !defined( __ )
-#define __(msg) GETTEXT_NOOP(msg)
-#endif
-
-#else  /* HAVE_INTL_SUPPORT */
-
-/***************************** NO intl support ***************************/
-#ifndef __RH_INTL_H__
-#define __RH_INTL_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#if !defined( GETTEXT )
-#define GETTEXT gettext__
-#endif
-
-#if !defined( gettext_noop )
-#define gettext_noop(msg) (msg)
-#endif
-
-#if !defined( GETTEXT_NOOP )
-#define GETTEXT_NOOP gettext_noop
-#endif
-
-#if !defined( TEXTDOMAIN )
-#define TEXTDOMAIN 
-#endif
-
-#if !defined( BINDTEXTDOMAIN )
-#define BINDTEXTDOMAIN
-#endif
-
-#if !defined( _ )
-#define _(msg) ((char *)msg)
-#endif
-
-#if !defined( __ )
-#define __(msg) GETTEXT_NOOP(msg)
-#endif
-
-#endif
-
-#endif /* else HAVE_INTL_SUPPORT */

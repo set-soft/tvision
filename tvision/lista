@@ -113,6 +113,7 @@ classes/tsubmenu.cc
 classes/ttermina.cc
 classes/ttextdev.cc
 classes/tvalidat.cc
+classes/tvintl.cc
 classes/tvedit1.cc
 classes/tvedit2.cc
 classes/tvedit3.cc

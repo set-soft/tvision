@@ -3,7 +3,7 @@
   This file isn't based in original TV file anymore.
   It was originally based on it and modified by Robert H”hne to be used for
 RHIDE. But currently it was rethinked from the start by Salvador E. Tropea.
-  Copyright (c) 2000 by Salvador E. Tropea. Covered by the GPL license.
+  Copyright (c) 2000-2003 by Salvador E. Tropea. Covered by the GPL license.
   Most of the OS dependent code was moved to the "Compat LaYer" library.
 
 */
@@ -32,6 +32,5 @@ const int maxReplaceStrLen = 80;
 #ifndef pid_t
 # define pid_t int
 #endif
-int TV_System(const char *command, pid_t *pidChild=0);
 
-#endif	// CONFIG_H_INCLUDED
+#endif // CONFIG_H_INCLUDED

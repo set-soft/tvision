@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.25  2003/04/03 20:06:22  set
+* Modified: The following patch enforces the use of the return value of
+gettext (intl library) as a const char *.
+
 Revision 2.399.2.24  2003/04/02 13:37:31  set
 * Added: [MinGW] Some comments about common problems with MinGW, like
 configuring without international support and avoiding files with debug info
