@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.389  2002/12/19 17:29:43  set
+* Updated: Russian translations. Contributed by Roman Valyushenko
+<smhs@mail.ru>
+* Updated: List of changes in 2.0.1.
+* Fixed: Wrong links in web page. Reported by Michel Catudal
+<bbcat@netonecom.net>.
+
 Revision 2.388  2002/12/17 14:23:26  set
 * Fixed: [X11] I used Xutf8LookupString without realizing that's an
 XFree86 4.0.2+ extension. Added conditionals for it (untested).
