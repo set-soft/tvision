@@ -189,6 +189,11 @@ int TDisplayWinNT::SetWindowTitle(const char *name)
  return SetConsoleTitle(name);
 }
 
+void TDisplayWinNT::Beep()
+{
+ MessageBeep(0xFFFFFFFF);
+}
+
 TDisplayWinNT::~TDisplayWinNT() {}
 
 void TDisplayWinNT::Init()
@@ -202,6 +207,7 @@ void TDisplayWinNT::Init()
  setWindowTitle=SetWindowTitle;
  getWindowTitle=GetWindowTitle;
  clearScreen=ClearScreen;
+ beep=Beep;
 }
 
 #else

@@ -73,6 +73,7 @@ protected:
  static int         SetWindowTitle(const char *name);
  static int         CheckForWindowSize(void);
  static void        SetFontMode( int fontIdx );
+ static void        Beep();
 
 
 // Support functions

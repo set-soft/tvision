@@ -40,6 +40,7 @@ protected:
  static int    SetWindowTitle(const char *name);
  static int    SetDisPaletteColors(int from, int number, TScreenColor *colors);
  static void   GetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static void   Beep();
 
  // Function members for this driver
  // Calls the BIOS 0x10 interrupt (Video service)

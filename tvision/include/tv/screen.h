@@ -138,6 +138,9 @@ public:
  // SET: Roman Valyushenko propposed some mechanism no indicate the
  // application is busy
  static Boolean (*showBusyState)(Boolean state);
+ // SET: The bell/beep is something really tied to the terminal
+ static void   (*beep)();
+ static void     bell() { beep(); };
  // This should be called before initialization.
  // Isn't mandatory but helps some drivers.
  static void     setArgv(int aArgc, char **aArgv, char **aEnvir);
@@ -231,6 +234,7 @@ protected:
  static int         defaultSetDisPaletteColors(int from, int number, TScreenColor *colors);
  static int         defaultSetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
  static Boolean     defaultShowBusyState(Boolean state);
+ static void        defaultBeep();
 
 private:
  // From original TV 2.0.
@@ -333,6 +337,8 @@ public:
  static char    *optSearch(const char *variable);
  static const char
                 *getDriverShortName() { return currentDriverShortName; }
+ static void     beep() { TDisplay::beep(); };
+ static void     bell() { TDisplay::beep(); };
 
  // SET: flags capabilities flags
  enum Capabilities1

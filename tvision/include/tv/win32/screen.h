@@ -30,6 +30,7 @@ protected:
  static int SetWindowTitle(const char *name);
  static void SetCrtMode(ushort);
  static void SetCrtModeExt(char *);
+ static void Beep();
 
  // Variables for this driver
  // Input/output handles

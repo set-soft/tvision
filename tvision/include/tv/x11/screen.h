@@ -87,6 +87,7 @@ protected:
  static void   RestoreFonts();
  static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
  static Boolean ShowBusyState(Boolean state);
+ static void    Beep();
  
 protected:
  // Blinking cursor emulation

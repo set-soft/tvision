@@ -16,9 +16,7 @@ same used in original Turbo Vision for compatibility purposes.
 ***************************************************************************/
 
 //#define DEBUG_CURSOR
-#ifdef DEBUG_CURSOR
- #define Uses_stdio
-#endif
+#define Uses_stdio
 #define Uses_stdlib
 #define Uses_TScreen
 #define Uses_TVCodePage
@@ -54,6 +52,7 @@ int         (*TDisplay::setCrtModeRes)(unsigned w, unsigned h, int fW, int fH)
                                                   =TDisplay::defaultSetCrtModeRes;
 Boolean     (*TDisplay::showBusyState)(Boolean state)
                                                   =TDisplay::defaultShowBusyState;
+void        (*TDisplay::beep)()                   =TDisplay::defaultBeep;
 int           TDisplay::argc                      =0;
 char        **TDisplay::argv                      =NULL;
 char        **TDisplay::environment               =NULL;
@@ -298,6 +297,15 @@ Boolean TDisplay::defaultShowBusyState(Boolean state)
  return ret;
 }
 
+/**[txh]********************************************************************
+  Description:
+  Makes an audible indication.
+***************************************************************************/
+
+void TDisplay::defaultBeep()
+{
+ puts("\x7");
+}
 
 TDisplay::TDisplay()
 {
