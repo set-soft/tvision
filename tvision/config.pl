@@ -505,7 +505,7 @@ int main(void)
 
 sub LookForXlib()
 {
- my ($test,$o,$libs,$testPr);
+ my ($test,$o,$libs,$testPr,$libs);
 
  print 'Looking for X11 libs: ';
  if (@conf{'HAVE_X11'})
@@ -527,6 +527,8 @@ int main(void)
 }
 ';
  $conf{'X11LibPath'}='/usr/X11R6/lib' unless $conf{'X11LibPath'};
+ # Looks like Cygwin does all static!
+ $libs=($Compf eq 'Cygwin') ? 'Xmu Xt SM ICE X11' : 'X11 Xmu';
  $conf{'X11Lib'}='X11 Xmu' unless $conf{'X11Lib'};
  $libs=$conf{'X11Lib'};
  $libs=~s/(\S+)/-l$1/g;

@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.324  2002/09/16 19:18:40  set
+* Modified: eliminated the direct use of alloca in C++ code. Now the code
+calls AllocLocalStr giving more chances to hide the implementation.
+* Modified: [MinGW] when version is >=2 I define alloca as __builtin_alloc.
+Looks like MinGW people didn't define alloca in headers, even when that's
+a builtin gcc "function". It isn't tested by I tried to strictly enclose it
+using __MINGW32_MAJOR_VERSION>=2. From a report by Igor Gnip
+<gnipi@digitalsystem.co.yu>.
+
 Revision 2.323  2002/09/16 15:55:20  set
 * Added: A new configuration option "DontMoveHiddenCursor". It disables the
 Braille Terminal helper in favor of speed.
