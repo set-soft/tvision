@@ -210,11 +210,10 @@ RHIDE_PATH_SEPARATOR_Linux=:
 RHIDE_PATH_SEPARATOR=$(RHIDE_PATH_SEPARATOR_$(RHIDE_OS))
 RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
 RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++\
-	/usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
+RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
 TVSRC=../../include /usr/src/tvision/include /usr/include/rhtvision
-RHIDE_OS_LIBS= ncurses m gpm
-TVOBJ=/usr/src/tvision/linux /usr/lib ../../linux
+RHIDE_OS_LIBS=ncurses m gpm
+TVOBJ=../../linux /usr/src/tvision/linux /usr/lib
 RHIDE_AR=ar
 INCLUDE_DIRS=../include
 LIB_DIRS=
