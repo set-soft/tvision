@@ -45,6 +45,8 @@ $GCC=CheckGCC();
 $GXX=CheckGXX();
 # Which architecture are we using?
 DetectCPU();
+# 32 or 64 bits pointers?
+DetectPointersSize();
 # Some platforms aren't easy to detect until we can compile.
 DetectOS2();
 # The prefix can be better determined if we know all the rest
@@ -977,6 +979,45 @@ int main(int argc, char *argv[])
  print "OK\n";
 }
 
+sub DetectPointersSize()
+{
+ my $test;
+
+ print 'Looking for pointer size: ';
+ if ($conf{'HAVE_64BITS_POINTERS'})
+   {
+    print ($conf{'HAVE_64BITS_POINTERS'} eq 'yes' ? '64' : '32')."bits (cached)\n";
+    return;
+   }
+
+ $test='
+#include <stdio.h>
+
+int main(void)
+{
+ printf("%d\n",sizeof(void *));
+ return 0;
+}
+';
+ $test=RunGCCTest($GCC,'c',$test,'');
+ chop($test);
+ if ($test eq '8')
+   {
+    $conf{'HAVE_64BITS_POINTERS'}='yes';
+    print " 64 bits\n";
+   }
+ elsif ($test eq '4')
+   {
+    $conf{'HAVE_64BITS_POINTERS'}='no';
+    print " 32 bits\n";
+   }
+ else
+   {
+    CreateCache();
+    die "Unknown pointer size!!\n";
+   }
+}
+
 sub GenerateMakefile
 {
  my ($text,$rep,$makeDir,$ver,$internac,$maintain);
@@ -1197,6 +1238,7 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
  $text.=ConfigIncDefYes('HAVE_LINUX_PTHREAD','Linux implementation of POSIX threads');
  $text.=ConfigIncDefYes('HAVE_UNSAFE_MEMCPY','Memcpy doesn\'t support overlaps');
+ $text.=ConfigIncDefYes('HAVE_64BITS_POINTERS','64 bits pointers');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n";
  $text.="#define TVOSf_$OSf\n";
