@@ -1736,6 +1736,7 @@ void TScreenX11::DoResize(unsigned w, unsigned h)
  XResizeWindow(disp,mainWin,maxX*fontW,maxY*fontH);
  /* Compute cursor position and draw it */
  SetCursorPos(cursorX,cursorY);
+ DrawCursor();
 }
 
 TScreenFont256 *TScreenX11::ChooseClosestFont(unsigned fW, unsigned fH)
