@@ -1,7 +1,7 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* Copyright (C) 1998-2001 Salvador Eduardo Tropea */
 /*
-
+TODO:
 TurboVision_screenOptions
 Un mecanismo para deshabilitar el uso de vcs como opción
    * Environment variable support.
@@ -331,13 +331,26 @@ void TScreenUNIX::startcurses()
        TerminalType=GENER_TERMINAL;
       }
     else if (!strcmp(terminal,"console") ||
-             !strcmp(terminal,"linux"))
-      { // Special case where we know the values and that 17 colors are available
+             !strncmp(terminal,"linux",5))
+      { // Special case where we know the values or can make a good guess
+       // Assume linux or linux-c
        palette = PAL_HIGH;
        TScreenUNIX::screenMode = TScreenUNIX::smCO80;
        use_pc_chars = 1;
        TerminalType=LINUX_TERMINAL;
        LOG("Using high palette");
+       if (strstr(terminal,"-m-")!=NULL || !strcmp(terminal+strlen(terminal)-2,"-m")) // linux-m
+         { // Mono mode, explicitly supress colors even if they are available
+          palette = PAL_MONO;
+          TScreen::screenMode = TScreen::smMono;
+         }
+       else if (strchr(terminal, '-')!=NULL && // Have a modifier
+                !(strstr(terminal,"-c-")!=NULL || !strcmp(terminal+strlen(terminal)-2,"-c"))) // It isn't color modifier
+         { // Not some color variation, so most probably a different charset
+          use_pc_chars = 0;
+          TerminalType=GENER_TERMINAL;
+         }
+       LOG(palette == PAL_HIGH ? "Using high palette" : "Using mono palette");
       }
     else if (xterm && has_colors())
       { // SET: Here we know the escape sequences and as a plus the bold
