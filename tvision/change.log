@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.178  2002/06/26 15:17:11  set
+* Fixed: [Linux] When the VCS access wasn't available the routine that
+restores the screen content put 0x0 attributes in spaces after the text.
+They become invisible and what's worst the cursor is also invisible when
+positioned over such a character. Now the buffer is properly filled with
+the default color (7).
+
 Revision 2.177  2002/06/25 12:17:16  set
 * Fixed: The Help Compiler to compile with gcc 3.x, also fixed some bugs.
 

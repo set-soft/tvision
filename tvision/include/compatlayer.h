@@ -939,7 +939,9 @@ typedef unsigned long  ulong;
      #define Include_unistd 1 */
  #endif
  #ifdef Uses_access
-  #error Where is access defined?
+  #undef  Include_io
+  #define Include_io 1
+  #define access(a,b) _access(a,b)
  #endif
  #ifdef Uses_ctype
   #undef  Include_ctype
