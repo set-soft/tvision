@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.526  2004/01/13 14:30:28  set
+* Fixed: [BC++] Missing QNX4 directory.
+* Fixed: [BC++] It doesn't have ioctl.h.
+
 Revision 2.525  2003/12/12 05:17:50  lmike
 * Fixed some mouse issues for the QNX6.
 * Fixed tvision.qpg file, added proper library dependencies.
