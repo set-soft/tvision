@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.194  2002/07/01 14:26:11  set
+* Fixed: [X11] cursor artifacts intoduced in last patches.
+
 Revision 2.193  2002/07/01 13:02:47  set
 * Added: Font set/restore mechanism to TScreen.
 * Added: [X11] Full fonts support.

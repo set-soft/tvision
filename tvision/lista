@@ -287,6 +287,10 @@ examples/fonts/rhide.env
 examples/fonts/test.cc
 -examples/fonts/test.gpr
 examples/fonts/test.mak
+examples/helpdemo/helpdemo.cc
+-examples/helpdemo/helpdemo.gpr
+examples/helpdemo/helpdemo.mak
+examples/helpdemo/rhide.env
 -examples/inplis/implis.gpr
 examples/inplis/inplist.cpp
 examples/inplis/inplist.h
