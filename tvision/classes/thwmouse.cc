@@ -13,6 +13,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #ifdef __DJGPP__
 
+#include <stdlib.h>
 #define Uses_TEvent
 #define Uses_TEventQueue
 #include <tv.h>
@@ -272,6 +273,11 @@ int use_mouse_handler = 1;
 
 THWMouse::THWMouse()
 {
+  char *OS=getenv("OS");
+  // SET: NT reacts crashing when we use the mouse handler, don't know why
+  // and personally don't care, so just disable the handler.
+  if (OS && strcmp(OS,"Windows_NT")==0)
+     use_mouse_handler=0;
   REGS r;
   AX = 0;
   INTR(0x33,r);

@@ -197,7 +197,8 @@ ushort TDisplay::getCrtMode()
 
 extern int emulate_mouse;
 /* tmode from 0 to 5 */
-extern "C" int set_tweaked_text(int tmode, void (*setf)(int));
+extern "C" int set_tweaked_text(int tmode, void (*setf)(int),
+                                void (*sm)(__dpmi_regs *regs));
 
 // A way to avoid problems from the C side
 extern "C" void set_font_for_tweaked_C_code(int lines);
@@ -207,6 +208,29 @@ void set_font_for_tweaked_C_code(int lines)
  // Tweaked uses BIOS and hence have the 8/9x16 fonts loaded so avoid a
  // reload
  TDisplay::SelectFont(lines,lines==16 ? 1 : 0);
+}
+
+static
+void SetVideoModeInt(__dpmi_regs *regs)
+{
+ // Windows NT workaround, looks like is something that happends in my
+ // machine but happends.
+ // I tested Windows NT 4.0 spanish, spanish+SP3 and english running in a
+ // TXProII motherboard with a M571 SYS integrated video chip using AMI
+ // BIOS and a K6 233 CPU. The fact is that NT clobbers the time after
+ // setting the video mode, the value that appears is around 512 hours and
+ // looks like that's enough to produce a "divide overflow" exception in the
+ // emulated DOS, it kills the djgpp application.
+
+ unsigned long v1=_farpeekl(_dos_ds,0x46C);
+ 
+ __dpmi_int(0x10,regs);
+ 
+ unsigned long v2=_farpeekl(_dos_ds,0x46C);
+ if (v2-v1>65536)
+   { // Come on, switching video modes can't take 1 hour ;-)))
+    _farpokel(_dos_ds,0x46C,v1+5);
+   }
 }
 
 // SET: Added VESA support
@@ -222,7 +246,7 @@ void Textmode(int mode)
    {
     AX=(mode & 0xff) | 0x80; // do not clear the screen
    }
- INTR(0x10,r_display);
+ SetVideoModeInt(&r_display);
 }
 
 /* The following code is taken from conio.c. I had to do this,
@@ -250,7 +274,7 @@ set_scan_lines_and_font(int scan_lines, int font)
 
   /* Scan lines setting only takes effect when video mode is set.  */
   regs.x.ax = 0x83;
-  __dpmi_int(0x10, &regs);
+  SetVideoModeInt(&regs);
 
   TDisplay::SelectFont(font);
 }
@@ -270,7 +294,7 @@ set_scan_lines_and_8x10_font(int scan_lines)
 
   /* Set video mode, so that scan lines we set will take effect.  */
   regs.x.ax = 0x83;
-  __dpmi_int(0x10, &regs);
+  SetVideoModeInt(&regs);
 
   /* Load our 8x10 font and enable intensity bit.  */
   TDisplay::SelectFont(10);
@@ -297,7 +321,7 @@ __set_screen_lines(int nlines)
 
           /* Set video mode.  */
           regs.x.ax = 0x83;
-          __dpmi_int(0x10, &regs);
+          SetVideoModeInt(&regs);
 
           // Fonts must be loaded AFTER the mode setting
           // and only if needed
@@ -366,7 +390,7 @@ void TDisplay::setCrtMode( ushort mode )
     int hmode = mode >> 8;
     if (hmode > 6 && hmode < 14)
     {
-      set_tweaked_text(hmode-7,set_font_for_tweaked_C_code);
+      set_tweaked_text(hmode-7,set_font_for_tweaked_C_code,SetVideoModeInt);
       emulate_mouse = 1;
     }
     else
