@@ -61,6 +61,8 @@ system("rm -f librhtv.so");
 system("rm -f librhtv.so.$extver");
 system("ln -s librhtv.so.$intver librhtv.so");
 system("ln -s librhtv.so.$intver librhtv.so.$extver");
+# RHIDE 1.4.9 includes rhide.env
+system('ln -s ../linux/rhide.env rhide.env') unless (-s 'rhide.env');
 
 #
 # Generate a small installation script
