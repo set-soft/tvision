@@ -16,10 +16,6 @@
 #include <tv/intl.h>
 #include <tv.h>
 
-#if defined(TVOSf_QNX4)
- #include <unix.h>
-#endif // TVOSf_QNX4
-
 #ifdef HAVE_INTL_SUPPORT
 
 #define Uses_TVCodePage

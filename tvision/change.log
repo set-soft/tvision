@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.399.2.134  2003/11/17 15:43:06  set
+* Added: --without-static and --without-dynamic to the configuration.
+Suggested by Oswald.
+* Fixed: The target to install the dynamic lib didn't create the directory
+first. Reported by Oswald.
+* Added: The posibility to override the "install" command in makefiles.
+Suggested by Oswald.
+
 Revision 2.399.2.133  2003/11/10 15:10:40  set
 * Applied: Another batch of patches for QNX4. Sent by Mike.
 
