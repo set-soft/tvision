@@ -163,4 +163,14 @@ int TDisplay::CheckForWindowSize(void)
  windowSizeChanged=0;
  return ret;
 }
+
+char *TDisplay::GetWindowTitle(void)
+{
+ return 0;
+}
+
+int TDisplay::SetWindowTitle(const char *)
+{
+ return 0;
+}
 #endif // __linux__

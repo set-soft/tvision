@@ -1,4 +1,10 @@
 $Log$
+-----------------------------------------------------------------------------
+v1.0.10 release.
+
+Revision 1.126  2000/01/02 16:38:59  set
+* Adjustments to realease v1.0.10.
+.
 Revision 1.125  1999/12/22 00:40:08  root (set)
 * Bug found: [Linux] When suspending a TV application in a remote terminal
 and using a font different than the default the frames gets scrambled when

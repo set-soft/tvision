@@ -67,6 +67,9 @@ public:
     static void   SetFontHandler(TFont *f);
     static void   RestoreDefaultFont(void);
     static int    CheckForWindowSize(void);
+    // SET: For windowed cases
+    static char  *GetWindowTitle(void);
+    static int    SetWindowTitle(const char *name);
 
 protected:
 
