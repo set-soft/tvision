@@ -1,4 +1,9 @@
 $Log$
+Revision 1.242.2.22  2002/04/15 14:13:41  set
+* Fixed: [Linux] TScreen's stopcurses() didn't make the tty_file variable
+invalid and hence some functions used it after closing the stream. Patch
+suggested by Andris.
+
 Revision 1.242.2.21  2002/02/20 01:29:30  set
 * Fixed: gcc 3.x problems with GetStrStream() macro. Reported and solution
 by Andris.
@@ -1643,7 +1648,7 @@ library.
 Revision 1.7  1999/01/10 16:25:41  set
 Fixed the demohelp.h32 name (to be lowercase).
 
-Revision 1.6  1999/01/10 16:04:05  root (set)
+Revision 1.6  1999/01/10 16:04:05  set
 Added demo to the Linux distribution.
 
 Revision 1.6  1999/01/10 00:47:21  set

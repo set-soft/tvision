@@ -35,7 +35,7 @@ class TFileCollection: public TSortedCollection
 public:
 
     TFileCollection( ccIndex aLimit, ccIndex aDelta) :
-	TSortedCollection( aLimit, aDelta ) {}
+	TSortedCollection( aLimit, aDelta ) { duplicates=True; }
 
     TSearchRec *at( ccIndex index )
 	{ return (TSearchRec *)TSortedCollection::at( index ); }
