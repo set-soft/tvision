@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.303  2002/09/12 20:51:22  set
+* Modified: The configuration and code to make the UNIX driver optional.
+
 Revision 2.302  2002/09/12 19:34:15  set
 * Added: Spanish translations for most of the TV messages.
 
