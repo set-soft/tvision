@@ -966,7 +966,7 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 // In systems with User and Group ID the mode is an structure
 typedef struct
 {
- mode_t mode;
+ mode_t mode,writemask;
  uid_t  user;
  gid_t  group;
 } CLY_mode_t;

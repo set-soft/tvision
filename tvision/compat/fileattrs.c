@@ -12,6 +12,7 @@ for SETEdit and not a full set.
 
 #define CLY_DoNotDefineUTypes
 #define Uses_CLYFileAttrs
+#define Uses_alloca
 #include <compatlayer.h>
 
 
@@ -73,9 +74,42 @@ enough.
 void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal,
                            const char *fileName)
 {
+ int ngroups,val;
+ gid_t *groups;
+
  mode->mode =statVal->st_mode;
  mode->user =statVal->st_uid;
  mode->group=statVal->st_gid;
+
+ // Compute the write mask:
+
+ // Is our file?
+ if (mode->user==getuid())
+   {
+    mode->writemask=S_IWUSR;
+    return;
+   }
+
+ // Are we from their group?
+ ngroups=getgroups(0,NULL);
+ groups=(gid_t *)alloca(ngroups*sizeof(gid_t));
+ val=getgroups(ngroups,groups);
+ if (val>=0)
+   {
+    int i;
+    for (i=0; i<ngroups; i++)
+        if (groups[i]==mode->group)
+          {
+           if (mode->mode & S_IWGRP)
+              mode->writemask=S_IWGRP;
+           else
+              mode->writemask=S_IWOTH;
+           return;
+          }
+   }
+
+ // Ok, the `others' apply
+ mode->writemask=S_IWOTH;
 }
 
 int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName)
@@ -86,17 +120,17 @@ int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName)
 
 void CLY_FileAttrReadOnly(CLY_mode_t *mode)
 {
- mode->mode&= ~S_IWUSR;
+ mode->mode&= ~mode->writemask;
 }
 
 void CLY_FileAttrReadWrite(CLY_mode_t *mode)
 {
- mode->mode|=S_IWUSR;
+ mode->mode|=mode->writemask;
 }
 
 int  CLY_FileAttrIsRO(CLY_mode_t *mode)
 {
- return (mode->mode & S_IWUSR)==0;
+ return (mode->mode & mode->writemask)==0;
 }
 
 void CLY_FileAttrModified(CLY_mode_t *mode)
