@@ -1,4 +1,8 @@
 $Log$
+Revision 1.30  1999/03/24 23:03:38  root
+* Incorporated the 1.0.3-6 Debian package diffs.
+* Fixed: Problem with dependencies of the .so library (by Ivan).
+.
 Revision 1.29  1999/03/23 01:01:38  set
 * Added an explanation in the readme.txt about the debian directory that will
 generate warnings when uncompressed in plain DOS.
