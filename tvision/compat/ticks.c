@@ -29,6 +29,7 @@ unsigned short CLY_Ticks(void)
 
 #ifdef TVOS_UNIX
 #include <sys/time.h>
+#include <stdio.h> /* for NULL */
 
 unsigned short CLY_Ticks(void)
 {
