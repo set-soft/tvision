@@ -21,6 +21,7 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 *****************************************************************************/
 #ifdef __linux__
 
+#include <configtv.h>
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
@@ -44,8 +45,10 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #include <sys/vt.h>
 #include <signal.h>
 
+#ifdef HAVE_KEYSYMS
 // X11R6 keysyms list
 #include <X11/keysym.h>
+#endif
 
 //#define GKEY
 #define TOSTDERR
@@ -57,11 +60,6 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 # else
 #  define dbprintf(a...) printf(a)
 # endif
-#endif
-
-#if (NCURSES_VERSION_MAJOR>4) || \
-    ((NCURSES_VERSION_MAJOR==4) && (NCURSES_VERSION_MINOR>=2))
-#define HAVE_DEFINE_KEY
 #endif
 
 /* Linux IOCTL values found experimentally */
@@ -197,6 +195,7 @@ unsigned char kbExtraFlags2[128] =
  0,0,0,0,0,0,0,kbAlt                            // 78-7F
 };
 
+#ifdef HAVE_KEYSYMS
 // This table should be filled at compile time, or I can trust the values
 // are standard?!
 static
@@ -235,6 +234,7 @@ keyEquiv XEquiv[] =
  /* End */
  {0,0}
 };
+#endif
 
 // xterm is a crappy terminal and does all in a way too different to the
 // standard.
@@ -341,12 +341,14 @@ unsigned short TGKey::gkey(void)
        Abstract=kbMouse;
        return rawCode.full;;
       }
+    #ifdef HAVE_KEYSYMS
     if (rawCode.full==KEY_F(57))
       {
        dbprintf("TGKey::gkey: Special Eterm keysym detected\r\n");
        Abstract=kbEterm;
        return rawCode.full;;
       }
+    #endif
    if (rawCode.full & 0x80)
      {
       sFlags|=kblAltL;
@@ -495,6 +497,7 @@ void TGKey::fillTEvent(TEvent &e)
     dbprintf("TGKey::fillTEvent: Reporting mouse instead of key (%d,%d:%d)\r\n",x,y,event);
    }
  else
+ #ifdef HAVE_KEYSYMS
  if (Abstract==kbEterm)
    { // X keysym reported as key sequence yuupi!
     int key,c;
@@ -547,6 +550,7 @@ void TGKey::fillTEvent(TEvent &e)
        e.what=evNothing;
    }
  else
+ #endif
    {
     e.keyDown.charScan.charCode=sFlags & kblAltL ? 0 : ascii;
     e.keyDown.charScan.scanCode=TGKey::rawCode.b.scan;
