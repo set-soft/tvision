@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-$oldv='1.0.6';
-$newv='1.0.7';
+$oldv='1.0.7';
+$newv='1.0.8';
 @files=('../readme.txt');
 
 $doBinary=0;
