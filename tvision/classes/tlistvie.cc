@@ -49,6 +49,7 @@ TListViewer::TListViewer( const TRect& bounds,
 
     hScrollBar = aHScrollBar;
     vScrollBar = aVScrollBar;
+    center = False;
     setNumCols(aNumCols);
 }
 
