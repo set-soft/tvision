@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.319  2002/09/16 14:34:39  set
+* Modified: [WinGr] priority to be the second option until the driver is
+finished.
+
 Revision 2.318  2002/09/16 14:33:35  set
 * Fixed: [CygWin/MinGW] Both of them needs libgdi32 for the new WinGr
 driver.
