@@ -137,7 +137,7 @@ elsif ($OS eq 'Win32')
    #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile','compat/compat.mak');
-   CreateRHIDEenvs('examples/rhide.env','win32/rhide.env');
+   CreateRHIDEenvs('examples/rhide.env','win32/rhide.env','compat/rhide.env');
    # Repeated later for other targets
   }
 CreateConfigH();
