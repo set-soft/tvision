@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 1996-2002 by Salvador Eduardo Tropea (SET)
+  Copyright 1996-2003 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
   Module: Code Page
@@ -164,6 +164,10 @@ int            TVCodePage::curInpCP=437;
 int            TVCodePage::defAppCP=437;
 int            TVCodePage::defScrCP=437;
 int            TVCodePage::defInpCP=437;
+// Helpers to convert internal buffers
+uint16         TVCodePage::appToUnicode[256];
+TVPartitionTree556
+              *TVCodePage::unicodeToApp=NULL;
 // User provided function to call each time we change the code page.
 // This is called before sending a broadcast.
 void         (*TVCodePage::UserHook)(ushort *map)=NULL;
@@ -1529,6 +1533,7 @@ void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
 
   Description:
   Protected member used to create the toupper, tolower and isalpha tables.
+Also creates tables to convert code page <-> Unicode.
 
 ***************************************************************************/
 
@@ -1572,6 +1577,19 @@ void TVCodePage::FillTables(int id)
  if (s)
     for (; *s; s++)
         AlphaTable[*s]=alphaChar;
+
+ // Create a table to convert 8 bits app. code page into 16 bits unicode
+ ushort *internals=GetTranslate(id);
+ for (i=0; i<256; i++)
+     appToUnicode[i]=UnicodeForInternalCode(internals[i]);
+
+ // Create a "partition tree" to convert a 16 bits unicode into 8 bits app
+ // code page
+ delete unicodeToApp;
+ unicodeToApp=new TVPartitionTree556();
+ for (i=0; i<256; i++)
+     unicodeToApp->add(appToUnicode[i],i);
+
  /* Dump tables
  fputs("uchar          TVCodePage::AlphaTable[256]=\n{\n",stderr);
  for (i=0; i<256; i++)
@@ -2735,4 +2753,132 @@ int TVCodePage::LookSimilarInRange(int code, int last)
    }
  return code>last ? -1 : code;
 }
+
+/*****************************************************************************
+ Helper functions used by TView. They convert the application code page values
+to Unicode and viceversa.
+*****************************************************************************/
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an Unicode value to application code page.
+  
+  Return: application code page value, 0 is the fallback.
+  
+***************************************************************************/
+
+char TVCodePage::convertU16_2_CP(uint16 val)
+{
+ uint16 ret=unicodeToApp->search(val);
+ return ret==0xFFFF ? 0 : (uchar)ret;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an application code page value to Unicode.
+  
+  Return: The Unicode that represents this value.
+  
+***************************************************************************/
+
+uint16 TVCodePage::convertCP_2_U16(char val)
+{
+ return appToUnicode[(uchar)val];
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a buffer containing Unicode/Attribute to Application Code Page/
+Attribute.
+  
+  Return: The destination buffer.
+  
+***************************************************************************/
+
+void *TVCodePage::convertBufferU16_2_CP(void *dest, const void *orig,
+                                        unsigned count)
+{
+ uint16 *o=(uint16 *)orig;
+ uchar *d=(uchar *)dest;
+ while (count--)
+   {
+    uint16 uni=unicodeToApp->search(*(o++));
+    *(d++)=uni==0xFFFF ? 0 : (uchar)uni;
+    *(d++)=(uchar)*(o++);
+   }
+ return dest;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a buffer containing Application Code Page/Attribute to
+Unicode/Attribute.
+  
+  Return: The destination buffer.
+  
+***************************************************************************/
+
+void *TVCodePage::convertBufferCP_2_U16(void *dest, const void *orig,
+                                        unsigned count)
+{
+ uint16 *d=(uint16 *)dest;
+ uchar *o=(uchar *)orig;
+ while (count--)
+   {
+    *(d++)=appToUnicode[*(o++)];
+    *(d++)=(uint16)*(o++);
+   }
+ return dest;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a string containing Unicode to Application Code Page. The len is
+as returned by strlen and the destination must be len+1 bytes for the EOS.
+  
+  Return: The destination string.
+  
+***************************************************************************/
+
+void *TVCodePage::convertStrU16_2_CP(void *dest, const void *orig,
+                                     unsigned len)
+{
+ uint16 *o=(uint16 *)orig;
+ uchar *d=(uchar *)dest;
+ while (len--)
+   {
+    uint16 uni=unicodeToApp->search(*(o++));
+    *(d++)=uni==0xFFFF ? 0 : (uchar)uni;
+   }
+ *d=0;
+ return dest;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a string containing Application Code Page to Unicode. The
+destination must be (len+1)*2 bytes for the EOS.
+  
+  Return: The destination string.
+  
+***************************************************************************/
+
+void *TVCodePage::convertStrCP_2_U16(void *dest, const void *orig,
+                                     unsigned len)
+{
+ uint16 *d=(uint16 *)dest;
+ uchar *o=(uchar *)orig;
+ while (len--)
+    *(d++)=appToUnicode[*(o++)];
+ *d=0;
+ return dest;
+}
+
+
 

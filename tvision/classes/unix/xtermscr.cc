@@ -1,7 +1,7 @@
 /*****************************************************************************
 
   Linux screen routines.
-  Copyright (c) 2002 by Salvador E. Tropea (SET)
+  Copyright (c) 2002-2003 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
   Configuration variables:
@@ -81,7 +81,6 @@ void TScreenXTerm::Init()
  TScreen::setCrtData=defaultSetCrtData;
  TScreen::setVideoMode=SetVideoMode;
  TScreen::setVideoModeExt=SetVideoModeExt;
- TScreen::setCharacter=SetCharacter;
  TScreen::System=System;
  TScreen::setCharacters=SetCharacters;
  TDisplay::checkForWindowSize=CheckForWindowSize;
@@ -398,11 +397,6 @@ void TScreenXTerm::SetVideoModeExt(char *mode)
  setCrtModeExt(mode);
  defaultSetCrtData();
  CheckSizeBuffer(oldWidth,oldHeight);
-}
-
-void TScreenXTerm::SetCharacter(unsigned offset,ushort value)
-{
- setCharacters(offset,&value,1);
 }
 
 void TScreenXTerm::SetCharacters(unsigned dst, ushort *src, unsigned len)

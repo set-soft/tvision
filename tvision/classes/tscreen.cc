@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 2001-2002 by Salvador E. Tropea
+  Copyright 2001-2003 by Salvador E. Tropea
   This file is covered by the GPL license.
   
   Module: Screen
@@ -69,7 +69,7 @@ void   (*TScreen::Resume)()                     =dummy;
 ushort (*TScreen::getCharacter)(unsigned offset)=TScreen::defaultGetCharacter;
 void   (*TScreen::getCharacters)(unsigned offset, ushort *buf, unsigned count)
                                                 =TScreen::defaultGetCharacters;
-void   (*TScreen::setCharacter)(unsigned offset, ushort value)
+void   (*TScreen::setCharacter)(unsigned offset, uint32 value)
                                                 =TScreen::defaultSetCharacter;
 void   (*TScreen::setCharacters)(unsigned offset, ushort *values, unsigned count)
                                                 =TScreen::defaultSetCharacters;
@@ -138,22 +138,31 @@ ushort TScreen::defaultFixCrtMode(ushort mode)
 
 ushort TScreen::defaultGetCharacter(unsigned offset)
 {
- return screenBuffer[offset];
+ if (drawingMode==unicode16)
+    offset*=2;
+ return screenBuffer[offset*2];
 }
 
 void TScreen::defaultGetCharacters(unsigned offset, ushort *buf, unsigned count)
 {
- memcpy(buf,screenBuffer+offset,count*sizeof(ushort));
+ if (drawingMode==unicode16)
+    memcpy(buf,screenBuffer+offset*2,count*sizeof(ushort)*2);
+ else
+    memcpy(buf,screenBuffer+offset,count*sizeof(ushort));
 }
 
-void TScreen::defaultSetCharacter(unsigned offset, ushort value)
+void TScreen::defaultSetCharacter(unsigned offset, uint32 value)
 {
- screenBuffer[offset]=value;
+ uint16 Value=value;
+ setCharacters(offset,&Value,1);
 }
 
 void TScreen::defaultSetCharacters(unsigned offset, ushort *values, unsigned count)
 {
- memcpy(screenBuffer+offset,values,count*2);
+ if (drawingMode==unicode16)
+    memcpy(screenBuffer+offset*2,values,count*2*2);
+ else
+    memcpy(screenBuffer+offset,values,count*2);
 }
 
 int TScreen::defaultSystem(const char *command, pid_t *pidChild, int in, int out,

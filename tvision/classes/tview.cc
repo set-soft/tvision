@@ -13,6 +13,8 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 Modified reworked the core drawing stuff (resetCursor(), exposed() and
          writeView()) to make the code easy to understand and maintain
          by Salvador E. Tropea (SET).
+Added support for Unicode buffers Copyright (c) 2003 by by Salvador E.
+         Tropea (SET).
  *
  *
  */
@@ -1031,55 +1033,77 @@ void blitBuffer(TView *view, int line, int xStart, int xEnd, int offset,
                 const ushort *buffer, int inShadow)
 {
  int count=xEnd-xStart;
- int buf_offset=line*view->size.x+xStart;
- int skip_offset=xStart-offset;
- const ushort *toBlit=buffer+skip_offset;
- int isScreen=((TGroup *)view)->buffer==TScreen::screenBuffer;
+ int destOffset=line*view->size.x+xStart;
+ int skipOffset=xStart-offset;
+ const ushort *toBlit;
+ TGroup *group=(TGroup *)view;
+ int isScreen=group->buffer==TScreen::screenBuffer;
 
- // Remap characters if needed
- AllocLocalStr(aux,count*sizeof(ushort));
- if (isScreen && TVCodePage::OnTheFlyRemapNeeded())
-   {
-    memcpy(aux,toBlit,count*sizeof(ushort));
-    int i;
-    if (inShadow)
-      {// Remap and shadow
-       for (i=0; i<count; i++)
-          {
-           uchar *s=((uchar *)aux)+i*2;
-           *s=TVCodePage::OnTheFlyRemap(*s);
-           s[1]=shadowAttr;
-          }
-      }
-    else
-      {// Just remap
-       for (i=0; i<count; i++)
-          {
-           uchar *s=((uchar *)aux)+i*2;
-           *s=TVCodePage::OnTheFlyRemap(*s);
-          }
-      }
-    toBlit=(const ushort *)aux;
-   }
- else
-   {// We don't need to remap, but ...
+ if (TDisplay::getDrawingMode()==TDisplay::unicode16)
+   {// The display uses Unicode
+    toBlit=buffer+skipOffset*2;
+    AllocLocalUShort(aux,count*2*2);
     if (inShadow)
       {// is much more efficient to call the OS just once
-       memcpy(aux,toBlit,count*sizeof(ushort));
+       memcpy(aux,toBlit,count*2*2);
        int i;
        for (i=0; i<count; i++)
-          {
-           uchar *s=((uchar *)aux)+i*2;
-           s[1]=shadowAttr;
-          }
+           aux[i*2+1]=shadowAttr;
        toBlit=(const ushort *)aux;
       }
+    if (isScreen)
+       TScreen::setCharacters(destOffset,(ushort *)toBlit,count);
+    else
+       memcpy(group->buffer+destOffset*2,toBlit,count*sizeof(ushort)*2);
    }
-
- if (isScreen)
-    TScreen::setCharacters(buf_offset,(ushort *)toBlit,count);
  else
-    memcpy(((TGroup *)(view))->buffer+buf_offset,toBlit,count*sizeof(ushort));
+   {
+    toBlit=buffer+skipOffset;
+    // Remap characters if needed
+    AllocLocalStr(aux,count*sizeof(ushort));
+    if (isScreen && TVCodePage::OnTheFlyRemapNeeded())
+      {
+       memcpy(aux,toBlit,count*sizeof(ushort));
+       int i;
+       if (inShadow)
+         {// Remap and shadow
+          for (i=0; i<count; i++)
+             {
+              uchar *s=((uchar *)aux)+i*2;
+              *s=TVCodePage::OnTheFlyRemap(*s);
+              s[1]=shadowAttr;
+             }
+         }
+       else
+         {// Just remap
+          for (i=0; i<count; i++)
+             {
+              uchar *s=((uchar *)aux)+i*2;
+              *s=TVCodePage::OnTheFlyRemap(*s);
+             }
+         }
+       toBlit=(const ushort *)aux;
+      }
+    else
+      {// We don't need to remap, but ...
+       if (inShadow)
+         {// is much more efficient to call the OS just once
+          memcpy(aux,toBlit,count*sizeof(ushort));
+          int i;
+          for (i=0; i<count; i++)
+             {
+              uchar *s=((uchar *)aux)+i*2;
+              s[1]=shadowAttr;
+             }
+          toBlit=(const ushort *)aux;
+         }
+      }
+   
+    if (isScreen)
+       TScreen::setCharacters(destOffset,(ushort *)toBlit,count);
+    else
+       memcpy(group->buffer+destOffset,toBlit,count*sizeof(ushort));
+   }
 }
 
 #ifdef TVCompf_MinGW
@@ -1252,38 +1276,200 @@ void WriteView(int xStart, int line, int xEnd, const void *buffer,
 
 #define writeView(b,a,c,B) WriteView(b,a,b+c,B,this,0,0,0)
 
-void TView::writeBuf(short x,short y,short w,short h,const void * Buffer)
+// That's the way to call the function getting conversion
+void TView::writeBuf(int x, int y, int w, int h, TDrawBufferBase& b)
 {
-  int i=0;
-  while (h--)
-  {
-    writeView(x,y++,w,((ushort *)(Buffer))+w*i);
+ if (b.getType()==TDisplay::getDrawingMode())
+   {
+    writeNativeBuf(x,y,w,h,b.getBuffer());
+    return;
+   }
+ if (TDisplay::getDrawingMode()==TDisplay::codepage)
+   {// Buffer is unicode and screen codepage
+    unsigned elements=w*h;
+    AllocLocalStr(dest,elements*2);
+    TVCodePage::convertBufferU16_2_CP(dest,b.getBuffer(),elements);
+    writeNativeBuf(x,y,w,h,dest);
+    return;
+   }
+ // Buffer is codepage and screen unicode
+ unsigned elements=w*h;
+ AllocLocalStr(dest,elements*2*2);
+ TVCodePage::convertBufferCP_2_U16(dest,(char *)b.getBuffer(),elements);
+ writeNativeBuf(x,y,w,h,dest);
+}
+
+// Called by old code using codepage encoding
+void TView::writeBuf(int x, int y, int w, int h, const void *Buffer)
+{
+ if (TDisplay::getDrawingMode()==TDisplay::codepage)
+   {// The buffer is in native mode
+    writeNativeBuf(x,y,w,h,Buffer);
+    return;
+   }
+ // We have to convert it into an Unicode 16 buffer
+ unsigned elements=w*h;
+ AllocLocalStr(dest,elements*2*2);
+ TVCodePage::convertBufferCP_2_U16(dest,(char *)Buffer,elements);
+ writeNativeBuf(x,y,w,h,dest);
+}
+
+// Used by new code that uses a buffer according to the mode
+void TView::writeNativeBuf(int x, int y, int w, int h, const void *Buffer)
+{
+ int i=0;
+ unsigned wB=w;
+ if (TDisplay::getDrawingMode()==TDisplay::unicode16)
+    wB*=2;
+ uint16 *b=(uint16 *)Buffer;
+ while (h--)
+   {
+    writeView(x,y++,w,b);
+    b+=wB;
     i++;
-  }
+   }
 }
 
-void TView::writeChar( short x, short y, char c, uchar color, short count )
+void TView::writeLine(int x, int y, int w, int h, TDrawBufferBase& b)
 {
-  ushort colo = (mapColor(color) << 8) | (uchar)c;
-  int i=0;
-  if (count<=0) return;
-  AllocLocalUShort(temp,count*sizeof(ushort));
-  for (i=0;i<count;i++) temp[i]=colo;
-  writeView(x,y,count,temp);
+ if (b.getType()==TDisplay::getDrawingMode())
+   {
+    writeNativeLine(x,y,w,h,b.getBuffer());
+    return;
+   }
+ if (TDisplay::getDrawingMode()==TDisplay::codepage)
+   {// Buffer is unicode and screen codepage
+    AllocLocalStr(dest,w*2);
+    TVCodePage::convertBufferU16_2_CP(dest,b.getBuffer(),w);
+    writeNativeLine(x,y,w,h,dest);
+    return;
+   }
+ // Buffer is codepage and screen unicode
+ AllocLocalStr(dest,w*2*2);
+ TVCodePage::convertBufferCP_2_U16(dest,b.getBuffer(),w);
+ writeNativeLine(x,y,w,h,dest);
 }
 
-void TView::writeLine( short x, short y, short w, short h, const void *Buffer )
+void TView::writeLine(int x, int y, int w, int h, const void *Buffer)
 {
-  while (h--) writeView(x,y++,w,((ushort *)(Buffer)));
+ if (TDisplay::getDrawingMode()==TDisplay::codepage)
+   {// The buffer is in native mode
+    writeNativeLine(x,y,w,h,Buffer);
+    return;
+   }
+ // We have to convert it into an Unicode 16 buffer
+ AllocLocalStr(dest,w*2*2);
+ TVCodePage::convertBufferCP_2_U16(dest,Buffer,w);
+ writeNativeLine(x,y,w,h,dest);
 }
 
-void TView::writeStr( short x, short y, const char *str, uchar color )
+void TView::writeNativeLine(int x, int y, int w, int h, const void *b)
 {
-  ushort count = strlen(str),i;
-  if (!count) return;
-  AllocLocalUShort(temp,count*sizeof(ushort));
-  color = mapColor(color);
-  for (i=0;i<count;i++) temp[i] = (color << 8) | (uchar)str[i];
-  writeView(x,y,count,temp);
+  while (h--)
+    writeView(x,y++,w,b);
+}
+
+
+void TView::writeChar(int x, int y, char c, uchar color, int count)
+{
+ if (count<=0)
+    return;
+ if (TDisplay::getDrawingMode()==TDisplay::unicode16)
+   {// Not in native mode
+    writeCharU16(x,y,TVCodePage::convertCP_2_U16(c),color,count);
+    return;
+   }
+ // Native mode
+ uint8 cell[2];
+ cell[0]=c;
+ cell[1]=mapColor(color);
+ uint16 cell16=*((uint16 *)cell);
+
+ int i=0;
+ AllocLocalUShort(temp,count*2);
+ for (i=0; i<count; i++)
+     temp[i]=cell16;
+
+ writeView(x,y,count,temp);
+}
+
+void TView::writeCharU16(int x, int y, unsigned c, unsigned color, int count)
+{
+ if (count<=0)
+    return;
+ if (TDisplay::getDrawingMode()==TDisplay::codepage)
+   {// Not in native mode
+    writeCharU16(x,y,TVCodePage::convertU16_2_CP(c),color,count);
+    return;
+   }
+ // Native mode
+ uint16 cell[2];
+ cell[0]=c;
+ cell[1]=mapColor(color);
+ uint32 cell32=*((uint32 *)cell);
+
+ int i=0;
+ AllocLocalUShort(t,count*2*2);
+ uint32 *temp=(uint32 *)t;
+ for (i=0; i<count; i++)
+     temp[i]=cell32;
+
+ writeView(x,y,count,t);
+}
+
+void TView::writeStr(int x, int y, const char *str, uchar color)
+{
+ int count=strlen(str),i;
+ if (!count)
+    return;
+ AllocLocalStr(temp,(count+1)*2);
+
+ if (TDisplay::getDrawingMode()==TDisplay::unicode16)
+   {// Not in native mode
+    TVCodePage::convertStrCP_2_U16((uint16 *)temp,str,count);
+    writeStrU16(x,y,(uint16 *)temp,color);
+    return;
+   }
+
+ color=mapColor(color);
+ for (i=0; i<count; i++)
+    {
+     temp[i*2]=str[i];
+     temp[i*2+1]=color;
+    }
+ writeView(x,y,count,temp);
+}
+
+static
+int strlenU16(const uint16 *str)
+{
+ int len=0;
+ while (*str++)
+    len++;
+ return len;
+}
+
+void TView::writeStrU16(int x, int y, const uint16 *str, unsigned color)
+{
+ int count=strlenU16(str),i;
+ if (!count)
+    return;
+
+ if (TDisplay::getDrawingMode()==TDisplay::codepage)
+   {// Not in native mode
+    AllocLocalStr(temp,count+1);
+    TVCodePage::convertStrU16_2_CP(temp,str,count);
+    writeStr(x,y,temp,color);
+    return;
+   }
+
+ AllocLocalUShort(temp,count*4);
+ color=mapColor(color);
+ for (i=0; i<count; i++)
+    {
+     temp[i*2]=str[i];
+     temp[i*2+1]=color;
+    }
+ writeView(x,y,count,temp);
 }
 

@@ -1,5 +1,5 @@
 /* X11 display routines.
-   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
@@ -40,6 +40,7 @@ int       TDisplayX11::newY;
 unsigned  TDisplayX11::fontW;
 unsigned  TDisplayX11::fontWb;
 unsigned  TDisplayX11::fontH;
+unsigned  TDisplayX11::fontSz;
 
 TDisplayX11::~TDisplayX11() {}
 

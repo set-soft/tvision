@@ -525,6 +525,7 @@ Modified by Salvador E. Tropea
 
 #if defined( Uses_TVCodePage )
 #define INCLUDE_CODEPAGE_H
+#define Uses_TVPartitionTree556
 #endif
 
 #if defined( Uses_TSortedCollection )

@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 1996-2002 by Salvador Eduardo Tropea (SET)
+  Copyright 1996-2003 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
   Module: TVFontCollection
@@ -76,6 +76,7 @@ public:
  static void ReduceOne(uchar *dest, uchar *ori, int height, int wBytes, int num=256);
  static void EnlargeOne(uchar *dest, uchar *ori, int height, int wBytes, int num=256);
  uchar *GetFont(int width, int height);
+ uchar *GetFontFull(int width, int height, int &first, int &last);
  void   SetCodePage(int id);
  int    GetError() { return error; }
  const char *GetFileName() { return fileName; }

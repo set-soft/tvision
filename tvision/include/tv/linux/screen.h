@@ -1,5 +1,5 @@
 /* Linux keyboard handler routines header.
-   Copyright by Salvador E. Tropea (SET) (2001-2002)
+   Copyright by Salvador E. Tropea (SET) (2001-2003)
    Covered by the GPL license. */
 #if defined(TVOSf_Linux) && !defined(LINUXSCREEN_HEADER_INCLUDED)
 #define LINUXSCREEN_HEADER_INCLUDED
@@ -125,7 +125,7 @@ protected:
  static void   GetCharactersMDA(unsigned offset,ushort *buf,unsigned count);
  static void   GetCharactersVCS(unsigned offset,ushort *buf,unsigned count);
  static ushort GetCharacter(unsigned dst);
- static void   SetCharacter(unsigned offset,ushort value);
+ static void   SetCharacter(unsigned offset,uint32 value);
  static void   SetCharactersTerm(unsigned dst,ushort *src,unsigned len);
  static void   SetCharactersVCS(unsigned dst,ushort *src,unsigned len);
  static void   SetCharactersMDA(unsigned dst,ushort *src,unsigned len);

@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.399.2.3  2003/02/14 13:43:26  set
+* Added: A base class for TDrawBuffer called TDrawBufferBase. It adds a
+"type" field to identify different types of draw buffers and a virtual
+memeber to get a pointer to the buffer containing the data. Also
+implemented a new type of TDrawBuffer to hold 16 bits characters and 16
+bits attributes.
+
 Revision 2.399.2.2  2003/02/13 18:05:20  set
 * Modified: Cleaned the drawing mechanism in TView. Now the code is much
 more easy to understand and there is no nasty gotos.

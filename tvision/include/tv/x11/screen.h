@@ -1,5 +1,5 @@
 /* X11 screen routines header.
-   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // X headers are needed to include it
 #if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11) && !defined(X11SCR_HEADER_INCLUDED)
@@ -37,7 +37,7 @@ protected:
  // Cursor position in pixels
  static int       cursorPX, cursorPY;
  // Size of the font
- static unsigned  fontW,fontWb,fontH;
+ static unsigned  fontW,fontWb,fontH,fontSz;
  // Cursor shape in absolute values (0-fontH)
  static char      cShapeFrom,cShapeTo;
  // Flag to indicate that the size of the window changed
@@ -72,8 +72,10 @@ protected:
  // Default: static void   setVideoModeExt(char *mode);
  // Default: static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
  // Default: static ushort getCharacter(unsigned dst);
- static void   setCharacter(unsigned offset, ushort value);
+ static void   setCharacter(unsigned offset, uint32 value);
+ static void   setCharacterU16(unsigned offset, uint32 value);
  static void   setCharacters(unsigned dst, ushort *src, unsigned len);
+ static void   setCharactersU16(unsigned offset, ushort *values, unsigned count);
  static int    System(const char *command, pid_t *pidChild, int in, int out, int err);
  static int    setWindowTitle(const char *aName);
  static const char *getWindowTitle(void);
@@ -100,9 +102,13 @@ protected:
  // Events loop
  static void   ProcessGenericEvents();
  // Internal line update
- static void   writeLine(int x, int y, int w, unsigned char *str, unsigned color);
+ static void   writeLineCP(int x, int y, int w, void *str, unsigned color);
+ static void   writeLineU16(int x, int y, int w, void *str, unsigned color);
+ static void   (*writeLine)(int x, int y, int w, void *str, unsigned color);
  // Internal rectangle update
- static void   redrawBuf(int x, int y, unsigned w, unsigned off);
+ static void   redrawBufCP(int x, int y, unsigned w, unsigned off);
+ static void   redrawBufU16(int x, int y, unsigned w, unsigned off);
+ static void   (*redrawBuf)(int x, int y, unsigned w, unsigned off);
 
  // Font helpers
  static void   CreateXImageFont(int which, uchar *font, unsigned w, unsigned h);
@@ -115,6 +121,8 @@ protected:
  static void   DoResize(unsigned w, unsigned h);
  inline
  static void   drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr);
+ inline
+ static void   drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar);
  // Creates the mouse cursors
  static Boolean createCursors();
 
@@ -175,6 +183,8 @@ protected:
  static Cursor busyCursor, leftPtr;
  static char busyCursorMap[];
  static char busyCursorMask[];
+ // For testing purposes should be removed
+ void LoadFontAsUnicode();
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

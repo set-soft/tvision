@@ -59,14 +59,7 @@ void TIndicator::draw()
     b.moveChar( 0, frame, color, size.x );
     if( modified )
         b.putChar( 0, modifiedStar );
-#if 1
     sprintf(s," %d:%d ",location.y+1,location.x+1);
-#else
-    ostrstream os( s, 15 );
-
-    os << ' ' << (location.y+1)
-       << ':' << (location.x+1) << ' ' << ends;
-#endif
     b.moveCStr( 8-int(strchr(s, ':')-s), s, color);
     writeBuf(0, 0, size.x, 1, b);
 }
