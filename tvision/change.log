@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.295  2002/09/11 15:04:59  set
+* Fixed: [Linux] TDisplayLinux::GetCursorShapeMDA undefined for non x86
+platforms.
+
 Revision 2.294  2002/09/11 12:54:54  set
 * Added: isLower, isUpper and isAlNum to TVCodePage.
 

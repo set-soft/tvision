@@ -52,7 +52,7 @@ public:
     friend int operator != ( const TCommandSet& tc1, const TCommandSet& tc2 );
 
 private:
-    unsigned long *cmds;
+    uint32 *cmds;
 
 };
 
