@@ -85,12 +85,12 @@ TStatusLine *TEditorApp::initStatusLine( TRect r )
     r.a.y = r.b.y-1;
     return new TStatusLine( r,
         *new TStatusDef( 0, 0xFFFF ) +
-            *new TStatusItem(_("~F2~ Save"), kbF2, cmSave ) +
+            *new TStatusItem( _("~F10~ Menu"), kbF10, cmMenu ) +
+            *new TStatusItem( _("~F2~ Save"), kbF2, cmSave ) +
             *new TStatusItem( _("~F3~ Open"), kbF3, cmOpen ) +
             *new TStatusItem( _("~Alt+F3~ Close"), kbAltF3, cmClose ) +
             *new TStatusItem( _("~F5~ Zoom"), kbF5, cmZoom ) +
             *new TStatusItem( _("~F6~ Next"), kbF6, cmNext ) +
-            *new TStatusItem( _("~F10~ Menu"), kbF10, cmMenu ) +
             *new TStatusItem( 0, kbCtrlF5, cmResize )
             );
 

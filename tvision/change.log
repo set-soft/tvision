@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.115  2002/06/03 19:42:24  set
+* Fixed: [Linux] The Resume member needed a fflush before calling a child
+process (a shell for example).
+
 Revision 2.114  2002/06/03 19:02:43  set
 * Added: Uses_chdir request to compatlayer (needed for MSVC where the name
 is _chdir).
