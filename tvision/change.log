@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.527  2004/03/02 19:52:41  set
+* Fixed: [Linux] Problems with big-endian terminals using /dev/vcs*
+devices. Looks like the vcs format is platform dependent.
+.
 Revision 2.526  2004/01/13 14:30:28  set
 * Fixed: [BC++] Missing QNX4 directory.
 * Fixed: [BC++] It doesn't have ioctl.h.
