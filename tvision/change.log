@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.130  2002/06/05 20:16:48  set
+* Added: [QNX] New patch from Mike to enhance the keyboard handling.
+* Fixed: TInputLine used an archaic ^Y hardcoded symbol instead of kbCtY.
+Patch by Mike.
+
 Revision 2.129  2002/06/05 15:28:38  set
 * Fixed: [X11] Now when the WM sends a DELETE_WINDOW message (usually
 because the user used the close button) the TV application gets a cmQuit
