@@ -133,7 +133,7 @@ title.
 
 const char *TDisplay::defaultGetWindowTitle(void)
 {
- return "";
+ return newStr("");
 }
 
 /**[txh]********************************************************************

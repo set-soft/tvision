@@ -650,7 +650,7 @@ void TScreenX11::DrawCursor()
     //fprintf(stderr,"DrawCursor: cursorInScreen=%d from/to %d/%d\n",cursorInScreen,cShapeFrom,cShapeTo);
     /* If the cursor is on draw it over the character */
     if (cursorInScreen)
-       memset(cursorData+cShapeFrom,0xFF,cShapeTo-cShapeFrom+1);
+       memset(cursorData+cShapeFrom,0xFF,cShapeTo-cShapeFrom);
 
     /* Now put it in the screen */
     XPutImage(disp,mainWin,cursorGC,cursorImage,0,0,cursorPX,cursorPY,fontW,fontH);
