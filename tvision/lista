@@ -131,6 +131,7 @@ djgpp/makefile
 +djgpp/distlist
 djgpp/obj/delete.me
 djgpp/tmp/delete.me
+djgpp/vga.cc
 drivers2.cc
 dual.cc
 +examples/clean.bat
@@ -532,5 +533,3 @@ stream/swindow.cc
 ticks.cc
 tweaked.c
 vesa.cc
-vga.cc
-
