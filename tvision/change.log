@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.466  2003/06/02 14:47:15  set
+* Fixed: Missing maintain.mak in distribution list.
+* Fixed: Compress scripts list generation.
+* Fixed: BC++ and MSVC makefiles generation, now using .imk files.
+
 Revision 2.465  2003/06/02 14:44:58  set
 * Modified: The whole compilation mechanism. Now all is concentrated in the
 "makes" directory using the mkf, imk and umk files like I did in setedit
