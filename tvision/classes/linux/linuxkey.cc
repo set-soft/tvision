@@ -32,6 +32,7 @@
 #define Uses_FullSingleKeySymbols
 #define Uses_TScreen
 #define Uses_TVCodePage
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -43,7 +44,6 @@
 // For the VT and key patch stuff
 #include <sys/kd.h>
 #include <sys/vt.h>
-#include <signal.h>
 
 #include <tv/linux/key.h>
 #include <tv/linux/screen.h>

@@ -15,6 +15,7 @@
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TScreen
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -23,7 +24,6 @@
 //---------------- GPM version -----------------
 
 #include <termios.h>
-#include <signal.h>
 #include <tv/linux/screen.h>
 #include <tv/linux/mouse.h>
 #include <tv/linux/log.h>
@@ -126,7 +126,6 @@ THWMouseGPM::~THWMouseGPM()
 
 #if defined(TVOSf_Linux)
  #include <termios.h>
- #include <signal.h>
 #endif
 
 #include <tv/linux/screen.h>

@@ -46,6 +46,7 @@
 #define Uses_stdlib
 #define Uses_string
 #define Uses_unistd   // TScreenX11::System
+#define Uses_signal
 #define Uses_AllocLocal
 #define Uses_TDisplay
 #define Uses_TScreen
@@ -78,7 +79,6 @@
 #include <tv/x11/mouse.h>
 
 #include <locale.h>
-#include <signal.h>
 #include <sys/time.h>
 #ifdef HAVE_LINUX_PTHREAD
  #include <pthread.h>

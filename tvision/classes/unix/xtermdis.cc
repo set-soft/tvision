@@ -18,13 +18,13 @@
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TGKey
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
 #if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
-#include <signal.h>
 
 #include <tv/unix/xtscreen.h>
 #include <tv/unix/xtkey.h>
