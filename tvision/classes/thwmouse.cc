@@ -10,8 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 
 #include <stdlib.h>
 #include <conio.h>
@@ -446,5 +447,5 @@ void THWMouse::getEvent( MouseEventType& me )
   }
 }
 
-#endif // __DJGPP__
+#endif // DJGPP
 

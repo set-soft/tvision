@@ -32,7 +32,7 @@ fpbase::fpbase( const char *name, int omode, int prot )
     open( name, omode, prot );
 }
 
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
 fpbase::fpbase( int f, char *b, int len ) : buf( f )
 {
     buf.PubSetBuf(b, len);

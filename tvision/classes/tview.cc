@@ -32,7 +32,7 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 #include <tv.h>
 
 #include <limits.h>
-#if 0 // def __DJGPP__
+#if 0 // def TVCompf_djgpp
 #include <dos.h>
 #include <go32.h>
 #include <dpmi.h>
@@ -860,7 +860,7 @@ lab5:
   TScreen::SetCursor(dx,ax);
   cx = TScreen::cursorLines;
   if (!(state & sfCursorIns)) goto lab6;
-#if defined(TVOSf_NT)
+#if defined(TVComp_BCPP)
   cx = 100;
 #else
   cx &= 0x00ff;
@@ -998,13 +998,22 @@ void call30(int x)
   x_pos_start = x;
 }
 
+// SET: Be careful about nibble order
+#ifdef TV_BIG_ENDIAN
+ #define GetAttrShadow(a) ((a) & 0xFF)
+ #define ChangeAttr(v,a)  (((v) & 0xFF00) | a)
+#else
+ #define GetAttrShadow(a) (((a) & 0xFF)<<8)
+ #define ChangeAttr(v,a)  (((v) & 0xFF) | a)
+#endif
+
 void call50()
 {
   int count = x_pos_end - x_pos_start;
   int buf_offset = y_pos * _view->size.x + x_pos_start;
   int skip_offset = x_pos_start - offset;
   ushort * buffer;
-#if 0 // def __DJGPP__
+#if 0 // def TVCompf_djgpp
   long _buffer = (dual_display ? 0xb0000 : ScreenPrimary) + buf_offset*2;
 #endif
   buffer = ((TGroup *)(_view))->buffer+buf_offset;
@@ -1012,7 +1021,7 @@ void call50()
   {
     if (((TGroup *)(_view))->buffer == TScreen::screenBuffer)
     {
-#if 0 // def __DJGPP__
+#if 0 // def TVCompf_djgpp
       movedata(_my_ds(),(int) (((const ushort *)_Buffer) +skip_offset),
                _dos_ds,_buffer,count*2);
 #else
@@ -1029,41 +1038,34 @@ void call50()
   if (((TGroup *)(_view))->buffer == TScreen::screenBuffer)
   {
     int i;
-    unsigned short attr = (shadowAttr & 0xff) << 8;
-#if 0 // def __DJGPP__
+    unsigned short attr = GetAttrShadow(shadowAttr);
+#if 0 // def TVCompf_djgpp
     _farsetsel(_dos_ds);
 #endif
     for (i=0;i<count;i++)
     {
-#if 0 // def __DJGPP__
+#if 0 // def TVCompf_djgpp
       _farnspokew(_buffer+i*2,(((const ushort *)(_Buffer))[skip_offset++] & 0x00ff) | attr);
 #else
       TScreen::setCharacter(buf_offset+i,
-        (((const ushort *)(_Buffer))[skip_offset++] & 0x00ff) | attr);
+        ChangeAttr((((const ushort *)(_Buffer))[skip_offset++],attr);
 #endif
     }
   }
   else
   {
-    #ifdef TV_BIG_ENDIAN
-    // Untested!!
-    unsigned short attr = shadowAttr & 0xff;
+    unsigned short attr=GetAttrShadow(shadowAttr);
     while (count--)
-      (buffer++)[0] = (((const ushort *)(_Buffer))[skip_offset++] & 0xff00) | attr;
-    #else
-    unsigned short attr = (shadowAttr << 8) & 0xff00;
-    while (count--)
-      (buffer++)[0] = (((const ushort *)(_Buffer))[skip_offset++] & 0x00ff) | attr;
-    #endif
+      (buffer++)[0]=ChangeAttr((((const ushort *)(_Buffer))[skip_offset++],attr);
   }
 }
 
-#if defined(TVOS_Win32) && !defined(TVOSf_NT)
+#ifdef TVCompf_MinGW
 // SET: Not sure why Vadim wanted it
 #define HideMouse()
 #define ShowMouse()
 #else
-// DOS, Linux and NT (SAA port)
+// DOS, Linux and Borland (SAA port)
 #define HideMouse()  TMouse::hide()
 #define ShowMouse()  TMouse::show()
 #endif

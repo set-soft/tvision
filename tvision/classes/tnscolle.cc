@@ -13,12 +13,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #define Uses_string
-#include <stdlib.h>      // abort()
-
-#ifdef _MSC_VER
-#include <process.h> //abort()
-#endif
-
+#define Uses_abort
 #define Uses_TNSCollection
 #include <tv.h>
 
@@ -206,16 +201,11 @@ void TNSCollection::setLimit(ccIndex aLimit)
         else
             {
             aItems = new void *[aLimit];
-            if( count !=  0 )
-#if 1
-              if (items)
-#endif
+            if( count !=  0 && items )
                 memcpy( aItems, items, count*sizeof(void *) );
             }
-#if 1
         if (items)
-#endif
-        delete[] items;
+           delete[] items;
         items =  aItems;
         limit =  aLimit;
         }

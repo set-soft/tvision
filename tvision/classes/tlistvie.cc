@@ -14,7 +14,7 @@ Modified by Salvador E. Tropea to add functionality.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #define Uses_string
-#define Uses_alloca
+#define Uses_AllocLocal
 #define Uses_TKeys
 #define Uses_TListViewer
 #define Uses_TScrollBar
@@ -142,16 +142,12 @@ void TListViewer::draw()
             b.moveChar( curCol, ' ', color, width );
             if( item < range )
                 {
-                #ifndef __GNUC__
-                char *text=(char *)alloca(width+indent+1);
-                char *buf=(char *)alloca(width+1);
-                #else
-                char text[width + indent + 1]; // This was probably the
-                                               // reason for a bug, because
-                                               // getText assumes a buffer
-                                               // with a length of maxLen + 1
-                char buf[width+1];
-                #endif
+                // This was probably the
+                // reason for a bug, because
+                // getText assumes a buffer
+                // with a length of maxLen + 1
+                AllocLocalStr(text,width+indent+1);
+                AllocLocalStr(buf,width+1);
                 getText( text, item, width + indent );
                 int tl = strlen(text);
                 if (tl <= indent)

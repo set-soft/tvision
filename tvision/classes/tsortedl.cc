@@ -22,7 +22,7 @@ Modified by Salvador E. Tropea to add functionality.
 #define Uses_TSortedCollection
 #include <tv.h>
 
-#if defined(__TURBOC__) && !defined(TVOS_Win32)
+#if defined(TVComp_BCPP) && !defined(TVOS_Win32)
 char &shiftKeys = *(char *)MK_FP( 0x40, 0x17 );
 #else
 #if 0

@@ -49,7 +49,7 @@ TEventQueue::TEventQueue()
 
 static int TEventQueue_suspended = 1;
 
-#ifdef __linux__
+#ifdef TVOSf_Linux
 void resume_keyboard();
 void suspend_keyboard();
 #endif
@@ -57,9 +57,9 @@ void suspend_keyboard();
 void TEventQueue::resume()
 {
 	 if (!TEventQueue_suspended) return;
-#ifdef __linux__
+    #ifdef TVOSf_Linux
     resume_keyboard();
-#endif
+    #endif
 	 mouseEvents =	False;
     if (!mouse)
       mouse = new TMouse();
@@ -82,9 +82,9 @@ void TEventQueue::suspend()
 /* I think here is the right place for clearing the
    buffer */
   TGKey::clear();
-#ifdef __linux__
+  #ifdef TVOSf_Linux
   suspend_keyboard();
-#endif
+  #endif
   TEventQueue_suspended	= 1;
 }
 
@@ -96,7 +96,7 @@ TEventQueue::~TEventQueue()
     delete mouse;
 }
 
-#ifdef TVOSf_NT
+#ifdef TVComp_BCPP
 // it works better (faster)
 #define AUTO_DELAY_VAL 0
 #else

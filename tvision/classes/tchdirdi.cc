@@ -12,15 +12,10 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <ctype.h>
-#include <stdio.h>
+#define Uses_ctype
+#define Uses_stdio
 #define Uses_string
-#ifdef _MSC_VER
-#include <io.h>
-#include <direct.h>
-#else
 #define Uses_unistd
-#endif
 
 #define Uses_MsgBox
 #define Uses_TChDirDialog
@@ -117,7 +112,7 @@ void TChDirDialog::handleEvent( TEvent& event )
                     {
                     TDirEntry *p = dirList->list()->at( dirList->focused );
                     strcpy( curDir, p->dir() );
-#if (defined(TVOS_DOS) || defined(TVOS_Win32))
+                    #ifdef CLY_HaveDriveLetters
                     if( strcmp( curDir, _("Drives") ) == 0 )
                         break;
                     else if( driveValid( curDir[0] ) )
@@ -127,11 +122,11 @@ void TChDirDialog::handleEvent( TEvent& event )
                         }
                     else
                         return;
-#else
+                    #else
                     if( curDir[strlen(curDir)-1] != DIRSEPARATOR )
                         strcat( curDir, DIRSEPARATOR_ );
                     changeDir(curDir);
-#endif
+                    #endif
                     break;
                     }
                 case cmDirSelection:
@@ -141,11 +136,11 @@ void TChDirDialog::handleEvent( TEvent& event )
                     return;
                 }
             dirList->newDirectory( curDir );
-#if (defined(TVOS_DOS) || defined(TVOS_Win32))
+            #if CLY_HaveDriveLetters
             int len = strlen( curDir );
-	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
+            if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
-#endif
+            #endif
             strcpy( dirInput->data, curDir );
             dirInput->drawView();
             dirList->select();
@@ -164,16 +159,16 @@ void TChDirDialog::setUpDialog()
 {
     if( dirList != 0 )
         {
-	char curDir[PATH_MAX];
+        char curDir[PATH_MAX];
         CLY_GetCurDirSlash( curDir );
         dirList->newDirectory( curDir );
         if( dirInput != 0 )
             {
-#if (defined(TVOS_DOS) || defined(TVOS_Win32))
+            #if CLY_HaveDriveLetters
             int len = strlen( curDir );
-	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
+            if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
-#endif
+            #endif
             strcpy( dirInput->data, curDir );
             dirInput->drawView();
             }

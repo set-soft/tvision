@@ -10,8 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef __DJGPP__
+#ifdef TVCompf_DJGPP
 
 #include <conio.h>
 
@@ -334,5 +335,5 @@ Boolean TScreen::codePageVariable()
  return True;
 }
 
-#endif // __DJGPP__
+#endif // DJGPP
 

@@ -111,7 +111,7 @@ the routine so I wanted to avoid a lose in performance. SET.
 
 void TDrawBuffer::moveCStr( unsigned indent, const char *str, unsigned attrs )
 {
-#if !defined(TVCPU_x86) || !defined(__GNUC__)
+#if !defined(TVCPU_x86) || !defined(TVComp_GCC)
 //$todo: implement it in asm for Win32
   uchar bh = attrs >> 8, ah = attrs & 0xff;
   uchar al;
@@ -208,7 +208,7 @@ SET.
 
 void TDrawBuffer::moveStr( unsigned indent, const char *str, unsigned attr )
 {
-#if !defined(TVCPU_x86) || !defined(__GNUC__)
+#if !defined(TVCPU_x86) || !defined(TVComp_GCC)
 //$todo: implement it in asm
   ushort *dest = data+indent;
   ushort *end = data+maxViewWidth;
