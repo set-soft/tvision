@@ -31,7 +31,7 @@ class TStreamableTypes;
 class pstream
 {
 
-    friend TStreamableTypes;
+    friend class TStreamableTypes;
 
 public:
 

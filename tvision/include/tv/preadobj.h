@@ -29,7 +29,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TPReadObjects : public TNSCollection
 {
 
-    friend ipstream;
+    friend class ipstream;
 
 public:
 
