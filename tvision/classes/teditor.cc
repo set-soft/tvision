@@ -1190,6 +1190,8 @@ TEditor::TEditor( StreamableInit ) : TView( streamableInit )
 
 // SET: The following routines were assembler in the original TVision, Robert
 // did just a quick hack.
+// Notes: changed 0xd by '\r' and 0xa by '\n'. Seems to work with EOL=\n
+// with only one patch.
 // EDITS.CC
 
 char TEditor::bufChar( uint32 p )
@@ -1214,8 +1216,8 @@ uint32 TEditor::lineEnd(uint32 p)
 //  di += bx;
   while (cx--)
   {
-    if (buffer[di++] == 0x0d) goto lab2;
-    if (buffer[di-1] == 0x0a) goto lab2;
+    if (buffer[di++] == '\r') goto lab2;
+    if (buffer[di-1] == '\n') goto lab2;
   }
   di = curPtr;
 lab1:
@@ -1226,8 +1228,8 @@ lab1:
   di += bx;
   while (cx--)
   {
-    if (buffer[di++] == 0x0d) goto lab2;
-    if (buffer[di-1] == 0x0a) goto lab2;
+    if (buffer[di++] == '\r') goto lab2;
+    if (buffer[di-1] == '\n') goto lab2;
   }
   goto lab3;
 lab2:
@@ -1238,7 +1240,7 @@ lab3:
 #else
   if (p == bufLen) return p;
   char c=bufChar(p);
-  while (c != 0x0d && c != 0x0a)
+  while (c != '\r' && c != '\n')
   {
     p++;
     if (p == bufLen) return p;
@@ -1260,8 +1262,8 @@ uint32 TEditor::lineStart(uint32 p)
   di--;
   while (cx--)
   {
-    if (buffer[di--] == 0x0d) goto lab2;
-    if (buffer[di+1] == 0x0a) goto lab2;
+    if (buffer[di--] == '\r') goto lab2;
+    if (buffer[di+1] == '\n') goto lab2;
   }
   bx -= gapLen;
   di = curPtr;
@@ -1272,8 +1274,8 @@ lab1:
   di--;
   while (cx--)
   {
-    if (buffer[di--] == 0x0d) goto lab2;
-    if (buffer[di+1] == 0x0a) goto lab2;
+    if (buffer[di--] == '\r') goto lab2;
+    if (buffer[di+1] == '\n') goto lab2;
   }
   goto lab3;
 lab2:
@@ -1282,8 +1284,11 @@ lab2:
   di -= bx;
   if ((uint32)di == curPtr) goto lab4;
   if ((uint32)di == bufLen) goto lab4;
-  if (buffer[di+bx] != 0x0a) goto lab4;
+  // SET: When lines end only with \n it fails
+  #ifndef __linux__
+  if (buffer[di+bx] != '\n') goto lab4;
   di++;
+  #endif
   goto lab4;
 lab3:
   di = 0;
@@ -1298,7 +1303,7 @@ uint32 TEditor::nextChar(uint32 p)
   p++;
   if (p == bufLen) return p;
   if (p >= curPtr) gl = gapLen;
-  if (buffer[gl+p] == 0x0a && buffer[gl+p-1] == 0x0d) return (p+1);
+  if (buffer[gl+p] == '\n' && buffer[gl+p-1] == '\r') return (p+1);
   return p;
 }
 
@@ -1309,7 +1314,7 @@ uint32 TEditor::prevChar(uint32 p)
   p--;
   if (!p) return p;
   if (p >= curPtr) gl = gapLen;
-  if (buffer[gl+p] == 0x0a && buffer[gl+p-1] == 0x0d) return (p-1);
+  if (buffer[gl+p] == '\n' && buffer[gl+p-1] == '\r') return (p-1);
   return p;
 }
 

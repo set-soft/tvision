@@ -9,7 +9,7 @@
 
 #include <stdlib.h>
 #include <stdarg.h>
-#include <strstrea.h>
+//#include <strstrea.h>
 #include <iomanip.h>
 
 #define Uses_TApplication
