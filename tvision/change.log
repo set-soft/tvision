@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.207  2002/07/03 15:40:54  set
+* Modified: [MSVC] tvex.exe to tvex targetname as suggested by WintiX.
+
 Revision 2.206  2002/07/03 15:39:44  set
 * Modified: [Win32/WinNT] to detect how many buttons have the mouse.
 Lamentably it isn't reliable at all. My mouse generate mouse events when
