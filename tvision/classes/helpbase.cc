@@ -9,11 +9,12 @@
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
  
-// SET: moved the standard headers before tv.h
-#include <ctype.h>
-#include <limits.h>
+// SET: moved the standard headers before tv.h. Adapted to compat layer.
+#define Uses_ctype
+#define Uses_limits
 #define Uses_string
-#include <sys/stat.h>
+#define Uses_sys_stat
+#define Uses_filelength
 
 #define Uses_TStreamableClass
 #define Uses_TPoint
