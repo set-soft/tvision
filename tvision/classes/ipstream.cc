@@ -4,14 +4,16 @@
  *      Copyright (c) 1994 by Borland International
  *      All Rights Reserved.
  *
-
-Modified by Robert H”hne to be used for RHIDE.
-
+ * Modified by Robert H”hne to be used for RHIDE.
  *
+ * SET: Moved the standard headers here because according to DJ
+ * they can inconditionally declare symbols like NULL.
+ * Reworked code for endian stuff (readShort, readInt, readLong, read8,
+ * read16, read32 and read64)
+ *
+ * JASC: Endian compatible files
  *
  */
-// SET: Moved the standard headers here because according to DJ
-// they can inconditionally declare symbols like NULL
 #include <assert.h>
 #define Uses_string
 #define Uses_TStreamable
@@ -65,15 +67,84 @@ uchar ipstream::readByte()
     return (uchar)result; // This cast is safe here
 }
 
-ushort ipstream::readWord()
-{
-    // Added modified code by V. Bugrov here.
-    ushort temp, i;
-    i = bp->sgetn( (char *)&temp, sizeof( ushort ) );
-    if (i < sizeof(ushort))
-       setstate(ios::eofbit);
-    return temp;
+
+/*
+ *  readShort, readInt and readLong:
+ *  These are platform dependent, reads the size and byte order of the native
+ *  platform.
+ *  Created by SET to be compatible with original code and V. Bugrov ideas.
+ */
+
+#define DefineReadDep(name,type)\
+type ipstream::read##name()\
+{\
+ type temp; size_t i;\
+ i=bp->sgetn((char *)&temp,sizeof(type));\
+ if (i<sizeof(type))\
+    setstate(ios::eofbit);\
+ return temp;\
 }
+DefineReadDep(Short,ushort);
+DefineReadDep(Int,uint);
+DefineReadDep(Long,ulong);
+
+/*
+ *  read16, read32 and read64:
+ *  These are platform independent, reads a fixed size in little endian order
+ *  and if the platform is big endian swaps bytes.
+ *  Created by SET to be compatible with original code and JASC + V. Bugrov
+ *  ideas.
+ */
+
+#ifdef TV_BIG_ENDIAN
+#define Swap(a,b) t=v[a]; v[a]=v[b]; v[b]=t
+
+static inline
+void Swap16(char *v)
+{
+ char t;
+ Swap(0,1);
+}
+
+static inline
+void Swap32(char *v)
+{
+ char t;
+ Swap(0,3);
+ Swap(1,2);
+}
+
+static inline
+void Swap64(char *v)
+{
+ char t;
+ Swap(0,7);
+ Swap(1,6);
+ Swap(2,5);
+ Swap(3,4);
+}
+#else
+static inline
+void Swap16(char *) {}
+static inline
+void Swap32(char *) {}
+static inline
+void Swap64(char *) {}
+#endif
+
+#define DefineRead(name,type)\
+type ipstream::read##name()\
+{\
+ type temp; size_t i;\
+ i=bp->sgetn((char *)&temp,sizeof(type));\
+ if (i<sizeof(type))\
+    setstate(ios::eofbit);\
+ Swap##name((char *)&temp);\
+ return temp;\
+}
+DefineRead(16,uint16);
+DefineRead(32,uint32);
+DefineRead(64,uint64);
 
 void ipstream::readBytes( void *data, size_t sz )
 {
@@ -89,8 +160,9 @@ char *ipstream::readString()
     if( _len == 0xFF )
         return 0;
     int len = _len;
-    if (len == 0xfe)
-      readBytes( &len, sizeof(len) );
+    if( len == 0xfe )
+        // SET: Read a fixed ammount of bytes in all platforms
+        len = read32();
     char *buf = new char[len+1];
     if( buf == 0 )
         return 0;
@@ -114,71 +186,7 @@ char *ipstream::readString( char *buf, unsigned maxLen )
     return buf;
 }
 
-ipstream& operator >> ( ipstream& ps, signed char &ch )
-{
-    ch = ps.readByte();
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, char &ch )
-{
-    ch = ps.readByte();
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, unsigned char &ch )
-{
-    ch = ps.readByte();
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, signed short &sh )
-{
-    sh = ps.readWord();
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, unsigned short &sh )
-{
-    sh = ps.readWord();
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, signed int &i )
-{
-    ps.readBytes(&i,sizeof(i));
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, unsigned int &i )
-{
-    ps.readBytes(&i,sizeof(i));
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, signed long &l )
-{
-    ps.readBytes( &l, sizeof(l) );
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, unsigned long &l )
-{
-    ps.readBytes( &l, sizeof(l) );
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, float &f )
-{
-    ps.readBytes( &f, sizeof(f) );
-    return ps;
-}
-
-ipstream& operator >> ( ipstream& ps, double &d )
-{
-    ps.readBytes( &d, sizeof(d) );
-    return ps;
-}
+/* Operators moved to headers by JASC */
 
 ipstream& operator >> ( ipstream& ps, TStreamable& t )
 {

@@ -55,6 +55,7 @@ Boolean TNSSortedCollection::search( void *key, ccIndex& index )
     ccIndex l = 0;
     ccIndex h = count - 1;
     Boolean res = False;
+    if ( !key ) return False;
     while( l <= h )
         {
         ccIndex i = (l +  h) >> 1;

@@ -4,14 +4,17 @@
  *      Copyright (c) 1994 by Borland International
  *      All Rights Reserved.
  *
-
-Modified by Robert H”hne to be used for RHIDE.
-Modified by Vadim Beloborodov to be used on WIN32 console
  *
+ * Modified by Robert H”hne to be used for RHIDE.
+ * Modified by Vadim Beloborodov to be used on WIN32 console
+ *
+ * SET: Moved the standard headers here because according to DJ
+ * they can inconditionally declare symbols like NULL.
+ * Added members for platform indepent writes. Started with a JASC
+ * modification. Added: write8, write16, write32, write64, writeShort,
+ * writeInt and writeLong.
  *
  */
-// SET: Moved the standard headers here because according to DJ
-// they can inconditionally declare symbols like NULL
 #include <stdio.h> // fprintf in writeData
 #define Uses_string // Needed for Win32
 #define Uses_PubStreamBuf
@@ -75,10 +78,75 @@ void opstream::writeBytes( const void *data, size_t sz )
     bp->sputn( (char *)data, sz );
 }
 
-void opstream::writeWord( ushort sh )
-{
-    bp->sputn( (char *)&sh, sizeof( ushort ) );
+/*
+ *  writeShort, writeInt and writeLong:
+ *  These are platform dependent, writes the size and byte order of the native
+ *  platform.
+ *  Created by SET to be compatible with original code and V. Bugrov ideas.
+ */
+
+#define DefineWriteDep(name,type)\
+void opstream::write##name(type val)\
+{\
+ bp->sputn((char *)&val,sizeof(type));\
 }
+DefineWriteDep(Short,ushort);
+DefineWriteDep(Int,uint);
+DefineWriteDep(Long,ulong);
+
+/*
+ *  write16, write32 and write64:
+ *  These are platform independent, writes a fixed size in little endian order
+ *  and if the platform is big endian swaps bytes.
+ *  Created by SET to be compatible with original code and JASC + V. Bugrov
+ *  ideas.
+ */
+
+#ifdef TV_BIG_ENDIAN
+#define Swap(a,b) t=v[a]; v[a]=v[b]; v[b]=t
+
+static inline
+void Swap16(char *v)
+{
+ char t;
+ Swap(0,1);
+}
+
+static inline
+void Swap32(char *v)
+{
+ char t;
+ Swap(0,3);
+ Swap(1,2);
+}
+
+static inline
+void Swap64(char *v)
+{
+ char t;
+ Swap(0,7);
+ Swap(1,6);
+ Swap(2,5);
+ Swap(3,4);
+}
+#else
+static inline
+void Swap16(char *) {}
+static inline
+void Swap32(char *) {}
+static inline
+void Swap64(char *) {}
+#endif
+
+#define DefineWrite(name,type)\
+void opstream::write##name(type val)\
+{\
+ Swap##name((char *)&val);\
+ bp->sputn((char *)&val,sizeof(type));\
+}
+DefineWrite(16,uint16);
+DefineWrite(32,uint32);
+DefineWrite(64,uint64);
 
 void opstream::writeString( const char *str )
 {
@@ -91,7 +159,7 @@ void opstream::writeString( const char *str )
     if (len > 0xfd)
     {
       writeByte( 0xfe );
-      writeBytes( &len, sizeof(len) );
+      write32(len);
     }
     else
     {
@@ -100,70 +168,7 @@ void opstream::writeString( const char *str )
     writeBytes( str, len );
 }
 
-opstream& operator << ( opstream& ps, signed char ch )
-{
-    ps.writeByte( ch );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, char ch )
-{
-    ps.writeByte( ch );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, unsigned char ch )
-{
-    ps.writeByte( ch );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, signed short sh )
-{
-    ps.writeWord( sh );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, unsigned short sh )
-{
-    ps.writeWord( sh );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, signed int i )
-{
-    ps.writeBytes( &i, sizeof(i) );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, unsigned int i )
-{
-    ps.writeBytes( &i, sizeof(i) );
-    return ps;
-}
-opstream& operator << ( opstream& ps, signed long l )
-{
-    ps.writeBytes( &l, sizeof(l) );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, unsigned long l )
-{
-    ps.writeBytes( &l, sizeof(l) );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, float f )
-{
-    ps.writeBytes( &f, sizeof(f) );
-    return ps;
-}
-
-opstream& operator << ( opstream& ps, double d )
-{
-    ps.writeBytes( &d, sizeof(d) );
-    return ps;
-}
+/* Operators moved to headers by JASC */
 
 opstream& operator << ( opstream& ps, TStreamable& t )
 {
@@ -177,17 +182,17 @@ opstream& operator << ( opstream& ps, TStreamable *t )
 {
     P_id_type index;
     if( t == 0 )
-	ps.writeByte( pstream::ptNull );
+        ps.writeByte( pstream::ptNull );
     else if( (index = ps.find( t )) != P_id_notFound )
-	{
-	ps.writeByte( pstream::ptIndexed );
-	ps.writeWord( index );
-	}
+        {
+        ps.writeByte( pstream::ptIndexed );
+        ps.writeWord( index );
+        }
     else
-	{
-	ps.writeByte( pstream::ptObject );
-	ps << *t;
-	}
+        {
+        ps.writeByte( pstream::ptObject );
+        ps << *t;
+        }
     return ps;
 }
 
@@ -201,15 +206,15 @@ void opstream::writePrefix( const TStreamable& t )
 void opstream::writeData( TStreamable& t )
 {
     if( types->lookup( t.streamableName() ) == 0 )
-    {
+        {
         fprintf(stderr,_("type not registered: %s\n"),t.streamableName());
-	error( peNotRegistered, t );
-    }
+        error( peNotRegistered, t );
+        }
     else
-	{
-	registerObject( &t );
-	t.write( *this );
-	}
+        {
+        registerObject( &t );
+        t.write( *this );
+        }
 }
 
 void opstream::writeSuffix( const TStreamable& )
