@@ -132,6 +132,9 @@ djgpp/makefile
 djgpp/obj/delete.me
 djgpp/tmp/delete.me
 djgpp/vga.cc
+djgpp/vgaregs.h
+djgpp/vgastate.c
+djgpp/vgastate.h
 drivers2.cc
 dual.cc
 +examples/clean.bat
