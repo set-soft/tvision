@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.605  2004/12/13 15:49:34  set
+* Fixed: [WWW] URL to Sigala's doc. Patch by Thiago.
+* Fixed: [config] install was searched in the path without using the "Exe
+Extension". I realized it when Thiago reported other problem about install
+detection.
+
 Revision 2.604  2004/12/10 19:39:58  set
 * Fixed: When configuring with --no-intl the TCluster class generated a
 SIGSEGV in the destructor. Reported by Julian B. Lethbridge. [Also applied
