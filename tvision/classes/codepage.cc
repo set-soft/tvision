@@ -1505,7 +1505,8 @@ different. In any case all the values are usable.
 
 ushort *TVCodePage::GetTranslate(int id)
 {
- if (!CodePages) return NULL;
+ if (!CodePages)
+    CreateCodePagesCol();
  CodePage *p=CodePageOfID(id);
  memcpy(CPTable+128,p->Font,sizeof(short)*128);
  CPTable[256]=128;

@@ -826,17 +826,21 @@ TScreenX11::TScreenX11()
  if (optSearch("Font10x20",aux) && aux)
     fontW=10, fontH=20;
 
- if (!frCB || !(defaultFont=frCB(0,fontW,fontH)))
+ if (fontW==10 || fontH==20)
+    defaultFont=&font10x20;
+ else
+    defaultFont=&font8x16;
+ TScreenFont256 *useFont;
+ int freeFontData=1;
+ if (!frCB || !(useFont=frCB(0,fontW,fontH)))
    {
-    if (fontW==10 || fontH==20)
-       defaultFont=&font10x20;
-    else
-       defaultFont=&font8x16;
+    useFont=defaultFont;
+    freeFontData=0;
    }
- fontW=defaultFont->w;
- fontH=defaultFont->h;
- fontWb=(defaultFont->w+7)/8;
- uchar *fontData=defaultFont->data;
+ fontW=useFont->w;
+ fontH=useFont->h;
+ fontWb=(useFont->w+7)/8;
+ uchar *fontData=useFont->data;
 
  /* Setting to fine tune this driver */
  aux=1;
@@ -881,6 +885,11 @@ TScreenX11::TScreenX11()
 
  /* Create what we'll use as font */
  CreateXImageFont(0,fontData,fontW,fontH);
+ if (freeFontData)
+   {/* Provided by the call back */
+    DeleteArray(useFont->data);
+    delete useFont;
+   }
 
  /* Create the cursor image */
  AdjustCursorImage();
@@ -1632,7 +1641,7 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
  if (changeP)
    {
     DestroyXImageFont(0);
-    if (fontP)
+    if (fontP && fontP->data)
       {
        CreateXImageFont(0,fontP->data,wP,hP);
        primaryFontChanged=1;
@@ -1659,9 +1668,13 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
    }
  // Verify if we need to resize
  if (wP!=fontW || hP!=fontH)
+   {
     DoResize(wP,hP);
+   }
  else
+   {
     FullRedraw();
+   }
  return 1;
 }
 
