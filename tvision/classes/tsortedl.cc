@@ -22,15 +22,11 @@ Modified by Salvador E. Tropea to add functionality.
 #define Uses_TSortedCollection
 #include <tv.h>
 
-#if defined(TVComp_BCPP) && !defined(TVOS_Win32)
-char &shiftKeys = *(char *)MK_FP( 0x40, 0x17 );
-#else
 #if 0
-extern unsigned short getshiftstate(void);
-#define shiftKeys (char)(getshiftstate() & 0xff)
+ extern unsigned short getshiftstate(void);
+ #define shiftKeys (char)(getshiftstate() & 0xff)
 #else
-#define shiftKeys (char)(event.keyDown.shiftState & 0xFF)
-#endif
+ #define shiftKeys (char)(event.keyDown.shiftState & 0xFF)
 #endif
 
 TSortedListBox::TSortedListBox( const TRect& bounds,

@@ -40,10 +40,9 @@ protected:
 
     uchar shiftState;
     ushort searchPos; // SET: made protected not private
+    virtual void *getKey( const char *s );
 
 private:
-
-    virtual void *getKey( const char *s );
 
 #if !defined( NO_STREAM )
     virtual const char *streamableName() const
