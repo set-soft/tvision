@@ -45,7 +45,7 @@ protected:
  // Window size in characters
  static int       maxX, maxY;
  // Window size before last resize
- static int       oldX, oldY;
+ static int       newX, newY;
 };
 
 // With this order the destructor will be called first for TScreenX11,
