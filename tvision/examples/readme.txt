@@ -41,6 +41,10 @@ sdlg     - That's a very good (and usefull) example. It implements a
 sdlg2    - Same as sdlg but more advanced.
 tcombo   - Implements a Combo Box widget. The implementation is clean and
            complete. That's a true example ;-).
+terminal - That's more a test than an example. I did it to test the class
+           because Andris found a bug in the Robert's translation of the
+           obfuscated assembler of the Borland's version. It just test the
+           TTerminal class.
 tprogb   - Another progress bar, less flexible.
 tutorial - It contains a very simple example application made in 16 steps to
            show how each thing is added. It was part of some tutorial from
