@@ -15,6 +15,8 @@ extern "C" {
 #endif
 
 #ifdef __DJGPP__
+/* We never use gettext from intl directly. Instead we use gettext__ */
+#undef gettext
 char *gettext__(const char *);
 #else
 # if !defined(__GLIBC__) || __GLIBC__ < 2
