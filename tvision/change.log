@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.133  2003/11/10 15:10:40  set
+* Applied: Another batch of patches for QNX4. Sent by Mike.
+
 Revision 2.399.2.132  2003/11/06 19:41:37  set
 * Fixed: The Uses_signal stuff in set-logo.cc example needed the inclusion
 of the configuration file. Reported by Frank Liu.
