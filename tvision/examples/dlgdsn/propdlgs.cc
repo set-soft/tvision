@@ -502,7 +502,7 @@ void TItemsEditor::handleEvent(TEvent& event)
          clearEvent(event);
          break;
       case cmDel:
-         if ( messageBox(_("Are you sure ?"), mfYesNoCancel) == cmYes )
+         if ( messageBox(__("Are you sure ?"), mfYesNoCancel) == cmYes )
          {
             cList->atFree(List->focused);
             cList->pack();
@@ -512,7 +512,7 @@ void TItemsEditor::handleEvent(TEvent& event)
          }
          break;
       case cmCClear:
-         if ( messageBox(_("Are you sure ?"), mfYesNoCancel) == cmYes )
+         if ( messageBox(__("Are you sure ?"), mfYesNoCancel) == cmYes )
          {
             cList->freeAll();
             List->setRange(0);

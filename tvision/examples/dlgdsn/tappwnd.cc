@@ -143,7 +143,7 @@ void TAppWindow::handleEvent(TEvent& event)
       switch (event.message.command)
       {
          case cmQuit:
-           if ( lmessageBox( _("Are you sure?"), deskTop ) == cmYes )
+           if ( lmessageBox( __("Are you sure?"), deskTop ) == cmYes )
               endModal(cmQuit);
          break;
          case cmViewAppWindow:
