@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.99  2002/05/30 17:47:25  set
+* Fixed: The column where the cursor is positioned to help Braille
+Terminals. Lamentably we must add a mechanism to unhide the cursor because
+in Linux if the cursor isn't visible the position isn't actually changed.
+From information that Tapio Kelloniemi <tappi@thack.org> sent me.
+
 Revision 2.98  2002/05/30 17:42:32  set
 * Fixed: Lack of string header. Reported by Tapio Kelloniemi
 <tappi@thack.org>

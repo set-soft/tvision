@@ -26,6 +26,7 @@
 #define Uses_TEditorApp
 #define Uses_TVEdMac
 #define Uses_TVEdConstant
+#define Uses_TScreen
 
 #include <tv.h>
 
@@ -76,9 +77,9 @@ TEditorApp::TEditorApp() :
 void TEditorApp::fileOpen()
 {
     char fileName[PATH_MAX];
-    strcpy( fileName, "*.*" );
+    strcpy( fileName, "*" );
 
-    if( execDialog( new TFileDialog( "*.*", "Open file",
+    if( execDialog( new TFileDialog( "*", "Open file",
             "~N~ame", fdOpenButton, 100 ), fileName) != cmCancel )
         openEditor( fileName, True );
 }
@@ -96,9 +97,7 @@ void TEditorApp::changeDir()
 void TEditorApp::dosShell()
 {
     suspend();
-    system("cls");
-    cout << _("Type EXIT to return...");
-    system( getenv( "COMSPEC"));
+    TScreen::System(CLY_GetShellName());
     resume();
     redraw();
 }
