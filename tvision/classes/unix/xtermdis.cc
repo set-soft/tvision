@@ -206,13 +206,13 @@ int TDisplayXTerm::SetDisPaletteColorsXT(int from, int number, TScreenColor *col
 {
  // Assume all will be ok
  int ret=number;
+ fputs("\E]4",stdout);
  while (number-- && from<16)
    {
-    fprintf(stdout,"\E]4;%d;#%2.2X%2.2X%2.2X\xF",cMap[from++],colors->R,colors->G,colors->B);
+    fprintf(stdout,";%d;#%2.2X%2.2X%2.2X",cMap[from++],colors->R,colors->G,colors->B);
     colors++;
    }
- if (selCharset)
-    fputc(14,stdout);
+ fputc(7,stdout);
  return ret;
 }
 

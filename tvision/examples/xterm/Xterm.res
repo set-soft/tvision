@@ -9,7 +9,9 @@
 # 4) The delete key ever emmits an escape sequence. Will think about
 #    changing it.
 #
-# ~Shift ~Ctrl ~Alt <Key>Delete: string(0x1b) string(\"[3~\") \n\
+# Additionally it configures Backspace and Delete to help TV.
+# I also added Alt+letter and Alt+Shift+letter because some XTerm fails
+# to generate ESC+letter.
 #
 xterm -xrm "XTerm*VT100.Translations: #override \n\
  ~Shift ~Ctrl ~Alt <Key>Insert: string(0x1b) string(\"[2~\") \n\
@@ -213,6 +215,16 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift  Ctrl ~Alt <Key>F4: string(0x1b) string(\"6OS\") \n\
  ~Shift  Ctrl  Alt <Key>F4: string(0x1b) string(\"7OS\") \n\
   Shift  Ctrl  Alt <Key>F4: string(0x1b) string(\"8OS\") \n\
+ ~Shift ~Ctrl  Alt <Key>1: string(0x1b) string(\"1\") \n\
+ ~Shift ~Ctrl  Alt <Key>2: string(0x1b) string(\"2\") \n\
+ ~Shift ~Ctrl  Alt <Key>3: string(0x1b) string(\"3\") \n\
+ ~Shift ~Ctrl  Alt <Key>4: string(0x1b) string(\"4\") \n\
+ ~Shift ~Ctrl  Alt <Key>5: string(0x1b) string(\"5\") \n\
+ ~Shift ~Ctrl  Alt <Key>6: string(0x1b) string(\"6\") \n\
+ ~Shift ~Ctrl  Alt <Key>7: string(0x1b) string(\"7\") \n\
+ ~Shift ~Ctrl  Alt <Key>8: string(0x1b) string(\"8\") \n\
+ ~Shift ~Ctrl  Alt <Key>9: string(0x1b) string(\"9\") \n\
+ ~Shift ~Ctrl  Alt <Key>0: string(0x1b) string(\"0\") \n\
  ~Shift ~Ctrl  Alt <Key>a: string(0x1b) string(\"a\") \n\
   Shift ~Ctrl  Alt <Key>a: string(0x1b) string(\"A\") \n\
  ~Shift ~Ctrl  Alt <Key>b: string(0x1b) string(\"b\") \n\
