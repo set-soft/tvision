@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.38  2003/04/16 19:54:42  set
+* Added: adapted the messageBox to the new i18n API.
+* Modified: messageBox to use snprintf instead a fixed size buffer.
+* Added: a snprinf replacement for systems without it, untested.
+
 Revision 2.399.2.37  2003/04/15 15:31:47  set
 * Modified: Files distribution list to reflect new QNX package.
 
