@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.184  2004/08/26 20:18:38  set
+* Modified: [MSVC] At least MSVC 6.0 (version 12.00) have a erong
+implementation of vsnprintf. As I already had too much problems with this
+issue I switching to the compatlayer replacements. Reported by Arnold.
+
 Revision 2.399.2.183  2004/08/24 15:16:42  set
 * Added: Horizontal scroll bar to the TDirListBox.
 * Added: Visible cursor to the TDirListBox, it shows the state of the
