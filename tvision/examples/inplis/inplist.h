@@ -34,7 +34,7 @@ class TLineCollection : public TCollection
 {
   public:
     TLineCollection(short lim, short delta) : TCollection(lim, delta) {}
-    virtual void  freeItem(void *p) { delete p; }
+    virtual void  freeItem(void *p) { delete (ListBoxItem *)p; }
   private:
     virtual void *readItem( ipstream& ) { return 0; }
     virtual void writeItem( void *, opstream& ) {}
