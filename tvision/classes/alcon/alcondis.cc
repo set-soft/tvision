@@ -14,7 +14,6 @@
 
 void TDisplayAlcon::Init()
 {
-    printf("TDisplayAlcon::Init() start\n");
     TDisplay::setCursorPos=SetCursorPos;
     TDisplay::getCursorPos=GetCursorPos;
     TDisplay::getCursorShape=GetCursorShape;
@@ -31,36 +30,30 @@ void TDisplayAlcon::Init()
 //    TDisplay::setDisPaletteColors=SetDisPaletteColors;
 //    TDisplay::getDisPaletteColors=GetDisPaletteColors;
 //    TDisplay::beep=Beep;
-    printf("TDisplayAlcon::Init() end\n");
 }
 
 TDisplayAlcon::~TDisplayAlcon()
 {
-    printf("~TDisplayAlcon()\n");
 }
 
 void TDisplayAlcon::GetCursorPos(unsigned &x, unsigned &y)
 {
-    printf("TDisplayAlcon::GetCursorPos\n");
     x = AlCon_WhereX();
     y = AlCon_WhereY();
 }
 
 void TDisplayAlcon::SetCursorPos(unsigned  x, unsigned  y)
 {
-    printf("TDisplayAlcon::SetCursorPos %d, %d\n", x, y);
     AlCon_GotoXY(x, y);
 }
 
 void TDisplayAlcon::SetCursorShape(unsigned start, unsigned end)
 {
-    printf("TDisplayAlcon::SetCursorShape\n");
     AlCon_SetCursorShape(start, end);
 }
 
 void TDisplayAlcon::GetCursorShape(unsigned &start, unsigned &end)
 {
-    printf("TDisplayAlcon::GetCursorShape\n");
     int _start, _end;
     AlCon_GetCursorShape(&_start, &_end);
     start = _start;
@@ -69,12 +62,10 @@ void TDisplayAlcon::GetCursorShape(unsigned &start, unsigned &end)
 
 ushort TDisplayAlcon::GetRows()
 {
-    printf("TDisplayAlcon::GetRows\n");
     return AlCon_ScreenRows();
 }
 
 ushort TDisplayAlcon::GetCols()
 {
-    printf("TDisplayAlcon::GetCols\n");
     return AlCon_ScreenCols();
 }

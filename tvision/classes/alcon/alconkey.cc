@@ -13,29 +13,29 @@
 
 void TGKeyAlcon::Init()
 {
-	TGKey::kbhit = KbHit;
-	TGKey::clear = Clear;
-	TGKey::gkey = GKey;
-//	TGKey::getShiftState=GetShiftState;
-//	TGKey::fillTEvent = FillTEvent;
+    TGKey::kbhit = KbHit;
+    TGKey::clear = Clear;
+    TGKey::gkey = GKey;
+//  TGKey::getShiftState=GetShiftState;
+//  TGKey::fillTEvent = FillTEvent;
 }
 
 int TGKeyAlcon::KbHit()
 {
-	return AlCon_KbHit();
+    return AlCon_KbHit();
 }
 
 void TGKeyAlcon::Clear()
 {
-	AlCon_ClearKeyBuf();
+    AlCon_ClearKeyBuf();
 }
 
 ushort TGKeyAlcon::GKey()
 {
-	unsigned aSymbol;
-	uchar aScan;
-	unsigned aFlags;
-	
-	return AlCon_GetKey(&aSymbol, &aScan, &aFlags);
+    unsigned aSymbol;
+    uchar aScan;
+    unsigned aFlags;
+    
+    return AlCon_GetKey(&aSymbol, &aScan, &aFlags);
 }
 

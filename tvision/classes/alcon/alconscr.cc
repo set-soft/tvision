@@ -15,7 +15,6 @@
 
 TScreen *TV_AlconDriverCheck()
 {
-    printf("TV_AlconDriverCheck\n");
     TScreenAlcon *drv = new TScreenAlcon();
     if (!TScreen::initialized) {
         delete drv;
@@ -27,7 +26,6 @@ TScreen *TV_AlconDriverCheck()
 
 TScreenAlcon::TScreenAlcon()
 {
-    printf("TScreenAlcon(): start\n");
     // Create screen.
     AlCon_Init(screenWidth, screenHeight);
     
@@ -60,14 +58,11 @@ TScreenAlcon::TScreenAlcon()
     // buffer on top of Allegro's buffer so that Allegro get's called.
     // Wicked. But works.
     screenBuffer = new uint16[screenWidth * screenHeight];
-    
-    printf("TScreenAlcon(): end\n");
 }
 
 
 TScreenAlcon::~TScreenAlcon()
 {
-    printf("~TScreenAlcon\n");
     delete[] screenBuffer;
     
     // Deinitialize all.
@@ -77,14 +72,12 @@ TScreenAlcon::~TScreenAlcon()
 
 void TScreenAlcon::clearScreen()
 {
-    printf("TScreenAlcon::clearScreen()\n");
     TDisplay::clearScreen(AlCon_ScreenCols(), AlCon_ScreenCols());
 }
 
 
 ushort TScreenAlcon::getCharacter(unsigned offset)
 {
-    printf("TScreenAlcon::getCharacter %d\n", offset);
     ushort buffer;
     AlCon_GetScrChars(offset, &buffer, 1);
     return buffer;
@@ -93,28 +86,24 @@ ushort TScreenAlcon::getCharacter(unsigned offset)
 
 void TScreenAlcon::getCharacters(unsigned offset, ushort *buffer, unsigned count)
 {
-    printf("TScreenAlcon::getCharacters offset %d, count %d\n", offset, count);
     AlCon_GetScrChars(offset, buffer, count);
 }
 
 
 void TScreenAlcon::setCharacter(unsigned offset, uint32 value)
 {
-    printf("TScreenAlcon::setCharacter offset %d value %d\n", offset, value);
     AlCon_PutChar(offset, value);
 }
 
 
 void TScreenAlcon::setCharacters(unsigned offset, ushort *values, unsigned count)
 {
-    printf("TScreenAlcon::setCharacters offset %d, count %d\n", offset, count);
     AlCon_PutBuf(offset, values, count);
 }
 
 
 int TScreenAlcon::GetFontGeometry(unsigned &w, unsigned &h)
 {
-    printf("TScreenAlcon::GetFontGeometry\n");
     w = 8;
     h = 16;
     return 1;
