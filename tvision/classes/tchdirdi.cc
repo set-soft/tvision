@@ -112,19 +112,16 @@ void TChDirDialog::handleEvent( TEvent& event )
                     strcpy( curDir, p->dir() );
                     #ifdef CLY_HaveDriveLetters
                     if( strcmp( curDir, _("Drives") ) == 0 )
+                        // Go and get the drive names
                         break;
-                    else if( driveValid( curDir[0] ) )
-                        {
-                        if( curDir[strlen(curDir)-1] != DIRSEPARATOR )
-                            strcat( curDir, DIRSEPARATOR_ );
-                        }
-                    else
+                    if( !driveValid( curDir[0] ) )
+                        // Invalid drive, don't change
                         return;
-                    #else
+                    #endif
+                    // Ensure it have a DIRSEPARATOR at the end
                     if( curDir[strlen(curDir)-1] != DIRSEPARATOR )
                         strcat( curDir, DIRSEPARATOR_ );
-                    changeDir(curDir);
-                    #endif
+                    // Go and get the directories
                     break;
                     }
                 case cmDirSelection:
@@ -135,6 +132,7 @@ void TChDirDialog::handleEvent( TEvent& event )
                 }
             dirList->newDirectory( curDir );
             #if CLY_HaveDriveLetters
+            // Let the last dirsep only if it is X:/
             int len = strlen( curDir );
             if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;

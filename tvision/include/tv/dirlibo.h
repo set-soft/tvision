@@ -56,6 +56,11 @@ private:
     char dir[PATH_MAX];
     ushort cur;
 
+    // SET: Incremental search
+    char incremental[PATH_MAX];
+    int  incPos;
+    ccIndex lastFocusedInSearch;
+
 #if !defined( NO_STREAM )
     virtual const char *streamableName() const
         { return name; }
