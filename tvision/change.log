@@ -1,4 +1,9 @@
 $Log$
+Revision 1.85  1999/08/01 13:34:13  set
+* Added: Now is possible to setup TDeskTop so windows are tiled first
+vertically. For it I added get/setOptions members to TDeskTop, it get/sets
+a flags variable. The dsktTileVertical is the only flag available now.
+.
 Revision 1.84  1999/07/31 19:52:31  set
 * Fixed: In the TDemo example: I forgot to add the link request for the
 streaming structures of the calculator that now are in the library. Reported

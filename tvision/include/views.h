@@ -164,6 +164,12 @@ const ushort
 
     cmListItemSelected  = 56,
 
+// SET: This is a broadcast that TWindow sends to TProgram::application
+// to notify the window is closing. In this way the application can keep
+// track of closed windows
+
+    cmClosingWindow     = 57,
+
 //  Event masks
 
     positionalEvents    = evMouse,
