@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.447  2003/05/16 14:25:45  set
+* Fixed: [Solaris] The use of size_t needs explicit inclusion of stdio
+header.
+.
 Revision 2.446  2003/05/16 12:39:47  set
 * Added: A small tool called "rhtv-config.exe" that can be used to
 determine the libraries needed to link with TV (statically and
