@@ -37,6 +37,8 @@ struct TScreenResolution
 typedef TScreenFont256 *(*TVScreenFontRequestCallBack)(int which, unsigned w,
                          unsigned height);
 
+const int TDisplayDOSModesNum=18;
+
 /**[txh]********************************************************************
 
   Description:

@@ -610,6 +610,17 @@ void TDisplayDOS::SetCrtModeExt(char *command)
    }
 }
 
+int TDisplayDOS::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
+{
+ if (w==TScreen::screenWidth && h==TScreen::screenHeight) return 0;
+ // DOS can't do it so we just select the closest mode available
+ unsigned pos;
+ Boolean exact=searchClosestRes(dosModesRes,w,h,TDisplayDOSModesNum,pos);
+ SetCrtMode(dosModes[pos]);
+ return exact && dosModesCell[pos].x==(unsigned)fW &&
+        dosModesCell[pos].y==(unsigned)fH ? 1 : 2;
+}
+
 /**[txh]********************************************************************
 
   Description:
@@ -739,6 +750,7 @@ void TDisplayDOS::Init()
  TDisplay::setCrtMode=SetCrtMode;
  TDisplay::getCrtMode=GetCrtMode;
  TDisplay::setCrtModeExt=SetCrtModeExt;
+ TDisplay::setCrtModeRes=SetCrtModeRes;
  TDisplay::getWindowTitle=GetWindowTitle;
  TDisplay::setWindowTitle=SetWindowTitle;
  TDisplay::setDisPaletteColors=SetDisPaletteColors;

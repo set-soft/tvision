@@ -33,6 +33,7 @@ protected:
  static void   SetCrtMode(ushort mode);
  static ushort GetCrtMode();
  static void   SetCrtModeExt(char *mode);
+ static int    SetCrtModeRes(unsigned w, unsigned h, int fW, int fH);
  // Not available static int    CheckForWindowSize(void);
  static
  const char   *GetWindowTitle(void);
