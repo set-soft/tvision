@@ -857,6 +857,8 @@ TScreenX11::TScreenX11()
  fontH=useFont->h;
  fontWb=(useFont->w+7)/8;
  uchar *fontData=useFont->data;
+ oldX=maxX;
+ oldY=maxY;
 
  /* Setting to fine tune this driver */
  aux=1;
@@ -1319,6 +1321,7 @@ void TScreenX11::ProcessGenericEvents()
             if (event.xresizerequest.window!=mainWin)
                break;*/
 
+            //printf("ConfigureNotify %d,%d\n",event.xconfigure.width,event.xconfigure.height);
             lastW=maxX;
             lastH=maxY;
             maxX=event.xconfigure.width /fontW;
@@ -1327,6 +1330,7 @@ void TScreenX11::ProcessGenericEvents()
             /* Minimal size */
             if (maxX<40) maxX=40;
             if (maxY<20) maxY=20;
+            //printf("maxX %d maxY %d lastW %d lastH %d\n",maxX,maxY,lastW,lastH);
 
             /* If size changed realloc buffer and indicate it */
             if ((maxX!=(int)lastW) || (maxY!=(int)lastH))
@@ -1348,9 +1352,9 @@ void TScreenX11::ProcessGenericEvents()
                 (unsigned)event.xconfigure.height==newPH)
                break;
 
-            /*printf("Nuevo: %d,%d (%d,%d)\n",maxX,maxY,lastW,lastH);*/
+            //printf("Nuevo: %d,%d (%d,%d)\n",maxX,maxY,lastW,lastH);
             XResizeWindow(disp,mainWin,newPW,newPH);
-            /*printf("Nuevo 2: %d,%d\n",maxX,maxY);*/
+            //printf("Nuevo 2: %d,%d\n",maxX,maxY);
             break;
       }
    }
@@ -1806,7 +1810,7 @@ int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
        CreateXImageFont(1,nsFont->data,nW,nH);
    }
  // Should I check the size?
- maxX=w; maxY=h;
+ oldX=maxX=w; oldY=maxY=h;
 
  screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
  DoResize(nW,nH);

@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.360  2002/11/27 17:24:28  set
+* Added: Now the TScreen::System member can take 3 optional arguments. They
+are used to redirect the stdin, stdout and stderr file handles of the child
+process. This is achieved using dup2 after spawning the child. If the value
+is -1 the handles are shared as before. Tested only for Linux.
+* Added: Testing code to the Linux driver to try using a separated file
+handle for output. This approach is cleaner but lamentably something is
+wrong and I must disable the buffering losing performance (5 times slower).
+For this reason it isn't used.
+
 Revision 2.359  2002/11/27 13:14:24  set
 * Added: Now the ~ at the beggining of a file name is expanded in a similar
 way used by UNIX shells. CLY_IsRelativePath() returns 0 and _fixpath() (it

@@ -576,7 +576,6 @@ int TScreenLinux::GuessCodePageFromLANG()
  return ret;
 }
 
-#include <stdio_ext.h>
 int TScreenLinux::InitOnce()
 {
  LOG("TScreenLinux::InitOnce");
