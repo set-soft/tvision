@@ -88,9 +88,7 @@ void TScreen::defaultSetCrtData()
  screenWidth =getCols();
  screenHeight=getRows();
  hiResScreen =Boolean(screenHeight>25);
- //fprintf(stderr,"Averiguando cursorLines\n");
  cursorLines =getCursorType();
- //fprintf(stderr,"cursorLines=%0xX\n",cursorLines);
  setCursorType(0);
 }
 
