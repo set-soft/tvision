@@ -10,7 +10,7 @@
 #
 
 $destination='/usr/lib';
-$intver='1.0.7';
+$intver='1.0.8';
 $extver='1';
 unlink('tcedit.dst',glob('*.bkp'));
 $f=&cat('../linux/Makefile');
