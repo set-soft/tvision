@@ -1277,6 +1277,18 @@ void TScreenLinux::GetCharactersVCS(unsigned offset, ushort *buf, unsigned count
 {
  lseek(vcsRfd,offset*sizeof(ushort)+4,SEEK_SET);
  read(vcsRfd,buf,count*sizeof(ushort));
+ #if TV_BIG_ENDIAN
+   {
+    unsigned i;
+    uchar *s=(uchar *)buf,aux;
+    for (i=0; i<length; i+=2)
+       {
+        aux=s[i];
+        s[i]=s[i+1];
+        s[i+1]=aux;
+       }
+   }
+ #endif
 }
 
 /*
@@ -1311,7 +1323,21 @@ void TScreenLinux::SetCharactersVCS(unsigned dst, ushort *src, unsigned len)
    }
 
  lseek(vcsWfd,dst*sizeof(ushort)+4,SEEK_SET);
- write(vcsWfd,src,length);
+ #if TV_BIG_ENDIAN
+   {
+    unsigned i;
+    uchar *s=(uchar *)src;
+    uchar b[length*2];
+    for (i=0; i<length; i+=2)
+       {
+        b[i]=s[i+1];
+        b[i+1]=s[i];
+       }
+    write(vcsWfd,b,length);
+   }
+ #else
+    write(vcsWfd,src,length);
+ #endif
  if (!canReadVCS())
     // SET: cache it to avoid reads that needs special priviledges
     memcpy(screenBuffer+dst,src,length);
