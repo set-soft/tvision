@@ -98,6 +98,7 @@ set_selection code using mode 16. This is far from usable.
 #include <termios.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
+#include <linux/kd.h>
 
 #include <tv/linux/screen.h>
 #include <tv/linux/key.h>
@@ -135,6 +136,8 @@ typedef struct
  ushort ye       __attribute__((packed));
  ushort sel_mode __attribute__((packed));
 } setSel;
+
+static uint32 adler32(uint32 adler, const char *buf, unsigned len);
 
 TScreen *TV_LinuxDriverCheck()
 {
@@ -192,6 +195,117 @@ void TScreenLinux::Init(int mode)
 }
 
 
+// This is the code to debug the code page detection
+#ifdef DEBUG
+static int compareUni(const void *v1, const void *v2)
+{
+ struct unipair *p1=(struct unipair *)v1;
+ struct unipair *p2=(struct unipair *)v2;
+ if (p1->fontpos==p2->fontpos)
+    return (p1->unicode>p2->unicode)-(p1->unicode<p2->unicode);
+ return (p1->fontpos>p2->fontpos)-(p1->fontpos<p2->fontpos);
+}
+
+int TScreenLinux::AnalyzeCodePage()
+{
+ // GIO_UNIMAP: get unicode-to-font mapping from kernel
+ struct unimapdesc map;
+ map.entry_ct=512;
+ map.entries=new struct unipair[512];
+ if (ioctl(hOut,GIO_UNIMAP,&map)==-1)
+   {
+    delete[] map.entries;
+    return 0;
+   }
+
+ int i,j;
+ fprintf(stderr,"The map have %d entries\n",map.entry_ct);
+ // Sort the entries
+ qsort(map.entries,map.entry_ct,sizeof(struct unipair),compareUni);
+ // Print all marking the entries that provides more than a code
+ for (i=0,j=0; i<map.entry_ct; i++)
+    {
+     if (j!=map.entries[i].fontpos)
+       {
+        while (j<map.entries[i].fontpos)
+           fprintf(stderr,"0x%02X => NO UNICODE\n",j++);
+       }
+     fprintf(stderr,"0x%02X => 0x%04X",map.entries[i].fontpos,map.entries[i].unicode);
+     if (i && map.entries[i-1].fontpos==map.entries[i].fontpos)
+        fputs(" *",stderr);
+     else
+        j++;
+     fputc('\n',stderr);
+    }
+ // Create a special list containing only one unicode by symbol
+ ushort UnicodeMap[256];
+ memset(UnicodeMap,0xFF,256*sizeof(ushort));
+ for (i=0; i<map.entry_ct; i++)
+    {
+     int pos=map.entries[i].fontpos;
+     if (i && map.entries[i-1].fontpos==pos) continue;
+     if (pos>255) continue;
+     UnicodeMap[pos]=map.entries[i].unicode;
+    }
+ // Print this map
+ fputs("-------------\nSimplified map for checksum:\n",stderr);
+ for (i=0; i<256; i++)
+     if (UnicodeMap[i]==0xFFFF)
+        fprintf(stderr,"0x%02X NO UNICODE\n",i);
+     else
+        fprintf(stderr,"0x%02X U+%04x\n",i,UnicodeMap[i]);
+ // Compute a good check sum
+ uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
+ fprintf(stderr,"Adler-32 checksum: 0x%08X\n",cks);
+
+ delete[] map.entries;
+ return 1;
+}
+#else
+int TScreenLinux::AnalyzeCodePage()
+{
+ // Get the console unicode map
+ // GIO_UNIMAP: get unicode-to-font mapping from kernel
+ struct unimapdesc map;
+ map.entry_ct=512;
+ map.entries=new struct unipair[512];
+ if (ioctl(hOut,GIO_UNIMAP,&map)==-1)
+   {
+    delete[] map.entries;
+    return 0;
+   }
+ // Make a simplified version
+ int i;
+ ushort UnicodeMap[256];
+ memset(UnicodeMap,0xFF,256*sizeof(ushort));
+ for (i=0; i<map.entry_ct; i++)
+    {
+     int pos=map.entries[i].fontpos;
+     if (pos>255) continue;
+     if (map.entries[i].unicode<UnicodeMap[pos])
+        UnicodeMap[pos]=map.entries[i].unicode;
+    }
+ // Compute a good check sum of it
+ uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
+ switch (cks)
+   {
+    case 0x2038159A:
+         fputs("Code page: Latin 1u\n",stderr);
+         break;
+    case 0x6E30159A:
+         fputs("Code page: Latin 1\n",stderr);
+         break;
+    case 0x207E10FA:
+         fputs("Code page: KOI-8 R\n",stderr);
+         break;
+    default:
+         fprintf(stderr,"Unknown code page: 0x%08X\n",cks);
+   }
+ delete[] map.entries;
+ return 1;
+}
+#endif
+
 int TScreenLinux::InitOnce()
 {
  LOG("TScreenLinux::InitOnce");
@@ -241,6 +355,12 @@ int TScreenLinux::InitOnce()
     defaultGetDisPaletteColors(0,16,ActualPalette);
     // Now set it
     SetDisPaletteColors(0,16,ActualPalette);
+   }
+
+ // Try to figure out which code page is loaded
+ if (tioclinuxOK)
+   {
+    AnalyzeCodePage();
    }
 
  // Setup the driver properties.
@@ -860,6 +980,79 @@ int TScreenLinux::System(const char *command, pid_t *pidChild)
  return 0;
 }
 
+/* The following is a modified version of Adler-32 checksum calculator:
+ * adler32.c -- compute the Adler-32 checksum of a data stream
+ * Copyright (C) 1995-1998 Mark Adler
+ * For conditions of distribution and use, see copyright notice in zlib.h
+   The above mentioned header says:
+
+  Copyright (C) 1995-2002 Jean-loup Gailly and Mark Adler
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+
+  Jean-loup Gailly        Mark Adler
+  jloup@gzip.org          madler@alumni.caltech.edu
+
+  This notice isn't removed, I clearly state the original author and that's
+ modified, so I think that's ok and compatible with GPL.
+ */
+
+const uint32 Base=65521; /* largest prime smaller than 65536 */
+const unsigned nMax=5552;
+/* nMax is the largest n such that 255n(n+1)/2 + (n+1)(Base-1) <= 2^32-1 */
+
+#define DO1(buf,i)  {s1+=buf[i]; s2+=s1;}
+#define DO2(buf,i)  DO1(buf,i); DO1(buf,i+1);
+#define DO4(buf,i)  DO2(buf,i); DO2(buf,i+2);
+#define DO8(buf,i)  DO4(buf,i); DO4(buf,i+4);
+#define DO16(buf)   DO8(buf,0); DO8(buf,8);
+
+static
+uint32 adler32(uint32 adler, const char *buf, unsigned len)
+{
+ uint32 s1=adler & 0xffff;
+ uint32 s2=(adler>>16) & 0xffff;
+ int k;
+
+ if (buf==NULL)
+    return 1;
+
+ while (len>0)
+   {
+    k=len<nMax ? len : nMax;
+    len-=k;
+    while (k>=16)
+      {
+       DO16(buf);
+       buf+=16;
+       k-=16;
+      }
+    if (k)
+      do
+        {
+         s1+=*buf++;
+         s2+=s1;
+        }
+      while (--k);
+    s1%=Base;
+    s2%=Base;
+   }
+ return (s2 << 16) | s1;
+}
 #endif // TVOSf_Linux
 /*****************************************************************************
 
