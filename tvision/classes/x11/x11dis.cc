@@ -8,7 +8,7 @@
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(TVOS_UNIX) && defined(HAVE_X11)
+#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11)
 
 // X11 defines their own values
 #undef True

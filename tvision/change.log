@@ -1,4 +1,19 @@
-$Log$.
+$Log$
+Revision 2.311  2002/09/16 14:25:07  set
+* Modified: [UNIX] now the priority for linking the examples is: (1)
+installed libraries, (2) compiled dynamic and (3) compiled static. It
+implies the user must install the libraries if s/he had an old version
+installed. But this is the standard procedure. The advantage is smaller
+examples and at the same time you can test small changes without linking
+the examples again and again, even without installing using LD_LIBRARY_PATH
+* Removed: redundant argument of the configure script.
+* Modified: the help of the conf. script, now is easier to find what you
+want.
+* Added: a configuration option to install the dynamic libraries without
+running strip.
+* Fixed: [Linux] the driver always *must* detect the code pages to use them
+as defaults, it can't be skiped.
+
 Revision 2.310  2002/09/13 18:55:58  set
 * Modified: [X11] Now the busy indicator shape is just XC_watch by default,
 using a configuration variable you can select Roman's cursor. Suggested by

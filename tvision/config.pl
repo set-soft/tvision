@@ -61,6 +61,10 @@ if ($OS eq 'UNIX')
    LookForXlib();
    #LookForOutB();
   }
+if ($Compf eq 'Cygwin')
+  {# Cygwin incorporates a XFree86 port
+   LookForXlib();
+  }
 LookForIntlSupport();
 LookForEndianess();
 
@@ -140,6 +144,7 @@ elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
+   $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
    #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile','compat/compat.mak','intl/dummy/Makefile');
