@@ -351,7 +351,7 @@ ushort TGKeyX11::GKey()
              else
                {// >=128, handle them using Unicode
                 name=kbUnkNown;
-                Symbol=Unicode2CP(Symbol);
+                Symbol=Unicode_2_CP(Symbol);
                }
             }
          }
