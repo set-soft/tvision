@@ -24,7 +24,7 @@ ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
 	mv debian/rhtvision.postrm debian/rhtvision$(version).postrm
 endif
-	./configure --prefix=$(destdir) --fhs
+	./configure --prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr
 	$(MAKE) CPPFLAGS="-D_REENTRANT"   
 	touch build-stamp
 
@@ -32,7 +32,7 @@ endif
 # Clean everything as if nothing happened :) :
 clean: clean-debian debianbackup.tar
 # If we don't configure there is no guarantee that we have a Makefile:
-	./configure --prefix=$(destdir) --fhs
+	./configure --prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr
 	$(MAKE) clean
 # Restore upstream provided regenerated files:
 	test -e debianbackup.tar && tar -xf debianbackup.tar
@@ -68,7 +68,7 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean
-	dh_installdirs -p $(package)$(version)-dev usr/lib \
+	dh_installdirs -p $(package)$(version)-dev usr/lib usr/bin \
 		usr/include/$(package) usr/share/doc \
 		usr/share/doc/$(package)$(version)-dev \
 		usr/share/doc/$(package)$(version)-dev/examples

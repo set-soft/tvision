@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.463  2003/05/29 18:36:59  set
+* Added: [BC++] Definition of __inline__ as inline in compatlayer.h. This
+will avoid command line definitions.
+
 Revision 2.462  2003/05/29 18:24:24  set
 * Modified: Now the global function destroy is called CLY_destroy, new code
 should use the function with this name. For compatibility most targets
