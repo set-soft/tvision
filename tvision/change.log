@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.443  2003/05/14 19:11:49  set
+* Fixed: New classes and operator improperly protected against multiple
+inclusion of the same header.
+
 Revision 2.442  2003/05/14 14:07:23  set
 * Added: Three new classes that makes the use of the base classes a little
 bit easier: TInput1Line, T1Label and T1StaticText. They are versions that
