@@ -360,7 +360,7 @@ glob(const char *_pattern, int _flags, int (*_errfunc)(const char *_epath, int _
       if (!(flags & GLOB_DOOFFS))
         _pglob->gl_offs = 0;
     }
-  if (glob2(_pattern, pathbuf, preserve_case ? 0 : 1, preserve_case ? 0 : 1) == GLOB_NOSPACE)
+  if (glob2(_pattern, pathbuf, preserve_case ? 0 : 1, /*preserve_case ? 0 :*/ 1) == GLOB_NOSPACE)
     {
       return GLOB_NOSPACE;
     }
