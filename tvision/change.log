@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.498  2003/08/10 19:55:39  terrible
+* Updated: Debian packaging to 2.0.2-1 version!
+
 Revision 2.497  2003/08/06 15:30:30  set
 * Fixed: The snprintf replacement wrote to NULL pointers.
 
