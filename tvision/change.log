@@ -1,4 +1,15 @@
 $Log$
+Revision 1.9  1999/01/13 23:26:57  set
+* Added "delete.me" files to ensure the empty directories are packaged.
+* Silly boy, silly boy, I don't how but some silly options were included in
+the DOS libtv.gpr (-funsigned-char and a -W that makes problems with gcc
+2.7.x).
+* Moved the #include of the standard headers to include these headers before
+the C++ headers. If I don't do it default djgpp installations barf about
+redefined NULL (no Linux libc5 nor glibc).
+* Added instructions to workaround a bug in the gettext distribution for
+djgpp.
+.
 Revision 1.8  1999/01/13 00:55:43  set
 Passed the changes to DOS.
 .
