@@ -67,7 +67,7 @@ public:
  static ushort GetAltSettings(void) { return AltSet; }
  static void SetAltSettings(ushort altSet) { AltSet=altSet; }
  static ushort KeyNameToNumber(char *s);
- #ifdef __linux__
+ #ifdef TVOS_UNIX
  #define KBD_OLD_STYLE      0
  #define KBD_REDHAT52_STYLE 1
  #define KBD_XTERM_STYLE    2
