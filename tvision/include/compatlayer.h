@@ -719,6 +719,13 @@ typedef unsigned long  ulong;
   #define Include_io 1
   #undef  R_OK
   #define R_OK 4
+  #undef  W_OK
+  #define W_OK 2
+  #undef  F_OK
+  #define F_OK 0
+  // No test for execute => just exists
+  #undef  X_OK
+  #define X_OK 0
  #endif
  #ifdef Uses_ctype
   #undef  Include_ctype
@@ -921,20 +928,51 @@ typedef unsigned long  ulong;
   #undef  Include_limits
   #define Include_limits 1
  #endif
+ #ifdef Uses_stdio
+  #undef  popen
+  #define popen _popen
+ #endif
  #ifdef Uses_fcntl
   #undef  Include_fcntl
   #define Include_fcntl 1
+  /* open and creat belongs here */
+  #undef  Include_io
+  #define Include_io 1
+  #undef  open
+  #define open  _open
+  #undef  creat
+  #define creat _creat
+  #undef  CLY_DefineFileConstants
+  #define CLY_DefineFileConstants 1
  #endif
  #ifdef Uses_sys_stat
   #undef  Include_sys_stat
   #define Include_sys_stat 1
   #undef  Fake_S_IS
   #define Fake_S_IS 1
+  #undef  CLY_DefineIRW
+  #define CLY_DefineIRW 1
  #endif
  #ifdef Uses_unistd
   #undef  Include_unistd
   /* Doesn't exist
      #define Include_unistd 1 */
+  /* Most unistd equivalents are here: */
+  #undef  Include_io
+  #define Include_io 1
+  /* close, dup, dup2, read, write and lseek is defined here */
+  #undef  close
+  #define close _close
+  #undef  dup
+  #define dup _dup
+  #undef  dup2
+  #define dup2 _dup2
+  #undef  read
+  #define read _read
+  #undef  write
+  #define write _write
+  #undef  lseek
+  #define lseek _lseek
  #endif
  #ifdef Uses_access
   #undef  Include_io
@@ -942,6 +980,13 @@ typedef unsigned long  ulong;
   #define access(a,b) _access(a,b)
   #undef  R_OK
   #define R_OK 4
+  #undef  W_OK
+  #define W_OK 2
+  #undef  F_OK
+  #define F_OK 0
+  // No test for execute => just exists
+  #undef  X_OK
+  #define X_OK 0
  #endif
  #ifdef Uses_ctype
   #undef  Include_ctype
@@ -1043,8 +1088,8 @@ typedef unsigned long  ulong;
   #define Include_sys_utime 1
   #undef  utime
   #define utime _utime
-  #undef  utimbuf
-  #define utimbuf _utimbuf
+  /*#undef  utimbuf
+  #define utimbuf _utimbuf*/
  #endif
  #ifdef Uses_mkstemp
   CLY_CFunc int mkstemp(char *_template);
@@ -1229,6 +1274,29 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #ifndef O_BINARY /* UNIX */
   #define O_BINARY (0)
  #endif
+ #ifdef CLY_DefineFileConstants
+  #if !defined(O_RDONLY) && defined(_O_RDONLY)
+   #define  O_RDONLY _O_RDONLY
+  #endif
+  #if !defined(O_WRONLY) && defined(_O_WRONLY)
+   #define  O_WRONLY _O_WRONLY
+  #endif
+  #if !defined(O_RDWR) && defined(_O_RDWR)
+   #define  O_RDWR _O_RDWR
+  #endif
+  #if !defined(O_APPEND) && defined(_O_APPEND)
+   #define  O_APPEND _O_APPEND
+  #endif
+  #if !defined(O_CREAT) && defined(_O_CREAT)
+   #define  O_CREAT _O_CREAT
+  #endif
+  #if !defined(O_EXCL) && defined(_O_EXCL)
+   #define  O_EXCL _O_EXCL
+  #endif
+  #if !defined(O_TRUNC) && defined(_O_TRUNC)
+   #define  O_TRUNC _O_TRUNC
+  #endif
+ #endif
 #endif
 
 #if defined(Include_sys_stat) && !defined(Included_sys_stat)
@@ -1245,6 +1313,14 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
   #define S_ISREG(m)  ((m) & S_IFREG)
   #undef  S_ISFIFO
   #define S_ISFIFO(m) ((m) & S_IFIFO)
+ #endif
+ #ifdef CLY_DefineIRW
+  #ifndef S_IREAD
+   #define S_IREAD _S_IREAD
+  #endif
+  #ifndef S_IWRITE
+   #define S_IWRITE _S_IWRITE
+  #endif
  #endif
 #endif
 
