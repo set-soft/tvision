@@ -50,8 +50,20 @@ compiler.@p
   #define NEEDS_ITOA
  #endif
  
+ // Solaris
+ #ifdef TVOSf_Solaris
+  // Strings
+  #define NEEDS_STRLWR
+  #define NEEDS_STRUPR
+  #define NEEDS_GETOPT
+  #define NEEDS_FIXPATH
+  #define NEEDS_FILELENGTH
+  #define NEEDS_ITOA
+  #define NEEDS_NL_LANGINFO
+ #endif
+
  // Generic UNIX system
- #if defined(TVOS_UNIX) && !defined(TVOSf_Linux)
+ #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)
   // Strings
   #define NEEDS_STRLWR
   #define NEEDS_STRUPR
