@@ -1,5 +1,5 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1998-2000 Salvador Eduardo Tropea */
+/* Copyright (C) 1998-2001 Salvador Eduardo Tropea */
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TDrawBuffer
@@ -746,6 +746,7 @@ TScreen::TScreen()
     bool found_vcsa = false;
     int pid = getpid();
     sprintf(path, "/proc/%d/stat", pid);
+    /* If it fails lets see what terminal own our parent */
     while (!found_vcsa &&
            (pid != -1) &&
            ((statfile = fopen(path, "r")) != NULL))
@@ -757,6 +758,12 @@ TScreen::TScreen()
       /* virtual consoles have minor numbers <= 63 */
   
       fscanf(statfile, "%*d %*s %*c %d %*d %*d %d", &ppid, &dev);
+
+      LOG("ppid: " << ppid << " device: " << dev);
+      /* Be a little bit smart, we don't want to bypass X */
+      /* X terminals are attached to 0 (unknown) terminal */
+      if (dev==0) break;
+      
       if ((dev & 0xff00) == 0x0400 && (dev & 0xff) <= 63)
       {
         LOG("virtual console detected");

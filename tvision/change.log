@@ -1,4 +1,20 @@
 $Log$
+Revision 1.168  2001/08/16 01:55:48  set
+* Fixed: The terminal attributes saved in startcurses were not restored in
+stopcurses (but in the destructor) making assymetric the calls. Patch by
+Robert.
+* Modified: Now sys/perm.h is used and asm/io.h doesn't need to be
+protected from sys/io.h. Robert hint.
+* Added: Now if the library isn't in a virtual console the library tries
+harder to find out if this is situation is because the parent spawned the
+program in a terminal like a pts/x. If this is the case the library finds
+what terminal owns the parent and uses it. This is very nice to bypass
+programs like Midnight Commander, but have a serious drawback that I must
+fix in the next minutes: X is also bypassed ;-). Patch from Robert.
+* Fixed: ticks.h used NULL without including stdio.h. Patch from Robert.
+* Fixed: Warning about unused variable in gkeyli.cc when HAVE_KEYSYMS was
+not enabled. Patch from Robert.
+
 Revision 1.167  2001/08/15 23:58:19  set
 * Added: The .mak files to the Linux distribution.
 Released as beta.
