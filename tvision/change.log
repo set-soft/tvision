@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.262  2002/08/20 19:49:28  set
+* Fixed: [Win32] The call to _sleep is deprecated according to Igor, so I
+replaced it by CLY_YieldProcessor, it calls to Sleep (Win32 API). From a
+report by Igor Gnip <gnipi@digitalsystem.co.yu>
+
 Revision 2.261  2002/08/20 14:18:40  set
 * Added: Code page configuration to the DOS, Linux, QNX, UNIX, Win32,
 WinNT, X11 and XTerm drivers using the tvrc.

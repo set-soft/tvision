@@ -6,7 +6,7 @@
 #define WIN32KEY_HEADER_INCLUDED
 struct TEvent;
 
-const int eventKeyboardQSize=16;
+const unsigned eventKeyboardQSize=16;
 
 // A class to encapsulate the globals, all is static!
 class TGKeyWin32 : public TGKey
