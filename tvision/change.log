@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.356  2002/11/25 15:06:47  set
+* Added: The creation and installation of es.mo and ru.mo files from
+spanish and russian translations.
+
 Revision 2.355  2002/11/25 15:03:12  set
 * Added: TGKey now have a member to set the code page for the translation
 tables.
