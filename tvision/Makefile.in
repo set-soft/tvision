@@ -2,7 +2,7 @@ prefix=@prefix@
 libdir=$(prefix)/lib
 OS=@OS@
 
-.PHONY: @targets@
+.PHONY: @targets@ @installers@ install-headers
 
 all: @targets@
 
@@ -10,6 +10,12 @@ all: @targets@
 
 @target2_rule@
 
-install: @targets@
-	@install_rule@
+install-headers:
+	@install_headers@
+
+@install1_rule@
+
+@install2_rule@
+
+install: @installers@ install-headers
 
