@@ -243,6 +243,7 @@ OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/strlwr.o\
 	../compat/obj/strupr.o ../compat/obj/ticks.o ../compat/obj/unc.o\
+	../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
 	../compat/obj/validfilename.o ../compat/obj/yieldpro.o\
 	obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/fileview.o obj/fpbase.o obj/fpstream.o obj/gkey.o\
@@ -449,6 +450,7 @@ DEPS_0= ../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/strlwr.o\
 	../compat/obj/strupr.o ../compat/obj/ticks.o ../compat/obj/unc.o\
+	../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
 	../compat/obj/validfilename.o ../compat/obj/yieldpro.o\
 	obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/fileview.o obj/fpbase.o obj/fpstream.o obj/gkey.o\

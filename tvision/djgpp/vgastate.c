@@ -8,6 +8,8 @@
 
 *****************************************************************************/
 
+#ifdef __DJGPP__
+
 #include <pc.h>
 #include <sys/movedata.h>
 typedef unsigned char uchar;
@@ -200,3 +202,5 @@ int VGAStateLoad(void *buffer)
  VGALoadRegs(s);
  return 1;
 }
+
+#endif // __DJGPP__
