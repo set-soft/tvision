@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.144  2002/06/11 15:09:25  set
+* Fixed: Missing \n after the tvfintl copy in generated makefile. Affected
+UNIX targets.
+
 Revision 2.143  2002/06/11 14:56:57  set
 * Fixed: [XTerm] The suspend member needed a flush, without it calling a
 shell didn't restore the shell screen.

@@ -10,9 +10,10 @@
   3) Parses escape sequences.
 
   TODO:
-  Move the code that overlaps with Linux driver to a base class. Lets say
+  * Move the code that overlaps with Linux driver to a base class. Lets say
   TGKeyEscapeSequences.
-  When the list is big (>8?) us bsearch
+  * When the list is big (>8?) us bsearch
+  * Allow changing MIN and TIME termios values for slow connections.
 
 *****************************************************************************/
 #include <tv/configtv.h>
@@ -104,6 +105,12 @@ int TGKeyXTerm::InitOnce()
  inTermiosNew.c_iflag&= ~(IXOFF | IXON);
  // Character oriented, no echo, no signals
  inTermiosNew.c_lflag&= ~(ICANON | ECHO | ISIG);
+ // The following are needed for Solaris. In 2.7 MIN is around 4 and TIME 0
+ // making things really annoying. In the future they could be driver
+ // variables to make the use of bandwidth smaller. A value of 4 and 1 looks
+ // usable.
+ inTermiosNew.c_cc[VMIN]=0;
+ inTermiosNew.c_cc[VTIME]=0;
  if (tcsetattr(hIn,TCSAFLUSH,&inTermiosNew))
    {
     error=_("can't set input terminal attributes");
