@@ -1,0 +1,55 @@
+Driver: QNX4
+Author: Mike Gorchak
+Status: Just a few words and patches.
+Revision: $Revision$
+
+Attention! EGCS 1.1.2/QNX4 distributive have some errors in headers, so before
+           compiling TurboVision you must apply the following patch:
+
+--- //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.60/include/term.h	Mon Nov  3 01:24:29 2003
++++ //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66/include/term.h	Wed Nov  5 01:09:40 2003
+@@ -624,6 +624,7 @@
+ #define NUMCOUNT  39
+ #define STRCOUNT  412
+ 
++#pragma pack(1)
+ typedef struct termtype {	/* in-core form of terminfo data */
+     char  *term_names;		/* str_table offset of term names */
+     char  *str_table;		/* pointer to string table */
+@@ -639,6 +640,7 @@
+                  Nttyb;		/* current state of the terminal */
+     int          _baudrate;      /* used to compute padding */
+ } TERMINAL;
++#pragma pack()
+ 
+ extern TERMINAL	*cur_term;
+ 
+--- //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66-orig/include/sys/term.h	Mon Nov  3 01:24:36 2003
++++ //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66/include/sys/term.h	Wed Nov  5 04:51:59 2003
+@@ -31,7 +31,7 @@
+ #endif
+ 
+ typedef short int chtype;
+-typedef char bool;
++typedef char BOOL;
+ typedef char *charptr;
+ typedef short int charoffset;
+ 
+@@ -934,7 +934,7 @@
+     int     _inputfd;               /* input file descriptor                */
+     FILE    *_outputfp;             /* stream of the Filedes                */
+     unsigned keystart[16];          /* Bit array of start bytes for fn keys */
+-    bool    _fl_rawmode,            /* in cbreak(=1) or raw(=2) mode        */
++    BOOL    _fl_rawmode,            /* in cbreak(=1) or raw(=2) mode        */
+             fl_typeahdok,           /* ok to use typeahead                  */
+             _cursorstate,           /* cursor: 0=invis, 1=norm, 2=vvis      */
+             _iwait;                 /* true if input-pending                */
+@@ -946,7 +946,7 @@
+     char    _termname[15];          /* Terminal name from TERM envar        */
+     char    _tty;                   /* 1=tty, 0=not a tty ( file ).         */
+     char    _pad_char;              /* Padding char for delays              */
+-    bool    _key_null:1,            /* 1=report K_MOUSE_POS always          */
++    BOOL    _key_null:1,            /* 1=report K_MOUSE_POS always          */
+             _shift_held:1,          /* 1=Shift down valid only for mouse    */
+             _ctrl_held:1,           /* 1=Ctrl down valid only for mouse     */
+             _alt_held:1,            /* 1=Alt down valid only for mouse      */

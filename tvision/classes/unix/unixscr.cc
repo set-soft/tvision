@@ -20,11 +20,12 @@ Mouse reporting not disabled at exit!!!
 #define Uses_TGKey
 #define Uses_string
 #define Uses_ctype
+#define Uses_ioctl
 #define Uses_TVCodePage
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(TVOSf_QNX4)
+#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <fcntl.h>
 #include <signal.h>
@@ -34,7 +35,10 @@ Mouse reporting not disabled at exit!!!
 #include <stdarg.h>
 #include <termios.h>
 #include <sys/mman.h>
-#include <sys/ioctl.h>
+
+#if defined(TVOSf_QNX4)
+ #include <process.h>
+#endif // TVOSf_QNX4
 
 // I don't know why it's needed, but it seems to be only known to me way
 // to get rhgdb built so it doesn't mess up terminal settings.
@@ -1014,7 +1018,7 @@ int TScreenUNIX::System(const char *command, pid_t *pidChild, int in,
 #include <tv/unix/mouse.h>
 #include <tv/linux/mouse.h>
 
-#endif // TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
+#endif // TVOS_UNIX && !TVOSf_QNXRtP
 /*****************************************************************************
 
      This code was in the constructor and commented, it could help in the

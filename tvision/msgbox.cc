@@ -35,6 +35,10 @@ i18n.
 #define Uses_snprintf
 #include <tv.h>
 
+#if defined(TVOSf_QNX4)
+ #include <unix.h>
+#endif // TVOSf_QNX4
+
 static const char *buttonName[] =
 {
     __("~Y~es"),

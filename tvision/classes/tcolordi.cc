@@ -119,7 +119,7 @@ void TColorDialog::handleEvent( TEvent& event )
       { // That's a new broadcast, I used it for the editor because the
         // colors are cached.
        message(TProgram::deskTop,evBroadcast,cmUpdateColorsChanged,0);
-       TProgram::application->Redraw();
+       TProgram::application->CLY_Redraw();
       }
 }
 

@@ -34,6 +34,9 @@
 #define Uses_TParamText
 #include <tv.h>
 
+#if defined(TVOSf_QNX4)
+ #include <unix.h>
+#endif // TVOSf_QNX4
 
 TParamText::TParamText( const TRect& bounds ) :
     TStaticText(bounds, 0 ),

@@ -788,7 +788,7 @@ typedef unsigned long  ulong;
   #define CLY_Redraw ForcedRedraw
   
   #undef  IOCTL_HEADER
-  #define IOCTL_HEADER    <sys/ioctl.h>
+  #define IOCTL_HEADER    <ioctl.h>
  #endif // TVOSf_QNX4
 
  /* Generic UNIX system */
@@ -1525,9 +1525,6 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #if defined(TVOSf_QNXRtP)
   #include <strings.h> // QNX RtP requires this include for functions strcasecmp, etc.
  #endif // TVOSf_QNXRtP
- #if defined(TVOSf_QNX4)
-  #include <unix.h> // QNX4 requires this include for functions strcasecmp, etc.
- #endif // TVOSf_QNX4
 #endif
 
 #if defined(Include_limits) && !defined(Included_limits)
