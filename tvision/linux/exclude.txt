@@ -7,7 +7,7 @@
 *CVS/*
 *cvs
 *CVS
-*linuxso/libtv*
+*linuxso/librhtv*
 *linuxso/instlib
 *linuxso/Makefile
 *linuxso/gkeyli.cc
