@@ -1,4 +1,7 @@
 $Log$
+Revision 1.55  1999/05/29 00:52:23  root (set)
+* Removed some Debian files no longer needed (Ivan).
+
 Revision 1.54  1999/05/28 01:02:39  set
 * Added: Windows NT detection (using the OS environment variable) to the
 mouse class so now if NT is detected the mouse is polled and not hooked.
