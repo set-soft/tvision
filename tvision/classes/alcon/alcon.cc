@@ -556,7 +556,7 @@ int AlCon_Init(int w, int h)
    }
   
    /* Load a binary font */
-   _AlCon_LoadCustomFont("rom-PC437.016");
+   _AlCon_LoadCustomFont("rom-PC437.014");
   
    /* Create default cursor shape */
    _cursorData[0] =0;
@@ -750,12 +750,16 @@ static void _AlCon_LoadCustomFont(const char *filename)
    } else {
       char font_buffer[4096];
       
-      fread(font_buffer, 4096, 1, file);
+      int read_bytes = fread(font_buffer, 1, 4096, file);
       fclose(file);
+      if (read_bytes < 256) {// Absurd size limit
+         allegro_message("Absurd custom font size (%d bytes)", read_bytes);
+         exit(3);
+      }
       one_custom_font_loaded = true;
-      // TODO: Recognise file size and set height accordingly.
+      // Presume the font is 8 pixels wide and contains 256 characters.
       _font_width = 8;
-      _font_height = 16;
+      _font_height = read_bytes / 0x100;
 
       // Copy font from buffer to internal structure.
       for (int i = 0; i < 0x100; i++) {
