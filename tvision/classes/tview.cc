@@ -1001,10 +1001,10 @@ void call30(int x)
 // SET: Be careful about nibble order
 #ifdef TV_BIG_ENDIAN
  #define GetAttrShadow(a) ((a) & 0xFF)
- #define ChangeAttr(v,a)  (((v) & 0xFF00) | a)
+ #define ChangeAttr(v,a)  (((v) & 0xFF00) | (a))
 #else
  #define GetAttrShadow(a) (((a) & 0xFF)<<8)
- #define ChangeAttr(v,a)  (((v) & 0xFF) | a)
+ #define ChangeAttr(v,a)  (((v) & 0xFF) | (a))
 #endif
 
 void call50()
@@ -1048,7 +1048,7 @@ void call50()
       _farnspokew(_buffer+i*2,(((const ushort *)(_Buffer))[skip_offset++] & 0x00ff) | attr);
 #else
       TScreen::setCharacter(buf_offset+i,
-        ChangeAttr((((const ushort *)(_Buffer))[skip_offset++],attr);
+        ChangeAttr(((const ushort *)(_Buffer))[skip_offset++],attr));
 #endif
     }
   }
@@ -1056,7 +1056,7 @@ void call50()
   {
     unsigned short attr=GetAttrShadow(shadowAttr);
     while (count--)
-      (buffer++)[0]=ChangeAttr((((const ushort *)(_Buffer))[skip_offset++],attr);
+      (buffer++)[0]=ChangeAttr(((const ushort *)(_Buffer))[skip_offset++],attr);
   }
 }
 
