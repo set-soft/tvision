@@ -77,7 +77,7 @@ GenerateMakefile();
 #
 # For the examples
 #
-$here=`pwd`;
+$here=RunRedirect('pwd',$ErrorLog);
 chop($here);
 if (!$here && ($OS ne 'UNIX'))
   {# command.com, cmd.exe, etc. have it.
@@ -732,7 +732,8 @@ sub LookForGettextTools
     print @conf{'xgettext'}." (cached)\n";
     return;
    }
- $test=`xgettext --version`;
+ #$test=`xgettext --version`;
+ RunRedirect('xgettext --version',$ErrorLog);
  if ($test=~/(\d+\.\d+(\.\d+)?)/)
    {
     print "$1\n";
@@ -755,7 +756,8 @@ sub LookForRecode
     print @conf{'recode'}." (cached)\n";
     return;
    }
- $test=`recode --version`;
+ #$test=`recode --version`;
+ RunRedirect('recode --version',$ErrorLog);
  if ($test=~/(\d+\.\d+(\.\d+)?)/)
    {
     print "$1\n";
