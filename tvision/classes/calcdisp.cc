@@ -19,6 +19,7 @@
 #define Uses_stdlib
 #define Uses_ctype
 #define Uses_stdio // sprintf
+#define Uses_nl_langinfo
 
 #define Uses_TKeys
 #define Uses_TKeys_Extended
@@ -33,8 +34,6 @@
 #define Uses_TPalette // SET: added
 #define Uses_TCalcDisplay
 #include <tv.h>
-
-#include <langinfo.h>
 
 #define cpCalcPalette   "\x13"
 
