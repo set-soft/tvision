@@ -235,6 +235,7 @@ examples/clipboard/test.cc
 examples/clipboard/test.gpr
 examples/clipboard/test.mak
 examples/clipboard/rhide.env
+-examples/cyrillic/linuxkoi8/koi8-r.acm.gz
 -examples/cyrillic/linuxkoi8/koi8-r.psf.gz
 -examples/cyrillic/linuxkoi8/lat1-16.psf.gz
 examples/cyrillic/linuxkoi8/README
@@ -245,6 +246,7 @@ examples/cyrillic/linuxkoi8/rhide.env
 examples/cyrillic/linuxkoi8/test.cc
 -examples/cyrillic/linuxkoi8/test.gpr
 examples/cyrillic/linuxkoi8/test.mak
+examples/cyrillic/linuxkoi8/trivial.acm
 examples/demo/ascii.cc
 examples/demo/ascii.h
 examples/demo/calendar.cc

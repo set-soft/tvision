@@ -2423,6 +2423,25 @@ stIntCodePairs TVCodePage::InternalMap[]=
 
 const int TVCodePage::providedUnicodes=sizeof(TVCodePage::InternalMap)/sizeof(stIntCodePairs);
 
+/**[txh]********************************************************************
+
+  Description:
+  Finds which unicode is represented by the specified internal code.
+Currently that's an slow search because isn't very.
+  
+  Return: The first unicode found.
+  
+***************************************************************************/
+
+uint16 TVCodePage::UnicodeForInternalCode(uint16 value)
+{
+ int i;
+ for (i=0; i<providedUnicodes; i++)
+     if (InternalMap[i].code==value)
+        return InternalMap[i].unicode;
+ return 0;
+}
+
 static
 int compare(const void *v1, const void *v2)
 {

@@ -75,6 +75,15 @@ set_selection code using mode 16. This is far from usable.
 When trying to use a secondary font:
 * The Linux kernel switchs to 8 colors mode. See comments in InitOnce().
 For this reason we don't enable it by default.
+
+When using unknown code pages:
+* Looks like is common practice to load kernel maps that aren't really
+encoded in Unicode, they are easier to create but they destroy any hope
+to figure out what are representing. KOI8-R is an example, the SFM and
+ACMs are in fact representing KOI8-R values and not Unicode. I got
+information about systems mixing both: KOI8-R values + euro and others in
+Unicode. I use a workaround for it, but this means most Linux systems
+are just broken.
 */
 #include <tv/configtv.h>
 
@@ -372,6 +381,7 @@ int TScreenLinux::AnalyzeCodePage()
         fprintf(stderr,"%03d U+%04x\n",i,v);
     }
  fputs("-------------\n",stderr);
+ char SFMCreated=0;
  for (i=0; knownFonts[i].codepage && knownFonts[i].checksum!=cks; i++);
  if (knownFonts[i].codepage)
    {
@@ -381,10 +391,8 @@ int TScreenLinux::AnalyzeCodePage()
  else
    {
     fputs("Unknown code page\n",stderr);
-    TVCodePage::CreateCPFromUnicode(&unknownSFM,TVCodePage::LinuxSFM,
-                                    "Linux SFM",UnicodeMap);
-    TVCodePage::AddCodePage(&unknownSFM);
-    installedSFM=TVCodePage::LinuxSFM;
+    CreateSFMFromTable(UnicodeMap);
+    SFMCreated=1;
    }
  fputs("-------------\nGIO_UNISCRNMAP\n",stderr);
  ushort scrUniMap[E_TABSZ];
@@ -426,10 +434,21 @@ int TScreenLinux::AnalyzeCodePage()
  else
    {
     fputs("Unknown code page\n",stderr);
-    TVCodePage::CreateCPFromUnicode(&unknownACM,TVCodePage::LinuxACM,
-                                    "Linux ACM",UnicodeMap);
-    TVCodePage::AddCodePage(&unknownACM);
-    installedACM=TVCodePage::LinuxACM;
+    // This a workaround for broken KOI8-R systems.
+    if (installedSFM==TVCodePage::KOI8r && scrUniMap[0xC0]==0xC0)
+      {// That's bogus, try to fix it
+       ushort *map=TVCodePage::GetTranslate(TVCodePage::KOI8r);
+       fputs("-------------\nACM is bogus, workaround:\n",stderr);
+       for (i=0; i<256; i++)
+           if (scrUniMap[i]<0x100)
+             {
+              scrUniMap[i]=TVCodePage::UnicodeForInternalCode(map[i]);
+              fprintf(stderr,"%3d => U+%04x\n",i,scrUniMap[i]);
+             }
+           else
+              fprintf(stderr,"%3d => U+%04x *\n",i,scrUniMap[i]);
+      }
+    CreateACMFromTable(scrUniMap);
    }
 
  delete[] map.entries;
@@ -461,6 +480,7 @@ int TScreenLinux::AnalyzeCodePage()
     }
  // Compute a good check sum of it
  uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
+ char SFMCreated=0;
  // Find if we know about this one
  for (i=0; knownFonts[i].codepage && knownFonts[i].checksum!=cks; i++);
  if (knownFonts[i].codepage)
@@ -472,10 +492,8 @@ int TScreenLinux::AnalyzeCodePage()
    {
     LOG("Unknown SFM: " << cks);
     // We don't know about it, but we have enough information to try using it
-    TVCodePage::CreateCPFromUnicode(&unknownSFM,TVCodePage::LinuxSFM,
-                                    "Linux SFM",UnicodeMap);
-    TVCodePage::AddCodePage(&unknownSFM);
-    installedSFM=TVCodePage::LinuxSFM;
+    CreateSFMFromTable(UnicodeMap);
+    SFMCreated=1;
    }
  // Now look for the ACM
  // GIO_UNISCRNMAP: get full Unicode screen mapping
@@ -496,16 +514,37 @@ int TScreenLinux::AnalyzeCodePage()
     else
       {
        LOG("Unknown ACM: " << cks);
-       TVCodePage::CreateCPFromUnicode(&unknownACM,TVCodePage::LinuxACM,
-                                       "Linux ACM",UnicodeMap);
-       TVCodePage::AddCodePage(&unknownACM);
-       installedACM=TVCodePage::LinuxACM;
+       // This a workaround for broken KOI8-R systems.
+       if (installedSFM==TVCodePage::KOI8r && scrUniMap[0xC0]==0xC0)
+         {// That's bogus, try to fix it
+          ushort *map=TVCodePage::GetTranslate(TVCodePage::KOI8r);
+          for (i=0; i<256; i++)
+              if (scrUniMap[i]<0x100)
+                 scrUniMap[i]=TVCodePage::UnicodeForInternalCode(map[i]);
+         }
+       CreateACMFromTable(scrUniMap);
       }
    }
  delete[] map.entries;
  return 1;
 }
 #endif
+
+void TScreenLinux::CreateSFMFromTable(ushort *table)
+{
+ TVCodePage::CreateCPFromUnicode(&unknownSFM,TVCodePage::LinuxSFM,
+                                 "Linux SFM",table);
+ TVCodePage::AddCodePage(&unknownSFM);
+ installedSFM=TVCodePage::LinuxSFM;
+}
+
+void TScreenLinux::CreateACMFromTable(ushort *table)
+{
+ TVCodePage::CreateCPFromUnicode(&unknownACM,TVCodePage::LinuxACM,
+                                 "Linux ACM",table);
+ TVCodePage::AddCodePage(&unknownACM);
+ installedACM=TVCodePage::LinuxACM;
+}
 
 int TScreenLinux::GuessCodePageFromLANG()
 {

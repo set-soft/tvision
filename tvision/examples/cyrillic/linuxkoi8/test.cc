@@ -46,7 +46,7 @@ int main()
 {
  TMyApp myApp;
  // Currently autodetection is broken, so I'm forcing it until I find a solution
- TVCodePage::SetCodePage(TVCodePage::KOI8r);
+ //TVCodePage::SetCodePage(TVCodePage::KOI8r);
  myApp.redraw();
 
  myApp.run();

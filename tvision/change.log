@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.287  2002/09/06 00:08:13  terrible
+* Updated: Debian packaging to version 2.0.0-0.4.
+* Note: it seems that the library is binary compatible with the 0.3 version,
+interesting!
+
 Revision 2.286  2002/09/04 20:25:23  set
 * Modified: The messageBox now temporally disables the "busy indicator".
 * Fixed: [X11] The busy indicator didn't flush the X commands.

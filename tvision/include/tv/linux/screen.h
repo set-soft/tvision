@@ -159,6 +159,8 @@ protected:
  static void DeallocateResources();
  // Analyzes the console code page
  static int  AnalyzeCodePage();
+ static void CreateSFMFromTable(ushort *table);
+ static void CreateACMFromTable(ushort *table);
  // A guess about the code page using the language
  static int  GuessCodePageFromLANG();
  // Tries to find the geometry of loaded fonts
