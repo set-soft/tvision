@@ -1,4 +1,7 @@
 $Log$
+Revision 1.11  1999/01/19 22:33:36  set
+* Released the 1.0.3 version and uploaded to DJ's server.
+.
 Revision 1.9  1999/01/18 22:55:18  root
 * Copied the changes from DOS.
 * Added the versions of libraries I use for Linux in the change.log.
