@@ -61,8 +61,9 @@ public:
  static char ascii;
  static char *KeyNames[]; // Because we need it for config.
  // Very used by: menues and hotkeys (buttons, status bar, etc).
- static char GetAltChar(unsigned short keyCode);
+ static char GetAltChar(unsigned short keyCode, uchar ascii);
  static unsigned short GetAltCode(char ch);
+ static int CompareASCII(uchar val, uchar code);
  static ushort GetAltSettings(void) { return AltSet; }
  static void SetAltSettings(ushort altSet) { AltSet=altSet; }
  static ushort KeyNameToNumber(char *s);
@@ -72,8 +73,12 @@ public:
  #define KBD_XTERM_STYLE    2
  #define KBD_NO_XTERM_STYLE 3
  #define KBD_ETERM_STYLE    4
- static void SetKbdMapping(int version);
+ #else
+ #define KBD_US             0
+ #define KBD_GREEK_CP737    1
  #endif
+ static void SetKbdMapping(int version);
+ static int  GetKbdMapping(void) { return Mode; };
 
  // PC specific
  static int useBIOS;
@@ -91,6 +96,8 @@ protected:
  static ushort AltSet;
 
  static KeyType rawCode;
+ // SetKbdMapping:
+ static int Mode;
 };
 
 extern unsigned short getshiftstate();

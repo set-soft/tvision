@@ -285,6 +285,7 @@ void PatchTablesForNewKbdLayout(void)
 void TGKey::SetKbdMapping(int version)
 {
  int i;
+ Mode=version;
  switch (version)
    {
     case KBD_REDHAT52_STYLE:
@@ -320,10 +321,14 @@ void TGKey::SetKbdMapping(int version)
          kbExtraFlags2[KEY_MOUSE & 0x7F]=0;
          XtermMode=1;
          break;
-         break;
     default: // KBD_OLD_STYLE
          PatchTablesForOldKbdLayout();
    }
+}
+
+int TGKey::CompareASCII(uchar val, uchar code)
+{
+ return val==code;
 }
 
 // The intelligence is here

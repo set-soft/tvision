@@ -90,7 +90,7 @@ void TLabel::handleEvent( TEvent& event )
         char c = hotKey( text );
         if( TGKey::GetAltCode(c) == event.keyDown.keyCode ||
                 ( c != 0 && owner->phase == TGroup::phPostProcess &&
-                uctoupper(event.keyDown.charScan.charCode) ==  c )
+                TGKey::CompareASCII(uctoupper(event.keyDown.charScan.charCode),c) )
           )
             {
             if( validLink() )

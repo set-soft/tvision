@@ -244,7 +244,8 @@ ushort TMenuView::execute()
                         break;
                     default:
                         target = this;
-                        ch = TGKey::GetAltChar(e.keyDown.keyCode);
+                        ch = TGKey::GetAltChar(e.keyDown.keyCode,
+                                               e.keyDown.charScan.charCode);
                         if( ch == 0 )
                             ch = e.keyDown.charScan.charCode;
 #if 0
@@ -350,7 +351,7 @@ TMenuItem *TMenuView::findItem( char ch )
         if( p->name != 0 && !p->disabled )
             {
             char *loc = strchr( p->name, '~' );
-            if( loc != 0 && (uchar)ch == uctoupper( loc[1] ) )
+            if( loc != 0 && TGKey::CompareASCII(ch,uctoupper(loc[1])) )
                 return p;
             }
         p =  p->next;
@@ -433,7 +434,8 @@ void TMenuView::handleEvent( TEvent& event )
                 do_a_select(event);
                 break;
             case  evKeyDown:
-                if( findItem(TGKey::GetAltChar(event.keyDown.keyCode)) != 0 )
+                if( findItem(TGKey::GetAltChar(event.keyDown.keyCode,
+                    event.keyDown.charScan.charCode)) != 0 )
                 {
                     putEvent(event);
                     do_a_select(event);

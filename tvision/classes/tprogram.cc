@@ -216,7 +216,7 @@ void TProgram::handleEvent( TEvent& event )
 {
     if( event.what == evKeyDown )
         {
-        char c = TGKey::GetAltChar( event.keyDown.keyCode );
+        char c = TGKey::GetAltChar( event.keyDown.keyCode, event.keyDown.charScan.charCode );
         if( c >= '1' && c <= '9' )
             {
                if (current->valid(cmReleasedFocus))

@@ -225,7 +225,7 @@ void TCluster::handleEvent( TEvent& event )
                             (state & sfFocused) != 0
                           ) &&
                           c != 0 &&
-                          uctoupper(event.keyDown.charScan.charCode) == c
+                          TGKey::CompareASCII(uctoupper(event.keyDown.charScan.charCode),c)
                         )
                       )
                         {
