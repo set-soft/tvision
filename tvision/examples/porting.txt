@@ -37,4 +37,4 @@ assumes a fixed value you'll need to fix it. Some code in the original TV had
 this error.
 * The program doesn't respond to some key.
 
-Salvador Eduardo Tropea (set-soft@usa.net)
+Salvador Eduardo Tropea (salvador@inti.gov.ar)

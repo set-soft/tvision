@@ -29,6 +29,10 @@ desklogo - An example of how to change the desktop appearance. Contributed by
            Joel <jso@europay.com>.
            One of the examples also shows how to stop a TV application using
            ^Z under Linux.
+dlgdsn   - That's a dialog design/code generator by Warlei Alves. I included
+           it because it could be useful for people not using tools like
+           EasyDiag and because Warlei told me he couldn't maintain it and
+           asked me to maintain your project.
 dyntxt   - Implements a StaticText with getData/setData member to make it
            "non-static".
 inplis   - That's interesting. It implements a class with pairs label/data
@@ -58,4 +62,4 @@ tutorial - It contains a very simple example application made in 16 steps to
            #include <th.h> that's the common use. I added some extra
            comments.
 
-Salvador Eduardo Tropea (set-soft@usa.net)
+Salvador Eduardo Tropea (salvador@inti.gov.ar)
