@@ -348,10 +348,10 @@ void startcurses()
       }
     else if (has_colors())
       { // Generic color terminal, that's more a guess than a real thing
-       palette = PAL_LOW;
+       palette = max_colors > 8 ? PAL_HIGH : PAL_LOW;
        TScreen::screenMode = TScreen::smCO80;
        use_pc_chars = 0;
-       LOG("Using low palette (8-8 colors)");
+       LOG("Using color palette (" << max_colors << "-8 colors)");
       }
     else
       { // No colors available
@@ -421,6 +421,8 @@ static void mapColor(char *&p, int col)
   old_col = col;
   back = (col >> 4) & 7;
   fore = col & 15;
+#define SB set_a_background ? set_a_background : set_background
+#define SF set_a_foreground ? set_a_foreground : set_foreground
   switch (palette)
     {
      // SET: That's a guess because we don't know how the colors are mapped
@@ -430,9 +432,9 @@ static void mapColor(char *&p, int col)
           if (fore==back)
              fore=(fore+1) & 7;    /* kludge */
           if (back!=old_back)
-             safeput(p,tparm(set_background,back));
+             safeput(p,tparm(SB,back));
           if (fore!=old_fore)
-             safeput(p,tparm(set_foreground,fore));
+             safeput(p,tparm(SF,fore));
           break;
      /* SET: That's an alternative code for PAL_HIGH
      case PAL_LOW2:
@@ -462,6 +464,8 @@ static void mapColor(char *&p, int col)
     }
   old_fore = fore;
   old_back = back;
+#undef SB
+#undef SF
 }
 
 
