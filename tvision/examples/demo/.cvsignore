@@ -1,2 +1,4 @@
 *.mak
-
+.tvrc
+*.imk
+*.mak

@@ -1,7 +1,13 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea.
+# Covered by the GPL license.
+#
 prefix=@prefix@
 EXE_EXT=@exe_ext@
 libdir=$(prefix)/lib
 OS=@OS@
+@maintainer_mode@
 export
 
 .PHONY: @targets@ @installers@ install-headers install-config clean \
@@ -9,12 +15,14 @@ export
 
 all: @targets@ intl-dummy
 
+@maintainance_rule@
+
 @target_rules@
 
 @intl_dummy_rule@
 
 examples:
-	make -C examples
+	$(MAKE) -C examples
 
 rhtv-config$(EXE_EXT): rhtv-config.c include/tv/configtv.h
 	@GCC@ -o rhtv-config$(EXE_EXT) -Iinclude rhtv-config.c

@@ -160,7 +160,7 @@ public:
    
    virtual void dsgUpdate();
    virtual void * dsgGetData();
-   Boolean saveToFile(char * FileName);
+   Boolean saveToFile(const char * FileName);
    Boolean Save(int aCommand = cmCancel);
    Boolean loadFromFile(const char * FileName);
    void setModified(Boolean);

@@ -44,7 +44,7 @@ bool fileExists(const char * FileName)
    return rst;
 }
 
-char * getFileName(char * aTitle, const char * ext, int Mode)
+const char * getFileName(const char * aTitle, const char * ext, int Mode)
 {
    TFileDialog *d = 0;
    int cmd = cmCancel;
@@ -84,7 +84,7 @@ ifpstream * openFile(const char * FileName, char * Signature)
    return rst;
 }
 
-ofpstream * initFile(char * FileName, char * current, char * Signature)
+ofpstream * initFile(const char * FileName, char * current, char * Signature)
 {
    if ( fileExists(FileName) &&
       ( current == 0 || strcmp(FileName, current) != 0 ) )

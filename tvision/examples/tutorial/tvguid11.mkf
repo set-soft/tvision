@@ -1,0 +1,11 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea.
+# Covered by the GPL license.
+#
+vpath_src=
+vpath_obj=.
+INCLUDE_DIRS=../../include
+include ../../makes/common.imk
+include tvguid11.umk
+
