@@ -1,4 +1,16 @@
 $Log$
+Revision 1.41  1999/05/06 03:36:24  set
+* Added: Now TMenuBar and TStatusLine uses one character around the name of
+the item in *both* sides and don't overlap with the next. That's the original
+behavior of TV. As it will reduce the number of visible items in the menu
+bar for RHIDE (specially in spanish ;-) I added code to automagically compact
+the items when they don't have enough space. The compactXXXX member reflects
+it and can be forced externally. The value is computed in the constructors
+and in the changeBounds. The changes where based in a patch that "Norberto
+Alfredo Bensa" <norberto.bensa@abaconet.com.ar> sent me to unconditionally
+have the original behavior (which is unacceptable for RHIDE). So I did it in
+a way that won't mess RHIDE and is good for users at the same time.
+.
 Revision 1.40  1999/05/02 14:00:36  set
 * Added: The desklogo example to the distribution. I already added it in the
 CVS tree (see Revision 1.26) but forgot to add it to the list of distributed
