@@ -26,9 +26,13 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TGKey
 #include <tv.h>
 
+/* SET: F*#$%! why these values are defined here!!!
 const ushort
     cmGrabDefault    = 61,
     cmReleaseDefault = 62;
+
+  Moved to views.h
+*/
 
 #define cpButton "\x0A\x0B\x0C\x0D\x0E\x0E\x0E\x0F"
 
