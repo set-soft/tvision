@@ -35,7 +35,7 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #define Uses_FullSingleKeySymbols
 #define Uses_string
 #include <tv.h>
-#include <tv/linux/key.h>
+#include <tv/unix/key.h>
 
 // New curses (ncurses) headers
 #ifdef TVOSf_FreeBSD
@@ -44,14 +44,6 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
  #include <curses.h>
 #endif
 #include <term.h>
-
-// All of this is needed for the VT switching hook and keyboard patching
-#ifdef TVOSf_Linux
- #include <sys/ioctl.h>
- #include <sys/kd.h>
- #include <sys/vt.h>
- #include <signal.h>
-#endif
 
 #ifdef HAVE_KEYSYMS
  // X11R6 keysyms list
@@ -226,57 +218,12 @@ keyEquiv XEquiv[] =
 };
 #endif // HAVE_KEYSYMS
 
-static
-void PatchTablesForOldKbdLayout(void)
-{
- // That's the most common at the moment (Debian <= 2.0, RedHat <= 5.1, etc)
- unsigned char names[]=
- {kbF1,kbF2,kbF3,kbF4,kbF5,kbF6,kbF7,kbF8,kbF9,kbF10,
-     0,   0,   0,   0,   0,   0,   0,   0,   0,    0,
-     0,   0,   0,   0,   0,   0};
- unsigned char modif[]=
- {kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,
-     0,   0,   0,   0,   0,   0,   0,   0,   0,    0,
-     0,   0,   0,   0,   0,   0};
- int i;
- for (i=0; i<26; i++)
-    {
-     kbToName2[i+0x13]=names[i];
-     kbExtraFlags2[i+0x13]=modif[i];
-    }
-}
-
-static
-void PatchTablesForNewKbdLayout(void)
-{
- // Tom Aschenbrenner <tom@aschen.com> found problems on Red Hat 5.2, after
- // some tests we found that the new kbd package changed some stuff.
- unsigned char names[]=
- {kbF11,kbF12,
-   kbF1,kbF2,kbF3,kbF4,kbF5,kbF6,kbF7,kbF8,kbF9,kbF10,kbF11,kbF12,
-   kbF1,kbF2,kbF3,kbF4,kbF5,kbF6,kbF7,kbF8,kbF9,kbF10,kbF11,kbF12 };
- unsigned char modif[]=
- {      0,      0,
-  kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,
-  kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl };
- // This layout have much sense but is a pain in the ... for my tables
- int i;
- for (i=0; i<26; i++)
-    {
-     kbToName2[i+0x13]=names[i];
-     kbExtraFlags2[i+0x13]=modif[i];
-    }
-}
-
 void TGKeyUNIX::SetKbdMapping(int version)
 {
  Mode=version;
  switch (version)
    {
-    case linuxRH52:
-         PatchTablesForNewKbdLayout();
-         break;
-    case linuxXterm: // It can be combined with others
+    case unixXterm: // It can be combined with others
          #ifdef HAVE_DEFINE_KEY
          // SET: Here is a temporal workaround for Eterm when the user uses
          // the xterm terminfo file (normal in Debian).
@@ -295,14 +242,14 @@ void TGKeyUNIX::SetKbdMapping(int version)
          #endif
          XtermMode=1;
          break;
-    case linuxNoXterm:
+    case unixNoXterm:
          #ifdef KEY_MOUSE
          kbToName2[KEY_MOUSE & 0x7F]=kbF7;
          kbExtraFlags2[KEY_MOUSE & 0x7F]=kbShift;
          #endif
          XtermMode=0;
          break;
-    case linuxEterm:
+    case unixEterm:
          #if defined(HAVE_KEYSYMS) && defined(HAVE_DEFINE_KEY)
          // SET: I submited a patch to Eterm maintainers for it:
          define_key("\x1B[k",KEY_F(57)); // End
@@ -320,8 +267,6 @@ void TGKeyUNIX::SetKbdMapping(int version)
          #endif
          XtermMode=1;
          break;
-    default: // KBD_OLD_STYLE
-         PatchTablesForOldKbdLayout();
    }
 }
 
@@ -566,352 +511,22 @@ void TGKeyUNIX::FillTEvent(TEvent &e)
    }
 }
 
-#ifdef TVOSf_Linux
-
-/*
- * Gets information about modifier keys (Alt, Ctrl and Shift).  This can
- * be done only if the program runs on the system console.
- */
-unsigned TGKeyUNIX::GetShiftState()
-{
- int arg=6;	/* TIOCLINUX function #6 */
- unsigned shift=0;
- 
- if (ioctl(IN_FD,TIOCLINUX,&arg)!=-1)
-   {
-    dbprintf("Shift flags from IOCTL %X\r\n",arg);
-    shift=arg;
-   }
- return shift;
-}
-
-typedef struct
-{
-  uchar change_table;
-  uchar change_index;
-  uchar old_table;
-  uchar old_index;
-  ushort old_val;
-  ushort new_val;
-} change_entry;
-
-#define SCAN_F1 0x3b
-#define SCAN_F2 0x3c
-#define SCAN_F3 0x3d
-#define SCAN_F4 0x3e
-#define SCAN_F5 0x3f
-#define SCAN_F6 0x40
-#define SCAN_F7 0x41
-#define SCAN_F8 0x42
-#define SCAN_F9 0x43
-#define SCAN_F10 0x44
-#define SCAN_Q 0x10
-#define SCAN_S 0x1f
-#define SCAN_J 0x24
-#define SCAN_M 0x32
-#define SCAN_Z 0x2C
-#define SCAN_PGUP 104
-#define SCAN_PGDN 109
-#define SCAN_BKSP 14
-#define SCAN_SPAC 57
-#define SCAN_TAB  15
-// As ^[ is usually Esc we must be sure it doesn't happend
-#define SCAN_LFBR 26
-// The Scroll lock key is evil for an interactive application
-// As in my keyboard that's above Home and some people wrongly
-// press it instead of Home I'm translating to Home.
-#define SCAN_SCRL 70
-#define SCAN_HOME 102
-
-change_entry changes[] = {
-  { kblAltL,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
-  { kblAltR,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
-  { kblCtrl,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
-  { kblShift, SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
-  { kblAltL,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
-  { kblAltR,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
-  { kblCtrl,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
-  { kblShift, SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
-  { kblAltL,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
-  { kblAltR,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
-  { kblCtrl,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
-  { kblShift, SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
-  { kblAltL,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
-  { kblAltR,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
-  { kblCtrl,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
-  { kblShift, SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
-  { kblAltL,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
-  { kblAltR,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
-  { kblCtrl,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
-  { kblShift, SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
-  { kblAltL,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
-  { kblAltR,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
-  { kblCtrl,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
-  { kblShift, SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
-  { kblAltL,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
-  { kblAltR,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
-  { kblCtrl,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
-  { kblShift, SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
-  { kblAltL,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
-  { kblAltR,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
-  { kblCtrl,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
-  { kblShift, SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
-  { kblAltL,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
-  { kblAltR,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
-  { kblCtrl,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
-  { kblShift, SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
-  { kblAltL,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
-  { kblAltR,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
-  { kblCtrl,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
-  { kblShift, SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
-  { kblCtrl,  SCAN_Q,    kblNormal, SCAN_Q,    0, 0},
-  { kblCtrl,  SCAN_S,    kblNormal, SCAN_S,    0, 0},
-  { kblCtrl,  SCAN_J,    kblNormal, SCAN_J,    0, 0},
-  { kblCtrl,  SCAN_M,    kblNormal, SCAN_M,    0, 0},
-  { kblCtrl,  SCAN_Z,    kblNormal, SCAN_Z,    0, 0},
-  { kblShift, SCAN_PGUP, kblNormal, SCAN_PGUP, 0, 0},
-  { kblShift, SCAN_PGDN, kblNormal, SCAN_PGDN, 0, 0},
-  { kblCtrl,  SCAN_BKSP, kblNormal, SCAN_BKSP, 0, 0},
-  { kblCtrl,  SCAN_SPAC, kblNormal, SCAN_SPAC, 0, 0},
-  { kblCtrl,  SCAN_LFBR, kblNormal, SCAN_LFBR, 0, 0},
-  { kblNormal,SCAN_SCRL, kblNormal, SCAN_HOME, 0, 0},
-  { kblAltL,  SCAN_SCRL, kblNormal, SCAN_HOME, 0, 0},
-  { kblAltR,  SCAN_SCRL, kblNormal, SCAN_HOME, 0, 0},
-  { kblCtrl | kblShift,  SCAN_TAB, kblNormal, SCAN_TAB, 0, 0}
-};
-
-#define change_size (sizeof(changes)/sizeof(change_entry))
-
-static int keyboard_patch_set = 0;
-static int keyboard_patch_available=0;
-static struct kbentry entry;
-
-static struct vt_mode oldvtmode;
-static int our_vt=-1;
-static int console_sigs_set = 0;
-static int atexit_done_console_sigs = 0;
-int install_console_sigs = 1;
-
-static void done_console_sigs()
-{
-  struct sigaction sig;
-
-  if (!install_console_sigs)
-    return;
-
-  if (!console_sigs_set)
-    return;
-  sigemptyset(&sig.sa_mask);
-  sigaddset(&sig.sa_mask,SIGUSR1);
-  sigaddset(&sig.sa_mask,SIGUSR2);
-  sig.sa_flags   = SA_RESTART;
-  sigprocmask(SIG_BLOCK,&sig.sa_mask,NULL); // No switches now, we are not
-                                            // initialized yet
-  sig.sa_handler = SIG_DFL;
-  sigaction(SIGUSR1,&sig,NULL);
-  sig.sa_handler = SIG_DFL;
-  sigaction(SIGUSR2,&sig,NULL);
-
-  ioctl(STDIN_FILENO,VT_SETMODE,&oldvtmode);
-
-  sigprocmask(SIG_UNBLOCK,&sig.sa_mask,NULL);
-
-  console_sigs_set = 0;
-
-}
-
-static void _patch_keyboard();
-static void _unpatch_keyboard();
-
-static void releasevt_handler(int)
-{
-  _unpatch_keyboard();
-  TMouse::suspend();
-  ioctl(STDIN_FILENO,VT_RELDISP,1);
-}
-
-static void acquirevt_handler(int)
-{
-  ioctl(STDIN_FILENO,VT_RELDISP,VT_ACKACQ);
-  ioctl(STDIN_FILENO,VT_WAITACTIVE,our_vt);
-  _patch_keyboard();
-  TMouse::resume();
-}
-
-static void init_console_sigs()
-{
-  if (!install_console_sigs)
-     return;
-
-  // -------- Get our console number
-  char *tty_name=ttyname(STDOUT_FILENO);
-  if (tty_name)
-    {
-     if (sscanf(tty_name,"/dev/tty%2d",&our_vt)!=1)
-        // SET: Some Slackware systems (I think that is what Andris uses)
-        // define /dev/ttyNN as symlinks to /dev/vc/NN:
-        if (sscanf(tty_name,"/dev/vc/%2d",&our_vt)!=1)
-           return;
-    }
-  else if (our_vt==-1)
-    return;
-
-  // -------- Tell our console to inform us about switches
-  struct vt_mode newvtmode;
-  if (ioctl(STDIN_FILENO,VT_GETMODE,&newvtmode))
-     return;
-
-  // -------- set up signal handlers to know about console switches
-  struct sigaction sig;
-  sigemptyset(&sig.sa_mask);
-  sigaddset(&sig.sa_mask,SIGUSR1);
-  sigaddset(&sig.sa_mask,SIGUSR2);
-  sig.sa_flags   = SA_RESTART;
-  sigprocmask(SIG_BLOCK,&sig.sa_mask,NULL); // No switches now, we are not
-                                            // initialized yet
-  sig.sa_handler = releasevt_handler;
-  sigaction(SIGUSR1,&sig,NULL);
-  sig.sa_handler = acquirevt_handler;
-  sigaction(SIGUSR2,&sig,NULL);
-
-  oldvtmode = newvtmode;
-  newvtmode.mode   = VT_PROCESS;
-  newvtmode.relsig = SIGUSR1;
-  newvtmode.acqsig = SIGUSR2;
-  if (ioctl(STDIN_FILENO,VT_SETMODE,&newvtmode))
-  {
-    return;
-  }
-
-  if (atexit_done_console_sigs)
-    atexit(done_console_sigs);
-  atexit_done_console_sigs = 1;
-
-  sigprocmask(SIG_UNBLOCK,&sig.sa_mask,NULL);
-
-  console_sigs_set = 1;
-}
-
-static int atexit_unpatch_keyboard = 0;
-
-static void patch_keyboard_init()
-{
-  unsigned i;
-  if (use_real_keyboard_bios)
-  {
-    keyboard_patch_available = 0;
-    return;
-  }
-  if (keyboard_patch_available)
-    return;
-  for (i=0;i<change_size;i++)
-  {
-    change_entry *e = &changes[i];
-    entry.kb_table = e->change_table;
-    entry.kb_index = e->change_index;
-    if (ioctl(STDIN_FILENO,KDGKBENT,&entry) != 0)
-    {
-      keyboard_patch_available = 0;
-      return;
-    }
-    e->old_val = entry.kb_value;
-    entry.kb_table = e->old_table;
-    entry.kb_index = e->old_index;
-    ioctl(STDIN_FILENO,KDGKBENT,&entry);
-    e->new_val = entry.kb_value;
-  }
-  keyboard_patch_available = 1;
-  if (!atexit_unpatch_keyboard)
-    atexit(_unpatch_keyboard);
-  atexit_unpatch_keyboard = 1;
-}
-
-static void _patch_keyboard()
-{
-  unsigned i;
-  if (keyboard_patch_set)
-    return;
-  patch_keyboard_init();
-  if (!keyboard_patch_available)
-    return;
-  for (i=0;i<change_size;i++)
-  {
-    change_entry *e = &changes[i];
-    entry.kb_table = e->change_table;
-    entry.kb_index = e->change_index;
-    entry.kb_value = e->new_val;
-    if (ioctl(STDIN_FILENO,KDSKBENT,&entry) != 0)
-    {
-      keyboard_patch_available = 0;
-      return;
-    }
-  }
-  keyboard_patch_set = 1;
-}
-
-static
-void patch_keyboard()
-{
-  _patch_keyboard();
-  if (keyboard_patch_set)
-    init_console_sigs();
-  cbreak();
-  noecho();
-}
-
-static void _unpatch_keyboard()
-{
-  unsigned i;
-  if (!keyboard_patch_available)
-    return;
-  if (!keyboard_patch_set)
-    return;
-  for (i=0;i<change_size;i++)
-  {
-    change_entry *e = &changes[i];
-    entry.kb_table = e->change_table;
-    entry.kb_index = e->change_index;
-    entry.kb_value = e->old_val;
-    ioctl(STDIN_FILENO,KDSKBENT,&entry);
-  }
-  keyboard_patch_set = 0;
-}
-
-static void unpatch_keyboard()
-{
-  _unpatch_keyboard();
-  if (keyboard_patch_available)
-    done_console_sigs();
-  echo();
-  nocbreak();
-}
-
-#else  // TVOSf_Linux
-
-// I don't know if other UNIX flavors have a way to release these keys
-void patch_keyboard() {}
-void unpatch_keyboard() {}
-
 // I don't know if other UNIX flavors have an equivalent IOCTL
 unsigned TGKeyUNIX::GetShiftState()
 {
  return 0;
 }
 
-#endif // else TVOSf_Linux
-
 static struct termios saved_attributes;
 
 void TGKeyUNIX::Resume()
 {
  tcgetattr(STDIN_FILENO,&saved_attributes);
- patch_keyboard();
 }
 
 void TGKeyUNIX::Suspend()
 {
  tcsetattr(STDIN_FILENO,TCSANOW,&saved_attributes);
- unpatch_keyboard();
 }
 
 void TGKeyUNIX::Init()

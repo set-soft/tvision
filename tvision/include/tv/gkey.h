@@ -136,16 +136,18 @@ public:
  enum keyMode
  {
   // Linux styles
-  linuxOldStyle=0,
-  linuxRH52=1,
-  linuxXterm=2,
-  linuxNoXterm=3,
-  linuxEterm=4,
+  linuxNormal=0,
+  linuxDisableKeyPatch=1,
+  linuxEnableKeyPatch=2,
   // DOS
   dosUS=0,
   dosGreek737=20,
   dosUseBIOS=21,
-  dosUseDirect=22
+  dosUseDirect=22,
+  // UNIX styles
+  unixXterm=40,
+  unixNoXterm=41,
+  unixEterm=42
  };
  static void   (*SetKbdMapping)(int version);
  static int      GetKbdMapping(void) { return Mode; };

@@ -1,15 +1,7 @@
-class THWMouseUNIX : public THWMouse
-{
-protected:
- THWMouseUNIX() {};
- virtual ~THWMouseUNIX();
+#ifndef LINUXMOUSE_INCLUDED
+#define LINUXMOUSE_INCLUDED
 
- static void Show();
- static void Hide();
- static int  DrawMouse(int x, int y);
-
- static void Init();
-};
+#include <tv/unix/mouse.h>
 
 #ifdef HAVE_GPM
 class THWMouseGPM : public THWMouseUNIX
@@ -24,20 +16,9 @@ protected:
 
  static void Init();
 
+ friend class TScreenLinux;
  friend class TScreenUNIX;
 };
 #endif
 
-class THWMouseXTerm : public THWMouseUNIX
-{
-protected:
- THWMouseXTerm() {};
- virtual ~THWMouseXTerm();
-
- static void Suspend();
- static void Resume();
-
- static void Init();
-
- friend class TScreenUNIX;
-};
+#endif // LINUXMOUSE_INCLUDED

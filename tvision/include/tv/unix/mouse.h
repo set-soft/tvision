@@ -1,3 +1,6 @@
+#ifndef UNIXMOUSE_INCLUDED
+#define UNIXMOUSE_INCLUDED
+
 class THWMouseUNIX : public THWMouse
 {
 protected:
@@ -10,23 +13,6 @@ protected:
 
  static void Init();
 };
-
-#ifdef HAVE_GPM
-class THWMouseGPM : public THWMouseUNIX
-{
-protected:
- THWMouseGPM() {};
- virtual ~THWMouseGPM();
-
- static void Suspend();
- static void Resume();
- static void GetEvent(MouseEventType &me);
-
- static void Init();
-
- friend class TScreenUNIX;
-};
-#endif
 
 class THWMouseXTerm : public THWMouseUNIX
 {
@@ -41,3 +27,5 @@ protected:
 
  friend class TScreenUNIX;
 };
+
+#endif // UNIXMOUSE_INCLUDED

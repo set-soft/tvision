@@ -117,6 +117,10 @@ classes/linux/linuxdis.cc
 classes/linux/linuxkey.cc
 classes/linux/linuxmouse.cc
 classes/linux/linuxscr.cc
+classes/unix/linuxdis.cc
+classes/unix/linuxkey.cc
+classes/unix/linuxmouse.cc
+classes/unix/linuxscr.cc
 classes/win32/win32dis.cc
 classes/win32/win32key.cc
 classes/win32/win32mouse.cc
@@ -463,6 +467,7 @@ include/tv/iopstrm.h
 include/tv/ipstream.h
 include/tv/label.h
 include/tv/linux/key.h
+include/tv/linux/log.h
 include/tv/linux/mouse.h
 include/tv/linux/screen.h
 include/tv/listbox.h
@@ -515,6 +520,9 @@ include/tv/sttctext.h
 include/tv/submenu.h
 include/tv/terminal.h
 include/tv/textdev.h
+include/tv/unix/key.h
+include/tv/unix/mouse.h
+include/tv/unix/screen.h
 include/tv/view.h
 include/tv/win32/key.h
 include/tv/win32/mouse.h

@@ -13,14 +13,8 @@
 #define Uses_TScreen
 #include <tv.h>
 #include <termios.h>
-#include <tv/linux/screen.h>
-#include <tv/linux/mouse.h>
-
-#ifdef HAVE_GPM
-extern "C" {
-#include <gpm.h>
-}
-#endif
+#include <tv/unix/screen.h>
+#include <tv/unix/mouse.h>
 
 //----------------- Common stuff ---------------
 
@@ -140,95 +134,5 @@ void THWMouseXTerm::Init()
 THWMouseXTerm::~THWMouseXTerm()
 {
 }
-
-//---------------- GPM version -----------------
-#ifdef HAVE_GPM
-
-#include <linux/keyboard.h>
-static
-int SetUpGPMConnection()
-{
- Gpm_Connect conn;
- 
- conn.eventMask = ~0;	/* I want all events */
- conn.defaultMask = 0;	/* no default treatment */
- /* It doesn't report events from GPM when ALT or ALTGR are pressed.
-    I saw it in mc and my friends from BALUG, Ivan and Laszlo bugged me
-    about adding it. Was hyper-easy, no? (SET) */
- conn.maxMod = ~((1<<KG_ALT) | (1<<KG_ALTGR));
- conn.minMod = 0;
- gpm_zerobased = 1;	/* coordinates start from zero */
- 
- return Gpm_Open(&conn, 0);
-}
-
-void THWMouseGPM::Resume()
-{
- if (gpm_fd!=-1)
-    return;
- if (SetUpGPMConnection()<0)
-    LOG("no gpm, running without mouse");
- else
-   {
-    LOG("gpm server version " << Gpm_GetServerVersion(NULL));
-    buttonCount=3;
-   }
- show();
-}
-
-void THWMouseGPM::Suspend()
-{
- if (gpm_fd==-1)
-    return;
- Gpm_Close();
- LOG("gpm connection closed");
-}
-
-inline
-int range(int test, int min, int max)
-{
- return test < min ? min : test > max ? max : test;
-}
-
-void THWMouseGPM::GetEvent(MouseEventType &me)
-{
- Gpm_Event mev;
-
- me.buttons=TEventQueue::curMouse.buttons;
- me.doubleClick=False;
- if (!Gpm_Repeat(1) && (Gpm_GetEvent(&mev)==1))
-   {
-    int b=mev.buttons;
-    if ((b & GPM_B_LEFT) && !(mev.type & GPM_UP))
-       me.buttons|= mbLeftButton;
-    else
-       me.buttons&= ~mbLeftButton;
-    if ((b & GPM_B_RIGHT) && !(mev.type & GPM_UP))
-       me.buttons|= mbRightButton;
-    else
-       me.buttons&= ~mbRightButton;
-    me.where.x=range(mev.x,0,TScreen::screenWidth-1);
-    me.where.y=range(mev.y,0,TScreen::screenHeight-1);
-    DrawMouse(me.where.x,me.where.y);
-   }
- else
-   {
-    me.where.x=TEventQueue::curMouse.where.x;
-    me.where.y=TEventQueue::curMouse.where.y;
-   }
-}
-
-void THWMouseGPM::Init()
-{
- THWMouseUNIX::Init();
- THWMouse::Resume=Resume;
- THWMouse::Suspend=Resume;
- THWMouse::GetEvent=GetEvent;
-}
-
-THWMouseGPM::~THWMouseGPM()
-{
-}
-#endif
 
 #endif // TVOS_UNIX

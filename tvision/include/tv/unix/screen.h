@@ -41,24 +41,6 @@ protected:
 };
 
 inline
-int  TDisplayUNIX::canWriteVCS()
-{
- return vcsWfd>=0;
-}
-
-inline
-int  TDisplayUNIX::canReadVCS()
-{
- return vcsRfd>=0;
-}
-
-inline
-int  TDisplayUNIX::canOnlyWriteVCS()
-{
- return vcsWfd>=0 && vcsRfd<0;
-}
-
-inline
 void TDisplayUNIX::safeput(char *&p, char *cap)
 {
  if (cap)
@@ -88,8 +70,6 @@ protected:
  static void mapColor(char *&p, int col);
  static void writeBlock(int dst, int len, ushort *old, ushort *src);
  static void RestoreScreen();
- static void SaveScreen();
- static void SaveScreenReleaseMemory();
 
  static void   Resume();
  static void   Suspend();
@@ -104,8 +84,6 @@ protected:
  static void   setCharacters(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild);
 
- inline static int range(int test, int min, int max);
-
  enum terminalType
  {
   LINUX_TERMINAL=0,
@@ -119,12 +97,8 @@ protected:
  };
 
  static int      use_pc_chars;
- static int      timeout_wakeup,timer_value;
  static int      TerminalType;
- static int      port_access;
  static FILE    *tty_file;
- static int      mono_mem_desc;
- static ushort  *mono_mem;
  static int      palette;
  static int      force_redraw;
  // SET: data to restore the XON/XOFF control keys and others like ^C, ^\ and ^Z

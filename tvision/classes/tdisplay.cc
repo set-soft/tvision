@@ -40,6 +40,9 @@ const char *(*TDisplay::getWindowTitle)(void)     =TDisplay::defaultGetWindowTit
 int         (*TDisplay::setWindowTitle)(const char *name)
                                                   =TDisplay::defaultSetWindowTitle;
 int         (*TDisplay::getBlinkState)()          =TDisplay::defaultGetBlinkState;
+int           TDisplay::argc                      =0;
+char        **TDisplay::argv                      =NULL;
+char        **TDisplay::environ                   =NULL;
 
 /*****************************************************************************
 
@@ -201,6 +204,13 @@ ushort TDisplay::getCursorType()
  fprintf(stderr,"Obteniendo: start %X end %X => 0x%0X\n",start,end,(start | (end<<8)));
  #endif
  return (ushort)(start | (end<<8));
+}
+
+void TDisplay::setArgv(int aArgc, char **aArgv, char **aEnvir)
+{
+ argc=aArgc;
+ argv=aArgv;
+ environ=aEnvir;
 }
 
 /*****************************************************************************
