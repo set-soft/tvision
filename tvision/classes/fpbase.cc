@@ -18,6 +18,8 @@ Andris Pavenis and Christoph Bauer.
 #define Uses_PubStreamBuf
 #include <tv.h>
 
+UsingNamespaceStd
+
 fpbase::fpbase()
 {
  buf=new filebuf();

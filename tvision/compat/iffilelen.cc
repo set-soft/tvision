@@ -5,9 +5,11 @@
  adding a new file isn't good.
 */
 #define Uses_filelength
+#define Uses_fstream
 #include <compatlayer.h>
 #include <cl/needs.h>
-#include <fstream.h>
+
+UsingNamespaceStd
 
 #if CLY_ISOCpp98
 long CLY_ifsFileLength(ifstream &f)

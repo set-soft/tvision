@@ -24,9 +24,9 @@ resize it.
 /****** imperfect draw method--see tvguid07 for improvement *****/
 
 #define Uses_stdlib             // for exit(), rand()
-#include <iostream.h>
-#include <fstream.h>            // for ifstream
-#define Uses_stdio.h>           // for puts() etc
+#define Uses_iostream
+#define Uses_fstream
+#define Uses_stdio              // for puts() etc
 #define Uses_string             // for strlen etc
 #define Uses_ctype
 #define Uses_IfStreamGetLine

@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis.
 
  *
  *
@@ -22,23 +24,17 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_pstream ) && !defined( __pstream )
 #define __pstream
 
-#if !defined( __IOSTREAM_H )
-#include <iostream.h>
-#endif  // __IOSTREAM_H
-
 class TStreamableTypes;
 
 class pstream
 {
-
     friend class TStreamableTypes;
 
 public:
-
     enum StreamableError { peNotRegistered, peInvalidType };
     enum PointerTypes { ptNull, ptIndexed, ptObject };
 
-    pstream( streambuf * );
+    pstream(CLY_std(streambuf) *);
     virtual ~pstream();
 
     int rdstate() const;
@@ -50,7 +46,7 @@ public:
     operator void *() const;
     int operator ! () const;
 
-    streambuf * rdbuf() const;
+    CLY_std(streambuf) *rdbuf() const;
 
     static void initTypes();
     // SET: called atexit to kill the collection
@@ -61,17 +57,15 @@ public:
     static void registerType( TStreamableClass *ts );
 
 protected:
-
     pstream();
 
-    streambuf *bp;
+    CLY_std(streambuf) *bp;
     int state;
 
-    void init( streambuf * );
+    void init(CLY_std(streambuf) *);
     void setstate( int );
 
     static TStreamableTypes * types;
-
 };
 
 #endif  // Uses_pstream

@@ -24,20 +24,13 @@ Andris Pavenis and Christoph Bauer.
 #if defined( Uses_opstream ) && !defined( __opstream )
 #define __opstream
 
-#if !defined( __IOSTREAM_H )
-#include <iostream.h>
-#endif  // __IOSTREAM_H
-
-
 class TStreamableClass;
 class TPWrittenObjects;
 
 class opstream : virtual public pstream
 {
-
 public:
-
-    opstream( streambuf * );
+    opstream( CLY_std(streambuf) * );
     ~opstream();
 
     CLY_StreamPosT tellp();
@@ -78,7 +71,6 @@ public:
     friend opstream& operator << ( opstream&, TStreamable * );
 
 protected:
-
     opstream();
 
     void writePrefix( const TStreamable& );
@@ -89,9 +81,7 @@ protected:
     void registerObject( const void *adr );
 
 private:
-
     TPWrittenObjects *objs;
-
 };
 
 #endif  // Uses_opstream

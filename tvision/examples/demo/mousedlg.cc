@@ -14,12 +14,14 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+ * Andris Pavenis.
  */
  
 // SET: moved the standard headers before tv.h
 #define Uses_string
-#include <stdlib.h>
-#include <ctype.h>
+#define Uses_stdlib
+#define Uses_ctype
 
 #define Uses_TRect
 #define Uses_TStaticText
@@ -33,10 +35,8 @@
 #define Uses_TSItem
 #define Uses_TEventQueue
 #define Uses_TPalette
-#define Uses_strstream
+#define Uses_iomanip
 #include <tv.h>
-
-#include <iomanip.h>
 
 #include "mousedlg.h"
 

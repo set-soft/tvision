@@ -12,6 +12,8 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+ * Andris Pavenis.
  */
  
 // SET: moved the standard headers before tv.h
@@ -41,6 +43,8 @@
 #include "puzzle.h"
 #include "demohelp.h"
 #include <help.h>
+
+UsingNamespaceStd
 
 /* SS: changed */
 

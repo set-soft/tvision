@@ -83,6 +83,14 @@ typedef unsigned long  ulong;
  #define Uses_sys_stat
 #endif
 
+#define FSTREAM_HEADER  <fstream.h>
+#define IOMANIP_HEADER  <iomanip.h>
+#define IOSTREAM_HEADER <iostream.h>
+
+#ifdef Uses_time
+ #define Include_time
+#endif
+
 #ifdef TVComp_GCC
 // GNU C is supported for various OSs:
 
@@ -159,15 +167,28 @@ typedef unsigned long  ulong;
   #define CLY_OpenModeT      std::ios::openmode
   #define CLY_StreamPosT     std::streampos
   #define CLY_StreamOffT     std::streamoff
-  #define CLY_IOSSeekDir     ios::seekdir
+  #define CLY_IOSSeekDir     std::ios::seekdir
   #define CLY_FBOpenProtDef  0
   #define CLY_NewFBFromFD(f) new filebuf(fdopen(f,"r+"),ios::in|ios::out)
   #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
   #undef  CLY_HaveFBAttach
   #define CLY_FBOpen(a,b,c)  open(a,b)
-  #define CLY_IOSBin         ios::binary
+  #define CLY_IOSBin         std::ios::binary
   #define CLY_PubSeekOff     pubseekoff
   #define CLY_PubSync        pubsync
+  #define CLY_std(a)         std::a
+  #define UsingNamespaceStd  using namespace std;
+  #define CreateStrStream(os,buf,size) std::string buf; std::ostringstream os(buf)
+  #define GetStrStream(buf) buf.c_str()
+  #ifdef Uses_StrStream
+   #define Include_sstream
+  #endif
+  #undef  FSTREAM_HEADER
+  #define FSTREAM_HEADER  <fstream>
+  #undef  IOMANIP_HEADER
+  #define IOMANIP_HEADER  <iomanip>
+  #undef  IOSTREAM_HEADER
+  #define IOSTREAM_HEADER <iostream>
  #else
   #define CLY_OpenModeT      int
   #define CLY_StreamPosT     streampos
@@ -181,6 +202,14 @@ typedef unsigned long  ulong;
   #define CLY_IOSBin         ios::bin
   #define CLY_PubSeekOff     seekoff
   #define CLY_PubSync        sync
+  #define CLY_std(a)         a
+  #define UsingNamespaceStd
+  #define CreateStrStream(os,buf,size) char buf[size]; \
+                                       ostrstream os(buf,sizeof(buf))
+  #define GetStrStream(buf) buf
+  #ifdef Uses_StrStream
+   #define Include_strstream
+  #endif
  #endif
  
  /* Use the internal bool type for Boolean */
@@ -620,7 +649,8 @@ typedef unsigned long  ulong;
  #define IfStreamGetLine(istream,buffer,size) \
          CLY_IfStreamGetLine(istream,buffer,size)
  #ifdef Uses_IfStreamGetLine
-  int CLY_IfStreamGetLine(ifstream &is, char *buffer, unsigned len);
+  #define Uses_fstream
+  #define Uses_CLY_IfStreamGetLine
  #endif
 
  #define CLY_OpenModeT      int
@@ -635,6 +665,14 @@ typedef unsigned long  ulong;
  #define CLY_IOSBin         ios::binary
  #define CLY_PubSeekOff     pubseekoff
  #define CLY_PubSync        pubsync
+ #define CLY_std(a)         a
+ #define CreateStrStream(os,buf,size) char buf[size]; \
+                                      ostrstream os(buf,sizeof(buf))
+ #define GetStrStream(buf) buf
+ #ifdef Uses_StrStream
+  #define Include_strstream
+ #endif
+ #define UsingNamespaceStd
 #endif
 
 
@@ -786,6 +824,14 @@ typedef unsigned long  ulong;
  #define CLY_IOSBin         ios::binary
  #define CLY_PubSeekOff     seekoff
  #define CLY_PubSync        sync
+ #define CLY_std(a)         a
+ #define CreateStrStream(os,buf,size) char buf[size]; \
+                                      ostrstream os(buf,sizeof(buf))
+ #define GetStrStream(buf) buf
+ #ifdef Uses_StrStream
+  #define Include_strstrea
+ #endif
+ #define UsingNamespaceStd
 #endif
 
 #ifdef Uses_IOS_BIN
@@ -855,6 +901,10 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 /* cl/unistd.h includes dir.h */
 #ifdef Include_cl_unistd
  #define Include_dir
+#endif
+
+#ifdef Uses_ifsFileLength
+ #define Uses_fstream
 #endif
 
 #ifdef Include_sys_types
@@ -957,81 +1007,97 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 #endif
 
 #ifdef Include_glob
-// POSIX
-#include <glob.h>
+ // POSIX
+ #include <glob.h>
 #endif
 
 #ifdef Include_cl_glob
-// Replacement
-#include <cl/glob.h>
+ // Replacement
+ #include <cl/glob.h>
 #endif
 
 #ifdef Include_fnmatch
-// POSIX
-#include <fnmatch.h>
+ // POSIX
+ #include <fnmatch.h>
 #endif
 
 #ifdef Include_cl_fnmatch
-// Replacement
-#include <cl/fnmatch.h>
+ // Replacement
+ #include <cl/fnmatch.h>
 #endif
 
 #ifdef Include_sys_types
-#include <sys/types.h>
+ #include <sys/types.h>
 #endif
 
 #ifdef Include_regex
-// POSIX
-#include <regex.h>
+ // POSIX
+ #include <regex.h>
 #endif
 
 #ifdef Include_cl_regex
-// Replacement
-#include <cl/regex.h>
+ // Replacement
+ #include <cl/regex.h>
 #endif
 
 #ifdef Include_getopt
-#include <getopt.h>
+ #include <getopt.h>
 #endif
 
 #ifdef Include_cl_getopt
-#include <cl/getopt.h>
+ #include <cl/getopt.h>
 #endif
 
 #ifdef Include_io
-#include <io.h>
+ #include <io.h>
 #endif
 
 #ifdef Include_sdtio
-#include <stdio.h>
+ #include <stdio.h>
 #endif
 
 #ifdef Include_dirent
-#include <dirent.h>
+ #include <dirent.h>
 #endif
 
 #ifdef Include_cl_dirent
-#include <cl/dirent.h>
+ #include <cl/dirent.h>
 #endif
 
 #ifdef Include_time
-#include <time.h>
+ #include <time.h>
 #endif
 
 #ifdef Include_utime
-#include <utime.h>
+ #include <utime.h>
 #endif
 
 #ifdef Include_cl_utime
-#include <cl/utime.h>
+ #include <cl/utime.h>
 #endif
 
 #ifdef Include_strstream
-#include <strstream.h>
+ #include <strstream.h>
 #endif
 
 #ifdef Include_strstrea
-#include <strstrea.h>
+ #include <strstrea.h>
+#endif
+
+#ifdef Include_sstream
+ #include <sstream>
+#endif
+
+#ifdef Uses_fstream
+ #include FSTREAM_HEADER
+#endif
+
+#ifdef Uses_iomanip
+ #include IOMANIP_HEADER
+#endif
+
+#ifdef Uses_iostream
+ #include IOSTREAM_HEADER
 #endif
 
 #if defined(Uses_CLYFileAttrs) && !defined(Uses_CLYFileAttrsDef)
@@ -1071,7 +1137,11 @@ CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
 CFunc char *CLY_GetShellName(void);
 
 #ifdef Uses_ifsFileLength
-extern long CLY_ifsFileLength(ifstream &f);
+extern long CLY_ifsFileLength(CLY_std(ifstream) &f);
+#endif
+
+#ifdef Uses_CLY_IfStreamGetLine
+extern int CLY_IfStreamGetLine(CLY_std(ifstream) &is, char *buffer, unsigned len);
 #endif
 
 /* Internal definition of nl_langinfo */

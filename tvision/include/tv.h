@@ -17,8 +17,8 @@ Modified by Robert H”hne to be used for RHIDE.
 // in programs that are very sensitive, like my editor.
 #define TV_MAJOR_VERSION  1
 #define TV_MIDDLE_VERSION 1
-#define TV_MINOR_VERSION  2
-#define TV_VERSION "1.1.2"
+#define TV_MINOR_VERSION  3
+#define TV_VERSION "1.1.3"
 
 #define Uses_EventCodes
 #define Uses_ViewCommands
@@ -135,6 +135,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_TTextDevice )
 #define Uses_TScroller
+#define Uses_iostream
 #define INCLUDE_TEXTVIEW_H
 #endif
 
@@ -512,21 +513,25 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_ofpstream )
 #define Uses_fpbase
+#define Uses_iostream
 #define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_ifpstream )
 #define Uses_fpbase
+#define Uses_iostream
 #define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_fpbase )
 #define Uses_pstream
+#define Uses_fstream
 #define INCLUDE_TOBJSTRM_H
 #define Uses_FILEBUF_OPENPROT
 #endif
 
 #if defined( Uses_iopstream )
+#define Uses_iostream
 #define INCLUDE_TOBJSTRM_H
 #endif
 
@@ -541,6 +546,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #endif
 
 #if defined( Uses_pstream )
+#define Uses_iostream
 #define INCLUDE_TOBJSTRM_H
 #endif
 
@@ -698,3 +704,4 @@ Modified by Robert H”hne to be used for RHIDE.
 #ifdef INCL_CALC_H
 #include <tv/calc.h>
 #endif
+

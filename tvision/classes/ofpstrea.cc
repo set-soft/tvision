@@ -20,6 +20,8 @@ Andris Pavenis and Christoph Bauer.
 #define Uses_IOS_BIN
 #include <tv.h>
 
+UsingNamespaceStd
+
 ofpstream::ofpstream()
 {
 }

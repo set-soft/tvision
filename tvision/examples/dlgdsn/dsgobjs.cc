@@ -21,10 +21,10 @@
  *                                                                         *
  ***************************************************************************/
  
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream.h>
+#define Uses_string
+#define Uses_stdio
+#define Uses_stdlib
+#define Uses_iostream
 
 #define Uses_TProgram
 #define Uses_TApplication

@@ -25,15 +25,9 @@ Andris Pavenis and Christoph Bauer.
 #if defined( Uses_fpstream ) && !defined( __fpstream )
 #define __fpstream
 
-#if !defined( __IOSTREAM_H )
-#include <iostream.h>
-#endif  // __IOSTREAM_H
-
 class fpstream : public fpbase, public iopstream
 {
-
 public:
-
     fpstream();
     fpstream( const char *, CLY_OpenModeT, int = CLY_FBOpenProtDef );
     fpstream( int );
@@ -41,11 +35,9 @@ public:
     ~fpstream();
     long filelength();
 
-    filebuf * rdbuf();
+    CLY_std(filebuf) *rdbuf();
     void open( const char *, CLY_OpenModeT, int = CLY_FBOpenProtDef );
-
 };
-
 
 #endif  // Uses_fpstream
 

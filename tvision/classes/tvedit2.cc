@@ -1,4 +1,6 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
+/* Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+   Andris Pavenis. */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -9,8 +11,7 @@
 
 #include <stdlib.h>
 #include <stdarg.h>
-//#define Uses_strstream
-#include <iomanip.h>
+#define Uses_iomanip
 
 #define Uses_TDialog
 #define Uses_TDeskTop

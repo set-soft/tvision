@@ -28,10 +28,6 @@ compilable with gcc 3.x without breaking compatibility.
 #if defined( Uses_fpbase ) && !defined( __fpbase )
 #define __fpbase
 
-#if !defined( __FSTREAM_H )
-#include <fstream.h>
-#endif  // __FSTREAM_H
-
 class fpbase : virtual public pstream
 {
 
@@ -49,11 +45,11 @@ public:
     #endif
     void close();
     void setbuf( char *, int );
-    filebuf * rdbuf();
+    CLY_std(filebuf) * rdbuf();
 
 private:
 
-    filebuf *buf;
+    CLY_std(filebuf) *buf;
 
 };
 

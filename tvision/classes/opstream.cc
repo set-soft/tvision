@@ -35,7 +35,7 @@ opstream::opstream()
     objs = new TPWrittenObjects();
 }
 
-opstream::opstream( streambuf * sb )
+opstream::opstream( CLY_std(streambuf) * sb )
 {
     objs = new TPWrittenObjects();
     pstream::init( sb );
@@ -49,7 +49,7 @@ opstream::~opstream()
 opstream& opstream::seekp( CLY_StreamPosT pos )
 {
     objs->freeAll();
-    bp->CLY_PubSeekOff( pos, ios::beg );
+    bp->CLY_PubSeekOff( pos, CLY_std(ios::beg) );
     return *this;
 }
 
@@ -62,7 +62,7 @@ opstream& opstream::seekp( CLY_StreamOffT pos, CLY_IOSSeekDir dir )
 
 CLY_StreamPosT opstream::tellp()
 {
-    return bp->CLY_PubSeekOff( 0, ios::cur, ios::out );
+    return bp->CLY_PubSeekOff( 0, CLY_std(ios::cur), CLY_std(ios::out) );
 }
 
 opstream& opstream::flush()

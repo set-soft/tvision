@@ -17,21 +17,22 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+ * Andris Pavenis.
  */
 
 // SET: moved the standard headers before tv.h
 #define Uses_string
-#include <stdlib.h>
-#include <ctype.h>
-#include <time.h>
+#define Uses_stdlib
+#define Uses_ctype
+#define Uses_time
+#define Uses_iomanip
 
 #define Uses_TRect
 #define Uses_TView
 #define Uses_TDrawBuffer
-#define Uses_strstream
 #include <tv.h>
 
-#include <iomanip.h>
 #include "gadgets.h"
 
 //extern "C" unsigned long farcoreleft( void );

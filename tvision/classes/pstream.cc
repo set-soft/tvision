@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis and Christoph Bauer.
 
  *
  *
@@ -19,6 +21,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStreamable
 #define Uses_pstream
 #include <tv.h>
+
+UsingNamespaceStd
 
 pstream::pstream( streambuf *sb )
 {

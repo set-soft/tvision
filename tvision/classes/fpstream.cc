@@ -21,6 +21,8 @@ Added filelength member by Salvador E. Tropea (SET)
 #define Uses_filelength
 #include <tv.h>
 
+UsingNamespaceStd
+
 fpstream::fpstream()
 {
 }
