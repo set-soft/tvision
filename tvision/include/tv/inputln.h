@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Added: TInput1Line class by SET (based on TVTools idea).
+Added: modeOptions stuff by SET.
 
  *
  *
@@ -29,16 +30,15 @@ class TRect;
 struct TEvent;
 class TValidator;
 
+const unsigned ilValidatorBlocks=1;  // Don't pass the focus if the validator indicates
+                                     // the data isn't valid. by SET.
+
 class TInputLine : public TView
 {
-
 public:
 
     TInputLine( const TRect& bounds, int aMaxLen );
     ~TInputLine();
-
-const unsigned ilValidatorBlocks=1;  // Don't pass the focus if the validator indicates
-                                     // the data isn't valid. by SET.
 
     virtual uint32 dataSize();
     virtual void draw();
@@ -62,15 +62,16 @@ const unsigned ilValidatorBlocks=1;  // Don't pass the focus if the validator in
     int firstPos;
     int selStart;
     int selEnd;
- // Functions to fine tune the behavior. by SET.
- unsigned setModeOptions(unsigned newOps)
-   { unsigned old=modeOptions; modeOptions=newOps; return old; }
- unsigned getModeOptions()
-   { return modeOptions; }
- static unsigned setDefaultModeOptions(unsigned newOps)
-   { unsigned old=defaultModeOptions; defaultModeOptions=newOps; return old; }
- static unsigned getDefaultModeOptions()
-   { return defaultModeOptions; }
+
+    // Functions to fine tune the behavior. by SET.
+    unsigned setModeOptions(unsigned newOps)
+      { unsigned old=modeOptions; modeOptions=newOps; return old; }
+    unsigned getModeOptions()
+      { return modeOptions; }
+    static unsigned setDefaultModeOptions(unsigned newOps)
+      { unsigned old=defaultModeOptions; defaultModeOptions=newOps; return old; }
+    static unsigned getDefaultModeOptions()
+      { return defaultModeOptions; }
 
 
     static char rightArrow;
@@ -85,9 +86,9 @@ protected:
     void makeVisible(); // Added by SET
     Boolean canScroll( int delta );
 
- // To fine tune the behavior. SET.
- static unsigned defaultModeOptions;
- unsigned modeOptions;
+    // To fine tune the behavior. SET.
+    static unsigned defaultModeOptions;
+    unsigned modeOptions;
 
 private:
     int mouseDelta( TEvent& event );

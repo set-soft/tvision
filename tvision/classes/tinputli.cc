@@ -30,7 +30,7 @@ other stuff).
 #define Uses_TGroup
 #include <tv.h>
 
-unsigned TInputLineBase::defaultModeOptions=0;
+unsigned TInputLine::defaultModeOptions=0;
 
 char hotKey( const char *s )
 {
@@ -57,6 +57,7 @@ TInputLine::TInputLine( const TRect& bounds, int aMaxLen ) :
     state |= sfCursorVis;
     options |= ofSelectable | ofFirstClick;
     *data = EOS;
+    modeOptions = defaultModeOptions;
 }
 
 void TInputLine::SetValidator(TValidator * aValidator)
@@ -72,7 +73,6 @@ TInputLine::~TInputLine()
     delete[] data;
     CLY_destroy(validator);
 }
- modeOptions=defaultModeOptions;
 
 Boolean TInputLine::canScroll( int delta )
 {
@@ -387,6 +387,18 @@ void TInputLine::setData( void *rec )
 
 void TInputLine::setState( ushort aState, Boolean enable )
 {
+    if (validator &&                           // We have a validator
+        (modeOptions & ilValidatorBlocks)  &&  // We want to block if invalid
+        owner && (owner->state & sfActive) &&  // The owner is visible
+        aState==sfFocused && enable==False)    // We are losing the focus
+      {
+       TValidator *v=validator;
+       validator=NULL;             // Avoid nested tests
+       Boolean ret=v->Valid(data); // Check if we have valid data
+       validator=v;
+       if (!ret)                   // If not refuse the focus change
+          return;
+      }
     TView::setState( aState, enable );
     if( aState == sfSelected ||
         ( aState == sfActive && (state & sfSelected) != 0 )
@@ -442,15 +454,4 @@ Boolean TInputLine::valid(ushort )
   return ret;
 }
 
- if (validator &&                           // We have a validator
-     (modeOptions & ilValidatorBlocks)  &&  // We want to block if invalid
-     owner && (owner->state & sfActive) &&  // The owner is visible
-     aState==sfFocused && enable==False)    // We are losing the focus
-   {
-    TValidator *v=validator;
-    validator=NULL;             // Avoid nested tests
-    Boolean ret=v->Valid(data); // Check if we have valid data
-    validator=v;
-    if (!ret)                   // If not refuse the focus change
-       return;
-   }
+
