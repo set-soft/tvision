@@ -125,10 +125,10 @@ void TMenuBox::draw()
     frameLine( b, 5 );
     writeBuf( 0, y++, size.x, 1, b );
     // SET: Force a cursor movement to indicate which one is selected.
-    // Even when the cursor is invisible it could help Braille Terminals.
+    // This helps Braille Terminals, but the cursor must be visible!
     if( yCur != -1 )
         {
-        setCursor( 4 , yCur );
+        setCursor( 2 , yCur );
         resetCursor();
         }
 }
