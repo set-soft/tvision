@@ -121,8 +121,6 @@ unsigned char kbToName1[128] =
  kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbBackSpace            // 78-7F
 };
 
-// F11 y F2 se solapan con S+F1 y S+F2! imbeciles
-// S+F11 y S+F2 se solapan con F1 y F2! imbeciles 2
 // 15e = kb5 (del keypad)
 static
 unsigned char kbToName2[128] =
@@ -191,6 +189,60 @@ unsigned char kbExtraFlags2[128] =
  0,0,0,0,0,0,0,kbAlt                            // 78-7F
 };
 
+static
+void PatchTablesForOldKbdLayout(void)
+{
+ // That's the most common at the moment (Debian <= 2.0, RedHat <= 5.1, etc)
+ unsigned char names[]=
+ {kbF1,kbF2,kbF3,kbF4,kbF5,kbF6,kbF7,kbF8,kbF9,kbF10,
+     0,   0,   0,   0,   0,   0,   0,   0,   0,    0,
+     0,   0,   0,   0,   0,   0};
+ unsigned char modif[]=
+ {kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,
+     0,   0,   0,   0,   0,   0,   0,   0,   0,    0,
+     0,   0,   0,   0,   0,   0};
+ int i;
+ for (i=0; i<26; i++)
+    {
+     kbToName2[i+0x13]=names[i];
+     kbExtraFlags2[i+0x13]=modif[i];
+    }
+}
+
+static
+void PatchTablesForNewKbdLayout(void)
+{
+ // Tom Aschenbrenner <tom@aschen.com> found problems on Red Hat 5.2, after
+ // some tests we found that the new kbd package changed some stuff.
+ unsigned char names[]=
+ {kbF11,kbF12,
+   kbF1,kbF2,kbF3,kbF4,kbF5,kbF6,kbF7,kbF8,kbF9,kbF10,kbF11,kbF12,
+   kbF1,kbF2,kbF3,kbF4,kbF5,kbF6,kbF7,kbF8,kbF9,kbF10,kbF11,kbF12 };
+ unsigned char modif[]=
+ {      0,      0,
+  kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,kbShift,
+  kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl,kbCtrl };
+ // This layout have much sense but is a pain in the ... for my tables
+ int i;
+ for (i=0; i<26; i++)
+    {
+     kbToName2[i+0x13]=names[i];
+     kbExtraFlags2[i+0x13]=modif[i];
+    }
+}
+
+void TGKey::SetKbdMapping(int version)
+{
+ switch (version)
+   {
+    case KDB_REDHAT52_STYLE:
+         PatchTablesForNewKbdLayout();
+         break;
+    default: // KBD_OLD_STYLE
+         PatchTablesForOldKbdLayout();
+   }
+}
+
 // The intelligence is here
 unsigned short TGKey::gkey(void)
 {
@@ -257,6 +309,7 @@ unsigned short TGKey::gkey(void)
  else
    { // The rest are passed by the tables
     key&=0x7F;
+    printf("key %X name[key] %X flags[key] %X\r\n",key,name[key],flags[key]);
     ascii=key;
     rawCode.b.scan=ascii;
     Abstract|=name[key] | (flags[key]<<4);
@@ -339,24 +392,44 @@ typedef struct
 change_entry changes[] = {
   { kblAltL,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
   { kblAltR,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
+  { kblCtrl,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
+  { kblShift, SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
   { kblAltL,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
   { kblAltR,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
+  { kblCtrl,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
+  { kblShift, SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
   { kblAltL,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
   { kblAltR,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
+  { kblCtrl,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
+  { kblShift, SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
   { kblAltL,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
   { kblAltR,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
+  { kblCtrl,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
+  { kblShift, SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
   { kblAltL,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
   { kblAltR,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
+  { kblCtrl,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
+  { kblShift, SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
   { kblAltL,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
   { kblAltR,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
+  { kblCtrl,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
+  { kblShift, SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
   { kblAltL,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
   { kblAltR,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
+  { kblCtrl,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
+  { kblShift, SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
   { kblAltL,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
   { kblAltR,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
+  { kblCtrl,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
+  { kblShift, SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
   { kblAltL,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
   { kblAltR,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
+  { kblCtrl,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
+  { kblShift, SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
   { kblAltL,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
   { kblAltR,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
+  { kblCtrl,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
+  { kblShift, SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
   { kblCtrl,  SCAN_Q,    kblNormal, SCAN_Q,    0, 0},
   { kblCtrl,  SCAN_S,    kblNormal, SCAN_S,    0, 0},
   { kblCtrl,  SCAN_J,    kblNormal, SCAN_J,    0, 0},

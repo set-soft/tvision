@@ -1,0 +1,9 @@
+*.o
+*.gdt
+*.bkp
+*.dst
+*.a
+*cvs/*
+*CVS/*
+*cvs
+*CVS

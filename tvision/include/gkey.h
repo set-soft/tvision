@@ -65,6 +65,11 @@ public:
  static ushort GetAltSettings(void) { return AltSet; }
  static void SetAltSettings(ushort altSet) { AltSet=altSet; }
  static ushort KeyNameToNumber(char *s);
+ #ifdef __linux__
+ #define KBD_OLD_STYLE      0
+ #define KDB_REDHAT52_STYLE 1
+ static void SetKbdMapping(int version);
+ #endif
 
  // PC specific
  static int useBIOS;
