@@ -1,4 +1,16 @@
-$Log$.
+$Log$
+Revision 2.139  2002/06/10 13:24:06  set
+* Fixed: tvfintl must be used for the examples if no intl was found.
+* Fixed: We no longer need to patch vpath_src in .maks for Win32.
+* Modified: Now a copy of libtvfintl.a is put in the same directory where
+the librhtv.* is created, it helps applications like setedit that can use
+Turbo Vision even if not installed.
+* Fixed: [Win32] cursor driver issues.
+* Fixed: [WinNT] lack of stdlib include.
+* Fixed: [MinGW] it doesn't define ssize_t.
+* Modified: win32/readme.txt, I teste the library with MinGW 1.1+MSys 1.0.7
+and SiePerl, it works and I explain how to use it.
+
 Revision 2.138  2002/06/07 19:11:25  set
 * Modified: [UNIX] the configuration to test if the X11 include directory
 is really needed. It looks like gcc 3.1 gives a warning if this is manually

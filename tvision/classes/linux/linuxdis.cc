@@ -30,6 +30,7 @@ colors and restore them.
 #include <sys/ioctl.h>
 // GIO_CMAP ioctl
 #include <linux/kd.h>
+#include <signal.h>
 
 #include <tv/linux/screen.h>
 #include <tv/linux/log.h>

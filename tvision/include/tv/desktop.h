@@ -52,7 +52,9 @@ public:
     // SET: Added to help Braille Terminals
     virtual ushort execView( TView *p );
 
-    static const char defaultBkgrnd;
+    // SET: Made non-constant and added original
+    static char defaultBkgrnd;
+    static char odefaultBkgrnd;
 
 protected:
 

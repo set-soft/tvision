@@ -36,6 +36,7 @@
 #include <tv/linux/log.h>
 
 int            TGKeyXTerm::hIn=-1;
+FILE          *TGKeyXTerm::fIn=NULL;
 int            TGKeyXTerm::oldInFlags;
 int            TGKeyXTerm::newInFlags;
 struct termios TGKeyXTerm::inTermiosOrig;
@@ -75,6 +76,21 @@ int TGKeyXTerm::InitOnce()
     error=_("that's an interactive application, don't redirect stdin");
     return 1;
    }
+
+ char *ttyName=ttyname(hIn);
+ if (!ttyName)
+   {
+    error=_("failed to get the name of the current terminal used for input");
+    return 3;
+   }
+ fIn=fopen(ttyName,"r+b");
+ if (!fIn)
+   {
+    error=_("failed to open the input terminal");
+    return 4;
+   }
+ hIn=fileno(fIn);
+
  if (tcgetattr(hIn,&inTermiosOrig))
    {
     error=_("can't get input terminal attributes");
@@ -97,7 +113,7 @@ int TGKeyXTerm::InitOnce()
  oldInFlags=fcntl(hIn,F_GETFL,0);
  // Currently disabled, it makes xterm lose output data and the
  // stream is already character oriented and hence doesn't block.
- newInFlags=oldInFlags;// | O_NONBLOCK;
+ newInFlags=oldInFlags | O_NONBLOCK;
  fcntl(hIn,F_SETFL,newInFlags);
 
  // We don't need to call Resume
@@ -140,7 +156,7 @@ int TGKeyXTerm::KbHit()
 {
  if (keysInBuffer || nextKey!=-1)
     return 1;     // We have a key waiting for processing
- nextKey=fgetc(stdin);
+ nextKey=fgetc(fIn);
  return nextKey!=-1;
 }
 
@@ -151,7 +167,7 @@ void TGKeyXTerm::Clear()
  // Discard a key waiting
  nextKey=-1;
  // Flush the input
- fflush(stdin);
+ fflush(fIn);
 }
 
 /*****************************************************************************
@@ -583,7 +599,7 @@ int TGKeyXTerm::ProcessEscape()
 {
  int nextVal, extraModifiers;
 
- nextVal=fgetc(stdin);
+ nextVal=fgetc(fIn);
  if (nextVal==EOF)     // Just ESC
     return 0;
  // ESC + Escape sequence => Alt/Meta + Escape sequence
@@ -591,7 +607,7 @@ int TGKeyXTerm::ProcessEscape()
  if (nextVal=='\e')
    {
     extraModifiers=kblAltL;
-    nextVal=fgetc(stdin);
+    nextVal=fgetc(fIn);
     if (nextVal==EOF)     // Just Alt+ESC
       {
        lastModifiers=kblAltL;
@@ -614,7 +630,7 @@ int TGKeyXTerm::ProcessEscape()
            if (p[i].next)
              {
               p=p[i].next;
-              nextVal=fgetc(stdin);
+              nextVal=fgetc(fIn);
               goto NextNode;
              }
            lastKeyCode=p[i].code;
@@ -640,7 +656,7 @@ int TGKeyXTerm::GetKeyFromBuffer()
 /**[txh]********************************************************************
 
   Description:
-  Gets a key from the buffer, waiting value or stdin and if needed calls
+  Gets a key from the buffer, waiting value or fIn and if needed calls
 the escape sequence parser.
   
 ***************************************************************************/
@@ -658,7 +674,7 @@ int TGKeyXTerm::GetKeyParsed()
  int nextVal=nextKey;
  nextKey=-1;
  if (nextVal==-1)
-    nextVal=fgetc(stdin);
+    nextVal=fgetc(fIn);
  if (nextVal==-1)
     return -1;
 
@@ -782,9 +798,9 @@ void TGKeyXTerm::FillTEvent(TEvent &e)
  GKey();
  if ((lastKeyCode & kbKeyMask)==kbMouse)
    { // Mouse events are traslated to keyboard sequences:
-    int event=fgetc(stdin);
-    int x=fgetc(stdin)-0x21; // They are 0x20+ and the corner is 1,1
-    int y=fgetc(stdin)-0x21;
+    int event=fgetc(fIn);
+    int x=fgetc(fIn)-0x21; // They are 0x20+ and the corner is 1,1
+    int y=fgetc(fIn)-0x21;
     // Filter the modifiers:
     event&= ~0x1C;
     // B4 and B5 behaves in a particular way

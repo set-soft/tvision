@@ -195,6 +195,11 @@ const ushort
     cmGrabDefault       = 62,
     cmReleaseDefault    = 63,
 
+// SET: This is a broadcast sent each time the code page encoding changes.
+//      All objects that uses non ASCII symbols should remap them.
+
+    cmUpdateCodePage    = 64,
+    
 //  Event masks
 
     positionalEvents    = evMouse,

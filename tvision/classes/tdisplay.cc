@@ -16,6 +16,7 @@ same used in original Turbo Vision for compatibility purposes.
  #include <stdio.h>
 #endif
 #define Uses_TScreen
+#define Uses_TVCodePage
 #include <tv.h>
 
 // Remove me please!
@@ -51,6 +52,7 @@ TScreenColor  TDisplay::OriginalPalette[16];
 TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
 uint32        TDisplay::opts1                     =0;
+TVCodePage   *TDisplay::codePage                  =NULL;
 
 /*****************************************************************************
 
@@ -183,7 +185,12 @@ TDisplay::~TDisplay()
  if (font)
    {
     delete font;
-    font=0;
+    font=NULL;
+   }
+ if (codePage)
+   {
+    delete codePage;
+    codePage=NULL;
    }
 }
 

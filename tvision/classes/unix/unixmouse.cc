@@ -13,6 +13,7 @@
 #define Uses_TScreen
 #include <tv.h>
 #include <termios.h>
+#include <signal.h>
 #include <tv/unix/screen.h>
 #include <tv/unix/mouse.h>
 

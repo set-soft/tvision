@@ -16,6 +16,7 @@
 #define Uses_TEvent
 #define Uses_TDrawBuffer
 #define Uses_TGKey
+#define Uses_TVCodePage
 #define Uses_string
 #define Uses_ctype
 #define Uses_iostream
@@ -159,6 +160,9 @@ TScreenXTerm::TScreenXTerm()
  Init();
 
  TGKeyXTerm::Init();
+
+ // Code page initialization
+ codePage=new TVCodePage(TVCodePage::ISOLatin1Linux);
 
  if (terminalType==Eterm)
    {// Only 8 colors + brightness (8*2+8*2)
@@ -357,8 +361,8 @@ Linux have all arrows, but Xterm no.
 
 const uchar TScreenXTerm::Code[256]=
 {
- '?','=','?','?',96,98,99,100,101,104,97,' '/**/,' '/**/,115/**/,111/**/,' '/**/,
- ' '/**/,'n'/**/,105,121,122,124,'<','>','^','v','>','<','*','*','?',123,
+ '?','=','?','?',96,98,99,100,101,97/*104?*/,97,' '/**/,' '/**/,115/**/,111/**/,' '/**/,
+ ' '/**/,104/*'n'*/,105,121,122,124,'<','>','^','v','>','<','*','*','?',123,
  32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,
  48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,
  64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,
