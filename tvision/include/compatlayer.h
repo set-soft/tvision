@@ -392,7 +392,13 @@ typedef unsigned long  ulong;
   #ifndef usleep
    #define usleep(microseconds) CLY_YieldProcessor(microseconds)
   #endif
+  #ifndef __MINGW32_MAJOR_VERSION
+   // MinGW people is really ignorant about gcc.
+   // This definition should be done by gcc itself.
+   #include <_mingw.h>
+  #endif
   #if defined(Uses_alloca) && (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
+   // Why needed? that's a really idiot thing.
    #define alloca __builtin_alloca
   #endif
  #endif

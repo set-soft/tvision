@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.373  2002/12/09 13:04:55  set
+* Fixed: [DOS] The greek mode stuff. It must be moved but right now is
+better to let it work like this until I have some greek tester ;-)
+* Tested with gcc 3.2.1 OK
+
 Revision 2.372  2002/12/09 13:03:29  set
 * Fixed: [DOS] Typos in untested code. Also reverted some keyboard
 variables just to compile the code, they should go away.
