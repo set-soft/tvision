@@ -1,6 +1,7 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
 #include <tv/configtv.h>
+#include "vgastate.h"
 
 #ifdef TVCompf_djgpp
 
@@ -30,7 +31,6 @@ before.
 #include <sys/farptr.h>
 #include <dpmi.h>
 #include <go32.h>
-#include "vgastate.h"
 
 #define SIZE 0x8000
 

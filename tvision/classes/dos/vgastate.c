@@ -9,13 +9,13 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVCompf_djgpp
-
-#include <pc.h>
-#include <sys/movedata.h>
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 #include "vgaregs.h"
+
+#ifdef TVCompf_djgpp
+
+#include <sys/movedata.h>
 
 /**[txh]********************************************************************
 

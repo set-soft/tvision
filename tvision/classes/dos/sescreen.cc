@@ -1,7 +1,13 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
+/* Copyright 1999-2002 Salvador E. Tropea */
 #include <tv/configtv.h>
 
+/* This is needed, because get the correct textmode */
+#define Uses_TScreen
+#include <tv.h>
+
+// I delay the check to generate as much dependencies as possible
 #ifdef TVCompf_djgpp
 /* This file is for saving/restoring the screen in graphics and/or
    text modes. Many parts and most of the very good comments came
@@ -218,10 +224,6 @@ must be enough.
 modes now.
 
 */
-
-/* This is needed, because get the correct textmode */
-#define Uses_TScreen
-#include <tv.h>
 
 #include <stdlib.h>
 #include <sys/movedata.h>
