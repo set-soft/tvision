@@ -452,6 +452,24 @@ void InterpretAbstract(void)
     printf(" ALT-L");
 }
 
+#ifdef __DJGPP__
+#include <signal.h>
+#include <conio.h>
+/* ungetch() is available only on DJGPP
+static void PasarAC(int Sig)
+{
+ Sig=0;
+}*/
+#undef kbhit
+void CtrlCOff(void)
+{
+ //signal(SIGINT,PasarAC);
+ signal(SIGINT,SIG_IGN);
+}
+#endif
+
+int count=0;
+
 int main(int argc, char *argv[])
 {
   unsigned short key;
@@ -463,12 +481,15 @@ int main(int argc, char *argv[])
   patch_keyboard();
   if (argc>1 && strcmp(argv[1],"rh52")==0)
      TGKey::SetKbdMapping(KDB_REDHAT52_STYLE);
+#else
+  //TGKey::useBIOS=1;
+  CtrlCOff();
 #endif
   // Setup the mode where the alt left/right are different
   TGKey::SetAltSettings(0);
   do
   {
-   while (!TGKey::kbhit());
+   while (!TGKey::kbhit());// {count++; if ((count%1000)==0) printf(".");}
    TEvent e;
    TGKey::fillTEvent(e);
    key = TGKey::Abstract;
