@@ -67,6 +67,16 @@ TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     selectNext( False );
 }
 
+static inline
+int changeDir( const char *path )
+{
+#if 0 // DJGPP can handle chdir also over drives
+    if( path[1] == ':' )
+        setdisk( uctoupper(path[0]) - 'A' );
+#endif
+    return chdir( path );
+}
+
 uint32 TChDirDialog::dataSize()
 {
     return 0;
@@ -102,18 +112,20 @@ void TChDirDialog::handleEvent( TEvent& event )
                     {
                     TDirEntry *p = dirList->list()->at( dirList->focused );
                     strcpy( curDir, p->dir() );
-#if defined( DJGPP )
+#ifdef __DJGPP__
                     if( strcmp( curDir, _("Drives") ) == 0 )
                         break;
                     else if( driveValid( curDir[0] ) )
                         {
-#endif
-			if( curDir[strlen(curDir)-1] != DIRSEPARATOR )
-			    strcat( curDir, DIRSEPARATOR_ );
-#if defined( DJGPP )
+                        if( curDir[strlen(curDir)-1] != DIRSEPARATOR )
+                            strcat( curDir, DIRSEPARATOR_ );
                         }
                     else
                         return;
+#else
+                    if( curDir[strlen(curDir)-1] != DIRSEPARATOR )
+                        strcat( curDir, DIRSEPARATOR_ );
+                    changeDir(curDir);
 #endif
                     break;
                     }
@@ -121,7 +133,7 @@ void TChDirDialog::handleEvent( TEvent& event )
                     return;
                 }
             dirList->newDirectory( curDir );
-#if defined( DJGPP )
+#ifdef __DJGPP__
             int len = strlen( curDir );
 	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
@@ -149,7 +161,7 @@ void TChDirDialog::setUpDialog()
         dirList->newDirectory( curDir );
         if( dirInput != 0 )
             {
-#if defined( DJGPP )
+#ifdef __DJGPP__
             int len = strlen( curDir );
 	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
@@ -158,15 +170,6 @@ void TChDirDialog::setUpDialog()
             dirInput->drawView();
             }
         }
-}
-
-static int changeDir( const char *path )
-{
-#if 0 // DJGPP can handle chdir also over drives
-    if( path[1] == ':' )
-        setdisk( uctoupper(path[0]) - 'A' );
-#endif
-    return chdir( path );
 }
 
 Boolean TChDirDialog::valid( ushort command )

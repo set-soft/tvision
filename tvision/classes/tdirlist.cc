@@ -125,9 +125,91 @@ extern "C" char *ffname(struct ffblk *);
 #endif
 
 #ifndef __DJGPP__
+#include <dirent.h>
+#include <sys/stat.h>
 
-void TDirListBox::showDirs( TDirCollection *)
+void TDirListBox::showDirs( TDirCollection *dirs )
 {
+    const int indentSize = 2;
+    int indent = indentSize;
+
+    char buf[PATH_MAX*2];
+    memset( buf, ' ', sizeof( buf ) );
+    char *name = buf + PATH_MAX;
+
+    // The first ramification of the tree
+    char *org = name - strlen(pathDir);
+    strcpy( org, pathDir );
+
+    char *curDir = dir;
+    char *end = dir + 1;
+    char hold = *end;
+    *end = EOS;         // mark end of drive name
+    strcpy( name, curDir );
+    dirs->insert( new TDirEntry( org, name ) );
+    
+    *end = hold;        // restore full path
+    curDir = end;
+    while( (end = strchr( curDir, DIRSEPARATOR )) != 0 )
+        {
+        *end = EOS;
+        strncpy( name, curDir, size_t(end-curDir) );
+        name[size_t(end-curDir)] = EOS;
+        dirs->insert( new TDirEntry( org - indent, dir ) );
+        *end = DIRSEPARATOR;
+        curDir = end+1;
+        indent += indentSize;
+        }
+
+    cur = dirs->getCount() - 1;
+
+    end = strrchr( dir, DIRSEPARATOR );
+    char path[PATH_MAX];
+    strncpy( path, dir, size_t(end-dir+1) );
+    end = path + unsigned(end-dir)+1;
+    *end = 0;
+    
+    Boolean isFirst = True;
+    DIR *d=opendir(path);
+    if (d)
+      {
+       struct dirent *ent;
+       while( (ent=readdir(d))!=0 )
+           {
+           struct stat st;
+           strcpy(end,ent->d_name);
+           stat(path,&st);
+           if( S_ISDIR(st.st_mode) && strcmp(ent->d_name,".")!=0 &&
+               strcmp(ent->d_name,"..")!=0)
+               {
+               if( isFirst )
+                   {
+                   memcpy( org, firstDir, strlen(firstDir)+1 );
+                   isFirst = False;
+                   }
+               else
+                   memcpy( org, middleDir, strlen(middleDir)+1 );
+               strcpy( name, ent->d_name );
+               strcpy( end, ent->d_name );
+               dirs->insert( new TDirEntry( org - indent, path ) );
+               }
+           }
+       closedir(d);
+      }
+
+    char *p = dirs->at(dirs->getCount()-1)->text();
+    char *i = strchr( p, graphics[0] );
+    if( i == 0 )
+        {
+        i = strchr( p, graphics[1] );
+        if( i != 0 )
+            *i = graphics[0];
+        }
+    else
+        {
+        *(i+1) = graphics[2];
+        *(i+2) = graphics[2];
+        }
 }
 
 #else
