@@ -738,37 +738,24 @@ static void acquirevt_handler(int)
 static void init_console_sigs()
 {
   if (!install_console_sigs)
-    return;
+     return;
 
   // -------- Get our console number
-  #if 1
-  if (sscanf(ttyname(STDOUT_FILENO),"/dev/tty%2d",&our_vt) != 1)
-  {
-    return;
-  }
-  #else
-  // Code from Andris that we should test
   char *tty_name=ttyname(STDOUT_FILENO);
   if (tty_name)
-  {
-     if (sscanf(tty_name,"/dev/tty%2d",&our_vt) != 1)
-       if (sscanf(tty_name,"/dev/pts/%2d",&our_vt) != 1)
-       {
-          return;
-       }
-  }
+    {
+     if (sscanf(tty_name,"/dev/tty%2d",&our_vt)!=1)
+        // Code from Andris that we should test
+        //if (sscanf(tty_name,"/dev/pts/%2d",&our_vt)!=1)
+        return;
+    }
   else if (our_vt==-1)
-  {
-     return;
-  }
-  #endif
+    return;
 
   // -------- Tell our console to inform us about switches
   struct vt_mode newvtmode;
   if (ioctl(STDIN_FILENO,VT_GETMODE,&newvtmode))
-  {
-    return;
-  }
+     return;
 
   // -------- set up signal handlers to know about console switches
   struct sigaction sig;
