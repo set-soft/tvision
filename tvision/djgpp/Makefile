@@ -60,11 +60,12 @@ OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/fileattrs.o ../compat/obj/fileexists.o\
 	../compat/obj/filelength.o ../compat/obj/fixpath.o\
 	../compat/obj/fnmatch.o ../compat/obj/getcurdir.o\
-	../compat/obj/getopt.o ../compat/obj/getopt1.o\
-	../compat/obj/getshell.o ../compat/obj/glob.o\
-	../compat/obj/globfree.o ../compat/obj/iffilelen.o\
-	../compat/obj/isdir.o ../compat/obj/isrelpath.o\
-	../compat/obj/iswild.o ../compat/obj/itoa.o ../compat/obj/mkstemp.o\
+	../compat/obj/getline.o ../compat/obj/getopt.o\
+	../compat/obj/getopt1.o ../compat/obj/getshell.o\
+	../compat/obj/glob.o ../compat/obj/globfree.o\
+	../compat/obj/iffilelen.o ../compat/obj/isdir.o\
+	../compat/obj/isrelpath.o ../compat/obj/iswild.o\
+	../compat/obj/itoa.o ../compat/obj/mkstemp.o\
 	../compat/obj/nl_langinfo.o ../compat/obj/ntdirent.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/strlwr.o\
@@ -130,11 +131,12 @@ ALL_OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/fileattrs.o ../compat/obj/fileexists.o\
 	../compat/obj/filelength.o ../compat/obj/fixpath.o\
 	../compat/obj/fnmatch.o ../compat/obj/getcurdir.o\
-	../compat/obj/getopt.o ../compat/obj/getopt1.o\
-	../compat/obj/getshell.o ../compat/obj/glob.o\
-	../compat/obj/globfree.o ../compat/obj/iffilelen.o\
-	../compat/obj/isdir.o ../compat/obj/isrelpath.o\
-	../compat/obj/iswild.o ../compat/obj/itoa.o ../compat/obj/mkstemp.o\
+	../compat/obj/getline.o ../compat/obj/getopt.o\
+	../compat/obj/getopt1.o ../compat/obj/getshell.o\
+	../compat/obj/glob.o ../compat/obj/globfree.o\
+	../compat/obj/iffilelen.o ../compat/obj/isdir.o\
+	../compat/obj/isrelpath.o ../compat/obj/iswild.o\
+	../compat/obj/itoa.o ../compat/obj/mkstemp.o\
 	../compat/obj/nl_langinfo.o ../compat/obj/ntdirent.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/strlwr.o\
@@ -464,8 +466,8 @@ RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3
 RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -fno-exceptions -fno-rtti
 RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib
 TVSRC=../../include e:/dj/contrib/tvision/include e:/dj/include/rhtvision
-RHIDE_OS_LIBS= intl iconv
-TVOBJ=../../djgpp e:/dj/contrib/tvision/djgpp e:/dj/lib
+RHIDE_OS_LIBS= tvfintl
+TVOBJ=../../djgpp e:/dj/contrib/tvision/djgpp e:/dj/lib ../../intl/dummy
 RHIDE_GCC=gcc
 RHIDE_GXX=gcc
 RHIDE_LD=gcc
@@ -474,8 +476,8 @@ RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3
 RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -fno-exceptions -fno-rtti
 RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib
 TVSRC=../../include e:/dj/contrib/tvision/include e:/dj/include/rhtvision
-RHIDE_OS_LIBS= intl iconv
-TVOBJ=../../djgpp e:/dj/contrib/tvision/djgpp e:/dj/lib
+RHIDE_OS_LIBS= tvfintl
+TVOBJ=../../djgpp e:/dj/contrib/tvision/djgpp e:/dj/lib ../../intl/dummy
 %.o: %.c
 	$(RHIDE_COMPILE.c.o)
 %.o: %.i
@@ -559,11 +561,12 @@ DEPS_0= ../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/fileattrs.o ../compat/obj/fileexists.o\
 	../compat/obj/filelength.o ../compat/obj/fixpath.o\
 	../compat/obj/fnmatch.o ../compat/obj/getcurdir.o\
-	../compat/obj/getopt.o ../compat/obj/getopt1.o\
-	../compat/obj/getshell.o ../compat/obj/glob.o\
-	../compat/obj/globfree.o ../compat/obj/iffilelen.o\
-	../compat/obj/isdir.o ../compat/obj/isrelpath.o\
-	../compat/obj/iswild.o ../compat/obj/itoa.o ../compat/obj/mkstemp.o\
+	../compat/obj/getline.o ../compat/obj/getopt.o\
+	../compat/obj/getopt1.o ../compat/obj/getshell.o\
+	../compat/obj/glob.o ../compat/obj/globfree.o\
+	../compat/obj/iffilelen.o ../compat/obj/isdir.o\
+	../compat/obj/isrelpath.o ../compat/obj/iswild.o\
+	../compat/obj/itoa.o ../compat/obj/mkstemp.o\
 	../compat/obj/nl_langinfo.o ../compat/obj/ntdirent.o\
 	../compat/obj/pathvalid.o ../compat/obj/regex.o\
 	../compat/obj/releasec.o ../compat/obj/strlwr.o\
@@ -3132,13 +3135,13 @@ obj/twindow.o:: $(DEPS_216)
 DEPS_217=vesa.cc ../include/compatlayer.h ../include/tv/configtv.h
 obj/vesa.o:: $(DEPS_217)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_218=vga.cc ../include/tv/configtv.h vgastate.h
+DEPS_218=vga.cc vgastate.h ../include/tv/configtv.h
 obj/vga.o:: $(DEPS_218)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_219=vgaregs.c ../include/tv/configtv.h vgaregs.h
+DEPS_219=vgaregs.c vgaregs.h ../include/tv/configtv.h
 obj/vgaregs.o:: $(DEPS_219)
 	$(RHIDE_COMPILE.c.o)
-DEPS_220=vgastate.c ../include/tv/configtv.h vgaregs.h
+DEPS_220=vgastate.c vgaregs.h ../include/tv/configtv.h
 obj/vgastate.o:: $(DEPS_220)
 	$(RHIDE_COMPILE.c.o)
 all:: librhtv.a
