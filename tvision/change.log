@@ -1,4 +1,8 @@
 $Log$
+Revision 1.140  2000/04/12 23:13:48  set
+* Added: An example of autoconf/automake macro for the library. Contributed
+by Laurynas.
+.
 Revision 1.139  2000/02/27 18:30:20  set
 * Added: A callback to the TButton class. Now you don't need to create a new
 class just because a dialog have a non-standard button.
