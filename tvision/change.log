@@ -1,4 +1,8 @@
 $Log$
+Revision 2.23  2001/12/11 00:59:59  set
+* Added: TDisplayDOS is almost finished.
+* Added: Started to work on DOS mouse driver.
+
 Revision 2.22  2001/12/11 00:26:45  set
 * Added: Some adjusts to compatlayer for Cygwin target. Needed to compile the
 editor. Patch from Robert.
@@ -6,7 +10,8 @@ editor. Patch from Robert.
 Revision 2.21  2001/12/06 01:17:15  set
 * Fixed: Some errors in listvi example. It used constant strings for input
 lines (read only on UNIX and of limited size a disaster). Also fixed the size
-of the columns and input line to be nicer.
+of the columns and input line to be nicer. Reported by Wojciech Warczakowski
+(Wowar) <wowar@poczta.onet.pl>.
 
 Revision 2.20  2001/11/29 23:08:41  set
 * Modified: Solaris have nl_langinfo so we don't need to use the
