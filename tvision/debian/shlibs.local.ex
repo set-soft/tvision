@@ -1,1 +1,1 @@
-librhtvision 1.0.3 rhtvision (>> 1.0.3-0), rhtvision (<< 1.0.3-99)
+librhtvision 1.0.5 rhtvision (>> 1.0.5-0), rhtvision (<< 1.0.5-99)

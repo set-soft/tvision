@@ -1,5 +1,5 @@
-usr/lib/libtv.a
-usr/lib/libtv_g.a
-usr/lib/libtv.so
+usr/lib/librhtv.a
+usr/lib/librhtv_g.a
+usr/lib/librhtv.so
 usr/include/rhtvision
 
