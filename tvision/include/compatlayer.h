@@ -390,7 +390,7 @@ typedef unsigned long  ulong;
    #define Uses_CLY_ssize_t 1
   #endif
   #ifndef usleep
-   #define usleep(microseconds) _sleep(microseconds/1000)
+   #define usleep(microseconds) CLY_YieldProcessor(microseconds)
   #endif
  #endif
 
