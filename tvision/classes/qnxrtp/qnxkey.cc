@@ -31,33 +31,36 @@ ushort TGKeyQNXRtP::sFlags;
 ushort TGKeyQNXRtP::undecoded;
 
 ushort TGKeyQNXRtP::hightranstable[0x0100]=
-       {//  0/8         1/9        2/A         3/B        4/C        5/D      6/E      7/F
-          0x0000,     0x0000,     kbDown,     kbUp,      kbLeft,   kbRight, kbHome,   kbCtH,          // 0x0100
-          0x0000,     kbF1,       kbF2,       kbF3,      kbF4,     kbF5,    kbF6,     kbF7,           // 0x0108
-          kbF8,       kbF9,       kbF10,      kbF11,     kbF12,    kbShF1,  kbShF2,   kbShF3,         // 0x0110
-          kbShF4,     kbShF5,     kbShF6,     kbShF7,    kbShF8,   kbShF9,  kbShF10,  kbShF11,        // 0x0118
-          kbShF12,    kbCtF1,     kbCtF2,     kbCtF3,    kbCtF4,   kbCtF5,  kbCtF6,   kbCtF7,         // 0x0120
-          kbCtF8,     kbCtF9,     kbCtF10,    kbCtF11,   kbCtF12,  kbAlF1,  kbAlF2,   kbAlF3,         // 0x0128
-          kbAlF4,     kbAlF5,     kbAlF6,     kbAlF7,    kbAlF8,   kbAlF9,  kbAlF10,  kbAlF11,        // 0x0130
-          kbAlF12,    0x0000,     0x0000,     0x0000,    0x0000,   0x0000,  0x0000,   0x0000,         // 0x0138
-          0x0000,     0x0000,     0x0000,     0x0000,    0x0000,   0x0000,  0x0000,   0x0000,         // 0x0140
-          kbCtDelete, kbCtInsert, kbDelete,   kbInsert,  0x0000,   kbAlA,   0x0000,   0x0000,         // 0x0148
-          kbCtUp,     kbCtDown,   kbPgDn,     kbPgUp,    kbAlB,    kbCtTab, kbAlD,    0x0000,         // 0x0150
-          0x0000,     0x0000,     0x0000,     0x0000,    0x0000,   0x0000,  0x0000,   0x0000,         // 0x0158
-          kbShInsert, kbShTab,    kbShDelete, kbMinus,   kbAlC,    kb5,     kbCt5,    0x0000,         // 0x0160 // FIXME: kbMinus - gray minus, kb5 - numeric 5, kbCt5 - numeric Ctrl-5
-          kbEnd,      kbCtEnd,    kbAlF,      kbAlH,     kbAlM,    kbAlE,   kbAlI,    0x0000,         // 0x0168
-          kbAlO,      kbAlK,      0x0000,     0x0000,    kbAlL,    kbAlG,   kbAlR,    kbAlJ,          // 0x0170
-          kbAlP,      kbAlQ,      kbAlN,      kbCtMinus, kbCtPlus, kbAlS,   kbAlT,    0x0000,         // 0x0178 // FIXME: kbCtMinus and kbCtPlus are gray.
-          kbAlV,      kbPlus,     0x0000,     0x0000,    kbAlW,    kbAlX,   kbAlY,    kbCtHome,       // 0x0180 // FIXME: kbPlus is gray.
-          0x0000,     kbCtLeft,   0x0000,     0x0000,    kbCtPgDn, kbAlZ,   kbCtPgUp, 0x0000          // 0x0188
+       {//  0/8         1/9        2/A         3/B        4/C         5/D         6/E      7/F
+          0x0000,     0x0000,     kbDown,     kbUp,      kbLeft,    kbRight,    kbHome,      kbCtH,          // 0x0100
+          0x0000,     kbF1,       kbF2,       kbF3,      kbF4,      kbF5,       kbF6,        kbF7,           // 0x0108
+          kbF8,       kbF9,       kbF10,      kbF11,     kbF12,     kbShF1,     kbShF2,      kbShF3,         // 0x0110
+          kbShF4,     kbShF5,     kbShF6,     kbShF7,    kbShF8,    kbShF9,     kbShF10,     kbShF11,        // 0x0118
+          kbShF12,    kbCtF1,     kbCtF2,     kbCtF3,    kbCtF4,    kbCtF5,     kbCtF6,      kbCtF7,         // 0x0120
+          kbCtF8,     kbCtF9,     kbCtF10,    kbCtF11,   kbCtF12,   kbAlF1,     kbAlF2,      kbAlF3,         // 0x0128
+          kbAlF4,     kbAlF5,     kbAlF6,     kbAlF7,    kbAlF8,    kbAlF9,     kbAlF10,     kbAlF11,        // 0x0130
+          kbAlF12,    0x0000,     0x0000,     0x0000,    0x0000,    0x0000,     0x0000,      0x0000,         // 0x0138
+          0x0000,     0x0000,     0x0000,     0x0000,    0x0000,    0x0000,     0x0000,      0x0000,         // 0x0140
+          kbCtDelete, kbCtInsert, kbDelete,   kbInsert,  0x0000,    kbAlA,      0x0000,      0x0000,         // 0x0148
+          kbCtUp,     kbCtDown,   kbPgDn,     kbPgUp,    kbAlB,     kbCtTab,    kbAlD,       0x0000,         // 0x0150
+          0x0000,     0x0000,     0x0000,     0x0000,    0x0000,    0x0000,     0x0000,      0x0000,         // 0x0158
+          kbShInsert, kbShTab,    kbShDelete, kbMinus,   kbAlC,     kb5,        kbCt5,       0x0000,         // 0x0160 // FIXME: kbMinus - gray minus, kb5 - numeric 5, kbCt5 - numeric Ctrl-5
+          kbEnd,      kbCtEnd,    kbAlF,      kbAlH,     kbAlM,     kbAlE,      kbAlI,       0x0000,         // 0x0168
+          kbAlO,      kbAlK,      0x0000,     0x0000,    kbAlL,     kbAlG,      kbAlR,       kbAlJ,          // 0x0170
+          kbAlP,      kbAlQ,      kbAlN,      kbCtMinus, kbCtPlus,  kbAlS,      kbAlT,       0x0000,         // 0x0178 // FIXME: kbCtMinus and kbCtPlus are gray.
+          kbAlV,      kbPlus,     0x0000,     0x0000,    kbAlW,     kbAlX,      kbAlY,       kbCtHome,       // 0x0180 // FIXME: kbPlus is gray.
+          0x0000,     kbCtLeft,   0x0000,     0x0000,    kbCtPgDn,  kbAlZ,      kbCtPgUp,    0x0000,         // 0x0188
+          kbShUp,     kbShDown,   kbCtRight,  kbShLeft,  kbShRight, kbShCtLeft, kbShCtRight, kbAlSpace       // 0x0190
        };
 
 ushort TGKeyQNXRtP::lowtranstable[0x0100]=
-       {//  0/8         1/9        2/A         3/B        4/C            5/D            6/E      7/F
-          0x0000,     kbCtA,      kbCtB,      kbCtC,     kbCtD,         kbCtE,         kbCtF,    kbCtG,          // 0x0000
-          0x0000,     0x0000,     kbCtJ,      kbCtK,     kbCtL,         kbEnter,       kbCtN,    kbCtO,          // 0x0008
-          kbCtP,      kbCtQ,      kbCtR,      kbCtS,     kbCtT,         kbCtU,         kbCtV,    kbCtW,          // 0x0010
-          kbCtX,      kbCtY,      kbCtZ,      kbEsc,     kbCtBackSpace, kbCtOpenBrace, 0x0000,   0x0000          // 0x0018
+       {//  0/8         1/9        2/A           3/B        4/C            5/D            6/E      7/F
+          0x0000,     kbCtA,      kbCtB,        kbCtC,     kbCtD,         kbCtE,         kbCtF,    kbCtG,          // 0x0000
+          0x0000,     0x0000,     kbCtJ,        kbCtK,     kbCtL,         kbEnter,       kbCtN,    kbCtO,          // 0x0008
+          kbCtP,      kbCtQ,      kbCtR,        kbCtS,     kbCtT,         kbCtU,         kbCtV,    kbCtW,          // 0x0010
+          kbCtX,      kbCtY,      kbCtZ,        kbEsc,     kbCtBackSpace, kbCtOpenBrace, 0x0000,   0x0000,         // 0x0018
+          kbSpace,    kbAdmid,    kbDobleQuote, kbNumeral, kbDolar,       kbPercent,     kbAmper,  kbOpenPar,      // 0x0020
+          kbOpenPar,  kbClosePar, kbAsterisk,   kbPlus,    kbComma,       kbMinus
        };
 
 
@@ -100,7 +103,7 @@ ushort TGKeyQNXRtP::GKey()
    do {
       if (rawkey<0x0100)
       {
-         rawkey=lowtranstable[rawkey-0x0100];
+         rawkey=lowtranstable[rawkey];
          break;
       }
 
@@ -147,22 +150,15 @@ void TGKeyQNXRtP::FillTEvent(TEvent &e)
 
    fullcode=GKey();
 
-   if (fullcode<0x007F)
+   if ((undecoded>0x001F)&&(undecoded<0x007F))
    {
-      if (fullcode==kbEnter)
-      {
-         e.keyDown.charScan.charCode=0;
-      }
-      else
-      {
-         e.keyDown.charScan.charCode=(uchar)undecoded;
-      }
+      e.keyDown.charScan.charCode=(uchar)undecoded;
    }
    else
    {
       e.keyDown.charScan.charCode=0;
    }
-
+   
    e.keyDown.keyCode=fullcode;
    e.keyDown.shiftState=sFlags;
    e.what=evKeyDown;

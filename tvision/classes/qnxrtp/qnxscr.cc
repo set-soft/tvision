@@ -91,6 +91,7 @@ TScreenQNXRtP::TScreenQNXRtP()
 //   THWMouseQNXRtP::Init();
 
    initialized=1;
+   suspended=0;
 
    startupCursor=getCursorType();
    screenMode=startupMode=getCrtMode();
@@ -369,6 +370,8 @@ void TScreenQNXRtP::StartNCurses()
    tcgetattr(tty_fd, &new_term);
 
    signal(SIGWINCH, sigWindowSizeChanged);
+   
+   ESCDELAY=1;
 }
 
 void TScreenQNXRtP::SetGTables()
