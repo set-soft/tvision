@@ -4902,6 +4902,7 @@ regerror (errcode, preg, errbuf, errbuf_size)
   const char *msg;
   size_t msg_size;
 
+  if (preg) preg=0; // Avoid not used warnings
   if (errcode < 0
       || errcode >= (sizeof (re_error_msg) / sizeof (re_error_msg[0])))
     /* Only error codes returned by the rest of the code should be passed 

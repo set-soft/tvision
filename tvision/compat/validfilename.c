@@ -28,7 +28,7 @@ static const char * const IllegalChars = "<>|/\"";
 static
 const char *GetInvalidChars(const char *unused)
 {
- unused=0;
+ if (unused) unused=0;
  return IllegalChars;
 }
 #endif
