@@ -1,4 +1,9 @@
 $Log$
+Revision 1.72  1999/06/27 20:40:47  root (set)
+* Added: More information in Linux TScreen module for cases where the
+library fails to open the terminal for output. It seems to happend in some
+new Linux installations.
+
 Revision 1.71  1999/06/27 20:19:47  set
 * Fixed: TFileInfoPane was using an unitialized buffer when the open dialogs
 didn't have any match.
