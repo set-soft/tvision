@@ -35,12 +35,15 @@ const unsigned rbgDontRemapLow32=1, rbgOnlySelected=2;
 class TVCodePage
 {
 public:
- TVCodePage(int idScr, int idApp=-1);
+ TVCodePage(int idApp, int idScr);
  ~TVCodePage();
  static ccIndex IDToIndex(int id);
  static int     IndexToID(ccIndex index);
  static ushort *GetTranslate(int id);
- static void    SetCodePage(int idScr, int idApp=-1);
+ static void    SetCodePage(int idApp, int idScr);
+ // Helpers to call SetCodePage
+ static void    SetCodePage(int idCP) { SetCodePage(idCP,idCP); };
+ static void    SetScreenCodePage(int idCP) { SetCodePage(curAppCP,idCP); };
  static TStringCollection
                *GetList(void);
  static uchar   RemapChar(uchar c, ushort *map);
@@ -92,7 +95,7 @@ protected:
 
  static TVCodePageCol *CodePages;
  static ushort CPTable[257];
- static int    CurrentCP,CurrentScrCP;
+ static int    curAppCP,curScrCP;
  static uchar  toUpperTable[256];
  static uchar  toLowerTable[256];
  static uchar  AlphaTable[256];

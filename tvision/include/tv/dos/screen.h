@@ -106,7 +106,7 @@ protected:
  static void   setCharacters(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild);
  static int    GetFontGeometry(unsigned &w, unsigned &h);
- static int    SetFont(int which, TScreenFont256 *font, int encoding);
+ static int    SetFont(int which, TScreenFont256 *font, int fontCP, int appCP=-1);
  static void   RestoreFonts();
 
  // Fonts stuff

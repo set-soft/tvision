@@ -249,8 +249,8 @@ public:
                                        unsigned &umax, unsigned &hmax);
  // The following are implemented only if CanSetBFont and/or CanSetSBFont
  // are set.
- static int      setPrimaryFont(TScreenFont256 *font, int encoding=-1)
-                   { return setFont(0,font,encoding); };
+ static int      setPrimaryFont(TScreenFont256 *font, int fontCP=-1, int appCP=-1)
+                   { return setFont(0,font,fontCP,appCP); };
  static int      setSecondaryFont(TScreenFont256 *font) { return setFont(1,font); };
  static void   (*restoreFonts)();
  static TVScreenFontRequestCallBack
@@ -306,7 +306,7 @@ protected:
  static TVScreenFontRequestCallBack frCB;
 
  // That's the real function to set the fonts
- static int  (*setFont)(int which, TScreenFont256 *font, int encoding=-1);
+ static int  (*setFont)(int which, TScreenFont256 *font, int fontCP=-1, int appCP=-1);
 
  // SET: Default behaviors:
  static void   defaultSetVideoMode(ushort mode);
@@ -322,7 +322,8 @@ protected:
  static int    defaultGetFontGeometry(unsigned &w, unsigned &h);
  static int    defaultGetFontGeometryRange(unsigned &wmin, unsigned &hmin,
                                            unsigned &umax, unsigned &hmax);
- static int    defaultSetFont(int which, TScreenFont256 *font, int encoding=-1);
+ static int    defaultSetFont(int which, TScreenFont256 *font, int fontCP=-1,
+                              int appCP=-1);
  static void   defaultRestoreFonts();
 
  // The following members are used to implement a tricky initialization

@@ -79,7 +79,7 @@ protected:
  static int    GetFontGeometry(unsigned &w, unsigned &h);
  static int    GetFontGeometryRange(unsigned &wmin, unsigned &hmin,
                                     unsigned &umax, unsigned &hmax);
- static int    SetFont(int which, TScreenFont256 *font, int encoding=-1);
+ static int    SetFont(int which, TScreenFont256 *font, int fontCP, int appCP=-1);
  static void   RestoreFonts();
  
 protected:
