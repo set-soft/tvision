@@ -367,6 +367,16 @@ void TVDOSClipboard::FreeDOSMem(unsigned long Address)
  TDisplayDOS::dosInt();
 }
 
+//#define DEBUG_CLIPBOARD
+#ifdef DEBUG_CLIPBOARD
+ ushort messageBox( const char *msg, ushort aOptions );
+ ushort messageBox( ushort aOptions, const char *fmt, ... );
+ #define DBGMessage(a) messageBox(a,0x402)
+ #define DBGMessage2(a,b) messageBox(0x402,a,b)
+#else
+ #define DBGMessage(a)
+#endif
+
 int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
 {
  if (!isValid || id!=0) return 0;
@@ -380,6 +390,7 @@ int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
  MultiplexInt();
  if (AX==0)
    {
+    DBGMessage("Error opening the clipboard");
     TVOSClipboard::error=WINOLDAP_ClpInUse;
     return 0;
    }
@@ -402,9 +413,16 @@ int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
     FreeDOSMem(dataoff);
     if (AX==0)
       {
+       DBGMessage("Error copying to clipboard");
        TVOSClipboard::error=WINOLDAP_WinErr;
        ret=0;
       }
+   }
+ else
+   {
+    TVOSClipboard::error=WINOLDAP_Memory;
+    DBGMessage("Error allocating DOS memory");
+    ret=0;
    }
  AX=CLOSE_CLIPBOARD;
  MultiplexInt();
@@ -423,6 +441,7 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
  MultiplexInt();
  if (AX==0)
    {
+    DBGMessage("Error at open clipboard");
     TVOSClipboard::error=WINOLDAP_ClpInUse;
     return NULL;
    }
@@ -430,6 +449,7 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
  DX=1;
  MultiplexInt();
  size=AX+(DX<<16);
+ DBGMessage2("Size of clipboard %d",size);
  if (size)
    {
     if (AllocateDOSMem(size,&BaseAddress))
@@ -444,10 +464,16 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
           MultiplexInt();
           dosmemget(BaseAddress,size,p);
           len=strlen(p);
+          DBGMessage2("Got %d bytes in string",len);
          }
        else
           TVOSClipboard::error=WINOLDAP_Memory;
        FreeDOSMem(BaseAddress);
+      }
+    else
+      {
+       TVOSClipboard::error=WINOLDAP_Memory;
+       DBGMessage("Error allocating DOS memory");
       }
    }
  else
