@@ -53,7 +53,14 @@ void THWMouseWinNT::GetEvent(MouseEventType &me)
 void THWMouseWinNT::Init()
 {
  THWMouse::GetEvent=THWMouseWinNT::GetEvent;
- buttonCount=2;
+ // SET: According to Win32 API reference an application should check if the
+ // mouse is installed and can find how many buttons have the mouse using
+ // calls to GetSystemMetrics. Windows supports upto 3 buttons :-(
+ // Note that in my system I have a 5 buttons mouse, 3 of them generates
+ // events and this call returns 2. I don't thing Windows is doing the right
+ // thing ;-) In my system the wheel works for IE, but I don't get mouse
+ // events from the wheel.
+ buttonCount=GetSystemMetrics(SM_CMOUSEBUTTONS);
 }
 #else
 
