@@ -226,11 +226,21 @@ I don't really know the result. If you use such a system please contact me.
 running in the Linux console. TV also supports loading a secondary font. This
 can be used for very special cases. To achieve it the driver uses a 512
 characters font, the first 256 for the primary font and the other 256 for the
-secondary. By default this is disabled because the kernel reduces the colors to
-8 when you load a 512 characters font. This is quite logical when the 512
+secondary. By default this is disabled because the kernel reduces the colors
+to 8 when you load a 512 characters font. This is quite logical when the 512
 symbols belongs to one big encoding but really annoying when they are two
 different fonts. To enable it use the UseSecondaryFont configuration
 variable.
+  Note: The PC VGA controller uses eight bits for color attributes. Four are
+used for the foreground color and the other four for the background color. It
+gives sixteen colors. But the most significant bit of each color have a
+second meaning that can be optionally enabled. The fourth bit of the
+background is used for blinking and the fourth bit of the foreground is used
+to select a second set of characters. This is why Linux reduces the colors to
+eight, but the bit still working, you can still using sixteen colors. The
+last is what TV uses. What Linux does is to redefine the colors to be the
+same and disables any attempt to reprogram the palette entries to these
+colors.
 
 
 5. CONFIGURATION VARIABLES
