@@ -6,7 +6,7 @@ protected:
 
  static void Show();
  static void Hide();
- static void DrawMouse(int x, int y);
+ static int  DrawMouse(int x, int y);
 
  static void Init();
 };

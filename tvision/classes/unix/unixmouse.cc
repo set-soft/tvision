@@ -75,16 +75,18 @@ void show_mouse_char()
  set_mouse_char();
 }
 
-void THWMouseUNIX::DrawMouse(int x, int y)
+int THWMouseUNIX::DrawMouse(int x, int y)
 {
- if (TScreen::suspended) return;
+ if (TScreen::suspended) return 0;
  if (x!=last_x || y!=last_y)
    {
     if (visible) reset_mouse_char();
     last_x=x;
     last_y=y;
     if (visible) show_mouse_char();
+    return 1;
    }
+ return 0;
 }
 
 void THWMouseUNIX::Show()
