@@ -567,6 +567,7 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
    {
     p=new char[1];
     *p=0;
+    len=0;
    }
  AX=CLOSE_CLIPBOARD;
  MultiplexInt();
