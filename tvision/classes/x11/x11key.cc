@@ -20,6 +20,9 @@
 #include <tv/x11/screen.h>
 #include <tv/x11/key.h>
 
+#include <stdio.h>
+#include <X11/XKBlib.h>
+
 /*****************************************************************************
 
   TGKeyX11 keyboard stuff.
@@ -60,6 +63,7 @@ int TGKeyX11::getKeyEvent(int block)
        continue;
     if (event.type==KeyPress)
       {
+       printf("Key event 0x%04X\n",event.xkey.state);
        lenKb=XmbLookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
        bufferKb[lenKb]=0;
        /*printf("Key event %d %s 0x%04X\n",lenKb,bufferKb,Key);*/
@@ -107,6 +111,52 @@ int TGKeyX11::getKeyEvent(int block)
                kbWaiting=1;
                return 1; /* Report the key */
           default:
+               /* Extract the modifiers info: */
+               if (event.xkey.state & ShiftMask)
+                 {
+                  if (!(kbFlags & (kbRightShiftDown | kbLeftShiftDown)))                    
+                     kbFlags|=kbLeftShiftDown;                     
+                 }
+               else
+                 {
+                  if (kbFlags & (kbRightShiftDown | kbLeftShiftDown))
+                     kbFlags&=~(kbRightShiftDown | kbLeftShiftDown);
+                 }
+               if (event.xkey.state & LockMask)
+                  kbFlags|=kbCapsLockDown;
+               else
+                  kbFlags&=~kbCapsLockDown;
+               if (event.xkey.state & ControlMask)
+                 {
+                  if (!(kbFlags & kbCtrlDown))
+                     kbFlags|=kbCtrlDown | kbLeftCtrlDown;
+                 }
+               else
+                 {
+                  if (kbFlags & kbCtrlDown)
+                     kbFlags&=~(kbLeftCtrlDown | kbRightCtrlDown | kbCtrlDown);
+                 }
+               if (event.xkey.state & Mod1Mask) // Alt for XFree86
+                 {
+                  if (!(kbFlags & kbAltDown))
+                     kbFlags|=kbAltDown | kbLeftAltDown;
+                 }
+               else
+                 {
+                  if (kbFlags & kbAltDown)
+                    {
+                     printf("Quitando ALT que no es válido\n");
+                     kbFlags&=~(kbLeftAltDown | kbRightAltDown | kbAltDown);
+                    }
+                 }
+               if (event.xkey.state & Mod2Mask) // NumLock for XFree86
+                  kbFlags|=kbNumLockDown;
+               else
+                  kbFlags&=~kbNumLockDown;
+               if (event.xkey.state & Mod5Mask) // ScrollLock for XFree86
+                  kbFlags|=kbScrollLockDown;
+               else
+                  kbFlags&=~kbScrollLockDown;
                kbWaiting=1;
                return 1;
          }
