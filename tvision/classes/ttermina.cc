@@ -27,32 +27,18 @@ TTerminal::TTerminal( const TRect& bounds,
     queFront( 0 ),
     queBack( 0 )
 {
-    growMode = gfGrowHiX + gfGrowHiY;
-    bufSize = aBufSize;
-    buffer = new char[ bufSize ];
-    setLimit( 0, 1 );
-    setCursor( 0, 0 );
-    showCursor();
+ growMode = gfGrowHiX + gfGrowHiY;
+ bufSize = aBufSize;
+ buffer = new char[ bufSize ];
+ setLimit( 0, 1 );
+ setCursor( 0, 0 );
+ showCursor();
 }
 
 
 TTerminal::~TTerminal()
 {
     delete buffer;
-}
-
-void TTerminal::bufDec( uint32& val )
-{
-    if (val == 0)
-        val = bufSize - 1;
-    else
-        val--;
-}
-
-void TTerminal::bufInc( uint32& val )
-{
-    if( ++val >= bufSize )
-        val = 0;
 }
 
 Boolean TTerminal::canInsert( uint32 amount )
@@ -64,11 +50,13 @@ Boolean TTerminal::canInsert( uint32 amount )
     return Boolean( (int32)queBack > T );
 }
 
+const int MaxLineLen=256;
+
 void TTerminal::draw()
 {
     short  i;
     uint32 begLine, endLine;
-    char s[256];
+    char s[MaxLineLen];
     int32 bottomLine;
 
     bottomLine = size.y + delta.y;
@@ -93,18 +81,25 @@ void TTerminal::draw()
         {
         begLine = prevLines(endLine, 1);
         if (endLine >= begLine)
-            {
-            int T = int( endLine - begLine );
-            memcpy( s, &buffer[begLine], T );
-            s[T] = EOS;
-            }
+          {
+           int T = int( endLine - begLine );
+           if (T>=MaxLineLen)
+              T=MaxLineLen-1;
+           memcpy( s, &buffer[begLine], T );
+           s[T] = EOS;
+          }
         else
-            {
-            int T = int( bufSize - begLine);
-            memcpy( s, &buffer[begLine], T );
-            memcpy( s+T, buffer, endLine );
-            s[T+endLine] = EOS;
-            }
+          {
+           int T=int( bufSize - begLine);
+           if (T>=MaxLineLen)
+              T=MaxLineLen-1;
+           memcpy( s, &buffer[begLine], T );
+           int T2=endLine;
+           if (T+T2>=MaxLineLen)
+              T2=MaxLineLen-T-1;
+           memcpy( s+T, buffer, T2 );
+           s[T+T2] = EOS;
+          }
         if( delta.x >= (int32)strlen(s) )
             *s = EOS;
         else
@@ -178,49 +173,55 @@ otstream::otstream( TTerminal *tt )
     ios::init( tt );
 }
 
-#define incdi \
-  pos++; \
-  if (pos>bufSize) pos = bufSize
-
-#define decdi \
-  if (!pos) pos = bufSize; \
-  pos --
-
-#define LineSeparator 10
-
-uint32 TTerminal::prevLines(uint32 pos, uint32 Lines)
+// SET: It was really broken, but as we never used it...
+// I rewrote it. I also used bufInc and bufDec and made it inline. (instead
+// of the old macros).
+uint32 TTerminal::prevLines(uint32 posStart, uint32 Lines)
 {
-  uint32 count;
-  if (Lines == 0)
-  {
-    incdi;
-    incdi;
+ uint32 pos=posStart;
+
+ // If that's the start just return, we can't go back. Remmember that's a
+ // circular buffer.
+ if (!Lines || pos==queBack)
     return pos;
-  }
-  if (queBack==pos) return pos;
-  decdi;
-  while (1)
-  {
-    if (pos>queBack) count = pos-queBack;
-    else count = pos;
-    count++;
-    while (buffer[pos] != '\n' && count)
-    {
-      pos--;
-      count--;
-    }
-    if (buffer[pos+1] == '\n')
-    {
-      Lines--;
-      if (Lines == 0)
+
+ // go back 1 character, is to skip the EOL
+ bufDec(pos);
+
+ if (pos<queBack)
+   { // Scan the first half of the buffer
+    do
       {
-        incdi;
-        incdi;
-        return pos;
+       if (buffer[pos]=='\n')
+         {
+          Lines--;
+          if (!Lines)
+            {
+             bufInc(pos); // Because we are over the \n
+             return pos;
+            }
+         }
       }
-    }
-    if ((pos+1) == queBack) return pos+1;
-    pos = bufSize-1;
-  }
+    while (pos--);
+    // Not here, go to the end
+    pos=bufSize-1;
+   }
+
+ // Scan the second half (first from the point of view of the text)
+ do
+   {
+    if (buffer[pos]=='\n')
+      {
+       Lines--;
+       if (!Lines)
+         {
+          bufInc(pos);
+          return pos;
+         }
+      }
+   }
+ while (pos-->=queBack);
+
+ return queBack;
 }
 
