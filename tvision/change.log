@@ -1,4 +1,14 @@
 $Log$
+Revision 1.62  1999/06/11 23:55:14  set
+* Fixed: Some calls to delete operator passing a void *. Now falling back to
+char *. Also the new operator in HistRec class was returning 0 and the new
+drafts says it should rise an exception instead. These things are reported
+by egcs 2.95.x snapshots with two new warnings:
+warning: `void *' is not a pointer-to-object type
+operator new should throw an exception, not return NULL
+The basic patches (I changed them before applying) were sent bt Andris
+Pavenis (he ever uses a cutting edge version of the compiler).
+.
 Revision 1.61  1999/06/11 00:21:52  set
 * Included some files I forgot in the list (keyboard extender and pif
 example).
