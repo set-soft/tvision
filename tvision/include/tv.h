@@ -144,6 +144,7 @@ Modified by Salvador E. Tropea
 #if defined( Uses_TProgram )
 #define Uses_TEvent
 #define Uses_TGroup
+#define Uses_allegro // For END_OF_MAIN
 #define INCLUDE_APP_H
 #define INCLUDE_TIME_H
 #endif
