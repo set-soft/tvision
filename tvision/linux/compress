@@ -1,7 +1,21 @@
 #!/usr/bin/perl
-$oldv='1.0.5';
-$newv='1.0.6';
+$oldv='1.0.6';
+$newv='1.0.7';
 @files=('../readme.txt');
+
+$doBinary=0;
+foreach $i (@ARGV)
+  {
+   if ($i eq '--binary')
+     {
+      $doBinary=1;
+     }
+   else
+     {
+      print "Unknown command line option: $i\n";
+      print "Usage: compres.pl [--binary]\n\n";
+     }
+  }
 
 #  Update the makefile if needed
 print 'makefile: ';
@@ -42,8 +56,8 @@ $srcdist="rhtvision-$newv.src.tar.gz";
 chdir('../..');
 unlink($srcdist,$bindist,$binddist);
 system("tar -X tvision/linux/exclude.txt -zcvf $srcdist tvision");
-system("tar -zcvf $bindist --exclude=*CVS `cat tvision/linux/inclubin.txt`");
-system("tar -zcvf $binddist --exclude=*CVS `cat tvision/linux/includbi.txt`");
+system("tar -zcvf $bindist --exclude=*CVS `cat tvision/linux/inclubin.txt`") if $doBinary;
+system("tar -zcvf $binddist --exclude=*CVS `cat tvision/linux/includbi.txt`") if $doBinary;
 
 # Generate the lsm distribution file (Linux Software Map entry).
 $lsm=
@@ -56,11 +70,7 @@ Keywords:       c++ cui tui framework interface tv tvision
 Author:         robert.hoehne\@gmx.net.de (Robert Hoehne)
                 salvador\@inti.gov.ar (Salvador E. Tropea)
 Maintained-by:  salvador\@inti.gov.ar (Salvador E. Tropea)
-Primary-site:   www.geocities.com /SiliconValley/Vista/6552
-                !1
-                !2
-                !4
-Alternate-site: sunsite.unc.edu /pub/Linux/devel/lang/c++
+Primary-site:   www.geocities.com /SiliconValley/Vista/6552/tvision.html
                 !1
                 !2
                 !4
@@ -72,9 +82,10 @@ End";
 
 $r= int((-s $srcdist)/1024+0.5)."k $srcdist";
 $lsm =~ s/\!1/$r/g;
-$r= int((-s $bindist)/1024+0.5)."k $bindist";
+$r='';
+$r= int((-s $bindist)/1024+0.5)."k $bindist" if $doBinary;
 $lsm =~ s/\!2/$r/g;
-$r= int((-s $binddist)/1024+0.5)."k $binddist";
+$r= int((-s $binddist)/1024+0.5)."k $binddist" if $doBinary;
 $lsm =~ s/\!4/$r/g;
 @t=localtime(time());
 @mes=('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
