@@ -24,9 +24,9 @@ build-stamp:
 	#  $(MAKE) -f ../Makefile VPATH=".." srcdir=".." \
 	#      CFLAGS="-O2 -fPIC -pipe" ; \
 	#    gcc -shared -Wl,-soname,$(package).so.$(version_major) -o $(package).so.$(version) `ls *.o`
-	cd linuxso; ./makemak.pl;#$(MAKE)
+	cd linuxso; ./makemak.pl;
 
-	#
+
 	# Build the static library (it does not need Position Independent Code,
 	# which reserves one register; thus without -fPIC we get more efficient
 	# code).
@@ -39,27 +39,17 @@ build-stamp:
 	touch build-stamp
 
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp install-stamp
-
+clean: clean-debian
 	#-rm -rf static shared
 	# Add here commands to clean up after the build process.
 	#-$(MAKE) clean
-	# SET: Only .o files should be deleted from this directory, not delete.me
-	# and my CVS repository information ;-)
 	rm -f linux/obj/*.o
 	rm -f linux/libtv.a
 	rm -f linuxso/libtv.so.*
 	rm -f linuxso/Makefile
 	rm -f linuxso/gkeyli.cc
 	rm -f linuxso/instlib
-	# SET: Same as linux/obj
 	rm -f linuxso/obj/*.o
-
-	#I should investigate why here dh_clean isn't called with the -k switch...
-	dh_clean
 
 
 clean-debian:
@@ -80,15 +70,12 @@ install-stamp: build-stamp
 	# Add here commands to install the package into debian/tmp.
 	#$(MAKE) install DESTDIR=`pwd`/debian/tmp
 	cp linuxso/libtv.so.$(version) debian/tmp/usr/lib
-	#ln -s debian/tmp/usr/lib/libtv.so.$(version) debian/tmp/usr/lib/libtv.so.$(version_major)
-	ln -s libtv.so.$(version) debian/tmp/usr/lib/libtv.so.$(version_major)
+	ln -sf libtv.so.$(version) debian/tmp/usr/lib/libtv.so.$(version_major)
 	cp linux/libtv.a debian/tmp/usr/lib/libtv_g.a
 	cp linux/libtv.a debian/tmp/usr/lib/libtv.a
-	# SET: Only header files should be copied, not .bkp and my CVS stuff ;-)
 	cp include/*.h debian/tmp/usr/include/rhtvision
+	ln -sf libtv.so.$(version) debian/tmp/usr/lib/libtv.so
 
-	#dh_movefiles
-	#dh_movefiles -p rhtvision1-dev
 	dh_movefiles -p rhtvision1
 
 	touch install-stamp
@@ -146,3 +133,4 @@ source diff:
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary
+

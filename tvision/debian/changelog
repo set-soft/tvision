@@ -1,3 +1,46 @@
+rhtvision (1.0.3-6) unstable; urgency=low
+
+  * Removed postrm for rhtvision1-dev and rhtvision1, since it is not
+    necessary.
+  * Removed postinst for rhtvision1-dev since it is not necessary.
+  * Packages checked with Lintian, there are some warnings yet...
+  * Added maintainer.notes, gives usefull information for the
+    maintainer (hey, thats me!).
+  * I forgot about doing a symlink in the rhtvision1-dev package from
+    rhtvision1.so to rhtvision1.so.1.0.3 (Lintian not complained about
+    this!).
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Fri,  5 Mar 1999 16:04:23 -0300
+
+rhtvision (1.0.3-5) unstable; urgency=low
+
+  * Applied patches from upstream maintainer. Avoiding deleting some
+    files that should not be deleted, added a clean-debian rule to
+    clean Debian specific files, only headers files are copied from the
+    include directory, and corrected the copying of files in the
+    example directory (it seems that the author has some files there
+    that don't need to be copied, dh_installexamples doesn't help very
+    much...).
+  * Made the clean target to depend on clean-debian, to avoid
+    repetition of code.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Mon,  1 Mar 1999 00:29:43 -0300
+
+rhtvision (1.0.3-4) unstable; urgency=low
+
+  * I don't remembered to add -lgpm on the upstream makemak.pl file.
+  * Now the symlink is forced (-f parameter to ln).
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Sun, 28 Feb 1999 23:37:46 -0300
+
+rhtvision (1.0.3-3) unstable; urgency=low
+
+  * Removed some .ex files that never will be necessary.
+  * Corrected upstream makemak.pl script to make a shared library that
+    has dependencies, also added -pipe switch to gcc (little faster).
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Sun, 28 Feb 1999 22:35:57 -0300
+
 rhtvision (1.0.3-2) unstable; urgency=low
 
   * Lots of bugfixes and now it works.
