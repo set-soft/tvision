@@ -388,8 +388,37 @@ void THWMouse::setRange( ushort rx, ushort ry )
     INTR(0x33,r);
 }
 
+static int m_x=0,m_y=0,m_b=0;
+static int forced=0;
+
+/**[txh]********************************************************************
+
+  Description:
+  It forces the state of the mouse externally, the next call to getEvent
+will return this values instead of values from the mouse driver. That's
+used to simuate the mouse with other events like keyboard. (SET)
+
+***************************************************************************/
+
+void THWMouse::forceEvent(int x, int y, int buttons)
+{
+ m_x=x; m_y=y; m_b=buttons;
+ forced=1;
+}
+
 void THWMouse::getEvent( MouseEventType& me )
 {
+  if (forced)
+  {
+    forced=0;
+    me.where.x = m_x;
+    me.where.y = m_y;
+    me.doubleClick = False;
+    me.buttons = m_b;
+    TEventQueue::curMouse = me;
+    draw_mouse(m_x,m_y);
+  }
+  else
   if (handlerInstalled == True)
   {
     me = TEventQueue::curMouse;

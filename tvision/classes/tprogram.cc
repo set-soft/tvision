@@ -166,6 +166,11 @@ void TProgram::getEvent(TEvent& event)
                     lastIdleClock=Clock();
                     inIdle=True;
                     }
+                if (TScreen::CheckForWindowSize())
+                  {
+                   setScreenMode(TScreen::screenMode);
+                   Redraw();
+                  }
                 idle();
                 }
             else
