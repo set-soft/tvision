@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.444  2003/05/15 18:14:03  set
+* Modified: configset to wait for ENTER instead of sleeping 2 seconds. As
+suggested by Ivan.
+
 Revision 2.443  2003/05/14 19:11:49  set
 * Fixed: New classes and operator improperly protected against multiple
 inclusion of the same header.

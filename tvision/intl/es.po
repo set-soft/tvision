@@ -654,9 +654,6 @@ msgstr "~Alt-X~ Salir"
 #~ "programa 2> archivo\r\n"
 #~ "\r\n"
 
-#~ msgid "~Alt-X~ Exit"
-#~ msgstr "~Alt-X~ Salir"
-
 #~ msgid "Not enough memory for this operation"
 #~ msgstr "No hay suficiente memoria para esta operación"
 
