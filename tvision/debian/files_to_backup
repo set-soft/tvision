@@ -36,6 +36,7 @@ examples/tutorial/tvguid15.mak
 examples/tutorial/tvguid16.mak
 examples/tvedit/tvedit.mak
 linux/Makefile
+linux/libtvfintl.a
 linuxso/makemak.pl
 win32/rhide.env
 win32/Makefile

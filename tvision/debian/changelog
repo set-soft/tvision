@@ -1,3 +1,17 @@
+rhtvision (2.0.1-0.1) unstable; urgency=low
+
+  * New upstream version, near to be stable. CVS dated 3 Dec 2002.
+  * Specify absolute path in the ./configure --prefix=foo, this fixes
+    problems with wrong installation of translation files (.mo).
+  * Remove intl/es_iso.mo, intl/es_iso.po, intl/es.mo and intl/ru.mo.
+  * Backup linux/libtvfintl.a.
+  * Add locale files to the runtime library package.
+  * I am looking for a job (a paid one) for a long time but things are really
+    dificult here in Uruguay, if you have a job for me, don't hesitate to
+    contact!
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Wed,  4 Dec 2002 12:21:54 -0300
+
 rhtvision (2.0.0-1) unstable; urgency=low
 
   * Well, this could be the first stable version if there are no major
