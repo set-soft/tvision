@@ -137,7 +137,7 @@ void TVDemo::getEvent(TEvent &event)
             if ((event.message.command == cmHelp) && ( helpInUse == False)) 
                 {
                 helpInUse = True;
-                helpStrm = new fpstream(HELP_FILENAME, ios::in|ios::bin);
+                helpStrm = new fpstream(HELP_FILENAME, ios::in|IOS_BIN);
                 hFile = new THelpFile(*helpStrm);
                 if (!helpStrm)
                     {
@@ -221,7 +221,7 @@ void TVDemo::retrieveDesktop()
         else
         {
 	fclose(fp);
-        fpstream *f = new fpstream("TVDEMO.DST", ios::in|ios::bin);
+        fpstream *f = new fpstream("TVDEMO.DST", ios::in|IOS_BIN);
         if( !f )
             messageBox("Could not open desktop file", mfOKButton | mfError);
         else
@@ -240,7 +240,7 @@ void TVDemo::retrieveDesktop()
 
 void TVDemo::saveDesktop()
 {
-    fpstream *f = new fpstream("TVDEMO.DST", ios::out|ios::bin);
+    fpstream *f = new fpstream("TVDEMO.DST", ios::out|IOS_BIN);
 
     if( f )
         {

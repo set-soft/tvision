@@ -16,7 +16,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 class TRect;
 class TScrollBar;
-class TEvent;
+struct TEvent;
 
 class TFileList : public TSortedListBox
 {

@@ -24,7 +24,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TScrollBar
 
 class TRect;
-class TEvent;
+struct TEvent;
 
 typedef char TScrollChars[5];
 

@@ -47,6 +47,10 @@ UNIX.
 #define Uses_TDialog
 #include <tv.h>
 
+#ifdef _WIN32
+#define random rand
+#endif 
+
 // note the extra #define above
 
 const int cmMyFileOpen = 200;   // assign new command values
@@ -151,7 +155,7 @@ void TInterior::draw()       // modified for scroller
         if( j < lineCount && lines[j] != 0 )
             {
             char s[maxLineLength];
-            if( delta.x > strlen(lines[j] ) )
+            if( delta.x > (int)strlen(lines[j] ) )
                 s[0] = EOS;
             else
                 {

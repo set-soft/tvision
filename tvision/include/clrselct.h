@@ -15,7 +15,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TColorSelector
 
 class TRect;
-class TEvent;
+struct TEvent;
 
 class TColorSelector : public TView
 {

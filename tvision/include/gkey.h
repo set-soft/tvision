@@ -44,7 +44,7 @@ kbMouse=102,kbEterm=103
 ;
 #endif
 
-class TEvent;
+struct TEvent;
 
 // A class to encapsulate the globals, all is static!
 class TGKey

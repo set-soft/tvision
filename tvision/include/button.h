@@ -29,7 +29,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TButton
 
 class TRect;
-class TEvent;
+struct TEvent;
 class TDrawBuffer;
 
 class TButton : public TView

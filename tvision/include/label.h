@@ -25,7 +25,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TLabel
 
 class TRect;
-class TEvent;
+struct TEvent;
 class TView;
 
 class TLabel : public TStaticText

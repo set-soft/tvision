@@ -15,7 +15,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TFileInputLine
 
 class TRect;
-class TEvent;
+struct TEvent;
 
 class TFileInputLine : public TInputLine
 {

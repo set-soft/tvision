@@ -54,7 +54,7 @@ TButton::TButton( const TRect& bounds,
 
 TButton::~TButton()
 {
-    delete[] title;
+    DeleteArray(title); // SET
 }
 
 void TButton::draw()

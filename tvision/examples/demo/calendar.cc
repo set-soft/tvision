@@ -18,10 +18,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-//#include <strstream.h>
-//#include <iomanip.h>
 #include <stdio.h>
 #include <time.h>
+
+#ifdef _MSC_VER
+#include <malloc.h> //alloca()
+#endif
 
 #define Uses_TRect
 #define Uses_TEvent
@@ -135,7 +137,8 @@ int dayOfWeek(int day, int month, int year)
 
 void TCalendarView::draw()
 {
-    char str[size.x+1];
+    char *str=alloca(size.x+1);
+
     unsigned current = 1 - dayOfWeek(1, month, year);
     unsigned  days = daysInMonth[month] + ((year % 4 == 0 && month == 2) ? 1 : 0);
     char color, boldColor;

@@ -41,12 +41,12 @@ protected:
 
 inline void TDrawBuffer::putAttribute( unsigned indent, unsigned attr )
 {
-    hiByte(data[indent]) = uchar(attr);
+    hiByte(data[indent]) = (uchar)attr;
 }
 
 inline void TDrawBuffer::putChar( unsigned indent, unsigned c )
 {
-    loByte(data[indent]) = uchar(c);
+    loByte(data[indent]) = (uchar)c;
 }
 
 #endif  // Uses_TDrawBuffer

@@ -1,10 +1,13 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* This file is part of RHIDE. */
+/* Copyright (C) 1999-2000 by SET */
 
 #ifdef FORCE_INTL_SUPPORT
 #define HAVE_INTL_SUPPORT
 #else
 #include <configtv.h>
+# ifdef _WIN32
+# undef HAVE_INTL_SUPPORT
+# endif
 #endif
 
 #ifdef HAVE_INTL_SUPPORT

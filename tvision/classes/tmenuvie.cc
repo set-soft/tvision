@@ -70,11 +70,11 @@ TMenuItem::TMenuItem( const char *aName,
 
 TMenuItem::~TMenuItem()
 {
-    delete[] name;
+    DeleteArray(name);
     if( command == 0 )
         delete(subMenu);
     else
-        delete[] param;
+        DeleteArray(param);
 }
 
 TMenu::~TMenu()

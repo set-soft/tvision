@@ -6,13 +6,14 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <stdio.h> // fprintf in writeData
+#include <string.h> // Needed for Win32
 
 #define Uses_TStreamable
 #define Uses_TStreamableClass

@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
@@ -32,7 +32,12 @@ Modified by Robert H”hne to be used for RHIDE.
 #ifdef __DJGPP__
 #include <dpmi.h>
 #else
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h> //for Sleep
+#else
 #include <unistd.h>
+#endif
 #endif
 // Public variables
 
@@ -98,7 +103,7 @@ inline Boolean hasMouse( TView *p, void *s )
                      p->mouseInView( ((TEvent *)s)->mouse.where ));
 }
 
-#ifdef __DJGPP__
+#if (defined( __DJGPP__ ) || defined(_WIN32))
 inline
 clock_t Clock(void)
 {
@@ -253,9 +258,13 @@ void TProgram::idle()
     if( !doNotReleaseCPU )
         {
         #ifdef __DJGPP__
-        __dpmi_yield();
+        __dpmi_yield(); // DJGPP
         #else
-        usleep(1000);
+        # ifdef _WIN32
+        Sleep(100);     // Win32
+        # else
+        usleep(1000);   // Linux
+        # endif
         #endif
         }
 }

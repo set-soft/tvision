@@ -27,7 +27,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TStatusLine
 
 class TRect;
-class TEvent;
+struct TEvent;
 class TPoint;
 
 class TStatusLine : public TView

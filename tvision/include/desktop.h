@@ -19,7 +19,7 @@ const unsigned dsktTileVertical=1, dsktTileHorizontal=0;
 
 class TBackground;
 class TRect;
-class TEvent;
+struct TEvent;
 
 class TDeskInit
 {

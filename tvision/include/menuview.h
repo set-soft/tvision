@@ -28,7 +28,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 class TRect;
 class TMenu;
-class TEvent;
+struct TEvent;
 
 class TMenuView : public TView
 {
