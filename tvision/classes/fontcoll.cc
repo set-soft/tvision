@@ -51,6 +51,7 @@ const int SizeInDisk1=3*sizeof(int);
 const int SizeInDisk2=SizeInDisk1+sizeof(int);
 const char TVFontCollection::Signature[]="SET's editor font\x1A";
 const char TVFontCollection::SFTExtension[]=".sft";
+int        TVFontCollection::invertEndian=0;
 
 struct SizeFont
 {
@@ -233,11 +234,28 @@ char *TVFontCollection::ReadName(FILE *f)
 {
  uint16 strLen;
  fread(&strLen,2,1,f);
+ Swap(&strLen);
  char *aux=new char[strLen];
  strLen--;
  fread(aux,strLen,1,f);
  aux[strLen]=0;
  return aux;
+}
+
+#define SwapMacro(a,b) t=v[a]; v[a]=v[b]; v[b]=t
+void TVFontCollection::Swap(int *value)
+{
+ if (!invertEndian) return;
+ char *v=(char *)value, t;
+ SwapMacro(0,3);
+ SwapMacro(1,2);
+}
+
+void TVFontCollection::Swap(uint16 *value)
+{
+ if (!invertEndian) return;
+ char *v=(char *)value, t;
+ SwapMacro(0,1);
 }
 
 /**[txh]********************************************************************
@@ -249,8 +267,11 @@ char *TVFontCollection::ReadName(FILE *f)
 
 void TVFontCollection::ReadVersionNum(FILE *f, int *version, int *numfonts)
 {
- fread(version,sizeof(int),1,f);
- fread(numfonts,sizeof(int),1,f);
+ fread(version,4,1,f);
+ fread(numfonts,4,1,f);
+ invertEndian=*version>0x1000;
+ Swap(version);
+ Swap(numfonts);
 }
 
 
@@ -275,8 +296,12 @@ unsigned TVFontCollection::ReadFontInfo(FILE *f, int version, TVBitmapFont *p)
  else
    {
     fread(p,SizeInDisk2,1,f);
+    Swap(&p->width);
     p->wBytes=(p->width+7)/8;
    }
+ Swap(&p->first);
+ Swap(&p->last);
+ Swap(&p->lines);
  return (p->last-p->first+1)*p->lines*p->wBytes;
 }
 
