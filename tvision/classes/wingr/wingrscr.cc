@@ -15,6 +15,7 @@
 #ifdef TVCompf_Cygwin
  #define Uses_unistd
 #endif
+#define Uses_alloca
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
@@ -40,7 +41,7 @@ static char * className= "TVISION for windows"; /* Make the classname into a glo
    VOID CALLBACK cursorProc( HWND hwnd      // handle of window for timer messages
                            , UINT uMsg      // WM_TIMER message
                            , UINT idEvent   // timer identifier
-                           , DWORD dwTime ) // current system time
+                           , DWORD /*dwTime*/ ) // current system time
 /* ------------------------------------------------------------------------- */
 { if ( uMsg )
   { TScreenWinGr::zPos ^= 0x80;         /* Toggle phase (turn 180 degrees) */
@@ -227,12 +228,13 @@ TScreenWinGr::~TScreenWinGr()
 /* ------------------------------------------------------ [ JASC jul/2002] -- */
    void TScreenWinGr::setCharacters( unsigned  offset
 		                   , ushort  * src
-	                           , unsigned  len )
+	                           , unsigned  aLen )
 /* -------------------------------------------------------------------------- */
 { uchar letra;
   uchar color;
   int add  ;
   int last ;
+  int len = aLen;
 
   ushort x= offset % screenWidth;  // Regenerate cartesian coordinates
   ushort y= offset / screenWidth;
@@ -415,6 +417,4 @@ TScreenWinGr::~TScreenWinGr()
 #include <tv/wingr/key.h>
 
 #endif // TVOS_Win32
-
-
 
