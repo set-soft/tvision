@@ -8,6 +8,9 @@
 #include <compatlayer.h>
 #include <tv/ttypes.h>
 #include <tv/intl.h>
+
+#ifdef HAVE_INTL_SUPPORT
+
 #define Uses_TVCodePage
 class TVPartitionTree556;
 #include <tv/codepage.h>
@@ -187,4 +190,5 @@ stTVIntl *TVIntl::dontTranslateSt()
  return p;
 }
 
+#endif /* HAVE_INTL_SUPPORT */
 
