@@ -552,6 +552,8 @@ void TDisplayDOS::SetCrtMode(ushort mode)
  if (TMouse::present())
     TMouse::hide();
 
+ if (mode==smFont8x8) // Looks like Borland TV 2.0 defined it
+    mode=smCO80x50;
  // Extended and tweaked modes are numbered Mode<<8 | smCO80
  // 0-6 are extended modes.
  // 7-13 are tweaked modes.

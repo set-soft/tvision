@@ -1,4 +1,15 @@
-$Log$.
+$Log$
+Revision 2.239  2002/08/12 15:40:18  set
+* Fixed: TVFontCollection::EnlargeOne to avoid SIGSEGVs (only detected with
+efence). I also changed the strategy to repeat the last line.
+* Modified: The sizes of the fonts in the list to offer to the user now
+uses a special collection to keep the list well sorted (first by width and
+then by height).
+* Modified: [X11] The minimum width and height of fonts reported by the
+driver. Now that's 5x7, I did it because now I have an SFT with such a
+fonts. They are too small to be usable, but could be used to "minimize"
+an application or maybe to use in a device like a palmtop, how knows?
+
 Revision 2.238  2002/08/12 15:39:02  set
 * Added: Some documentation about the SFT format in fontcoll.cc.
 

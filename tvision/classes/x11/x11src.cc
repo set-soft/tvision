@@ -94,6 +94,7 @@ int       TScreenX11::bg;
 char      TScreenX11::cursorEnabled=1;
 char      TScreenX11::cursorInScreen=0;
 uchar     TScreenX11::curAttr;
+uchar     TScreenX11::primaryFontChanged=0;
 char     *TScreenX11::cursorData=NULL;
 volatile
 char      TScreenX11::cursorChange=0;
@@ -812,6 +813,7 @@ TScreenX11::TScreenX11()
  TScreen::getFontGeometryRange=GetFontGeometryRange;
  TScreen::setFont=SetFont;
  TScreen::restoreFonts=RestoreFonts;
+ TScreen::setCrtModeRes=SetCrtModeRes;
 
  TVX11Clipboard::Init();
  TGKeyX11::Init();
@@ -1569,9 +1571,15 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
    {
     DestroyXImageFont(0);
     if (fontP)
+      {
        CreateXImageFont(0,fontP->data,wP,hP);
+       primaryFontChanged=1;
+      }
     else
+      {
        CreateXImageFont(0,defaultFont->data,wP,hP);
+       primaryFontChanged=0;
+      }
    }
  if (changeS)
    {
@@ -1589,25 +1597,7 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
    }
  // Verify if we need to resize
  if (wP!=fontW || hP!=fontH)
-   {
-    UnDrawCursor();
-    unsigned start=100*cShapeFrom/fontH;
-    unsigned end  =100*cShapeTo/fontH;
-    fontW=wP;
-    fontWb=(wP+7)/8;
-    fontH=hP;
-    AdjustCursorImage();
-    /* Change the cursor shape */
-    SetCursorShape(start,end);
-    /* Inform the WM about this change*/
-    sizeHints->width_inc =fontW;
-    sizeHints->height_inc=fontH;
-    XSetWMNormalHints(disp,mainWin,sizeHints);
-    /* Change the size */
-    XResizeWindow(disp,mainWin,maxX*fontW,maxY*fontH);
-    /* Compute cursor position and draw it */
-    SetCursorPos(cursorX,cursorY);
-   }
+    DoResize(wP,hP);
  else
     FullRedraw();
  return 1;
@@ -1616,6 +1606,122 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
 void TScreenX11::RestoreFonts()
 {
  SetFont(1,NULL,1,NULL,TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
+}
+
+void TScreenX11::DoResize(unsigned w, unsigned h)
+{
+ UnDrawCursor();
+ if (w!=fontW || h!=fontH)
+   {
+    unsigned start=100*cShapeFrom/fontH;
+    unsigned end  =100*cShapeTo/fontH;
+    fontW=w;
+    fontWb=(w+7)/8;
+    fontH=h;
+    AdjustCursorImage();
+    /* Change the cursor shape */
+    SetCursorShape(start,end);
+    /* Inform the WM about this change*/
+    sizeHints->width_inc =fontW;
+    sizeHints->height_inc=fontH;
+    XSetWMNormalHints(disp,mainWin,sizeHints);
+   }
+ /* Change the size */
+ XResizeWindow(disp,mainWin,maxX*fontW,maxY*fontH);
+ /* Compute cursor position and draw it */
+ SetCursorPos(cursorX,cursorY);
+}
+
+TScreenFont256 *TScreenX11::ChooseClosestFont(unsigned fW, unsigned fH)
+{
+ TScreenFont256 *nFont=NULL;
+
+ if (fW==8 || fH==16)
+    nFont=&font8x16;
+ else if (fW==10 || fH==20)
+    nFont=&font10x20;
+ else
+   {
+    unsigned target=fW*fH;
+    int dif1=abs(8*16-target);
+    int dif2=abs(10*20-target);
+    if (dif1<dif2)
+       nFont=&font8x16;
+    else
+       nFont=&font10x20;
+   }
+ return nFont;
+}
+
+int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
+{
+ if (fW==-1) fW=fontW;
+ if (fH==-1) fH=fontH;
+ if (w==(unsigned)maxX && h==(unsigned)maxY &&
+     fontW==(unsigned)fW && fontH==(unsigned)fH) return 0;
+
+ unsigned nW=fontW, nH=fontH;
+ TScreenFont256 *nFont=NULL,*nsFont=NULL;
+ int releaseFont=0, releaseSFont=0, resetFont=0;
+
+ // Solve the fonts, don't change them yet.
+ if ((unsigned)fW!=fontW || (unsigned)fH!=fontH)
+   {
+    if (primaryFontChanged)
+      {// The application set a font, ask for this new one
+       if (frCB && (nFont=frCB(0,fW,fH)))
+          releaseFont=1;
+       else
+         {// No replacement available, revert to our font.
+          resetFont=1;
+          nFont=ChooseClosestFont(fW,fH);
+         }
+      }
+    else
+      {
+       if (fW==8 && fH==16)
+          resetFont=1, nFont=&font8x16;
+       else if (fW==10 && fH==20)
+          resetFont=1, nFont=&font10x20;
+       else if (frCB && (nFont=frCB(0,fW,fH)))
+          releaseFont=1;
+       else
+          resetFont=1, nFont=ChooseClosestFont(fW,fH);
+      }
+    nW=nFont->w;
+    nH=nFont->h;
+    if ((nW!=fontW || nH!=fontH) && useSecondaryFont)
+      {
+       if (frCB && (nsFont=frCB(1,nW,nH)))
+          releaseSFont=1;
+      }
+   }
+
+ if (nFont)
+   {
+    DestroyXImageFont(0);
+    CreateXImageFont(0,nFont->data,nW,nH);
+    if (resetFont)
+       primaryFontChanged=0;
+    if (releaseFont)
+      {
+       DeleteArray(nFont->data);
+       delete nFont;
+      }
+   }
+ if (useSecondaryFont)
+   {
+    DestroyXImageFont(1);
+    if (nsFont)
+       CreateXImageFont(1,nsFont->data,nW,nH);
+   }
+ // Should I check the size?
+ maxX=w; maxY=h;
+
+ screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
+ DoResize(nW,nH);
+
+ return (nW==(unsigned)fW && nH==(unsigned)fH) ? 1 : 2;
 }
 #else
 

@@ -46,6 +46,8 @@ void        (*TDisplay::getDisPaletteColors)(int from, int number, TScreenColor 
                                                   =TDisplay::defaultGetDisPaletteColors;
 int         (*TDisplay::setDisPaletteColors)(int from, int number, TScreenColor *colors)
                                                   =TDisplay::defaultSetDisPaletteColors;
+int         (*TDisplay::setCrtModeRes)(unsigned w, unsigned h, int fW, int fH)
+                                                  =TDisplay::defaultSetCrtModeRes;
 int           TDisplay::argc                      =0;
 char        **TDisplay::argv                      =NULL;
 char        **TDisplay::environment               =NULL;
@@ -54,6 +56,72 @@ TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
 uint32        TDisplay::opts1                     =0;
 TVCodePage   *TDisplay::codePage                  =NULL;
+TScreenResolution TDisplay::dosModesRes[]=
+{
+ {  80,25 },
+ {  80,28 },
+ {  80,30 },
+ {  80,34 },
+ {  80,35 },
+ {  80,40 },
+ {  80,43 },
+ {  80,50 },
+ {  80,60 },
+ {  82,25 },
+ {  90,30 },
+ {  90,34 },
+ {  94,30 },
+ {  94,34 },
+ { 132,25 },
+ { 132,43 },
+ { 132,50 },
+ { 132,60 }
+};
+
+const int dosModesNum=sizeof(TDisplay::dosModesRes)/sizeof(TScreenResolution);
+
+TScreenResolution TDisplay::dosModesCell[dosModesNum]=
+{
+ { 9,16 },
+ { 9,14 },
+ { 9,16 },
+ { 9,14 },
+ { 9,10 },
+ { 9,10 },
+ { 9, 8 },
+ { 9, 8 },
+ { 9, 8 },
+ { 8,16 },
+ { 9,16 },
+ { 9,14 },
+ { 9,16 },
+ { 9,14 },
+ { 9,14 },
+ { 9,11 },
+ { 9,10 },
+ { 9, 8 }
+};
+int           TDisplay::dosModes[dosModesNum]=
+{
+ smCO80x25,
+ smCO80x28,
+ smCO80x30,
+ smCO80x34,
+ smCO80x35,
+ smCO80x40,
+ smCO80x43,
+ smCO80x50,
+ smCO80x60,
+ smCO82x25,
+ smCO90x30,
+ smCO90x34,
+ smCO94x30,
+ smCO94x34,
+ smCO132x25,
+ smCO132x43,
+ smCO132x50,
+ smCO132x60
+};
 
 /*****************************************************************************
 
@@ -108,8 +176,16 @@ void TDisplay::defaultGetCursorShape(unsigned &start, unsigned &end)
   Description: Sets the video mode.
 ***************************************************************************/
 
-void TDisplay::defaultSetCrtMode(ushort)
+void TDisplay::defaultSetCrtMode(ushort mode)
 {
+ int i;
+ for (i=0; i<dosModesNum; i++)
+     if (dosModes[i]==mode)
+       {
+        setCrtModeRes(dosModesRes[i].x,dosModesRes[i].y,
+                      dosModesCell[i].x,dosModesCell[i].y);
+        break;
+       }
  setCursorShape(86,99);
 }
 
@@ -122,6 +198,19 @@ void TDisplay::defaultSetCrtModeExt(char *command)
 {
  setCursorShape(86,99);
  system(command);
+}
+
+/**[txh]********************************************************************
+  Description: Selects the mode that's closest to the sepcified width and
+height. The optional font size can be specified.
+  Return: 0 no change done, 1 change done with all the requested parameters,
+2 change done but just to get closer.
+***************************************************************************/
+
+int TDisplay::defaultSetCrtModeRes(unsigned /*w*/, unsigned /*h*/, int /*fW*/,
+                                   int /*fH*/)
+{
+ return 0;
 }
 
 /**[txh]********************************************************************
@@ -223,6 +312,58 @@ void TDisplay::setArgv(int aArgc, char **aArgv, char **aEnvir)
  argc=aArgc;
  argv=aArgv;
  environment=aEnvir;
+}
+
+Boolean TDisplay::searchClosestRes(TScreenResolution *res, unsigned x,
+                                   unsigned y, unsigned cant, unsigned &pos)
+{
+ unsigned i, minDif, indexMin, dif;
+ int firstXMatch=-1;
+ // Look for an exact match of width
+ for (i=0; i<cant && res[i].x<x; i++)
+    {
+     if (res[i].x==x)
+       {
+        if (firstXMatch==-1) firstXMatch=i;
+        if (res[i].y==y)
+          {// Exact match
+           pos=i;
+           return True;
+          }
+       }
+    }
+ if (firstXMatch!=-1)
+   {// Return the closest y that match x
+    i=indexMin=firstXMatch;
+    minDif=abs(res[i].y-y);
+    while (++i<cant && res[i].x==x)
+      {
+       dif=abs(res[i].y-y);
+       if (dif<minDif)
+         {
+          minDif=dif;
+          indexMin=i;
+         }
+      }
+    pos=indexMin;
+    return False;
+   }
+ // No x match, looks the one with minimum differences
+ indexMin=0;
+ minDif=abs(res[0].y-y)+abs(res[0].x-x);
+ i=1;
+ while (i<cant)
+   {
+    dif=abs(res[i].y-y)+abs(res[i].x-x);
+    if (dif<minDif)
+      {
+       minDif=dif;
+       indexMin=i;
+      }
+    i++;
+   }
+ pos=indexMin;
+ return False;
 }
 
 /*****************************************************************************

@@ -11,6 +11,7 @@ Modified by Salvador E. Tropea (release CPU and other stuff)
  *
  *
  */
+#define Uses_stdio
 
 #define Uses_TKeys
 #define Uses_TProgram
@@ -172,7 +173,7 @@ void TProgram::getEvent(TEvent& event)
                     }
                 if (TScreen::checkForWindowSize())
                   {
-                   setScreenMode(TScreen::screenMode);
+                   setScreenMode(0xFFFF);
                    Redraw();
                   }
                 idle();
@@ -343,6 +344,35 @@ void TProgram::setScreenMode( ushort mode, char *command )
     setState(sfExposed, False);
     redraw();
     setState(sfExposed, True);
+    TMouse::show();
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Changes the screen mode to the closest resolution available. The @var{fW}
+and @var{fH} is just a hint about the preferred font size and isn't
+mandatory. If you really want to get a specific font size your application
+should provide the font using a call back.
+  
+***************************************************************************/
+
+// SET
+void TProgram::setScreenMode( unsigned w, unsigned h, int fW, int fH )
+{
+    TRect  r;
+
+    TMouse::hide();
+    if (TScreen::setVideoModeRes( w, h, fW, fH ))
+      {
+       initScreen();
+       syncScreenBuffer();
+       r = TRect( 0, 0, TScreen::screenWidth, TScreen::screenHeight );
+       changeBounds( r );
+       setState(sfExposed, False);
+       redraw();
+       setState(sfExposed, True);
+      }
     TMouse::show();
 }
 

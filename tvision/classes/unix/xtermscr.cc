@@ -5,7 +5,7 @@
   Covered by the GPL license.
 
   guardar los atributos anteriores.
-  En particualr colores.
+  En particular colores.
 
 *****************************************************************************/
 #include <tv/configtv.h>
@@ -172,6 +172,7 @@ TScreenXTerm::TScreenXTerm()
     // Eterm 0.9.x supports palette setting
     TDisplay::setDisPaletteColors=SetDisPaletteColorsEt;
     ResetPaletteColors=ResetPaletteColorsEt;
+    setCrtModeRes=SetCrtModeEt;
    }
  else
    {// 16+16 colors
@@ -182,7 +183,10 @@ TScreenXTerm::TScreenXTerm()
     ResetPaletteColors=ResetPaletteColorsXT;
     // XTerm colors are ugly, change them.
     SetDisPaletteColorsXT(0,16,ActualPalette);
+    setCrtModeRes=SetCrtModeXT;
    }
+ // This is what GNU/Debian Woody uses by default
+ fontW=6; fontH=13;
  TScreenXTerm::screenMode=TScreenXTerm::smCO80;
  LOG((palette==PAL_HIGH ? "Using high palette" : "Using low palette"));
 
@@ -192,8 +196,8 @@ TScreenXTerm::TScreenXTerm()
 
  cursorLines=startupCursor=getCursorType();
  screenMode=startupMode=getCrtMode();
- screenWidth =getCols();
- screenHeight=getRows();
+ startScreenWidth =screenWidth =getCols();
+ startScreenHeight=screenHeight=getRows();
  LOG("Screen size: " << (int)screenWidth << "," << (int)screenHeight);
  screenBuffer=new ushort[screenWidth * screenHeight];
  SaveScreen();
@@ -207,6 +211,14 @@ TScreenXTerm::TScreenXTerm()
 void TScreenXTerm::Suspend()
 {// Invalidate the knowledge about the current color of the terminal
  oldCol=oldBack=oldFore=-1;
+ // Restore old font
+ if (fontChanged && oldFontName)
+    fprintf(stdout,"\E]50;%s\x7",oldFontName);
+ // Restore original window size
+ signal(SIGWINCH,SIG_DFL);
+ if (startScreenWidth!=screenWidth || startScreenHeight!=screenHeight)
+    fprintf(stdout,"\E[8;%d;%dt",startScreenHeight+(terminalType==Eterm ? 1 : 0),
+            startScreenWidth);
  // Restore screen contents
  RestoreScreen();
  // Restore the palette, must be before restoring the charset
@@ -235,6 +247,11 @@ TScreenXTerm::~TScreenXTerm()
 void TScreenXTerm::DeallocateResources()
 {
  LOG("TScreenXTerm DeallocateResources");
+ if (oldFontName)
+   {
+    DeleteArray(oldFontName);
+    oldFontName=NULL;
+   }
 }
 
 void TScreenXTerm::Resume()
@@ -248,14 +265,28 @@ void TScreenXTerm::Resume()
  selCharset=0;
  // Save cursor position, attributes and charset
  fputs("\E7",stdout);
+ SaveScreen();
  // Setup our palette
  if (paletteModified)
     SetDisPaletteColorsXT(0,16,ActualPalette);
+ // Check the window size
+ startScreenWidth =getCols();
+ startScreenHeight=getRows();
+ if (startScreenWidth!=screenWidth || startScreenHeight!=screenHeight)
+    fprintf(stdout,"\E[8;%d;%dt",screenWidth+(terminalType==Eterm ? 1 : 0),
+            screenHeight);
+ // Restore our font
+ if (fontChanged)
+   {
+    DeleteArray(oldFontName);
+    oldFontName=GetCurrentFontName();
+    fprintf(stdout,"\E]50;%dx%d\x7",fontW,fontH);
+   }
+ signal(SIGWINCH,sigWindowSizeChanged);
  // When we set the video mode the cursor is hidded
  ushort oldCursorLines=cursorLines;
  // Check for video size change and save some state
- setVideoMode(screenMode);
- SaveScreen();
+ //setVideoMode(screenMode);
  // Set our cursor shape
  setCursorType(oldCursorLines);
  LOG("TScreenXTerm Resume");
