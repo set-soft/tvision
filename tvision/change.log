@@ -1,4 +1,12 @@
 $Log$
+Revision 1.174  2001/08/28 20:57:50  set
+* Modified: Disable the sched_yield() method in yieldpro.c. I don't know if
+it's working, I guess so, but top says the applications uses 99% of the
+CPU. I guess that's because I only running this application (all the rest
+are sleepping) and hence Linux doesn't have anyone to yield the CPU and
+returns inmediatly. That's OK, but I'm sure users will complain because it
+gives the impression that we eat all the CPU.
+
 Revision 1.173  2001/08/28 16:22:48  set
 * Added: A dummy libintl.a library. This is provided for people that have
 configured the library with international support but want to create one or
