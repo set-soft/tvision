@@ -65,6 +65,7 @@ public:
  TVMainConfigFile();
  ~TVMainConfigFile();
  static Boolean Search(const char *key, long &val);
+ static Boolean Search(const char *section, const char *variable, long &val);
  static char   *Search(const char *key);
 
 protected:

@@ -477,6 +477,18 @@ Boolean TVMainConfigFile::Search(const char *key, long &val)
  return config->Search(b,v,val) ? True : False;
 }
 
+Boolean TVMainConfigFile::Search(const char *section, const char *variable, long &val)
+{
+ if (!config || !section || !variable) return False;
+ AllocLocalStr(b,strlen(section)+strlen(variable)+5);
+ strcpy(b,"TV/");
+ strcat(b,section);
+ strcat(b,"/");
+ strcat(b,variable);
+ char *v;
+ return config->Search(b,v,val) ? True : False;
+}
+
 char *TVMainConfigFile::Search(const char *key)
 {
  if (!config || !key) return False;
