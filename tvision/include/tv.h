@@ -54,6 +54,10 @@ Modified by Salvador E. Tropea
 #define Uses_stdio
 #endif
 
+#ifdef Uses_TVOSClipboard
+#define INCL_OSCLIPBOARD_H
+#endif
+
 #ifdef Uses_TCalculator
 #define Uses_TCalcDisplay
 #define Uses_TDialog
@@ -754,6 +758,10 @@ Modified by Salvador E. Tropea
 // SET: Incorporated in 1.0.7
 #ifdef INCL_CALC_H
 #include <tv/calc.h>
+#endif
+
+#ifdef INCL_OSCLIPBOARD_H
+#include <tv/osclipboard.h>
 #endif
 
 #ifdef INCL_CONFIGFILE_H

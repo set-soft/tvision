@@ -162,7 +162,9 @@ system("perl confignt.pl");
 # UNIX dynamic library
 if ($OS eq 'UNIX')
   {
-   $ReplaceTags{'LIB_X11_SWITCH'}=@conf{'HAVE_X11'} eq 'yes' ? "-L".$conf{'X11LibPath'}." -lX11" : '';
+   $libs=$conf{'X11Lib'};
+   $libs=~s/(\S+)/-l$1/g;
+   $ReplaceTags{'LIB_X11_SWITCH'}=@conf{'HAVE_X11'} eq 'yes' ? "-L".$conf{'X11LibPath'}." $libs" : '';
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
    $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
    $ReplaceTags{'LIB_NCURSES_SWITCH'}=($OSf eq 'QNXRtP') ? '-lncursesS' : '-lncurses';
@@ -272,7 +274,7 @@ sub ShowHelp
  print "--no-fhs        : force to not use the FHS layout under UNIX.\n";
  print "--cflags=val    : normal C flags [default is env. CFLAGS].\n";
  print "--cxxflags=val  : normal C++ flags [default is env. CXXFLAGS].\n";
- print "--X11lib=val    : Name of X11 library [default is X11].\n";
+ print "--X11lib=val    : Name of X11 libraries [default is X11 Xmu].\n";
  print "--X11path=val   : Path for X11 library [default is /usr/X11R6/lib].\n";
  print "--with-mss      : compiles with MSS memory debugger.\n";
  print "--without-mss   : compiles without MSS [default].\n";
@@ -476,7 +478,7 @@ int main(void)
 
 sub LookForXlib()
 {
- my ($test,$o);
+ my ($test,$o,$libs);
 
  print 'Looking for X11 libs: ';
  if (@conf{'HAVE_X11'})
@@ -498,10 +500,12 @@ int main(void)
 }
 ';
  $conf{'X11LibPath'}='/usr/X11R6/lib' unless $conf{'X11LibPath'};
- $conf{'X11Lib'}='X11' unless $conf{'X11Lib'};
+ $conf{'X11Lib'}='X11 Xmu' unless $conf{'X11Lib'};
+ $libs=$conf{'X11Lib'};
+ $libs=~s/(\S+)/-l$1/g;
  $o='';
  $o.='-I'.$conf{'X11IncludePath'} if $conf{'X11IncludePath'};
- $o.=" -L$conf{'X11LibPath'} -l$conf{'X11Lib'}";
+ $o.=" -L$conf{'X11LibPath'} $libs";
  $test=RunGCCTest($GCC,'c',$test,$o);
  if ($test=~/OK, (\d+)\.(\d+)/)
    {
@@ -513,7 +517,7 @@ int main(void)
     if (!$conf{'X11IncludePath'})
       {
        $conf{'X11IncludePath'}='/usr/X11R6/include';
-       $o.="-I$conf{'X11IncludePath'} -L$conf{'X11LibPath'} -l$conf{'X11Lib'}";
+       $o.="-I$conf{'X11IncludePath'} -L$conf{'X11LibPath'} $libs";
        if ($test=~/OK, (\d+)\.(\d+)/)
          {
           $conf{'HAVE_X11'}='yes';

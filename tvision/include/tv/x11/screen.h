@@ -5,6 +5,8 @@
 #ifndef X11SCR_HEADER_INCLUDED
 #define X11SCR_HEADER_INCLUDED
 
+class TVX11Clipboard;
+
 // virtual to avoid problems with multiple inheritance
 class TDisplayX11 : virtual public TDisplay
 {
@@ -56,6 +58,7 @@ public:
  friend class TGKeyX11;
  friend class THWMouseX11;
  friend class TDisplayX11;
+ friend class TVX11Clipboard;
 
 protected:
  // Default: void   Resume();
@@ -128,6 +131,25 @@ protected:
  static XImage   *ximgFont[256];
  // The image for the cursor
  static XImage   *cursorImage;
+};
+
+// A small class to encapsulate the cliboard, this is too tied to TScreen
+class TVX11Clipboard
+{
+public:
+ TVX11Clipboard() {};
+
+protected:
+ static int   copy(int id, const char *buffer, unsigned len);
+ static char *paste(int id);
+ static void  destroy();
+
+ static char    *buffer;
+ static unsigned length;
+ static Atom     property;
+ static int      waiting;
+
+ friend class TScreenX11;
 };
 
 #define aMouseEvent (ButtonPressMask | ButtonReleaseMask | ButtonMotionMask)

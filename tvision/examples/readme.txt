@@ -26,9 +26,9 @@ files.
   All of these examples where easylly ported, read the porting.txt file to
 learn what incompatibilities I found while porting the examples.
 
-autoconf - This directory contains an example of how you can write autoconf/
-           automake macros for this library. If you don't know what autoconf
-           is just skip it.
+clipboard- This is an example on how to write code using the TVOSClipboard
+           class. It gives access to the OS clipboard in an OS independent
+           way.
 demo     - That's the Borland's demo adapted by Sergio Sigala, I did some
            changes to compile it with this port.
 desklogo - An example of how to change the desktop appearance. Contributed by

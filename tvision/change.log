@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.186  2002/06/28 12:38:31  set
+* Added: A new capability flag to the drivers. It informs if a screen saver
+have any sense for this driver. Ivan remmembered it, a screen saver doesn't
+have any sense when we are working inside a window ;-)
+
 Revision 2.185  2002/06/27 20:52:22  set
 * Added: [X11] Explanation about WM/Desktop key conflicts to the mini doc.
 

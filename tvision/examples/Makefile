@@ -16,9 +16,11 @@ examples=demo/demo desklogo/desklogo desklogo/set-logo \
 	tutorial/tvguid08 tutorial/tvguid09 tutorial/tvguid10 \
 	tutorial/tvguid11 tutorial/tvguid12 tutorial/tvguid13 \
 	tutorial/tvguid14 tutorial/tvguid15 tutorial/tvguid16 \
-	tvedit/tvedit tvhc/tvhc
+	tvedit/tvedit tvhc/tvhc clipboard/test
 
 all: $(addsuffix .exe,$(examples))
+
+clipboard/test.exe: clipboard/test.gpr
 
 demo/demo.exe: demo/demo.gpr
 
