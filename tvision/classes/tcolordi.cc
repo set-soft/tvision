@@ -42,8 +42,8 @@ horizontal scroll bar in items, etc.
 #include <tv.h>
 
 TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
-    TDialog( TRect( 0, 0, 77, 18 ), __("Colors") )
-    , TWindowInit( &TColorDialog::initFrame )
+    TWindowInit( &TColorDialog::initFrame )
+    , TDialog( TRect( 0, 0, 77, 18 ), __("Colors") )
 {
     options |= ofCentered;
     pal = aPalette;
@@ -175,8 +175,8 @@ TStreamable *TColorDialog::build()
 }
 
 TColorDialog::TColorDialog( StreamableInit ) :
-    TDialog( streamableInit )
-    , TWindowInit( &TColorDialog::initFrame )
+    TWindowInit( &TColorDialog::initFrame )
+    , TDialog( streamableInit )
 {
 }
 

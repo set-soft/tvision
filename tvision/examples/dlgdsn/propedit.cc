@@ -1128,8 +1128,8 @@ void TObjEditView::handleEvent(TEvent& event)
 /* TObjedit ===============================================================*/
 
 TObjEdit::TObjEdit(TDsgObj * Obj):
-          TWindow( TRect(55, 0, 80, 23), _("Object editor"), 0 ),
-          TWindowInit(&TObjEdit::initFrame)
+          TWindowInit(&TObjEdit::initFrame),
+          TWindow( TRect(55, 0, 80, 23), _("Object editor"), 0 )
 {
    flags &= ~wfClose;
    flags |= wfGrow;

@@ -416,8 +416,8 @@ const ushort
   cmCClear = 203;
 
 TItemsEditor::TItemsEditor():
-            TDialog( TRect(0, 0, 45, 16) , __("Items") ),
-            TWindowInit(&TItemsEditor::initFrame)
+            TWindowInit(&TItemsEditor::initFrame),
+            TDialog( TRect(0, 0, 45, 16) , __("Items") )
 {
    TScrollBar * sb;
    

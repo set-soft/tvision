@@ -39,8 +39,8 @@ Modified by Salvador E. Tropea: added i18n support.
 #include <tv.h>
 
 TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
-    TDialog( TRect( 16, 2, 64, 20 ), __("Change Directory") )
-    , TWindowInit( &TChDirDialog::initFrame )
+    TWindowInit( &TChDirDialog::initFrame )
+    , TDialog( TRect( 16, 2, 64, 20 ), __("Change Directory") )
 {
     options |= ofCentered;
 

@@ -16,8 +16,8 @@
 // =================================================
 
 ScrollDialog::ScrollDialog(const TRect& bounds, const char* aTitle, ushort f) :
-	TDialog(bounds, aTitle),
 	TWindowInit(initFrame),
+	TDialog(bounds, aTitle),
 	scrollGroup(0)
 {
 	TScrollBar* hsb = 0;

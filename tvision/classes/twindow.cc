@@ -42,8 +42,8 @@ TWindow::TWindow( const TRect& bounds,
                   const char *aTitle,
                   short aNumber
                 ) :
-    TGroup( bounds ),
     TWindowInit( &TWindow::initFrame ),
+    TGroup( bounds ),
     flags( wfMove | wfGrow | wfClose | wfZoom ),
     zoomRect( getBounds() ),
     number( aNumber ),
@@ -266,8 +266,8 @@ TStreamable *TWindow::build()
 }
 
 TWindow::TWindow( StreamableInit ) :
-    TGroup( streamableInit ),
-    TWindowInit( NULL )
+    TWindowInit( NULL ),
+    TGroup( streamableInit )
 {
 }
 #endif // NO_STREAM

@@ -237,8 +237,8 @@ void TMyApp::myNewWindow()
 
 TDemoWindow::TDemoWindow( const TRect& bounds, const char *aTitle,
               short aNumber) :
-         TWindow( bounds, aTitle, aNumber),
-         TWindowInit( &TDemoWindow::initFrame )
+         TWindowInit( &TDemoWindow::initFrame ),
+         TWindow( bounds, aTitle, aNumber)
 {
     makeInterior(); // creates scrollable interior and inserts into window
 }

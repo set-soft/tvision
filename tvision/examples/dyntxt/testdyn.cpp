@@ -132,8 +132,9 @@ private:
 	DynamicText *slave;
 };
 
-TestDialog::TestDialog() : TDialog( TRect(0,0,40,10), "Dynamic Text" ),
-		TWindowInit( &TestDialog::initFrame )
+TestDialog::TestDialog() : 
+		TWindowInit( &TestDialog::initFrame ),
+                TDialog( TRect(0,0,40,10), "Dynamic Text" )
 {
 	options |= ofCentered;
 

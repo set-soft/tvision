@@ -25,9 +25,9 @@ THistInit::THistInit( TListViewer *(*cListViewer)( TRect, TWindow *, ushort ) ) 
 
 THistoryWindow::THistoryWindow( const TRect& bounds,
                                 ushort historyId ) :
-    THistInit( &THistoryWindow::initViewer ),
-    TWindow( bounds, 0, wnNoNumber),
     TWindowInit( &THistoryWindow::initFrame )
+    , THistInit( &THistoryWindow::initViewer )
+    , TWindow( bounds, 0, wnNoNumber)
 {
     flags = wfClose;
     if( createListViewer != 0 &&
