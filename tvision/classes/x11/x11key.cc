@@ -53,6 +53,7 @@ uchar    TGKeyX11::KeyCodeByKeySym[256];
 unsigned TGKeyX11::Symbol;
 unsigned TGKeyX11::Flags;
 uchar    TGKeyX11::Scan;
+uchar    TGKeyX11::sendQuit=0;
 
 int TGKeyX11::getKeyEvent(int block)
 {
@@ -224,6 +225,7 @@ int TGKeyX11::getKeyEvent(int block)
 
 int TGKeyX11::KbHit()
 {
+ if (sendQuit) return 1;
  return getKeyEvent(0);
 }
 
@@ -342,6 +344,13 @@ unsigned TGKeyX11::GetShiftState()
 
 void TGKeyX11::FillTEvent(TEvent &e)
 {
+ if (sendQuit)
+   {
+    sendQuit=0;
+    e.what=evCommand;
+    e.message.command=cmQuit;
+    return;
+   }
  ushort Abstract=GKey();
  e.keyDown.charScan.charCode=Flags & kbAltLCode ? 0 : Symbol;
  e.keyDown.charScan.scanCode=Scan;

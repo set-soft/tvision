@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.128  2002/06/05 14:26:45  set
+* Added: Thanks to JASC in the X11 code, I think he deserves it.
+
 Revision 2.127  2002/06/05 14:17:50  set
 * Fixed: [X11] the driver didn't map ^a-^z, reported by Ivan.
 

@@ -47,6 +47,11 @@ protected:
  static unsigned Symbol;
  static unsigned Flags;
  static uchar    Scan;
+
+ // This is used to translate the WM close to a cmQuit event
+ static uchar    sendQuit;
+
+ friend class TScreenX11;
 };
 #endif // X11KEY_HEADER_INCLUDED
 

@@ -775,12 +775,13 @@ void TScreenX11::ProcessGenericEvents()
          {
           if ((Atom)event.xclient.data.l[0]==theProtocols)
             {
-             printf("Bye, bye!\n");
+             /*printf("Bye, bye!\n");
              XDestroyIC(xic);
              XCloseIM(xim);
              XDestroyWindow(disp,mainWin);
              XCloseDisplay(disp);
-             exit(0);
+             exit(0);*/
+             TGKeyX11::sendQuit=1;
             }
          }
        return;
