@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.448  2003/05/16 18:37:00  set
+* Added: Workaround for problems when using CVS RHIDE, it generates
+absolute paths for items in subprojects that doesn't have a target. I added
+a filter to make them relative.
+.
 Revision 2.447  2003/05/16 14:25:45  set
 * Fixed: [Solaris] The use of size_t needs explicit inclusion of stdio
 header.
