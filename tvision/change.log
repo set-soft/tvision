@@ -1,4 +1,46 @@
 $Log$
+Revision 1.57  1999/06/05 01:35:19  set
+* Fixed: Calls to delete without using []. According to new standards:
+Here is text from a relative old draft of the standard:
+0 Accredited Standards Committee*              Doc No:X3J16/96-0225
+  X3, INFORMATION PROCESSING SYSTEMS                  WG21/N1043
+...
+  5.3.4  New                                                  [expr.new]
+...
+21The  way the object was allocated determines how it is freed: if it is
+  allocated by ::new, then it is freed by ::delete,  and  if  it  is  an
+  array, it is freed by delete[] or ::delete[] as appropriate.
+...
+  5.3.5  Delete                                            [expr.delete]
+...
+2 ...                      .  In either alternative, if the value of the
+  operand of delete is the null pointer the operation has no effect.  In
+  the  first  alternative  (delete  object), the value of the operand of
+  delete shall be a pointer to a non-array  object  created  by  a  new-
+  expression, or a pointer to a sub-object (_intro.object_) representing
+  a base class of such an object (_class.derived_).  If not, the  behav-
+  ior is undefined.  In the second alternative (delete array), the value
+  of the operand of delete shall be the  pointer  value  which  resulted
+  from a previous array new-expression.18) If not, the behavior is unde-
+  fined.  [Note: this means that the  syntax  of  the  delete-expression
+  must  match the type of the object allocated by new, not the syntax of
+  the new-expression.  ] [Note: a pointer to a const  type  can  be  the
+  operand  of  a delete-expression; it is not necessary to cast away the
+  constness (_expr.const.cast_) of the pointer expression before  it  is
+  used as the operand of the delete-expression.  ]
+  _________________________
+  18)  For  non-zero-length arrays, this is the same as a pointer to the
+  first element of the array  created  by  that  new-expression.   Zero-
+  length arrays do not have a first element.
+And the comp.lang.c++ FAQ says:
+[16.12] Can I drop the [] when deleteing array of some built-in type
+(char, int, etc)?
+No!
+Patches to add [] in some necesary places and FAQ quotation provided by
+Laurynas Biveinis <lauras@softhome.net>.
+I also applied the part that says that is not necesary to cast a const
+char * to char * when calling delete.
+.
 Revision 1.56  1999/06/05 00:40:35  set
 * Fixed: Some key bindings in TEditor class (Enter and Backspace for example).
 * Modified: Now the doEditDialog function provided in tvedit3.cc can be used
