@@ -61,11 +61,11 @@ void TListBox::getData( void * rec )
 
 void TListBox::getText( char *dest, ccIndex item, short maxChars )
 {
-	if (items != 0 )
-		{
-		strncpy( dest, (const char *)(items->at(item)), maxChars );
-		dest[maxChars] = '\0';
-		}
+    if( items != 0 )
+        {
+        strncpy( dest, (const char *)(items->at(item)), maxChars );
+        dest[maxChars] = '\0';
+        }
     else
         *dest = EOS;
 }

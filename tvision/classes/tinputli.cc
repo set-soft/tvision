@@ -290,6 +290,8 @@ void  TInputLine::handleEvent( TEvent& event )
                             }
                         drawView();
                         } while (mouseEvent(event, evMouseMove | evMouseAuto));
+                    if( TVOSClipboard::isAvailable() > 1 )
+                        TVOSClipboard::copy(1,data+selStart,selEnd-selStart);
                     }
                 clearEvent(event);
                 break;
@@ -367,6 +369,8 @@ void TInputLine::selectAll( Boolean enable )
     else
         curPos = selEnd = 0;
     firstPos = max( 0, curPos-size.x+2 );
+    if( TVOSClipboard::isAvailable() > 1 )
+        TVOSClipboard::copy(1,data+selStart,selEnd-selStart);
     drawView();
 }
 
