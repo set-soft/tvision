@@ -5,8 +5,12 @@
 #define Uses_string
 #define Uses_ctype
 #define Uses_stdlib
+#define Uses_stdarg
+#define Uses_stdio
+#define Uses_snprintf
 #include <compatlayer.h>
 #include <tv/ttypes.h>
+#define Uses_intl_fprintf
 #include <tv/intl.h>
 
 #ifdef HAVE_INTL_SUPPORT
@@ -190,5 +194,44 @@ stTVIntl *TVIntl::dontTranslateSt()
  return p;
 }
 
+int TVIntl::snprintf(char *dest, size_t sz, const char *fmt, ...)
+{
+ va_list argptr;
+ char *intlFmt=getTextNew(fmt);
+ va_start(argptr,fmt);
+ int l=CLY_vsnprintf(dest,sz,intlFmt,argptr);
+ va_end(argptr);
+ DeleteArray(intlFmt);
+ return l;
+}
+
+int TVIntl::fprintf(FILE *f, const char *fmt, ...)
+{
+ va_list argptr;
+ char *intlFmt=getTextNew(fmt);
+ va_start(argptr,fmt);
+ int l=vfprintf(f,intlFmt,argptr);
+ va_end(argptr);
+ DeleteArray(intlFmt);
+ return l;
+}
+#else
+int TVIntl::snprintf(char *dest, size_t sz, const char *fmt, ...)
+{
+ va_list argptr;
+ va_start(argptr,fmt);
+ int l=CLY_vsnprintf(dest,sz,fmt,argptr);
+ va_end(argptr);
+ return l;
+}
+
+int TVIntl::fprintf(FILE *f, const char *fmt, ...)
+{
+ va_list argptr;
+ va_start(argptr,fmt);
+ int l=vfprintf(f,fmt,argptr);
+ va_end(argptr);
+ return l;
+}
 #endif /* HAVE_INTL_SUPPORT */
 

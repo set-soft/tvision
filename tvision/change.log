@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.423  2003/04/21 16:13:33  set
+* Added: Some comments about TV streams in the doc directory. They are
+really small but includes an ASCII graphic showing the hierarchy.
+* Modified: TEditorApp to use messageBox as a printf instead of using
+strstreams. Now it can be done safetly because we use snprintf.
+
 Revision 2.422  2003/04/21 16:08:02  set
 * Fixed: [Cygwin] it have snprintf, no need for replacement. It makes DJGPP
 the only one without it, I guess it will be solved in 2.04.

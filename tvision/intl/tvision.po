@@ -1,4 +1,4 @@
-#: classes/calcdisp.cc:103 msgbox.cc:53
+#: classes/calcdisp.cc:103 msgbox.cc:57
 msgid "Error"
 msgstr ""
 
@@ -71,101 +71,102 @@ msgstr ""
 msgid "Trying to overwrite a section with a value"
 msgstr ""
 
-#: classes/dos/dosscr.cc:371
+#: classes/dos/dosscr.cc:387
 msgid "Windows not present"
 msgstr ""
 
-#: classes/dos/dosscr.cc:372
+#: classes/dos/dosscr.cc:388
 msgid "Clipboard in use by other application"
 msgstr ""
 
-#: classes/dos/dosscr.cc:373
+#: classes/dos/dosscr.cc:389
 msgid "Clipboard too big for the transfer buffer"
 msgstr ""
 
-#: classes/dos/dosscr.cc:374
+#: classes/dos/dosscr.cc:390
 msgid "Not enough memory"
 msgstr ""
 
-#: classes/dos/dosscr.cc:375
+#: classes/dos/dosscr.cc:391
 msgid "Windows reports error"
 msgstr ""
 
-#: classes/opstream.cc:213
+#: classes/opstream.cc:242
 #, c-format
 msgid "type not registered: %s\n"
 msgstr ""
 
-#: classes/tchdirdi.cc:40
+#: classes/tchdirdi.cc:42
 msgid "Change Directory"
 msgstr ""
 
-#: classes/tchdirdi.cc:48
+#: classes/tchdirdi.cc:51
 msgid "Directory ~n~ame"
 msgstr ""
 
-#: classes/tchdirdi.cc:56
+#: classes/tchdirdi.cc:60
 msgid "Directory ~t~ree"
 msgstr ""
 
-#: classes/tchdirdi.cc:59 classes/tcolordi.cc:101 msgbox.cc:38 msgbox.cc:197
+#: classes/tchdirdi.cc:63 classes/tcolordi.cc:107 classes/tfiledia.cc:100
+#: msgbox.cc:42 msgbox.cc:219
 msgid "~O~K"
 msgstr ""
 
-#: classes/tchdirdi.cc:61
+#: classes/tchdirdi.cc:65
 msgid "~C~hdir"
 msgstr ""
 
-#: classes/tchdirdi.cc:63
+#: classes/tchdirdi.cc:67
 msgid "~R~evert"
 msgstr ""
 
-#: classes/tchdirdi.cc:65
+#: classes/tchdirdi.cc:69
 msgid "Help"
 msgstr ""
 
-#: classes/tchdirdi.cc:117 classes/tdirlist.cc:392
+#: classes/tchdirdi.cc:121 classes/tdirlist.cc:392
 msgid "Drives"
 msgstr ""
 
-#: classes/tchdirdi.cc:185
+#: classes/tchdirdi.cc:189
 msgid "Invalid directory"
 msgstr ""
 
-#: classes/tcolordi.cc:43
+#: classes/tcolordi.cc:44
 msgid "Colors"
 msgstr ""
 
-#: classes/tcolordi.cc:55
+#: classes/tcolordi.cc:57
 msgid "~G~roup"
 msgstr ""
 
-#: classes/tcolordi.cc:63
+#: classes/tcolordi.cc:66
 msgid "~I~tem"
 msgstr ""
 
-#: classes/tcolordi.cc:69
+#: classes/tcolordi.cc:73
 msgid "~F~oreground"
 msgstr ""
 
-#: classes/tcolordi.cc:78
+#: classes/tcolordi.cc:83
 msgid "~B~ackground"
 msgstr ""
 
-#: classes/tcolordi.cc:83
+#: classes/tcolordi.cc:89
 msgid "Text "
 msgstr ""
 
-#: classes/tcolordi.cc:89
+#: classes/tcolordi.cc:95
 msgid "Color"
 msgstr ""
 
-#: classes/tcolordi.cc:99
+#: classes/tcolordi.cc:105
 msgid "~T~ry"
 msgstr ""
 
-#: classes/tcolordi.cc:103 classes/tfiledia.cc:105 classes/tvedit2.cc:72
-#: classes/tvedit2.cc:104 msgbox.cc:39 msgbox.cc:201
+#: classes/tcolordi.cc:109 classes/tfiledia.cc:106 classes/tvedit2.cc:72
+#: classes/tvedit2.cc:104 msgbox.cc:43 msgbox.cc:223
 msgid "Cancel"
 msgstr ""
 
@@ -177,23 +178,43 @@ msgstr ""
 msgid "Untitled"
 msgstr ""
 
-#: classes/tfiledia.cc:85
+#: classes/tfiledia.cc:86
 msgid "~F~iles"
 msgstr ""
 
-#: classes/tfiledia.cc:105
+#: classes/tfiledia.cc:99 classes/tvedit3.cc:42
+msgid "~O~pen"
+msgstr ""
+
+#: classes/tfiledia.cc:101
+msgid "~A~dd"
+msgstr ""
+
+#: classes/tfiledia.cc:102
+msgid "~S~elect"
+msgstr ""
+
+#: classes/tfiledia.cc:103
+msgid "~R~eplace"
+msgstr ""
+
+#: classes/tfiledia.cc:104 classes/tvedit3.cc:59
+msgid "~C~lear"
+msgstr ""
+
+#: classes/tfiledia.cc:106
 msgid "Done"
 msgstr ""
 
-#: classes/tfiledia.cc:114
+#: classes/tfiledia.cc:115
 msgid "~H~elp"
 msgstr ""
 
-#: classes/tfiledia.cc:250
+#: classes/tfiledia.cc:252
 msgid "Invalid drive or directory"
 msgstr ""
 
-#: classes/tfiledia.cc:300
+#: classes/tfiledia.cc:302
 msgid "Invalid file name."
 msgstr ""
 
@@ -269,10 +290,6 @@ msgstr ""
 msgid "Inverse"
 msgstr ""
 
-#: classes/tprogram.cc:308
-msgid "~Alt-X~ Exit"
-msgstr ""
-
 #: classes/trangeva.cc:51
 #, c-format
 msgid "Value not in the range %lu to %lu"
@@ -319,210 +336,202 @@ msgstr ""
 msgid "~R~eplace all"
 msgstr ""
 
-#: classes/tvedit3.cc:40
+#: classes/tvedit3.cc:41
 msgid "~F~ile"
 msgstr ""
 
-#: classes/tvedit3.cc:41
-msgid "~O~pen"
-msgstr ""
-
-#: classes/tvedit3.cc:42
+#: classes/tvedit3.cc:43
 msgid "~N~ew"
 msgstr ""
 
-#: classes/tvedit3.cc:43
+#: classes/tvedit3.cc:44
 msgid "~S~ave"
 msgstr ""
 
-#: classes/tvedit3.cc:44
+#: classes/tvedit3.cc:45
 msgid "S~a~ve as..."
 msgstr ""
 
-#: classes/tvedit3.cc:46
+#: classes/tvedit3.cc:47
 msgid "~C~hange dir..."
 msgstr ""
 
-#: classes/tvedit3.cc:47
+#: classes/tvedit3.cc:48
 msgid "S~h~ell"
 msgstr ""
 
-#: classes/tvedit3.cc:48
+#: classes/tvedit3.cc:49
 msgid "E~x~it"
 msgstr ""
 
-#: classes/tvedit3.cc:50
+#: classes/tvedit3.cc:51
 msgid "~E~dit"
 msgstr ""
 
-#: classes/tvedit3.cc:51
+#: classes/tvedit3.cc:52
 msgid "~U~ndo"
 msgstr ""
 
-#: classes/tvedit3.cc:53
+#: classes/tvedit3.cc:54
 msgid "Cu~t~"
 msgstr ""
 
-#: classes/tvedit3.cc:54
+#: classes/tvedit3.cc:55
 msgid "~C~opy"
 msgstr ""
 
-#: classes/tvedit3.cc:55
+#: classes/tvedit3.cc:56
 msgid "~P~aste"
 msgstr ""
 
-#: classes/tvedit3.cc:56
+#: classes/tvedit3.cc:57
 msgid "~S~how clipboard"
 msgstr ""
 
-#: classes/tvedit3.cc:58
-msgid "~C~lear"
-msgstr ""
-
-#: classes/tvedit3.cc:60
+#: classes/tvedit3.cc:61
 msgid "~S~earch"
 msgstr ""
 
-#: classes/tvedit3.cc:61
+#: classes/tvedit3.cc:62
 msgid "~F~ind..."
 msgstr ""
 
-#: classes/tvedit3.cc:62
+#: classes/tvedit3.cc:63
 msgid "~R~eplace..."
 msgstr ""
 
-#: classes/tvedit3.cc:63
+#: classes/tvedit3.cc:64
 msgid "~S~earch again"
 msgstr ""
 
-#: classes/tvedit3.cc:65
+#: classes/tvedit3.cc:66
 msgid "~W~indows"
 msgstr ""
 
-#: classes/tvedit3.cc:66
+#: classes/tvedit3.cc:67
 msgid "~S~ize/move"
 msgstr ""
 
-#: classes/tvedit3.cc:67
+#: classes/tvedit3.cc:68
 msgid "~Z~oom"
 msgstr ""
 
-#: classes/tvedit3.cc:68
+#: classes/tvedit3.cc:69
 msgid "~T~ile"
 msgstr ""
 
-#: classes/tvedit3.cc:69
+#: classes/tvedit3.cc:70
 msgid "C~a~scade"
 msgstr ""
 
-#: classes/tvedit3.cc:70
+#: classes/tvedit3.cc:71
 msgid "~N~ext"
 msgstr ""
 
-#: classes/tvedit3.cc:71
+#: classes/tvedit3.cc:72
 msgid "~P~revious"
 msgstr ""
 
-#: classes/tvedit3.cc:72
+#: classes/tvedit3.cc:73
 msgid "~C~lose"
 msgstr ""
 
 #. SET: F10 before the others so when the library maintains the
 #. cursor visible this option is pointed and the user have a
 #. hint about what to do.
-#: classes/tvedit3.cc:91
+#: classes/tvedit3.cc:92
 msgid "~F10~ Menu"
 msgstr ""
 
-#: classes/tvedit3.cc:92
+#: classes/tvedit3.cc:93
 msgid "~F2~ Save"
 msgstr ""
 
-#: classes/tvedit3.cc:93
+#: classes/tvedit3.cc:94
 msgid "~F3~ Open"
 msgstr ""
 
-#: classes/tvedit3.cc:94
+#: classes/tvedit3.cc:95
 msgid "~Alt+F3~ Close"
 msgstr ""
 
-#: classes/tvedit3.cc:95
+#: classes/tvedit3.cc:96
 msgid "~F5~ Zoom"
 msgstr ""
 
-#: classes/tvedit3.cc:96
+#: classes/tvedit3.cc:97
 msgid "~F6~ Next"
 msgstr ""
 
-#: classes/tvedit3.cc:104
+#: classes/tvedit3.cc:105 classes/tvedit3.cc:126
 msgid "Not enough memory for this operation."
 msgstr ""
 
-#: classes/tvedit3.cc:125
-msgid "Not enough memory for this operation"
+#: classes/tvedit3.cc:133
+#, c-format
+msgid "Error reading file %s."
 msgstr ""
 
-#: classes/tvedit3.cc:129
-msgid "Error reading file "
+#: classes/tvedit3.cc:140
+#, c-format
+msgid "Error writing file %s."
 msgstr ""
 
-#: classes/tvedit3.cc:136
-msgid "Error writing file "
+#: classes/tvedit3.cc:147
+#, c-format
+msgid "Error creating file %s."
 msgstr ""
 
-#: classes/tvedit3.cc:143
-msgid "Error creating file "
+#: classes/tvedit3.cc:154
+#, c-format
+msgid "%s has been modified. Save?"
 msgstr ""
 
-#: classes/tvedit3.cc:151
-msgid " has been modified. Save?"
-msgstr ""
-
-#: classes/tvedit3.cc:156
+#: classes/tvedit3.cc:157
 msgid "Save untitled file?"
 msgstr ""
 
-#: classes/tvedit3.cc:161
+#: classes/tvedit3.cc:162
 msgid "Save file as"
 msgstr ""
 
-#: classes/tvedit3.cc:162 fileview.cc:217
+#: classes/tvedit3.cc:163 fileview.cc:217
 msgid "~N~ame"
 msgstr ""
 
-#: classes/tvedit3.cc:173
+#: classes/tvedit3.cc:174
 msgid "Search string not found."
 msgstr ""
 
-#: classes/tvedit3.cc:191
+#: classes/tvedit3.cc:192
 msgid "Replace this occurence?"
 msgstr ""
 
-#: classes/linux/linuxkey.cc:95 classes/unix/xtermkey.cc:81
+#: classes/linux/linuxkey.cc:96 classes/unix/xtermkey.cc:81
 msgid "that's an interactive application, don't redirect stdin"
 msgstr ""
 
-#: classes/linux/linuxkey.cc:116 classes/unix/xtermkey.cc:88
+#: classes/linux/linuxkey.cc:117 classes/unix/xtermkey.cc:88
 msgid "failed to get the name of the current terminal used for input"
 msgstr ""
 
-#: classes/linux/linuxkey.cc:122 classes/unix/xtermkey.cc:94
+#: classes/linux/linuxkey.cc:123 classes/unix/xtermkey.cc:94
 msgid "failed to open the input terminal"
 msgstr ""
 
-#: classes/linux/linuxkey.cc:129 classes/unix/xtermkey.cc:101
+#: classes/linux/linuxkey.cc:130 classes/unix/xtermkey.cc:101
 msgid "can't get input terminal attributes"
 msgstr ""
 
-#: classes/linux/linuxkey.cc:142 classes/unix/xtermkey.cc:120
+#: classes/linux/linuxkey.cc:143 classes/unix/xtermkey.cc:120
 msgid "can't set input terminal attributes"
 msgstr ""
 
-#: classes/linux/linuxkey.cc:820
+#: classes/linux/linuxkey.cc:821
 msgid "ioctl VT_SETMODE failed"
 msgstr ""
 
-#: classes/linux/linuxscr.cc:584 classes/unix/xtermscr.cc:101
+#: classes/linux/linuxscr.cc:590 classes/unix/xtermscr.cc:100
 msgid ""
 "that's an interactive application, don't redirect stdout\r\n"
 "If you want to collect information redirect stderr like this:\r\n"
@@ -530,16 +539,25 @@ msgid ""
 "program 2> file\r\n"
 msgstr ""
 
-#: classes/linux/linuxscr.cc:592 classes/unix/xtermscr.cc:109
+#: classes/linux/linuxscr.cc:600
+msgid "failed to get the name of the current terminal used for output"
+msgstr ""
+
+#: classes/linux/linuxscr.cc:606
+msgid "failed to open the output terminal"
+msgstr ""
+
+#: classes/linux/linuxscr.cc:614 classes/linux/linuxscr.cc:624
+#: classes/unix/xtermscr.cc:108
 msgid "can't get output terminal information"
 msgstr ""
 
-#: classes/linux/linuxscr.cc:602 classes/unix/xtermscr.cc:119
+#: classes/linux/linuxscr.cc:635 classes/unix/xtermscr.cc:118
 msgid "can't configure terminal mode"
 msgstr ""
 
-#: classes/linux/linuxscr.cc:767 classes/linux/linuxscr.cc:774
-#: classes/unix/xtermscr.cc:149 classes/unix/xtermscr.cc:156
+#: classes/linux/linuxscr.cc:806 classes/linux/linuxscr.cc:813
+#: classes/unix/xtermscr.cc:148 classes/unix/xtermscr.cc:155
 #, c-format
 msgid "Error! %s\r\n"
 msgstr ""
@@ -554,23 +572,23 @@ msgid ""
 "\r\n"
 msgstr ""
 
-#: classes/x11/x11src.cc:1420
+#: classes/x11/x11src.cc:2037
 msgid "No available selection"
 msgstr ""
 
-#: classes/x11/x11src.cc:1421
+#: classes/x11/x11src.cc:2038
 msgid "Unsupported data type"
 msgstr ""
 
-#: classes/x11/x11src.cc:1422
+#: classes/x11/x11src.cc:2039
 msgid "No data"
 msgstr ""
 
-#: classes/x11/x11src.cc:1423
+#: classes/x11/x11src.cc:2040
 msgid "X11 error"
 msgstr ""
 
-#: classes/x11/x11src.cc:1424
+#: classes/x11/x11src.cc:2041
 msgid "Another application holds the clipboard"
 msgstr ""
 
@@ -583,26 +601,26 @@ msgstr ""
 msgid "Save to file"
 msgstr ""
 
-#: msgbox.cc:36
+#: msgbox.cc:40
 msgid "~Y~es"
 msgstr ""
 
-#: msgbox.cc:37
+#: msgbox.cc:41
 msgid "~N~o"
 msgstr ""
 
-#: msgbox.cc:52
+#: msgbox.cc:56
 msgid "Warning"
 msgstr ""
 
-#: msgbox.cc:54
+#: msgbox.cc:58
 msgid "Information"
 msgstr ""
 
-#: msgbox.cc:55
+#: msgbox.cc:59
 msgid "Confirm"
 msgstr ""
 
-#: msgbox.cc:83
+#: msgbox.cc:93
 msgid "Don't warn you next time"
 msgstr ""
