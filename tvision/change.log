@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.595  2004/10/20 13:42:56  set
+* Modified: [Compilation][MSVC] HistRec to overload delete making explicit
+this operation is invalid. I hope it avoids warnings. Reported by Grzegorz.
+* Added: [Compilation][MSVC] A lib wrapper to avoid command line
+limitations. Is untested.
+
 Revision 2.594  2004/10/19 18:16:52  set
 * Modified: [Compilation] Removed time stamp from ?mk files.
 

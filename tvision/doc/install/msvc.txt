@@ -17,7 +17,7 @@ $Id$
 find any problem just do the same the other users did: help to fix them.
   You can also create Win32 versions of this package using BorlandC Builder,
 Cygwin or MinGW.
-  Versions 5.0, 6.0 and 7.0 compiled the code.
+  Versions 5.0, 6.0, 7.0 and 7.1 compiled the code.
 
 
 2. HOW TO COMPILE
