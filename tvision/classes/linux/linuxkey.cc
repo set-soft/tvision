@@ -495,9 +495,13 @@ int TGKeyLinux::GetRaw()
     return 1;   // Key already processed
    }
  if (result==-3) // Forced modifier
+   {
     result=lastKeyCode;
+    ascii=0;
+   }
+ else
+    ascii=result;
 
- ascii=result;
  // Translate the key
  if (result>=128)
     lastKeyCode=kbUnkNown;
@@ -506,7 +510,7 @@ int TGKeyLinux::GetRaw()
     lastModifiers|=kbExtraFlags[result];
     lastKeyCode=kbToName[result];
    }
- lastModifiers|=GetLinuxShiftState();
+ lastModifiers|=GetLinuxShiftState(); 
  return 1;
 }
 

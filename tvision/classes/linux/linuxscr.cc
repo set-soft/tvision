@@ -18,6 +18,7 @@ is explained.
   AppCP
   ScrCP
   InpCP
+  ScreenPalette
 
 *****************************************************************************/
 /*
@@ -785,6 +786,10 @@ TScreenLinux::TScreenLinux()
       }
     LOG((palette == PAL_HIGH ? "Using high palette" : "Using mono palette"));
    }
+
+ // User requested palette
+ if (palette==PAL_HIGH && parseUserPalette())
+    setPaletteColors(0,16,UserStartPalette);
 
  cursorLines=startupCursor=getCursorType();
  screenMode=startupMode=getCrtMode();

@@ -14,6 +14,8 @@ same used in original Turbo Vision for compatibility purposes.
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_string
+#define Uses_AllocLocal
+#define Uses_ctype
 #define Uses_TScreen
 #define Uses_TVConfigFile
 #include <tv.h>
@@ -322,12 +324,63 @@ void TScreen::resetPalette()
  paletteModified=0;
 }
 
+const char *sep=",;";
+
+Boolean TScreen::parseUserPalette()
+{
+ char *sPal=optSearch("ScreenPalette");
+ //printf("parseUserPalette():  %s\n",sPal ? sPal : "None");
+ if (!sPal || !*sPal) return False;
+ memcpy(UserStartPalette,PC_BIOSPalette,sizeof(UserStartPalette));
+ int l=strlen(sPal);
+ AllocLocalStr(b,l+1);
+ memcpy(b,sPal,l+1);
+
+ char *s=strtok(b,sep),*end;
+ int index=0, R, G, B;
+ Boolean ret=False;
+ while (s)
+   {
+    for (;*s && isspace(*s); s++);
+    R=*s ? strtol(s,&end,0) : UserStartPalette[index].R;
+
+    s=strtok(NULL,sep);
+    if (!s) break;
+    for (;*s && isspace(*s); s++);
+    G=*s ? strtol(s,&end,0) : UserStartPalette[index].G;
+
+    s=strtok(NULL,sep);
+    if (!s) break;
+    for (;*s && isspace(*s); s++);
+    B=*s ? strtol(s,&end,0) : UserStartPalette[index].B;
+
+    UserStartPalette[index].R=R;
+    UserStartPalette[index].G=G;
+    UserStartPalette[index].B=B;
+    //printf("%d: %d,%d,%d\n",index,R,G,B);
+    index++;
+    ret=True;
+
+    s=strtok(NULL,sep);
+   }
+ return ret;
+}
+
 Boolean TScreen::optSearch(const char *variable, long &val)
 {
  if (TVMainConfigFile::Search(currentDriverShortName,variable,val))
     return True;
  // If not found in the driver specific section search in the TV section
  return TVMainConfigFile::Search(variable,val);
+}
+
+char *TScreen::optSearch(const char *variable)
+{
+ char *val=TVMainConfigFile::Search(currentDriverShortName,variable);
+ if (val)
+    return val;
+ // If not found in the driver specific section search in the TV section
+ return TVMainConfigFile::Search(variable);
 }
 
 TVScreenFontRequestCallBack

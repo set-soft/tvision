@@ -14,6 +14,7 @@
    Font10x20=0 Selects the 10x20 font instead of 8x16
    ScreenWidth
    ScreenHeight
+   ScreenPalette
    FontWidth
    FontHeight
    AppCP
@@ -945,16 +946,17 @@ TScreenX11::TScreenX11()
  /* Map the VGA Text BIOS colors */
  cMap=DefaultColormap(disp,screen);
  XColor query;
+ TScreenColor *pal=parseUserPalette() ? UserStartPalette : PC_BIOSPalette;
  for (col=0; col<16; col++)
     {
-     query.red  =PC_BIOSPalette[col].R*256;
-     query.green=PC_BIOSPalette[col].G*256;
-     query.blue =PC_BIOSPalette[col].B*256;
+     query.red  =pal[col].R*256;
+     query.green=pal[col].G*256;
+     query.blue =pal[col].B*256;
      query.flags= ~0;
      XAllocColor(disp,cMap,&query);
      colorMap[col]=query.pixel;
     }
- memcpy(ActualPalette,PC_BIOSPalette,sizeof(ActualPalette));
+ memcpy(ActualPalette,pal,sizeof(ActualPalette));
 
  /* A graphics context for the text cursor */
  cursorGC=XCreateGC(disp,mainWin,0,0);

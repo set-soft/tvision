@@ -183,6 +183,8 @@ protected:
  static TScreenColor PC_BIOSPalette[16];
  // To know if the palette changed (set by high level routines)
  static char paletteModified;
+ // This is the palette parsed from the tvrc file or the application
+ static TScreenColor UserStartPalette[16];
  // Code page initializator
  static TVCodePage *codePage;
  
@@ -302,6 +304,7 @@ public:
  static Boolean  isSecondaryFontEnabled() { return useSecondaryFont ? True : False; };
  // It looks for a configuration variable that belongs to the current driver
  static Boolean  optSearch(const char *variable, long &val);
+ static char    *optSearch(const char *variable);
  static const char
                 *getDriverShortName() { return currentDriverShortName; }
 
@@ -354,6 +357,9 @@ protected:
  static TVScreenFontRequestCallBack frCB;
  // Values from the user configuration
  static long forcedAppCP, forcedScrCP, forcedInpCP;
+
+ // Used to set the palette requested by the user/application
+ static Boolean parseUserPalette();
 
  // SET: Default behaviors:
  static void   defaultSetVideoMode(ushort mode);

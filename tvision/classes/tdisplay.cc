@@ -370,6 +370,7 @@ must indicate if they work. The dummies help to know the PC BIOS palette.
 
 *****************************************************************************/
 
+// Default PC BIOS palette
 TScreenColor TDisplay::PC_BIOSPalette[16]=
 {
  { 0x00, 0x00, 0x00 },
@@ -389,6 +390,9 @@ TScreenColor TDisplay::PC_BIOSPalette[16]=
  { 0xFC, 0xFC, 0x54 },
  { 0xFC, 0xFC, 0xFC }
 };
+
+// This is the palette parsed from the tvrc file or the application
+TScreenColor TDisplay::UserStartPalette[16];
 
 void TDisplay::defaultGetDisPaletteColors(int from, int number, TScreenColor *colors)
 {

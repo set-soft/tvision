@@ -14,6 +14,7 @@
   Configuration variables:
   ScreenWidth
   ScreenHeight
+  ScreenPalette
   AppCP
   ScrCP
   InpCP
@@ -169,6 +170,10 @@ TScreenDOS::TScreenDOS()
  else
     if (frCB)
        SelectFont(charLines,False); // Try loading the application font
+
+ // User requested palette
+ if (parseUserPalette())
+    setPaletteColors(0,16,UserStartPalette);
 
  screenMode=getCrtMode();
  setCrtData();
