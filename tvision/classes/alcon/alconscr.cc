@@ -63,7 +63,7 @@ TScreenAlcon::TScreenAlcon()
     TGKeyAlcon::Init();
     
     // Initialise mouse.
-    //THWMouseAlcon::Init();
+    THWMouseAlcon::Init();
 }
 
 

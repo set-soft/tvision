@@ -70,6 +70,7 @@ extern int AlCon_GetKey(unsigned *symbol, uchar *scan, unsigned *flags);
 extern void AlCon_ClearKeyBuf();
 
 /* Mouse input routines */
+extern int AlCon_GetMouseButtons(void);
 extern void AlCon_GetMousePos(int *x, int *y, int *buttons);
 
 #ifndef AlCon_NO_KEYDEFS

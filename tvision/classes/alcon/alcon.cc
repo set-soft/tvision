@@ -65,6 +65,8 @@ static unsigned char *chars, *attrs;
 static unsigned char curAttr;
 static char cShapeFrom,cShapeTo;
 static int al_text_mode;
+static int al_mouse_buttons = 0;
+static int al_mouse_wheel;
 
 /*****************************************************************************
 
@@ -490,7 +492,14 @@ void AlCon_Init(int w, int h)
 
  allegro_init();
  install_keyboard();
- install_mouse();
+ al_mouse_buttons = install_mouse();
+ al_mouse_wheel = mouse_z;
+ // Clamp allegro return of "no mouse" to TVision interpretation.
+ if (al_mouse_buttons < 0)
+    al_mouse_buttons = 0;
+ // And add "fake wheel buttons" if the mouse has at least two.
+ if (al_mouse_buttons > 1)
+    al_mouse_buttons = 5;
  install_timer();
 
  /* Load a binary font */
@@ -678,10 +687,26 @@ void AlCon_ClearKeyBuf()
     
 *****************************************************************************/
 
+// Returns 0 if there is no mouse.
+int AlCon_GetMouseButtons(void)
+{
+ return al_mouse_buttons;
+}
+
 void AlCon_GetMousePos(int *x, int *y, int *buttons)
 {
+ if (al_mouse_buttons == 1)
+    return ;
+    
  poll_mouse();
  *x=mouse_x/8;
  *y=mouse_y/16;
  *buttons=mouse_b;
+
+ // Emulate 4th and 5th buttons through wheelmouse control.
+ if (mouse_z > al_mouse_wheel)
+    *buttons |= 1 << 3;
+ if (mouse_z < al_mouse_wheel)
+    *buttons |= 1 << 4;
+ al_mouse_wheel = mouse_z;
 }
