@@ -1,0 +1,54 @@
+  This file describes how to compile the package for Win32  systems using
+GNU tools as provided by Cygnus' Cygwin package (Cygnus is currently part of
+Red Hat).
+
+$Id$
+
+1. INTRODUCTION
+2. COMPILING
+
+
+1. INTRODUCTION
+
+  Cygwin provides a POSIX environment for Win32 systems based on GNU tools.
+It makes quite easy to compile programs adapted for GNU tools. In order to
+compile this package you have to install the tools listed in
+doc/install/tools.txt
+  A short list of the needed tools is:
+  bash, binutils, fileutils, gcc, gpp, gettext, make, perl, shellutils,
+texinfo and textutils.
+  I experimented some bizarre problems while using Perl from Cygwin
+distribution so I switched to the version distributed by djgpp package. You
+can find information about djgpp in: http://www.delorie.com/djgpp/
+  I hope the problems are fixed in a newer version of Cygwin tools but
+lamentably I don't have time to test it. Volunteers will be welcome.
+  Some users reported success using the UNIX tarball instead of the .zip
+file. But I think it depends on the way you configured Cygwin.
+  You can compile the library to run under Win32 platforms using various
+compilers, for this reason I explain the dis/advantages of using Cygwin for
+it.
+
+Advantages:
+
+* Unlike djgpp it generates a Win32 executable, so it integrates better with
+Windows NT incarnations (NT, 2000, XP, etc.).
+* GCC is very good optimizing code.
+* You can use the configure script to fine tune the compilation process.
+* The installation is automated.
+
+Disadvantages:
+
+* The resulting binary needs a special DLLs provided by Cygwin.
+* The available compiler and the whole tools are really slow. GCC 3.x is too
+slow to compile C++ and the Win32 port is even worst.
+* I don't use the resulting binary too much so it is more probable to find
+bugs not found in the same version compiled with other compilers.
+
+
+2. COMPILING
+
+  Once you installed all the needed tools your system will become some kind
+of GNU/Win32 system. For this reason you can just follow the instructions found
+in doc/install/unix.txt
+  I tested this process using Cygwin 1.3.3-2.
+

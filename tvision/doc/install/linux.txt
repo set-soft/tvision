@@ -1,0 +1,41 @@
+  This file describes how to compile the package for Linux systems using
+GNU tools. So you need a GNU/Linux environment, this is provided by all Linux
+distributions I know even when their name doesn't clearly denote they are
+GNU/Linux distros.
+
+$Id$
+
+1. INTRODUCTION
+2. MANUAL MECHANISM
+3. SYSTEMS BASED ON .DEB FILES (DEBIAN GNU/LINUX)
+4. SYSTEMS BASED ON .RPM FILES (REDHAT, SUSE, MANDRAKE)
+
+
+1. INTRODUCTION
+
+  Most Linux distributions have some package system, is much better if you
+create the packages first and then install them. This is because then you can
+uninstall the files or install the binaries in another machine that runs the
+same distribution.
+  Currently the library have scripts to generate packages for distributions
+based on .deb and .rpm packages. For other distributions you should follow
+the "manual" mechanism.
+  For a list of tools and libraries you should have in your system please read
+the doc/install/tools.txt file.
+
+2. MANUAL MECHANISM
+
+  Follow the instructions found in the doc/install/unix.txt file.
+
+3. SYSTEMS BASED ON .DEB FILES (DEBIAN GNU/LINUX)
+
+  Follow the instructions found in the debian/README file.
+
+4. SYSTEMS BASED ON .RPM FILES (REDHAT, SUSE, MANDRAKE)
+
+  Follow the instructions found in the redhat/README file.
+  Note: As the script to generate the RPM files doesn't check for errors I
+recommend trying to follow the "manual" mechanism but skip the installation
+procedure. Once you are sure all compiles perfectly for your system then try
+this procedure.
+

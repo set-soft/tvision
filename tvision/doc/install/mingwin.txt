@@ -1,0 +1,50 @@
+  This file describes how to compile the package for Win32  systems using
+GNU tools as provided by MinGW package (aka MingWin, MinGW32, etc.).
+
+$Id$
+
+1. INTRODUCTION
+2. COMPILING
+
+
+1. INTRODUCTION
+
+  MinGW needs the help of MSys and a Perl interpreter to compile this
+package. I tested it using MinGW 2.0.0, MSys 1.0.8 and the Siemens Perl port
+(SiePerl). This provides a good environment for compilation. You must ensure
+that MSys' make is used because MinGW 1.1 ships a make command that fails. I
+think newer versions doesn't have this problem.
+  IMPORTANT! the resulting application can't be run from the MSys console,
+use a DOS console or just start it as any Windows application.
+  You have to ensure that /bin/sh exists or at least create a symlink to bash
+there. If it isn't there you won't be able to run the shell scripts.
+  You can compile the library to run under Win32 platforms using various
+compilers, for this reason I explain the dis/advantages of using Cygwin for
+it.
+
+Advantages:
+
+* Unlike djgpp it generates a Win32 executable, so it integrates better with
+Windows NT incarnations (NT, 2000, XP, etc.).
+* GCC is very good optimizing code.
+* You can use the configure script to fine tune the compilation process.
+* The installation is automated.
+* The resulting binary doesn't need special DLLs.
+* All the needed tools are concentrated in a few packages you have to
+download.
+
+Disadvantages:
+
+* The available compiler and the whole tools are really slow. GCC 3.x is too
+slow to compile C++ and the Win32 port is even worst.
+* I don't use the resulting binary too much so it is more probable to find
+bugs not found in the same version compiled with other compilers.
+
+
+2. COMPILING
+
+  Once you installed all the needed tools your system will become some kind
+of GNU/Win32 system. For this reason you can just follow the instructions found
+in doc/install/unix.txt
+  I recommed configuring the package with --no-intl.
+

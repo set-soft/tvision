@@ -1,0 +1,85 @@
+  This file describes how to compile the package for UNIX systems using
+GNU tools. I personaly use "Debian GNU/Linux" but the code successfuly
+compiled for FreeBSD, QNX and Solaris. Instructions specific for Linux
+systems can be found in the doc/install/linux.txt but this instructions are
+also valid for Linux and in fact the Linux file refers to this one for the
+"manual" installation mechanism.
+
+$Id$
+
+1. INTRODUCTION
+2. CONFIGURING
+3. COMPILING
+4. INSTALLING
+
+
+1. INTRODUCTION
+
+  FreeBSD systems seems to have all the needed GNU tools (GNU/FreeBSD ;-).
+FreeBSD details were contributed by Andrew 'Onyx' Shevtsov (miniEleph)
+<nyxo@dnuc.polyn.kiae.su>.
+  QNX systems are a little bit more problematic but they also contain the
+needed tools. QNX details were contributed by Mike Gorchak <mike@malva.ua>.
+  Solaris doesn't have all the needed GNU tools so you must get them from
+internet. You should get at least make, gcc/g++ and perl, I'm not sure what
+else is needed. I have a Solaris 2.7 (Ultra 60 machine) at work with the
+needed tools installed.
+  If you are dealing with other UNIX box the first step will be to get the
+most common GNU tools used for development and then start trying. Contact me
+if you need help or want to contribute changes needed to compile for your
+UNIX box.
+  For a list of tools and libraries you should have in your system please read
+the doc/install/tools.txt file.
+
+2. CONFIGURING
+
+  The first step is the configuration, this is a Perl script so you must have
+Perl in your system:
+
+$ ./configure
+
+  This script will inform you what was found in your system and what wasn't.
+If the missing component is vital the script will stop. Read the output of
+the script carefuly. Unlike the traditional configure scripts created by GNU
+autoconf this script doesn't print useless information (like if your system
+have 20 of the string functions needed), so the output is not too big.
+  If your system and/or CPU can't be detected please take a look at the
+conflib.pl file. The DetectOS function determines the OS using the output of
+uname command. The DetectCPU function determines the CPU by actually
+compiling a small program with conditionals for all the architectures I
+currently tested. If you need to add something there just contact me.
+  If the script fails install the missing component and run it again. If
+optional components are missing the script will suggest installing them.
+  Once you successfuly configured the package you can go to the next step.
+  If you want to change any of the default compilation options run:
+
+$ ./configure --help
+
+  It will inform all the available options. The --prefix=... is something you
+could want to use.
+  If you want to make changes to the code and contribute to the project I
+recommend configuring the package using the same options I use:
+
+$ ./configset
+
+  This enables some maintainance stuff that you'll need for development. The
+most important detail are header dependencies.
+
+3. COMPILING
+
+  Just use the make command. If your system must use gmake the configuration
+will inform it.
+
+4. INSTALLING
+
+  Use the install target, you'll most probably need to switch to "root" to
+run this step:
+
+# make install
+
+  You can change the destination prefix using:
+
+# make prefix=/path_you_want install
+
+  But I recommend doing it during the configuration step.
+

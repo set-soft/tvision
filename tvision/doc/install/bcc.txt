@@ -1,0 +1,64 @@
+  This file describes how to compile the package for Win32 systems using
+Borland C++ 5.5 free command line tools. Optionally you can use the BorlandC
+Builder 6 for it, that's compiler version 5.6. But I can do periodical tests
+only with the former. If you want to volunteer to periodically test the code
+with other versions please let me know.
+
+$Id$
+
+1. INTRODUCTION
+2. HOW TO COMPILE
+
+
+
+1. INTRODUCTION
+
+  The tools can be downloaded from internet without charge. Note: BorlandC
+Builder 6 also have a trial I used to fix some issues, but it have a limited
+time usage.
+  This target is periodically tested for compilation but not much tested for
+functionality.
+  You can compile the editor to run under Win32 platforms using various
+compilers, for this reason I explain the dis/advantages of using BC++ 5.5 for
+it.
+
+Advantages:
+
+* Unlike djgpp it generates a Win32 executable, so it integrates better with
+Windows NT incarnations (NT, 2000, XP, etc.).
+* The resulting binary doesn't need special DLLs.
+* BC++ 5.5 compiles really fast.
+* You don't need a lot of GNU tools, just the BC++ package distributed by
+Borland.
+* The environment is very well controlled. If you have BC++ 5.5 free command
+line tools it should compile without any problems.
+
+Disadvantages:
+
+* I don't use the resulting binary too much so it is more probable to find
+bugs not found in the same version compiled with other compilers.
+* BC++ 5.5 is quite inferior when compared with gcc in terms of code
+optimization.
+* This target can't run the configure script so you can't fine tune the
+process.
+* The installation isn't automated.
+
+
+
+2. HOW TO COMPILE
+
+  Currently I'm in a middle of a transition between an old mechanism and a
+new one (may 2003) so I'll give information about both mechanism.
+
+A) The new mechanism:
+
+  Run "make -f Makefile.bcc" this should create the library in the makes
+directory. The name is librhtv.lib.
+
+B) The old mechanism:
+
+  Instructions about it are contained in the WinNT directory.
+See: winnt/readme.txt
+
+
+

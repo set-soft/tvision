@@ -1,0 +1,34 @@
+  This file describes how to compile the package for DOS (djgpp) systems using
+GNU tools. You have to install a quite complete djgpp environment, you can
+download it from: http://www.delorie.com/djgpp/
+
+$Id$
+
+1. INTRODUCTION
+2. COMPILING
+
+
+1. INTRODUCTION
+
+  DJGPP provides a quite POSIX compliant environment for DOS systems. It is
+based on GNU tools. In order to compile this package you have to install the
+tools listed in doc/install/tools.txt
+  A short list of the needed tools is:
+  binutils, fileutils, gcc, gpp, gettext, make, perl, shellutils, texinfo and
+textutils.
+
+  We compiled the library using DJGPP 2.01, 2.02 and 2.03. Older versions
+won't work. The 2.01 version have some bugs that affect this package so I
+suggest a newer version.
+
+2. COMPILING
+
+  Once you installed all the needed tools your system will become some kind
+of GNU/DOS system. For this reason you can just follow the instructions found
+in doc/install/unix.txt The only difference is that you'll have to invoke the
+configure.bat file instead of configure script, but as you don't have to type
+the extension it looks almost the same as in UNIX:
+
+c:\djgpp\contrib\tvision>configure
+
+

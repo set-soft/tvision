@@ -1,0 +1,34 @@
+  This directory contains scripts and helpers used to create DEB packages.
+  The name "debian" is because Debian created the DEB format. That's the
+same reason why the directory to create the .rpm files is called "redhat"
+even when a lot of distros based on RPMs are available.
+
+  These scripts are maintained by Ivan Baldo <ibaldo@adinet.com.uy> so you
+should ask Debian specific details to Ivan with Cc to me.
+
+  Using the .deb files instead of just using "make install" you'll get a much
+better integration of the library with your system.
+
+  In order to create the .deb files you need to install:
+
+A) Some packages used to create .deb files. I don't have a complete list at
+the moment but in my system I have: debianutils, debhelper, debconf-utils,
+dpkg-dev and devscripts.
+
+B) Some development packages. They are listed in the "Build-Depends" section
+of the debian/control file. If any of them is missing the Debian scripts will
+inform it.
+
+C) The fakeroot package if you want to create the .deb files running as a
+regular user (recommended).
+
+  To create the .deb files just run:
+
+$ debian/buildpackage
+
+  The resulting DEB files should be located in ../ (../rhtvision*.deb).
+  To remove the temporal files created by Debian scripts run:
+
+$ debian/rules clean
+
+$Id$
