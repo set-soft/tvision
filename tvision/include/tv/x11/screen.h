@@ -83,6 +83,7 @@ protected:
                        int changeS, TScreenFont256 *fontS,
                        int fontCP=-1, int appCP=-1);
  static void   RestoreFonts();
+ static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
  
 protected:
  // Blinking cursor emulation
@@ -105,8 +106,10 @@ protected:
  static void   DestroyXImageFont(int which);
  // It creates the XImage used for the cursor.
  static void   AdjustCursorImage();
-
+ static TScreenFont256 *ChooseClosestFont(unsigned fW, unsigned fH);
+ 
  static void   FullRedraw();
+ static void   DoResize(unsigned w, unsigned h);
  inline
  static void   drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr);
 
@@ -159,6 +162,7 @@ protected:
  static TScreenFont256 *defaultFont;
  static uchar shapeFont10x20[];
  static uchar shapeFont8x16[];
+ static uchar primaryFontChanged;
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

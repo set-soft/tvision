@@ -28,6 +28,11 @@ struct TScreenFont256
  uchar *data;
 };
 
+struct TScreenResolution
+{
+ unsigned x,y;
+};
+
 // Type for the callback called when the driver needs a new font.
 typedef TScreenFont256 *(*TVScreenFontRequestCallBack)(int which, unsigned w,
                          unsigned height);
@@ -64,8 +69,30 @@ public:
  {
   smBW80    = 0x0002,
   smCO80    = 0x0003,
+  smCO80x25 = 0x0003,
   smMono    = 0x0007,
-  smFont8x8 = 0x0100
+  smFont8x8 = 0x0100,
+  // Modes defined by Robert
+  // Extended
+  smCO80x28 = 0x0103,
+  smCO80x35 = 0x0203,
+  smCO80x40 = 0x0303,
+  smCO80x43 = 0x0403,
+  smCO80x50 = 0x0503,
+  // Tweaked
+  smCO80x30 = 0x0703,
+  smCO80x34 = 0x0803,
+  smCO90x30 = 0x0903,
+  smCO90x34 = 0x0A03,
+  smCO94x30 = 0x0B03,
+  smCO94x34 = 0x0C03,
+  smCO82x25 = 0x0D03, // Created by SET to get 8x16 char cells
+  // Common VESA text modes
+  smCO80x60 = 0x0108,
+  smCO132x25= 0x0109,
+  smCO132x43= 0x010A,
+  smCO132x50= 0x010B,
+  smCO132x60= 0x010C
  };
 
  static void   (*clearScreen)(uchar w, uchar h);
@@ -87,19 +114,15 @@ public:
  // SET: I moved it to the class
  // Returns 0 if the MSB of the background selects more colors.
  static int    (*getBlinkState)();
-
+ // SET: A new and more rasonable way to choose a video mode
+ static int    (*setCrtModeRes)(unsigned w, unsigned h, int fW=-1, int fH=-1);
  // SET: These are the real functions for *CursorType
  static void   (*setCursorShape)(unsigned start, unsigned end);
  static void   (*getCursorShape)(unsigned &start, unsigned &end);
  // SET: This version sets the mode through an external program or other complex
  // mode setting.
  static void   (*setCrtModeExt)(char *mode);
- // SET: Fonts handling
- // I changed it for a new approach, see TScreen
- //static int      SelectFont(int height, int noForce=0, int modeRecalculate=1, int width=8);
- //static TFont   *GetFontHandler(void) { return font; }
- //static void     SetFontHandler(TFont *f);
- //static void     RestoreDefaultFont(void);
+ // SET: Fonts handling. I changed it for a new approach, see TScreen
  // SET: Checks if screen size was changed by an external "force"
  static int    (*checkForWindowSize)(void);
  // SET: For windowed cases
@@ -112,7 +135,15 @@ public:
  // Driver options
  static Boolean  setShowCursorEver(Boolean value);
  static Boolean  getShowCursorEver() { return opts1 & ShowCursorEver ? True : False; };
+ // Helper to look for the closest resolution from a list
+ static Boolean  searchClosestRes(TScreenResolution *res, unsigned x, unsigned y,
+                                  unsigned cant, unsigned &pos);
  
+ // Tables for the DOS video modes, used to look for similar modes by other drivers
+ static TScreenResolution dosModesRes[];
+ static TScreenResolution dosModesCell[];
+ static int dosModes[];
+
  // We must remove it
  static int dual_display;
 
@@ -170,6 +201,7 @@ protected:
  static int         defaultGetBlinkState();
  static void        defaultGetDisPaletteColors(int from, int number, TScreenColor *colors);
  static int         defaultSetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static int         defaultSetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
 
 private:
  // From original TV 2.0.
@@ -235,6 +267,8 @@ public:
  static void   (*setCharacters)(unsigned offset, ushort *values, unsigned count);
  // SET: Used to set the video mode using an external program
  static void   (*setVideoModeExt)(char *mode);
+ // SET: Set the video mode using sizes.
+ static int    (*setVideoModeRes)(unsigned w, unsigned h, int fW=-1, int fH=-1);
  // SET: executes the indicated command
  static int    (*System)(const char *command, pid_t *pidChild=0);
  // Palette handling, they call the TDisplay members
@@ -314,6 +348,7 @@ protected:
  // SET: Default behaviors:
  static void   defaultSetVideoMode(ushort mode);
  static void   defaultSetVideoModeExt(char *mode);
+ static int    defaultSetVideoModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
  static void   defaultClearScreen();
  static void   defaultSetCrtData();
  static ushort defaultFixCrtMode(ushort mode);

@@ -75,6 +75,8 @@ int    (*TScreen::setFont)(int changeP, TScreenFont256 *fontP,
                            int fontCP, int appCP)
                                                 =TScreen::defaultSetFont;
 void   (*TScreen::restoreFonts)()               =TScreen::defaultRestoreFonts;
+int    (*TScreen::setVideoModeRes)(unsigned w, unsigned h, int fW, int fH)
+                                                =TScreen::defaultSetVideoModeRes;
 
 /*****************************************************************************
   Default behaviors for the members
@@ -92,6 +94,15 @@ void TScreen::defaultSetVideoModeExt(char *mode)
  setCrtModeExt(mode);
  // Cache the data about it and initialize related stuff
  setCrtData();
+}
+
+int  TScreen::defaultSetVideoModeRes(unsigned w, unsigned h, int fW, int fH)
+{// Set the screen mode
+ int ret=setCrtModeRes(w,h,fW,fH);
+ if (ret)
+    // Cache the data about it and initialize related stuff
+    setCrtData();
+ return ret;
 }
 
 void TScreen::defaultClearScreen()

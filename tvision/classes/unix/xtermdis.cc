@@ -43,6 +43,29 @@ int                   TDisplayXTerm::selCharset=0;
 int                   TDisplayXTerm::terminalType=TDisplayXTerm::XTerm;
 void                (*TDisplayXTerm::ResetPaletteColors)()=ResetPaletteColorsXT;
 char                  TDisplayXTerm::cMap[16]={0,4,2,6,1,5,3,7,8,12,10,14,9,13,11,15};
+unsigned              TDisplayXTerm::fontW,
+                      TDisplayXTerm::fontH;
+char                  TDisplayXTerm::fontChanged=0;
+uchar                 TDisplayXTerm::startScreenWidth,
+                      TDisplayXTerm::startScreenHeight;
+char                 *TDisplayXTerm::oldFontName=NULL;
+// This is the list of fixed fonts included in XFree86 4.1.0
+TScreenResolution     TDisplayXTerm::XFonts[]=
+{
+ {  5, 7 },
+ {  5, 8 },
+ {  6,10 },
+ {  6,12 },
+ {  6,13 },
+ {  7,13 },
+ {  7,14 },
+ {  8,13 },
+ {  8,16 },
+ {  9,15 },
+ {  9,18 },
+ { 10,20 },
+ { 10,24 }
+};
 
 // All the code is in TScreenLinux, but this is the right moment, by this
 // time TScreenLinux is suspended.
@@ -235,6 +258,58 @@ int TDisplayXTerm::SetDisPaletteColorsEt(int from, int number, TScreenColor *col
 void TDisplayXTerm::ResetPaletteColorsEt()
 {
  fputs("\E]R",stdout);
+}
+
+// This is supported only by XTerm
+char *TDisplayXTerm::GetCurrentFontName()
+{
+ char fontNameAux[84];
+ fputs("\E]50;?\x7",stdout);
+ if (fscanf(TGKeyXTerm::fIn,"\E]50;%80[^\x7]\x7",fontNameAux)==1)
+    return newStr(fontNameAux);
+ return NULL;
+}
+
+int TDisplayXTerm::SetCrtModeXT(unsigned w, unsigned h, int fW, int fH)
+{
+ const unsigned XFontsCant=sizeof(XFonts)/sizeof(TScreenResolution);
+ int fontOK=1, setFont=0;
+ unsigned whichFont;
+ if (fW!=-1 || fH!=-1)
+   {// This is all a guess, I took the GNU/Debian Woody configuration as base.
+    // That's XFree86 4.1.0
+    if (fW==-1) fW=fontW;
+    if (fH==-1) fH=fontH;
+    if ((unsigned)fW!=fontW || (unsigned)fH!=fontH)
+      {
+       setFont=1;
+       if (!searchClosestRes(XFonts,fW,fH,XFontsCant,whichFont))
+          fontOK=0;
+       fontW=XFonts[whichFont].x;
+       fontH=XFonts[whichFont].y;
+      }
+   }
+
+ if (TScreen::screenBuffer)
+    DeleteArray(TScreen::screenBuffer);
+ TScreen::screenBuffer=new ushort[w*h];
+ fprintf(stdout,"\E[8;%d;%dt",h,w);
+
+ if (setFont)
+   {
+    if (!fontChanged)
+      {// Memorize current font
+       oldFontName=GetCurrentFontName();
+       fontChanged=oldFontName!=NULL;
+      }
+    fprintf(stdout,"\E]50;%dx%d\x7",fontW,fontH);
+   }
+ return fontOK ? 1 : 2;
+}
+
+int TDisplayXTerm::SetCrtModeEt(unsigned w, unsigned h, int fW, int fH)
+{
+ return SetCrtModeXT(w,h+1,fW,fH);
 }
 #else
 

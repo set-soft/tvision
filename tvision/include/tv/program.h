@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea (setScreenMode and other things)
 
  *
  *
@@ -96,6 +97,7 @@ public:
     virtual void putEvent( TEvent& event );
     virtual void run();
     void setScreenMode( ushort mode, char *comm=0 );
+    void setScreenMode( unsigned w, unsigned h, int fW=-1, int fH=-1 );
     TView *validView( TView *p );
     virtual void shutDown();
 

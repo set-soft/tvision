@@ -27,6 +27,8 @@ protected:
  // Not available static void   SetCrtMode(ushort mode);
  // Not available static ushort getCrtMode();
  // Not available static void   SetCrtModeExt(char *mode);
+ static int    SetCrtModeXT(unsigned w, unsigned h, int , int );
+ static int    SetCrtModeEt(unsigned w, unsigned h, int , int );
  static int    CheckForWindowSize(void);
  static const char *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
@@ -41,6 +43,8 @@ protected:
  // 1 when the size of the window where the program is running changed
  static volatile sig_atomic_t windowSizeChanged;
  static int hOut;   // Handle for the console output
+ // Font size, this is just a guess
+ static unsigned fontW,fontH;
  // To distiguish between similar terminals
  enum { XTerm, Eterm };
  static int terminalType;
@@ -52,6 +56,13 @@ protected:
  static char cMap[16];
  // Which charset is currently selected (G0/G1)
  static int selCharset;
+ // Available font sizes
+ static TScreenResolution XFonts[];
+ static char  fontChanged;
+ static char *oldFontName;
+ static char *GetCurrentFontName();
+ // Window size at start-up
+ static uchar startScreenWidth,startScreenHeight;
 };
 
 // With this order the destructor will be called first for TScreen,

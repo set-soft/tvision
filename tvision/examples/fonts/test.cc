@@ -63,7 +63,7 @@ TMyApp::TMyApp() :
  if (!TScreen::canSetBFont())
    {
     messageBox("This terminal doesn't support changing the fonts",mfError | mfOKButton);
-    quit=1;
+    //quit=1;
    }
  else
    {
@@ -189,7 +189,7 @@ void TMyApp::testFont()
  #ifdef TVOS_DOS
  /* Test for DOS driver mode switch when the font have the same size */
  messageBox("\03Now I'll change the video mode, fonts should survive",mfInformation | mfOKButton);
- setScreenMode(0x903);
+ setScreenMode(TDisplay::smCO90x30);
  #endif
 }
 
@@ -247,6 +247,8 @@ int main(int argc, char *argv[], char **envir)
  TMyApp myApp;
  const char *title=TScreen::getWindowTitle();
  TScreen::setWindowTitle("Turbo Vision font test program");
+ //myApp.setScreenMode(TDisplay::smCO90x34);
+ //myApp.setScreenMode(90,30,10,20);
  myApp.run();
  if (title)
    {
