@@ -161,7 +161,7 @@ void TFileViewer::readFile( const char *fName )
       end = start;
       while (end < bufend && *end != '\n') end++;
       *end = 0;
-      width = max( width, strlen( start ) );
+      width = max( (size_t)width, strlen( start ) );
       count++;
       start = end + 1;
     }

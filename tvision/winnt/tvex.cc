@@ -21,10 +21,16 @@ int main()
 {
  TEditorApp *myApp=new TEditorApp();
 
+#if defined (__BORLANDC__)
  fprintf(stderr,"This test was compiled using BC++ %d.%d.%d\n",
          (__BORLANDC__/0x100) & 0xF,
          (__BORLANDC__/0x10)  & 0xF,
           __BORLANDC__ & 0xF);
+#elif defined (_MSC_VER)
+ fprintf(stderr,"This test was compiled using MSVC++ compiler v%d.%d\n",
+         (_MSC_VER/100) & 0xFF,
+         (_MSC_VER - ((_MSC_VER/100) & 0xFF)*100));
+#endif
 
  if (myApp)
    {
