@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.420  2003/04/21 15:29:04  set
+* Added: Dummy versions of the TVIntl members for systems without gettext.
+
 Revision 2.419  2003/04/21 14:38:43  set
 * Fixed: unused variable.
 
