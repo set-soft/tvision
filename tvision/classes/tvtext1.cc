@@ -85,6 +85,8 @@ char THistory::oicon[] = "\xDE~\x19~\xDD"; // ÞÝ
 
 char TColorSelector::icon = '\xDB'; // Û
 char TColorSelector::oicon = '\xDB'; // Û
+char TColorSelector::mark = 8;
+char TColorSelector::omark = 8;
 
 char TMonoSelector::button[] = " ( ) ";
 char TMonoSelector::obutton[] = " ( ) ";

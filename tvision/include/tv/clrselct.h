@@ -30,6 +30,8 @@ public:
 
     static char icon;
     static char oicon;
+    static char mark;
+    static char omark;
 
 protected:
 
