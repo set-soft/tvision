@@ -38,6 +38,7 @@ public:
     virtual uint32 dataSize();
     virtual void getData( void *rec );
     virtual void setData( void *rec );
+    virtual void setState( ushort aState, Boolean enable );
 
     TFileCollection *list();
 

@@ -139,6 +139,14 @@ void TFileList::readDirectory( const char *dir, const char *wildCard )
   readDirectory( path );
 }
 
+void TFileList::setState( ushort aState, Boolean enable )
+{
+  TSortedListBox::setState( aState, enable );
+  if ( aState == sfFocused && enable )
+     {
+     message( owner, evBroadcast, cmFileFocused, list()->at(focused) );
+     }
+}
 
 /******** struct DirSearchRec ********/
 #ifdef TVCompf_djgpp
