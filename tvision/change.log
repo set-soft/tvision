@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.486  2003/06/30 14:02:28  set
+* Added: makes/rhide.env to distro.
+* Added: gprexp to the genimk.
+
 Revision 2.485  2003/06/30 13:04:11  set
 * Added: A script to update from CVS using the options I use. A DOS batch
 file and a shell script are provided.

@@ -67,4 +67,13 @@ $ rpmbuild -bb redhat/librhtv-`cat version.txt`.spec
 Hopefuly you'll get the result in ~/rpm/RPMS/
 You just need to install them changing to `root' user.
 
+*****************************************************************************
+Note 1: The specs doesn't allow building two RPM packages at the same time if
+they use the same root directory.
+
+Note 2: If you want to use a directory different than ~/rpm you can use:
+[bash syntax]
+
+$ mkdir /tmp/example
+$ export SET_RPM_DIR=/tmp/example
 
