@@ -106,8 +106,8 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
 
   letra= attrChar( *dst );
        
-  SetBkColor  ( hdc, colorMap[bg] );  // Background color
-  SetTextColor( hdc, colorMap[fg] );  // Foreground color
+  SetBkColor  ( hdc, colorMap[(int)bg] );  // Background color
+  SetTextColor( hdc, colorMap[(int)fg] );  // Foreground color
 
   rect.top=    y * tm.tmHeight + cShapeFr;
   rect.bottom= y * tm.tmHeight + cShapeTo;
