@@ -1,7 +1,9 @@
-tvision/readme.src
+tvision/readme.txt
 tvision/copying*
 tvision/borland.txt
 tvision/djgpp/libtv.a
 tvision/include/*.h
 tvision/djgpp/sacadeb.bat
 tvision/djgpp/tmp
+tvision/djgpp/obj
+tvision/change.log
