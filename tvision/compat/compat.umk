@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-09 13:56
+# 2003-06-30 10:39
 #
 
 ../makes/obj/beep$(ExOBJ):: beep.c  
@@ -86,6 +86,9 @@
 
 ../makes/obj/snprintf$(ExOBJ):: snprintf.c  
 	$(RHIDE_COMPILE_C)
+
+../makes/obj/ssc_streams$(ExOBJ):: ssc_streams.cc  
+	$(RHIDE_COMPILE_CC)
 
 ../makes/obj/strlwr$(ExOBJ):: strlwr.c  
 	$(RHIDE_COMPILE_C)

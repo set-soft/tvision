@@ -43,23 +43,23 @@ TV_OBJS_ =  +beep.obj +drivevalid.obj +expandpath.obj +fexpand.obj +fileattrs.ob
 +fileexists.obj +filelength.obj +fixpath.obj +fnmatch.obj +getcurdir.obj +getline.obj\
 +getopt.obj +getopt1.obj +getshell.obj +glob.obj +globfree.obj +iffilelen.obj +isdir.obj\
 +isrelpath.obj +iswild.obj +itoa.obj +mkstemp.obj +nl_langinfo.obj +ntdirent.obj\
-+pathvalid.obj +regex.obj +releasec.obj +snprintf.obj +strlwr.obj +strupr.obj +ticks.obj\
-+unc.obj +unc_95.obj +unc_nt.obj +validfilename.obj +yieldpro.obj +calcdisp.obj\
-+calculat.obj +codepage.obj +configfile.obj +dosdis.obj +doskey.obj +dosmouse.obj\
-+dosscr.obj +drivers2.obj +dual.obj +fileview.obj +fontcoll.obj +fpbase.obj +fpstream.obj\
-+help.obj +helpbase.obj +histlist.obj +ifpstrea.obj +iopstrea.obj +ipstream.obj\
-+linuxdis.obj +linuxkey.obj +linuxmouse.obj +linuxscr.obj +misc.obj +msgbox.obj\
-+nbackgro.obj +nbutton.obj +ncalcdis.obj +ncalcula.obj +nchdirdi.obj +ncheckbo.obj\
-+nclrdisp.obj +ncluster.obj +ncollect.obj +ncolordi.obj +ncolorgr.obj +ncolorit.obj\
-+ncolorse.obj +ndesktop.obj +ndialog.obj +ndircoll.obj +ndirlist.obj +neditor.obj\
-+neditwi.obj +newstr.obj +nfilecol.obj +nfiledia.obj +nfiledtr.obj +nfileinf.obj\
-+nfileinp.obj +nfilelis.obj +nfilterv.obj +nframe.obj +ngroup.obj +nhistory.obj\
-+nindicat.obj +ninputli.obj +nlabel.obj +nlistbox.obj +nlistvie.obj +nmemo.obj\
-+nmenubar.obj +nmenubox.obj +nmenuvie.obj +nmonosel.obj +nparamte.obj +nradiobu.obj\
-+nrangeva.obj +nresourc.obj +nscrollb.obj +nscrolle.obj +nsortedc.obj +nsortedl.obj\
-+nstatict.obj +nstatusl.obj +nstringc.obj +nstringl.obj +nvalidat.obj +nview.obj\
-+nwindow.obj +ofpstrea.obj +opstream.obj +osclipboard.obj +pstream.obj +qnxdis.obj\
-+qnxkey.obj +qnxmouse.obj +qnxscr.obj +rhscreen.obj +sbackgro.obj +sbutton.obj\
++pathvalid.obj +regex.obj +releasec.obj +snprintf.obj +ssc_streams.obj +strlwr.obj\
++strupr.obj +ticks.obj +unc.obj +unc_95.obj +unc_nt.obj +validfilename.obj +yieldpro.obj\
++calcdisp.obj +calculat.obj +codepage.obj +configfile.obj +dosdis.obj +doskey.obj\
++dosmouse.obj +dosscr.obj +drivers2.obj +dual.obj +fileview.obj +fontcoll.obj +fpbase.obj\
++fpstream.obj +help.obj +helpbase.obj +histlist.obj +ifpstrea.obj +iopstrea.obj\
++ipstream.obj +linuxdis.obj +linuxkey.obj +linuxmouse.obj +linuxscr.obj +misc.obj\
++msgbox.obj +nbackgro.obj +nbutton.obj +ncalcdis.obj +ncalcula.obj +nchdirdi.obj\
++ncheckbo.obj +nclrdisp.obj +ncluster.obj +ncollect.obj +ncolordi.obj +ncolorgr.obj\
++ncolorit.obj +ncolorse.obj +ndesktop.obj +ndialog.obj +ndircoll.obj +ndirlist.obj\
++neditor.obj +neditwi.obj +newstr.obj +nfilecol.obj +nfiledia.obj +nfiledtr.obj\
++nfileinf.obj +nfileinp.obj +nfilelis.obj +nfilterv.obj +nframe.obj +ngroup.obj\
++nhistory.obj +nindicat.obj +ninputli.obj +nlabel.obj +nlistbox.obj +nlistvie.obj\
++nmemo.obj +nmenubar.obj +nmenubox.obj +nmenuvie.obj +nmonosel.obj +nparamte.obj\
++nradiobu.obj +nrangeva.obj +nresourc.obj +nscrollb.obj +nscrolle.obj +nsortedc.obj\
++nsortedl.obj +nstatict.obj +nstatusl.obj +nstringc.obj +nstringl.obj +nvalidat.obj\
++nview.obj +nwindow.obj +ofpstrea.obj +opstream.obj +osclipboard.obj +pstream.obj\
++qnxdis.obj +qnxkey.obj +qnxmouse.obj +qnxscr.obj +rhscreen.obj +sbackgro.obj +sbutton.obj\
 +scalcdis.obj +scalcula.obj +schdirdi.obj +scheckbo.obj +sclrdisp.obj +scluster.obj\
 +scolordi.obj +scolorgr.obj +scolorit.obj +scolorse.obj +screen.obj +sdesktop.obj\
 +sdialog.obj +sdircoll.obj +sdirlist.obj +seditor.obj +seditwin.obj +sescreen.obj\
