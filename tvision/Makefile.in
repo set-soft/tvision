@@ -1,18 +1,19 @@
 #!/usr/bin/make
 #
-# Copyright (c) 2003 by Salvador E. Tropea.
+# Copyright (c) 2003-2004 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
 ifeq ($(prefix),)
   prefix=@prefix@
 endif
 ifeq ($(INSTALL),)
-  INSTALL=install
+  INSTALL=@install@
 endif
 EXE_EXT=@exe_ext@
 libdir=$(prefix)/lib
 OS=@OS@
 @maintainer_mode@
+@darwin@
 export
 
 .PHONY: @targets@ @installers@ install-headers install-config clean \

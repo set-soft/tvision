@@ -586,6 +586,7 @@ sub FindLDExtraDirs()
    }
  $ret='';
  $ret.='/usr/local/lib' if ($OSf eq 'FreeBSD');
+ $ret.='/usr/pkg/lib'   if ($OSf eq 'NetBSD');
  $conf{'LDExtraDirs'}=$ret;
  $ret;
 }
