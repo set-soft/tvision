@@ -35,11 +35,11 @@ Modified by Robert H”hne to be used for RHIDE.
 // All the strings are arrays ASCIIZ
 // All duplicated to restore the original
 
-uchar specialChars[] =
+uchar TView::specialChars[] =
 {
     175, 174, 26, 27, ' ', ' ', 0
 };
-uchar o_specialChars[] =
+uchar TView::o_specialChars[] =
 {
     175, 174, 26, 27, ' ', ' ', 0
 };
