@@ -98,7 +98,7 @@ void deleteString()
     // This insures that if n = lastRec, no bytes are copied and
     // a GPF is prevented.
     HistRec *n = next(curRec);
-    memcpy(curRec, n, size_t((char *)lastRec - (char *)n));
+    CLY_memcpy(curRec, n, size_t((char *)lastRec - (char *)n));
 
     lastRec = backup( lastRec, len );
 }
