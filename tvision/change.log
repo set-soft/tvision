@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.124  2002/06/04 18:34:40  set
+* Fixed: Another *.* pattern, reported by Tapio.
+
 Revision 2.123  2002/06/04 18:31:10  set
 * Fixed: [Linux] Now I use a separated file handle for the stdin. The
 explanation is in the code and is complex. Fixes random fails on cursor

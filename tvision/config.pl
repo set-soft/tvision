@@ -30,6 +30,8 @@ $OS=DetectOS();
 $CFLAGS=FindCFLAGS();
 # Determine C++ flags
 $CXXFLAGS=FindCXXFLAGS();
+# Extra lib directories
+$LDExtraDirs=FindLDExtraDirs();
 # Test for a working gcc
 $GCC=CheckGCC();
 # Check if gcc can compile C++
@@ -108,26 +110,26 @@ if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
    $MakeDefsRHIDE[0].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
-   $MakeDefsRHIDE[3]='TVOBJ=';
+   $MakeDefsRHIDE[3]='TVOBJ='.$LDExtraDirs.' ';
    # QNX 6.2 beta 3 workaround
    $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
    $MakeDefsRHIDE[3].='../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib';
-   $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
+   $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
+   $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
    ModifyMakefiles('linux/Makefile','compat/compat.mak');
    CreateRHIDEenvs('linux/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'DOS')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
-   $MakeDefsRHIDE[3]='TVOBJ=../../djgpp '.$here.'/djgpp '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3]='TVOBJ=../../djgpp '.$here.'/djgpp '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    ModifyMakefiles('djgpp/Makefile','compat/compat.mak');
    CreateRHIDEenvs('djgpp/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'Win32')
   {
-   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
@@ -142,7 +144,7 @@ if ($OS ne 'Win32')
   {
    $MakeDefsRHIDE[0]='';
    $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2);
-   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
@@ -356,7 +358,7 @@ int main(void)
 sub LookForIntlSupport
 {
  my $vNeed=$_[0];
- my ($test,$a,$djdir,$intllib,$intltest);
+ my ($test,$a,$djdir,$intllib,$intltest,$libdir);
 
  print 'Checking for international support: ';
  if (@conf{'intl-force-dummy'} eq 'yes')
@@ -404,9 +406,10 @@ int main(void)
  return 0;
 }
 ';
- $intllib=(($OS eq 'DOS') || ($OS eq 'Win32')) ? '-lintl' : '';
- $intllib='-L/usr/local/lib -lintl' if ($OSf eq 'FreeBSD');
- $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$intllib);
+ $intllib=(($OS eq 'DOS') || ($OS eq 'Win32') || ($OSf eq 'FreeBSD')) ? '-lintl' : '';
+ $libdir=$LDExtraDirs;
+ $libdir=~s/(\S+)/-L$1/g;
+ $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$libdir.' '.$intllib);
  if ($test ne "OK\n")
    {
     print "no, additional check required.\n";

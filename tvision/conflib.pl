@@ -540,10 +540,36 @@ sub FindCFLAGS
     $ret.=' -pipe' if ($OS eq 'UNIX');
     # Looks like that's common and some sysadmins doesn't configure gcc to
     # look there:
-    $ret.=' -I/usr/local/include -L/usr/local/lib' if ($OSf eq 'FreeBSD');
+    $ret.=' -I/usr/local/include' if ($OSf eq 'FreeBSD');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
+ $ret;
+}
+
+###[txh]####################################################################
+#
+# Prototype: FindLDExtraDirs()
+# Description:
+#  Simple hook to get the extra dirs.
+#
+# Return: 
+#  Space separated list of directories.
+#
+####################################################################[txi]###
+
+sub FindLDExtraDirs()
+{
+ my $ret;
+
+ $ret=@conf{'LDExtraDirs'};
+ if ($ret)
+   {
+    return $ret;
+   }
+ $ret='';
+ $ret.='/usr/local/lib' if ($OSf eq 'FreeBSD');
+ $conf{'LDExtraDirs'}=$ret;
  $ret;
 }
 
