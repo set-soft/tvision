@@ -35,8 +35,9 @@ sub GetCache
 
 sub CreateCache
 {
- my $i,$ff=1;
+ my ($i,$ff);
 
+ $ff=1;
  if (open(FIL,'>configure.cache'))
    {
     foreach $i (%conf)
@@ -59,7 +60,7 @@ sub CreateCache
 sub CompareVersion
 {
  my ($actual,$needed)=@_;
- my $vact,$vneed;
+ my ($vact,$vneed);
 
  $actual=~/(\d+)\.(\d+)(\.(\d+))?/;
  $vact=$1*1000000+$2*1000+$4;
@@ -73,7 +74,7 @@ sub CompareVersion
 sub LookForFile
 {
  my ($file,@path)=@_;
- my $i,@a,$f;
+ my ($i,@a,$f);
 
  foreach $i (@path)
    {
@@ -110,7 +111,8 @@ sub LookForFile
 sub RunGCCTest
 {
  my ($cc,$ext,$test,$switchs)=@_;
- my $file='test.'.$ext,$command,$label,$flags='';
+ my ($command,$label);
+ my ($file,$flags)=('test.'.$ext,'');
 
  replace($file,$test);
  $flags=$CFLAGS if ($ext eq 'c');
@@ -157,7 +159,7 @@ sub RunGCCTest
 
 sub LookForPrefix
 {
- my $test,$prefix;
+ my ($test,$prefix);
 
  print 'Looking for prefix: ';
  $prefix=@conf{'prefix'};
@@ -267,7 +269,7 @@ sub LookIfFHS
 
 sub CheckGCC
 {
- my $cc,$test;
+ my ($cc,$test);
 
  print 'Looking for a working gcc: ';
  $cc=@conf{'GCC'};
@@ -312,7 +314,8 @@ int main(void)
 
 sub CheckGCCcanXX
 {
- my $cc=$_[0],$ret,$test;
+ my $cc=$_[0];
+ my ($ret,$test);
 
  print "$cc can compile C++ code: ";
  $test='#include <iostream.h>
@@ -622,7 +625,7 @@ sub FindXCXXFLAGS
 
 sub DetectOS
 {
- my $os,$OS;
+ my ($os,$OS);
  $os=`uname`;
  print 'Determining OS: ';
  
@@ -678,7 +681,7 @@ sub DetectOS
 
 sub ModifyMakefiles
 {
- my $a,$text,$rep,$repv;
+ my ($a,$text,$rep,$repv);
 
  print 'Configuring makefiles: ';
  foreach $a (@_)
@@ -714,7 +717,7 @@ sub ModifyMakefiles
 
 sub ModifySimpleMakefiles
 {
- my $a,$text,$rep;
+ my ($a,$text,$rep);
 
  print 'Configuring simple makefiles: ';
  foreach $a (@_)
@@ -747,7 +750,7 @@ sub ModifySimpleMakefiles
 
 sub CreateRHIDEenvs
 {
- my $a,$text,$rep,$useXtreme,$b;
+ my ($a,$text,$rep,$useXtreme,$b);
 
  print 'Configuring RHIDE: ';
  foreach $a (@_)
@@ -841,7 +844,7 @@ sub ConfigIncDefYes
 
 sub ParentDir
 {
- my $cur,$parent;
+ my ($cur,$parent);
  $cur=`pwd`;
  chop $cur;
  chdir('..');
@@ -853,8 +856,9 @@ sub ParentDir
 
 sub ReplaceText
 {
- my $Text,$Dest=$_[1],$i,$se,$re;
+ my ($Text,$Dest,$i,$se,$re);
 
+ $Dest=$_[1];
  print "Processing $_[0] => $_[1]\n";
  $Text=cat($_[0]);
  foreach $i (%ReplaceTags)
@@ -864,6 +868,61 @@ sub ReplaceText
     $Text =~ s/$se/$re/g;
    }
  replace($Dest,$Text);
+}
+
+###[txh]####################################################################
+#
+# Prototype: ExtractItemsMak($makefile,\$column)
+# Description:
+#   Extracts the list of project items from a .mak. Is recursive.
+#
+# Return: The list of items.
+#
+####################################################################[txi]###
+
+sub ExtractItemsMak
+{
+ my ($makefile,$col)=($_[0],\$_[1]);
+ my ($mak,@items,$file,$result,$path);
+
+ $result='';
+ $makefile=~/((.+)\/+)/;
+ $path=$1;
+ print "Extracting from $makefile\n";
+ $mak=cat($makefile);
+ if ($mak=~ /PROJECT_ITEMS=(((.+)\\\n)+(.+)\n)/)
+   {
+    @items=split(/[\\\s]+/,$1);
+    foreach $file (@items)
+      {
+       if ($file=~/\.gpr/)
+         {
+          $file=~s/\.gpr/\.mak/;
+          $result.=ExtractItemsMak($path.$file,$$col);
+          #print "**** Back ($path)\n";
+         }
+       else
+         {
+          #print "$file\n";
+          if ($$col!=0)
+            {
+             if ($$col+length($file)>76)
+               {
+                $result.="\\\n\t";
+                $$col=8;
+               }
+             else
+               {
+                $result.=' ';
+                $$col++;
+               }
+            }
+          $$col+=length($file);
+          $result.="$file";
+         }
+      }
+   }
+ $result;
 }
 
 1;
