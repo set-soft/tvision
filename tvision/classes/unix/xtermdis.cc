@@ -30,6 +30,10 @@
 #include <tv/unix/xtkey.h>
 #include <tv/linux/log.h>
 
+// That's a workaround for a bug in the glibc included in SuSE 9.0:
+// The TEMP_FAILURE_RETRY macro uses errno, but errno.h isn't included!
+#include <errno.h>
+// TEMP_FAILURE_RETRY isn't mandatory.
 #ifndef TEMP_FAILURE_RETRY
  #define TEMP_FAILURE_RETRY(a) (a)
 #endif
