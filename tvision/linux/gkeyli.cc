@@ -189,6 +189,10 @@ unsigned char kbExtraFlags2[128] =
  0,0,0,0,0,0,0,kbAlt                            // 78-7F
 };
 
+// xterm is a crappy terminal and does all in a way too different to the
+// standard.
+static int XtermMode=0;
+
 static
 void PatchTablesForOldKbdLayout(void)
 {
@@ -235,8 +239,14 @@ void TGKey::SetKbdMapping(int version)
 {
  switch (version)
    {
-    case KDB_REDHAT52_STYLE:
+    case KBD_REDHAT52_STYLE:
          PatchTablesForNewKbdLayout();
+         break;
+    case KBD_XTERM_STYLE: // It can be combined with others
+         XtermMode=1;
+         break;
+    case KBD_NO_XTERM_STYLE:
+         XtermMode=0;
          break;
     default: // KBD_OLD_STYLE
          PatchTablesForOldKbdLayout();
@@ -250,11 +260,18 @@ unsigned short TGKey::gkey(void)
 
  GetRaw();
  if (rawCode.full & META_MASK)
- {
-   sFlags|=kblAltL;
-   rawCode.full &= ~META_MASK;
-   dbprintf("Adding left alt because the code contains META key\r\n");
- }
+   {
+    sFlags|=kblAltL;
+    rawCode.full &= ~META_MASK;
+    dbprintf("Adding left alt because the code contains META key\r\n");
+   }
+ else
+   if (XtermMode && (rawCode.full & 0x80))
+     {
+      sFlags|=kblAltL;
+      rawCode.full &= ~0x80;
+      dbprintf("Adding left alt because the code contains 0x80 and xterm detected\r\n");
+     }
  
  //---- The following code takes advantage of the flags reported by the ioctl
  //---- call. As this mechanism isn't available if we aren't loged in the

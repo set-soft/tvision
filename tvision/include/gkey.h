@@ -67,7 +67,9 @@ public:
  static ushort KeyNameToNumber(char *s);
  #ifdef __linux__
  #define KBD_OLD_STYLE      0
- #define KDB_REDHAT52_STYLE 1
+ #define KBD_REDHAT52_STYLE 1
+ #define KBD_XTERM_STYLE    2
+ #define KBD_NO_XTERM_STYLE 3
  static void SetKbdMapping(int version);
  #endif
 
