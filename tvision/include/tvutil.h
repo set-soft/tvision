@@ -113,4 +113,19 @@ ushort TICKS(void);
 #define uctolower(a)  tolower((unsigned char)a)
 #define uctoupper(a)  toupper((unsigned char)a)
 
+#ifdef __DJGPP__
+#include <fcntl.h>
+inline
+int TV_HaveLFNs()
+{
+ return _use_lfn(0);
+}
+#else // Assume any other supports its (read Linux ;-)
+inline
+int TV_HaveLFNs()
+{
+ return 1;
+}
+#endif
+
 #endif  // __UTIL_H

@@ -64,9 +64,13 @@ TFileDialog::TFileDialog( const char *aWildCard,
                         fileName
                       ) );
     insert( new THistory( TRect( 31, 3, 34, 4 ), fileName, histId ) );
-    TScrollBar *sb = new TScrollBar( TRect( 3, 14, 34, 15 ) );
+    
+    int longNames=TV_HaveLFNs(); // SET
+    TScrollBar *sb = longNames ?
+                     new TScrollBar( TRect( 34, 6, 35, 15 ) ) :
+                     new TScrollBar( TRect( 3, 14, 34, 15 ) );
     insert( sb );
-    insert( fileList = new TFileList( TRect( 3, 6, 34, 14 ), sb ) );
+    insert(fileList=new TFileList(TRect(3,6,34,longNames ? 15 : 14),sb));
 
     tmp = _("~F~iles");
     insert( new TLabel( TRect( 2, 5, 3+cstrlen(tmp), 6 ), tmp, fileList ) );

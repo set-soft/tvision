@@ -38,7 +38,8 @@ TFileList::TFileList( const TRect& bounds,
           TScrollBar *aScrollBar) :
     TSortedListBox( bounds, 2, aScrollBar )
 {
-  numCols = 1;
+ if (TV_HaveLFNs())
+    numCols = 1;
 }
 
 TFileList::~TFileList()

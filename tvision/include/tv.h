@@ -40,6 +40,17 @@ Modified by Robert H”hne to be used for RHIDE.
 #define INCL_EDITORS_H
 #endif
 
+#ifdef Uses_TCalculator
+#define Uses_TCalcDisplay
+#define Uses_TDialog
+#endif
+
+#ifdef Uses_TCalcDisplay
+#define Uses_TView
+#define INCL_CALC_H
+#define __INC_STDLIB_H
+#endif
+
 #ifdef Uses_TEditorApp
 #define INCL_TVEDIT_H
 #endif
@@ -568,6 +579,10 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <string.h>
 #endif
 
+#if defined( __INC_STDLIB_H )
+#include <stdlib.h>
+#endif
+
 #if defined( __INC_TIME_H )
 #include <time.h>
 #endif
@@ -663,3 +678,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tvedit.h>
 #endif
 // SET: End of the TEditor classes
+
+// SET: Incorporated in 1.0.7
+#ifdef INCL_CALC_H
+#include <calc.h>
+#endif
