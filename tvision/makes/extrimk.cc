@@ -73,6 +73,7 @@ char *srcDirs[]=
  "../classes/x11",
  "../names",
  "../stream",
+ "../compat",
  "..",
  NULL
 };
