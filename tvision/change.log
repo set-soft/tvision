@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.507  2003/10/27 13:19:10  set
+* Fixed: A bug in dlgdsn example. Patch by Frank Liu
+<liug.mama.indstate.edu>.
+
 Revision 2.506  2003/10/14 16:02:13  set
 * Added: A flag to TProgram to disable the Alt+N window selection. I need
 it so I can make this key combination configurable in SETEdit.
