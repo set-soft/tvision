@@ -1,4 +1,8 @@
 $Log$
+Revision 1.206  2001/09/23 20:05:12  set
+* Modified: Moved all the macros to define if we need \r\n or \n from
+setedit to the compatlayer library.
+
 Revision 1.205  2001/09/23 19:08:27  set
 * Modified: [Linux][Xterm] Now if the library detects xterm puts the keypad
 in the normal mode (looks like ncurses put it in a special mode) it makes
