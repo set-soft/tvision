@@ -61,7 +61,7 @@ protected:
  // Our termios settings
  static struct termios inTermiosNew;
  // Description of the last error
- static char *error;
+ static const char *error;
  // Buffer to store a key escape sequence while we analize it.
  // If a sequence failed the keys must be returned from here.
  static int bufferKeys[MaxLenEscapeSequence];

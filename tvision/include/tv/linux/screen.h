@@ -178,7 +178,7 @@ protected:
  // Our terminal state
  static struct termios outTermiosNew;
  // Last error
- static char *error;
+ static const char *error;
  // Is MDA accesible?
  static char secondaryAvailable;
  // File handle for mmaped memory of MDA board

@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.399.2.24  2003/04/02 13:37:31  set
+* Added: [MinGW] Some comments about common problems with MinGW, like
+configuring without international support and avoiding files with debug info
+(in the MinGW I have installed the library is over 150 MB compiled with
+debug, I think they are generating extra line debug info, it happened once to
+djgpp team).
+
 Revision 2.399.2.23  2003/04/02 13:36:35  set
 * Fixed: [MinGW] The configuration script shown the error messages created
 when running non-existent programs appear in the screen generating

@@ -53,7 +53,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
     directory( 0 )
 { // SET: Enlarged the window 1 line and added 1 line to the list moving
   // labels 1 line up
-    char *tmp;
+    const char *tmp;
     options |= ofCentered;
     // SET: Allow it to grow
     growMode = gfGrowAll;

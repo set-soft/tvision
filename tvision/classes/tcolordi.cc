@@ -43,7 +43,7 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     TDialog( TRect( 0, 0, 61, 18 ), _("Colors") )
     , TWindowInit( &TColorDialog::initFrame )
 {
-    char *tmp;
+    const char *tmp;
     options |= ofCentered;
     pal = aPalette;
 
