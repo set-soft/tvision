@@ -1,4 +1,10 @@
 $Log$
+Revision 1.82  1999/07/27 22:06:03  root (set)
+* Fixed: Some calls to delete instead of delete[] and delete instead of free.
+Patches and suggestions by Laurynas Biveinis <lauras@softhome.net>.
+* Added: Now TProgram::idle() releases the CPU by default. You can avoid it
+with TProgram::doNotReleaseCPU=1;. Suggested by Laurynas.
+
 Revision 1.81  1999/07/26 23:48:33  set
 * Added: TListBoxRec is now publically available from the headers.
 * Modified: TSortedListBox::searchPos is now protected instead of private so
