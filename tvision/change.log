@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.100  2003/06/17 12:46:51  set
+* Added: [BC++] A simple makefile to call the main makefile and clean the
+package.
+
 Revision 2.399.2.99  2003/06/17 12:43:33  set
 * Added: A script to generate the RPMs in an easy way.
 
