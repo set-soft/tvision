@@ -931,6 +931,10 @@ typedef unsigned long  ulong;
  #ifdef Uses_stdio
   #undef  popen
   #define popen _popen
+  #undef  pclose
+  #define pclose _pclose
+  #undef  pipe
+  #define pipe _pipe
  #endif
  #ifdef Uses_fcntl
   #undef  Include_fcntl
@@ -973,6 +977,16 @@ typedef unsigned long  ulong;
   #define write _write
   #undef  lseek
   #define lseek _lseek
+  /* Standard file descriptors.  */
+  #ifndef STDIN_FILENO
+   #define STDIN_FILENO  0 /* Standard input.  */
+  #endif
+  #ifndef STDOUT_FILENO
+   #define STDOUT_FILENO 1 /* Standard output.  */
+  #endif
+  #ifndef STDERR_FILENO
+   #define STDERR_FILENO 2 /* Standard error output.  */
+  #endif
  #endif
  #ifdef Uses_access
   #undef  Include_io
@@ -1086,9 +1100,9 @@ typedef unsigned long  ulong;
  #ifdef Uses_utime
   #undef  Include_sys_utime
   #define Include_sys_utime 1
-  #undef  utime
+  /*#undef  utime
   #define utime _utime
-  /*#undef  utimbuf
+  #undef  utimbuf
   #define utimbuf _utimbuf*/
  #endif
  #ifdef Uses_mkstemp
