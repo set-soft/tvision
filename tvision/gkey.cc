@@ -71,6 +71,9 @@ takes only 400 bytes of memory.
 #define Uses_string
 #include <tv.h>
 
+#include <ncurses.h>
+#include <term.h>
+
 int TGKey::useBIOS=0;
 int TGKey::translateKeyPad=1;
 KeyType TGKey::rawCode;
@@ -604,6 +607,13 @@ int main(int argc, char *argv[])
   void suspend_keyboard();
   startcurses();
   resume_keyboard();
+  /* Quite good to debug ncurses:
+  for (key=0; key<200; key++)
+     {
+      if (cur_term->type.Strings[key])
+         fprintf(stderr,"%d: `%s'\n",key,cur_term->type.Strings[key]);
+     }*/
+  meta(0,TRUE);
   if (argc>1 && strcmp(argv[1],"rh52")==0)
      TGKey::SetKbdMapping(KBD_REDHAT52_STYLE);
 #else

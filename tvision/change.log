@@ -1,4 +1,9 @@
 $Log$
+Revision 1.204  2001/09/22 02:16:56  set
+* Modified: [UNIX] The behavior of file attribute functions of compat
+layer, now the IsReadOnly tries to be a little more cleaver looking for the
+file group and the groups where the user is.
+
 Revision 1.203  2001/09/21 02:30:20  set
 * Fixed: New standards seems to enforce a \n at the end of all sources. At
 least gcc 3.0 says that. I added it to all the tests in the configuration
@@ -12,6 +17,7 @@ inoked using gpp.
 * Added: no_mss.h and yes_mss.h to the distribution list.
 * Fixed: glob.c had text after a #endif, gcc 3.0 detects it.
 * Fixed: isrelpath.c didn't end with \n, gcc 3.0 detects it.
+Note: Sergey Krivulja <skrivulja@erec.ru> reported it also for gcc 2.96.
 
 Revision 1.202  2001/09/21 01:20:43  set
 * Added: Now the library is `MSS aware'. Laurynas sent me some patches for
