@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.509  2003/11/03 15:55:17  set
+* Added: A new configuration variable "AvoidMoire". This variable is
+checked by TScrollBar and TBackground to avoid using chars that produce
+annoying moire effects. Suggeste by Oswald Buddenhagen.
+
 Revision 2.508  2003/11/03 15:53:57  set
 * Modified: The behavior of menu short-cuts look-up. The original code from
 Borland was quite bad (never searched in the current menu) so Robert
