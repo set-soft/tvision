@@ -322,6 +322,14 @@ elsif ($i=~'--real-prefix=(.*)')
       {
        $conf{'try-pthread'}='no';
       }
+    elsif ($i eq '--without-static')
+      {
+       $conf{'no-static'}='yes';
+      }
+    elsif ($i eq '--without-dynamic')
+      {
+       $conf{'no-dynamic'}='yes';
+      }
     else
       {
        ShowHelp();
@@ -352,13 +360,15 @@ sub ShowHelp
  print "--real-prefix=pa: real prefix, for Debian package\n";
  
  print "\nLibraries:\n";
- print "--force-dummy   : use the dummy intl library even when gettext is detected.\n";
- print "--no-intl       : don't use international support.\n";
- print "--with-mss      : compiles with MSS memory debugger.\n";
- print "--without-mss   : compiles without MSS [default].\n";
- print "--with-ssc      : compiles using Simple Streams Compatibility.\n";
- print "--without-ssc   : compiles without SSC [default].\n";
- print "--with-pthread  : uses pthread for X11 driver.\n";
+ print "--force-dummy    : use the dummy intl library even when gettext is detected.\n";
+ print "--no-intl        : don't use international support.\n";
+ print "--without-static : don't create the static library.\n";
+ print "--without-dynamic: don't create the dynamic library.\n";
+ print "--with-mss       : compiles with MSS memory debugger.\n";
+ print "--without-mss    : compiles without MSS [default].\n";
+ print "--with-ssc       : compiles using Simple Streams Compatibility.\n";
+ print "--without-ssc    : compiles without SSC [default].\n";
+ print "--with-pthread   : uses pthread for X11 driver.\n";
  print "--without-pthread: avoids pthread for X11 driver [default].\n";
  
  print "\nOthers:\n";
@@ -903,6 +913,7 @@ int main(int argc, char *argv[])
 sub GenerateMakefile
 {
  my ($text,$rep,$makeDir,$ver,$internac,$maintain);
+ my ($dosta,$dodyn);
 
  print "Generating Makefile\n";
  $text=cat('Makefile.in');
@@ -914,11 +925,19 @@ sub GenerateMakefile
  $internac=@conf{'xgettext'} ne 'no';
  $maintain=@conf{'MAINTAINER_MODE'} eq 'yes';
 
+ $dosta=@conf{'no-static'} ne 'yes';
+ $dodyn=($OS eq 'UNIX') && ($OSf ne 'QNX4') && (@conf{'no-dynamic'} ne 'yes');
+ if (!$dosta && !$dodyn)
+   {
+    CreateCache();
+    die "No static nor dynamic library created!!\n";
+   }
+
  $rep ='';
  $rep.=' maintainance' if $maintain;
- $rep.=' static-lib';
+ $rep.=' static-lib' if $dosta;
  $rep.=' rhtv-config$(EXE_EXT)';
- $rep.=' dynamic-lib' if (($OS eq 'UNIX') && ($OSf ne 'QNX4'));
+ $rep.=' dynamic-lib' if $dodyn;
  $rep.=' internac' if ($internac);
  $text=~s/\@targets\@/$rep/g;
  $text=~s/\@OS\@/$OS/g;
@@ -935,10 +954,14 @@ sub GenerateMakefile
  $text=~s/\@maintainance_rule\@/$rep/g;
 
  # Write target rules:
- $rep ="static-lib:\n\t\$(MAKE) -C $makeDir -f librhtv.mkf";
- $rep.="\n\tranlib $makeDir/librhtv.a" if $conf{'UseRanLib'};
- $rep.="\n";
- if (($OS eq 'UNIX') && ($OSf ne 'QNX4'))
+ $rep='';
+ if ($dosta)
+   {
+    $rep.="static-lib:\n\t\$(MAKE) -C $makeDir -f librhtv.mkf";
+    $rep.="\n\tranlib $makeDir/librhtv.a" if $conf{'UseRanLib'};
+    $rep.="\n";
+   }
+ if ($dodyn)
    {
     $rep.="\ndynamic-lib:\n\t\$(MAKE) DYNAMIC_LIB=1 -C $makeDir -f librhtv.mkf\n";
     $rep.="\tcd $makeDir; ln -sf librhtv.so.$Version librhtv.so\n";
@@ -959,67 +982,73 @@ sub GenerateMakefile
 
  # Write install stuff
  # What versions of the library we will install
- $rep= 'install-static ';
- $rep.='install-dynamic ' if (($OS eq 'UNIX') && ($OSf ne 'QNX4'));
+ $rep='';
+ $rep.='install-static ' if $dosta;
+ $rep.='install-dynamic ' if $dodyn;
  $rep.='install-internac ' if $internac;
  $text=~s/\@installers\@/$rep/g;
 
  # Headers
- $rep= "install -d -m 0755 \$(prefix)/include/rhtvision\n";
+ $rep= "\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision\n";
  $rep.="\trm -f \$(prefix)/include/rhtvision/*.h\n";
- $rep.="\tinstall -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
- $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv\n";
- $rep.="\tinstall -m 0644 include/tv/*.h \$(prefix)/include/rhtvision/tv\n";
+ $rep.="\t\$(INSTALL) -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
+ $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv\n";
+ $rep.="\t\$(INSTALL) -m 0644 include/tv/*.h \$(prefix)/include/rhtvision/tv\n";
  if ($OS eq 'DOS')
    {
-    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/dos\n";
-    $rep.="\tinstall -m 0644 include/tv/dos/*.h \$(prefix)/include/rhtvision/tv/dos\n";
+    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/dos\n";
+    $rep.="\t\$(INSTALL) -m 0644 include/tv/dos/*.h \$(prefix)/include/rhtvision/tv/dos\n";
    }
  if ($OS eq 'UNIX')
    {
-    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/linux\n";
-    $rep.="\tinstall -m 0644 include/tv/linux/*.h \$(prefix)/include/rhtvision/tv/linux\n";
+    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/linux\n";
+    $rep.="\t\$(INSTALL) -m 0644 include/tv/linux/*.h \$(prefix)/include/rhtvision/tv/linux\n";
    }
  if ($OSf eq 'QNXRtP')
    {
-    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/qnxrtp\n";
-    $rep.="\tinstall -m 0644 include/tv/qnxrtp/*.h \$(prefix)/include/rhtvision/tv/qnxrtp\n";
+    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/qnxrtp\n";
+    $rep.="\t\$(INSTALL) -m 0644 include/tv/qnxrtp/*.h \$(prefix)/include/rhtvision/tv/qnxrtp\n";
    }
  if ($OS eq 'Win32')
    {
-    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/win32\n";
-    $rep.="\tinstall -m 0644 include/tv/win32/*.h \$(prefix)/include/rhtvision/tv/win32\n";
+    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/win32\n";
+    $rep.="\t\$(INSTALL) -m 0644 include/tv/win32/*.h \$(prefix)/include/rhtvision/tv/win32\n";
    }
  if (@conf{'HAVE_X11'} eq 'yes')
    {
-    $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv/x11\n";
-    $rep.="\tinstall -m 0644 include/tv/x11/*.h \$(prefix)/include/rhtvision/tv/x11\n";
+    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/x11\n";
+    $rep.="\t\$(INSTALL) -m 0644 include/tv/x11/*.h \$(prefix)/include/rhtvision/tv/x11\n";
    }
- $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/cl\n";
- $rep.="\tinstall -m 0644 include/cl/*.h \$(prefix)/include/rhtvision/cl\n";
+ $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/cl\n";
+ $rep.="\t\$(INSTALL) -m 0644 include/cl/*.h \$(prefix)/include/rhtvision/cl\n";
  $text=~s/\@install_headers\@/$rep/g;
  
  # Dummy replacement for i8n library
  $rep ="install-intl-dummy: intl-dummy\n";
- $rep.="\tinstall -d -m 0755 \$(libdir)\n";
- $rep.="\tinstall -m 0644 intl/dummy/libtvfintl.a \$(libdir)/libtvfintl.a\n";
+ $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
+ $rep.="\t\$(INSTALL) -m 0644 intl/dummy/libtvfintl.a \$(libdir)/libtvfintl.a\n";
  $text=~s/\@intl_dummy_install_rule\@/$rep/g;
 
  # Static library
- $rep ="install-static: static-lib\n";
- $rep.="\tinstall -d -m 0755 \$(libdir)\n";
- $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
+ $rep='';
+ if ($dosta)
+   {
+    $rep.="install-static: static-lib\n";
+    $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
+    $rep.="\t\$(INSTALL) -m 0644 $makeDir/librhtv.a \$(libdir)\n";
+   }
 
- if (($OS eq 'UNIX') && ($OSf ne 'QNX4'))
+ if ($dodyn)
    {# Dynamic library
     $ver=($OSf eq 'FreeBSD') ? $VersionMajor : $Version;
     $rep.="\ninstall-dynamic: dynamic-lib\n";
+    $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
     $rep.="\trm -f \$(libdir)/librhtv.so\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.$VersionMajor\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.$ver\n";
     $rep.="\tcd \$(libdir); ln -s librhtv.so.$ver librhtv.so\n";
     # Not needed if the soname changes which each version (at least Ivan says that)
-    $rep.="\tinstall -m 0644 $makeDir/librhtv.so.$ver \$(libdir)\n";
+    $rep.="\t\$(INSTALL) -m 0644 $makeDir/librhtv.so.$ver \$(libdir)\n";
     $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$ver\n" unless $conf{'debugInfo'} eq 'yes';
     # FreeBSD: merge data from libdir
     $rep.=($OSf eq 'FreeBSD') ? "\t-ldconfig -m \$(libdir)\n" : "\t-ldconfig\n";

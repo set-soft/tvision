@@ -3,7 +3,12 @@
 # Copyright (c) 2003 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
-prefix=@prefix@
+ifeq ($(prefix),)
+  prefix=@prefix@
+endif
+ifeq ($(INSTALL),)
+  INSTALL=install
+endif
 EXE_EXT=@exe_ext@
 libdir=$(prefix)/lib
 OS=@OS@
@@ -35,8 +40,8 @@ install-headers:
 @intl_dummy_install_rule@
 
 install-config:
-	install -d -m 0755 $(prefix)/bin
-	install -m 0755 rhtv-config$(EXE_EXT) $(prefix)/bin
+	$(INSTALL) -d -m 0755 $(prefix)/bin
+	$(INSTALL) -m 0755 rhtv-config$(EXE_EXT) $(prefix)/bin
 
 install: @installers@ install-headers install-intl-dummy install-config
 
