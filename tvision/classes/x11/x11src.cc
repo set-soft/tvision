@@ -30,6 +30,17 @@
 #include <signal.h>
 #include <sys/time.h>
 
+#ifdef TVOSf_Solaris
+ // At least in the Solaris 7 box I tested looks like ITIMER_REAL is broken
+ // and behaves like ITIMER_VIRTUAL
+ #define ITIMER_USED ITIMER_REALPROF
+ #define TIMER_ALARM SIGPROF
+#else
+ #define ITIMER_USED ITIMER_REAL
+ #define TIMER_ALARM SIGALRM
+#endif
+
+
 const int cursorDelay=300000;
 
 /*****************************************************************************
@@ -454,7 +465,7 @@ void microAlarm(unsigned int usec)
  newV.it_interval.tv_sec=0;
  newV.it_value.tv_usec=(long int)usec;
  newV.it_value.tv_sec=0;
- setitimer(ITIMER_REAL,&newV,0);
+ setitimer(ITIMER_USED,&newV,0);
 }
 
 TScreenX11::TScreenX11()
@@ -609,7 +620,7 @@ TScreenX11::TScreenX11()
  action.sa_handler=sigAlm;
  sigemptyset(&action.sa_mask);
  action.sa_flags=0;
- sigaction(SIGALRM,&action,NULL);
+ sigaction(TIMER_ALARM,&action,NULL);
  //signal(SIGALRM,sigAlm); To avoid SVID vs BSD differences
  microAlarm(cursorDelay);
 
