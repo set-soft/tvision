@@ -409,8 +409,17 @@ BOOL WINAPI TScreenWinNT::ConsoleEventHandler(DWORD dwCtrlType)
  return FALSE;
 }
 
-int TScreenWinNT::System(const char *command, pid_t *pidChild)
+int TScreenWinNT::System(const char *command, pid_t *pidChild, int in, int out,
+                         int err)
 {
+ // If the caller asks for redirection replace the requested handles
+ if (in!=-1)
+    dup2(in,STDIN_FILENO);
+ if (out!=-1)
+    dup2(out,STDOUT_FILENO);
+ if (err!=-1)
+    dup2(err,STDERR_FILENO);
+
  int rc=system(command);
  SetConsoleMode(hIn, TV_CONSOLE_MODE);
  // fork mechanism not implemented, indicate the child finished

@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.359  2002/11/27 13:14:24  set
+* Added: Now the ~ at the beggining of a file name is expanded in a similar
+way used by UNIX shells. CLY_IsRelativePath() returns 0 and _fixpath() (it
+is used by CLY_fexpand()) expands it. Win32 (unless Cygwin) is an
+exception. If the ~ is followed by anything but a dir separator or the end
+of the name it isn't expanded (~Name pass unmodified). If the HOME
+environment variable isn't defined it isn't expanded. Martijn suggested
+expanding ~.
+
 Revision 2.358  2002/11/26 12:53:29  set
 * Changed version to 2.0.1 to make a maintainance release during the next
 weeks.

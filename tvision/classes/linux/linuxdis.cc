@@ -50,6 +50,7 @@ volatile sig_atomic_t TDisplayLinux::windowSizeChanged=0;
 int                   TDisplayLinux::vcsWfd=-1; // virtual console system descriptor
 int                   TDisplayLinux::vcsRfd=-1; // Same for reading
 int                   TDisplayLinux::hOut=-1;   // Handle for the console output
+FILE                 *TDisplayLinux::fOut=NULL;
 char                 *TDisplayLinux::origEnvir=NULL;
 char                 *TDisplayLinux::newEnvir=NULL;
 int                   TDisplayLinux::maxLenTit=0;
@@ -119,7 +120,7 @@ void TDisplayLinux::Init(int mode)
 
 void TDisplayLinux::SetCursorPos(unsigned x, unsigned y)
 {
- fprintf(stdout,"\E[%d;%dH",y+1,x+1);
+ fprintf(fOut,"\E[%d;%dH",y+1,x+1);
  curX=x; curY=y;
 }
 
@@ -134,7 +135,7 @@ void TDisplayLinux::GetCursorPos(unsigned &x, unsigned &y)
 {
  char s[40];
 
- fputs("\E[6n",stdout);
+ fputs("\E[6n",fOut);
  *s=0;
  fgets(s,sizeof(s)-1,TGKeyLinux::fIn); // Response is \E[y;xR
 
@@ -154,7 +155,7 @@ void TDisplayLinux::SetCursorShape(unsigned start, unsigned end)
  if (start>=end)
    {
     if (!getShowCursorEver())
-       fputs("\E[?1c",stdout);
+       fputs("\E[?1c",fOut);
     cursorStart=start;
     cursorEnd=end;
    }
@@ -162,7 +163,7 @@ void TDisplayLinux::SetCursorShape(unsigned start, unsigned end)
    {// Approximate with the size (1-8)
     int size=(int)((end-start)/12.5)+1;
     if (size>8) size=8;
-    fprintf(stdout,"\E[?%dc",size);
+    fprintf(fOut,"\E[?%dc",size);
     cursorStart=(int)((8-size)*12.5);
     cursorEnd=99;
    }
@@ -263,7 +264,7 @@ int TDisplayLinux::SetDisPaletteColors(int from, int number, TScreenColor *color
  int ret=number;
  while (number-- && from<16)
    {
-    fprintf(stdout,"\E]P%1.1X%2.2X%2.2X%2.2X",cMap[from++],colors->R,colors->G,colors->B);
+    fprintf(fOut,"\E]P%1.1X%2.2X%2.2X%2.2X",cMap[from++],colors->R,colors->G,colors->B);
     colors++;
    }
  return ret;

@@ -18,6 +18,7 @@ same used in original Turbo Vision for compatibility purposes.
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_string
+#define Uses_unistd
 #define Uses_AllocLocal
 #define Uses_ctype
 #define Uses_TScreen
@@ -72,7 +73,8 @@ void   (*TScreen::setCharacter)(unsigned offset, ushort value)
                                                 =TScreen::defaultSetCharacter;
 void   (*TScreen::setCharacters)(unsigned offset, ushort *values, unsigned count)
                                                 =TScreen::defaultSetCharacters;
-int    (*TScreen::System)(const char *command, pid_t *pidChild)
+int    (*TScreen::System)(const char *command, pid_t *pidChild, int in,
+                          int out, int err)
                                                 =TScreen::defaultSystem;
 int    (*TScreen::getFontGeometry)(unsigned &w, unsigned &h)
                                                 =TScreen::defaultGetFontGeometry;
@@ -154,11 +156,19 @@ void TScreen::defaultSetCharacters(unsigned offset, ushort *values, unsigned cou
  memcpy(screenBuffer+offset,values,count*2);
 }
 
-int TScreen::defaultSystem(const char *command, pid_t *pidChild)
+int TScreen::defaultSystem(const char *command, pid_t *pidChild, int in, int out,
+                           int err)
 {
  // fork mechanism not available
  if (pidChild)
     *pidChild=0;
+ // If the caller asks for redirection replace the requested handles
+ if (in!=-1)
+    dup2(in,STDIN_FILENO);
+ if (out!=-1)
+    dup2(out,STDOUT_FILENO);
+ if (err!=-1)
+    dup2(err,STDERR_FILENO);
  return system(command);
 }
 

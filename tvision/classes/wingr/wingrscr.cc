@@ -336,12 +336,22 @@ TScreenWinGr::~TScreenWinGr()
 
 /* ------------------------------------------------------------------------- */
    int TScreenWinGr::System( const char * command
-                           , pid_t      * pidChild )
+                           , pid_t      * pidChild
+                           , int in
+                           , int out
+                           , int err)
 /* ------------------------------------------------------------------------- */
 
 #ifndef TVCompf_Cygwin
 { if (pidChild)     // fork mechanism not implemented, indicate the child finished
   { *pidChild=0; }
+  // If the caller asks for redirection replace the requested handles
+  if (in!=-1)
+     dup2(in,STDIN_FILENO);
+  if (out!=-1)
+     dup2(out,STDOUT_FILENO);
+  if (err!=-1)
+     dup2(err,STDERR_FILENO);
   return system(command); }
 #else
 
@@ -351,7 +361,15 @@ TScreenWinGr::~TScreenWinGr()
  */
 
 { if (!pidChild)
-  { return system(command); }
+  {
+   // If the caller asks for redirection replace the requested handles
+   if (in!=-1)
+      dup2(in,STDIN_FILENO);
+   if (out!=-1)
+      dup2(out,STDOUT_FILENO);
+   if (err!=-1)
+      dup2(err,STDERR_FILENO);
+   return system(command); }
 
   pid_t cpid=fork();
 
@@ -370,6 +388,14 @@ TScreenWinGr::~TScreenWinGr()
     { _exit(127); }
 
     char *argv[4];
+
+    // If the caller asks for redirection replace the requested handles
+    if (in!=-1)
+       dup2(in,STDIN_FILENO);
+    if (out!=-1)
+       dup2(out,STDOUT_FILENO);
+    if (err!=-1)
+       dup2(err,STDERR_FILENO);
 
     argv[0]=getenv("SHELL");
     if (!argv[0])

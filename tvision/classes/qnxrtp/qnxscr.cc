@@ -288,13 +288,21 @@ void TScreenQNXRtP::setCharacter(unsigned offset, ushort value)
    setCharacters(offset, &value, 1);
 }
 
-int TScreenQNXRtP::System(const char *command, pid_t* pidChild)
+int TScreenQNXRtP::System(const char *command, pid_t* pidChild, int in,
+                          int out, int err)
 {
    char *argv[4];
 
    if (!pidChild)
    {
-      return system(command);
+     // If the caller asks for redirection replace the requested handles
+     if (in!=-1)
+        dup2(in,STDIN_FILENO);
+     if (out!=-1)
+        dup2(out,STDOUT_FILENO);
+     if (err!=-1)
+        dup2(err,STDERR_FILENO);
+     return system(command);
    }
 
    pid_t cpid=fork();
@@ -306,6 +314,14 @@ int TScreenQNXRtP::System(const char *command, pid_t* pidChild)
          _exit(127);
       }
    
+      // If the caller asks for redirection replace the requested handles
+      if (in!=-1)
+         dup2(in,STDIN_FILENO);
+      if (out!=-1)
+         dup2(out,STDOUT_FILENO);
+      if (err!=-1)
+         dup2(err,STDERR_FILENO);
+
       argv[0]=getenv("SHELL");
       if (!argv[0])
       {

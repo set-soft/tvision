@@ -79,7 +79,8 @@ protected:
  static ushort GetCharacter(unsigned dst);
  static void   SetCharacter(unsigned offset, ushort value);
  static void   SetCharacters(unsigned dst, ushort *src, unsigned len);
- static int    System(const char *command, pid_t *pidChild);
+ static int    System(const char *command, pid_t *pidChild, int in, int out,
+                      int err);
  static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
 
  // Support functions

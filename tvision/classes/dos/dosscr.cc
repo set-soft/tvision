@@ -333,11 +333,19 @@ void TScreenDOS::setCharacters(unsigned offset,ushort *values,unsigned count)
    }
 }
 
-int TScreenDOS::System(const char *command, pid_t *pidChild)
+int TScreenDOS::System(const char *command, pid_t *pidChild, int in,
+                       int out, int err)
 {
  // fork mechanism not available
  if (pidChild)
     *pidChild=0;
+ // If the caller asks for redirection replace the requested handles
+ if (in!=-1)
+    dup2(in,STDIN_FILENO);
+ if (out!=-1)
+    dup2(out,STDOUT_FILENO);
+ if (err!=-1)
+    dup2(err,STDERR_FILENO);
  return system(command);
 }
 
