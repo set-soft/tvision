@@ -676,7 +676,7 @@ sub GenerateMakefile
    {
     #$rep="linuxso/librhtv.so.$Version";
     #$rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl --no-inst-message";
-    $rep="dynamic-lib:\n\tcd linuxso; ./makemak.pl --no-inst-message";
+    $rep="dynamic-lib:\n\tcd linuxso; perl makemak.pl --no-inst-message";
     $text=~s/\@target2_rule\@/$rep/g;
    }
  else

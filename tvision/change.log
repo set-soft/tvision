@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.59  2002/05/10 18:46:33  set
+* Fixed: [Solaris] getopt.c didn't include some needed headers.
+
 Revision 2.58  2002/05/10 17:34:44  set
 * Modified: [X11] Cursor initialization.
 * Fixed: [X11 Solaris] XmbLookupString doesn't support NULL for status.
