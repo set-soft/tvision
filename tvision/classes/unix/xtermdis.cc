@@ -30,7 +30,10 @@
 #include <tv/unix/xtkey.h>
 #include <tv/linux/log.h>
 
-// That's a workaround for a bug in the glibc included in SuSE 9.0:
+// GNU libc pulls it but other libc implementations just have a forward
+// declaration for struct timeval.
+#include <sys/time.h>
+// That's a workaround for a bug in the glibc 2.3.2 and 2.3.3:
 // The TEMP_FAILURE_RETRY macro uses errno, but errno.h isn't included!
 #include <errno.h>
 // TEMP_FAILURE_RETRY isn't mandatory.
