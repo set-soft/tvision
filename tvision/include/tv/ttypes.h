@@ -25,13 +25,28 @@ Modified by Robert H”hne to be used for RHIDE.
 enum Boolean { False, True };
 #endif
 
-typedef short int16;
-typedef int int32;
+/* The following types should be platform independent */
+typedef signed char int8;
+typedef short       int16;
+typedef int         int32;
+typedef unsigned char  uint8;
 typedef unsigned short uint16;
-typedef unsigned int uint32;
+typedef unsigned int   uint32;
+#if defined(__GNUC__)
+typedef unsigned long long uint64;
+typedef          long long int64;
+#elif defined(__TURBOC__) || defined(_MSVC)
+typedef unsigned __int64 uint64;
+typedef          __int64 int64;
+#else
+#error Can not define uint64 type: unknown compiler.
+#endif
 
+/* The following are just aliases and the size is platform dependant */
+typedef unsigned char  uchar;
 typedef unsigned short ushort;
-typedef unsigned char uchar;
+typedef unsigned int   uint;
+typedef unsigned long  ulong;
 
 const char EOS = '\0';
 
@@ -50,13 +65,5 @@ const int ccNotFound = -1;
 
 extern uchar specialChars[];
 extern uchar o_specialChars[];
-
-#if defined(__GNUC__)
-typedef unsigned long long uint64;
-#elif defined(__TURBOC__) || defined(_MSVC)
-typedef unsigned __int64 uint64;
-#else
-#error Can not define uint64 type: unknown compiler.
-#endif
 
 #endif	// __TTYPES_H

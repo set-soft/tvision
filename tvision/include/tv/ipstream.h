@@ -4,20 +4,21 @@
  *      Copyright (c) 1994 by Borland International
  *      All Rights Reserved.
  *
-
-Modified by Robert H”hne to be used for RHIDE.
-
+ * Modified by Robert H”hne to be used for RHIDE.
  *
+ * Modified by Jose Angel Sanchez Caso (JASC) to have machine endian and
+ *  integer size compatibility.
  *
- */
-
-/* ------------------------------------------------------------------------*/
-/*                                                                         */
-/*   class ipstream                                                        */
-/*                                                                         */
-/*   Base class for reading streamable objects                             */
-/*                                                                         */
-/* ------------------------------------------------------------------------*/
+ * Added functions to rework the endian stuff by SET: readShort, readInt,
+ * readLong, read8, read16, read32 and read64.
+ *
+ * ------------------------------------------------------------------------*
+ *                                                                         *
+ *   class ipstream                                                        *
+ *                                                                         *
+ *   Base class for reading streamable objects                             *
+ *                                                                         *
+ * ------------------------------------------------------------------------*/
 
 #if defined( Uses_ipstream ) && !defined( __ipstream )
 #define __ipstream
@@ -42,25 +43,33 @@ public:
     ipstream& seekg( streamoff, ios::seek_dir );
 
     uchar readByte();
-    void readBytes( void *, size_t );
-    ushort readWord();
+    ushort readWord() { return readShort(); };
+    void  readBytes( void *, size_t );
     char * readString();
     char * readString( char *, unsigned );
+    /* Platform dependent: */
+    ushort readShort();
+    uint   readInt();
+    ulong  readLong();
+    /* The following are platform independent (stores in little endian) */
+    uint8  read8() { return readByte(); };
+    uint16 read16();
+    uint32 read32();
+    uint64 read64();
 
-    friend ipstream& operator >> ( ipstream&, char& );
-#ifndef __TURBOC__
-    friend ipstream& operator >> ( ipstream&, signed char& );
-#endif
-    friend ipstream& operator >> ( ipstream&, unsigned char& );
-    friend ipstream& operator >> ( ipstream&, signed short& );
-    friend ipstream& operator >> ( ipstream&, unsigned short& );
-    friend ipstream& operator >> ( ipstream&, signed int& );
-    friend ipstream& operator >> ( ipstream&, unsigned int& );
-    friend ipstream& operator >> ( ipstream&, signed long& );
-    friend ipstream& operator >> ( ipstream&, unsigned long& );
-    friend ipstream& operator >> ( ipstream&, float& );
-    friend ipstream& operator >> ( ipstream&, double& );
-    friend ipstream& operator >> ( ipstream&, long double& );
+    #ifndef __TURBOC__
+    ipstream& operator >> (signed char    &ch ) {ch=readByte();  return (*this);}
+    #endif
+    ipstream& operator >> (char           &ch ) {ch=readByte();  return (*this);}
+    ipstream& operator >> (unsigned char  &ch ) {ch=readByte();  return (*this);}
+    ipstream& operator >> (signed short   &sh ) {sh=readShort();  return (*this);}
+    ipstream& operator >> (unsigned short &sh ) {sh=readShort();  return (*this);}
+    ipstream& operator >> (signed int     &i  ) { i=readInt(); return (*this);}
+    ipstream& operator >> (unsigned int   &i  ) { i=readInt(); return (*this);}
+    ipstream& operator >> (signed long    &l  ) { l=readLong(); return (*this);}
+    ipstream& operator >> (unsigned long  &l  ) { l=readLong(); return (*this);}
+    ipstream& operator >> (float          &f  ) { readBytes( &f, sizeof(f) ); return (*this);}
+    ipstream& operator >> (double         &d  ) { readBytes( &d, sizeof(d) ); return (*this);}
 
     friend ipstream& operator >> ( ipstream&, TStreamable& );
     friend ipstream& operator >> ( ipstream&, void *& );
