@@ -567,4 +567,5 @@ win32/demo.mk
 win32/demo.ms
 win32/gkey.cc
 win32/obj/delete.me
+win32/obj_demo/delete.me
 win32/trans.cc
