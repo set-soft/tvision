@@ -987,6 +987,10 @@ TScreenX11::TScreenX11()
     XCloseIM(xim);
     exit(0);
    }
+ // This prints which locale was detected for the X Input Methode.
+ // It should have a very big impact in the way input is interpreted, but I
+ // couldn't verify it. I'm trying using japanese ;-)
+ //printf("Locale: %s\n",XLocaleOfIM(xim));
 
  /* We will accept the Input Context default events ... */
  unsigned long mask, fevent;

@@ -69,6 +69,7 @@ public:
   { return AlphaTable[(uchar)val] & upperChar; }
  static int     InternalCodeForUnicode(uint16 unicode);
  static uint16  UnicodeForInternalCode(uint16 code);
+ static void    GetUnicodesForCP(int id, stIntCodePairs *unicodes);
  static TVCodePageCallBack SetCallBack(TVCodePageCallBack map);
 
  static Boolean OnTheFlyRemapNeeded() { return NeedsOnTheFlyRemap ? True : False; }

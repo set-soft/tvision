@@ -4,11 +4,13 @@
 #include <tv/configtv.h>
 
 #define Uses_stdio // debug
+#define Uses_stdlib // bsearch
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
 #define Uses_TEvent
+#define Uses_TVCodePage
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -57,6 +59,34 @@ unsigned TGKeyX11::Symbol;
 unsigned TGKeyX11::Flags;
 uchar    TGKeyX11::Scan;
 uchar    TGKeyX11::sendQuit=0;
+stIntCodePairs
+        *TGKeyX11::inputCP=NULL;
+
+static
+uint16 utf8_2_u16(const char *b)
+{
+ int c=*((uchar *)(b++));
+ int n,t;
+
+ if (c & 0x80)
+   {
+    n=1;
+    while (c & (0x80>>n))
+      n++;
+
+    c&=(1<<(8-n))-1;
+
+    while (--n>0)
+      {
+       t=*((unsigned char *)(b++));
+       if ((!(t&0x80)) || (t&0x40))
+          return '^';
+       c=(c<<6) | (t&0x3F);
+      }
+   }
+
+ return c;
+}
 
 int TGKeyX11::getKeyEvent(int block)
 {
@@ -82,8 +112,9 @@ int TGKeyX11::getKeyEvent(int block)
        continue;
     if (event.type==KeyPress)
       {
-       //printf("Key event 0x%04X\n",event.xkey.state);
-       lenKb=XmbLookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
+       //printf("Key event 0x%04X Keysym: 0x%08X\n",event.xkey.state,XLookupKeysym(&event.xkey,3));
+       // Ask for the UTF-8 character, better for future applications
+       lenKb=Xutf8LookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
        bufferKb[lenKb]=0;
        //printf("Key event %d %s 0x%04X %d\n",lenKb,bufferKb,(unsigned)Key,bufferKb[0]);
        /* FIXME: how can I know the state before entering the application? */
@@ -289,9 +320,9 @@ ushort TGKeyX11::GKey()
     name=KeyCodeByKeySym[Key & 0xFF];
     //printf("Key by keysym 0x%X name: %d Symbol %d\n",(unsigned)Key,name,Symbol);
    }
- else if (lenKb==1)
+ else if (lenKb!=0)
    {/* A key by their ASCII */
-    Symbol=(unsigned char)bufferKb[0];
+    Symbol=utf8_2_u16(bufferKb);
     if (Symbol==0 && Key==' ')
        name=kbSpace; // Why Ctrl+Space reports it? is my X?
     else
@@ -307,11 +338,14 @@ ushort TGKeyX11::GKey()
              if (Symbol>26 && Symbol<32) // ^{ ^\ ^} ?? ^/
                 name=KeyCodeByASCII[Key-32];
              else
+               {// >=128, handle them using Unicode
                 name=kbUnkNown;
+                Symbol=Unicode2CP(Symbol);
+               }
             }
          }
       }
-    //printf("Key of lenght 1: name: %d Symbol %d Key: 0x%04X\n",name,Symbol,Key);
+    //printf("Key of lenght %d: name: %d Symbol %04X Key: 0x%04X\n",lenKb,name,Symbol,Key);
    }
  else
    {/* A key with something else, not handled yet */
@@ -350,6 +384,26 @@ ushort TGKeyX11::GKey()
  return name|Flags;
 }
 
+static
+int compare(const void *v1, const void *v2)
+{
+ stIntCodePairs *p1=(stIntCodePairs *)v1;
+ stIntCodePairs *p2=(stIntCodePairs *)v2;
+ return (p1->unicode>p2->unicode)-(p1->unicode<p2->unicode);
+}
+
+unsigned TGKeyX11::Unicode2CP(uint16 unicode)
+{
+ if (!inputCP)
+    return unicode;
+ stIntCodePairs se,*re;
+ se.unicode=unicode;
+ re=(stIntCodePairs *)bsearch(&se,inputCP,256,sizeof(stIntCodePairs),compare);
+ /*if (!re)
+    printf("No encuentro U+%04X\n",unicode);*/
+ return re ? re->code : '?';
+}
+
 unsigned TGKeyX11::GetShiftState()
 {
  return kbFlags;
@@ -379,9 +433,22 @@ void TGKeyX11::Init()
  TGKey::gkey         =GKey;
  TGKey::getShiftState=GetShiftState;
  TGKey::fillTEvent   =FillTEvent;
+ TGKey::SetCodePage  =SetCodePage;
  /* Initialize keyboard tables */
  for (int i=0; XEquiv[i].symbol; i++)
      KeyCodeByKeySym[XEquiv[i].symbol & 0xFF]=XEquiv[i].key;
+ /* Find which encoding is used for input */
+ if (!inputCP)
+    inputCP=new stIntCodePairs[256];
+ TVCodePage::GetUnicodesForCP(TVCodePage::GetInpCodePage(),inputCP);
+}
+
+int TGKeyX11::SetCodePage(int id)
+{
+ TGKey::SetCodePage(id);
+ if (!inputCP)
+    inputCP=new stIntCodePairs[256];
+ TVCodePage::GetUnicodesForCP(id,inputCP);
 }
 #else
 
