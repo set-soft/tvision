@@ -1,4 +1,20 @@
-$Log$
+$Log$.
+Revision 2.38  2002/02/03 19:45:40  set
+* Modified: Moved mouse.cc code to tevent.cc. It contains mouseInt() which
+was reworked.
+* Added: a new THWMouse member called drawCounter, used when the mouse is
+drawn asynchronically by an interrupt. It can be accessed using TMouse
+members: resetDrawCounter() and getDrawCounter(). Only needed by TView to
+know if the mouse was updated while drawing to screen.
+* Modified: Draw mouse to return 1 if the draw was necesary.
+* Modified: TView to be more clean in the code that finds mouse position and
+determines asynchronic draws.
+* Modidied: Now the BIOS/direct mode for DOS driver is set using
+SetKbdMapping. Two special values determines it: dosUseBIOS and dosUseDirect.
+It allows for special actions (pointers redirection) and a portable mechanism
+(you can use code that is valid for other drivers, not useful but valid).
+* Added: Mouse and Keyboard headers for DOS are almost finished.
+
 Revision 2.37  2002/02/02 15:20:08  set
 * Modified: Now OS specific headers are in separated directories. Example:
 tv/linuxscr.h is now tv/linux/screen.h.
