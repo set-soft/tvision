@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999,2000 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2001 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -17,8 +17,6 @@ $GPMVersionNeeded='1.10';
 #$NCursesVersionNeeded='1.9.9';
 # That's a test to see if that works:
 $NCursesVersionNeeded='1.8.6';
-# Adds some nice stuff to define key sequences.
-$NCursesVersionRecomended='4.2';
 $DJGPPVersionNeeded='2.0.2';
 unlink $ErrorLog;
 
@@ -36,6 +34,12 @@ $CXXFLAGS=FindCXXFLAGS();
 $GCC=CheckGCC();
 # Check if gcc can compile C++
 $GXX=CheckGXX();
+# Which architecture are we using?
+DetectCPU();
+# Only gnu make have the command line and commands we use.
+LookForGNUMake();
+# Same for ar, it could be `gar'
+LookForGNUar();
 # Is the right djgpp?
 if ($OS eq 'DOS')
   {
@@ -45,7 +49,7 @@ if ($OS eq 'DOS')
 if ($OS eq 'UNIX')
   {
    LookForGPM($GPMVersionNeeded);
-   LookForNCurses($NCursesVersionNeeded,$NCursesVersionRecomended);
+   LookForNCurses($NCursesVersionNeeded);
    LookForKeysyms();
    #LookForOutB();
   }
@@ -63,10 +67,14 @@ chop($here);
 $MakeDefsRHIDE[1]='TVSRC='.$here.'/include '.@conf{'prefix'}.'/include/rhtvision ../../include';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
+ # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
+ # be added for things like FreeBSD or SunOS.
+$MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSflavor eq 'Linux'));
 $MakeDefsRHIDE[2].='intl ' if ($OS eq 'DOS') && (@conf{'intl'} eq 'yes');
 $MakeDefsRHIDE[2].='iconv ' if (@conf{'iconv'} eq 'yes');
-$MakeDefsRHIDE[2].='ncurses m ' if ($OS eq 'UNIX');
+$MakeDefsRHIDE[2].=$conf{'NameCurses'}.' m ' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].='gpm ' if @conf{'HAVE_GPM'} eq 'yes';
+$MakeDefsRHIDE[4]='RHIDE_AR='.$conf{'GNU_AR'};
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
@@ -111,6 +119,8 @@ CreateConfigH();
 if ($OS eq 'UNIX')
   {
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
+   $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
+   $ReplaceTags{'make'}=$conf{'GNU_Make'};
    ReplaceText('linuxso/makemak.in','linuxso/makemak.pl');
    chmod(0755,'linuxso/makemak.pl');
   }
@@ -148,10 +158,14 @@ sub SeeCommandLine
       {
        $conf{'no-intl'}='yes';
       }
-#    elsif ($i=~'--cflags=(.*)')
-#      {
-#       @conf{'CFLAGS'}=$1;
-#      }
+    elsif ($i=~'--cflags=(.*)')
+      {
+       @conf{'CFLAGS'}=$1;
+      }
+    elsif ($i=~'--cxxflags=(.*)')
+      {
+       @conf{'CXXFLAGS'}=$1;
+      }
     elsif ($i eq '--fhs')
       {
        $conf{'fhs'}='yes';
@@ -171,6 +185,8 @@ sub ShowHelp
  print "--prefix=path  : defines the base directory for installation.\n";
  print "--no-intl      : don't use international support.\n";
  print "--fhs          : force the FHS layout under UNIX.\n";
+ print "--cflags=val   : normal C flags [default is env. CFLAGS].\n";
+ print "--cxxflags=val : normal C++ flags [default is env. CXXFLAGS].\n";
 }
 
 sub GiveAdvice
@@ -200,6 +216,11 @@ sub GiveAdvice
     print "\n";
     print "* No mouse support for console! please install the libgpm package needed\n";
     print "  for development. (i.e. libgpmg1-dev_1.13-5.deb).\n";
+   }
+ if (@conf{'GNU_Make'} ne 'make')
+   {
+    print "\n";
+    print "* Please use $conf{'GNU_Make'} instead of make command.\n";
    }
 }
 
@@ -418,7 +439,8 @@ int main(void)
 
 sub LookForNCurses
 {
- my ($vNeed,$vReco)=@_,$test;
+ my ($vNeed)=@_;
+ my ($result,$test);
 
  print 'Looking for ncurses library: ';
  if (@conf{'ncurses'})
@@ -426,6 +448,8 @@ sub LookForNCurses
     print "@conf{'ncurses'} (cached) OK\n";
     return;
    }
+ # Assume it is -lncurses
+ $conf{'NameCurses'}='ncurses';
  $test='
 #include <stdio.h>
 #include <ncurses.h>
@@ -435,32 +459,51 @@ int main(void)
  printf(NCURSES_VERSION);
  return 0;
 }';
- $test=RunGCCTest($GCC,'c',$test,'-lncurses');
- if (!length($test))
-   {
-    print "\nError: ncurses library not found, please install ncurses $vNeed or newer\n";
-    print "Look in $ErrorLog for potential compile errors of the test\n";
-    CreateCache();
-    die "Missing library\n";
+ $result=RunGCCTest($GCC,'c',$test,'-lncurses');
+ if (!length($result))
+   {# Try again with -lcurses, In Solaris ncurses is installed this way
+    $result=RunGCCTest($GCC,'c',$test,'-lcurses');
+    if (!length($result))
+      {
+       print "\nError: ncurses library not found, please install ncurses $vNeed or newer\n";
+       print "Look in $ErrorLog for potential compile errors of the test\n";
+       CreateCache();
+       die "Missing library\n";
+      }
+    $conf{'NameCurses'}='curses';
    }
- if (!CompareVersion($test,$vNeed))
+ if (!CompareVersion($result,$vNeed))
    {
-    print "$test, too old\n";
+    print "$result, too old\n";
     print "Please upgrade your ncurses library to version $vNeed or newer.\n";
-    print "You can try with $test forcing the configure scripts.\n";
+    print "You can try with $result forcing the configure scripts.\n";
     CreateCache();
     die "Old library\n";
    }
- print "$test OK\n";
- @conf{'ncurses'}=$test;
- if (!CompareVersion($test,$vReco))
+ print "$result OK\n";
+ @conf{'ncurses'}=$result;
+
+ print 'Checking if ncurses have define_key: ';
+ $test='
+#include <stdio.h>
+#include <ncurses.h>
+void dummy(void) { define_key("\x1B[8~",KEY_F(59)); /* End */ }
+int main(void)
+{
+ printf("Ok\n");
+ return 0;
+}';
+ $result=RunGCCTest($GCC,'c',$test,'-l'.$conf{'NameCurses'});
+ chop($result);
+ if ($result eq 'Ok')
    {
-    print "Warning: $vReco version is recommended\n";
-    $conf{'HAVE_DEFINE_KEY'}=0;
+    print "yes\n";
+    $conf{'HAVE_DEFINE_KEY'}=1;
    }
  else
    {
-    $conf{'HAVE_DEFINE_KEY'}=1;
+    print "no\n";
+    $conf{'HAVE_DEFINE_KEY'}=0;
    }
 }
 
@@ -545,7 +588,7 @@ sub CreateConfigH
 
  print "Generating configuration header\n";
 
- $text.=ConfigIncDef('HAVE_DEFINE_KEY','ncurses 4.2 or better have define_key');
+ $text.=ConfigIncDef('HAVE_DEFINE_KEY','ncurses 4.2 or better have define_key (In Linux)');
  $text.=ConfigIncDefYes('HAVE_KEYSYMS','The X11 keysyms are there');
  $conf{'HAVE_INTL_SUPPORT'}=@conf{'intl'};
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
@@ -554,6 +597,7 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n#define TVOSf_$OSflavor\n";
+ $text.="#define TVCPU_$conf{'TV_CPU'}\n";
 
  $old=cat('include/tv/configtv.h');
  replace('include/tv/configtv.h',$text) unless $text eq $old;

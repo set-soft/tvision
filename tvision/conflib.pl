@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999,2000 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2001 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # Common configuration routines.
@@ -93,6 +93,37 @@ sub LookForFile
 
 ###[txh]####################################################################
 #
+# Prototype: RunRedirect($command,$ErrorLog)
+# Description:
+#  Executes the desired command sending the stderr to $ErrorLog file
+# (appending) and returning the stdout.
+#
+# Return: The value returned from the program (from stdout).
+#
+####################################################################[txi]###
+
+sub RunRedirect
+{
+ my ($command,$ErrorLog)=@_;
+ my $ret;
+
+ if ($OS eq 'DOS')
+   {
+    $ret=`redir -ea $ErrorLog $command`;
+   }
+ elsif ($OS eq 'Win32')
+   {
+    $ret=`sh -c "$command 2>> $ErrorLog"`;
+   }
+ else
+   {
+    $ret=`$command 2>> $ErrorLog`;
+   }
+ $ret;
+}
+
+###[txh]####################################################################
+#
 # Prototype: RunGCCTest($gcc,$extension,$prog,$flags)
 # Description:
 #  Compiles a test program with gcc and runs it callecting the output.@*
@@ -114,6 +145,7 @@ sub RunGCCTest
  my ($command,$label);
  my ($file,$flags)=('test.'.$ext,'');
 
+ unlink 'test.exe';
  replace($file,$test);
  $flags=$CFLAGS if ($ext eq 'c');
  $flags=$CXXFLAGS if ($ext eq 'cc');
@@ -122,18 +154,7 @@ sub RunGCCTest
  $label=$command.":\n";
  `echo $label >> $ErrorLog`;
 
- if ($OS eq 'DOS')
-   {
-    `redir -ea $ErrorLog $command`;
-   }
- elsif ($OS eq 'Win32')
-   {
-    `sh -c "$command 2>> $ErrorLog"`;
-   }
- else
-   {
-    `$command 2>> $ErrorLog`;
-   }
+ RunRedirect($command,$ErrorLog);
  $test=`./test.exe`;
  #print "$command: $test";
  # Does anybody know why I can't delete the exe here?
@@ -665,6 +686,14 @@ sub DetectOS
     $defaultCXX='g++';
     $supportDir='win32';
    }
+ elsif ($os=~/SunOS/)
+   {
+    $OS='UNIX';
+    $OSflavor='Solaris';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='linux';
+   }
  else
    {
     die('Unknown OS, you must do things by yourself');
@@ -865,16 +894,21 @@ sub ParentDir
 
 sub ReplaceText
 {
- my ($Text,$Dest,$i,$se,$re);
+ my ($Text,$Dest,$i,$se,$re,$ff);
 
  $Dest=$_[1];
  print "Processing $_[0] => $_[1]\n";
  $Text=cat($_[0]);
+ $ff=0;
  foreach $i (%ReplaceTags)
    {
-    $se='@'.$i.'@';
-    $re=@ReplaceTags{$i};
-    $Text =~ s/$se/$re/g;
+    $ff=!$ff;
+    if ($ff)
+      {
+       $se='@'.$i.'@';
+       $re=$ReplaceTags{$i};
+       $Text =~ s/$se/$re/g;
+      }
    }
  replace($Dest,$Text);
 }
@@ -932,6 +966,106 @@ sub ExtractItemsMak
       }
    }
  $result;
+}
+
+sub DetectCPU
+{
+ my $test;
+
+ print 'Checking Architecture: ';
+
+ if ($conf{'TV_CPU'})
+   {
+    print "$conf{'TV_CPU'} (cached)\n";
+    return;
+   }
+ $test='
+#include <stdio.h>
+int main(void)
+{
+ #ifdef __i386__
+ printf("x86\n");
+ #elif defined(__alpha__) || defined(__alpha)
+ printf("Alpha\n");
+ #elif defined(__sparc_v9__) || defined(__sparcv9)
+ printf("SPARC64\n");
+ #elif defined(__sparc__) || defined(sparc)
+ printf("SPARC\n");
+ #elif defined(__PPC__) || defined(PPC)
+ printf("PPC\n");
+ #elif defined(__hppa__)
+ printf("HPPA\n");
+ #elif defined(__mips__)
+ printf("MIPS\n");
+ #else
+ printf("Unknown\n");
+ #endif
+ return 0;
+}';
+ $test=RunGCCTest($GCC,'c',$test,'');
+ chop($test);
+ $conf{'TV_CPU'}=$test;
+ print "$test\n";
+}
+
+sub LookForGNUMake
+{
+ my $test;
+ print 'Looking for GNU make: ';
+
+ if ($conf{'GNU_Make'})
+   {
+    print "$conf{'GNU_Make'} (cached)\n";
+    return;
+   }
+ $test=RunRedirect('make --version',$ErrorLog);
+ if ($test=~/GNU Make/)
+   {
+    $conf{'GNU_Make'}='make';
+    print "make\n";
+    return;
+   }
+ $test=RunRedirect('gmake --version',$ErrorLog);
+ if ($test=~/GNU Make/)
+   {
+    $conf{'GNU_Make'}='gmake';
+    print "gmake\n";
+    return;
+   }
+ print "Unable to find GNU Make on this system.\n";
+ print "Please install it and be sure it's in your path.\n";
+ print "Also use `make' or `gmake' name for the binary.\n";
+ die;
+}
+
+sub LookForGNUar
+{
+ my $test;
+ print 'Looking for GNU ar: ';
+
+ if ($conf{'GNU_AR'})
+   {
+    print "$conf{'GNU_AR'} (cached)\n";
+    return;
+   }
+ $test=RunRedirect('ar --version',$ErrorLog);
+ if ($test=~/GNU ar/)
+   {
+    $conf{'GNU_AR'}='ar';
+    print "ar\n";
+    return;
+   }
+ $test=RunRedirect('gar --version',$ErrorLog);
+ if ($test=~/GNU ar/)
+   {
+    $conf{'GNU_AR'}='gar';
+    print "gar\n";
+    return;
+   }
+ print "Unable to find GNU ar on this system.\n";
+ print "Please install it and be sure it's in your path.\n";
+ print "Also use `ar' or `gar' name for the binary.\n";
+ die;
 }
 
 1;
