@@ -1,63 +1,92 @@
+/*------------------------------------------------------------*/
+/* filename -       tparamte.cc                               */
+/*                                                            */
+/* function(s)                                                */
+/*                  TParamText member functions               */
+/*------------------------------------------------------------*/
 /*
  *      Turbo Vision - Version 2.0
  *
  *      Copyright (c) 1994 by Borland International
  *      All Rights Reserved.
  *
-
-Modified by Robert H”hne to be used for RHIDE.
-
+ * Modified by Salvador E. Tropea (SET) for RHTVision port.
  *
+ * Big Warning!!!!! This code uses a 256 bytes buffer and doesn't check
+ * for overflow.
+ * I added:
+ * 1) The limit is now a constant defined in tparamTextMaxLen, so you can
+ * adjust it.
+ * 2) If SAFE_CODE is defined (default) the setText() member checks the
+ * lenght of the string. I use a slow trick, but is better than corrupting
+ * memory.
+ *
+ * Portability note:
+ * getText( char *s, int maxLen ) and BTV uses: getText( char *s )
+ *   That's because Robert modified TStaticText, I think that's good, asking
+ * to write in a string without knowing the length is a very bad idea.
  *
  */
-// SET: Moved the standard headers here because according to DJ
-// they can inconditionally declare symbols like NULL
 #include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
 
 #define Uses_TParamText
 #include <tv.h>
 
-TParamText::TParamText( const TRect& bounds,
-                        const char *aText,
-                        int aParamCount ) :
-    TStaticText(bounds, aText),
-    paramCount( aParamCount ),
-    paramList( 0 )
+
+TParamText::TParamText( const TRect& bounds ) :
+    TStaticText(bounds, 0 ),
+    str( new char [tparamTextMaxLen] )
 {
+    str[0] = EOS;
 }
 
-uint32 TParamText::dataSize()
+TParamText::~TParamText()
 {
-    return paramCount * sizeof(long);
+    delete str;
 }
 
-void TParamText::getText( char *s, int /* maxLen */)
+// , int maxLen ) isn't part of TV 2.0
+void TParamText::getText( char *s, int maxLen )
 {
-    if( text == 0 )
+    if( str == 0 )
         *s = EOS;
     else
-        vsprintf( s, text, paramList );
+    {
+        strncpy( s, str, maxLen );
+        s[maxLen] = 0;
+    }
 }
 
-void TParamText::setData( void *rec )
+int TParamText::getTextLen()
 {
-    paramList = &rec;
+    return (str != 0) ? strlen( str ) : 0;
 }
 
-#if !defined( NO_STREAM )
-void TParamText::write( opstream& os )
+void TParamText::setText( char *fmt, ... )
 {
-    TStaticText::write( os );
-    os << paramCount;
+    va_list ap;
+
+    va_start( ap, fmt );
+    #ifdef SAFE_CODE
+    // Slow but we can check the overflow
+    FILE *f=fopen("/dev/null","wb");
+    int len=vfprintf(f,fmt,ap);
+    fclose(f);
+    if (len>=tparamTextMaxLen)
+      {
+       *str=EOS;
+       return;
+      }
+    #endif
+    vsprintf( str, fmt, ap );
+    va_end( ap );
+
+    drawView();
 }
 
-void *TParamText::read( ipstream& is )
-{
-    TStaticText::read( is );
-    is >> paramCount;
-    paramList = 0;
-    return this;
-}
+#if !defined(NO_STREAMABLE)
 
 TStreamable *TParamText::build()
 {
@@ -67,6 +96,5 @@ TStreamable *TParamText::build()
 TParamText::TParamText( StreamableInit ) : TStaticText( streamableInit )
 {
 }
-#endif // NO_STREAM
 
-
+#endif
