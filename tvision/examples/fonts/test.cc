@@ -63,7 +63,7 @@ TMyApp::TMyApp() :
  if (!TScreen::canSetBFont())
    {
     messageBox("This terminal doesn't support changing the fonts",mfError | mfOKButton);
-    //quit=1;
+    quit=1;
    }
  else
    {
@@ -248,7 +248,7 @@ int main(int argc, char *argv[], char **envir)
  const char *title=TScreen::getWindowTitle();
  TScreen::setWindowTitle("Turbo Vision font test program");
  //myApp.setScreenMode(TDisplay::smCO90x34);
- //myApp.setScreenMode(90,30,10,20);
+ //myApp.setScreenMode(90,30,9,15);
  myApp.run();
  if (title)
    {

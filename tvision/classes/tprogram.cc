@@ -11,7 +11,6 @@ Modified by Salvador E. Tropea (release CPU and other stuff)
  *
  *
  */
-#define Uses_stdio
 
 #define Uses_TKeys
 #define Uses_TProgram
