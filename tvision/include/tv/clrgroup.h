@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea for i18n support.
 
  *
  *
@@ -28,8 +29,12 @@ public:
     TColorGroup *next;
     friend TColorGroup& operator + ( TColorGroup&, TColorItem& );
     friend TColorGroup& operator + ( TColorGroup& g1, TColorGroup& g2 );
-    
 
+protected:
+
+    stTVIntl *cacheName;
+
+    friend class TColorGroupList;
 };
 
 #endif  // Uses_TColorGroup

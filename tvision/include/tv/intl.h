@@ -48,6 +48,11 @@ public:
  static void        freeSt(stTVIntl *&cache);
  static stTVIntl   *emptySt();
  static stTVIntl   *dontTranslateSt();
+ // Replacements that translates and recodes the format string
+ static int         snprintf(char *dest, size_t sz, const char *fmt, ...);
+ #ifdef Uses_intl_fprintf
+ static int         fprintf(FILE *f, const char *fmt, ...);
+ #endif
 
 protected:
  // Enable translations

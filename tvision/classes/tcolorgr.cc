@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea for i18n support.
 
  *
  *
@@ -29,11 +30,13 @@ TColorGroup::TColorGroup( const char *nm, TColorItem *itm, TColorGroup *nxt )
     items = itm;
     next = nxt;
     name = newStr( nm );
+    cacheName = NULL;
 }
 
 TColorGroup::~TColorGroup()
 { 
     DeleteArray(name);
+    TVIntl::freeSt(cacheName);
 }
 
 TColorGroup& operator + ( TColorGroup& g, TColorItem& i )
@@ -120,7 +123,7 @@ void TColorGroupList::getText( char *dest, ccIndex item, short maxChars )
 	TColorGroup *curGroup = groups;
 	while( item-- > 0 )
 		curGroup = curGroup->next;
-	strncpy( dest, curGroup->name, maxChars );
+    strncpy( dest, TVIntl::getText(curGroup->name,curGroup->cacheName), maxChars );
     dest[maxChars] = '\0';
 }
 
