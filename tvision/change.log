@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.320  2002/09/16 14:39:40  set
+* Fixed: The file viewer of the demo program didn't initialize the delta
+member generating aleatory memory corruptions. Seen on Cygwin and MinGW.
+
 Revision 2.319  2002/09/16 14:34:39  set
 * Modified: [WinGr] priority to be the second option until the driver is
 finished.

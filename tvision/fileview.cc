@@ -94,6 +94,7 @@ TFileViewer::TFileViewer( const TRect& bounds,
     fileName = 0;
     helpCtx = hcFileViewer;
     readFile( aFileName );
+    delta.x = delta.y = 0;
 }
 
 TFileViewer::~TFileViewer()
