@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.86  2002/05/28 12:48:30  set
+* Added: The first approach for the Palette handling. The user can access
+a couple of TScreen members (get/setPaletteColors) that works using a
+couple of members defined by each driver (get/setDisPaletteColors) and some
+buffers (ActualPalette, OriginalPalette and PC_BIOSPalette). Added the
+capability bits needed to know what's implemented. I implemented it in the
+Linux driver, lamentably Linux lack a mechanism to know the current colors.
+I explain more in linuxdis.cc.
+
 Revision 2.85  2002/05/27 17:46:18  set
 * Added: QNX update from Mike:
 I'm almost done the screen related stuff (only minor bugs remain), 25% done
