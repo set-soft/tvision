@@ -1008,7 +1008,7 @@ sub GenerateMakefile
    }
  if ($dodyn)
    {
-    $rep.="\ndynamic-lib:\n\t\$(MAKE) DYNAMIC_LIB=1 -C $makeDir -f librhtv.mkf\n";
+    $rep.="\ndynamic-lib: intl-dummy\n\t\$(MAKE) DYNAMIC_LIB=1 -C $makeDir -f librhtv.mkf\n";
 
     if ($OSf ne 'Darwin')
       {
@@ -1108,7 +1108,7 @@ sub GenerateMakefile
     $rep.="\trm -f \$(libdir)/$nameSOM\n";
     $rep.="\trm -f \$(libdir)/$nameSOV\n";
     $rep.="\tcd \$(libdir); ln -s $ver $nameSO\n";
-    # Not needed if the soname changes which each version (at least Ivan says that)
+    $rep.="\tcd \$(libdir); ln -s $ver $nameSOV\n" if $OSf eq 'FreeBSD';
     $rep.="\t\$(INSTALL) -m 0644 $makeDir/$ver \$(libdir)\n";
     $stripDebug=($OSf eq 'Darwin') ? '-S' : '--strip-debug';
     $rep.="\tstrip $stripDebug \$(libdir)/$ver\n" unless $conf{'debugInfo'} eq 'yes';

@@ -1,11 +1,28 @@
-$Log$.
+$Log$
+Revision 2.578  2004/10/01 21:35:27  set
+* Added: Support for NetBSD:
+  * install moves files by default so we need to add -c.
+  * extra libs must be searched in /usr/pkg/lib.
+  * getopt_long is supported.
+* Added: Support for OpenBSD:
+  * getopt_long is supported.
+* Added: Support for Darwin:
+  * options to compile sources for dynamic libraries is -fno-common (no
+    -fPIC).
+  * options to link a dynamic lib are 100% different.
+  * static libs must be included during dynamic lib generation.
+  * dynamic libs names are different (lib.version.dylib).
+  * ranlib must be run *after* installing a static lib.
+  * strip --strip-debug => -S.
+  * ldconfig doesn't exist.
+
 Revision 2.577  2004/09/30 20:56:16  set
 * Fixed: [XTerm] The "get window title" escape sequence was reported to be
 exploitable. For this reason new versions of xterm and Eterm doesn't
 respond to this request. It made the library wait for the reply. So the
 programs didn't continue until the user pressed a key. Now I added a 300 ms
 timeout.
-.
+
 Revision 2.576  2004/09/30 20:55:36  set
 * Added: [Config] OpenBSD as known OS. Tested with OpenBSD 3.4.
 * Fixed: [XTerm] input problems with *BSD systems. They interpret VMIN in a
