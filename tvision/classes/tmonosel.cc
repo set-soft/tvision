@@ -46,7 +46,7 @@ void TMonoSelector::handleEvent( TEvent& event )
     TCluster::handleEvent( event );
     if( event.what == evBroadcast && event.message.command == cmColorSet )
         {
-        value = event.message.infoByte;
+        value = event.message.infoLong;
         drawView();
         }
 }

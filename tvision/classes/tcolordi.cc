@@ -114,7 +114,7 @@ void TColorDialog::handleEvent( TEvent& event )
 {
     TDialog::handleEvent( event );
     if( event.what==evBroadcast && event.message.command==cmNewColorIndex )
-        display->setColor( (uchar *)&pal->data[event.message.infoByte] );
+        display->setColor( (uchar *)&pal->data[event.message.infoLong] );
     else
     // SET: Added this button to test the colors without pressing OK.
     if (event.what==evCommand && event.message.command==cmTryColors)
