@@ -12,7 +12,7 @@ $ExtraModifyMakefiles={};
 $OS='';
 # Linux, FreeBSD, Solaris, QNXRtP
 $OSf='';
-# x86, Alpha, SPARC64, SPARC, PPC, HPPA, MIPS, Unknown
+# x86, Alpha, SPARC64, SPARC, PPC, HPPA, MIPS, Itanium, Unknown
 $CPU='';
 # GCC, BCPP, MSVC
 $Comp='';
@@ -1115,8 +1115,10 @@ sub ExtractItemsMak
  $path=$1;
  print "Extracting from $makefile\n";
  $mak=cat($makefile);
- if ($mak=~ /PROJECT_ITEMS=(((.+)\\\n)*(.+)\n)/)
+ if ($mak=~ /PROJECT_ITEMS=(((.+)\\\r?\n)+(.+)\r?\n)/ ||
+     $mak=~ /PROJECT_ITEMS=((.+)\r?\n)/)
    {
+    #print "$1\n";
     @items=split(/[\\\s]+/,$1);
     foreach $file (@items)
       {
@@ -1180,6 +1182,8 @@ int main(void)
  printf("HPPA\n");
  #elif defined(__mips__)
  printf("MIPS\n");
+ #elif defined(__ia64__)
+ printf("Itanium\n");
  #else
  printf("Unknown\n");
  #endif
