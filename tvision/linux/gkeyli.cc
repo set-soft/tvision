@@ -7,7 +7,7 @@
  That's the counterpart of the gkey.cc for DOS that I created some months ago
 it uses curses input and tries to detect the shift/control status from the
 keycode reported by curses. Additionally the routines detects ALT using the
-ESC-keycode sequence (META+key) with a patch in the low level __tv_GetRaw.
+ESC-keycode sequence (META+key) with a patch in the low level tv_GetRaw.
 
 RH: I moved that patch to the TGKey::gkey() member
 
@@ -44,6 +44,15 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #include <sys/vt.h>
 #include <signal.h>
 
+#ifndef GKEY
+#define dbprintf(a...)
+#else
+#define dbprintf(a...) printf(a)
+#endif
+
+/* Linux IOCTL values found experimentally */
+const int kblNormal=0,kblShift=1,kblAltR=2,kblCtrl=4,kblAltL=8;
+
 int use_real_keyboard_bios = 0;
 int convert_num_pad = 0;
 
@@ -67,67 +76,25 @@ extern int timer_value;
 
 #define IN_FD fileno(stdin)
 
-static int kbReadShiftState()
+unsigned short getshiftstate(void)
 {
-	int arg = 6;	/* TIOCLINUX function #6 */
-	int shift = 0;
-
-	if (ioctl(IN_FD, TIOCLINUX, &arg) != -1)
-	{
-		if (arg & (2 | 8)) shift |= 0x08; // alt
-		if (arg & 4) shift |= 0x04; // ctrl
-		if (arg & 1) shift |= 0x02; // shift left
-	}
-	return shift;
-}
-
-unsigned short __tv_getshiftstate()
-{
-  return kbReadShiftState();
+ int arg = 6;	/* TIOCLINUX function #6 */
+ int shift = 0;
+ 
+ if (ioctl(IN_FD, TIOCLINUX, &arg) != -1)
+   {
+    dbprintf("Shift flags from IOCTL %X\r\n",arg);
+    shift=arg;
+   }
+ return shift;
 }
 
 unsigned short gkey_shifts_flags;
 unsigned char gkey_raw_value;
 unsigned short gkey_raw_code;
 
-void __tv_clear()
-{
-  tcflush(IN_FD,TCIFLUSH);
-}
-
 #define _getch_ getch
 #define _ungetch_ ungetch
-
-int __tv_kbhit()
-{
-  int c = _getch_();
-  if (c != ERR) _ungetch_(c);
-  return c != ERR;
-}
-
-unsigned short __tv_GetRaw()
-{
-  int code;
-
-  /* see if there is data available */
-  if ((code = _getch_()) != ERR)
-  {
-    if (code == 27)
-    {
-      if (__tv_kbhit())
-      {
-        int code2 = _getch_();
-        if (code2 != 27)
-        {
-          code = code2 | META_MASK;
-        }
-      }
-    }
-  }
-  else return 0;
-  return code;
-}
-
 
 // -  9 = Tab tiene conflicto con kbI+Control lo cual es natural, por otro
 // -lado Ctrl+Tab no lo reporta en forma natural
@@ -232,8 +199,9 @@ unsigned short TGKey::gkey(void)
  GetRaw();
  if (rawCode.full & META_MASK)
  {
-   sFlags|=0x200;
+   sFlags|=kblAltL;
    rawCode.full &= ~META_MASK;
+   dbprintf("Adding left alt because the code contains META key\r\n");
  }
  
  //---- The following code takes advantage of the flags reported by the ioctl
@@ -241,28 +209,28 @@ unsigned short TGKey::gkey(void)
  //---- console I add more information later.
  
  // Compose the shift flags:
- if (sFlags & 3)
+ if (sFlags & kblShift)
     Abstract|=kbShiftCode;
- if (sFlags & 4)
+ if (sFlags & kblCtrl)
     Abstract|=kbCtrlCode;
  switch (AltSet)
    {
     case 0: // Normal thing, left is left, right is right
-         if (sFlags & 0x200)
+         if (sFlags & kblAltL)
             Abstract|=kbAltLCode;
          else
-            if (sFlags & 8)
+            if (sFlags & kblAltR)
                Abstract|=kbAltRCode;
          break;
     case 1: // Reverse thing
-         if (sFlags & 0x200)
+         if (sFlags & kblAltL)
             Abstract|=kbAltRCode;
          else
-            if (sFlags & 8)
+            if (sFlags & kblAltR)
                Abstract|=kbAltLCode;
          break;
     default: // Compatibility
-         if (sFlags & 0x208)
+         if (sFlags & (kblAltL | kblAltR))
             Abstract|=kbAltLCode;
    }
 
@@ -297,6 +265,48 @@ unsigned short TGKey::gkey(void)
  return rawCode.full;
 }
 
+// All the info. from BIOS in one call
+void TGKey::GetRaw(void)
+{
+ int code;
+
+ /* see if there is data available */
+ if ((code = _getch_()) != ERR)
+   {
+    if (code == 27)
+      {
+       if (kbhit())
+         {
+          int code2 = _getch_();
+          if (code2 != 27)
+             code = code2 | META_MASK;
+         }
+      }
+   }
+ else
+   {
+    rawCode.full=0;
+    sFlags=0;
+    return;
+   }
+ rawCode.full=code;
+ sFlags=getshiftstate();
+}
+
+int TGKey::kbhit(void)
+{
+  int c = _getch_();
+  if (c != ERR) _ungetch_(c);
+  return c != ERR;
+}
+
+// Who knows what's that?
+#undef clear
+void TGKey::clear(void)
+{
+  tcflush(IN_FD,TCIFLUSH);
+}
+
 typedef struct
 {
   uchar change_table;
@@ -321,26 +331,40 @@ typedef struct
 #define SCAN_S 0x1f
 #define SCAN_J 0x24
 #define SCAN_M 0x32
-
-#define _K_ALTTAB 8
-#define _K_NORMTAB 0
-#define _K_CTRLTAB 4
+#define SCAN_PGUP 104
+#define SCAN_PGDN 109
+#define SCAN_BKSP 14
+#define SCAN_SPAC 57
 
 change_entry changes[] = {
-  { _K_ALTTAB, SCAN_F1, _K_NORMTAB, SCAN_F1, 0, 0 },
-  { _K_ALTTAB, SCAN_F2, _K_NORMTAB, SCAN_F2, 0, 0  },
-  { _K_ALTTAB, SCAN_F3, _K_NORMTAB, SCAN_F3, 0, 0 },
-  { _K_ALTTAB, SCAN_F4, _K_NORMTAB, SCAN_F4, 0, 0 },
-  { _K_ALTTAB, SCAN_F5, _K_NORMTAB, SCAN_F5, 0, 0 },
-  { _K_ALTTAB, SCAN_F6, _K_NORMTAB, SCAN_F6, 0, 0 },
-  { _K_ALTTAB, SCAN_F7, _K_NORMTAB, SCAN_F7, 0, 0 },
-  { _K_ALTTAB, SCAN_F8, _K_NORMTAB, SCAN_F8, 0, 0 },
-  { _K_ALTTAB, SCAN_F9, _K_NORMTAB, SCAN_F9, 0, 0 },
-  { _K_ALTTAB, SCAN_F10, _K_NORMTAB, SCAN_F10, 0, 0 },
-  { _K_CTRLTAB, SCAN_Q, _K_NORMTAB, SCAN_Q, 0, 0},
-  { _K_CTRLTAB, SCAN_S, _K_NORMTAB, SCAN_S, 0, 0},
-  { _K_CTRLTAB, SCAN_J, _K_NORMTAB, SCAN_J, 0, 0},
-  { _K_CTRLTAB, SCAN_M, _K_NORMTAB, SCAN_M, 0, 0}
+  { kblAltL,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
+  { kblAltR,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
+  { kblAltL,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
+  { kblAltR,  SCAN_F2,   kblNormal, SCAN_F2,   0, 0},
+  { kblAltL,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
+  { kblAltR,  SCAN_F3,   kblNormal, SCAN_F3,   0, 0},
+  { kblAltL,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
+  { kblAltR,  SCAN_F4,   kblNormal, SCAN_F4,   0, 0},
+  { kblAltL,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
+  { kblAltR,  SCAN_F5,   kblNormal, SCAN_F5,   0, 0},
+  { kblAltL,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
+  { kblAltR,  SCAN_F6,   kblNormal, SCAN_F6,   0, 0},
+  { kblAltL,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
+  { kblAltR,  SCAN_F7,   kblNormal, SCAN_F7,   0, 0},
+  { kblAltL,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
+  { kblAltR,  SCAN_F8,   kblNormal, SCAN_F8,   0, 0},
+  { kblAltL,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
+  { kblAltR,  SCAN_F9,   kblNormal, SCAN_F9,   0, 0},
+  { kblAltL,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
+  { kblAltR,  SCAN_F10,  kblNormal, SCAN_F10,  0, 0},
+  { kblCtrl,  SCAN_Q,    kblNormal, SCAN_Q,    0, 0},
+  { kblCtrl,  SCAN_S,    kblNormal, SCAN_S,    0, 0},
+  { kblCtrl,  SCAN_J,    kblNormal, SCAN_J,    0, 0},
+  { kblCtrl,  SCAN_M,    kblNormal, SCAN_M,    0, 0},
+  { kblShift, SCAN_PGUP, kblNormal, SCAN_PGUP, 0, 0},
+  { kblShift, SCAN_PGDN, kblNormal, SCAN_PGDN, 0, 0},
+  { kblCtrl,  SCAN_BKSP, kblNormal, SCAN_BKSP, 0, 0},
+  { kblCtrl,  SCAN_SPAC, kblNormal, SCAN_SPAC, 0, 0}
 };
 
 #define change_size (sizeof(changes)/sizeof(change_entry))
@@ -509,7 +533,7 @@ static void _patch_keyboard()
   keyboard_patch_set = 1;
 }
 
-static void patch_keyboard()
+void patch_keyboard()
 {
   _patch_keyboard();
   if (keyboard_patch_set)

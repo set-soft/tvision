@@ -210,11 +210,9 @@ unsigned char kbByASCII[128] =
  kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
  kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbBackSpace
 };
-#endif
 
 unsigned short getshiftstate(void)
 {
-#ifdef __DJGPP__
  if (TGKey::useBIOS)
    {
     REGS r;
@@ -224,15 +222,11 @@ unsigned short getshiftstate(void)
    }
  _farsetsel(_dos_ds);
  return _farnspeekw(0x417);
-#else
- return __tv_getshiftstate();
-#endif
 }
 
 // All the info. from BIOS in one call
 void TGKey::GetRaw(void)
 {
-#ifdef __DJGPP__
  if (useBIOS)
    {
     REGS r;
@@ -253,14 +247,8 @@ void TGKey::GetRaw(void)
    if (keybuf_start>0x3d) keybuf_start = 0x1e;
    _farnspokew(0x41a, keybuf_start);
   }
-#else
-  rawCode.full = __tv_GetRaw();
-  sFlags = getshiftstate();
-#endif
 }
 
-
-#ifdef __DJGPP__
 // The intelligence is here
 unsigned short TGKey::gkey(void)
 {
@@ -377,23 +365,17 @@ unsigned short TGKey::gkey(void)
    }
  return rawCode.full;
 }
-#endif
 
 int TGKey::kbhit(void)
 {
-#ifdef __DJGPP__
  if (useBIOS)
     return ::kbhit();
  else
     return (_farpeekw(_dos_ds, 0x41a)!=_farpeekw(_dos_ds, 0x41c));
-#else
- return __tv_kbhit();
-#endif
 }
 
 void TGKey::clear(void)
 {
-#ifdef __DJGPP__
  if (useBIOS)
     while (::kbhit())
       gkey();
@@ -401,10 +383,8 @@ void TGKey::clear(void)
     _farpokel(_dos_ds,0x41A,0x001E001EUL);
  // the bios has no function for clearing the key buffer
  // But you can loop until is empty ;-)
-#else
- __tv_clear();
-#endif
 }
+#endif
 
 void TGKey::fillTEvent(TEvent &e)
 {
@@ -460,15 +440,15 @@ ushort TGKey::KeyNameToNumber(char *s)
 
 void InterpretAbstract(void)
 {
- int key=TGKey::Abstract & 0x7F;
+ int key=TGKey::Abstract & kbKeyMask;
  printf("Abstract: kb%s",TGKey::KeyNames[key]);
- if (TGKey::Abstract & 0x80)
+ if (TGKey::Abstract & kbShiftCode)
     printf(" SHIFT");
- if (TGKey::Abstract & 0x100)
+ if (TGKey::Abstract & kbCtrlCode)
     printf(" CTRL");
- if (TGKey::Abstract & 0x200)
+ if (TGKey::Abstract & kbAltRCode)
     printf(" ALT-R");
- if (TGKey::Abstract & 0x400)
+ if (TGKey::Abstract & kbAltLCode)
     printf(" ALT-L");
 }
 
@@ -478,18 +458,22 @@ int main(void)
 #ifdef __linux__
   void startcurses();
   void stopcurses();
+  void patch_keyboard();
   startcurses();
+  patch_keyboard();
 #endif
+  // Setup the mode where the alt left/right are different
+  TGKey::SetAltSettings(0);
   do
   {
    while (!TGKey::kbhit());
    TEvent e;
    TGKey::fillTEvent(e);
    key = TGKey::Abstract;
-   printf("Shiftstate: %04x RawCode: %04x ASCII: %X  SCAN: %04X\n",
+   printf("Shiftstate: %04x RawCode: %04x ASCII: %X  SCAN: %04X\r\n",
           TGKey::sFlags,key,key & 0xff,e.keyDown.raw_scanCode);
    InterpretAbstract();
-   printf(" ASCII: %c\n",TGKey::ascii);
+   printf(" ASCII: %c\r\n",TGKey::ascii);
   } while (key!=kbEsc);
 #ifdef __linux__
   stopcurses();
