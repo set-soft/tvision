@@ -1,8 +1,12 @@
 $Log$
+Revision 1.12  1999/01/19 22:54:22  set
+* Fixed the gkey.gpr to be usable by anyone ;-). I added an rhide.env file to
+give just another example on how to use it with TVision.
+.
 Revision 1.11  1999/01/19 22:33:36  set
 * Released the 1.0.3 version and uploaded to DJ's server.
 .
-Revision 1.9  1999/01/18 22:55:18  root
+Revision 1.9  1999/01/18 22:55:18  root (set)
 * Copied the changes from DOS.
 * Added the versions of libraries I use for Linux in the change.log.
 
@@ -25,14 +29,14 @@ djgpp.
 Revision 1.8  1999/01/13 00:55:43  set
 Passed the changes to DOS.
 .
-Revision 1.7  1999/01/13 00:35:35  root
+Revision 1.7  1999/01/13 00:35:35  root (set)
 Added a linuxso directory to create the dynamically linked version of the
 library.
 
 Revision 1.7  1999/01/10 16:25:41  set
 Fixed the demohelp.h32 name (to be lowercase).
 
-Revision 1.6  1999/01/10 16:04:05  root
+Revision 1.6  1999/01/10 16:04:05  root (set)
 Added demo to the Linux distribution.
 .
 Revision 1.6  1999/01/10 00:47:21  set
@@ -50,12 +54,12 @@ version djgpp files and compress the files in the djgpp fashion. Asked by DJ.
 Revision 1.3  1999/01/09 17:24:58  set
 Modifications from Linux version.
 .
-Revision 1.4  1999/01/09 16:14:41  root
+Revision 1.4  1999/01/09 16:14:41  root (set)
 Changed linux/compress by a Perl script that updates readme.txt (version),
 generates the tarred files with the right version name and creates the .lsm.
 (linux/compress)
 
-Revision 1.3  1999/01/09 14:40:24  root
+Revision 1.3  1999/01/09 14:40:24  root (set)
 Changed the Linux compress script to be much more efficient. Added a couple
 of files to indicate files to include/exclude in the Linux distribution.
 Changed the name of the Linux distribution to 'rhtvision' to avoid collisions
