@@ -450,7 +450,7 @@ ushort TGKey::KeyNameToNumber(char *s)
  for (i=0; i<NumKeyNames; i++)
      if (strcmp(KeyNames[i],s)==0)
         return i;
- return -1;
+ return (ushort)-1;
 }
 
 //---------------- TEST
