@@ -603,7 +603,7 @@ int count=0;
 int main(int argc, char *argv[])
 {
   unsigned short key=0;
-#ifdef TVOSf_Linux
+#ifdef TVOS_UNIX
   void startcurses();
   void stopcurses();
   void resume_keyboard();
@@ -620,7 +620,7 @@ int main(int argc, char *argv[])
   if (argc>1 && strcmp(argv[1],"rh52")==0)
      TGKey::SetKbdMapping(KBD_REDHAT52_STYLE);
 #else
-  //TGKey::useBIOS=1;
+  TGKey::useBIOS=0;
   CtrlCOff();
 #endif
   // Setup the mode where the alt left/right are different
