@@ -247,7 +247,8 @@ int main(int argc, char *argv[], char **envir)
  const char *title=TScreen::getWindowTitle();
  TScreen::setWindowTitle("Turbo Vision font test program");
  //myApp.setScreenMode(TDisplay::smCO90x34);
- //myApp.setScreenMode(90,30,9,15);
+ //myApp.setScreenMode(90,30,9,16);
+ //myApp.setScreenMode(132,60,9,16); Test for a VESA mode
  myApp.run();
  if (title)
    {

@@ -56,7 +56,7 @@ TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
 uint32        TDisplay::opts1                     =0;
 TVCodePage   *TDisplay::codePage                  =NULL;
-TScreenResolution TDisplay::dosModesRes[]=
+TScreenResolution TDisplay::dosModesRes[TDisplayDOSModesNum]=
 {
  {  80,25 },
  {  80,28 },
@@ -77,10 +77,7 @@ TScreenResolution TDisplay::dosModesRes[]=
  { 132,50 },
  { 132,60 }
 };
-
-const int dosModesNum=sizeof(TDisplay::dosModesRes)/sizeof(TScreenResolution);
-
-TScreenResolution TDisplay::dosModesCell[dosModesNum]=
+TScreenResolution TDisplay::dosModesCell[TDisplayDOSModesNum]=
 {
  { 9,16 },
  { 9,14 },
@@ -101,7 +98,7 @@ TScreenResolution TDisplay::dosModesCell[dosModesNum]=
  { 9,10 },
  { 9, 8 }
 };
-int           TDisplay::dosModes[dosModesNum]=
+int           TDisplay::dosModes[TDisplayDOSModesNum]=
 {
  smCO80x25,
  smCO80x28,
@@ -179,7 +176,7 @@ void TDisplay::defaultGetCursorShape(unsigned &start, unsigned &end)
 void TDisplay::defaultSetCrtMode(ushort mode)
 {
  int i;
- for (i=0; i<dosModesNum; i++)
+ for (i=0; i<TDisplayDOSModesNum; i++)
      if (dosModes[i]==mode)
        {
         setCrtModeRes(dosModesRes[i].x,dosModesRes[i].y,
