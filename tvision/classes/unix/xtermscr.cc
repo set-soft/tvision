@@ -51,7 +51,6 @@ int            TScreenXTerm::palette;
 int            TScreenXTerm::oldCol=-1,
                TScreenXTerm::oldBack=-1,
                TScreenXTerm::oldFore=-1;
-TScreenColor TDisplay::UserStartPalette[16];
 
 #define force_redraw 0
 

@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.265  2002/08/22 18:30:45  set
+* Modified: [Linux] The last patch to report the ASCII only if that's >=
+128. I think that's necesary to understand Alt+cyrillic.
+
 Revision 2.264  2002/08/22 18:29:44  set
 * Fixed: Write pass 1 error in configfile.cc. Detected with efence while
 using SETEdit.
