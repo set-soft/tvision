@@ -12,7 +12,7 @@
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
 #include <signal.h>
