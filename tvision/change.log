@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.175  2002/06/24 19:39:04  set
+* Modified: [QNX] When linking the dynamic library -lncursesS should be
+used, explained by Mike.
+
 Revision 2.174  2002/06/24 19:31:00  set
 * Added: [QNX] Package description contributed by Mike.
 
