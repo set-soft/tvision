@@ -38,3 +38,4 @@ linux/rhide.env
 linuxso/Makefile
 linuxso/compat.mak
 win32/Makefile
+include/tv/configtv.h
