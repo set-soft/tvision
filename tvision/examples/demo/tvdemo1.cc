@@ -120,10 +120,10 @@ TVDemo::TVDemo( int argc, char **argv ) :
         strcpy( fileSpec, *++argv );
         len = strlen( fileSpec );
 
-	/* SS: changed */
+        /* SS: changed */
 
         if( fileSpec[len-1] == '/' )
-            strcat( fileSpec, "*.*" );
+            strcat( fileSpec, "*" );
         if( strchr( fileSpec, '*' ) || strchr( fileSpec, '?' ) )
             openFile( fileSpec );
         else

@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.123  2002/06/04 18:31:10  set
+* Fixed: [Linux] Now I use a separated file handle for the stdin. The
+explanation is in the code and is complex. Fixes random fails on cursor
+position restore at exit.
+
 Revision 2.122  2002/06/04 18:28:58  set
 * Fixed: When no window was in the desktop and a dialog was executed it
 left the cursor in the last used position. Now TDesktop detects it and
