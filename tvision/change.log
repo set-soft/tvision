@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.338  2002/09/23 16:02:03  set
+* Added: Daily snapshot to the web site.
+
 Revision 2.337  2002/09/23 15:56:37  set
 3 Patches and/ot Reports from Igor Gnip <gnipi@europeonline.com>:
 * Fixed: Removed unused variable in classes/tfilelis.cc.
