@@ -169,8 +169,8 @@ void AlCon_CursorHome()
 
 void AlCon_GotoXY(int x, int y)
 {
- allegro_message("Gotoxy %2d %2d\n", x, y);
- ASSERT(x > 0 && y > 0);
+ ASSERT(x > 0 && x <= _screen_width);
+ ASSERT(y > 0 && y <= _screen_height);
  AlCon_ScareCursor();
  cursorX = x; cursorY = y;
  cursorPX = (x - 1) * _font_width;
@@ -557,7 +557,8 @@ int AlCon_Init(int w, int h)
       return 2;
    }
   
-   /* Load a binary font */
+   /* Load a binary font. Hack to get the font/screen properties set. */
+   _AlCon_LoadCustomFont(0);
    //_AlCon_LoadCustomFont("rom-PC437.016");
   
    /* Create default cursor shape */
@@ -731,17 +732,20 @@ void AlCon_GetMousePos(int *x, int *y, int *buttons)
   structure like Allegro's font and then sets the static global font pointer
   to that. If the font could not be loaded, the previously loaded custom
   font will be used. If this was the first custom font call, Allegro's
-  default font will be used if everything fails.
+  default font will be used if everything fails. If the filename is a NULL
+  pointer, the default font will be used.
   
 ***************************************************************************/
 
 static void _AlCon_LoadCustomFont(const char *filename)
 {
-   ASSERT(filename);
    ASSERT(screen && "You have to call set_gfx_mode before.");
    static bool one_custom_font_loaded = false;
 
-   FILE *file = fopen(filename, "rb");
+   FILE *file = 0;
+   if (filename)
+      file = fopen(filename, "rb");
+      
    if (!file) {
       // We have to cover up if there was no previous font.
       if (!one_custom_font_loaded) {

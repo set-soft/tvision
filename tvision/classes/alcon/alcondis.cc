@@ -47,7 +47,6 @@ void TDisplayAlcon::GetCursorPos(unsigned &x, unsigned &y)
 
 void TDisplayAlcon::SetCursorPos(unsigned  x, unsigned  y)
 {
-    allegro_message("SetCursorPos: %d, %d\n", x, y);
     // AlCon expects a range of 1 <= var <= inf.
     AlCon_GotoXY(x + 1, y + 1);
 }
