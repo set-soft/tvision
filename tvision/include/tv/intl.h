@@ -11,6 +11,12 @@
 #ifndef TVIntl_Included
 #define TVIntl_Included
 
+struct stTVIntl
+{
+ char *translation;
+ int cp;
+};
+
 class TVIntl
 {
 public:
@@ -30,6 +36,8 @@ public:
  static void        disableTranslations() { translate=0; };
  // Returns a newly allocated string and translated (if enabled)
  static char       *getTextNew(const char *msgid);
+ static const char *getText(const char *msgid, stTVIntl *&cache);
+ static void        freeSt(stTVIntl *&cache);
 
 protected:
  // Enable translations

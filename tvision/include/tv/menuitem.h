@@ -41,6 +41,7 @@ public:
 
     TMenuItem *next;
     const char *name;
+    stTVIntl *intlName;
     ushort command;
     Boolean disabled;
     ushort keyCode;
