@@ -4,6 +4,10 @@
 // and fixed a small bug.
 //
 // Author: Jay Perez. Modified by Barnaby Falls
+//
+// Added: Code page remap, busy state feedback and window title.
+// By Salvador E. Tropea (SET)
+//
 #include <stdio.h>
 #define Uses_string
 #include <stdlib.h>
@@ -39,6 +43,8 @@
 #define Uses_TDrawBuffer
 #define Uses_TStreamableClass
 #define Uses_TStreamable
+#define Uses_TScreen
+#define Uses_TVCodePage
  
 #include <tv.h>
 __link( RView )
@@ -50,6 +56,9 @@ __link( RButton )
 const int cmAboutCmd   = 100;  // User selected menu item 'About'
 const int cmStatusCmd  = 101;  // User selected menu item 'Progress Bar'
 
+static char cBackChar='²';
+static char oBackChar='²';
+
 //========================================================================
 
 class TMyApplication : public TApplication
@@ -58,6 +67,9 @@ public:
    TMyApplication();
    static TMenuBar *initMenuBar(TRect);
    void handleEvent(TEvent &);
+   
+   static void cpCallBack(ushort *map);
+   
 private:
    void aboutDlg();
    void statusDlg();
@@ -138,8 +150,12 @@ Boolean TMyApplication::isCancel(TDialog *pd)
    TEvent event;
    pd->getEvent(event);
    pd->handleEvent(event);
-   if(event.what==evCommand && event.message.command==cmCancel)
-      return (messageBox("Are you sure you want to Cancel",mfConfirmation|mfYesButton|mfNoButton)==cmYes ? True : False);
+   if(event.what==evCommand && event.message.command==cmCancel) {
+      Boolean oldState=TScreen::showBusyState(False);
+      Boolean ret=messageBox("Are you sure you want to Cancel",mfConfirmation|mfYesButton|mfNoButton)==cmYes ? True : False;
+      TScreen::showBusyState(oldState);
+      return ret;
+   }
    else
       return False;
 }
@@ -149,9 +165,12 @@ void TMyApplication::statusDlg()
    TDialog *pd = new TDialog(TRect(0,0,60,15),"Example Progress Bar");
    pd->flags &= ~wfClose;
    pd->options |= ofCentered;
-   TProgressBar *pbar = new TProgressBar(TRect(2,2,pd->size.x-2,3),300);
+   TProgressBar *pbar = new TProgressBar(TRect(2,2,pd->size.x-2,3),300,cBackChar);
    pd->insert(pbar);
    pd->insert(new TButton(TRect(10,pd->size.y-3,pd->size.x-10,pd->size.y-1),"~C~ancel",cmCancel,bfDefault));
+
+   Boolean oldBusyState=TScreen::showBusyState(True);
+   
    TProgram::deskTop->insert(pd);     // Modeless !!!!
 
    int i=0;
@@ -211,16 +230,32 @@ void TMyApplication::statusDlg()
       }
    destroy(pd);
 
+   TScreen::showBusyState(oldBusyState);
+}
 
+
+void TMyApplication::cpCallBack(ushort *map)
+{
+ cBackChar=TVCodePage::RemapChar(oBackChar,map);
 }
 
 //========================================================================
 
-int main(void)
+int main(int argc, char **argv, char **envir)
 {
+	 TDisplay::setArgv(argc,argv,envir);
+	 TVCodePage::SetCallBack(TMyApplication::cpCallBack);
 	 TMyApplication myApplication;
 
+	 const char *title=TScreen::getWindowTitle();
+	 TScreen::setWindowTitle("Progress bar example");
+         
 	 myApplication.run();
+
+	 if(title) {
+		TScreen::setWindowTitle(title);
+		delete[] title;
+	 }
 
 	 return 0;
 }

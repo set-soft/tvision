@@ -59,6 +59,7 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <X11/Xatom.h>
+#include <X11/cursorfont.h>
 
 #include <tv/x11/screen.h>
 #include <tv/x11/key.h>
@@ -999,6 +1000,9 @@ TScreenX11::TScreenX11()
  flags0=CanSetPalette | CanReadPalette | CodePageVar    | CursorShapes /*| PalNeedsRedraw*/ |
         CanSetBFont   | CanSetSBFont   | CanSetFontSize | CanSetVideoSize |
         NoUserScreen;
+
+ if (createCursors())
+    TScreen::showBusyState=ShowBusyState;
 }
 
 void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h)
@@ -1781,6 +1785,128 @@ int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
 
  return (nW==(unsigned)fW && nH==(unsigned)fH) ? 1 : 2;
 }
+
+/* Busy indicator by Roman Valyushenko <smhs@mail.ru> */
+
+/* These are the bitmaps I created. They show a pointer with watch near.
+   Could be used to indicate some background computations. */
+
+const int busyCursorWidth=28;
+const int busyCursorHeight=20;
+
+Cursor TScreenX11::busyCursor,
+       TScreenX11::leftPtr;
+char   TScreenX11::busyCursorMap[]=
+{
+ 0xff, 0xff, 0xff, 0x1f,
+ 0xfd, 0xff, 0xff, 0x1f,
+ 0xf9, 0xff, 0xff, 0x1f,
+ 0xf1, 0xff, 0xff, 0x1f,
+ 0xe1, 0x7f, 0xc0, 0x1f,
+ 0xc1, 0x7f, 0xc0, 0x1f,
+ 0x81, 0x3f, 0x80, 0x1f,
+ 0x01, 0x9f, 0x3b, 0x1f,
+ 0x01, 0xce, 0x7b, 0x1e,
+ 0xc1, 0xef, 0xfb, 0x1e,
+ 0xc9, 0xef, 0xf1, 0x18,
+ 0x9d, 0xef, 0xf1, 0x18,
+ 0x9f, 0xef, 0xfe, 0x18,
+ 0x3f, 0x6f, 0xff, 0x1e,
+ 0x3f, 0xcf, 0x7f, 0x1e,
+ 0xff, 0x9f, 0x3f, 0x1f,
+ 0xff, 0x3f, 0x80, 0x1f,
+ 0xff, 0x7f, 0xc0, 0x1f,
+ 0xff, 0x7f, 0xc0, 0x1f,
+ 0xff, 0xff, 0xff, 0x1f
+};
+char TScreenX11::busyCursorMask[]=
+{
+ 0xfc, 0xff, 0xff, 0x1f,
+ 0xf8, 0xff, 0xff, 0x1f,
+ 0xf0, 0xff, 0xff, 0x1f,
+ 0xe0, 0x3f, 0x80, 0x1f,
+ 0xc0, 0x3f, 0x80, 0x1f,
+ 0x80, 0x3f, 0x80, 0x1f,
+ 0x00, 0x1f, 0x00, 0x1f,
+ 0x00, 0x0e, 0x00, 0x1e,
+ 0x00, 0x04, 0x00, 0x1c,
+ 0x00, 0x04, 0x00, 0x10,
+ 0x80, 0x07, 0x00, 0x10,
+ 0x08, 0x07, 0x00, 0x10,
+ 0x0c, 0x07, 0x00, 0x10,
+ 0x1f, 0x06, 0x00, 0x10,
+ 0x1f, 0x06, 0x00, 0x1c,
+ 0x3f, 0x0f, 0x00, 0x1e,
+ 0xff, 0x1f, 0x00, 0x1f,
+ 0xff, 0x3f, 0x80, 0x1f,
+ 0xff, 0x3f, 0x80, 0x1f,
+ 0xff, 0x3f, 0x80, 0x1f
+};
+
+/* This is the function which creates cursors. On success it return
+   true, otherwise false */
+Boolean TScreenX11::createCursors()
+{
+ Pixmap busyCursorPixmap, busyCursorPixmapMask;
+
+ busyCursorPixmap=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMap,
+                                              busyCursorWidth,busyCursorHeight,
+                                              BlackPixel(disp,screen),
+                                              WhitePixel(disp,screen),1);
+ if (busyCursorPixmap==None)
+    return False;
+ 
+ busyCursorPixmapMask=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMask,
+                                                  busyCursorWidth,busyCursorHeight,
+                                                  BlackPixel(disp,screen),
+                                                  WhitePixel(disp,screen),1);
+ if (busyCursorPixmapMask==None)
+   {
+    XFreePixmap(disp,busyCursorPixmap);
+    return False;
+   }
+
+ XColor busyCursorFg, busyCursorBg;
+ Status status;
+ 
+ status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
+                         "black",&busyCursorFg,&busyCursorFg);
+ if (!status)
+   {
+    XFreePixmap(disp,busyCursorPixmap);
+    XFreePixmap(disp,busyCursorPixmapMask);
+    return False;
+   }
+
+ status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
+                         "white",&busyCursorBg,&busyCursorBg);
+ if (!status)
+   {
+    XFreePixmap(disp,busyCursorPixmap);
+    XFreePixmap(disp,busyCursorPixmapMask);
+    return False;
+   }
+
+ busyCursor=XCreatePixmapCursor(disp,busyCursorPixmap,busyCursorPixmapMask,
+                                &busyCursorFg,&busyCursorBg,1,1);
+
+ XFreePixmap(disp,busyCursorPixmap);
+ XFreePixmap(disp,busyCursorPixmapMask);
+              
+ leftPtr=XCreateFontCursor(disp,XC_left_ptr);
+ return True; /* Success */
+}
+
+/* This is the function to change the cursor. */
+Boolean TScreenX11::ShowBusyState(Boolean busyState)
+{
+ if (busyState)
+    XDefineCursor(disp,mainWin,busyCursor);
+ else
+    XDefineCursor(disp,mainWin,leftPtr);
+ return defaultShowBusyState(busyState);
+}
+
 #else
 
 #include <tv/x11/screen.h>

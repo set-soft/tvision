@@ -48,6 +48,8 @@ int         (*TDisplay::setDisPaletteColors)(int from, int number, TScreenColor 
                                                   =TDisplay::defaultSetDisPaletteColors;
 int         (*TDisplay::setCrtModeRes)(unsigned w, unsigned h, int fW, int fH)
                                                   =TDisplay::defaultSetCrtModeRes;
+Boolean     (*TDisplay::showBusyState)(Boolean state)
+                                                  =TDisplay::defaultShowBusyState;
 int           TDisplay::argc                      =0;
 char        **TDisplay::argv                      =NULL;
 char        **TDisplay::environment               =NULL;
@@ -56,6 +58,7 @@ TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
 uint32        TDisplay::opts1                     =0;
 TVCodePage   *TDisplay::codePage                  =NULL;
+Boolean       TDisplay::busyState                 =False;
 TVScreenDriverDetectCallBack TDisplay::dCB        =NULL;
 TScreenResolution TDisplay::dosModesRes[TDisplayDOSModesNum]=
 {
@@ -278,6 +281,19 @@ int TDisplay::defaultGetBlinkState()
 {
  return 2;
 }
+
+/*****************************************************************************
+  Description: Shows/hides something to indicate the application is busy.
+  Return: the previous state.
+*****************************************************************************/
+
+Boolean TDisplay::defaultShowBusyState(Boolean state)
+{
+ Boolean ret=busyState;
+ busyState=state;
+ return ret;
+}
+
 
 TDisplay::TDisplay()
 {
