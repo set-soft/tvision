@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.334  2002/09/23 12:37:24  set
+* Added: Win32 and WinGr documentation.
+* Modified: X11 docs, added the fact that X11 driver can be used for Win32.
+
 Revision 2.333  2002/09/23 12:34:24  set
 * Added: DOS driver, code pages and configuration file documentation.
 * Modified: Added most structure to all the other docs.

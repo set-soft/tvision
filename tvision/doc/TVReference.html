@@ -1,0 +1,1965 @@
+<html>
+<head>
+<title>Turbo Vision reference</title>
+</head>
+<body>
+<H1>Turbo Vision reference</H1>
+
+This document describes the functions of Turbo Vision that didn't
+exist in the original version of the library.
+
+<p>
+
+This document applies to version 2.0.0
+of the Turbo Vision library.
+
+<p>
+
+
+<Menu>
+<li><a href="#Alphabetical List">Alphabetical list of functions</a>
+<li><a href="#Classes">List by classes</a>
+<li><a href="#Modules">List by modules</a>
+<li><a href="#Files">List by files</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="Alphabetical List"></a>
+<H1>Alphabetical List</H1>
+
+<Menu>
+<li><a href="#AddCodePage (TVCodePage)">AddCodePage (TVCodePage)</a>
+<li><a href="#CodePageOfID (TVCodePage)">CodePageOfID (TVCodePage)</a>
+<li><a href="#CreateCodePagesCol (TVCodePage)">CreateCodePagesCol (TVCodePage)</a>
+<li><a href="#CreateCPFromUnicode (TVCodePage)">CreateCPFromUnicode (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyInpRemap (TVCodePage)">CreateOnTheFlyInpRemap (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyRemap (TVCodePage)">CreateOnTheFlyRemap (TVCodePage)</a>
+<li><a href="#CreateRemap (TVCodePage)">CreateRemap (TVCodePage)</a>
+<li><a href="#defaultCheckForWindowSize (TDisplay)">defaultCheckForWindowSize (TDisplay)</a>
+<li><a href="#defaultClearScreen (TDisplay)">defaultClearScreen (TDisplay)</a>
+<li><a href="#defaultGetBlinkState (TDisplay)">defaultGetBlinkState (TDisplay)</a>
+<li><a href="#defaultGetCols (TDisplay)">defaultGetCols (TDisplay)</a>
+<li><a href="#defaultGetCols (TDisplay) <1>">defaultGetCols (TDisplay) <1></a>
+<li><a href="#defaultGetCrtMode (TDisplay)">defaultGetCrtMode (TDisplay)</a>
+<li><a href="#defaultGetCursorShape (TDisplay)">defaultGetCursorShape (TDisplay)</a>
+<li><a href="#defaultGetRows (TDisplay)">defaultGetRows (TDisplay)</a>
+<li><a href="#defaultGetWindowTitle (TDisplay)">defaultGetWindowTitle (TDisplay)</a>
+<li><a href="#defaultSetCrtMode (TDisplay)">defaultSetCrtMode (TDisplay)</a>
+<li><a href="#defaultSetCrtModeExt (TDisplay)">defaultSetCrtModeExt (TDisplay)</a>
+<li><a href="#defaultSetCrtModeRes (TDisplay)">defaultSetCrtModeRes (TDisplay)</a>
+<li><a href="#defaultSetCursorShape (TDisplay)">defaultSetCursorShape (TDisplay)</a>
+<li><a href="#defaultSetWindowTitle (TDisplay)">defaultSetWindowTitle (TDisplay)</a>
+<li><a href="#dummy">dummy</a>
+<li><a href="#FillTables (TVCodePage)">FillTables (TVCodePage)</a>
+<li><a href="#GetList (TVCodePage)">GetList (TVCodePage)</a>
+<li><a href="#GetTranslate (TVCodePage)">GetTranslate (TVCodePage)</a>
+<li><a href="#IDToIndex (TVCodePage)">IDToIndex (TVCodePage)</a>
+<li><a href="#IndexToID (TVCodePage)">IndexToID (TVCodePage)</a>
+<li><a href="#InternalCodeForUnicode (TVCodePage)">InternalCodeForUnicode (TVCodePage)</a>
+<li><a href="#LookSimilarInRange (TVCodePage)">LookSimilarInRange (TVCodePage)</a>
+<li><a href="#RemapBufferGeneric (TVCodePage)">RemapBufferGeneric (TVCodePage)</a>
+<li><a href="#RemapChar (TVCodePage)">RemapChar (TVCodePage)</a>
+<li><a href="#RemapNString (TVCodePage)">RemapNString (TVCodePage)</a>
+<li><a href="#RemapString (TVCodePage)">RemapString (TVCodePage)</a>
+<li><a href="#RemapTVStrings (TVCodePage)">RemapTVStrings (TVCodePage)</a>
+<li><a href="#Search (TVConfigFile)">Search (TVConfigFile)</a>
+<li><a href="#searchDOSModeInfo (TDisplay)">searchDOSModeInfo (TDisplay)</a>
+<li><a href="#SetCallBack (TVCodePage)">SetCallBack (TVCodePage)</a>
+<li><a href="#SetCodePage (TVCodePage)">SetCodePage (TVCodePage)</a>
+<li><a href="#setCursorType (TDisplay)">setCursorType (TDisplay)</a>
+<li><a href="#TScreen (TScreen)">TScreen (TScreen)</a>
+<li><a href="#TVCodePage (TVCodePage)">TVCodePage (TVCodePage)</a>
+<li><a href="#TVCodePageCol">TVCodePageCol</a>
+<li><a href="#TVConfigFile (TVConfigFile)">TVConfigFile (TVConfigFile)</a>
+<li><a href="#TVConfigFile (TVConfigFile) <1>">TVConfigFile (TVConfigFile) <1></a>
+<li><a href="#UnicodeForInternalCode (TVCodePage)">UnicodeForInternalCode (TVCodePage)</a>
+<li><a href="#~TVCodePage (TVCodePage)">~TVCodePage (TVCodePage)</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="Classes"></a>
+<H1>Classes</H1>
+
+<Menu>
+<li><a href="#TDisplay (class)">TDisplay</a>
+<li><a href="#TScreen (class)">TScreen</a>
+<li><a href="#TVCodePage (class)">TVCodePage</a>
+<li><a href="#TVConfigFile (class)">TVConfigFile</a>
+</Menu>
+
+
+<p><hr></p>
+<a name="TDisplay (class)"></a>
+<H1>TDisplay</H1>
+
+
+
+<Menu>
+<li><a href="#defaultCheckForWindowSize (TDisplay)">defaultCheckForWindowSize (TDisplay)</a>
+<li><a href="#defaultClearScreen (TDisplay)">defaultClearScreen (TDisplay)</a>
+<li><a href="#defaultGetBlinkState (TDisplay)">defaultGetBlinkState (TDisplay)</a>
+<li><a href="#defaultGetCols (TDisplay)">defaultGetCols (TDisplay)</a>
+<li><a href="#defaultGetCols (TDisplay) <1>">defaultGetCols (TDisplay) <1></a>
+<li><a href="#defaultGetCrtMode (TDisplay)">defaultGetCrtMode (TDisplay)</a>
+<li><a href="#defaultGetCursorShape (TDisplay)">defaultGetCursorShape (TDisplay)</a>
+<li><a href="#defaultGetRows (TDisplay)">defaultGetRows (TDisplay)</a>
+<li><a href="#defaultGetWindowTitle (TDisplay)">defaultGetWindowTitle (TDisplay)</a>
+<li><a href="#defaultSetCrtMode (TDisplay)">defaultSetCrtMode (TDisplay)</a>
+<li><a href="#defaultSetCrtModeExt (TDisplay)">defaultSetCrtModeExt (TDisplay)</a>
+<li><a href="#defaultSetCrtModeRes (TDisplay)">defaultSetCrtModeRes (TDisplay)</a>
+<li><a href="#defaultSetCursorShape (TDisplay)">defaultSetCursorShape (TDisplay)</a>
+<li><a href="#defaultSetWindowTitle (TDisplay)">defaultSetWindowTitle (TDisplay)</a>
+<li><a href="#searchDOSModeInfo (TDisplay)">searchDOSModeInfo (TDisplay)</a>
+<li><a href="#setCursorType (TDisplay)">setCursorType (TDisplay)</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="TScreen (class)"></a>
+<H1>TScreen</H1>
+
+
+
+<Menu>
+<li><a href="#TScreen (TScreen)">TScreen (TScreen)</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="TVCodePage (class)"></a>
+<H1>TVCodePage</H1>
+
+
+
+<Menu>
+<li><a href="#AddCodePage (TVCodePage)">AddCodePage (TVCodePage)</a>
+<li><a href="#CodePageOfID (TVCodePage)">CodePageOfID (TVCodePage)</a>
+<li><a href="#CreateCodePagesCol (TVCodePage)">CreateCodePagesCol (TVCodePage)</a>
+<li><a href="#CreateCPFromUnicode (TVCodePage)">CreateCPFromUnicode (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyInpRemap (TVCodePage)">CreateOnTheFlyInpRemap (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyRemap (TVCodePage)">CreateOnTheFlyRemap (TVCodePage)</a>
+<li><a href="#CreateRemap (TVCodePage)">CreateRemap (TVCodePage)</a>
+<li><a href="#FillTables (TVCodePage)">FillTables (TVCodePage)</a>
+<li><a href="#GetList (TVCodePage)">GetList (TVCodePage)</a>
+<li><a href="#GetTranslate (TVCodePage)">GetTranslate (TVCodePage)</a>
+<li><a href="#IDToIndex (TVCodePage)">IDToIndex (TVCodePage)</a>
+<li><a href="#IndexToID (TVCodePage)">IndexToID (TVCodePage)</a>
+<li><a href="#InternalCodeForUnicode (TVCodePage)">InternalCodeForUnicode (TVCodePage)</a>
+<li><a href="#LookSimilarInRange (TVCodePage)">LookSimilarInRange (TVCodePage)</a>
+<li><a href="#RemapBufferGeneric (TVCodePage)">RemapBufferGeneric (TVCodePage)</a>
+<li><a href="#RemapChar (TVCodePage)">RemapChar (TVCodePage)</a>
+<li><a href="#RemapNString (TVCodePage)">RemapNString (TVCodePage)</a>
+<li><a href="#RemapString (TVCodePage)">RemapString (TVCodePage)</a>
+<li><a href="#RemapTVStrings (TVCodePage)">RemapTVStrings (TVCodePage)</a>
+<li><a href="#SetCallBack (TVCodePage)">SetCallBack (TVCodePage)</a>
+<li><a href="#SetCodePage (TVCodePage)">SetCodePage (TVCodePage)</a>
+<li><a href="#TVCodePage (TVCodePage)">TVCodePage (TVCodePage)</a>
+<li><a href="#UnicodeForInternalCode (TVCodePage)">UnicodeForInternalCode (TVCodePage)</a>
+<li><a href="#~TVCodePage (TVCodePage)">~TVCodePage (TVCodePage)</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="TVConfigFile (class)"></a>
+<H1>TVConfigFile</H1>
+
+
+
+<Menu>
+<li><a href="#Search (TVConfigFile)">Search (TVConfigFile)</a>
+<li><a href="#TVConfigFile (TVConfigFile)">TVConfigFile (TVConfigFile)</a>
+<li><a href="#TVConfigFile (TVConfigFile) <1>">TVConfigFile (TVConfigFile) <1></a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="Modules"></a>
+<H1>Modules</H1>
+
+<Menu>
+<li><a href="#TVCodePage">TVCodePage</a>
+<li><a href="#TVConfigFile">TVConfigFile</a>
+</Menu>
+
+
+<p><hr></p>
+<a name="TVCodePage"></a>
+<H1>TVCodePage</H1>
+
+
+
+<Menu>
+<li><a href="#AddCodePage (TVCodePage)">AddCodePage (TVCodePage)</a>
+<li><a href="#CodePageOfID (TVCodePage)">CodePageOfID (TVCodePage)</a>
+<li><a href="#CreateCodePagesCol (TVCodePage)">CreateCodePagesCol (TVCodePage)</a>
+<li><a href="#CreateCPFromUnicode (TVCodePage)">CreateCPFromUnicode (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyInpRemap (TVCodePage)">CreateOnTheFlyInpRemap (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyRemap (TVCodePage)">CreateOnTheFlyRemap (TVCodePage)</a>
+<li><a href="#CreateRemap (TVCodePage)">CreateRemap (TVCodePage)</a>
+<li><a href="#FillTables (TVCodePage)">FillTables (TVCodePage)</a>
+<li><a href="#GetList (TVCodePage)">GetList (TVCodePage)</a>
+<li><a href="#GetTranslate (TVCodePage)">GetTranslate (TVCodePage)</a>
+<li><a href="#IDToIndex (TVCodePage)">IDToIndex (TVCodePage)</a>
+<li><a href="#IndexToID (TVCodePage)">IndexToID (TVCodePage)</a>
+<li><a href="#InternalCodeForUnicode (TVCodePage)">InternalCodeForUnicode (TVCodePage)</a>
+<li><a href="#LookSimilarInRange (TVCodePage)">LookSimilarInRange (TVCodePage)</a>
+<li><a href="#RemapBufferGeneric (TVCodePage)">RemapBufferGeneric (TVCodePage)</a>
+<li><a href="#RemapChar (TVCodePage)">RemapChar (TVCodePage)</a>
+<li><a href="#RemapNString (TVCodePage)">RemapNString (TVCodePage)</a>
+<li><a href="#RemapString (TVCodePage)">RemapString (TVCodePage)</a>
+<li><a href="#RemapTVStrings (TVCodePage)">RemapTVStrings (TVCodePage)</a>
+<li><a href="#SetCallBack (TVCodePage)">SetCallBack (TVCodePage)</a>
+<li><a href="#SetCodePage (TVCodePage)">SetCodePage (TVCodePage)</a>
+<li><a href="#TVCodePage (TVCodePage)">TVCodePage (TVCodePage)</a>
+<li><a href="#TVCodePageCol">TVCodePageCol</a>
+<li><a href="#UnicodeForInternalCode (TVCodePage)">UnicodeForInternalCode (TVCodePage)</a>
+<li><a href="#~TVCodePage (TVCodePage)">~TVCodePage (TVCodePage)</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="TVConfigFile"></a>
+<H1>TVConfigFile</H1>
+
+
+
+<Menu>
+<li><a href="#Search (TVConfigFile)">Search (TVConfigFile)</a>
+<li><a href="#TVConfigFile (TVConfigFile)">TVConfigFile (TVConfigFile)</a>
+<li><a href="#TVConfigFile (TVConfigFile) <1>">TVConfigFile (TVConfigFile) <1></a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="Files"></a>
+<H1>Files</H1>
+
+<Menu>
+<li><a href="#codepage.cc">codepage.cc</a>
+<li><a href="#configfile.cc">configfile.cc</a>
+<li><a href="#tdisplay.cc">tdisplay.cc</a>
+<li><a href="#tscreen.cc">tscreen.cc</a>
+</Menu>
+
+
+<p><hr></p>
+<a name="codepage.cc"></a>
+<H1>codepage.cc</H1>
+
+
+
+<Menu>
+<li><a href="#AddCodePage (TVCodePage)">AddCodePage (TVCodePage)</a>
+<li><a href="#CodePageOfID (TVCodePage)">CodePageOfID (TVCodePage)</a>
+<li><a href="#CreateCodePagesCol (TVCodePage)">CreateCodePagesCol (TVCodePage)</a>
+<li><a href="#CreateCPFromUnicode (TVCodePage)">CreateCPFromUnicode (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyInpRemap (TVCodePage)">CreateOnTheFlyInpRemap (TVCodePage)</a>
+<li><a href="#CreateOnTheFlyRemap (TVCodePage)">CreateOnTheFlyRemap (TVCodePage)</a>
+<li><a href="#CreateRemap (TVCodePage)">CreateRemap (TVCodePage)</a>
+<li><a href="#FillTables (TVCodePage)">FillTables (TVCodePage)</a>
+<li><a href="#GetList (TVCodePage)">GetList (TVCodePage)</a>
+<li><a href="#GetTranslate (TVCodePage)">GetTranslate (TVCodePage)</a>
+<li><a href="#IDToIndex (TVCodePage)">IDToIndex (TVCodePage)</a>
+<li><a href="#IndexToID (TVCodePage)">IndexToID (TVCodePage)</a>
+<li><a href="#InternalCodeForUnicode (TVCodePage)">InternalCodeForUnicode (TVCodePage)</a>
+<li><a href="#LookSimilarInRange (TVCodePage)">LookSimilarInRange (TVCodePage)</a>
+<li><a href="#RemapBufferGeneric (TVCodePage)">RemapBufferGeneric (TVCodePage)</a>
+<li><a href="#RemapChar (TVCodePage)">RemapChar (TVCodePage)</a>
+<li><a href="#RemapNString (TVCodePage)">RemapNString (TVCodePage)</a>
+<li><a href="#RemapString (TVCodePage)">RemapString (TVCodePage)</a>
+<li><a href="#RemapTVStrings (TVCodePage)">RemapTVStrings (TVCodePage)</a>
+<li><a href="#SetCallBack (TVCodePage)">SetCallBack (TVCodePage)</a>
+<li><a href="#SetCodePage (TVCodePage)">SetCodePage (TVCodePage)</a>
+<li><a href="#TVCodePage (TVCodePage)">TVCodePage (TVCodePage)</a>
+<li><a href="#TVCodePageCol">TVCodePageCol</a>
+<li><a href="#UnicodeForInternalCode (TVCodePage)">UnicodeForInternalCode (TVCodePage)</a>
+<li><a href="#~TVCodePage (TVCodePage)">~TVCodePage (TVCodePage)</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="configfile.cc"></a>
+<H1>configfile.cc</H1>
+
+
+
+<Menu>
+<li><a href="#Search (TVConfigFile)">Search (TVConfigFile)</a>
+<li><a href="#TVConfigFile (TVConfigFile)">TVConfigFile (TVConfigFile)</a>
+<li><a href="#TVConfigFile (TVConfigFile) <1>">TVConfigFile (TVConfigFile) <1></a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="tdisplay.cc"></a>
+<H1>tdisplay.cc</H1>
+
+
+
+<Menu>
+<li><a href="#defaultCheckForWindowSize (TDisplay)">defaultCheckForWindowSize (TDisplay)</a>
+<li><a href="#defaultClearScreen (TDisplay)">defaultClearScreen (TDisplay)</a>
+<li><a href="#defaultGetBlinkState (TDisplay)">defaultGetBlinkState (TDisplay)</a>
+<li><a href="#defaultGetCols (TDisplay)">defaultGetCols (TDisplay)</a>
+<li><a href="#defaultGetCols (TDisplay) <1>">defaultGetCols (TDisplay) <1></a>
+<li><a href="#defaultGetCrtMode (TDisplay)">defaultGetCrtMode (TDisplay)</a>
+<li><a href="#defaultGetCursorShape (TDisplay)">defaultGetCursorShape (TDisplay)</a>
+<li><a href="#defaultGetRows (TDisplay)">defaultGetRows (TDisplay)</a>
+<li><a href="#defaultGetWindowTitle (TDisplay)">defaultGetWindowTitle (TDisplay)</a>
+<li><a href="#defaultSetCrtMode (TDisplay)">defaultSetCrtMode (TDisplay)</a>
+<li><a href="#defaultSetCrtModeExt (TDisplay)">defaultSetCrtModeExt (TDisplay)</a>
+<li><a href="#defaultSetCrtModeRes (TDisplay)">defaultSetCrtModeRes (TDisplay)</a>
+<li><a href="#defaultSetCursorShape (TDisplay)">defaultSetCursorShape (TDisplay)</a>
+<li><a href="#defaultSetWindowTitle (TDisplay)">defaultSetWindowTitle (TDisplay)</a>
+<li><a href="#searchDOSModeInfo (TDisplay)">searchDOSModeInfo (TDisplay)</a>
+<li><a href="#setCursorType (TDisplay)">setCursorType (TDisplay)</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="tscreen.cc"></a>
+<H1>tscreen.cc</H1>
+
+
+
+<Menu>
+<li><a href="#dummy">dummy</a>
+<li><a href="#TScreen (TScreen)">TScreen (TScreen)</a>
+</Menu>
+
+
+
+
+
+<p><hr></p>
+<a name="TVCodePageCol"></a>
+<center><Font Size=+2>TVCodePageCol</Font> (codepage.cc 46)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePageCol(ccIndex aLimit, ccIndex aDelta);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+This module provides code page remapping needed to adapt the special
+character to all the supported terminals.
+<p>
+
+  It was originally designed for SETEdit and moved to Turbo Vision in 2002.
+<p>
+
+  The internal encoding system maps the first 256 to CP 437.
+<p>
+
+  Important: The Turbo Vision never had such a thing and this is completly
+new code that affects a lot of TV components.
+<p>
+
+  The mechanism used is similar to what Linux kernel uses, why? simple:<br>
+1) That's the most complex mechanism I found in all the targets so far.<br>
+2) This is quite crazy but at the same time flexible.<br>
+  What's similar?<br>
+  We have two maps. The first map is what Linux calls SFM (Screen Font Map).
+It defines which internal codes are rendered by each font character (which
+unicodes in Linux kernel). This is basically a map that describes the font.
+This is the only map I had in the editor. The curScrCP variable holds the
+ID of this map.
+<p>
+
+  The second map is what the Linux kernel calls ACM (Application Charset
+Map). This map describes how is the application data encoded, as an example:
+how is encoded the text. It doesn't have to map one to one with the font,
+and that's the complex stuff. For this reason this map is used to do an
+"on-the-fly" remap before sending the characters to the screen. If this map
+is identical to the SFM (maps 1 to 1 =&gt; what Linux calls trivial mapping)
+we don't do the remap. The OnTheFlyRemapNeeded() and OnTheFlyRemap(uchar val)
+are used for the remap. The curAppCP holds the ID of this map.
+<p>
+
+  Is important to note that we don't do 8-bits -&gt; ACM -&gt; Unicode -&gt; SFM -&gt;
+8-bits Screen like the Linux kernel does. We recode the application using
+the ACM and if ACM!=SFM we use a simple table that makes: 8-bits -&gt; 8-bits
+Screen and if it isn't needed we just send the code to the screen.
+<p>
+
+  I added a new code page to this: the input code page. In Linux systems
+the input is supposed to be encoded in the ACM code page. In Windows systems
+they can be different and they are asked with different calls. It can be
+useful if you want to use an encoding different than the currently used by
+the OS. You can change the screen encoding and load an appropriate font for
+it, then you change the application code page and you can properly see
+documents encoded in the target code page. But in order to edit them you
+need to translate the codes that come from keyboard to the target code page.
+That's a good use for the input code page.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="CreateCodePagesCol (TVCodePage)"></a>
+<center><Font Size=+2>CreateCodePagesCol</Font> (codepage.cc 1265)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::CreateCodePagesCol();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Protected member used to create the list of known code pages stored in
+CodePages.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="TVCodePage (TVCodePage)"></a>
+<center><Font Size=+2>TVCodePage</Font> (codepage.cc 1332)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::TVCodePage(int idApp, int idScr, int idInp);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Initializes the code page system selecting the indicated code pages. This
+is only used iternally. <a href="#SetCodePage (TVCodePage)">SetCodePage</a>.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="CreateRemap (TVCodePage)"></a>
+<center><Font Size=+2>CreateRemap</Font> (codepage.cc 1358)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::CreateRemap(int idSource, int idDest, uchar *table);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Protected member used to create a one to one table to convert from one
+code page to another. Used to create the input to application and application
+to screen on the fly convertion tables.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="CreateOnTheFlyRemap (TVCodePage)"></a>
+<center><Font Size=+2>CreateOnTheFlyRemap</Font> (codepage.cc 1416)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Protected member used to create the application to screen map when we have
+to translate values on the fly. <a href="#CreateRemap (TVCodePage)">CreateRemap</a>.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="CreateOnTheFlyInpRemap (TVCodePage)"></a>
+<center><Font Size=+2>CreateOnTheFlyInpRemap</Font> (codepage.cc 1444)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::CreateOnTheFlyInpRemap(int idInp, int idApp);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Protected member used to create the input to application map when we have
+to translate values on the fly. <a href="#CreateRemap (TVCodePage)">CreateRemap</a>.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="SetCodePage (TVCodePage)"></a>
+<center><Font Size=+2>SetCodePage</Font> (codepage.cc 1467)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::SetCodePage(int idApp, int idScr, int idInp);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Selects the current code page used for toupper, tolower, etc. operations
+and internal encodings, the code page used for the screen and the one used
+for input.
+<p>
+
+  If any of the arguments is -1 the current value is used. If the code pages
+aren't the same the remap on the fly is enabled. The application code page
+is used to remap the application, only if it changed.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="FillTables (TVCodePage)"></a>
+<center><Font Size=+2>FillTables</Font> (codepage.cc 1497)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::FillTables(int id);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Protected member used to create the toupper, tolower and isalpha tables.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="~TVCodePage (TVCodePage)"></a>
+<center><Font Size=+2>~TVCodePage</Font> (codepage.cc 1566)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::~TVCodePage();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Deallocates memory used by TVCodePage.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="IDToIndex (TVCodePage)"></a>
+<center><Font Size=+2>IDToIndex</Font> (codepage.cc 1582)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::IDToIndex(int id);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Converts a code page id into an index in the code page collection.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The index of the code page with this id. If error the index for
+PC 437 code page is returned.
+<p>
+
+
+
+<p><hr></p>
+<a name="IndexToID (TVCodePage)"></a>
+<center><Font Size=+2>IndexToID</Font> (codepage.cc 1606)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::IndexToID(ccIndex index);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Converts an index in the code page collection into a code page id. No
+check of range is done.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The code page id for the indicated index.
+<p>
+
+
+
+<p><hr></p>
+<a name="GetTranslate (TVCodePage)"></a>
+<center><Font Size=+2>GetTranslate</Font> (codepage.cc 1626)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::GetTranslate(int id);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Used to get a map to translate code page symbols into internal symbols for
+the indicated code page id.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+A pointer to a static buffer containing the translation values. Or
+NULL if not initialized. The index 256 indicates 128 if only the upper 128
+values are really different from CP 437 or 256 if all the values are
+different. In any case all the values are usable.
+<p>
+
+
+
+<p><hr></p>
+<a name="GetList (TVCodePage)"></a>
+<center><Font Size=+2>GetList</Font> (codepage.cc 1657)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::GetList(void);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Used to get a TStringCollection listing all the available code pages.
+Useful to make the user choose one. This is a read-only value, don't modify
+it.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The internal collection casted to TStringCollection.
+<p>
+
+
+
+<p><hr></p>
+<a name="RemapChar (TVCodePage)"></a>
+<center><Font Size=+2>RemapChar</Font> (codepage.cc 1673)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::RemapChar(uchar c, ushort *map);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Remaps the desired character using the provided map. The original character
+should be in CP437 encoding. <a href="#GetTranslate (TVCodePage)">GetTranslate</a>.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The remapped character. It can be a direct translation or the
+closest found.
+<p>
+
+
+
+<p><hr></p>
+<a name="RemapString (TVCodePage)"></a>
+<center><Font Size=+2>RemapString</Font> (codepage.cc 1703)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::RemapString(uchar *n, uchar *o, ushort *map);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Remaps the <b>o</b> string using the provided map and storing it in the
+<b>n</b> string. The string should be terminated by a 0. <a href="#RemapChar (TVCodePage)">RemapChar</a>.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="RemapNString (TVCodePage)"></a>
+<center><Font Size=+2>RemapNString</Font> (codepage.cc 1719)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::RemapNString(uchar *n, uchar *o, ushort *map, int len);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Remaps the @var{o} string using the provided map and storing it in the
+@var{n} string. The number of items to remap is indicated with @var{len}.
+<a href="#RemapChar (TVCodePage)">RemapChar</a>.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="RemapBufferGeneric (TVCodePage)"></a>
+<center><Font Size=+2>RemapBufferGeneric</Font> (codepage.cc 1734)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::RemapBufferGeneric(int sourID, int destID, uchar *buffer, unsigned len, unsigned ops);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Used to remap a buffer from any of the supported code pages into another.
+The process doesn't have to be reversible.
+<p>
+
+  Tabs, carriage returns, new lines and the null code aren't remapped.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="RemapTVStrings (TVCodePage)"></a>
+<center><Font Size=+2>RemapTVStrings</Font> (codepage.cc 1815)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::RemapTVStrings(ushort *map);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Protected member used internally to remap all the TV stuff that isn't
+ASCII.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="SetCallBack (TVCodePage)"></a>
+<center><Font Size=+2>SetCallBack</Font> (codepage.cc 1873)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::SetCallBack(TVCodePageCallBack cb);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Sets the function to be called after changing the code page. This should
+remap the special strings used by the application.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The previous function. If it's != NULL you should call it.
+<p>
+
+
+
+<p><hr></p>
+<a name="CodePageOfID (TVCodePage)"></a>
+<center><Font Size=+2>CodePageOfID</Font> (codepage.cc 1889)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::CodePageOfID(int id);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Protected member used to find the code page structure for a provided id.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+A CodePage structure pointer.
+<p>
+
+
+
+<p><hr></p>
+<a name="UnicodeForInternalCode (TVCodePage)"></a>
+<center><Font Size=+2>UnicodeForInternalCode</Font> (codepage.cc 2567)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::UnicodeForInternalCode(uint16 value);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Finds which unicode is represented by the specified internal code.
+Currently that's an slow search because isn't very.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The first unicode found.
+<p>
+
+
+
+<p><hr></p>
+<a name="InternalCodeForUnicode (TVCodePage)"></a>
+<center><Font Size=+2>InternalCodeForUnicode</Font> (codepage.cc 2593)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::InternalCodeForUnicode(ushort unicode);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Finds which internal code can render an Unicode value.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The internal or -1 if none can do it.
+<p>
+
+
+
+<p><hr></p>
+<a name="CreateCPFromUnicode (TVCodePage)"></a>
+<center><Font Size=+2>CreateCPFromUnicode</Font> (codepage.cc 2610)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::CreateCPFromUnicode(CodePage *cp, int id, const char *name, ushort *unicodes);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Creates a new code page from an arry containing the unicodes for each
+symbol. Use an id over than 0x7FFF8000 to avoid collisions. This is used by
+the Linux driver when the unicodes maps doesn't match with known cp.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="AddCodePage (TVCodePage)"></a>
+<center><Font Size=+2>AddCodePage</Font> (codepage.cc 2649)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::AddCodePage(CodePage *cp);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Adds a custom code page to the list. You can create a new one from an
+array containing the Unicodes for each symbol. <a href="#CreateCPFromUnicode (TVCodePage)">CreateCPFromUnicode</a>.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The index of the new code page in the collection.
+<p>
+
+
+
+<p><hr></p>
+<a name="LookSimilarInRange (TVCodePage)"></a>
+<center><Font Size=+2>LookSimilarInRange</Font> (codepage.cc 2668)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_TVCodePage
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVCodePage::LookSimilarInRange(int code, int last);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVCodePage
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+This is a helper for the TVFontCollection class the parameters of this
+function could change in the future.<br>
+  Basically it finds a replacement for a missing symbol in a font. It allows
+using incomplete font.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+The replacement or -1 if none known.
+<p>
+
+
+
+<p><hr></p>
+<a name="TVConfigFile (TVConfigFile)"></a>
+<center><Font Size=+2>TVConfigFile</Font> (configfile.cc 27)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_configfile.h
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVConfigFile::TVConfigFile();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVConfigFile
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+This module provides the TVConfigFile class. This class can load a
+configuration file containing sections and variables. Each section have
+a name which is indicated using brackets [Name]. As sections can be nested
+and my text editor can indent using the braces as reference (also jump to
+the start/end of a block and highlight the pair) the section's body must
+be enclosed using braces. Sections can be nested conforming an structure
+that resembles a file system. Inside a section you can define variables. A
+variable name must be composed of a-zA-Z_0-9 characters. After the name, and
+in the same line, an equal sign must be put. The value after the equal sign
+can be a number (decimal, octal or hexadecimal as in C) or a string enclosed
+using double quotes. You can use spaces around the equal sign and after the
+value but you must finish a definition in one line. Comments are started
+with a # symbol and ends at the end of the line.
+<p>
+
+  The information from a configuration file is stored in memory as a tree.
+You can search in the tree some key indicating it as a you indicate a path
+and file name. Just think it as a particular file system, just use forward
+slashes.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="TVConfigFile (TVConfigFile) <1>"></a>
+<center><Font Size=+2>TVConfigFile</Font> (configfile.cc 66)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_configfile.h
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVConfigFile::TVConfigFile();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVConfigFile
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Initializes the class and reads the contents of the specified file to a
+tree in memory.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="Search (TVConfigFile)"></a>
+<center><Font Size=+2>Search</Font> (configfile.cc 86)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+<pre>
+ #define Uses_configfile.h
+ #include &lt;tv.h&gt;
+ 
+</pre>
+
+
+<pre>
+ TVConfigFile::Search(const char *key, char *&p, long &n);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TVConfigFile
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Searchs for the indicated key in the tree. Separate nested sections using
+forward slashes.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+not 0 if the key was found, the return value is in <b>p</b> if
+the key is an string. Otherwise <b>p</b> is NULL and the value is in
+<b>n</b>.
+<p>
+
+
+
+<p><hr></p>
+<a name="defaultGetCols (TDisplay)"></a>
+<center><Font Size=+2>defaultGetCols</Font> (tdisplay.cc 12)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultGetCols();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+This is the base class for low level screen output.
+  Most members are pointers to functions defined by each platform dependent
+driver. Default members are provided.
+  This is a complete new file created from concepts that Jos&eacute; Angel Sanchez
+Caso provide me and coded from scratch. The names of some members are the
+same used in original Turbo Vision for compatibility purposes.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultGetCols (TDisplay) <1>"></a>
+<center><Font Size=+2>defaultGetCols</Font> (tdisplay.cc 135)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultGetCols();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Number of columns of the physical screen.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultGetRows (TDisplay)"></a>
+<center><Font Size=+2>defaultGetRows</Font> (tdisplay.cc 144)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultGetRows();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Number of rows of the physical screen.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultClearScreen (TDisplay)"></a>
+<center><Font Size=+2>defaultClearScreen</Font> (tdisplay.cc 153)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultClearScreen(uchar, uchar);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Erase the screen using this width and height.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultSetCursorShape (TDisplay)"></a>
+<center><Font Size=+2>defaultSetCursorShape</Font> (tdisplay.cc 161)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultSetCursorShape(unsigned, unsigned);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Sets the cursor shape, values in percent.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultGetCursorShape (TDisplay)"></a>
+<center><Font Size=+2>defaultGetCursorShape</Font> (tdisplay.cc 169)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultGetCursorShape(unsigned &start, unsigned &end);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Gets the cursor shape, values in percent.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="searchDOSModeInfo (TDisplay)"></a>
+<center><Font Size=+2>searchDOSModeInfo</Font> (tdisplay.cc 180)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::searchDOSModeInfo(ushort mode, unsigned &w, unsigned &h, int &fW, int &fH);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+True if the mode is known.
+<p>
+
+
+
+<p><hr></p>
+<a name="defaultSetCrtMode (TDisplay)"></a>
+<center><Font Size=+2>defaultSetCrtMode</Font> (tdisplay.cc 200)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultSetCrtMode(ushort mode);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Sets the video mode.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultSetCrtModeExt (TDisplay)"></a>
+<center><Font Size=+2>defaultSetCrtModeExt</Font> (tdisplay.cc 214)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultSetCrtModeExt(char *command);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Sets the video mode using a string. It could be an external
+program or other information that doesn't fit in an ushort.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultSetCrtModeRes (TDisplay)"></a>
+<center><Font Size=+2>defaultSetCrtModeRes</Font> (tdisplay.cc 227)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultSetCrtModeRes(unsigned, unsigned, int, int);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Selects the mode that's closest to the sepcified width and
+height. The optional font size can be specified.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+0 no change done, 1 change done with all the requested parameters,
+2 change done but just to get closer.
+<p>
+
+
+
+<p><hr></p>
+<a name="defaultGetCrtMode (TDisplay)"></a>
+<center><Font Size=+2>defaultGetCrtMode</Font> (tdisplay.cc 237)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultGetCrtMode();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Returns current video mode.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultCheckForWindowSize (TDisplay)"></a>
+<center><Font Size=+2>defaultCheckForWindowSize</Font> (tdisplay.cc 247)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultCheckForWindowSize(void);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Returns !=0 if the screen size changed externally. Usually
+when we are in a window, but isn't the only case.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultGetWindowTitle (TDisplay)"></a>
+<center><Font Size=+2>defaultGetWindowTitle</Font> (tdisplay.cc 257)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultGetWindowTitle(void);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Gets the visible title of the screen, usually the window
+title.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="defaultSetWindowTitle (TDisplay)"></a>
+<center><Font Size=+2>defaultSetWindowTitle</Font> (tdisplay.cc 268)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultSetWindowTitle(const char *);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Sets the visible title of the screen, usually the window
+title.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+!=0 success.
+<p>
+
+
+
+<p><hr></p>
+<a name="defaultGetBlinkState (TDisplay)"></a>
+<center><Font Size=+2>defaultGetBlinkState</Font> (tdisplay.cc 278)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::defaultGetBlinkState();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Finds if the MSB of the attribute is for blinking.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+0 no, 1 yes, 2 no but is used for other thing.
+<p>
+
+
+
+<p><hr></p>
+<a name="setCursorType (TDisplay)"></a>
+<center><Font Size=+2>setCursorType</Font> (tdisplay.cc 322)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TDisplay::setCursorType(ushort val);
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TDisplay
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Sets the cursor shape. I take the TV 2.0 convention: the low 8 bits is
+the start and the high 8 bits the end. Values can be between 0 and 99. To
+disable the cursor a value of 0 is used.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="dummy"></a>
+<center><Font Size=+2>dummy</Font> (tscreen.cc 12)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ dummy();
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+This is the base class for medium level screen output.
+  Most members are pointers to functions defined by each platform dependent
+driver. Default members are provided.
+  This is a complete new file created from concepts that Jos&eacute; Angel Sanchez
+Caso provide me and coded from scratch. The names of some members are the
+same used in original Turbo Vision for compatibility purposes.
+<p>
+
+
+
+
+<p><hr></p>
+<a name="TScreen (TScreen)"></a>
+<center><Font Size=+2>TScreen</Font> (tscreen.cc 243)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ TScreen::TScreen();
+</pre>
+
+
+<Font Size=+1><u>Member of the class:</u></Font>
+TScreen
+<p>
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+This constructor is called when the TApplication object is created. The
+TProgramInit constructor creates a dynamic copy instance of a TScreen
+object.<br>
+  Actually it calls the detection routines to determine the best driver
+available. If non is found prints and error to the stderr output and aborts
+the execution.
+<p>
+
+
+
+
+
+
+</body>
+</html>

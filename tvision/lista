@@ -228,12 +228,15 @@ doc/ConfigFile.txt
 doc/CodePages.txt
 doc/DOS.txt
 doc/Eterm.txt
+doc/html.frt
+-doc/libdocs.epr
 doc/Linux.txt
 doc/QNX.txt
-doc/X11.txt
-doc/XTerm.txt
+doc/TVReference.html
 doc/Win32.txt
 doc/WinGr.txt
+doc/X11.txt
+doc/XTerm.txt
 drivers2.cc
 dual.cc
 examples/Makefile

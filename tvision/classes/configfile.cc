@@ -79,8 +79,9 @@ TVConfigFile::TVConfigFile()
   Searchs for the indicated key in the tree. Separate nested sections using
 forward slashes.
   
-  Return: not 0 if the key was found, the return value is in @var{p} if
-the key is an string. Otherwise @var{p} is NULL and the value is in @var{n}.
+  Return: not 0 if the key was found, the return value is in @<var>{p} if
+the key is an string. Otherwise @<var>{p} is NULL and the value is in
+@<var>{n}.
   
 ***************************************************************************/
 

@@ -4,7 +4,7 @@
   This file is covered by the GPL license.
 
   Module: TVCodePage
-  Include: codepage.h
+  Include: TVCodePage
   Description:
   This module provides code page remapping needed to adapt the special
 character to all the supported terminals.@p
@@ -1256,6 +1256,14 @@ CodePage TVCodePage::stMazovia=
  "‚ƒ…ˆ‰Š‹Œ“–—á",0,0
 };
 
+/**[txh]********************************************************************
+
+  Description:
+  Protected member used to create the list of known code pages stored in
+CodePages.
+
+***************************************************************************/
+
 void TVCodePage::CreateCodePagesCol()
 {
  CodePages=new TVCodePageCol(43,3);
@@ -1315,6 +1323,14 @@ void TVCodePage::CreateCodePagesCol()
  #undef a
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Initializes the code page system selecting the indicated code pages. This
+is only used iternally. @x{::SetCodePage}.
+  
+***************************************************************************/
+
 TVCodePage::TVCodePage(int idApp, int idScr, int idInp)
 {
  if (!CodePages)
@@ -1332,6 +1348,14 @@ TVCodePage::TVCodePage(int idApp, int idScr, int idInp)
    }
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Protected member used to create a one to one table to convert from one
+code page to another. Used to create the input to application and application
+to screen on the fly convertion tables.
+
+***************************************************************************/
 
 void TVCodePage::CreateRemap(int idSource, int idDest, uchar *table)
 {
@@ -1383,6 +1407,14 @@ void TVCodePage::CreateRemap(int idSource, int idDest, uchar *table)
  DeleteArray(fromCode);
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Protected member used to create the application to screen map when we have
+to translate values on the fly. @x{::CreateRemap}.
+
+***************************************************************************/
+
 void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
 {
  // Create on-the-fly remap table if needed
@@ -1403,6 +1435,14 @@ void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
     }*/
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Protected member used to create the input to application map when we have
+to translate values on the fly. @x{::CreateRemap}.
+
+***************************************************************************/
+
 void TVCodePage::CreateOnTheFlyInpRemap(int idInp, int idApp)
 {
  if (idInp==idApp)
@@ -1417,11 +1457,13 @@ void TVCodePage::CreateOnTheFlyInpRemap(int idInp, int idApp)
 /**[txh]********************************************************************
 
   Description:
-  Selects the current code page used for toupper, tolower, etc. opperations.
-If any of the arguments is -1 the current value is used. If the code pages
+  Selects the current code page used for toupper, tolower, etc. operations
+and internal encodings, the code page used for the screen and the one used
+for input.@p
+  If any of the arguments is -1 the current value is used. If the code pages
 aren't the same the remap on the fly is enabled. The application code page
 is used to remap the application, only if it changed.
-  
+
 ***************************************************************************/
 
 void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
@@ -1450,8 +1492,8 @@ void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
 /**[txh]********************************************************************
 
   Description:
-  Internally used to create the toupper, tolower and isalpha tables.
-  
+  Protected member used to create the toupper, tolower and isalpha tables.
+
 ***************************************************************************/
 
 void TVCodePage::FillTables(int id)
@@ -1520,7 +1562,7 @@ void TVCodePage::FillTables(int id)
 
   Description:
   Deallocates memory used by TVCodePage.
-  
+
 ***************************************************************************/
 
 TVCodePage::~TVCodePage()
@@ -1533,10 +1575,10 @@ TVCodePage::~TVCodePage()
 
   Description:
   Converts a code page id into an index in the code page collection.
-  
+
   Return: The index of the code page with this id. If error the index for
-PC 437 code paege is returned.
-  
+PC 437 code page is returned.
+
 ***************************************************************************/
 
 ccIndex TVCodePage::IDToIndex(int id)
@@ -1623,7 +1665,7 @@ TStringCollection *TVCodePage::GetList(void)
 
   Description:
   Remaps the desired character using the provided map. The original character
-should be in CP437 encoding. @x{GetTranslate}.
+should be in CP437 encoding. @x{::GetTranslate}.
   
   Return: The remapped character. It can be a direct translation or the
 closest found.
@@ -1655,8 +1697,8 @@ uchar TVCodePage::RemapChar(uchar c, ushort *map)
 /**[txh]********************************************************************
 
   Description:
-  Remaps the @var{o} string using the provided map and storing it in the
-@var{n} string. The string should be terminated by a 0. @x{RemapChar}.
+  Remaps the @<var>{o} string using the provided map and storing it in the
+@<var>{n} string. The string should be terminated by a 0. @x{::RemapChar}.
   
 ***************************************************************************/
 
@@ -1672,7 +1714,7 @@ void TVCodePage::RemapString(uchar *n, uchar *o, ushort *map)
   Description:
   Remaps the @var{o} string using the provided map and storing it in the
 @var{n} string. The number of items to remap is indicated with @var{len}.
-@x{RemapChar}.
+@x{::RemapChar}.
   
 ***************************************************************************/
 
@@ -1763,10 +1805,12 @@ void TVCodePage::RemapBufferGeneric(int sourID, int destID, uchar *buffer, unsig
 
  delete[] fromCode;
 }
+
 /**[txh]********************************************************************
 
   Description:
-  Used internally to remap all the TV stuff that isn't ASCII.
+  Protected member used internally to remap all the TV stuff that isn't
+ASCII.
 
 ***************************************************************************/
 
@@ -1834,6 +1878,15 @@ TVCodePageCallBack TVCodePage::SetCallBack(TVCodePageCallBack cb)
  UserHook=cb;
  return oldCB;
 }
+
+/**[txh]********************************************************************
+
+  Description:
+  Protected member used to find the code page structure for a provided id.
+  
+  Return: A CodePage structure pointer.
+  
+***************************************************************************/
 
 CodePage *TVCodePage::CodePageOfID(int id)
 {
@@ -2589,7 +2642,7 @@ void TVCodePage::CreateCPFromUnicode(CodePage *cp, int id, const char *name,
 
   Description:
   Adds a custom code page to the list. You can create a new one from an
-array containing the Unicodes for each symbol. @x{CreateCPFromUnicode}.
+array containing the Unicodes for each symbol. @x{::CreateCPFromUnicode}.
 
   Return: The index of the new code page in the collection.
   
@@ -2625,3 +2678,4 @@ int TVCodePage::LookSimilarInRange(int code, int last)
    }
  return code>last ? -1 : code;
 }
+
