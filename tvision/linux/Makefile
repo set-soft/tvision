@@ -461,23 +461,21 @@ RHIDE_GCC=gcc
 RHIDE_GXX=gcc
 RHIDE_LD=gcc
 RHIDE_AR=ar
-RHIDE_OS_CFLAGS=-O2 -gstabs+3 -pipe
-RHIDE_OS_CXXFLAGS=-O2 -gstabs+3 -pipe
-RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++\
-	/usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
+RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
 TVSRC=../../include /usr/src/tv-new/include /usr/include/rhtvision
-RHIDE_OS_LIBS= ncurses m gpm X11
+RHIDE_OS_LIBS=ncurses m gpm X11
 TVOBJ=../../linux /usr/src/tv-new/linux /usr/lib /usr/X11R6/lib
 RHIDE_GCC=gcc
 RHIDE_GXX=gcc
 RHIDE_LD=gcc
 RHIDE_AR=ar
-RHIDE_OS_CFLAGS=-O2 -gstabs+3 -pipe
-RHIDE_OS_CXXFLAGS=-O2 -gstabs+3 -pipe
-RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++\
-	/usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
+RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
 TVSRC=../../include /usr/src/tv-new/include /usr/include/rhtvision
-RHIDE_OS_LIBS= ncurses m gpm X11
+RHIDE_OS_LIBS=ncurses m gpm X11
 TVOBJ=../../linux /usr/src/tv-new/linux /usr/lib /usr/X11R6/lib
 %.o: %.c
 	$(RHIDE_COMPILE.c.o)
@@ -783,7 +781,7 @@ obj/ipstream.o:: $(DEPS_12)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_13=linuxdis.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/linuxscr.h\
+	../include/tv/ipstream.h ../include/tv/linux/screen.h\
 	../include/tv/opstream.h ../include/tv/pstream.h\
 	../include/tv/screen.h ../include/tv/stddlg.h\
 	../include/tv/system.h ../include/tv/tobjstrm.h\
@@ -794,7 +792,7 @@ obj/linuxdis.o:: $(DEPS_13)
 DEPS_14=linuxkey.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/event.h ../include/tv/gkey.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/linuxkey.h ../include/tv/objects.h\
+	../include/tv/linux/key.h ../include/tv/objects.h\
 	../include/tv/opstream.h ../include/tv/point.h\
 	../include/tv/pstream.h ../include/tv/stddlg.h\
 	../include/tv/system.h ../include/tv/tobjstrm.h\
@@ -805,8 +803,8 @@ obj/linuxkey.o:: $(DEPS_14)
 DEPS_15=linuxmouse.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/event.h\
 	../include/tv/eventqu.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/linuxmouse.h\
-	../include/tv/linuxscr.h ../include/tv/objects.h\
+	../include/tv/ipstream.h ../include/tv/linux/mouse.h\
+	../include/tv/linux/screen.h ../include/tv/objects.h\
 	../include/tv/opstream.h ../include/tv/point.h\
 	../include/tv/pstream.h ../include/tv/screen.h\
 	../include/tv/stddlg.h ../include/tv/system.h\
@@ -818,8 +816,8 @@ obj/linuxmouse.o:: $(DEPS_15)
 DEPS_16=linuxscr.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/drawbuf.h\
 	../include/tv/event.h ../include/tv/gkey.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/linuxkey.h\
-	../include/tv/linuxmouse.h ../include/tv/linuxscr.h\
+	../include/tv/ipstream.h ../include/tv/linux/key.h\
+	../include/tv/linux/mouse.h ../include/tv/linux/screen.h\
 	../include/tv/objects.h ../include/tv/opstream.h\
 	../include/tv/point.h ../include/tv/pstream.h\
 	../include/tv/screen.h ../include/tv/stddlg.h\

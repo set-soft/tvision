@@ -67,7 +67,7 @@ protected:
  static void defaultRegisterHandler(unsigned, void (*)());
  static void defaultSuspend();
  static void defaultResume();
- static void defaultDrawMouse(int x, int y);
+ static int  defaultDrawMouse(int x, int y);
 
 public:
  // SET: Used to externally force a mouse event.
@@ -166,12 +166,12 @@ inline Boolean TMouse::present()
  return THWMouse::present();
 }
 
-inline void resetDrawCounter()
+inline void TMouse::resetDrawCounter()
 {
  drawCounter=0;
 }
 
-inline unsigned getDrawCounter()
+inline unsigned TMouse::getDrawCounter()
 {
  return drawCounter;
 }

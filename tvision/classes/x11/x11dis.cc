@@ -68,8 +68,8 @@ void TDisplayX11::SetCursorShape(unsigned start, unsigned end)
 {
  cShapeFrom=start*fontH/100;
  cShapeTo  =end*fontH/100;
- if (cShapeFrom>fontH) cShapeFrom=fontH;
- if (cShapeTo>fontH)   cShapeTo  =fontH;
+ if ((unsigned)cShapeFrom>fontH) cShapeFrom=fontH;
+ if ((unsigned)cShapeTo>fontH)   cShapeTo  =fontH;
 }
 
 ushort TDisplayX11::GetRows()

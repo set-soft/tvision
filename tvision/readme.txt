@@ -14,8 +14,9 @@ The small sections are:
 9.  CPU usage
 10. Notes about international support
 11. How to submit a patch
-12. Special thanks
-13. Contact information
+12. Memory Debuggers
+13. Special thanks
+14. Contact information
 
 If you are looking for information about the Win32 target please look in the
 win32 (MingW) directory and winnt directory (BC++).
@@ -73,6 +74,7 @@ ftp://ftp.inprise.com/pub/borlandcpp/devsupport/archive/turbovision/tv.zip
 what Inprise says about this package:
 
 URL: http://www.inprise.com/devsupport/bcppbuilder/faq/QNA906.html
+or:  http://community.borland.com/article/0,1410,17285,00.html
 ------------------------------------------------------------------------------
 Question and Answer Database
 
@@ -497,27 +499,32 @@ minimal amount of time.
   The configuration script detects if the internationalization support is
 available in your system.
   For Linux that's part of the standard C library and all is provided as
-dynamic libraries so it doesn't impact the memory use.
+dynamic libraries so it doesn't impact the memory usage.
   For DOS that's provided by the gettext package (gtxtXXXb.zip). Versions of
 gettext prior to 0.10.37 are relative small and I think the memory used by it
-is small and you should try to use it. Since 0.10.37 libintl.a recodes the
+is OK and you should try to use it. Since 0.10.37 libintl.a recodes the
 strings on the fly, for that it needs libiconv (licvXXb.zip). This library is
 a huge set of conversion tables, those tables include chinese, japanese and
 korean codes, it makes the tables really huge and the size of programs linked
 with it increases more than 800 Kb (more than 600 Kb using UPX). In this case
 you could:
 a) Just use an old version of gettext, very recommendable.
-b) Generate programs with international support only if really needed.
-If you choose the second option you must configure the library to use
-international support. In the intl/dummy directory you'll find a small
-library intended as a replacement for libintl.a. Then when you want to create
-a program with the internationalization disabled just make sure this dummy
-library is used. You can do it by specifying the libraries path (-L option of
-gcc or Options|Directories|Libraries in RHIDE), make it point to the
-directory where the dummy library is located and the internationalization
-support will be disabled.
-Note: to compile the dummy library just go to the intl/dummy directory and
-run the make command.
+b) Generate programs with international support only when really needed.
+  If you choose the second option you must configure the library to use
+international support. I provide a dummy international library. This library
+provides the functions that gettext provides but they do nothing.
+  Why? What is the purpose? By doing it if you don't have international
+support at configuration time but you install it latter no recompilation is
+needed. You can also configure with international support and then create
+applications without it just linking with this library. Additionally you can
+configure the library to use the dummy version even if gettext is installed
+(--force-dummy), that's a good option if you only need to create a few
+applications with international support.
+  This library is compiled and installed with the libtvfintl.a name. If you
+don't have international support or want to disable it to reduce the size of
+a particular application you must link with this library
+  If you want to disable the fake library and all the internationalization
+support use the --no-intl configuration option.
 
 
 
@@ -533,7 +540,21 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-12. Special thanks:
+12. Memory Debuggers:
+--------------------
+
+  The library supports the MSS memory debugger version 1.2.1 for DOS. The
+code have special provisions to workaround some limitations in MSS. To use it
+just configure the library using the --with-mss option. You'll need to link
+with the mss library as explained in the mss documentation and as shown in
+the examples. MSS should work for Linux but I didn't test it.
+  If you know about other memory debugger and you need to introduce some
+changes in the library contact me.
+
+
+
+
+13. Special thanks:
 ------------------
 
 They goes to (no particular sorting):
@@ -556,7 +577,7 @@ He contributed a lot of patches.
 
 
 
-13. Contact information:
+14. Contact information:
 -----------------------
 
 Salvador E. Tropea (SET)
