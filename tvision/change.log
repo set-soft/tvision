@@ -1,4 +1,12 @@
 $Log$
+Revision 1.220  2001/10/10 14:56:15  set
+* Fixed: The TRangeValidator was supposed to support hexa numbers but
+didn't accept A-Fa-f. Also changed the complex and slow scanfs to
+strtol/stroul. Reported and solutions suggested by Andris.
+* Added: An example of TRangeValidator to the Tutorial number 16. I used it
+to test the changes ;-). I also added an example of the messageBoxes that
+uses printf style parameters.
+
 Revision 1.219  2001/10/08 23:36:18  set
 * Fixed: [gcc 3.x] fpstream(int fd) was creating a text mode stream and not
 binary.
