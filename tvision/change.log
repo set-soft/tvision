@@ -1,4 +1,10 @@
 $Log$
+Revision 1.19  1999/02/02 01:55:54  set
+* Added the TEditor, TFileEditor, TEditorWindow and TMemo classes. I taked
+the code from the old RHIDE BETA 4 and adapted it for the new keyboard and
+did other small changes.
+* Added TEditorApp to the library and a small example to test it.
+
 Revision 1.18  1999/02/02 00:56:55  set
 * Minor changes in the readme.txt and porting.txt to give some hints.
 .
@@ -7,15 +13,12 @@ Revision 1.17  1999/01/31 20:12:44  set
 text modes when using S3 boards. Reported and tested by Jerzy Witkowski
 <jwi@pl.ibm.com>.
 
-Revision 1.16  1999/01/31 19:20:14  root
+Revision 1.16  1999/01/31 19:20:14  root (set)
 * Adjusted the examples for Linux (some used dos.h).
 * Cleaned the /usr/... dependencies in the example gprs.
 * Trying to start a shared repository between DOS and Linux.
 .
-Revision 1.15  1999/01/29 04:26:02  set
-*** empty log message ***
-.
-Revision 1.10  1999/01/22 01:21:19  root
+Revision 1.10  1999/01/22 01:21:19  root (set)
 Passed the changes from DOS to Linux.
 
 Revision 1.14  1999/01/22 01:05:37  set
