@@ -675,6 +675,7 @@ makes/librhtv.imk
 makes/librhtv.mkf
 makes/librhtv.umk
 makes/maintain.mak
+makes/rhide.env
 makes/obj/delete.me                                                             
 misc.cc
 miscperl.pl

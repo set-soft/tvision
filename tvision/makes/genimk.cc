@@ -88,6 +88,8 @@ int main(int argc, char *argv[])
         if (stat(mak,&stMak)!=0 || stMak.st_mtime<stGpr.st_mtime)
           {
            printf("%s => %s\n",gpr,mak);
+           sprintf(b,"gprexp %s",gpr);
+           system(b);
            sprintf(b,"gpr2mak %s",gpr);
            system(b);
            if (stat(mak,&stMak)!=0)
