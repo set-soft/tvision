@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.410  2003/04/08 14:05:45  set
+* Added: Support for the new i18n features to TStaticText it affects
+TLabel and TParamText(partially).
+
 Revision 2.409  2003/04/07 13:39:55  set
 * Added: Support for the new i18n features to TCluster it affects
 TCheckBoxes and TRadioButtons.

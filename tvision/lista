@@ -491,6 +491,7 @@ include/tv/msgbox.h
 include/tv/no_mss.h
 include/tv/objects.h
 include/tv/osclipboard.h
+include/tv/parttree.h
 include/tv/resource.h
 include/tv/stddlg.h
 include/tv/system.h
