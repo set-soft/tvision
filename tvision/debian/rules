@@ -44,8 +44,8 @@ clean: clean-debian
 	# Add here commands to clean up after the build process.
 	#-$(MAKE) clean
 	rm -f linux/obj/*.o
-	rm -f linux/libtv.a
-	rm -f linuxso/libtv.so.*
+	rm -f linux/librhtv.a
+	rm -f linuxso/librhtv.so.*
 	rm -f linuxso/Makefile
 	rm -f linuxso/gkeyli.cc
 	rm -f linuxso/instlib
@@ -69,12 +69,12 @@ install-stamp: build-stamp
 
 	# Add here commands to install the package into debian/tmp.
 	#$(MAKE) install DESTDIR=`pwd`/debian/tmp
-	cp linuxso/libtv.so.$(version) debian/tmp/usr/lib
-	ln -sf libtv.so.$(version) debian/tmp/usr/lib/libtv.so.$(version_major)
-	cp linux/libtv.a debian/tmp/usr/lib/libtv_g.a
-	cp linux/libtv.a debian/tmp/usr/lib/libtv.a
+	cp linuxso/librhtv.so.$(version) debian/tmp/usr/lib
+	ln -sf librhtv.so.$(version) debian/tmp/usr/lib/librhtv.so.$(version_major)
+	cp linux/librhtv.a debian/tmp/usr/lib/librhtv_g.a
+	cp linux/librhtv.a debian/tmp/usr/lib/librhtv.a
 	cp include/*.h debian/tmp/usr/include/rhtvision
-	ln -sf libtv.so.$(version) debian/tmp/usr/lib/libtv.so
+	ln -sf librhtv.so.$(version) debian/tmp/usr/lib/librhtv.so
 
 	dh_movefiles -p rhtvision1
 
