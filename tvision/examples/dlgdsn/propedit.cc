@@ -549,8 +549,8 @@ public:
 TStructMap::TStructMap(const char * Label,
             int DataSize,
             TDataEditorType aEditorType,
-            bool ReadOnly = false,
-            TStructMap *Next = 0)
+            bool ReadOnly ,
+            TStructMap *Next )
 {
    label = newStr(Label);
    offset = 0;
