@@ -817,7 +817,7 @@ sub ModifyMakefiles
             {
              $name=$1;
              $value=$4;
-             print "$name=$value\n";
+             #print "$name=$value\n";
              $rep="^$name"."=((.+\\\\\\n)+(.+))";
              if ($text=~/$rep/m)
                { # Ok multiline
