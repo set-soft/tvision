@@ -1,8 +1,13 @@
-$Log$.
+$Log$
+Revision 2.528  2004/03/12 19:25:05  set
+* Added: [config] Some stuff to the configure and makefiles to maintain
+compatibility with packages that uses "auto tools". Patch by Aurelian
+Melinte (LinCS/tiger project).
+
 Revision 2.527  2004/03/02 19:52:41  set
 * Fixed: [Linux] Problems with big-endian terminals using /dev/vcs*
 devices. Looks like the vcs format is platform dependent.
-.
+
 Revision 2.526  2004/01/13 14:30:28  set
 * Fixed: [BC++] Missing QNX4 directory.
 * Fixed: [BC++] It doesn't have ioctl.h.
