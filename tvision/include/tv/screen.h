@@ -104,6 +104,9 @@ public:
  static
  const  char  *(*getWindowTitle)(void);
  static int    (*setWindowTitle)(const char *name);
+ // This should be called before initialization.
+ // Isn't mandatory but helps some drivers.
+ static void     setArgv(int aArgc, char **aArgv, char **aEnvir);
 
  // We must remove it
  static int dual_display;
@@ -116,6 +119,11 @@ protected:
  virtual ~TDisplay();
 
  static TFont *font;
+ // A copy of the command line arguments, old applications doesn't
+ // provide it.
+ static int    argc;
+ static char **argv;
+ static char **environ;
 
  // Default behaviors
  static void        defaultClearScreen(uchar, uchar);

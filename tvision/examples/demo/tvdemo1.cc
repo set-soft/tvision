@@ -65,9 +65,10 @@ __link(RCalcDisplay);
 //   opening.
 //
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envir)
 {
-    TVDemo *demoProgram = new TVDemo(argc, argv);
+    TDisplay::setArgv(argc,argv,envir);
+    TVDemo *demoProgram = new TVDemo(argc,argv);
 
     TScreen::setWindowTitle("Turbo Vision Demo Program");
     demoProgram->run();

@@ -1,151 +1,181 @@
+/* Linux keyboard handler routines header.
+   Copyright by Salvador E. Tropea (SET) (2001-2002)
+   Covered by the GPL license. */
+#ifndef LINUXSCREEN_HEADER_INCLUDED
+#define LINUXSCREEN_HEADER_INCLUDED
+
+// Modes you can pass to Init
+const int lnxInitVCSrw=0, lnxInitVCSwo=1, lnxInitSimple=2, lnxInitMDA=3;
+
 // virtual to avoid problems with multiple inheritance
-class TDisplayUNIX : virtual public TDisplay
+class TDisplayLinux : virtual public TDisplay
 {
 protected:
- TDisplayUNIX() {};
+ TDisplayLinux() {};
  // We will use casts to base classes, destructors must be pointers
- virtual ~TDisplayUNIX();
+ virtual ~TDisplayLinux();
  // This sets the pointers of TDisplay to point to this class
- static void   Init();
+ static void   Init(int mode);
 
  // Behaviors to replace TDisplay
+ // Monochrome (MDA, Hercules, etc.) members are marked with MDA
+ // /dev/vcs* members are marked with VCS
  static void   SetCursorPos(unsigned x, unsigned y);
+ static void   SetCursorPosMDA(unsigned x, unsigned y);
+ static void   SetCursorPosVCS(unsigned x, unsigned y);
+ 
  static void   GetCursorPos(unsigned &x, unsigned &y);
- static void   GetCursorShape(unsigned &start, unsigned &end);
+ static void   GetCursorPosVCS(unsigned &x, unsigned &y);
+ static void   GetCursorPosGeneric(unsigned &x, unsigned &y);
+ 
  static void   SetCursorShape(unsigned start, unsigned end);
+ static void   SetCursorShapeMDA(unsigned start, unsigned end);
+ 
+ static void   GetCursorShape(unsigned &start, unsigned &end);
+ static void   GetCursorShapeMDA(unsigned &start, unsigned &end);
+
  // Not available static void clearScreen(uchar, uchar);
+ 
  static ushort GetRows();
+ //static ushort GetRowsMDA(); is ushort TDisplay::defaultGetRows()
+ 
  static ushort GetCols();
- // Not available static void setCrtMode(ushort mode);
+ //static ushort GetColsMDA(); is ushort TDisplay::defaultGetCols()
+ 
+ // Not available, but does some defaults
+ static void   SetCrtMode(ushort mode);
  // Not available static ushort getCrtMode();
  static void   SetCrtModeExt(char *mode);
  static int    CheckForWindowSize(void);
- // Not available static const char *getWindowTitle(void);
- // Not available static int setWindowTitle(const char *name);
+ static const char *GetWindowTitle(void);
+ static int    SetWindowTitle(const char *name);
 
  // Functions and members specific for this driver
- inline static void safeput(char *&p, char *cap);
+ // Helpers to make the code easy to read
  inline static int  canWriteVCS();
  inline static int  canReadVCS();
- inline static int  canOnlyWriteVCS();
-
- static int vcsWfd; // virtual console system descriptor
- static int vcsRfd; // SET: Same for reading
- static int tty_fd; // tty descriptor
+ static void   setUpEnviron();
  // Current cursor position
- static int cur_x, cur_y;
- // SET: Current cursor shape
+ static int curX, curY;
+ // Current cursor shape
  static int cursorStart,cursorEnd;
- // SET: 1 when the size of the window where the program is running changed
+ // 1 when the size of the window where the program is running changed
  static volatile sig_atomic_t windowSizeChanged;
+ static int vcsWfd; // virtual console system descriptor
+ static int vcsRfd; // Same for reading
+ static int hOut;   // Handle for the console output
+ // Original environment of the application, here we put the title
+ static char *origEnvir;
+ // New environment, a copy of the original
+ static char *newEnvir;
+ // How much space we have
+ static int maxLenTit;
 };
 
 inline
-int  TDisplayUNIX::canWriteVCS()
+int  TDisplayLinux::canWriteVCS()
 {
  return vcsWfd>=0;
 }
 
 inline
-int  TDisplayUNIX::canReadVCS()
+int  TDisplayLinux::canReadVCS()
 {
  return vcsRfd>=0;
 }
 
-inline
-int  TDisplayUNIX::canOnlyWriteVCS()
-{
- return vcsWfd>=0 && vcsRfd<0;
-}
-
-inline
-void TDisplayUNIX::safeput(char *&p, char *cap)
-{
- if (cap)
-    while (*cap) *p++=*cap++;
-}
-
-// With this order the destructor will be called first for TScreenUnix,
-// TScreen, TDisplayUNIX and finally TDisplay.
-class TScreenUNIX : public TDisplayUNIX, public TScreen
+// With this order the destructor will be called first for TScreen,
+// TScreenLinux, TScreen, TScreenLinux::suspend, TDisplayLinux and
+// finally TDisplay (twice).
+class TScreenLinux : public TDisplayLinux, public TScreen
 {
 public:
- TScreenUNIX();
+ TScreenLinux();
  // We will use casts to base classes, destructors must be pointers
- virtual ~TScreenUNIX();
+ virtual ~TScreenLinux();
 
- friend class THWMouseXTerm;
+ friend class TDisplayLinux;
 
- // Fix me: should be protected but right now is used by the editor for the
- // pal. that should be moved here.
- static void SendToTerminal(const char *value);
 protected:
- static void InitPCCharsMapping();
- static void sigWindowSizeChanged(int sig);
- static void SpecialKeysDisable(int file);
- static void SpecialKeysRestore(int file);
- static void startcurses();
- static void mapColor(char *&p, int col);
- static void writeBlock(int dst, int len, ushort *old, ushort *src);
- static void RestoreScreen();
- static void SaveScreen();
- static void SaveScreenReleaseMemory();
 
- static void   Resume();
  static void   Suspend();
+ static void   Resume();
  // Default: ushort fixCrtMode( ushort mode )
- static void   setCrtData();
- // Default: void clearScreen()
- static void   setVideoMode(ushort mode);
- static void   setVideoModeExt(char *mode);
- static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
- static ushort getCharacter(unsigned dst);
- static void   setCharacter(unsigned offset,ushort value);
- static void   setCharacters(unsigned dst,ushort *src,unsigned len);
+ // Default: void   setCrtData();
+ // Default: void   clearScreen()
+ static void   SetVideoMode(ushort mode);
+ static void   SetVideoModeExt(char *mode);
+ static void   GetCharactersMDA(unsigned offset,ushort *buf,unsigned count);
+ static void   GetCharactersVCS(unsigned offset,ushort *buf,unsigned count);
+ static ushort GetCharacter(unsigned dst);
+ static void   SetCharacter(unsigned offset,ushort value);
+ static void   SetCharactersTerm(unsigned dst,ushort *src,unsigned len);
+ static void   SetCharactersVCS(unsigned dst,ushort *src,unsigned len);
+ static void   SetCharactersMDA(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild);
 
- inline static int range(int test, int min, int max);
-
- enum terminalType
- {
-  LINUX_TERMINAL=0,
-  GENER_TERMINAL=1,
-  VCSA_TERMINAL=2,
-  XTERM_TERMINAL=3
- };
+ // Initialization code executed just once
+ static int InitOnce();
+ // Initialize member pointers
+ static void Init(int mode);
+ // Detects if we can access /dev/vcs* device. Initializes vcsWfd and vcsRfd.
+ static void DetectVCS();
+ // Detects a MDA board. Indicated in secondaryAvailable.
+ static void DetectSecondaryDisplay();
+ // Window size change signal handler
+ static void sigWindowSizeChanged(int sig);
+ // Helper function to save the current content of the screen
+ static void SaveScreen();
+ static void RestoreScreen();
+ static void SaveScreenReleaseMemory(void);
+ // Helper used to resize screenBuffer
+ static void CheckSizeBuffer(int oldWidth, int oldHeight);
+ // Helper to write the text and escape sequences
+ static void writeBlock(int dst, int len, ushort *old, ushort *src);
+ // Helper to set the color escape sequence
+ static void mapColor(int col);
+ // Closes and releases all, called from TDisplayLinux
+ static void DeallocateResources();
+ // Terminal state before starting
+ static struct termios outTermiosOrig;
+ // Our terminal state
+ static struct termios outTermiosNew;
+ // Last error
+ static char *error;
+ // Is MDA accesible?
+ static char secondaryAvailable;
+ // File handle for mmaped memory of MDA board
+ static int mdaMemH;
+ // Mmaped MDA memory
+ static ushort *mdaMem;
+ // Kind of palette
+ static int palette;
  enum
  {
   PAL_MONO, PAL_LOW, PAL_HIGH, PAL_LOW2
  };
-
- static int      use_pc_chars;
- static int      timeout_wakeup,timer_value;
- static int      TerminalType;
- static int      port_access;
- static FILE    *tty_file;
- static int      mono_mem_desc;
- static ushort  *mono_mem;
- static int      palette;
- static int      force_redraw;
- // SET: data to restore the XON/XOFF control keys and others like ^C, ^\ and ^Z
- // Used by SpecialKeys*
- static cc_t     oldKeys[5];
- // Used by mapColor:
- static int      old_col,old_fore,old_back;
- // Save/Restore screen
- static ushort  *user_buffer;
- static int      user_buffer_size;
- static unsigned user_cursor_x,user_cursor_y;
- static char    *terminal;
- static char     cursesInitialized;
- static char     termAttrsSaved;
- // SET: That's the job of curses endwin(), additionally it does a much more
- // complete work so I don't see the point of duplicating work, in my system
- // I didn't see any change after removing it, but I left the code just in
- // case
- #ifdef SAVE_TERMIOS
- static struct termios old_term,new_term;
- #endif
+ // Buffer containing the screen before we started
+ static ushort *userBuffer;
+ // Size of the buffer
+ static unsigned userBufferSize;
+ // Current colors, for escape sequences
+ static int oldCol, oldBack, oldFore;
+ // Can we use TIOCLINUX?
+ static char tioclinuxOK;
 };
 
+// SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
+// think it have much sense in non-Intel PCs. In fact looks like it gives
+// some problems when compiling for Alpha (__alpha__).
+//   Also make it only for Linux until I know how to do it for FreeBSD.
+
+#if defined(TVCPU_x86)
+ // Needed for ioperm, used only by i386.
+ // I also noted that glibc 2.1.3 for Alpha, SPARC and PPC doesn't have
+ // this header
+ #include <sys/perm.h>
+ #define h386LowLevel
+#endif
+
+#endif // LINUXSCREEN_HEADER_INCLUDED
 

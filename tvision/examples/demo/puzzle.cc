@@ -38,9 +38,7 @@
  #include <time.h>
  #include <io.h>
 #else
- #if defined(TVOSf_QNXRtP)
-  #include <time.h>
- #endif // __QNXNTO__
+ #include <time.h>
  #include <sys/time.h>
  #include <unistd.h>
 #endif

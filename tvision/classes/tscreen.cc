@@ -139,7 +139,10 @@ drvChecker Drivers[]=
   #ifdef HAVE_X11
    TV_XDriverCheck,
   #endif // HAVE_X11
- TV_LinuxDriverCheck,
+  #ifdef TVOSf_Linux
+   TV_LinuxDriverCheck,
+  #endif
+  TV_UNIXDriverCheck,
  #endif
  #ifdef TVOS_Win32
  TV_Win32DriverCheck,
