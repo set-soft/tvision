@@ -1,4 +1,12 @@
 $Log$
+Revision 1.10  1999/01/22 01:21:19  root
+Passed the changes from DOS to Linux.
+
+Revision 1.14  1999/01/22 01:05:37  set
+* Fixed the UNIX terminals code to use the ACS_xxxx macros for the frames
+instead of falling back to just ASCII. It makes the program look *much*
+better when using xterm, gnome-terminal, eterm, etc.
+
 Revision 1.13  1999/01/22 00:34:11  set
 * Added clarification in the readme.txt about: license, RHIDE version needed
 no-rtti stuff.
