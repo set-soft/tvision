@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.398  2003/02/05 12:27:19  set
+* Fixed: [DOS] The Windows clipboard paste requested plain text instead of
+OEM text. This skipped the code page translation. Reported by Thiago.
+
 Revision 2.397  2003/02/02 01:09:33  terrible
 * Updated: Debian packaging to version 2.0.1-1 "Columbia".
 
