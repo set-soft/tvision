@@ -481,28 +481,28 @@ DEPS_1=bc.cc ../include/ttypes.h ../include/tvutil.h
 obj/bc.o:: $(DEPS_1)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_2=calcdisp.cc ../include/button.h ../include/calc.h\
-	../include/dialogs.h ../include/drawbuf.h ../include/event.h\
-	../include/intl.h ../include/ipstream.h ../include/object.h\
-	../include/objects.h ../include/opstream.h ../include/palette.h\
-	../include/point.h ../include/pstream.h ../include/rect.h\
-	../include/stddlg.h ../include/streambl.h ../include/strmblcl.h\
-	../include/system.h ../include/tkeyext.h ../include/tkeys.h\
-	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
-	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
-	../include/view.h ../include/views.h
-obj/calcdisp.o:: $(DEPS_2)
-	$(RHIDE_COMPILE.cc.o)
-DEPS_3=calculat.cc ../include/button.h ../include/calc.h\
-	../include/dialog.h ../include/dialogs.h ../include/drawbuf.h\
-	../include/event.h ../include/group.h ../include/intl.h\
-	../include/ipstream.h ../include/object.h ../include/objects.h\
-	../include/opstream.h ../include/point.h ../include/pstream.h\
+	../include/configtv.h ../include/dialogs.h ../include/drawbuf.h\
+	../include/event.h ../include/intl.h ../include/ipstream.h\
+	../include/object.h ../include/objects.h ../include/opstream.h\
+	../include/palette.h ../include/point.h ../include/pstream.h\
 	../include/rect.h ../include/stddlg.h ../include/streambl.h\
 	../include/strmblcl.h ../include/system.h ../include/tkeyext.h\
 	../include/tkeys.h ../include/tobjstrm.h ../include/ttypes.h\
 	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
-	../include/tvutil.h ../include/view.h ../include/views.h\
-	../include/window.h
+	../include/tvutil.h ../include/view.h ../include/views.h
+obj/calcdisp.o:: $(DEPS_2)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_3=calculat.cc ../include/button.h ../include/calc.h\
+	../include/configtv.h ../include/dialog.h ../include/dialogs.h\
+	../include/drawbuf.h ../include/event.h ../include/group.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/point.h\
+	../include/pstream.h ../include/rect.h ../include/stddlg.h\
+	../include/streambl.h ../include/strmblcl.h ../include/system.h\
+	../include/tkeyext.h ../include/tkeys.h ../include/tobjstrm.h\
+	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
+	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
+	../include/views.h ../include/window.h
 obj/calculat.o:: $(DEPS_3)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_4=drivers2.cc ../include/configtv.h ../include/intl.h\
@@ -1988,11 +1988,11 @@ DEPS_183=tprogini.cc ../include/app.h ../include/configtv.h\
 	../include/menubar.h ../include/menus.h ../include/menuview.h\
 	../include/object.h ../include/objects.h ../include/opstream.h\
 	../include/point.h ../include/program.h ../include/pstream.h\
-	../include/rect.h ../include/statslin.h ../include/stddlg.h\
-	../include/streambl.h ../include/system.h ../include/tobjstrm.h\
-	../include/ttypes.h ../include/tv.h ../include/tvconfig.h\
-	../include/tvobjs.h ../include/tvutil.h ../include/view.h\
-	../include/views.h
+	../include/rect.h ../include/screen.h ../include/statslin.h\
+	../include/stddlg.h ../include/streambl.h ../include/system.h\
+	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
+	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
+	../include/view.h ../include/views.h
 obj/tprogini.o:: $(DEPS_183)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_184=tprogram.cc ../include/app.h ../include/configtv.h\
