@@ -474,7 +474,7 @@ int count=0;
 
 int main(int argc, char *argv[])
 {
-  unsigned short key;
+  unsigned short key=0;
 #ifdef __linux__
   void startcurses();
   void stopcurses();
@@ -494,11 +494,14 @@ int main(int argc, char *argv[])
    while (!TGKey::kbhit());// {count++; if ((count%1000)==0) printf(".");}
    TEvent e;
    TGKey::fillTEvent(e);
-   key = TGKey::Abstract;
-   printf("Shiftstate: %04x RawCode: %04x ASCII: %X  SCAN: %04X\r\n",
-          TGKey::sFlags,key,key & 0xff,e.keyDown.raw_scanCode);
-   InterpretAbstract();
-   printf(" ASCII: %c\r\n",TGKey::ascii);
+   if (e.what!=evNothing)
+     {
+      key = TGKey::Abstract;
+      printf("Shiftstate: %04x RawCode: %04x ASCII: %X  SCAN: %04X\r\n",
+             TGKey::sFlags,key,key & 0xff,e.keyDown.raw_scanCode);
+      InterpretAbstract();
+      printf(" ASCII: %c\r\n",TGKey::ascii);
+     }
   } while (key!=kbEsc);
 #ifdef __linux__
   stopcurses();
