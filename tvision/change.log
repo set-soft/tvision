@@ -1,4 +1,10 @@
 $Log$
+Revision 1.95  1999/08/25 00:11:17  set
+* Fixed: One of the new broadcasts was overlying a TButton command. Now I
+moved the TButton command to the views.h file so it won't happend again. I
+don't know why the original programmers left a lot of things in the .cc files
+instead of putting them in the headers.
+.
 Revision 1.94  1999/08/22 23:26:54  set
 * Fixed: the doit UNIX script to apply the patches.
 * Modified: the number of one broadcast to be equal to the original.
