@@ -6,9 +6,10 @@ The small sections are:
 2. Notes about the package
 3. Compilation and use
 4. Linux dynamic libraries
-5. Examples
-6. How to submit a patch
-7. Contact information
+5. Libraries needed
+6. Examples
+7. How to submit a patch
+8. Contact information
 
 
 1. Introduction:
@@ -123,7 +124,25 @@ the version with debug information to your libs directory.
 
 
 
-5. Examples:
+5. Libraries needed:
+-------------------
+
+Linux:
+  In Linux you'll need ncurses (I use 3.4) and gpm. If you are using libc5
+you'll need gettext too (libintl) that isn't needed for glibc.
+  The binary distribution was created with Debian 2.0 (glibc2, ncurses3, etc).
+
+DOS:
+  You must install gettext, you can find it in the v2gnu directory in
+Simtelnet. Is called (for example) gtxt032b.zip. There are a bug in the
+headers of gtxt032b.zip, in the file libintl.h there are a line that says
+@INCLUDE_LOCALE_H@, you can safetly remove it.
+
+
+
+
+
+6. Examples:
 -----------
 
   I included a collection of nine examples I got from the net and ported to
@@ -132,7 +151,7 @@ this TVision. The examples are shipped only with the sources distribution.
 
 
 
-6. How to submit a patch:
+7. How to submit a patch:
 ------------------------
 
   The simplest way is running a diff between your current directory and a
@@ -143,7 +162,7 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-7. Contact information:
+8. Contact information:
 ----------------------
 
 Salvador E. Tropea (SET)

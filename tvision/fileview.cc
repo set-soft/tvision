@@ -10,6 +10,15 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define Uses_MsgBox
 #define Uses_TKeys
@@ -22,13 +31,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TFileViewer
 #define Uses_TFileDialog
 #include <tv.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 #if !defined( NO_STREAM )
 

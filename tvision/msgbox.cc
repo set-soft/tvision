@@ -10,6 +10,11 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
 
 #define Uses_MsgBox
 #define Uses_TObject
@@ -24,10 +29,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TCheckBoxes
 #define Uses_TSItem
 #include <tv.h>
-
-#include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
 
 static const char *buttonName[] =
 {
