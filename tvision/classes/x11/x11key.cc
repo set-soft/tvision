@@ -85,7 +85,7 @@ int TGKeyX11::getKeyEvent(int block)
        //printf("Key event 0x%04X\n",event.xkey.state);
        lenKb=XmbLookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
        bufferKb[lenKb]=0;
-       /*printf("Key event %d %s 0x%04X\n",lenKb,bufferKb,Key);*/
+       //printf("Key event %d %s 0x%04X %d\n",lenKb,bufferKb,(unsigned)Key,bufferKb[0]);
        /* FIXME: how can I know the state before entering the application? */
        #define ToggleBit(a) if (kbFlags & a) kbFlags&=~a; else kbFlags|=a
        /* Look if that's a modifier */
@@ -303,7 +303,12 @@ ushort TGKeyX11::GKey()
           if (Symbol>=1 && Symbol<=26) // ^A to ^Z
              name=kbA+Symbol-1;
           else
-             name=kbUnkNown;
+            {
+             if (Symbol>26 && Symbol<32) // ^{ ^\ ^} ?? ^/
+                name=KeyCodeByASCII[Key-32];
+             else
+                name=kbUnkNown;
+            }
          }
       }
     //printf("Key of lenght 1: name: %d Symbol %d Key: 0x%04X\n",name,Symbol,Key);

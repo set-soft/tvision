@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.331  2002/09/23 12:31:54  set
+* Added: A mechanism to set the name of the configuration file from the
+user application side. It allows to have special configuration files for
+particular applications.
+
 Revision 2.330  2002/09/23 12:31:09  set
 * Added: [Linux] more details about why the 512 chars system used by Linux
 isn't the same that TV needs. From a talk with Tapio.
