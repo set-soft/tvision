@@ -45,11 +45,12 @@ const ushort arrowCodes[] =
 
     /* The keycode contains now also the shift flags, which the
        caller don't want to see */
-    keyCode &= 0x7F;
+    ushort _keyCode = keyCode & 0x7F;
 
     for( unsigned i = 0; i<(sizeof(ctrlCodes)/sizeof(ushort)) ; i++ )
-        if( keyCode==ctrlCodes[i] )
+        if( _keyCode==ctrlCodes[i] )
             return arrowCodes[i];
+    /* If it was not found, return the original code */
     return keyCode;
 }
 
