@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.383  2002/12/12 19:01:39  set
+* Added: A generalized mechanism to interpret Alt+Non-ASCII. So now in a
+greek keyboard Alt+Chi is converted to Alt+X and in a russian keyboard
+Alt+Che is also converted to Alt+X ... may be some day Alt+SA will be Alt+X
+in a japanese keyboard ;-), but that will need much more work.
+
 Revision 2.382  2002/12/11 12:41:07  set
 * Modified: I generalized the TGKey::defaultSetCodePage, it now supports
 russian and greek keyboards for various code pages. This code allows
