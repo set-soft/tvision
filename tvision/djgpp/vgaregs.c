@@ -6,6 +6,8 @@
   This module provides the functions declared inline in vgaregs.h.
   They are needed only if you compile without optimizations.
 */
+#ifdef __DJGPP__
+
 #include <pc.h>
 #define NO_INLINE
 #include "vgaregs.h"
@@ -218,3 +220,4 @@ __asm__ __volatile__("
 : "c" (cant*3), "D" (_pal_ptr), "a" (color), "d" (0x3C7)
 );
 }
+#endif // __DJGPP__

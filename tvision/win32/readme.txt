@@ -1,5 +1,6 @@
   This file contains information about how to build the Win32 version of the
-library.
+library. I tested it under Windows 95 and NT 4 so I think it works for any of
+the Win32 family members (98, 2000, etc.).
 
   The Win32 version port was contributed by Vadim Beloborodov.
 
@@ -12,6 +13,8 @@ and works very well.
 be sure if it works ok. You should have no problems or at most very simple
 ones. Also note that Vadim wrote the MSVC make file with GNU tools in mind
 (he used rm instead of just del ;-).
+  If you are looking for a Borland C++ port take a look to the
+../winnt/readme.txt file.
 
 * Why this target have special instructions and isn't explained in the main
   readme file?
@@ -47,7 +50,7 @@ install". Send me comments about it.
 
 * How do I compile the demo?
 
-  Mingw32: make demo.exe
+  Mingw32: make -f demo.mak
   MSVC: The makefile is called demo.ms (make -f demo.ms)
 
 * Some additional comments:
