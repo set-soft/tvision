@@ -1,3 +1,11 @@
+rhtvision (2.0.3-2) unstable; urgency=low
+
+  * With a new version of lintian it complained that we should not
+    build-depend on make and gzip because the first is a build-essential
+    package and the second is an essential package. 
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Tue,  5 Oct 2004 20:24:34 -0200
+
 rhtvision (2.0.3-1) unstable; urgency=low
 
   * New upstream version! CVS release 2.573 2004/09/22 21:26:40.
