@@ -1,5 +1,5 @@
 /* X11 screen routines header.
-   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // X headers are needed to include it
 #if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11) && !defined(X11SCR_HEADER_INCLUDED)
@@ -38,7 +38,7 @@ protected:
  // Cursor position in pixels
  static int       cursorPX, cursorPY;
  // Size of the font
- static unsigned  fontW,fontWb,fontH;
+ static unsigned  fontW,fontWb,fontH,fontSz;
  // Cursor shape in absolute values (0-fontH)
  static char      cShapeFrom,cShapeTo;
  // Flag to indicate that the size of the window changed
@@ -119,6 +119,10 @@ protected:
  static void   drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr);
  // Creates the mouse cursors
  static Boolean createCursors();
+
+ // Helper to set the bacground and foreground in one step
+ static void    XSetBgFg(uint16 attr);
+ static void    XSetBgFgC(uint16 attr);
 
  // Variables for this driver
  // Foreground and background colors

@@ -1,5 +1,5 @@
 /* X11 keyboard routines.
-   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 #include <tv/configtv.h>
 

@@ -1,5 +1,5 @@
 /* X11 screen routines.
-   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
    Covered by the GPL license.
     Thanks to José Ángel Sánchez Caso (JASC). He implemented a first X11
    driver.
@@ -29,7 +29,9 @@
    UseUpdateThread       Uses a separated thread to update the window content.
 
 */
-#define _GNU_SOURCE
+#ifndef _GNU_SOURCE
+ #define _GNU_SOURCE
+#endif
 
 #include <tv/configtv.h>
 
@@ -175,8 +177,7 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
  uchar *theChar=(uchar *)(screenBuffer+offset);
  uchar newChar=theChar[charPos];
  uchar newAttr=theChar[attrPos];
- XSetBackground(disp,gc,colorMap[newAttr>>4]);
- XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+ XSetBgFg(newAttr);
  UnDrawCursor();
  drawChar(gc,x,y,newChar,newAttr);
  DrawCursor();
@@ -205,8 +206,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
        sb[attrPos]=newAttr;
        if (newAttr!=oldAttr)
          {
-          XSetBackground(disp,gc,colorMap[newAttr>>4]);
-          XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+          XSetBgFg(newAttr);
           oldAttr=newAttr;
          }
        drawChar(gc,x,y,newChar,newAttr);
@@ -236,7 +236,6 @@ int TScreenX11::System(const char *command, pid_t *pidChild, int in, int out,
  pid_t cpid=fork();
  if (cpid==0)
    {// Ok, we are the child
-
     //   I'm not sure about it, but is the best I have right now.
     //   Doing it we can kill this child and all the subprocesses
     // it creates by killing the group. It also have an interesting
@@ -823,7 +822,7 @@ void TScreenX11::AdjustCursorImage()
 {
  if (cursorImage)
     XDestroyImage(cursorImage);
- cursorData=(char *)malloc(fontH*fontWb);
+ cursorData=(char *)malloc(fontSz);
  cursorImage=XCreateImage(disp,visual,1,XYBitmap,0,cursorData,fontW,fontH,8,0);
  cursorImage->byte_order=cursorImage->bitmap_bit_order=MSBFirst;
 }
@@ -892,6 +891,7 @@ TScreenX11::TScreenX11()
  fontW=useFont->w;
  fontH=useFont->h;
  fontWb=(useFont->w+7)/8;
+ fontSz=fontWb*fontH;
  uchar *fontData=useFont->data;
 
  aux=0;
@@ -1198,15 +1198,28 @@ void TScreenX11::UnDrawCursor()
  uchar *theChar=(uchar *)(screenBuffer+offset);
  uchar newChar=theChar[charPos];
  uchar newAttr=theChar[attrPos];
- int bg=newAttr>>4;
- int fg=newAttr & 0xF;
 
- XSetBackground(disp,cursorGC,colorMap[bg]);
- XSetForeground(disp,cursorGC,colorMap[fg]);
+ XSetBgFgC(newAttr);
  drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
  cursorInScreen=0;
  SEMAPHORE_OFF;
  return;
+}
+
+void TScreenX11::XSetBgFgC(uint16 attr)
+{
+ int bg=attr>>4;
+ int fg=attr & 0xF;
+ XSetBackground(disp,cursorGC,colorMap[bg]);
+ XSetForeground(disp,cursorGC,colorMap[fg]);
+}
+
+void TScreenX11::XSetBgFg(uint16 attr)
+{
+ int bg=attr>>4;
+ int fg=attr & 0xF;
+ XSetBackground(disp,gc,colorMap[bg]);
+ XSetForeground(disp,gc,colorMap[fg]);
 }
 
 void TScreenX11::DrawCursor()
@@ -1221,13 +1234,10 @@ void TScreenX11::DrawCursor()
     unsigned offset=cursorX+cursorY*maxX;
     uchar *theChar=(uchar *)(screenBuffer+offset);
     int attr=theChar[attrPos];
-    int bg=attr>>4;
-    int fg=attr & 0xF;
-    XSetBackground(disp,cursorGC,colorMap[bg]);
-    XSetForeground(disp,cursorGC,colorMap[fg]);
+    XSetBgFgC(attr);
     memcpy(cursorData,useSecondaryFont && (attr & 8) ?
            ximgSecFont[theChar[charPos]]->data :
-           ximgFont[theChar[charPos]]->data,fontH*fontWb);
+           ximgFont[theChar[charPos]]->data,fontSz);
 
     //fprintf(stderr,"DrawCursor: cursorInScreen=%d from/to %d/%d\n",cursorInScreen,cShapeFrom,cShapeTo);
     /* If the cursor is on draw it over the character */
@@ -1281,6 +1291,7 @@ void TScreenX11::ProcessGenericEvents()
  // Current time
  gettimeofday(&curCursorTime,0);
  // Substract the reference
+ curCursorTime.tv_sec-=refCursorTime.tv_sec;
  SubstractRef(curCursorTime,refCursorTime);
 
  if (curCursorTime.tv_sec>0 || curCursorTime.tv_usec>cursorDelay)
@@ -1435,9 +1446,7 @@ void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned col
     return; // Nothing to do
 
  SEMAPHORE_ON;
- XSetBackground(disp,gc,colorMap[color>>4]);
- XSetForeground(disp,gc,colorMap[color&15]);
-
+ XSetBgFg(color);
  x*=fontW; y*=fontH;
  UnDrawCursor();
  XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
@@ -1796,6 +1805,7 @@ void TScreenX11::DoResize(unsigned w, unsigned h)
     fontW=w;
     fontWb=(w+7)/8;
     fontH=h;
+    fontSz=fontWb*h;
     AdjustCursorImage();
     /* Change the cursor shape */
     SetCursorShape(start,end);
@@ -2109,7 +2119,7 @@ Disadvantages:
 // Used to print a mark every 250 updates
 #define TIC 0
 // Prints some debug info when the mechanism is dis/enabled
-#define DBG_ALM_STATE 1
+#define DBG_ALM_STATE 0
 
 int     TVX11UpdateThread::running=0;
 int     TVX11UpdateThread::initialized=0;

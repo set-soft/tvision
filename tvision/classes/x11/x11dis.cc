@@ -40,6 +40,7 @@ int       TDisplayX11::newY;
 unsigned  TDisplayX11::fontW;
 unsigned  TDisplayX11::fontWb;
 unsigned  TDisplayX11::fontH;
+unsigned  TDisplayX11::fontSz;
 
 TDisplayX11::~TDisplayX11() {}
 
