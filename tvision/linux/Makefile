@@ -277,7 +277,7 @@ OBJFILES=obj/bc.o obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/tstringl.o obj/tstrlist.o obj/tstrmcla.o obj/tstrmtyp.o\
 	obj/tsubmenu.o obj/ttermina.o obj/ttextdev.o obj/tvalidat.o\
 	obj/tvedit1.o obj/tvedit2.o obj/tvedit3.o obj/tview.o obj/tvtext1.o\
-	obj/tvtext2.o obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o
+	obj/tvtext2.o obj/tweaked.o obj/twindow.o obj/vesa.o
 LIBRARIES=
 SOURCE_NAME=$<
 OUTFILE=$@
@@ -338,7 +338,7 @@ PROJECT_ITEMS=bc.cc calcdisp.cc calculat.cc drivers2.cc dual.cc fileview.cc\
 	tstringl.cc tstrlist.cc tstrmcla.cc tstrmtyp.cc tsubmenu.cc\
 	ttermina.cc ttextdev.cc tvalidat.cc tvedit1.cc tvedit2.cc\
 	tvedit3.cc tview.cc tvtext1.cc tvtext2.cc tweaked.c twindow.cc\
-	vesa.cc vga.cc
+	vesa.cc
 DEFAULT_MASK=*
 RHIDE_BIN_DIR=/usr/local/bin
 PASCAL_TYPE=GPC
@@ -470,7 +470,7 @@ DEPS_0= obj/bc.o obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/tstringl.o obj/tstrlist.o obj/tstrmcla.o obj/tstrmtyp.o\
 	obj/tsubmenu.o obj/ttermina.o obj/ttextdev.o obj/tvalidat.o\
 	obj/tvedit1.o obj/tvedit2.o obj/tvedit3.o obj/tview.o obj/tvtext1.o\
-	obj/tvtext2.o obj/tweaked.o obj/twindow.o obj/vesa.o obj/vga.o 
+	obj/tvtext2.o obj/tweaked.o obj/twindow.o obj/vesa.o 
 NO_LINK=
 LINK_FILES=$(filter-out $(NO_LINK),$(DEPS_0))
 librhtv.a:: $(DEPS_0)
@@ -2275,22 +2275,19 @@ obj/tvtext2.o:: $(DEPS_217)
 DEPS_218=tweaked.c
 obj/tweaked.o:: $(DEPS_218)
 	$(RHIDE_COMPILE.c.o)
-DEPS_219=twindow.cc ../include/drawbuf.h ../include/event.h\
-	../include/frame.h ../include/group.h ../include/intl.h\
-	../include/ipstream.h ../include/object.h ../include/objects.h\
-	../include/opstream.h ../include/palette.h ../include/point.h\
-	../include/pstream.h ../include/rect.h ../include/scrlbar.h\
-	../include/stddlg.h ../include/streambl.h ../include/system.h\
-	../include/tkeys.h ../include/tobjstrm.h ../include/ttypes.h\
-	../include/tv.h ../include/tvconfig.h ../include/tvobjs.h\
-	../include/tvutil.h ../include/view.h ../include/views.h\
-	../include/window.h
+DEPS_219=twindow.cc ../include/app.h ../include/drawbuf.h\
+	../include/event.h ../include/frame.h ../include/group.h\
+	../include/intl.h ../include/ipstream.h ../include/object.h\
+	../include/objects.h ../include/opstream.h ../include/palette.h\
+	../include/point.h ../include/program.h ../include/pstream.h\
+	../include/rect.h ../include/scrlbar.h ../include/stddlg.h\
+	../include/streambl.h ../include/system.h ../include/tkeys.h\
+	../include/tobjstrm.h ../include/ttypes.h ../include/tv.h\
+	../include/tvconfig.h ../include/tvobjs.h ../include/tvutil.h\
+	../include/view.h ../include/views.h ../include/window.h
 obj/twindow.o:: $(DEPS_219)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_220=vesa.cc
 obj/vesa.o:: $(DEPS_220)
-	$(RHIDE_COMPILE.cc.o)
-DEPS_221=vga.cc
-obj/vga.o:: $(DEPS_221)
 	$(RHIDE_COMPILE.cc.o)
 all:: librhtv.a
