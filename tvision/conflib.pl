@@ -791,7 +791,7 @@ int main(void)
 
 sub ModifyMakefiles
 {
- my ($a,$text,$rep,$repv);
+ my ($a,$text,$rep,$repv,$line);
 
  print 'Configuring makefiles: ';
  foreach $a (@_)
@@ -800,15 +800,24 @@ sub ModifyMakefiles
     $text=cat($a);
     if ($text)
       {
-       $text=~s/RHIDE_GCC=(.*)\n/RHIDE_GCC=$GCC\n/;
-       $text=~s/RHIDE_GXX=(.*)\n/RHIDE_GXX=$GXX\n/;
-       $text=~s/RHIDE_LD=(.*)\n/RHIDE_LD=$GXX\n/;
-       $text=~s/RHIDE_OS_CFLAGS=(.*)\n/RHIDE_OS_CFLAGS=$CFLAGS\n/;
-       $text=~s/RHIDE_OS_CXXFLAGS=(.*)\n/RHIDE_OS_CXXFLAGS=$CXXFLAGS\n/;
+       $text=~s/RHIDE_GCC=(.*)\n/RHIDE_GCC=$GCC\n/g;
+       $text=~s/RHIDE_GXX=(.*)\n/RHIDE_GXX=$GXX\n/g;
+       $text=~s/RHIDE_LD=(.*)\n/RHIDE_LD=$GXX\n/g;
+       $text=~s/RHIDE_OS_CFLAGS=(.*)\n/RHIDE_OS_CFLAGS=$CFLAGS\n/g;
+       $text=~s/RHIDE_OS_CXXFLAGS=(.*)\n/RHIDE_OS_CXXFLAGS=$CXXFLAGS\n/g;
+       $text=~s/RHIDE_AR=(.*)\n/RHIDE_AR=$GAR\n/g if ($GAR);
        foreach $rep (%ExtraModifyMakefiles)
          {
           $repv="$rep=@ExtraModifyMakefiles{$rep}\n";
           $text=~s/$rep=(.*)\n/$repv/;
+         }
+       foreach $line (@MakeDefsRHIDE)
+         {
+          if ($line=~/([\w_]*)(\s*)=(\s*)(.*)/)
+            {
+             $rep=$1;
+             $text=~s/$rep=(.*)/$line/g;
+            }
          }
        replace($a,$text);
       }
@@ -882,9 +891,10 @@ sub CreateRHIDEenvs
 #
 
 ";
-    $text.="RHIDE_GCC=$GCC\n" unless ($GCC eq 'gcc');
-    $text.="RHIDE_GXX=$GXX\n" unless ($GXX eq 'gcc');
-    $text.="RHIDE_LD=$GXX\n"  unless ($GXX eq 'gcc');
+    $text.="RHIDE_GCC=$GCC\n";
+    $text.="RHIDE_GXX=$GXX\n";
+    $text.="RHIDE_LD=$GXX\n";
+    $text.="RHIDE_AR=$GAR\n" if ($GAR);
     if ($useXtreme)
       {
        $text.="RHIDE_OS_CFLAGS=@conf{'XCFLAGS'}\n";
@@ -1124,21 +1134,21 @@ sub LookForGNUar
  if ($conf{'GNU_AR'})
    {
     print "$conf{'GNU_AR'} (cached)\n";
-    return;
+    return $conf{'GNU_AR'};
    }
  $test=RunRedirect('ar --version',$ErrorLog);
  if ($test=~/GNU ar/)
    {
     $conf{'GNU_AR'}='ar';
     print "ar\n";
-    return;
+    return 'ar';
    }
  $test=RunRedirect('gar --version',$ErrorLog);
  if ($test=~/GNU ar/)
    {
     $conf{'GNU_AR'}='gar';
     print "gar\n";
-    return;
+    return 'gar';
    }
  print "Unable to find GNU ar on this system.\n";
  print "Please install it and be sure it's in your path.\n";
