@@ -78,44 +78,44 @@ TFileDialog::TFileDialog( const char *aWildCard,
         {
         insert( new TButton( r, _("~O~pen"), cmFileOpen, opt ) );
         opt = bfNormal;
-        r.a.y += 3;
-        r.b.y += 3;
+        r.a.y += 2;
+        r.b.y += 2;
         }
 
     if( (aOptions & fdOKButton) != 0 )
         {
         insert( new TButton( r, _("~O~K"), cmFileOpen, opt ) );
         opt = bfNormal;
-        r.a.y += 3;
-        r.b.y += 3;
+        r.a.y += 2;
+        r.b.y += 2;
         }
 
     if( (aOptions & fdReplaceButton) != 0 )
         {
         insert( new TButton( r, _("~R~eplace"), cmFileReplace, opt ) );
         opt = bfNormal;
-        r.a.y += 3;
-        r.b.y += 3;
+        r.a.y += 2;
+        r.b.y += 2;
         }
 
     if( (aOptions & fdClearButton) != 0 )
         {
         insert( new TButton( r, _("~C~lear"), cmFileClear, opt ) );
         opt = bfNormal;
-        r.a.y += 3;
-        r.b.y += 3;
+        r.a.y += 2;
+        r.b.y += 2;
         }
 
     insert( new TButton( r, _("Cancel"), cmCancel, bfNormal ) );
-    r.a.y += 3;
-    r.b.y += 3;
+    r.a.y += 2;
+    r.b.y += 2;
 
     if( (aOptions & fdHelpButton) != 0 )
         {
         insert( new TButton( r, _("~H~elp"), cmHelp, bfNormal ) );
         opt = bfNormal;
-        r.a.y += 3;
-        r.b.y += 3;
+        r.a.y += 2;
+        r.b.y += 2;
         }
 
     insert( new TFileInfoPane( TRect( 1, 15, 48, 18 ) ) );
