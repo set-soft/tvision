@@ -140,7 +140,7 @@ void TDisplayDOS::GetCursorShape(unsigned &start, unsigned &end)
 
 void TDisplayDOS::SetCursorShape(unsigned start, unsigned end)
 {
- if (start>=end && !getShowCursorEver())
+ if (start>=end && getShowCursorEver())
     return;
 
  unsigned lStart=(start*charLines+50)/100;
@@ -581,6 +581,8 @@ void TDisplayDOS::SetCrtMode(ushort mode)
     TMouse::setRange(getCols()-1,getRows()-1);
     TMouse::show();
    }
+ if (paletteModified)
+    SetDisPaletteColors(0,16,ActualPalette);
 }
 
 
