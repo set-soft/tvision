@@ -1,4 +1,9 @@
 $Log$
+Revision 1.242.2.17  2002/01/02 00:07:23  set
+* Fixed: The configuration forced tvfintl for Linux.
+* Fixed: RHIDE 1.4.9 includes rhide.env in generated makefiles so the new
+makefile used for Linux needs a link to it in linuxso directory.
+
 Revision 1.242.2.16  2002/01/02 00:49:07  set
 * Added: GNU getline replacement to compatlayer.
 

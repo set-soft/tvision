@@ -36,6 +36,10 @@ General Public License for more details.  */
 /** Header **/
 #define GETLINE_NO_LIMIT -1
 
+#ifdef TVComp_BCPP
+typedef long ssize_t;
+#endif
+
 ssize_t CLY_getline(char **_lineptr, size_t *_n, FILE *_stream);
 ssize_t CLY_getline_safe(char **_lineptr, size_t *_n, FILE *_stream, int limit);
 ssize_t CLY_getstr(char **_lineptr, size_t *_n, FILE *_stream,
