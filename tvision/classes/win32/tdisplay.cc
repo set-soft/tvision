@@ -148,4 +148,46 @@ int TDisplay::CheckForWindowSize(void)
 	}
 	return SizeChanged;
 }
+
+const int mxTitleSize=256;
+
+/**[txh]********************************************************************
+
+  Description:
+  Finds the main window title.
+
+  Return:
+  A pointer to a newly allocated string (new[]). Or 0 if fail. by SET.
+
+***************************************************************************/
+
+char *TDisplay::GetWindowTitle(void)
+{
+ char buf[mxTitleSize];
+ DWORD ret=GetConsoleTitle(buf,mxTitleSize);
+ if (ret)
+   {
+    char *s=new char[ret+1];
+    memcpy(s,buf,ret);
+    s[ret]=0;
+    return s;
+   }
+ return 0;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Sets the main window title.
+
+  Return:
+  non-zero successful. by SET.
+
+***************************************************************************/
+
+int TDisplay::SetWindowTitle(const char *name)
+{
+ return SetConsoleTitle(name);
+}
+
 #endif // _WIN32
