@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.44  2002/04/29 20:17:49  set
+* Fixed: dual.cc shouldn't be in the makefiles.
+* Fixed: TEditor used getshiftstate.
+
 Revision 2.43  2002/04/29 19:19:01  set
 * Added: compat.mak to CVS so people without RHIDE can compile.
 * Fixed: linuxso/makemak.pl needs to create a link to rhide.env for RHIDE
