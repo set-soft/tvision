@@ -142,6 +142,7 @@ elsif ($OS eq 'DOS')
   }
 elsif ($OS eq 'Win32')
   {
+   $MakeDefsRHIDE[2].=' gdi32'; # Needed for WinGr driver
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
@@ -157,7 +158,7 @@ CreateConfigH();
 if ($OS ne 'Win32')
   {
    $MakeDefsRHIDE[0]='';
-   $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2);
+   $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2).' gdi32';
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
