@@ -22,8 +22,8 @@ Added: TInput1Line class by SET (based on TVTools idea).
 /*        4 = Arrows                                                      */
 /* ---------------------------------------------------------------------- */
 
-#if defined( Uses_TInputLine ) && !defined( __TInputLine )
-#define __TInputLine
+#if defined( Uses_TInputLine ) && !defined( TInputLine_defined )
+#define TInputLine_defined
 
 class TRect;
 struct TEvent;
@@ -103,7 +103,10 @@ inline opstream& operator << ( opstream& os, TInputLine* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 
-#ifdef Uses_TInput1Line
+#endif  // Uses_TInputLine
+
+#if defined( Uses_TInput1Line ) && !defined( TInput1Line_defined )
+#define TInput1Line_defined
 // This is based on TVTools idea, but I think is better to implement it
 // in this way and not like a macro.
 class TInput1Line : public TInputLine
@@ -113,6 +116,4 @@ public:
    TInputLine(TRect(x,y,x+max+2,y+1), max)) {};
 };
 #endif // Uses_TInput1Line
-
-#endif  // Uses_TInputLine
 

@@ -60,32 +60,38 @@ TStatusDef& operator + ( TStatusDef& s1, TStatusDef& s2 );
 
 // SET: The following 4 operator are from TVTools
 // They are simple and adds more coherence.
-#if defined( Uses_TSubMenu )
+#if defined( Uses_TSubMenu ) && !defined( TSubMenu_operators_defined  )
+#define TSubMenu_operators_defined
 inline void operator += ( TSubMenu& s1, TSubMenu& s2 )
 {
     s1 = s1 + s2;
 }
+#endif
 
-#if defined( Uses_TMenuItem )
+#if defined( Uses_TSubMenu ) && defined( Uses_TMenuItem ) && \
+    !defined( TSubMenu_Item_operators_defined  )
+#define TSubMenu_Item_operators_defined
 inline void operator += ( TSubMenu& i1, TMenuItem& i2 )
 {
     i1 = i1 + i2;
 }
-#endif // Uses_TMenuItem
-#endif // Uses_TSubMenu
+#endif
 
-#if defined( Uses_TStatusDef )
+#if defined( Uses_TStatusDef ) && !defined( TStatusDef_operators_defined )
+#define TStatusDef_operators_defined
 inline void operator += ( TStatusDef& s1, TStatusDef& s2 )
 {
     s1 = s1 + s2;
 }
+#endif
 
-#if defined( Uses_TStatusItem )
+
+#if defined( Uses_TStatusDef ) && defined( Uses_TStatusItem ) && \
+    !defined( TStatusDef_Item_operators_defined )
+#define TStatusDef_Item_operators_defined
 inline void operator += ( TStatusDef& s1, TStatusItem& s2 )
 {
     s1 = s1 + s2;
 }
 #endif // Uses_TStatusItem
-#endif // Uses_TStatusDef
-
 
