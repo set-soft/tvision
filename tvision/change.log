@@ -1,9 +1,13 @@
-$Log$.
+$Log$
+Revision 2.539  2004/05/24 15:45:15  set
+* Fixed: [Win32] The keypad / key for the WinNT driver. From information
+provided by: Warren H. Holt (wHolt/drs-ewns/com)
+
 Revision 2.538  2004/05/24 14:48:44  set
 * Modified: [config] Use of "g++" in favor of "gcc -lstdc++". This is
 because newer gcc 3.x compilers can't compile C++ code without doing a
 mess when we use the gcc frontend. From a report by Baurjan Ismagulov - ibr
-.
+
 Revision 2.537  2004/05/12 14:25:15  set
 * Fixed: When using TButton callbacks the button called the CB but also
 sent the event. It is dangerous if the CB uses a dialog because the event
@@ -11,7 +15,7 @@ will be received by this dialog. Now if the CB should generate the event
 if needed.
 * Added: A user provided data pointer to the callback. So it not only
 receives the command number but also a pointer to user defined data.
-.
+
 Revision 2.536  2004/05/07 20:09:19  set
 * Added: A new function called CLY_memcpy to compatlayer.h. This must be
 used when we use memcpy and the blocks overlaps but we know the "normal"
@@ -19,25 +23,25 @@ implementation will work. Platforms where the copy order isn't OK can
 define it to be memmove. A configuration option allows to do it too.
 * Fixed: Some calls to memcpy that overlaps are now to CLY_memcpy. From
 reports obtained by valgrind.
-.
+
 Revision 2.535  2004/05/06 19:39:02  set
 * Fixed: Use of delete[] for TVBitmapFontSize * objects. Reported by
 Oswald using valgrind.
 * Fixed: TListViewer::center not initialized. Reported by Oswald using
 valgrind.
-.
+
 Revision 2.534  2004/05/05 20:11:03  set
 Modified/Fixed/?: In "File Dialogs": Now as soon as the file list is
 selected the focused item is propagated to the other views (input line and
 info panel).
-.
+
 Revision 2.533  2004/04/28 15:39:37  set
 * Added: Support for the way that Putty uses to report Home and End keys.
 Not tested, from a report by Andras Szabo szaboan/kesz/hu.
-.
+
 Revision 2.532  2004/04/19 20:41:58  set
 * Added: Code needed to test with the AlCon branch.
-.
+
 Revision 2.531  2004/04/14 15:41:12  set
 * Fixed: Oops! the patch from the Unicode branch didn't apply propperly,
 now is fixed and the code compiles.
