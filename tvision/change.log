@@ -1,4 +1,8 @@
 $Log$
+Revision 1.94  1999/08/22 23:26:54  set
+* Fixed: the doit UNIX script to apply the patches.
+* Modified: the number of one broadcast to be equal to the original.
+.
 Revision 1.93  1999/08/16 14:51:50  set
 * Added: As the VGA Save State BIOS call is amazingly buggy in a lot of video
 boards (Matrox in particular) I added a version of this service but made with
