@@ -104,7 +104,10 @@ VGABIOSState  Integer  This is related to the SaveVGAState variable. When
                        VGA compatible at registers level (also the Windows
                        driver if you are using Windows). This uses very low
                        level stuff.
-
+FixKbdBuffer  Integer  When enabled we assume the start of the keyboard
+                       buffer is at offset 0x1E and the end at offset 0x3D.
+                       When disabled (default) the size is monitored all
+                       the time.
 
 
 4. NOTES ABOUT WINDOWS

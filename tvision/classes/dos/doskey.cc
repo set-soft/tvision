@@ -1,7 +1,7 @@
 /**[txh]********************************************************************
 
   Keyboard handler for DOS.
-  Copyright (c) 1998-2002 by Salvador E. Tropea (SET)
+  Copyright (c) 1998-2004 by Salvador E. Tropea (SET)
 
   Description: 
   This module implements the low level keyboard routines for DOS.
@@ -44,10 +44,30 @@ intersting information.
 
 #define GET_ENHANCED_KEYSTROKE          0x0010
 #define GET_EXTENDED_SHIFT_STATES       0x0012
+// Keyboard definitions:
+#define KEYBOARD_STATUS_FLAGS_1         0x0417
+// Bitfields for keyboard status flags 1:
+// Bit(s)  Description     (Table M010)
+//  7      INSert active
+//  6      Caps Lock active
+//  5      Num Lock active
+//  4      Scroll Lock active
+//  3      either Alt pressed
+//  2      either Ctrl pressed
+//  1      Left Shift pressed
+//  0      Right Shift pressed
+#define KBD_POINTER_TO_NEXT_CHAR_IN_KBD_BUF   0x041A
+#define KBD_POINTER_TO_FIRST_FREE_SLOT_IN_BUF 0x041C
+// KM00400080  - KEYBOARD BUFFER START OFFSET FROM SEGMENT 40h (normally 1Eh)
+#define KEYBOARD_BUFFER_START_OFFSET          0x0480
+// KM00400082  - KEYBOARD BUFFER END+1 OFFSET FROM SEGMENT 40h (normally 3Eh)
+#define KEYBOARD_BUFFER_END_1_OFFSET          0x0482
+
 
 KeyType TGKeyDOS::rawCode;
 int     TGKeyDOS::Abstract;
 char    TGKeyDOS::ascii;
+char    TGKeyDOS::useFixKbdBuffer;
 ushort  TGKeyDOS::sFlags;
 int     TGKeyDOS::useBIOS=0;
 int     TGKeyDOS::translateKeyPad=1;
@@ -139,7 +159,7 @@ unsigned TGKeyDOS::GetShiftStateBIOS(void)
 unsigned TGKeyDOS::GetShiftStateDirect(void)
 {
  _farsetsel(_dos_ds);
- return _farnspeekw(0x417);
+ return _farnspeekw(KEYBOARD_STATUS_FLAGS_1);
 }
 
 // All the info. from BIOS in one call
@@ -157,12 +177,21 @@ void TGKeyDOS::GetRawBIOS(void)
 void TGKeyDOS::GetRawDirect(void)
 {
  _farsetsel(_dos_ds);
- sFlags=_farnspeekw(0x417);
- unsigned short keybuf_start = _farnspeekw(0x41a);
- rawCode.full=_farnspeekw(0x400 + keybuf_start);
- keybuf_start += 2;
- if (keybuf_start>0x3d) keybuf_start = 0x1e;
- _farnspokew(0x41a, keybuf_start);
+ sFlags=_farnspeekw(KEYBOARD_STATUS_FLAGS_1);
+ ushort keybuf_nextchar=_farnspeekw(KBD_POINTER_TO_NEXT_CHAR_IN_KBD_BUF);
+ rawCode.full=_farnspeekw(0x400+keybuf_nextchar);
+ keybuf_nextchar+=2;
+ if (useFixKbdBuffer)
+   {
+    if (keybuf_nextchar>=0x3e)
+       keybuf_nextchar=0x1e;
+   }
+ else
+   {
+    if (keybuf_nextchar>=_farnspeekw(KEYBOARD_BUFFER_END_1_OFFSET)) // if past the buffer...
+       keybuf_nextchar=_farnspeekw(KEYBOARD_BUFFER_START_OFFSET);   // ...wrap to it's start
+   }
+ _farnspokew(KBD_POINTER_TO_NEXT_CHAR_IN_KBD_BUF,keybuf_nextchar);
 }
 
 
@@ -290,7 +319,8 @@ int TGKeyDOS::KbHitBIOS(void)
 
 int TGKeyDOS::KbHitDirect(void)
 {
- return (_farpeekw(_dos_ds, 0x41a)!=_farpeekw(_dos_ds, 0x41c));
+ return (_farpeekw(_dos_ds,KBD_POINTER_TO_NEXT_CHAR_IN_KBD_BUF)
+         !=_farpeekw(_dos_ds,KBD_POINTER_TO_FIRST_FREE_SLOT_IN_BUF));
 }
 
 void TGKeyDOS::ClearBIOS(void)
@@ -303,7 +333,14 @@ void TGKeyDOS::ClearBIOS(void)
 
 void TGKeyDOS::ClearDirect(void)
 {
- _farpokel(_dos_ds,0x41A,0x001E001EUL);
+ if (useFixKbdBuffer)
+    _farpokel(_dos_ds,KBD_POINTER_TO_NEXT_CHAR_IN_KBD_BUF,0x001E001EUL);
+ else
+   {
+    _farsetsel(_dos_ds);
+    ulong keybuf_start=_farnspeekw(KEYBOARD_BUFFER_START_OFFSET);
+    _farnspokel(KBD_POINTER_TO_NEXT_CHAR_IN_KBD_BUF,(keybuf_start<<16)+keybuf_start);
+   }
 }
 
 void TGKeyDOS::FillTEvent(TEvent &e)
@@ -380,6 +417,14 @@ void TGKeyDOS::Init()
  long useBIOS=0;
  TScreen::optSearch("BIOSKey",useBIOS);
  SetKbdMapping(useBIOS ? dosUseBIOS : dosUseDirect);
+ // SET: Original code assumed the circular buffer starts at offset 0x1E and
+ // ends at offset 0x3D. But some utilities to grow the buffer exists.
+ // Egon Eckert <egon.heaven.industries.cz> contributed a patch to fix it.
+ // As it was incorporated between 2.0.3 RC1 and 2.0.3 I added an option to
+ // rollback without recompiling.
+ long aux=0;
+ TScreen::optSearch("FixKbdBuffer",aux);
+ useFixKbdBuffer=aux!=0;
 }
 
 //---------------- TEST

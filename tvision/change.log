@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.201  2004/10/04 21:32:09  set
+* Fixed: [Comnpilation][SuSE] SuSE 9.0 defines TEMP_FAILURE_RETRY using
+errno, but errno.h isn't automatically included. So I added a workaround
+for this bug.
+
 Revision 2.399.2.200  2004/10/02 20:54:45  set
 * Fixed: [Darwin] The file libfintl.a must be generated before the dynamic
 lib. My previous try worked because I already installed it during the test.
