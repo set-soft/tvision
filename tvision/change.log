@@ -1,4 +1,9 @@
 $Log$
+Revision 1.197  2001/09/16 17:52:53  set
+* Added: Updated information about supported platforms to readme.in.
+* Added: A clean target to the makefile. It only deletes the objects and
+libraries.
+
 Revision 1.196  2001/09/16 16:52:07  set
 * Added: Architecture detection to the configure. It defines TVCPU_$(Arch).
 * Added: GNU make detection to the configure. It supports gmake as name.

@@ -1045,9 +1045,16 @@ void call50()
   }
   else
   {
+    #ifdef TV_BIG_ENDIAN
+    // Untested!!
+    unsigned short attr = shadowAttr & 0xff;
+    while (count--)
+      (buffer++)[0] = (((const ushort *)(_Buffer))[skip_offset++] & 0xff00) | attr;
+    #else
     unsigned short attr = (shadowAttr << 8) & 0xff00;
     while (count--)
       (buffer++)[0] = (((const ushort *)(_Buffer))[skip_offset++] & 0x00ff) | attr;
+    #endif
   }
 }
 
