@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.150  2002/06/12 16:46:38  set
+* Modified: [X11] the driver now uses ISO-8859-1 fonts instead of PC437.
+
 Revision 2.149  2002/06/12 15:40:03  set
 * Added: [Linux] Code page detection to the driver. It needs console
 IOCTLs. If we can't use them the driver tries to guess using the LANG
