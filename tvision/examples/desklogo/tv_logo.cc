@@ -33,7 +33,7 @@
 
 #define   PATTERN 177
 
-const cmAbout   = 100;  // User selected menu item 'About'
+const int cmAbout   = 100;  // User selected menu item 'About'
 
 // Following logo is just a simple text
 const char *logo = "To the success of FSF ";

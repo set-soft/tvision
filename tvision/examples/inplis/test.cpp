@@ -86,7 +86,7 @@ TStatusLine *TMyApp::initStatusLine( TRect r )
 void TMyApp::inputBox()
  {
   short i = 0;
-  const MAXINPLN = 30;
+  const int MAXINPLN = 30;
   ListBoxItem *v;
   char label[MAXLABELLEN];
   TLineCollection *list;

@@ -50,8 +50,8 @@ __link( RButton )
 
 const int sampleIterations = 21 ;
 
-const cmAboutCmd   = 100;  // User selected menu item 'About'
-const cmStatusCmd  = 101;  // User selected menu item 'Progress Bar'
+const int cmAboutCmd   = 100;  // User selected menu item 'About'
+const int cmStatusCmd  = 101;  // User selected menu item 'Progress Bar'
 
 
 //========================================================================
