@@ -385,13 +385,13 @@ TView* TProgram::validView(TView* p)
         return 0;
     if( lowMemory() )
         {
-        destroy( p );
+        CLY_destroy( p );
         outOfMemory();
         return 0;
         }
     if( !p->valid( cmValid ) )
         {
-        destroy( p );
+        CLY_destroy( p );
         return 0;
         }
     return p;

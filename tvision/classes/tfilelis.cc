@@ -67,7 +67,7 @@ TFileList::TFileList( const TRect& bounds,
 TFileList::~TFileList()
 {
  if ( list() )
-   destroy ( list() );
+   CLY_destroy ( list() );
 }
 
 void TFileList::focusItem( ccIndex item )

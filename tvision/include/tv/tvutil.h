@@ -25,6 +25,9 @@ Modified by Salvador E. Tropea to avoid macros collisions and make easier to use
 #define __CM(x,y) const unsigned short cm##x = __BASE+y;
 #define __HC(x,y) const unsigned short hc##x = __BASE+y;
 
+
+#ifndef CLY_DONT_DEFINE_MIN_MAX
+
 #ifdef min
 #undef min
 #endif
@@ -56,6 +59,8 @@ template <class T> inline T max( const T &a, const T &b )
 {
     return (a<b) ? b : a;
 }
+
+#endif
 
 char hotKey( const char *s );
 unsigned short ctrlToArrow( unsigned short );

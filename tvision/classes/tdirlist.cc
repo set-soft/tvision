@@ -37,7 +37,7 @@ TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aScrollBar ) :
 TDirListBox::~TDirListBox()
 { 
    if ( list() )
-      destroy( list() );
+      CLY_destroy( list() );
 }
 
 void TDirListBox::getText( char *text, ccIndex item, short maxChars )
