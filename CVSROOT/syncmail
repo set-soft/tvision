@@ -73,7 +73,7 @@ MAILCMD = '/bin/mail -s "CVS: %(SUBJECT)s" %(PEOPLE)s 2>&1 > /dev/null'
 # Diff trimming stuff
 DIFF_HEAD_LINES = 20
 DIFF_TAIL_LINES = 20
-DIFF_TRUNCATE_IF_LARGER = 1000
+DIFF_TRUNCATE_IF_LARGER = 100000
 
 PROGRAM = sys.argv[0]
 
