@@ -42,7 +42,8 @@ uint32   TScreen::flags0=0;
 TScreen *TScreen::driver=NULL;
 const char
         *TScreen::currentDriverShortName=NULL;
-
+TVScreenFontRequestCallBack
+         TScreen::frCB=NULL;
 
 /*****************************************************************************
   Function pointer members initialization
@@ -309,4 +310,10 @@ Boolean TScreen::optSearch(const char *variable, long &val)
  return TVMainConfigFile::Search(currentDriverShortName,variable,val);
 }
 
-
+TVScreenFontRequestCallBack
+ TScreen::setFontRequestCallBack(TVScreenFontRequestCallBack cb)
+{
+ TVScreenFontRequestCallBack old=frCB;
+ frCB=cb;
+ return old;
+}
