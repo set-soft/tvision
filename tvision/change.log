@@ -1,4 +1,8 @@
 $Log$
+Revision 1.223  2001/10/13 22:50:05  set
+* Removed autoconf example because it doesn't work anymore. Laurynas is
+working on a new version.
+
 Revision 1.222  2001/10/13 21:40:20  set
 * Fixed: The BC++ 5.5 makefile lacked a rule to make C++ components of
 compatlayer (currently just a file). Patch by Owen Rudge <owen@osplus.co.uk>.
