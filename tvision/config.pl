@@ -324,15 +324,16 @@ sub GenerateMakefile
  $rep.="\tinstall -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
  # This should be created if the target is a new directory
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
- $rep.="\tinstall -m 0755 $makeDir/librhtv.a \$(libdir)\n";
+ $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
  if ($OS eq 'linux')
    {
     $rep.="\trm -f \$(libdir)/librhtv.so\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.1\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.$Version\n";
-    $rep.="\tln -s \$(libdir)/librhtv.so.$Version \$(libdir)/librhtv.so\n";
-    $rep.="\tln -s \$(libdir)/librhtv.so.$Version \$(libdir)/librhtv.so.1\n";
-    $rep.="\tinstall -m 0755 linuxso/librhtv.so.$Version \$(libdir)\n";
+    $rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so\n";
+    # Not needed if the soname changes which each version (at least Ivan says that)
+    #$rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so.1\n";
+    $rep.="\tinstall -m 0644 linuxso/librhtv.so.$Version \$(libdir)\n";
     $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$Version\n";
     $rep.="\tldconfig\n";
    }

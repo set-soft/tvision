@@ -5,58 +5,55 @@
 # architecture-dependant package, as well as an architecture-independant
 # package.
 
+#version=$(shell expr `pwd` : '.*-\([0-9.]*\)')
+#version_major=$(shell expr `pwd` : '.*-\([0-9]*\).[0-9.]*')
+
+version=$(shell cat version.txt)
 package=rhtvision
+destdir=debian/tmp/usr
 
-version=$(shell expr `pwd` : '.*-\([0-9.]*\)')
-version_major=$(shell expr `pwd` : '.*-\([0-9]*\).[0-9.]*')
-
-# Uncomment this to turn on verbose mode. 
+# Uncomment this to turn on verbose mode:
 #export DH_VERBOSE=1
+
+# This is the debhelper compatibility version to use:
+export DH_COMPAT=1
 
 build: build-stamp
 build-stamp:
+	dh_testversion 2.0.40
 	dh_testdir
 
-	#-mkdir shared static
-	#
-	# First build the shared library
-	#cd shared ; \
-	#  $(MAKE) -f ../Makefile VPATH=".." srcdir=".." \
-	#      CFLAGS="-O2 -fPIC -pipe" ; \
-	#    gcc -shared -Wl,-soname,$(package).so.$(version_major) -o $(package).so.$(version) `ls *.o`
-	cd linuxso; ./makemak.pl;
-
-
-	# Build the static library (it does not need Position Independent Code,
-	# which reserves one register; thus without -fPIC we get more efficient
-	# code).
-	#
-	#cd static ; \
-	#     $(MAKE) -f ../Makefile VPATH=".." srcdir=".." \
-	#          CFLAGS="-O2 -pipe" LDFLAGS="-s" progs
-	cd linux; $(MAKE)
-
+	#Rename debian/rhtvision.postinst file if it exists:
+ifneq ($(wildcard debian/rhtvision.postinst),)
+	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
+endif
+	./configure --prefix=$(destdir) --fhs
+	$(MAKE)
 	touch build-stamp
 
 
 clean: clean-debian
-	#-rm -rf static shared
-	# Add here commands to clean up after the build process.
-	#-$(MAKE) clean
+	#Upstream doesn't have a clean target yet.
 	rm -f linux/obj/*.o
 	rm -f linux/librhtv.a
-	rm -f linuxso/librhtv.so.*
+	rm -f linuxso/librhtv.so*
 	rm -f linuxso/Makefile
 	rm -f linuxso/gkeyli.cc
 	rm -f linuxso/instlib
 	rm -f linuxso/obj/*.o
-
-
+	rm -f configure.cache
+	rm -f Makefile
+	rm -f build-stamp
+	
 clean-debian:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp install-stamp
-	#I should investigate why here dh_clean isn't called with the -k switch...
+	rm -f install-stamp
+
+	#Rename rhtvision$(version).postinst file if it exists:
+ifneq ($(wildcard debian/rhtvision$(version).postinst),)
+	mv debian/rhtvision$(version).postinst debian/rhtvision.postinst
+endif
 	dh_clean
 
 
@@ -64,58 +61,30 @@ install: install-stamp
 install-stamp: build-stamp
 	dh_testdir
 	dh_testroot
-	dh_clean -k
-	dh_installdirs
+	dh_clean
+	dh_installdirs -p $(package)$(version)-dev usr/lib usr/include/$(package) usr/share/doc usr/share/doc/$(package)$(version)-dev usr/share/doc/$(package)$(version)-dev/examples
+	dh_installdirs -p $(package)$(version) usr/lib usr/share usr/share/man usr/share/man/man3 usr/share/doc/$(package)$(version) usr/share/doc/$(package)$(version)/eterm
 
-	# Add here commands to install the package into debian/tmp.
-	#$(MAKE) install DESTDIR=`pwd`/debian/tmp
-	cp linuxso/librhtv.so.$(version) debian/tmp/usr/lib
-	cp linux/librhtv.a debian/tmp/usr/lib/librhtv_g.a
-	cp linux/librhtv.a debian/tmp/usr/lib/librhtv.a
-	cp include/*.h debian/tmp/usr/include/rhtvision
-	cp -r examples debian/tmp/usr/doc/rhtvision1-dev/
+	$(MAKE) install
 
-	dh_link usr/lib/librhtv.so.$(version) usr/lib/librhtv.so.$(version_major)   usr/lib/librhtv.so.$(version) usr/lib/librhtv.so
-	dh_movefiles -p rhtvision1
+	#We need to move files for other packages than the first one in the control file:
+	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version)
 
 	touch install-stamp
 
 
-## Build architecture-independent files here.
-#binary-indep: build install
-	dh_testversion 1.2.9
-#	dh_testdir -i
-#	dh_testroot -i
-#	dh_installdocs -i
-#	dh_installexamples -i
-##	dh_installmenu -i
-##	dh_installemacsen -i
-##	dh_installinit -i
-##	dh_installcron -i
-##	dh_installmanpages -i
-#	dh_undocumented rhtvision.3 tvision.3
-#	dh_installchangelogs -i change.log
-#	dh_compress -i
-#	dh_fixperms -i
-##	dh_suidregister -i
-#	dh_installdeb -i
-#	dh_gencontrol -i
-#	dh_md5sums -i
-#	dh_builddeb -i
-
-
 binary-arch: build install
-#	dh_testversion
 	dh_testdir
 	dh_testroot
-	dh_installdocs
+	dh_installdocs -p $(package)$(version) extra/eterm/ borland.txt copying copying.rh readme.txt
+	dh_installdocs -p $(package)$(version)-dev examples/ borland.txt copying copying.rh readme.txt
 #	dh_installexamples
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installinit
 #	dh_installcron
 #	dh_installmanpages
-	dh_undocumented rhtvision.3 tvision.3
+	dh_undocumented -p $(package)$(version) rhtvision.3
 	dh_installchangelogs change.log
 	dh_strip
 	dh_compress
@@ -128,9 +97,14 @@ binary-arch: build install
 	dh_md5sums
 	dh_builddeb
 
+
+## Build architecture-independent files here.
+#binary-indep: build install
+#This package doesn't have architecture-independent files for the moment...
+
+
 source diff:                                                                  
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary
-
