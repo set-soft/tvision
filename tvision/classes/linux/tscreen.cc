@@ -16,9 +16,18 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <stdarg.h>
-#ifdef __GLIBC__
-// Works for glibc 2.0 and glibc 2.1 for Alpha.
-#include <sys/perm.h>
+
+// SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
+// think it have much sense in non-Intel PCs. In fact looks like it gives
+// some problems when compiling for Alpha (__alpha__).
+//   Also make it only for Linux until I know how to do it for FreeBSD.
+
+#if defined(__i386__) && defined(TVOSf_Linux)
+ // Needed for ioperm, used only by i386.
+ // I also noted that glibc 2.1.3 for Alpha, SPARC and PPC doesn't have
+ // this header
+ #include <sys/perm.h>
+ #define h386LowLevel
 #endif
 
 // I don't know why it's needed, but it seems to be only known to me way
@@ -669,15 +678,6 @@ void SaveScreen();
 void RestoreScreen();
 void ScreenUpdate();
 extern ushort user_mode;
-
-// SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
-// think it have much sense in non-Intel PCs. In fact looks like it gives
-// some problems when compiling for Alpha (__alpha__).
-//   Also make it only for Linux until I know how to do it for FreeBSD.
-
-#if defined(__i386__) && defined(TVOSf_Linux)
- #define h386LowLevel
-#endif
 
 #ifdef h386LowLevel
 #include <asm/io.h>
