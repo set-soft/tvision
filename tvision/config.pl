@@ -217,7 +217,7 @@ $MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
 $MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
 $MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
-$MakeDefsRHIDE[6].=' -ltvfintl' if ($OSf eq 'Darwin') && $UseDummyIntl;
+$MakeDefsRHIDE[6].=' libtvfintl.a' if ($OSf eq 'Darwin') && $UseDummyIntl;
 $MakeDefsRHIDE[7]="LIB_VER=$Version";
 $MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
 

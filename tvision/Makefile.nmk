@@ -4,13 +4,13 @@
 # Covered by the GPL license.
 #
 # That's the makefile for MSVC compiler.
-# It isn't tested and I need help to solve some details.
-# If you have MSVC please help me.
 #
 # This file reuses the Makefile.bcc file but defining FOR_NMAKE variable to
 # select Microsoft tools.
 #
 
 FOR_NMAKE=1
+# Uncomment to generate code with debug information.
+#DEBUG=1
 !include Makefile.bcc
 
