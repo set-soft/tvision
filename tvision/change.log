@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.468  2003/06/02 14:51:19  set
+* Fixed: The compat.gpr project have relative dependencies that confused
+genimk.cc.
+
 Revision 2.467  2003/06/02 14:49:55  set
 * Added: Support for more variants of RHIDE .mak files to extrimk.cc.
 
