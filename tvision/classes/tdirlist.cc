@@ -7,8 +7,13 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
-Modified by Salvador E. Tropea. Changed to sort directory names. Added
-incremental directory search.
+Modified by Salvador E. Tropea:
+* Changed to sort directory names.
+* Added incremental directory search.
+* Added horizontal scroll bar.
+* Made cursor visible.
+* Abstracted platform dependent detail, more things must be done.
+
  *
  *
  */
@@ -27,30 +32,67 @@ incremental directory search.
 #define Uses_TStringCollection
 #define Uses_TKeys
 #define Uses_TVCodePage
+#define Uses_TScrollBar
 #if defined(TVCompf_djgpp) || defined(TVComp_BCPP)
  #define Uses_dir // getdisk()
 #endif
 #include <tv.h>
 
-TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aScrollBar ) :
-    TListBox( bounds, 1, aScrollBar ),
+TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aVScrollBar,
+                          TScrollBar *aHScrollBar ) :
+    TListBox( bounds, 1, aHScrollBar, aVScrollBar ),
     cur( 0 )
 {
     *dir = EOS;
     incPos = 0;
-    lastFocusedInSearch = -1;
+    // SET: Now we use it for the incremental search
+    showCursor();
 }
 
 TDirListBox::~TDirListBox()
 { 
-    if( list() )
-        CLY_destroy( list() );
+    CLY_destroy( list() );
+}
+
+void TDirListBox::draw()
+{
+    TListBox::draw();
+    // SET: Put the cursor over the directory name. Also add an offset
+    // if we are doing an incremental search. BTW: It should help blind
+    // people.
+    if( focused >= 0 && focused < list()->getCount() )
+       updateCursorPos();
 }
 
 void TDirListBox::getText( char *text, ccIndex item, short maxChars )
 {
     strncpy( text, list()->at(item)->text(), maxChars );
     text[maxChars] = '\0';
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  This is a new member added to update the cursor position. Originaly this
+class had no cursor. Now is used to show the incremental search state.
+  
+***************************************************************************/
+
+void TDirListBox::updateCursorPos()
+{
+    int x = list()->at( focused )->offset() + 1;
+    // Here we emulate the TSortedListBox behavior
+    if( incPos > 1 )
+       x += incPos - 1;
+    if( hScrollBar )
+       x -= hScrollBar->value;
+    if( x <= 0 )
+       hideCursor();
+    else
+      {
+      setCursor( x, focused - topItem );
+      showCursor();
+      }
 }
 
 void TDirListBox::handleEvent( TEvent& event )
@@ -61,6 +103,7 @@ void TDirListBox::handleEvent( TEvent& event )
         event.message.command = cmChangeDir;
         putEvent( event );
         clearEvent( event );
+        return;
         }
     else if( event.what == evKeyDown  )
         {// SET: Incremental directory search
@@ -68,8 +111,6 @@ void TDirListBox::handleEvent( TEvent& event )
             ( event.keyDown.charScan.charCode != 0 ||
               event.keyDown.keyCode == kbBack ) )
            {
-           if( lastFocusedInSearch != focused )
-              incPos = 0;
            if( event.keyDown.keyCode == kbBack )
               {
               if( incPos > 0 )
@@ -114,17 +155,24 @@ void TDirListBox::handleEvent( TEvent& event )
                  }
               else
                  {
-                 focusItem( newFocus );
-                 lastFocusedInSearch = newFocus;
+                 if( newFocus != focused )
+                    focusItem( newFocus );
+                 else
+                    updateCursorPos();
                  clearEvent( event );
                  return;
                  }
               }
            }
-        TListBox::handleEvent( event );
         }
-    else
-        TListBox::handleEvent( event );
+    ccIndex oldFocused = focused;
+    TListBox::handleEvent( event );
+    // SET: Reset the incremental search if the user changed the focus
+    if( oldFocused != focused )
+       {
+       incPos = 0;
+       updateCursorPos();
+       }
 }
 
 Boolean TDirListBox::isSelected( ccIndex item )
@@ -155,6 +203,11 @@ void TDirListBox::showDrives( TDirCollection *dirs )
     Boolean isFirst = True;
     char oldc[5];
     strcpy( oldc, "0:"DIRSEPARATOR_ );
+    // SET: We actually assume firstDir, middleDir and lastDir have the same
+    // len. Otherwise the list becomes unreadable.
+    // Doing this I replaced strcpy by memcpy and avoided continues strlen
+    // computations.
+    unsigned lenStr = strlen( firstDir );
     for( char c = 'a'; c <= 'z'; c++ )
         {
         if( c < 'c' || driveValid( c ) )
@@ -164,18 +217,14 @@ void TDirListBox::showDrives( TDirCollection *dirs )
                 char s[ 16 ];
                 if( isFirst )
                     {
-                    strcpy( s, firstDir );
-                    s[ strlen(firstDir) ] = oldc[0];
-                    s[ strlen(firstDir)+1 ] = EOS;
                     isFirst = False;
+                    memcpy( s, firstDir, lenStr );
                     }
                 else
-                    {
-                    strcpy( s, middleDir );
-                    s[ strlen(middleDir) ] = oldc[0];
-                    s[ strlen(middleDir)+1 ] = EOS;
-                    }
-                dirs->insert( new TDirEntry( s, oldc ) );
+                    memcpy( s, middleDir, lenStr );
+                s[ lenStr ] = oldc[0];
+                s[ lenStr+1 ] = EOS;
+                dirs->insert( new TDirEntry( s, oldc, lenStr ) );
                 }
             if( c == getdisk() + 'a' )
                 cur = dirs->getCount();
@@ -185,11 +234,16 @@ void TDirListBox::showDrives( TDirCollection *dirs )
     if( oldc[0] != '0' )
         {
         char s[ 16 ];
-        strcpy( s, lastDir );
-        s[ strlen(lastDir) ] = oldc[0];
-        s[ strlen(lastDir)+1 ] = EOS;
-        dirs->insert( new TDirEntry( s, oldc ) );
+        memcpy( s, lastDir, lenStr );
+        s[ lenStr ] = oldc[0];
+        s[ lenStr+1 ] = EOS;
+        dirs->insert( new TDirEntry( s, oldc, lenStr ) );
         }
+    // SET: No need to scroll here
+    if( hScrollBar )
+       hScrollBar->setRange( 0, 0 );
+    // SET: Reset incremental search
+    incPos = 0;
 }
 #endif // CLY_HaveDriveLetters
 
@@ -353,8 +407,10 @@ void TDirListBox::showDirs( TDirCollection *dirs )
     memset( buf, ' ', sizeof( buf ) );
     char *name = buf + PATH_MAX;
 
+    // SET: Same here, we assume all separators have the same len
+    unsigned lenSep = strlen( pathDir );
     // The first ramification of the tree
-    char *org = name - strlen(pathDir);
+    char *org = name - lenSep;
     strcpy( org, pathDir );
 
     char *curDir = dir;
@@ -362,18 +418,23 @@ void TDirListBox::showDirs( TDirCollection *dirs )
     char hold = *end;
     *end = EOS;         // mark end of drive name
     strcpy( name, curDir );
-    dirs->insert( new TDirEntry( org, name ) );
-
+    dirs->insert( new TDirEntry( org, name, lenSep ) );
     *end = hold;        // restore full path
     curDir = end;
+
+    unsigned maxLen = 0;
     while( (end = strchr( curDir, DIRSEPARATOR )) != 0 )
         {
         *end = EOS;
-        strncpy( name, curDir, size_t(end-curDir) );
-        name[size_t(end-curDir)] = EOS;
-        dirs->insert( new TDirEntry( org - indent, dir ) );
+        unsigned lname = unsigned(end-curDir);
+        memcpy( name, curDir, lname );
+        name[lname] = EOS;
+        lname += indent + lenSep;
+        if( lname > maxLen )
+           maxLen = lname;
+        dirs->insert( new TDirEntry( org - indent, dir, indent + lenSep ) );
         *end = DIRSEPARATOR;
-        curDir = end+1;
+        curDir = end + 1;
         indent += indentSize;
         }
 
@@ -394,17 +455,27 @@ void TDirListBox::showDirs( TDirCollection *dirs )
     for( int j = 0; j < cnt; j++ )
         {
         char *s = (char *) col->at(j);
+        unsigned ls = strlen( s );
         if( isFirst )
            {
-           memcpy( org, firstDir, strlen(firstDir)+1 );
+           memcpy( org, firstDir, lenSep );
            isFirst = False;
            }
         else
-           memcpy( org, middleDir, strlen(middleDir)+1 );
-        strcpy( name, s );
-        strcpy( end, s );
-        dirs->insert( new TDirEntry( org - indent, path ) );
+           memcpy( org, middleDir, lenSep );
+        memcpy( name, s, ls + 1 );
+        memcpy( end , s, ls + 1 );
+        ls += indent + lenSep;
+        if( ls > maxLen )
+           maxLen = ls;
+        dirs->insert( new TDirEntry( org - indent, path, indent + lenSep ) );
         }
+
+    // SET: Update hz scroll bar range
+    if( hScrollBar )
+       hScrollBar->setRange( 0, maxLen - size.x + 1 );
+    // SET: Reset incremental search
+    incPos = 0;
 
     CLY_destroy(col);
 
