@@ -9,11 +9,12 @@ The small sections are:
 4.  Linux dynamic libraries
 5.  Libraries and tools needed
 6.  Examples
-7.  Targets supported, limitations
-8.  CPU usage
-9.  How to submit a patch
-10. Special thanks
-11. Contact information
+7.  Dialog editor
+8.  Targets supported, limitations
+9.  CPU usage
+10.  How to submit a patch
+11. Special thanks
+12. Contact information
 
 If you are looking for information about the Win32 target please look in the
 win32 (MingW) directory and winnt directory (BC++).
@@ -290,7 +291,20 @@ this TV. The examples are shipped only with the sources distribution.
 
 
 
-7. Targets supported, limitations:
+7. Dialog Editor:
+----------------
+
+  In the examples directory you'll find a directory called dlgdsn. This
+directory contains sources for a dialog editor. It was created by Warlei
+Alves and he asked me to maintain it. Right now I'm just including it in the
+package and adapted it to compile with the last release of TV. I also made it
+work under DOS and not only Linux. If enough people gets interested I think
+we can do a good tool from it.
+
+
+
+
+8. Targets supported, limitations:
 ---------------------------------
 
   The library compiles and runs in DOS and Linux. Only i386 Linux is fully
@@ -444,7 +458,7 @@ Windows NT:
 
 
 
-8.  CPU usage:
+9.  CPU usage:
 -------------
 
   Since v1.0.8 the TProgram::idle() member releases the CPU to the OS. If for
@@ -461,8 +475,8 @@ minimal amount of time.
 
 
 
-9. How to submit a patch:
-------------------------
+10. How to submit a patch:
+-------------------------
 
   The simplest way is running a diff between your current directory and a
 copy of the library as you downloaded it. Don't forget to specify the exact
@@ -472,7 +486,7 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-10. Special thanks:
+11. Special thanks:
 ------------------
 
 They goes to (no particular sorting):
@@ -495,7 +509,7 @@ He contributed a lot of patches.
 
 
 
-11. Contact information:
+12. Contact information:
 -----------------------
 
 Salvador E. Tropea (SET)
