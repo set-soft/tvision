@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.73  2002/05/16 18:54:15  set
+* Added: A batch of patches from Mike for QNX.
+ * Configuration for libstdc++
+ * strings.h inclusion.
+ * Class: member(value) -> Class { member=value; for some cases reported
+   by the compiler as problematic.
+ * Fixed: exclusion of X11 driver initialization if no X detected.
+ * time.h for puzzle.h demo.
+
 Revision 2.72  2002/05/16 18:19:30  set
 * Added: QNX needs -shared to create a module for a dynamic library.
 Pointed out by Mike.
