@@ -126,7 +126,7 @@ sub GiveAdvice
 
 sub LookForIntlSupport
 {
- my $vNeed=$_[0],$test;
+ my $vNeed=$_[0],$test,$a,$djdir;
 
  print 'Checking for international support: ';
  if (@conf{'no-intl'} eq 'yes')
@@ -145,6 +145,16 @@ sub LookForIntlSupport
    {
     print "no (cached)\n";
     return;
+   }
+ if ($OS eq 'dos')
+   { # gettext 0.10.32 port have a bug in the headers, correct it
+    $djdir=@ENV{'DJDIR'};
+    $a=cat("$djdir/include/libintl.h");
+    if (length($a) && $a=~/\@INCLUDE_LOCALE_H@/)
+      {
+       $a=~s/\@INCLUDE_LOCALE_H\@//;
+       replace("$djdir/include/libintl.h",$a);
+      }
    }
  $test='
 #include <stdio.h>
