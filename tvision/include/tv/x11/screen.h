@@ -72,7 +72,9 @@ protected:
  static void   setCharacter(unsigned offset, ushort value);
  static void   setCharacters(unsigned dst, ushort *src, unsigned len);
  static int    System(const char *command, pid_t *pidChild);
-
+ static int    setWindowTitle(const char *aName);
+ static const char *getWindowTitle(void);
+ 
 protected:
  // Blinking cursor emulation
  static void   sigAlm(int sig);
