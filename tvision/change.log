@@ -1,4 +1,22 @@
 $Log$
+Revision 1.211  2001/09/29 02:11:10  set
+* Modified: I made the library compile with gcc 3.0.1. This new version of
+gcc implments the ISO C++ 1998 standard and hence changes a lot of things
+about the C++ streams. I got some help from Andris Pavenis and Christoph
+Bauer. Andris already compiled the library using some quick and dirty patches
+and Christoph suggested good solutions for some of the problems.
+* Fixed: New standards enforce the use of an EOL at the last line of code.
+* Fixed: New standards deprecates multi-line strings, they are very
+convenient for inline assembler. That's a really bad thing.
+* Added: A good amount of macros to compatlayer to reduce the impact of the
+new streams semantics.
+* Modified: Now fpbase::filebuf buf; is a pointer (is a private member).
+* Added: fpstream::filelength() because now is invalid to ask for the file
+descriptor of a stream.
+* Modified: The asm(register) modifier now doesn't work as with gcc<3.
+* Fixed: A huge amount of errors in the dialog editor that gcc 3 now
+detects (like bizarre casts or returning pointers to local variables).
+.
 Revision 1.210  2001/09/26 00:08:09  set
 * Modified: [DOS] Now the useBIOS variable is the default for the keyboard
 routines. According to reports of various users it looks like some new
