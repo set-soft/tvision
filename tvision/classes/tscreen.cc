@@ -311,5 +311,20 @@ void TScreen::setCharacter(unsigned offset,ushort *values,unsigned count)
   }
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Finds if this terminal have variable code page of that's fixed.
+  
+  Return: 
+  True if the terminal have a variable code page.
+  
+***************************************************************************/
+ 
+Boolean TScreen::codePageVariable()
+{
+ return True;
+}
+
 #endif // __DJGPP__
 

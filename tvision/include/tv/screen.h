@@ -134,6 +134,9 @@ public:
     static ushort getCursorType();
     static ushort getRows();
     static ushort getCols();
+    // SET: It says if we should offer the user to select the code page
+    // or the terminal have a fixed encoding and needs things as is.
+    static Boolean codePageVariable();
 
     static ushort getCharacter(unsigned offset);
     static void getCharacter(unsigned offset,ushort *buf,unsigned count);
