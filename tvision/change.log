@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.538  2004/05/24 14:48:44  set
+* Modified: [config] Use of "g++" in favor of "gcc -lstdc++". This is
+because newer gcc 3.x compilers can't compile C++ code without doing a
+mess when we use the gcc frontend. From a report by Baurjan Ismagulov - ibr
+.
 Revision 2.537  2004/05/12 14:25:15  set
 * Fixed: When using TButton callbacks the button called the CB but also
 sent the event. It is dangerous if the CB uses a dialog because the event
