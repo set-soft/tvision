@@ -118,12 +118,32 @@ ushort TDisplay::getCols()
   return ScreenCols();
 }
 
+#if 0
+#include <stdio.h>
+static
+unsigned VBEScreenMode()
+{
+ unsigned mode=ScreenMode();
+ fprintf(stderr,"Modo reportado por libc: %03x\n",mode);
+
+ // Now test if VBE is available and wich mode reports
+ AX=0x4F03;
+ INTR(0x10,r_display);
+ if (AL==0x4F && AH==0)
+   {
+    mode=BX & 0x3FFF;
+    fprintf(stderr,"Modo reportado por VBE: %03x\n",mode);
+   }
+ return mode;
+}
+#endif
+
 ushort TDisplay::getCrtMode()
 {
-  ushort mode = ScreenMode();
+  ushort mode = ScreenMode(); // VBEScreenMode();
   if (mode == smCO80)
     {
-     // I changed it because was wrong. With STM I can set 108x34 (25% more
+     // SET: I changed it because was wrong. With STM I can set 108x34 (25% more
      // resolution, same aspect) but it reports 3
      int res=getRows()+getCols()*100;
 
@@ -189,13 +209,20 @@ void set_font_for_tweaked_C_code(int lines)
  TDisplay::SelectFont(lines,lines==16 ? 1 : 0);
 }
 
+// SET: Added VESA support
 static
 void Textmode(int mode)
 {
-  __dpmi_regs r;
-  r.h.ah = 0;
-  r.h.al = (mode & 0xff) | 0x80; // do not clear the screen
-  __dpmi_int(0x10,&r);
+ if (mode>=0x100)
+   { // It should be a VESA mode
+    AX=0x4F02;
+    BX=mode | 0x8000; // do not clear the screen
+   }
+ else
+   {
+    AX=(mode & 0xff) | 0x80; // do not clear the screen
+   }
+ INTR(0x10,r_display);
 }
 
 /* The following code is taken from conio.c. I had to do this,
