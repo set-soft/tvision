@@ -65,13 +65,13 @@ typedef          __int64 int64;
 #endif
 #endif // CLY_DoNotDefineSizedTypes
 
-#ifndef CLY_DoNotDefineUTypes
+#if defined(CLY_DefineUTypes) || defined(__cplusplus)
 /* The following are just aliases and the size is platform dependant */
 typedef unsigned char  uchar;
 typedef unsigned short ushort;
 typedef unsigned int   uint;
 typedef unsigned long  ulong;
-#endif // CLY_DoNotDefineUTypes
+#endif // CLY_DefineUTypes
 
 
 #ifdef Uses_stdio

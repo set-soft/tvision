@@ -5,12 +5,11 @@
 some of them in an abstract way. Note that I wrote only the functions I need
 for SETEdit and not a full set.
 
- Copyright (C) 2000      Salvador E. Tropea
+ Copyright (C) 2000-2001 by Salvador E. Tropea
  Covered by the GPL license.
 
 ***************************************************************************/
 
-#define CLY_DoNotDefineUTypes
 #define Uses_CLYFileAttrs
 #define Uses_alloca
 #include <compatlayer.h>
