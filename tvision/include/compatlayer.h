@@ -1104,12 +1104,14 @@ typedef unsigned long  ulong;
 #endif
 
 #ifdef TVComp_MSC
+ // Note: snprintf and vsnprintf seems to be available in some versions but not in others.
+ // But looks like _snprintf and _vsnprintf is available in 1000 and 1300 versions.
+ // So currently I assume the _* versions are available for all versions.
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
  #if _MSC_VER <= 1000
-   // MSVC 4.0 doesn't have it and reports version 10.0
-   #undef CLY_Have_snprintf
+   // MSVC 4.0 reports version 10.0
    // Only new.h exists
    #undef  NEW_HEADER
    #define NEW_HEADER      <new.h>
@@ -1462,14 +1464,11 @@ typedef unsigned long  ulong;
  #ifdef CLY_Have_snprintf
   #undef  Include_stdio
   #define Include_stdio 1
-  #define CLY_snprintf  snprintf
   #ifdef TVComp_MSC
-   #if _MSC_VER>=1300 // from MSVC .NET first release - v13.0.
-      #define CLY_vsnprintf _vsnprintf
-   #else
-      #define CLY_vsnprintf vsnprintf
-   #endif
+   #define CLY_snprintf  _snprintf
+   #define CLY_vsnprintf _vsnprintf
   #else
+   #define CLY_snprintf  snprintf
    #define CLY_vsnprintf vsnprintf
   #endif
  #else

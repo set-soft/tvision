@@ -123,8 +123,5 @@ compiler.@p
  #define NEEDS_NL_LANGINFO
  #define NEEDS_GETLINE
  #define NEEDS_OPENDIR
- #if _MSC_VER <= 1000
-  #define NEEDS_SNPRINTF
- #endif
 #endif
 
