@@ -428,6 +428,7 @@ TVMainConfigFile::TVMainConfigFile()
    }
  if (name)
    {
+    //printf("Loading configuration from %s\n",name);
     config=new TVConfigFile(name);
     delete[] name;
    }

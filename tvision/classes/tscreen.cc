@@ -8,6 +8,10 @@ driver. Default members are provided.
   This is a complete new file created from concepts that José Angel Sanchez
 Caso provide me and coded from scratch. The names of some members are the
 same used in original Turbo Vision for compatibility purposes.
+
+  Config variables:
+  ScreenWidth
+  ScreenHeight
   
 ***************************************************************************/
 
@@ -321,7 +325,10 @@ void TScreen::resetPalette()
 
 Boolean TScreen::optSearch(const char *variable, long &val)
 {
- return TVMainConfigFile::Search(currentDriverShortName,variable,val);
+ if (TVMainConfigFile::Search(currentDriverShortName,variable,val))
+    return True;
+ // If not found in the driver specific section search in the TV section
+ return TVMainConfigFile::Search(variable,val);
 }
 
 TVScreenFontRequestCallBack

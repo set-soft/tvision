@@ -151,7 +151,7 @@ TScreenWinNT::TScreenWinNT()
 {
  if (!InitOnce()) return;
  flags0=CodePageVar | CursorShapes | CanSetVideoSize;
- screenMode=startupMode=getCrtMode();
+ startupMode=getCrtMode();
  #ifdef USE_NEW_BUFFER
  // Just remmember the current window size
  saveScreenWidth =GetCols();
@@ -159,6 +159,20 @@ TScreenWinNT::TScreenWinNT()
  #else
  Resume();
  #endif
+
+ unsigned maxX=saveScreenWidth, maxY=saveScreenHeight;
+ long aux;
+ if (optSearch("ScreenWidth",aux))
+    maxX=aux;
+ if (optSearch("ScreenHeight",aux))
+    maxY=aux;
+ if (maxX!=startScreenWidth || maxY!=startScreenHeight)
+   {
+    cursorLines=getCursorType();
+    setCrtModeRes(maxX,maxY);
+   }
+
+ screenMode=getCrtMode();
  setCrtData();
 
  initialized=1;

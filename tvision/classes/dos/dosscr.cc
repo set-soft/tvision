@@ -135,8 +135,19 @@ TScreenDOS::TScreenDOS()
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
         CanSetBFont | CanSetSBFont  | CanSetVideoSize;
- user_mode=screenMode=startupMode=getCrtMode();
+ startupMode=getCrtMode();
  SaveScreen();
+
+ unsigned maxX=GetCols(), maxY=GetRows();
+ long aux;
+ if (optSearch("ScreenWidth",aux))
+    maxX=aux;
+ if (optSearch("ScreenHeight",aux))
+    maxY=aux;
+ if (maxX!=startScreenWidth || maxY!=startScreenHeight)
+    setCrtModeRes(maxX,maxY);
+
+ user_mode=screenMode=getCrtMode();
  setCrtData();
  // We use the video memory as buffer, not a malloced buffer
  screenBuffer=(uint16 *)-1;
