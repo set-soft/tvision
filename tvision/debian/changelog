@@ -1,3 +1,14 @@
+rhtvision (2.0.0-1) unstable; urgency=low
+
+  * Well, this could be the first stable version if there are no major
+    problems. CVS dated 30 Sep 2002.
+  * Someone stole my bicycle!!!
+  * Added new documentation: doc/CodePages.txt, doc/ConfigFile.txt,
+    doc/Eterm.txt, doc/Linux.txt, doc/TVReference.html, doc/XTerm.txt and
+    THANKS.
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Thu,  3 Oct 2002 18:26:22 -0300
+
 rhtvision (2.0.0-0.5) unstable; urgency=low
 
   * New beta from CVS dated 11 Sep 2002.

@@ -78,7 +78,10 @@ install: build
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installdocs -A borland.txt copying copying.rh readme.txt doc/X11.txt
+	dh_installdocs -A borland.txt copying copying.rh readme.txt doc/X11.txt \
+		doc/CodePages.txt doc/ConfigFile.txt doc/Eterm.txt doc/Linux.txt \
+		doc/XTerm.txt THANKS
+	dh_installdocs -p $(package)$(version)-dev doc/TVReference.html
 	dh_installdocs -p $(package)$(version) extra/eterm/ debian/README.debian
 	mv debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.debian \
 		debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.Debian
