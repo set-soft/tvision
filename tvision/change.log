@@ -1,4 +1,9 @@
 $Log$
+Revision 1.81  1999/07/26 23:48:33  set
+* Added: TListBoxRec is now publically available from the headers.
+* Modified: TSortedListBox::searchPos is now protected instead of private so
+childs can know something about the incremental selection.
+.
 Revision 1.80  1999/07/21 01:15:14  set
 * Added: A script to create snap-shots as diffs.
 .
