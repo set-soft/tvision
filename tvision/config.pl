@@ -644,7 +644,7 @@ int main(void)
 void dummy() {initscr();}
 int main(void)
 {
- printf(NCURSES_VERSION);
+ printf("Ok\n");
  return 0;
 }
 ';
