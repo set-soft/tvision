@@ -89,6 +89,9 @@ extern void AlCon_DisableSecFont();
 /* Our default font */
 extern uchar AlCon_ShapeFont8x16[];
 
+/* Externally forced keyboard mapping */
+extern char AlCon_ForcedKeyboard[3];
+
 int AlCon_SetDisPaletteColors(int from, int number, AlCon_Color *colors);
 /* Only for readback */
 extern AlCon_Color AlCon_CurPalette[16];

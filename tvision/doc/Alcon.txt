@@ -66,11 +66,9 @@ by Allegro, but at the moment it is being tested only under Linux
    This driver has by default a very low priority. It is in
    development, so you will need to bump the priority integer to
    see it working. If you can't see any graphical difference between
-   X11 and Alcon, that means:
-
-   1) You are using rom fonts. You know what you are doing.
-   2) Alcon might not have been selected. Press Ctrl+Alt+End to
-      see if it exits.
+   X11 and Alcon, that means Alcon might not have been selected as
+   output driver. Ctrl+Alt+End (standard Allegro shutdown keyboard
+   shortcut) to see if the program finishes.
 
    Example of configuration file ~/.tvrc:
 
@@ -79,13 +77,19 @@ by Allegro, but at the moment it is being tested only under Linux
            [Alcon]
            {
                Priority=220
+               KeyboardMapping="langcode"
            }
        }
 
-4. FONTS
+   The priority has to be an integer number. The higher it is, the
+   most likely the AlCon driver will be selected (or rather, tried
+   before others).
 
-   If there is no ROM font on your current directory when you
-   run your program, you will get the standard ugly 8x8 font of
-   Allegro. You can solve this by copying some ROM font to your
-   path and modifying the loading font call of AlCon_Init in
-   classes/alcon/alcon.cc. This will be more flexible in the future.
+   The KeyboardMapping is a string specifying the keyboard mapping
+   that should be used. By default Allegro looks for an allegro.cfg
+   file with the correct keyboard specification. To avoid creating
+   one, you can use this variable, which overrides whatever selection
+   is used later by Allegro. langcode is a two letter string with
+   the iso name of the language. Note that the keyboard mapping
+   datafile (keyboard.dat) has to be available somewhere on your
+   system for this to have any effect at all.

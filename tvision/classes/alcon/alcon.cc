@@ -98,6 +98,7 @@ static char AlCon_CursorShapeFrom, AlCon_CursorShapeTo;
 static int al_mouse_buttons = 0;
 static int al_mouse_wheel;
 
+char AlCon_ForcedKeyboard[3] = "";
 
 void AlCon_EnableSecFont()
 {
@@ -664,6 +665,13 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
    //set_uformat(U_UTF8);
   
    allegro_init();
+
+   /* Maybe force a specific keyboard layout? */
+   if (*AlCon_ForcedKeyboard) {
+      AlCon_ForcedKeyboard[3] = 0;
+      set_config_string("system", "keyboard", AlCon_ForcedKeyboard);
+   }
+   
    install_keyboard();
    al_mouse_buttons = install_mouse();
    al_mouse_wheel = mouse_z;

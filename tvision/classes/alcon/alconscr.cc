@@ -65,6 +65,13 @@ TScreenAlcon::TScreenAlcon()
     if (optSearch("FontHeight",aux))
        fontH=aux;
 
+    const char *lang = optSearch("KeyboardMapping");
+    if (lang) {
+        AlCon_ForcedKeyboard[0] = lang[0];
+        if (lang[0])
+            AlCon_ForcedKeyboard[1] = lang[1];
+    }
+
     uchar *fontData=NULL;
     int freeFontData=1;
     TScreenFont256 *secFont=NULL;
