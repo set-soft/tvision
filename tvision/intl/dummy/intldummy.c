@@ -9,22 +9,22 @@ was configured to have it.
   
 ***************************************************************************/
 
-char *textdomain(char *domainname)
+char *textdomain(const char *domainname)
 {
- return domainname;
+ return (char *)domainname;
 }
 
-char *bindtextdomain(char *domainname, char *dirname)
+char *bindtextdomain(const char *domainname, const char *dirname)
 {
- return domainname ? domainname : dirname;
+ return (char *)(domainname ? domainname : dirname);
 }
 
-char *gettext(char *msgid)
+char *gettext(const char *msgid)
 {
- return msgid;
+ return (char *)msgid;
 }
 
-char *gettext__(char *msgid)
+char *gettext__(const char *msgid)
 {
- return msgid;
+ return (char *)msgid;
 }
