@@ -617,6 +617,7 @@ sub GenerateMakefile
  $rep.="\trm -f intl/dummy/*.o\n";
  $rep.="\trm -f intl/dummy/*.a\n";
  $rep.="\t-\$(MAKE) -C examples clean\n";
+ $rep.="\trm -f configure.cache\n";
  $text=~s/\@clean\@/$rep/g;
 
  replace('Makefile',$text);
