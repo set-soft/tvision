@@ -965,9 +965,6 @@ lab1:
 extern TPoint shadowSize;
 extern uchar shadowAttr;
 
-static MouseEventType * curmouse;
-static Boolean * mouseintflag;
-
 static int offset;
 static int y_pos,x_pos_start,x_pos_end,in_shadow;
 const void * _Buffer;
@@ -1157,14 +1154,14 @@ lab20:
     if (((TGroup *)(_view))->lockFlag) return;
     goto lab10;
   }
-  if (y_pos != curmouse->where.y ||
-      x_pos_start > curmouse->where.x ||
-      x_pos_end <= curmouse->where.x)
+  if (y_pos!=TEventQueue::curMouse.where.y ||
+      x_pos_start>TEventQueue::curMouse.where.x ||
+      x_pos_end<=TEventQueue::curMouse.where.x)
   // the mouse is not in the draw area
   {
-    *mouseintflag = False;
+    TMouse::resetDrawCounter();
     call50();
-    if (*mouseintflag == False)
+    if (TMouse::getDrawCounter()==0)
     {
       // there was no mouse event
       if (((TGroup *)(_view))->lockFlag) return;
@@ -1196,8 +1193,6 @@ do\
   x_pos_end = c;\
   _Buffer = B;\
   _view = this;\
-  curmouse = &TEventQueue::curMouse;\
-  mouseintflag = &TEventQueue::mouseIntFlag;\
   _call(00);\
 } while (0)
 
@@ -1209,8 +1204,6 @@ void TView::writeView(write_args wa)
   x_pos_end = WA->cx;
   _Buffer = WA->Buffer;
   _view = WA->view;
-  curmouse = &TEventQueue::curMouse;
-  mouseintflag = &TEventQueue::mouseIntFlag;
   _call(00);
 }
 
