@@ -406,7 +406,7 @@ DEPS_0= obj/beep.o obj/drivevalid.o obj/expandpath.o obj/fexpand.o\
 NO_LINK=
 LINK_FILES=$(filter-out $(NO_LINK),$(DEPS_0))
 TARGET_0:: $(DEPS_0)
-DEPS_1=beep.c ../include/compatlayer.h ../include/tv/configtv.h
+DEPS_1=beep.c
 obj/beep.o:: $(DEPS_1)
 	$(RHIDE_COMPILE.c.o)
 DEPS_2=drivevalid.c ../include/cl/needs.h ../include/tv/configtv.h
@@ -422,21 +422,22 @@ obj/fexpand.o:: $(DEPS_4)
 DEPS_5=fileattrs.c ../include/compatlayer.h ../include/tv/configtv.h
 obj/fileattrs.o:: $(DEPS_5)
 	$(RHIDE_COMPILE.c.o)
-DEPS_6=fileexists.c ../include/compatlayer.h ../include/tv/configtv.h
+DEPS_6=fileexists.c ../include/cl/unistd.h ../include/compatlayer.h\
+	../include/tv/configtv.h
 obj/fileexists.o:: $(DEPS_6)
 	$(RHIDE_COMPILE.c.o)
 DEPS_7=filelength.c ../include/cl/needs.h ../include/tv/configtv.h
 obj/filelength.o:: $(DEPS_7)
 	$(RHIDE_COMPILE.c.o)
-DEPS_8=fixpath.c ../include/cl/needs.h ../include/compatlayer.h\
-	../include/tv/configtv.h
+DEPS_8=fixpath.c ../include/cl/needs.h ../include/cl/unistd.h\
+	../include/compatlayer.h ../include/tv/configtv.h
 obj/fixpath.o:: $(DEPS_8)
 	$(RHIDE_COMPILE.c.o)
 DEPS_9=fnmatch.c ../include/cl/needs.h ../include/tv/configtv.h
 obj/fnmatch.o:: $(DEPS_9)
 	$(RHIDE_COMPILE.c.o)
-DEPS_10=getcurdir.c ../include/cl/needs.h ../include/compatlayer.h\
-	../include/tv/configtv.h
+DEPS_10=getcurdir.c ../include/cl/needs.h ../include/cl/unistd.h\
+	../include/compatlayer.h ../include/tv/configtv.h
 obj/getcurdir.o:: $(DEPS_10)
 	$(RHIDE_COMPILE.c.o)
 DEPS_11=getline.c ../include/cl/needs.h ../include/tv/configtv.h
