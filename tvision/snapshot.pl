@@ -100,7 +100,7 @@ open(FIL,">$snapdir/doit.bat");
 print FIL ("patch -p0 < main.pat$crlf");
 close FIL;
 open(FIL,">$snapdir/doit");
-print FIL ("#!/usr/bin/sh\npatch -p0 < main.pat\n");
+print FIL ("#!/bin/sh\npatch -p0 < main.pat\n");
 close FIL;
 dtou("$snapdir/doit");
 `chmod +x $snapdir/doit`;

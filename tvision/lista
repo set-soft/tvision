@@ -103,6 +103,9 @@ classes/linux/tdisplay.cc
 classes/linux/tfont.cc
 classes/linux/thwmouse.cc
 classes/linux/tscreen.cc
+config.pl
+configure.bat
+configure
 copying
 copying.rh
 debian/README.debian
@@ -421,7 +424,9 @@ linux/tmp/delete.me
 +linuxso/makemak.pl
 linuxso/obj/delete.me
 linuxso/tmp/delete.me
+Makefile.in
 misc.cc
+miscperl.pl
 mouse.cc
 msgbox.cc
 names/nbackgro.cc
@@ -479,6 +484,7 @@ names/nvalidat.cc
 names/nview.cc
 names/nwindow.cc
 newstr.cc
+readme.in
 readme.txt
 rhscreen.cc
 screen.cc
@@ -535,4 +541,5 @@ stream/sview.cc
 stream/swindow.cc
 ticks.cc
 tweaked.c
+version.txt
 vesa.cc
