@@ -15,6 +15,16 @@ destdir=$(shell pwd)/debian/tmp/usr
 # This is the debhelper compatibility version to use:
 export DH_COMPAT=1
 
+# Set CFLAGS according to the Debian Policy:
+CFLAGS = -D_REENTRANT -g -Wall
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+CXXFLAGS = $(CFLAGS)
+
+
 # Compile the beast!:
 build: build-stamp
 build-stamp: debianbackup.tar
@@ -24,8 +34,9 @@ ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
 	mv debian/rhtvision.postrm debian/rhtvision$(version).postrm
 endif
-	./configure --prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr
-	$(MAKE) CPPFLAGS="-D_REENTRANT"   
+	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" ./configure \
+		--prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr
+	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" $(MAKE)
 	touch build-stamp
 
 
@@ -41,7 +52,8 @@ clean: clean-debian debianbackup.tar
 	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env \
 		Makefile compat/rhide.env examples/rhide.env include/tv/configtv.h \
 		linux/rhide.env linuxso/Makefile linuxso/compat.mak \
-		intl/es_iso.mo intl/es_iso.po intl/es.mo intl/ru.mo
+		intl/es_iso.mo intl/es_iso.po intl/es.mo intl/ru.mo \
+		makes/rhide.env makes/libtvfintl.a redhat/librhtv-*.spec
 	rm -f build-stamp
 
 # Use the following target when you just want for example to rebuild the
@@ -88,7 +100,8 @@ binary-arch: build install
 	dh_installdocs -A borland.txt copying copying.rh readme.txt \
 		doc/CodePages.txt doc/ConfigFile.txt doc/Eterm.txt doc/Linux.txt \
 		doc/X11.txt doc/XTerm.txt THANKS
-	dh_installdocs -p $(package)$(version)-dev doc/TVReference.html
+	dh_installdocs -p $(package)$(version)-dev doc/TVReference.html \
+		doc/I18n.txt doc/Streams.txt
 	dh_installdocs -p $(package)$(version) extra/eterm/ debian/README.debian
 	mv debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.debian \
 		debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.Debian

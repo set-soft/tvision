@@ -10,4 +10,6 @@ Upstream initial author: Robert Hoehne <robert.hoehne@gmx.net>.
 Copyright:
 GPL, but wide redistribution is questioned because of unresolved legal
 problems with Borland, please, contact upstream authors for more information.
+On Debian systems, the complete text of the GNU General Public License can be
+found in `/usr/share/common-licenses/GPL'.
 
