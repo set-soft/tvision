@@ -23,8 +23,8 @@ TVTools but reworked.
 /*        4 = Selected shortcut                                           */
 /* ---------------------------------------------------------------------- */
 
-#if defined( Uses_TLabel ) && !defined( __TLabel )
-#define __TLabel
+#if defined( Uses_TLabel ) && !defined( TLabel_defined )
+#define TLabel_defined
 
 class TRect;
 struct TEvent;
@@ -81,7 +81,10 @@ inline opstream& operator << ( opstream& os, TLabel* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 
-#ifdef Uses_T1Label
+#endif  // Uses_TLabel
+
+#if defined( Uses_T1Label ) && !defined( T1Label_defined )
+#define T1Label_defined
 class T1Label : public TLabel
 {
 public:
@@ -90,6 +93,4 @@ public:
    { growTo(cstrlen(TVIntl::getText(aText,intlText))+1,1); };
 };
 #endif // Uses_T1Label
-
-#endif  // Uses_TLabel
 
