@@ -23,6 +23,7 @@ same used in original Turbo Vision for compatibility purposes.
 Boolean  THWMouse::handlerInstalled=False;
 Boolean  THWMouse::noMouse         =False;
 uchar    THWMouse::buttonCount     =0;
+uchar    THWMouse::btBeforeForce   =0;
 char     THWMouse::visible         =0;
 char     THWMouse::forced          =0;
 volatile
@@ -118,10 +119,15 @@ void THWMouse::resume()
 
 void THWMouse::forceEvent(int x, int y, int buttons)
 {
- forced=1;
+ forced=0;
+ if (TEventQueue::curMouse.where.x!=x || TEventQueue::curMouse.where.y!=y)
+    forced++;
+ if (TEventQueue::curMouse.buttons!=buttons)
+    forced++;
  forcedME.where.x=x;
  forcedME.where.y=y;
  forcedME.doubleClick=False;
+ btBeforeForce=forcedME.buttons;
  forcedME.buttons=buttons;
 }
 
@@ -129,10 +135,12 @@ void THWMouse::getEvent(MouseEventType& me)
 {
  if (forced)
    {
-    forced=0;
     me=forcedME;
+    if (forced==2)
+       me.buttons=btBeforeForce;
     TEventQueue::curMouse=me;
     drawMouse(forcedME.where.x,forcedME.where.y);
+    forced--;
    }
  else if (handlerInstalled)
    {

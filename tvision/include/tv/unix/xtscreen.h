@@ -63,8 +63,8 @@ protected:
  // Default: void   clearScreen()
  static void   SetVideoMode(ushort mode);
  static void   SetVideoModeExt(char *mode);
- static void   GetCharacters(unsigned offset,ushort *buf,unsigned count);
- static ushort GetCharacter(unsigned dst);
+ // Default: static void   GetCharacters(unsigned offset,ushort *buf,unsigned count);
+ // Default: static ushort GetCharacter(unsigned dst);
  static void   SetCharacter(unsigned offset,ushort value);
  static void   SetCharacters(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild);

@@ -79,6 +79,8 @@ protected:
  static unsigned char kbExtraFlags[128];
  // Keys tree
  static node *Keys;
+ // Mouse is reported as a escape sequence and hence handled here
+ static int MouseButtons;
 };
 
 #endif // XTERMKEY_HEADER_INCLUDED

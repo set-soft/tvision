@@ -7,7 +7,7 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOS_UNIX
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_unistd
@@ -180,5 +180,5 @@ int TDisplayXTerm::SetWindowTitle(const char *name)
  fprintf(stdout,"\E]2;%s\x7",name);
  return 1;
 }
-#endif // TVOS_UNIX
+#endif // TVOS_UNIX && !TVOSf_QNXRtP
 

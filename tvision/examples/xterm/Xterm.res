@@ -1,0 +1,217 @@
+#!/bin/sh
+#
+# This script starts xterm mapping the keyboard like the xterm
+# shipped with XFree86 4.x does.
+# I introduced some additional tweaks to:
+# 1) Generate values for Tab key when used with modifiers CSI Flags T
+# 2) Same for back space: CSI Flags K
+# 3) The keypad 5, but is just for testing.
+# 4) The delete key ever emmits an escape sequence. Will think about
+#    changing it.
+#
+# ~Shift ~Ctrl ~Alt <Key>Delete: string(0x1b) string(\"[3~\") \n\
+#
+xterm -xrm "XTerm*VT100.Translations: #override \n\
+ ~Shift ~Ctrl ~Alt <Key>Insert: string(0x1b) string(\"[2~\") \n\
+  Shift ~Ctrl ~Alt <Key>Insert: string(0x1b) string(\"[2;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>Insert: string(0x1b) string(\"[2;3~\") \n\
+  Shift ~Ctrl  Alt <Key>Insert: string(0x1b) string(\"[2;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>Insert: string(0x1b) string(\"[2;5~\") \n\
+  Shift  Ctrl ~Alt <Key>Insert: string(0x1b) string(\"[2;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>Insert: string(0x1b) string(\"[2;7~\") \n\
+  Shift  Ctrl  Alt <Key>Insert: string(0x1b) string(\"[2;8~\") \n\
+  Shift ~Ctrl ~Alt <Key>Delete: string(0x1b) string(\"[3;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>Delete: string(0x1b) string(\"[3;3~\") \n\
+  Shift ~Ctrl  Alt <Key>Delete: string(0x1b) string(\"[3;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>Delete: string(0x1b) string(\"[3;5~\") \n\
+  Shift  Ctrl ~Alt <Key>Delete: string(0x1b) string(\"[3;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>Delete: string(0x1b) string(\"[3;7~\") \n\
+  Shift  Ctrl  Alt <Key>Delete: string(0x1b) string(\"[3;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Prior: string(0x1b) string(\"[5~\") \n\
+  Shift ~Ctrl ~Alt <Key>Prior: string(0x1b) string(\"[5;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>Prior: string(0x1b) string(\"[5;3~\") \n\
+  Shift ~Ctrl  Alt <Key>Prior: string(0x1b) string(\"[5;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>Prior: string(0x1b) string(\"[5;5~\") \n\
+  Shift  Ctrl ~Alt <Key>Prior: string(0x1b) string(\"[5;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>Prior: string(0x1b) string(\"[5;7~\") \n\
+  Shift  Ctrl  Alt <Key>Prior: string(0x1b) string(\"[5;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Next: string(0x1b) string(\"[6~\") \n\
+  Shift ~Ctrl ~Alt <Key>Next: string(0x1b) string(\"[6;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>Next: string(0x1b) string(\"[6;3~\") \n\
+  Shift ~Ctrl  Alt <Key>Next: string(0x1b) string(\"[6;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>Next: string(0x1b) string(\"[6;5~\") \n\
+  Shift  Ctrl ~Alt <Key>Next: string(0x1b) string(\"[6;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>Next: string(0x1b) string(\"[6;7~\") \n\
+  Shift  Ctrl  Alt <Key>Next: string(0x1b) string(\"[6;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F5: string(0x1b) string(\"[15~\") \n\
+  Shift ~Ctrl ~Alt <Key>F5: string(0x1b) string(\"[15;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F5: string(0x1b) string(\"[15;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F5: string(0x1b) string(\"[15;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F5: string(0x1b) string(\"[15;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F5: string(0x1b) string(\"[15;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F5: string(0x1b) string(\"[15;7~\") \n\
+  Shift  Ctrl  Alt <Key>F5: string(0x1b) string(\"[15;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F6: string(0x1b) string(\"[16~\") \n\
+  Shift ~Ctrl ~Alt <Key>F6: string(0x1b) string(\"[16;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F6: string(0x1b) string(\"[16;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F6: string(0x1b) string(\"[16;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F6: string(0x1b) string(\"[16;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F6: string(0x1b) string(\"[16;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F6: string(0x1b) string(\"[16;7~\") \n\
+  Shift  Ctrl  Alt <Key>F6: string(0x1b) string(\"[16;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F7: string(0x1b) string(\"[18~\") \n\
+  Shift ~Ctrl ~Alt <Key>F7: string(0x1b) string(\"[18;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F7: string(0x1b) string(\"[18;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F7: string(0x1b) string(\"[18;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F7: string(0x1b) string(\"[18;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F7: string(0x1b) string(\"[18;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F7: string(0x1b) string(\"[18;7~\") \n\
+  Shift  Ctrl  Alt <Key>F7: string(0x1b) string(\"[18;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F8: string(0x1b) string(\"[19~\") \n\
+  Shift ~Ctrl ~Alt <Key>F8: string(0x1b) string(\"[19;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F8: string(0x1b) string(\"[19;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F8: string(0x1b) string(\"[19;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F8: string(0x1b) string(\"[19;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F8: string(0x1b) string(\"[19;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F8: string(0x1b) string(\"[19;7~\") \n\
+  Shift  Ctrl  Alt <Key>F8: string(0x1b) string(\"[19;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F9: string(0x1b) string(\"[20~\") \n\
+  Shift ~Ctrl ~Alt <Key>F9: string(0x1b) string(\"[20;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F9: string(0x1b) string(\"[20;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F9: string(0x1b) string(\"[20;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F9: string(0x1b) string(\"[20;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F9: string(0x1b) string(\"[20;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F9: string(0x1b) string(\"[20;7~\") \n\
+  Shift  Ctrl  Alt <Key>F9: string(0x1b) string(\"[20;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F10: string(0x1b) string(\"[21~\") \n\
+  Shift ~Ctrl ~Alt <Key>F10: string(0x1b) string(\"[21;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F10: string(0x1b) string(\"[21;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F10: string(0x1b) string(\"[21;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F10: string(0x1b) string(\"[21;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F10: string(0x1b) string(\"[21;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F10: string(0x1b) string(\"[21;7~\") \n\
+  Shift  Ctrl  Alt <Key>F10: string(0x1b) string(\"[21;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F11: string(0x1b) string(\"[23~\") \n\
+  Shift ~Ctrl ~Alt <Key>F11: string(0x1b) string(\"[23;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F11: string(0x1b) string(\"[23;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F11: string(0x1b) string(\"[23;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F11: string(0x1b) string(\"[23;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F11: string(0x1b) string(\"[23;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F11: string(0x1b) string(\"[23;7~\") \n\
+  Shift  Ctrl  Alt <Key>F11: string(0x1b) string(\"[23;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F12: string(0x1b) string(\"[24~\") \n\
+  Shift ~Ctrl ~Alt <Key>F12: string(0x1b) string(\"[24;2~\") \n\
+ ~Shift ~Ctrl  Alt <Key>F12: string(0x1b) string(\"[24;3~\") \n\
+  Shift ~Ctrl  Alt <Key>F12: string(0x1b) string(\"[24;4~\") \n\
+ ~Shift  Ctrl ~Alt <Key>F12: string(0x1b) string(\"[24;5~\") \n\
+  Shift  Ctrl ~Alt <Key>F12: string(0x1b) string(\"[24;6~\") \n\
+ ~Shift  Ctrl  Alt <Key>F12: string(0x1b) string(\"[24;7~\") \n\
+  Shift  Ctrl  Alt <Key>F12: string(0x1b) string(\"[24;8~\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Up: string(0x1b) string(\"[A\") \n\
+  Shift ~Ctrl ~Alt <Key>Up: string(0x1b) string(\"[2A\") \n\
+ ~Shift ~Ctrl  Alt <Key>Up: string(0x1b) string(\"[3A\") \n\
+  Shift ~Ctrl  Alt <Key>Up: string(0x1b) string(\"[4A\") \n\
+ ~Shift  Ctrl ~Alt <Key>Up: string(0x1b) string(\"[5A\") \n\
+  Shift  Ctrl ~Alt <Key>Up: string(0x1b) string(\"[6A\") \n\
+ ~Shift  Ctrl  Alt <Key>Up: string(0x1b) string(\"[7A\") \n\
+  Shift  Ctrl  Alt <Key>Up: string(0x1b) string(\"[8A\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Down: string(0x1b) string(\"[B\") \n\
+  Shift ~Ctrl ~Alt <Key>Down: string(0x1b) string(\"[2B\") \n\
+ ~Shift ~Ctrl  Alt <Key>Down: string(0x1b) string(\"[3B\") \n\
+  Shift ~Ctrl  Alt <Key>Down: string(0x1b) string(\"[4B\") \n\
+ ~Shift  Ctrl ~Alt <Key>Down: string(0x1b) string(\"[5B\") \n\
+  Shift  Ctrl ~Alt <Key>Down: string(0x1b) string(\"[6B\") \n\
+ ~Shift  Ctrl  Alt <Key>Down: string(0x1b) string(\"[7B\") \n\
+  Shift  Ctrl  Alt <Key>Down: string(0x1b) string(\"[8B\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Right: string(0x1b) string(\"[C\") \n\
+  Shift ~Ctrl ~Alt <Key>Right: string(0x1b) string(\"[2C\") \n\
+ ~Shift ~Ctrl  Alt <Key>Right: string(0x1b) string(\"[3C\") \n\
+  Shift ~Ctrl  Alt <Key>Right: string(0x1b) string(\"[4C\") \n\
+ ~Shift  Ctrl ~Alt <Key>Right: string(0x1b) string(\"[5C\") \n\
+  Shift  Ctrl ~Alt <Key>Right: string(0x1b) string(\"[6C\") \n\
+ ~Shift  Ctrl  Alt <Key>Right: string(0x1b) string(\"[7C\") \n\
+  Shift  Ctrl  Alt <Key>Right: string(0x1b) string(\"[8C\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Left: string(0x1b) string(\"[D\") \n\
+  Shift ~Ctrl ~Alt <Key>Left: string(0x1b) string(\"[2D\") \n\
+ ~Shift ~Ctrl  Alt <Key>Left: string(0x1b) string(\"[3D\") \n\
+  Shift ~Ctrl  Alt <Key>Left: string(0x1b) string(\"[4D\") \n\
+ ~Shift  Ctrl ~Alt <Key>Left: string(0x1b) string(\"[5D\") \n\
+  Shift  Ctrl ~Alt <Key>Left: string(0x1b) string(\"[6D\") \n\
+ ~Shift  Ctrl  Alt <Key>Left: string(0x1b) string(\"[7D\") \n\
+  Shift  Ctrl  Alt <Key>Left: string(0x1b) string(\"[8D\") \n\
+ ~@Num_Lock ~Shift ~Ctrl ~Alt <Key>KP_5: string(0x1b) string(\"[E\") \n\
+  @Num_Lock ~Shift ~Ctrl ~Alt <Key>KP_5: string(\"5\") \n\
+ ~@Num_Lock Shift ~Ctrl ~Alt <Key>KP_5: string(\"5\") \n\
+  @Num_Lock Shift ~Ctrl ~Alt <Key>KP_5: string(0x1b) string(\"[E\") \n\
+ ~Shift ~Ctrl  Alt <Key>KP_5: string(0x1b) string(\"[3E\") \n\
+  Shift ~Ctrl  Alt <Key>KP_5: string(0x1b) string(\"[4E\") \n\
+ ~Shift  Ctrl ~Alt <Key>KP_5: string(0x1b) string(\"[5E\") \n\
+  Shift  Ctrl ~Alt <Key>KP_5: string(0x1b) string(\"[6E\") \n\
+ ~Shift  Ctrl  Alt <Key>KP_5: string(0x1b) string(\"[7E\") \n\
+  Shift  Ctrl  Alt <Key>KP_5: string(0x1b) string(\"[8E\") \n\
+ ~Shift ~Ctrl ~Alt <Key>End: string(0x1b) string(\"[F\") \n\
+  Shift ~Ctrl ~Alt <Key>End: string(0x1b) string(\"[2F\") \n\
+ ~Shift ~Ctrl  Alt <Key>End: string(0x1b) string(\"[3F\") \n\
+  Shift ~Ctrl  Alt <Key>End: string(0x1b) string(\"[4F\") \n\
+ ~Shift  Ctrl ~Alt <Key>End: string(0x1b) string(\"[5F\") \n\
+  Shift  Ctrl ~Alt <Key>End: string(0x1b) string(\"[6F\") \n\
+ ~Shift  Ctrl  Alt <Key>End: string(0x1b) string(\"[7F\") \n\
+  Shift  Ctrl  Alt <Key>End: string(0x1b) string(\"[8F\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Home: string(0x1b) string(\"[H\") \n\
+  Shift ~Ctrl ~Alt <Key>Home: string(0x1b) string(\"[2H\") \n\
+ ~Shift ~Ctrl  Alt <Key>Home: string(0x1b) string(\"[3H\") \n\
+  Shift ~Ctrl  Alt <Key>Home: string(0x1b) string(\"[4H\") \n\
+ ~Shift  Ctrl ~Alt <Key>Home: string(0x1b) string(\"[5H\") \n\
+  Shift  Ctrl ~Alt <Key>Home: string(0x1b) string(\"[6H\") \n\
+ ~Shift  Ctrl  Alt <Key>Home: string(0x1b) string(\"[7H\") \n\
+  Shift  Ctrl  Alt <Key>Home: string(0x1b) string(\"[8H\") \n\
+  Shift ~Ctrl ~Alt <Key>BackSpace: string(0x1b) string(\"[2K\") \n\
+ ~Shift ~Ctrl  Alt <Key>BackSpace: string(0x1b) string(\"[3K\") \n\
+  Shift ~Ctrl  Alt <Key>BackSpace: string(0x1b) string(\"[4K\") \n\
+ ~Shift  Ctrl ~Alt <Key>BackSpace: string(0x1b) string(\"[5K\") \n\
+  Shift  Ctrl ~Alt <Key>BackSpace: string(0x1b) string(\"[6K\") \n\
+ ~Shift  Ctrl  Alt <Key>BackSpace: string(0x1b) string(\"[7K\") \n\
+  Shift  Ctrl  Alt <Key>BackSpace: string(0x1b) string(\"[8K\") \n\
+  Shift ~Ctrl ~Alt <Key>Tab: string(0x1b) string(\"[2T\") \n\
+ ~Shift ~Ctrl  Alt <Key>Tab: string(0x1b) string(\"[3T\") \n\
+  Shift ~Ctrl  Alt <Key>Tab: string(0x1b) string(\"[4T\") \n\
+ ~Shift  Ctrl ~Alt <Key>Tab: string(0x1b) string(\"[5T\") \n\
+  Shift  Ctrl ~Alt <Key>Tab: string(0x1b) string(\"[6T\") \n\
+ ~Shift  Ctrl  Alt <Key>Tab: string(0x1b) string(\"[7T\") \n\
+  Shift  Ctrl  Alt <Key>Tab: string(0x1b) string(\"[8T\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F1: string(0x1b) string(\"[OP\") \n\
+  Shift ~Ctrl ~Alt <Key>F1: string(0x1b) string(\"[2OP\") \n\
+ ~Shift ~Ctrl  Alt <Key>F1: string(0x1b) string(\"[3OP\") \n\
+  Shift ~Ctrl  Alt <Key>F1: string(0x1b) string(\"[4OP\") \n\
+ ~Shift  Ctrl ~Alt <Key>F1: string(0x1b) string(\"[5OP\") \n\
+  Shift  Ctrl ~Alt <Key>F1: string(0x1b) string(\"[6OP\") \n\
+ ~Shift  Ctrl  Alt <Key>F1: string(0x1b) string(\"[7OP\") \n\
+  Shift  Ctrl  Alt <Key>F1: string(0x1b) string(\"[8OP\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F2: string(0x1b) string(\"[OQ\") \n\
+  Shift ~Ctrl ~Alt <Key>F2: string(0x1b) string(\"[2OQ\") \n\
+ ~Shift ~Ctrl  Alt <Key>F2: string(0x1b) string(\"[3OQ\") \n\
+  Shift ~Ctrl  Alt <Key>F2: string(0x1b) string(\"[4OQ\") \n\
+ ~Shift  Ctrl ~Alt <Key>F2: string(0x1b) string(\"[5OQ\") \n\
+  Shift  Ctrl ~Alt <Key>F2: string(0x1b) string(\"[6OQ\") \n\
+ ~Shift  Ctrl  Alt <Key>F2: string(0x1b) string(\"[7OQ\") \n\
+  Shift  Ctrl  Alt <Key>F2: string(0x1b) string(\"[8OQ\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F3: string(0x1b) string(\"[OR\") \n\
+  Shift ~Ctrl ~Alt <Key>F3: string(0x1b) string(\"[2OR\") \n\
+ ~Shift ~Ctrl  Alt <Key>F3: string(0x1b) string(\"[3OR\") \n\
+  Shift ~Ctrl  Alt <Key>F3: string(0x1b) string(\"[4OR\") \n\
+ ~Shift  Ctrl ~Alt <Key>F3: string(0x1b) string(\"[5OR\") \n\
+  Shift  Ctrl ~Alt <Key>F3: string(0x1b) string(\"[6OR\") \n\
+ ~Shift  Ctrl  Alt <Key>F3: string(0x1b) string(\"[7OR\") \n\
+  Shift  Ctrl  Alt <Key>F3: string(0x1b) string(\"[8OR\") \n\
+ ~Shift ~Ctrl ~Alt <Key>F4: string(0x1b) string(\"[OS\") \n\
+  Shift ~Ctrl ~Alt <Key>F4: string(0x1b) string(\"[2OS\") \n\
+ ~Shift ~Ctrl  Alt <Key>F4: string(0x1b) string(\"[3OS\") \n\
+  Shift ~Ctrl  Alt <Key>F4: string(0x1b) string(\"[4OS\") \n\
+ ~Shift  Ctrl ~Alt <Key>F4: string(0x1b) string(\"[5OS\") \n\
+  Shift  Ctrl ~Alt <Key>F4: string(0x1b) string(\"[6OS\") \n\
+ ~Shift  Ctrl  Alt <Key>F4: string(0x1b) string(\"[7OS\") \n\
+  Shift  Ctrl  Alt <Key>F4: string(0x1b) string(\"[8OS\") \n" \
+-xrm "*metaSendsEscape: true"
+# Ctrl  <Key>Prior: string(0x1b) string(\"[5;5~\") \n\
+#       <Key>Prior: string(0x1b) string(\"[5~\") \n \
+ 

@@ -6,4 +6,5 @@ extern TScreen *TV_QNXRtPDriverCheck();
 extern TScreen *TV_UNIXDriverCheck();
 extern TScreen *TV_Win32DriverCheck();
 extern TScreen *TV_XDriverCheck();
+extern TScreen *TV_XTermDriverCheck();
 

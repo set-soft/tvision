@@ -10,7 +10,7 @@
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOS_UNIX
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #define Uses_TScreen
 #define Uses_TEvent
@@ -31,7 +31,8 @@
 
 #include <tv/unix/xtscreen.h>
 #include <tv/unix/xtkey.h>
-//#include <tv/unix/mouse.h>
+#include <tv/unix/mouse.h>
+#include <tv/unix/xtmouse.h>
 #include <tv/linux/log.h>
 
 struct termios TScreenXTerm::outTermiosOrig;
@@ -70,11 +71,10 @@ void TScreenXTerm::Init()
  TScreen::setCrtData=defaultSetCrtData;
  TScreen::setVideoMode=SetVideoMode;
  TScreen::setVideoModeExt=SetVideoModeExt;
- TScreen::getCharacter=GetCharacter;
  TScreen::setCharacter=SetCharacter;
  TScreen::System=System;
  TScreen::setCharacters=SetCharacters;
- TScreen::getCharacters=defaultGetCharacters;
+ TDisplay::checkForWindowSize=CheckForWindowSize;
 }
 
 
@@ -147,15 +147,16 @@ TScreenXTerm::TScreenXTerm()
  Init();
 
  TGKeyXTerm::Init();
- //THWMouseGPM::Init();
 
  if (!strncasecmp(terminal,"Eterm",5))
    {// Only 8 colors
     palette=PAL_LOW;
+    THWMouseXTermFull::Init(THWMouseXTermFull::modeEterm);
    }
  else
    {
     palette=PAL_HIGH;
+    THWMouseXTermFull::Init(THWMouseXTermFull::modeXTerm);
    }
  TScreenXTerm::screenMode=TScreenXTerm::smCO80;
  LOG((palette==PAL_HIGH ? "Using high palette" : "Using low palette"));
@@ -266,6 +267,7 @@ void TScreenXTerm::SetVideoMode(ushort mode)
  int oldHeight=screenHeight;
 
  setCrtMode(mode);
+ defaultSetCrtData();
  CheckSizeBuffer(oldWidth,oldHeight);
 }
 
@@ -275,14 +277,8 @@ void TScreenXTerm::SetVideoModeExt(char *mode)
  int oldHeight=screenHeight;
 
  setCrtModeExt(mode);
+ defaultSetCrtData();
  CheckSizeBuffer(oldWidth,oldHeight);
-}
-
-ushort TScreenXTerm::GetCharacter(unsigned dst)
-{
- ushort src;
- getCharacters(dst,&src,1);
- return src;
 }
 
 void TScreenXTerm::SetCharacter(unsigned offset,ushort value)
@@ -412,7 +408,7 @@ void TScreenXTerm::writeBlock(int dst, int len, ushort *old, ushort *src)
     // Use the DEC graphics for some values in the control range.
     val=Code[code];
     mod=Modifier[code];
-   
+
     if (mod!=selCharset)
       {
        selCharset=mod;
@@ -443,9 +439,6 @@ void TScreenXTerm::mapColor(int col)
  back=(col >> 4) & 15;
  fore=col & 15;
 
- #define SB set_a_background ? set_a_background : set_background
- #define SF set_a_foreground ? set_a_foreground : set_foreground
-
  if (palette==PAL_LOW)
    {// Just 8 colors, but use bold
     if (fore!=oldFore && back!=oldBack)
@@ -475,9 +468,6 @@ void TScreenXTerm::mapColor(int col)
 
  oldFore = fore;
  oldBack = back;
-
- #undef SB
- #undef SF
 }
 
 // SET: Call to an external program, optionally forking
@@ -518,7 +508,7 @@ int TScreenXTerm::System(const char *command, pid_t *pidChild)
  return 0;
 }
 
-#endif // TVOS_UNIX
+#endif // TVOS_UNIX && !TVOSf_QNXRtP
 /*****************************************************************************
 
 ESC ( C        Designate G0 Character Set (ISO 2022)
@@ -549,7 +539,7 @@ ESC [ ? Pm h   DEC Private Mode Set (DECSET)
                ******* Lo siguiente restaura la pantalla al salir!!! *******
                  Ps = 4 7  -> Use Alternate Screen Buffer  (unless  disabled
                by the titeInhibit resource)
-                 Ps = 1 0 0 0  -> Send Mouse X  &  Y  on  button  press  and
+ Ps = 1 0 0 0  -> Send Mouse X  &  Y  on  button  press  and
                release.  See the section Mouse Tracking.
  Ps = 1 0 0 2  -> Use Cell Motion Mouse Tracking.
  ****** Esto lo soporta la del X 3 y reporta el movimiento del mouse!!!! ***
@@ -656,151 +646,151 @@ CSI Pm m       Character Attributes (SGR)
 
 **** ¿Será necesario?
 CSI Ps ; Ps " p
-	       Set conformance level (DECSCL) Valid values for the first
-	       parameter:
-		 Ps = 6 1  -> VT100
-		 Ps = 6 2  -> VT200
-		 Ps = 6 3  -> VT300
-	       Valid values for the second parameter:
-		 Ps = 0  -> 8-bit controls
-		 Ps = 1  -> 7-bit controls (always set for VT100)
-		 Ps = 2  -> 8-bit controls
+          Set conformance level (DECSCL) Valid values for the first
+          parameter:
+       Ps = 6 1  -> VT100
+       Ps = 6 2  -> VT200
+       Ps = 6 3  -> VT300
+          Valid values for the second parameter:
+       Ps = 0  -> 8-bit controls
+       Ps = 1  -> 7-bit controls (always set for VT100)
+       Ps = 2  -> 8-bit controls
 
 CSI Ps ; Ps ; Ps t
-	       Window manipulation (from dtterm, as well as extensions).
-	       Valid values for the first (and any additional parame­
-	       ters) are:
+          Window manipulation (from dtterm, as well as extensions).
+          Valid values for the first (and any additional parame­
+          ters) are:
        **** Estas dos son mortales:
-		 Ps = 1  -> De-iconify window.
-		 Ps = 2  -> Iconify window.
-		 Ps = 3  ; x ; y -> Move window to [x, y].
-		 Ps = 4  ; height ; width -> Resize the xterm window to height and width in pixels.
-		 Ps = 5  -> Raise the xterm window to the front of the stacking order.
-		 Ps = 6  -> Lower the xterm window to the bottom of the stacking order.
-		 Ps = 7  -> Refresh the xterm window.
+       Ps = 1  -> De-iconify window.
+       Ps = 2  -> Iconify window.
+       Ps = 3  ; x ; y -> Move window to [x, y].
+       Ps = 4  ; height ; width -> Resize the xterm window to height and width in pixels.
+       Ps = 5  -> Raise the xterm window to the front of the stacking order.
+       Ps = 6  -> Lower the xterm window to the bottom of the stacking order.
+       Ps = 7  -> Refresh the xterm window.
        **** Esta permitiría cosas muy buenas!!!
-		 Ps = 8  ; height ; width -> Resize the text area to [height;width] in characters.
-		 Ps = 9  ; 0  -> Restore maximized window.
-		 Ps = 9  ; 1  -> Maximize window (i.e., resize to screen size).
-		 Ps = 1 1  -> Report xterm window state.  If the xterm
-	       window is open (non-iconified), it returns CSI 1 t .  If
-	       the xterm window is iconified, it returns CSI 2 t .
-		 Ps = 1 3  -> Report xterm window position as CSI 3 ; x; yt
-		 Ps = 1 4  -> Report xterm window in pixels as CSI  4  ; height ;  width t
+       Ps = 8  ; height ; width -> Resize the text area to [height;width] in characters.
+       Ps = 9  ; 0  -> Restore maximized window.
+       Ps = 9  ; 1  -> Maximize window (i.e., resize to screen size).
+       Ps = 1 1  -> Report xterm window state.  If the xterm
+          window is open (non-iconified), it returns CSI 1 t .  If
+          the xterm window is iconified, it returns CSI 2 t .
+       Ps = 1 3  -> Report xterm window position as CSI 3 ; x; yt
+       Ps = 1 4  -> Report xterm window in pixels as CSI  4  ; height ;  width t
        ***** Esta es una alternativa para el tamaño de la ventana
-		 Ps = 1 8  -> Report the size of the text area in characters as CSI  8  ;  height ;  width t
-		 Ps = 1 9  -> Report the size of the screen in characters as CSI  9  ;  height ;  width t
-		 Ps = 2 0  -> Report xterm window's icon label as OSC  L label ST
+       Ps = 1 8  -> Report the size of the text area in characters as CSI  8  ;  height ;  width t
+       Ps = 1 9  -> Report the size of the screen in characters as CSI  9  ;  height ;  width t
+       Ps = 2 0  -> Report xterm window's icon label as OSC  L label ST
        ***** Esto implementa el getWindowTitle
-		 Ps = 2 1  -> Report xterm window's title as OSC  l title ST
-		 Ps >= 2 4  -> Resize to Ps lines (DECSLPP)
+       Ps = 2 1  -> Report xterm window's title as OSC  l title ST
+       Ps >= 2 4  -> Resize to Ps lines (DECSLPP)
 
 **** Este parece interesante, pero no lo pude hacer andar
 CSI Ps ; Pu ´ z
-	       Enable Locator Reporting (DECELR)
-	       Valid values for the first parameter:
-		 Ps = 0  -> Locator disabled (default)
-		 Ps = 1  -> Locator enabled
-		 Ps = 2  -> Locator enabled for one report, then dis­
-	       abled
-	       The second parameter specifies the coordinate unit for
-	       locator reports.
-	       Valid values for the second parameter:
-		 Pu = 0  or omitted -> default to character cells
-		 Pu = 1  -> device physical pixels
-		 Pu = 2  -> character cells
+          Enable Locator Reporting (DECELR)
+          Valid values for the first parameter:
+       Ps = 0  -> Locator disabled (default)
+       Ps = 1  -> Locator enabled
+       Ps = 2  -> Locator enabled for one report, then dis­
+          abled
+          The second parameter specifies the coordinate unit for
+          locator reports.
+          Valid values for the second parameter:
+       Pu = 0  or omitted -> default to character cells
+       Pu = 1  -> device physical pixels
+       Pu = 2  -> character cells
 CSI Pm ´ {     Select Locator Events (DECSLE)
-	       Valid values for the first (and any additional parame­
-	       ters) are:
-		 Ps = 0  -> only respond to explicit host requests
-	       (DECRQLP)
-			    (default) also cancels any filter rectangle
-		 Ps = 1  -> report button down transitions
-		 Ps = 2  -> do not report button down transitions
-		 Ps = 3  -> report button up transitions
-		 Ps = 4  -> do not report button up transitions
+          Valid values for the first (and any additional parame­
+          ters) are:
+       Ps = 0  -> only respond to explicit host requests
+          (DECRQLP)
+             (default) also cancels any filter rectangle
+       Ps = 1  -> report button down transitions
+       Ps = 2  -> do not report button down transitions
+       Ps = 3  -> report button up transitions
+       Ps = 4  -> do not report button up transitions
 CSI Ps ´ |     Request Locator Position (DECRQLP)
-	       Valid values for the parameter are:
-		 Ps = 0 , 1 or omitted -> transmit a single DECLRP loca­
-	       tor report
+          Valid values for the parameter are:
+       Ps = 0 , 1 or omitted -> transmit a single DECLRP loca­
+          tor report
 
-	       If Locator Reporting has been enabled by a DECELR, xterm
-	       will respond with a DECLRP Locator Report.  This report
-	       is also generated on button up and down events if they
-	       have been enabled with a DECSLE, or when the locator is
-	       detected outside of a filter rectangle, if filter rectan­
-	       gles have been enabled with a DECEFR.
+          If Locator Reporting has been enabled by a DECELR, xterm
+          will respond with a DECLRP Locator Report.  This report
+          is also generated on button up and down events if they
+          have been enabled with a DECSLE, or when the locator is
+          detected outside of a filter rectangle, if filter rectan­
+          gles have been enabled with a DECEFR.
 
-		 -> CSI Pe ; Pb ; Pr ; Pc ; Pp &  w
+       -> CSI Pe ; Pb ; Pr ; Pc ; Pp &  w
 
-	       Parameters are [event;button;row;column;page].
-	       Valid values for the event:
-		 Pe = 0  -> locator unavailable - no other parameters
-	       sent
-		 Pe = 1  -> request - xterm received a DECRQLP
-		 Pe = 2  -> left button down
-		 Pe = 3  -> left button up
-		 Pe = 4  -> middle button down
-		 Pe = 5  -> middle button up
-		 Pe = 6  -> right button down
-		 Pe = 7  -> right button up
-		 Pe = 8  -> M4 button down
-		 Pe = 9  -> M4 button up
-		 Pe = 1 0  -> locator outside filter rectangle
-	       ``button'' parameter is a bitmask indicating which but­
-	       tons are pressed:
-		 Pb = 0  -> no buttons down
-		 Pb & 1  -> right button down
-		 Pb & 2  -> middle button down
-		 Pb & 4  -> left button down
-		 Pb & 8  -> M4 button down
-	       ``row'' and ``column'' parameters are the coordinates of
-	       the locator position in the xterm window, encoded as
-	       ASCII decimal.
-	       The ``page'' parameter is not used by xterm, and will be
-	       omitted.
+          Parameters are [event;button;row;column;page].
+          Valid values for the event:
+       Pe = 0  -> locator unavailable - no other parameters
+          sent
+       Pe = 1  -> request - xterm received a DECRQLP
+       Pe = 2  -> left button down
+       Pe = 3  -> left button up
+       Pe = 4  -> middle button down
+       Pe = 5  -> middle button up
+       Pe = 6  -> right button down
+       Pe = 7  -> right button up
+       Pe = 8  -> M4 button down
+       Pe = 9  -> M4 button up
+       Pe = 1 0  -> locator outside filter rectangle
+          ``button'' parameter is a bitmask indicating which but­
+          tons are pressed:
+       Pb = 0  -> no buttons down
+       Pb & 1  -> right button down
+       Pb & 2  -> middle button down
+       Pb & 4  -> left button down
+       Pb & 8  -> M4 button down
+          ``row'' and ``column'' parameters are the coordinates of
+          the locator position in the xterm window, encoded as
+          ASCII decimal.
+          The ``page'' parameter is not used by xterm, and will be
+          omitted.
 
 
 **** Esto lo estoy usando para la paleta
 OSC Ps ; Pt BEL
-	       Set Text Parameters.  For colors and font, if Pt is a
-	       "?", the control sequence elicits a response which con­
-	       sists of the control sequence which would set the corre­
-	       sponding value.	The dtterm control sequences allow you
-	       to determine the icon name and window title.
-		 Ps = 0  -> Change Icon Name and Window Title to Pt
-		 Ps = 1  -> Change Icon Name to Pt
-		 Ps = 2  -> Change Window Title to Pt
-		 Ps = 3  -> Set X property on top-level window. Pt
-	       should be in the form "prop=value", or just "prop" to
-	       delete the property
-		 Ps = 4  ; c ; name -> Change Color #c to cname.  Any
-	       number of c name pairs may be given.
-		 Ps = 1 0  -> Change color names starting with text
-	       foreground to Pt (a list of one or more color names or
-	       RGB specifications, separated by semicolon, up to eight,
-	       as per XParseColor).
-		 Ps = 1 1  -> Change colors starting with text back­
-	       ground to Pt
-		 Ps = 1 2  -> Change colors starting with text cursor to
-	       Pt
-		 Ps = 1 3  -> Change colors starting with mouse fore­
-	       ground to Pt
-		 Ps = 1 4  -> Change colors starting with mouse back­
-	       ground to Pt
-		 Ps = 1 5  -> Change colors starting with Tek foreground
-	       to Pt
-		 Ps = 1 6  -> Change colors starting with Tek background
-	       to Pt
-		 Ps = 1 7  -> Change colors starting with highlight to
-	       Pt
-		 Ps = 4 6  -> Change Log File to Pt (normally disabled
-	       by a compile-time option)
-		 Ps = 5 0  -> Set Font to Pt If Pt begins with a "#",
-	       index in the font menu, relative (if the next character
-	       is a plus or minus sign) or absolute.  A number is
-	       expected but not required after the sign (the default is
-	       the current entry for relative, zero for absolute index­
-	       ing).
+          Set Text Parameters.  For colors and font, if Pt is a
+          "?", the control sequence elicits a response which con­
+          sists of the control sequence which would set the corre­
+          sponding value.  The dtterm control sequences allow you
+          to determine the icon name and window title.
+       Ps = 0  -> Change Icon Name and Window Title to Pt
+       Ps = 1  -> Change Icon Name to Pt
+       Ps = 2  -> Change Window Title to Pt
+       Ps = 3  -> Set X property on top-level window. Pt
+          should be in the form "prop=value", or just "prop" to
+          delete the property
+       Ps = 4  ; c ; name -> Change Color #c to cname.  Any
+          number of c name pairs may be given.
+       Ps = 1 0  -> Change color names starting with text
+          foreground to Pt (a list of one or more color names or
+          RGB specifications, separated by semicolon, up to eight,
+          as per XParseColor).
+       Ps = 1 1  -> Change colors starting with text back­
+          ground to Pt
+       Ps = 1 2  -> Change colors starting with text cursor to
+          Pt
+       Ps = 1 3  -> Change colors starting with mouse fore­
+          ground to Pt
+       Ps = 1 4  -> Change colors starting with mouse back­
+          ground to Pt
+       Ps = 1 5  -> Change colors starting with Tek foreground
+          to Pt
+       Ps = 1 6  -> Change colors starting with Tek background
+          to Pt
+       Ps = 1 7  -> Change colors starting with highlight to
+          Pt
+       Ps = 4 6  -> Change Log File to Pt (normally disabled
+          by a compile-time option)
+       Ps = 5 0  -> Set Font to Pt If Pt begins with a "#",
+          index in the font menu, relative (if the next character
+          is a plus or minus sign) or absolute.  A number is
+          expected but not required after the sign (the default is
+          the current entry for relative, zero for absolute index­
+          ing).
     
 *****************************************************************************/

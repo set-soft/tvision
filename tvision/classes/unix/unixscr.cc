@@ -635,7 +635,6 @@ TScreenUNIX::TScreenUNIX()
   TScreen::System=System;
 
   TGKeyUNIX::Init();
-  /* ToDo: can be used the xterm trick for a terminal without gpm? */
   if (terminal && (strncmp(terminal,"xterm",5)==0 || strncmp(terminal,"Eterm",5)==0))
      THWMouseXTerm::Init();
   #ifdef HAVE_GPM

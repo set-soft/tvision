@@ -112,7 +112,7 @@ void THWMouseXTerm::Resume()
 {
  buttonCount=3; // X uses at least 3 buttons
  // Save old hilit tracking and enable mouse tracking (GPM_XTERM_ON)
- TScreenUNIX::SendToTerminal("\x1B[?1001s\x1B[?1000h");
+ TScreenUNIX::SendToTerminal("\x1B[?1000s\x1B[?1000h");
  LOG("using xterm* mouse");
  show();
 }
@@ -120,7 +120,7 @@ void THWMouseXTerm::Resume()
 void THWMouseXTerm::Suspend()
 {
  // Disable mouse tracking and restore old hilittracking (GPM_XTERM_OFF)
- TScreenUNIX::SendToTerminal("\x1B[?1000l\x1B[?1001r");
+ TScreenUNIX::SendToTerminal("\x1B[?1000l\x1B[?1000r");
  LOG("xterm mouse disabled");
 }
 
@@ -128,7 +128,7 @@ void THWMouseXTerm::Init()
 {
  THWMouseUNIX::Init();
  THWMouse::Resume=Resume;
- THWMouse::Suspend=Resume;
+ THWMouse::Suspend=Suspend;
 }
 
 THWMouseXTerm::~THWMouseXTerm()

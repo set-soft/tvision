@@ -165,6 +165,7 @@ void TScreenLinux::Init(int mode)
  TScreen::getCharacter=GetCharacter;
  TScreen::setCharacter=SetCharacter;
  TScreen::System=System;
+ TDisplay::checkForWindowSize=CheckForWindowSize;
 
  switch (mode)
    {
@@ -589,6 +590,7 @@ void TScreenLinux::SetVideoMode(ushort mode)
  int oldHeight=screenHeight;
 
  setCrtMode(mode);
+ defaultSetCrtData();
  CheckSizeBuffer(oldWidth,oldHeight);
 }
 
@@ -598,6 +600,7 @@ void TScreenLinux::SetVideoModeExt(char *mode)
  int oldHeight=screenHeight;
 
  setCrtModeExt(mode);
+ defaultSetCrtData();
  CheckSizeBuffer(oldWidth,oldHeight);
 }
 
