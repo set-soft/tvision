@@ -352,6 +352,8 @@ protected:
  static char      useSecondaryFont;
  // Font Request Call Back
  static TVScreenFontRequestCallBack frCB;
+ // Values from the user configuration
+ static long forcedAppCP, forcedScrCP, forcedInpCP;
 
  // SET: Default behaviors:
  static void   defaultSetVideoMode(ushort mode);

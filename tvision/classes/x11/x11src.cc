@@ -16,6 +16,10 @@
    ScreenHeight
    FontWidth
    FontHeight
+   AppCP
+   ScrCP
+   InpCP
+
 */
 
 #include <tv/configtv.h>
@@ -791,6 +795,16 @@ TScreenX11::TScreenX11()
  fontW=8; fontH=16;
 
  /* Look for defaults */
+
+ /* Code page */
+ optSearch("AppCP",forcedAppCP);
+ optSearch("ScrCP",forcedScrCP);
+ optSearch("InpCP",forcedInpCP);
+ /* User settings have more priority than detected settings */
+ codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::ISOLatin1Linux,
+                         forcedScrCP!=-1 ? forcedScrCP : TVCodePage::ISOLatin1Linux,
+                         forcedInpCP!=-1 ? forcedInpCP : TVCodePage::ISOLatin1Linux);
+
  long aux;
  if (optSearch("ScreenWidth",aux))
     maxX=aux;
@@ -851,9 +865,6 @@ TScreenX11::TScreenX11()
 
  /* Create what we'll use as font */
  CreateXImageFont(0,fontData,fontW,fontH);
- /* Set up the code page used for it */
- codePage=new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
-                         TVCodePage::ISOLatin1Linux);
 
  /* Create the cursor image */
  AdjustCursorImage();

@@ -14,6 +14,9 @@
   Configuration variables:
   ScreenWidth
   ScreenHeight
+  AppCP
+  ScrCP
+  InpCP
   
 ***************************************************************************/
 
@@ -135,7 +138,14 @@ TScreenDOS::TScreenDOS()
     dosInt();
     dosCodePage=BX;
    }
- codePage=new TVCodePage(dosCodePage,dosCodePage,dosCodePage);
+ // Look for user settings
+ optSearch("AppCP",forcedAppCP);
+ optSearch("ScrCP",forcedScrCP);
+ optSearch("InpCP",forcedInpCP);
+ // User settings have more priority than detected settings
+ codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : dosCodePage,
+                         forcedScrCP!=-1 ? forcedScrCP : dosCodePage,
+                         forcedInpCP!=-1 ? forcedInpCP : dosCodePage);
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
         CanSetBFont | CanSetSBFont  | CanSetVideoSize;

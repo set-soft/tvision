@@ -31,7 +31,9 @@ TProgInit::TProgInit( TStatusLine *(*cStatusLine)( TRect ),
     createDeskTop( cDeskTop )
 {
  // Load the configuration file
- config=new TVMainConfigFile();
+ if (!config)
+    config=new TVMainConfigFile();
+ config->Load();
  // Read common settings
  long aux;
  if (config->Search("ShowCursorEver",aux))

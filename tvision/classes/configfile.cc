@@ -42,16 +42,19 @@ const char tBranch=0, tInteger=1, tString=2;
 
 const char *TVConfigFile::Errors[]=
 {
- __("Can't open file"),
- __("Comment inside section name"),
- __( "Unterminated section name"),
- __( "Empty section name"),
- __( "Syntax error"),
- __( "Missing open section {"),
- __( "Missing close section }"),
- __( "Missing equal sign"),
- __( "Missing value after equal"),
- __( "Unterminated string")
+ __("Can't open file"), // -1
+ __("Comment inside section name"), // -2
+ __("Unterminated section name"), // -3
+ __("Empty section name"), // -4
+ __("Syntax error"), // -5
+ __("Missing open section {"), // -6
+ __("Missing close section }"), // -7
+ __("Missing equal sign"), // -8
+ __("Missing value after equal"), // -9
+ __("Unterminated string"), // -10
+ __("Non branch in base"), // -11
+ __("Trying to overwrite a value with a section"), // -12
+ __("Trying to overwrite a section with a value")  // -13
 };
 
 /**[txh]********************************************************************
@@ -62,12 +65,12 @@ tree in memory.
   
 ***************************************************************************/
 
-TVConfigFile::TVConfigFile(const char *file)
+TVConfigFile::TVConfigFile()
 {
  tree.next=NULL;
  sLine=0;
  line=NULL;
- ErrorStatus=Read(file);
+ ErrorStatus=0;
 }
 
 /**[txh]********************************************************************
@@ -181,11 +184,14 @@ long TVConfigFile::GetInteger()
  return value;
 }
 
-int TVConfigFile::ReadBranch(TVConfigFileTreeNode *parent)
+int TVConfigFile::ReadBranch(TVConfigFileTreeNode *&base)
 {
- TVConfigFileTreeNode *p=NULL, *aux;
- int cant=0;
+ int cant=0, ret;
  char *start, *end;
+ TVConfigFileTreeNode *aux, *last=base;
+
+ while (last && last->next) last=last->next;
+
  // Look for the open section character
  do
    {
@@ -210,17 +216,32 @@ int TVConfigFile::ReadBranch(TVConfigFileTreeNode *parent)
           for (; *s && *s!=']' && *s!='#'; s++);
           if (*s=='#') return -2;
           if (!*s) return -3;
-          aux=NewBranch(start,s-start);
-          //printf("New Branch 2: %s\n",aux->name);
-          if (p)
-             p->next=aux;
+
+          aux=SearchOnlyInBranch(base,start,s-start);
+          if (aux)
+            { // We already have it
+             if (aux->type!=tBranch) return -12;
+             s++;
+             ret=ReadBranch(aux->content);
+            }
           else
-             parent->content=aux;
-          s++;
-          int ret=ReadBranch(aux);
+            { // New one
+             aux=NewBranch(start,s-start);
+             aux->priority=fromFile;
+             //printf("New Branch 2: %s\n",aux->name);
+             if (base)
+               {
+                last->next=aux;
+                last=aux;
+               }
+             else
+                base=last=aux;
+             s++;
+             ret=ReadBranch(aux->content);
+            }
           if (ret<0) return ret;
+
           cant+=ret;
-          p=aux;
           EatSpaces();
          }
        if (*s=='}')
@@ -236,34 +257,69 @@ int TVConfigFile::ReadBranch(TVConfigFileTreeNode *parent)
           if (EatSpaces() || *s!='=') return -8;
           s++;
           if (EatSpaces()) return -9;
+          int lenVar=s-start-1;
+          // Be sure we can get the value
+          char *string=NULL;
+          long integer=0;
           if (*s=='"')
             {
-             char *string=GetString();
+             string=GetString();
              if (!string) return -10;
-             aux=new TVConfigFileTreeNode;
-             aux->string=string;
-             aux->type=tString;
             }
           else if (isdigit(*s))
             {
-             aux=new TVConfigFileTreeNode;
-             aux->integer=GetInteger();
-             aux->type=tInteger;
+             integer=GetInteger();
             }
           else
-             return -5;
-          aux->name=newStrL(start,end-start);
-          aux->next=NULL;
-          /*if (aux->type==tString)
-             printf("New String: %s=\"%s\"\n",aux->name,aux->string);
+             return -10;
+          // Is already there?
+          int newOne=0;
+          aux=SearchOnlyInBranch(base,start,lenVar);
+          if (aux)
+            { // We already have it
+             if (aux->type==tBranch) return -13;
+             if (aux->priority>fromFile)
+                aux=NULL;
+             else
+                if (aux->type==tString) delete[] aux->string;
+            }
           else
-             printf("New Integer: %s=%d\n",aux->name,aux->integer);*/
-          if (p)
-             p->next=aux;
-          else
-             parent->content=aux;
-          cant++;
-          p=aux;
+            {
+             aux=new TVConfigFileTreeNode;
+             newOne=1;
+            }
+
+          if (aux)
+            {
+             if (string)
+               {
+                aux->string=string;
+                aux->type=tString;
+               }
+             else
+               {
+                aux->integer=integer;
+                aux->type=tInteger;
+               }
+             aux->name=newStrL(start,end-start);
+             aux->next=NULL;
+             aux->priority=fromFile;
+             /*if (aux->type==tString)
+                printf("New String: %s=\"%s\"\n",aux->name,aux->string);
+             else
+                printf("New Integer: %s=%d\n",aux->name,aux->integer);*/
+             if (newOne)
+               {
+                if (base)
+                  {
+                   last->next=aux;
+                   last=aux;
+                  }
+                else
+                   base=last=aux;
+               }
+             cant++;
+            }
           EatSpaces();
          }
        else
@@ -276,11 +332,13 @@ int TVConfigFile::ReadBranch(TVConfigFileTreeNode *parent)
  return -7;
 }
 
-int TVConfigFile::ReadBase(TVConfigFileTreeNode *p)
+int TVConfigFile::ReadBase(TVConfigFileTreeNode *&base)
 {
- int cant=0;
+ int cant=0, ret;
  char *start;
- TVConfigFileTreeNode *aux;
+ TVConfigFileTreeNode *aux, *last=base;
+
+ while (last && last->next) last=last->next;
 
  while (GetLine()!=-1)
    {
@@ -294,14 +352,30 @@ int TVConfigFile::ReadBase(TVConfigFileTreeNode *p)
           for (; *s && *s!=']' && *s!='#'; s++);
           if (*s=='#') return -2;
           if (!*s) return -3;
-          aux=NewBranch(start,s-start);
-          //printf("New Branch 1: %s\n",aux->name);
-          p->next=aux;
-          s++;
-          int ret=ReadBranch(aux);
+          aux=SearchOnlyInBranch(base,start,s-start);
+          if (aux)
+            { // We already have it
+             if (aux->type!=tBranch) return -11;
+             s++;
+             ret=ReadBranch(aux->content);
+            }
+          else
+            { // New one
+             aux=NewBranch(start,s-start);
+             aux->priority=fromFile;
+             //printf("New Branch 1: %s\n",aux->name);
+             if (base)
+               {
+                last->next=aux;
+                last=aux;
+               }
+             else
+                base=last=aux;
+             s++;
+             ret=ReadBranch(aux->content);
+            }
           if (ret<0) return ret;
           cant+=ret;
-          p=aux;
           EatSpaces();
          }
        if (*s && *s!='#' && *s!='[')
@@ -312,9 +386,32 @@ int TVConfigFile::ReadBase(TVConfigFileTreeNode *p)
  return cant;
 }
 
+TVConfigFileTreeNode *TVConfigFile::SearchOnlyInBranch(TVConfigFileTreeNode *b,
+                                                       char *name, int len)
+{
+ if (!b) return NULL;
+ AllocLocalStr(key,len+1);
+ memcpy(key,name,len);
+ key[len]=0;
+ return SearchOnlyInBranch(b,key);
+}
+
+TVConfigFileTreeNode *TVConfigFile::SearchOnlyInBranch(TVConfigFileTreeNode *b,
+                                                       char *name)
+{
+ if (!b) return NULL;
+ while (b)
+   {
+    if (strcmp(b->name,name)==0)
+       return b;
+    b=b->next;
+   }
+ return NULL;
+}
+
 int TVConfigFile::SearchInBranch(TVConfigFileTreeNode *b, char *key, char *&p, long &n)
 {
- if (!key) return 0;
+ if (!key || !b) return 0;
  while (b)
    {
     if (strcmp(b->name,key)==0)
@@ -343,16 +440,7 @@ int TVConfigFile::Read(const char *file)
  f=fopen(file,"rt");
  if (!f)
     return -1;
- TVConfigFileTreeNode *ant=NULL, *p=&tree;
-
- // Move to the end of the current list
- while (p)
-   {
-    ant=p;
-    p=p->next;
-   }
- p=ant;
- int ret=ReadBase(p);
+ int ret=ReadBase(tree.next);
 
  // Free the line
  free(line);
@@ -361,6 +449,104 @@ int TVConfigFile::Read(const char *file)
 
  fclose(f);
  return ret;
+}
+
+int TVConfigFile::Add(const char *key, TVConfigFileTreeNode *node)
+{
+ int len=strlen(key);
+ AllocLocalStr(b,len+1);
+ strcpy(b,key);
+
+ // Create/navigate the "directories"
+ TVConfigFileTreeNode *where=tree.next, **parent=&tree.next, *p;
+ char *val=strtok(b,"/");
+ while (val)
+   {
+    p=SearchOnlyInBranch(where,val);
+    if (p)
+      {
+       parent=&p->content;
+       where=p->content;
+      }
+    else
+      {
+       TVConfigFileTreeNode *aux=NewBranch(val,len);
+       aux->priority=node->priority;
+       if (where)
+         {// At the end
+          TVConfigFileTreeNode *p=where;
+          while (p->next) p=p->next;
+          p->next=aux;
+         }
+       else
+          *parent=aux;
+       parent=&aux->content;
+       where=NULL;
+      }
+    val=strtok(NULL,"/");
+   }
+ // Now put the value
+ p=SearchOnlyInBranch(where,node->name);
+ if (p)
+   {
+    if (p->type==tBranch)
+      {
+       ErrorStatus=-13;
+       return 0;
+      }
+    if (p->priority>node->priority) return 0;
+    if (p->type==tString)
+       delete[] p->string;
+    memcpy(p,node,sizeof(TVConfigFileTreeNode));
+   }
+ else
+   {
+    if (where)
+      {// At the end
+       TVConfigFileTreeNode *b=where;
+       while (b->next) b=b->next;
+       b->next=node;
+      }
+    else
+       *parent=node;
+   }
+ return 1;
+}
+
+int TVConfigFile::AddInt(const char *key, const char *name, long value, int priority)
+{
+ TVConfigFileTreeNode *node=new TVConfigFileTreeNode;
+ node->type=tInteger;
+ node->priority=priority;
+ node->integer=value;
+ node->name=newStr(name);
+ node->next=NULL;
+ if (!Add(key,node))
+   {
+    DeleteArray(node->name);
+    delete node;
+    return 0;
+   }
+ return 1;
+}
+
+int TVConfigFile::AddString(const char *key, const char *name,
+                            const char *value, int priority)
+{
+ TVConfigFileTreeNode *node=new TVConfigFileTreeNode;
+ node->type=tInteger;
+ node->priority=priority;
+ node->string=newStr(value);
+ node->name=newStr(name);
+ node->next=NULL;
+ if (!Add(key,node))
+   {
+    DeleteArray(node->name);
+    DeleteArray(node->string);
+    delete node;
+    return 0;
+   }
+ return 1;
 }
 
 void TVConfigFile::FreeList(TVConfigFileTreeNode *p)
@@ -390,6 +576,44 @@ void TVConfigFile::FreeTree()
  FreeList(tree.next);
 }
 
+void TVConfigFile::PrintIndent(int indent, FILE *f)
+{
+ int i;
+ for (i=indent; i; --i) fputc(' ',f);
+}
+
+void TVConfigFile::PrintBranch(TVConfigFileTreeNode *base, int indent, FILE *f)
+{
+ while (base)
+   {
+    switch (base->type)
+      {
+       case tBranch:
+            PrintIndent(indent,f);
+            fprintf(f,"[%s]\n",base->name);
+            PrintIndent(indent,f);
+            fputs("{\n",f);
+            PrintBranch(base->content,indent+1,f);
+            PrintIndent(indent,f);
+            fputs("}\n",f);
+            break;
+       case tString:
+            PrintIndent(indent,f);
+            fprintf(f,"%s=%s\n",base->name,base->string);
+            break;
+       case tInteger:
+            PrintIndent(indent,f);
+            fprintf(f,"%s=%ld\n",base->name,base->integer);
+            break;               
+      }
+    base=base->next;
+   }
+}
+
+void TVConfigFile::Print(FILE *f)
+{
+ PrintBranch(tree.next,0,f);
+}
 
 /*****************************************************************************
  That's a special case used to configure the library.
@@ -402,6 +626,11 @@ const char *configFileNameH=".tvrc";
 #endif
 
 TVMainConfigFile::TVMainConfigFile()
+{
+ config=new TVConfigFile();
+}
+
+int TVMainConfigFile::Load()
 {
  // Load the configuration file
  char *name=NULL;
@@ -429,9 +658,11 @@ TVMainConfigFile::TVMainConfigFile()
  if (name)
    {
     //printf("Loading configuration from %s\n",name);
-    config=new TVConfigFile(name);
+    config->Load(name);
     delete[] name;
    }
+ config->Print(stderr);
+ return config->ErrorStatus;
 }
 
 TVMainConfigFile::~TVMainConfigFile()
