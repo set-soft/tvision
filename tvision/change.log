@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.142  2003/12/04 19:07:30  set
+* Fixed: MinGW seems to lack the ioctl.h header. Compatlayer must avoid
+to try to include it.
+
 Revision 2.399.2.141  2003/12/03 20:22:53  set
 * Fixed: Moved changes to winnt/Makefile.nmk to winnt/msvcmake.in. Reported
 by gradha.
