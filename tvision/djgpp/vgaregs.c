@@ -64,16 +64,17 @@ void WaitVRT()
 }
 
 #else
+
 uchar ReadCRT(uchar index)
 {
  int dummy;
- uchar a asm("%eax");
+ uchar a RegEAX;
  a=index;
- asm volatile ("
-     outb %%al,%%dx
-     incl %%edx
-     inb  %%dx,%%al
-     " : "=a" (a), "=d" (dummy) : "a" (a), "d" (CRTController));
+ asm volatile (
+"     outb %%al,%%dx          \n"
+"     incl %%edx              \n"
+"     inb  %%dx,%%al          \n"
+      : "=a" (a), "=d" (dummy) : "a" (a), "d" (CRTController));
  return a;
 }
 
@@ -81,69 +82,69 @@ uchar ReadCRT(uchar index)
 uchar ReadGRA(uchar index)
 {
  int dummy;
- uchar a asm("%eax");
+ uchar a RegEAX;
  a=index;
- asm volatile ("
-     outb %%al,%%dx
-     incl %%edx
-     inb  %%dx,%%al
-     " : "=a" (a), "=d" (dummy) : "a" (a), "d" (GraphicsController));
+ asm volatile (
+"     outb %%al,%%dx          \n"
+"     incl %%edx              \n"
+"     inb  %%dx,%%al          \n"
+      : "=a" (a), "=d" (dummy) : "a" (a), "d" (GraphicsController));
  return a;
 }
 
 uchar ReadSEQ(uchar index)
 {
  int dummy;
- uchar a asm("%eax");
+ uchar a RegEAX;
  a=index;
- asm volatile ("
-     outb %%al,%%dx
-     incl %%edx
-     inb  %%dx,%%al
-     " : "=a" (a), "=d" (dummy)  : "a" (a), "d" (Sequencer));
+ asm volatile (
+"     outb %%al,%%dx          \n"
+"     incl %%edx              \n"
+"     inb  %%dx,%%al          \n"
+     : "=a" (a), "=d" (dummy)  : "a" (a), "d" (Sequencer));
  return a;
 }
 
 void WriteCRT(uchar index, uchar value)
 {
  int dummy;
- asm volatile ("
-     movb %1,%%ah
-     outw %%ax,%%dx
-     " : "=a" (dummy) : "qi" (value), "a" (index), "d" (CRTController));
+ asm volatile (
+"     movb %1,%%ah            \n"
+"     outw %%ax,%%dx          \n"
+     : "=a" (dummy) : "qi" (value), "a" (index), "d" (CRTController));
 }
 
 void WriteGRA(uchar index, uchar value)
 {
  int dummy;
- asm volatile ("
-     movb %1,%%ah
-     outw %%ax,%%dx
-     " : "=a" (dummy) : "qi" (value), "a" (index), "d" (GraphicsController));
+ asm volatile (
+"     movb %1,%%ah          \n"
+"     outw %%ax,%%dx        \n"
+     : "=a" (dummy) : "qi" (value), "a" (index), "d" (GraphicsController));
 }
 
 void WriteSEQ(uchar index, uchar value)
 {
  int dummy;
- asm volatile ("
-     movb %1,%%ah
-     outw %%ax,%%dx
-     " : "=a" (dummy) : "qi" (value), "a" (index), "d" (Sequencer));
+ asm volatile (
+"     movb %1,%%ah          \n"
+"     outw %%ax,%%dx        \n"
+     : "=a" (dummy) : "qi" (value), "a" (index), "d" (Sequencer));
 }
 
 void WaitVRT()
 {
- asm volatile("
- 1:
-     inb   %%dx,%%al
-     testb $8,%%al
-     jne 1b
-     .align 2,0x90
- 2:
-     inb %%dx,%%al
-     testb $8,%%al
-     je 2b
-     " : : "d" (InputStatusRegister1) : "%eax" );
+ asm volatile(
+" 1:                         \n"
+"     inb   %%dx,%%al        \n"
+"     testb $8,%%al          \n"
+"     jne 1b                 \n"
+"     .align 2,0x90          \n"
+" 2:                         \n"
+"     inb %%dx,%%al          \n"
+"     testb $8,%%al          \n"
+"     je 2b                  \n"
+      : : "d" (InputStatusRegister1) : "%eax" );
 }
 
 #endif
@@ -196,13 +197,13 @@ void WriteEDAC(int index, int val)
 void RPF_SetPalRange(unsigned char *_pal_ptr, int color, int cant)
 {
  int dummy1,dummy2,dummy3,dummy4;
-__asm__ __volatile__("
-     outb %%al,%%dx
-     incl %%edx
-     cli
-     rep
-     outsb
-     sti"
+ asm volatile(
+"     outb %%al,%%dx          \n"
+"     incl %%edx              \n"
+"     cli                     \n"
+"     rep                     \n"
+"     outsb                   \n"
+"     sti                     \n"
 : "=a" (dummy1), "=d" (dummy2), "=S" (dummy3), "=c" (dummy4)
 : "c" (cant*3), "S" (_pal_ptr), "a" (color), "d" (0x3C8)
 );
@@ -211,15 +212,16 @@ __asm__ __volatile__("
 void RPF_GetPalRange(unsigned char *_pal_ptr, int color, int cant)
 {
  int dummy1,dummy2,dummy3,dummy4;
-__asm__ __volatile__("
-     outb %%al,%%dx
-     addl $2,%%edx
-     cli
-     rep
-     insb
-     sti"
+ asm volatile (
+"     outb %%al,%%dx          \n"
+"     addl $2,%%edx           \n"
+"     cli                     \n"
+"     rep                     \n"
+"     insb                    \n"
+"     sti                     \n"
 : "=a" (dummy1), "=d" (dummy2), "=D" (dummy3), "=c" (dummy4)
 : "c" (cant*3), "D" (_pal_ptr), "a" (color), "d" (0x3C7)
 );
 }
 #endif // DJGPP
+
