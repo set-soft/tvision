@@ -270,13 +270,13 @@ Boolean TCluster::mark( int )
 void TCluster::movedTo( int item )
 {
  if (owner)
-    message(owner,evBroadcast,cmClusterMovedTo,&item);
+    message(owner,evBroadcast,cmClusterMovedTo,this);
 }
 
 void TCluster::press( int item )
 {
  if (owner)
-    message(owner,evBroadcast,cmClusterPress,&item);
+    message(owner,evBroadcast,cmClusterPress,this);
 }
 
 int TCluster::column( int item )
