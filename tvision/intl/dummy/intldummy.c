@@ -1,4 +1,4 @@
-/* Copyright (C) 2001 by Salvador E. Tropea (SET),
+/* Copyright (C) 2001-2003 by Salvador E. Tropea (SET),
    see copyrigh file for details */
 /**[txh]********************************************************************
 
@@ -20,6 +20,11 @@ char *bindtextdomain(const char *domainname, const char *dirname)
 }
 
 char *gettext(const char *msgid)
+{
+ return (char *)msgid;
+}
+
+char *dgettext(const char *domain, const char *msgid)
 {
  return (char *)msgid;
 }
