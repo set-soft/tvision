@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea: added i18n support.
 
  *
  *
@@ -29,15 +30,19 @@ class TStaticText : public TView
 public:
 
     TStaticText( const TRect& bounds, const char *aText );
+    TStaticText( const TRect& bounds, const char *aText, stTVIntl *aIntlText );
     ~TStaticText();
 
     virtual void draw();
     virtual TPalette& getPalette() const;
     virtual void getText( char *buf, int maxLen );
+    const char *getText();
 
 protected:
 
     const char *text;
+    stTVIntl   *intlText;
+    char        noIntl;
 #if !defined( NO_STREAM )
 private:
 
