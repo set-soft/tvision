@@ -134,3 +134,7 @@ DontResizeToCells      Don't resize the window to a cells multiple size if the W
                        in KDE 3.1 alpha.
 InternalBusyCursor     When enabled we use our own mouse cursor for it.
 
+* I don't know if anybody can be interested on it, but this driver compiles
+and run for Windows. You need to use Cygwin with the XFree86 port installed
+and run the applications from X. The result is quite slow, but works.
+

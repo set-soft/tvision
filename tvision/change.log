@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.333  2002/09/23 12:34:24  set
+* Added: DOS driver, code pages and configuration file documentation.
+* Modified: Added most structure to all the other docs.
+* Modified: [DOS] Made PollMouse=1 and SaveVGAState=0 the defaults. I think
+this gives more chances to get things working in the first try. If the user
+wants to get better support s/he can read the docs.
+
 Revision 2.332  2002/09/23 12:32:28  set
 * Fixed: [X11] The 27 to 31 ASCII range wasn't mapped to any key, they are
 used for ^{ ^\ ^} ?? ^/.

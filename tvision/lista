@@ -227,11 +227,13 @@ djgpp/tmp/delete.me
 doc/ConfigFile.txt
 doc/CodePages.txt
 doc/DOS.txt
+doc/Eterm.txt
 doc/Linux.txt
 doc/QNX.txt
 doc/X11.txt
 doc/XTerm.txt
-doc/Eterm.txt
+doc/Win32.txt
+doc/WinGr.txt
 drivers2.cc
 dual.cc
 examples/Makefile
