@@ -33,6 +33,7 @@
 #define Uses_TApplication
 #define Uses_TChDirDialog
 #define Uses_TScreen
+#define Uses_TCalculator
 
 #include <tv.h>
 
@@ -41,7 +42,6 @@
 #include "demohelp.h"
 #include "ascii.h"
 #include "calendar.h"
-#include "calc.h"
 
 //
 //  DOS Shell Command.
