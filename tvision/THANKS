@@ -1,0 +1,47 @@
+Excluding Robert and me (SET) the following people contributed valuable things
+to the project.
+If I omitted somebody please e-mail me! The list is sorted alphabetically.
+
+Alex Lozano: Solaris beta testing.
+
+Anatoli Soltan: BC++ and WinNT code.
+
+Andrey `Onyx' Shevtsov (miniEleph): A lot of help and testing for the FreeBSD
+port.
+
+Andris Pavenis: Many patches and help to support the last releases of gcc.
+
+Dominique (Anamorphose): RPM packages (v1.1.4).
+
+Ivan Baldo: Debian packager and beta tester.
+
+Jose Angel Sanchez Caso (JASC): Big endian solutions and the drivers concept
+implemented in TV 2.0.
+
+Laurynas Biveinis: A lot of patches collected from the net, MSS support,
+testing and ideas.
+
+Michel Catudal: RPM packages (v1.1.3).
+
+Mike Gorchak: QNX port.
+
+Ronald Landheer: Help with the Cygwin port.
+
+Sergio Sigala: He maintains a BSD port of TV from where I took some of the
+examples. I think Robert based his Linux code on it.
+
+Tapio Kelloniemi: Information about how to make the library cooperate with
+Braille Terminals.
+
+Vadim Beloborodov: MinGW and Win32 code.
+
+
+The following users also contributed with small patches, testing and bug
+reports:
+
+Alex Matulich, Anders Blom, Arvin Baccay, Cesar Rabak, Christoph Bauer,
+Christopher Nelson, David Nock, David A. Capello, Dean Wakerley, Dim Zegebart,
+Dimitar Jekov, Egon Eckert, Jerzy Witkowski, Joel Soete, Luis Pistoia, Matt
+Mueller, Nate Eldredge, Norberto Alfredo Bensa, Owen Rudge, Robert Varga,
+Sean Proctor, Sergey Krivulja, Tanes Sriviroolchai, Tatu Kilappa, Waldemar
+Schultz and Wojciech Warczakowski.
