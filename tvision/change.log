@@ -1,4 +1,12 @@
-$Log$.
+$Log$
+Revision 2.396  2003/01/24 12:37:58  set
+* Fixed: [X11] Some times when resizing a window we get an expose event for
+the new size before the application gets the resize notification. It can
+fool the redrawing mechanism. As the application will redraw the screen
+soon there is no point in executing the expose event, so these events are
+ignored until the TApplication receives the notification. Reported by
+Andris, it wasn't easy to reproduce.
+
 Revision 2.395  2003/01/16 20:15:58  set
 * Fixed(?): Bug in the TEditor class. It looks like the condition that
 paints the empty part of the lines was wrong and didn't paint lines longer

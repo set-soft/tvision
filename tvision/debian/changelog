@@ -1,3 +1,13 @@
+rhtvision (2.0.1-1) unstable; urgency=low
+
+  * Yeah!!! New upstream stable version!!! Great! Thanks to all the friends
+    working on this library, specially to Salvador!
+  * This Debian release is dedicated to the crew of the space shuttle
+    Columbia.
+  * Build-Depends on gettext and recode to ensure correct i18n support.
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Sat,  1 Feb 2003 16:57:54 -0300
+
 rhtvision (2.0.1-0.2) unstable; urgency=low
 
   * New upstream version, not yet stable. CVS dated 13 Dec 2002.
