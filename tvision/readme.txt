@@ -19,7 +19,7 @@ The small sections are:
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.5.
+  That's the Turbo Vision distribution (TVision for short) v1.0.6.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
