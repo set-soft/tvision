@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.451  2003/05/19 13:50:06  set
+* Fixed: [Win32] The configure script didn't define the STDINC directories
+(in fact I don't know what exactly to put there) and hence it was
+imposible to compile rhtv-config.c.
+
 Revision 2.450  2003/05/19 13:47:58  set
 * Modified: rhtv-config to report the same for dynamic and static libs in
 systems where we don't support dynamic libs.
