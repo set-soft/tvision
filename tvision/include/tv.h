@@ -18,8 +18,8 @@ Modified by Salvador E. Tropea
 // in programs that are very sensitive, like my editor.
 #define TV_MAJOR_VERSION  2
 #define TV_MIDDLE_VERSION 0
-#define TV_MINOR_VERSION  2
-#define TV_VERSION "2.0.2"
+#define TV_MINOR_VERSION  3
+#define TV_VERSION "2.0.3"
 
 #define Uses_EventCodes
 #define Uses_ViewCommands
