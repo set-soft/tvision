@@ -496,6 +496,9 @@ include/tv/scrlbar.h
 include/tv/scroller.h
 include/tv/searchrc.h
 include/tv/sitem.h
+include/tv/skeleton/key.h
+include/tv/skeleton/mouse.h
+include/tv/skeleton/screen.h
 include/tv/sortcoll.h
 include/tv/sortlibo.h
 include/tv/statsdef.h

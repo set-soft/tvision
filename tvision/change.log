@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.69  2002/05/15 19:06:14  set
+* Fixed: Default CFLAGS for FreeBSD used -L/usr/local/include. Reported by
+miniEleph (Andrew 'Onyx' Shevtsov).
+
 Revision 2.68  2002/05/15 01:51:44  terrible
 * Modified: Updates to Debian packaging.
 * Fixed: reordered external library linking for dynamic library (I think
