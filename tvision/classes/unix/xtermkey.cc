@@ -272,12 +272,14 @@ typedef struct
 } stEtKey;
 
 // CSI Number ; Modifiers ~
-const int cCsiKeys1=14;
+const int cCsiKeys1=16;
 static
 stCsiKey csiKeys1[cCsiKeys1]=
 {
+ {  1, kbHome }, // Putty
  {  2, kbInsert },
  {  3, kbDelete },
+ {  4, kbEnd },  // Putty
  {  5, kbPgUp }, // Prior
  {  6, kbPgDn }, // Next
  {  7, kbHome },

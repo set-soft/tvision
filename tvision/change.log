@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.152  2004/04/19 20:37:35  set
+* Added: Code needed to test with the AlCon branch.
+
 Revision 2.399.2.151  2004/04/14 15:28:54  set
 * Fixed: Errors in the insert/overwrite logic of the new TInputLine code.
 
