@@ -499,27 +499,32 @@ minimal amount of time.
   The configuration script detects if the internationalization support is
 available in your system.
   For Linux that's part of the standard C library and all is provided as
-dynamic libraries so it doesn't impact the memory use.
+dynamic libraries so it doesn't impact the memory usage.
   For DOS that's provided by the gettext package (gtxtXXXb.zip). Versions of
 gettext prior to 0.10.37 are relative small and I think the memory used by it
-is small and you should try to use it. Since 0.10.37 libintl.a recodes the
+is OK and you should try to use it. Since 0.10.37 libintl.a recodes the
 strings on the fly, for that it needs libiconv (licvXXb.zip). This library is
 a huge set of conversion tables, those tables include chinese, japanese and
 korean codes, it makes the tables really huge and the size of programs linked
 with it increases more than 800 Kb (more than 600 Kb using UPX). In this case
 you could:
 a) Just use an old version of gettext, very recommendable.
-b) Generate programs with international support only if really needed.
-If you choose the second option you must configure the library to use
-international support. In the intl/dummy directory you'll find a small
-library intended as a replacement for libintl.a. Then when you want to create
-a program with the internationalization disabled just make sure this dummy
-library is used. You can do it by specifying the libraries path (-L option of
-gcc or Options|Directories|Libraries in RHIDE), make it point to the
-directory where the dummy library is located and the internationalization
-support will be disabled.
-Note: to compile the dummy library just go to the intl/dummy directory and
-run the make command.
+b) Generate programs with international support only when really needed.
+  If you choose the second option you must configure the library to use
+international support. I provide a dummy international library. This library
+provides the functions that gettext provides but they do nothing.
+  Why? What is the purpose? By doing it if you don't have international
+support at configuration time but you install it latter no recompilation is
+needed. You can also configure with international support and then create
+applications without it just linking with this library. Additionally you can
+configure the library to use the dummy version even if gettext is installed
+(--force-dummy), that's a good option if you only need to create a few
+applications with international support.
+  This library is compiled and installed with the libtvfintl.a name. If you
+don't have international support or want to disable it to reduce the size of
+a particular application you must link with this library
+  If you want to disable the fake library and all the internationalization
+support use the --no-intl configuration option.
 
 
 
