@@ -30,6 +30,7 @@ class TGKeyQNXRtP: public TGKey
 
 protected:
       static ushort GetRaw();
+      static ushort MakeArtKeys(QNXRtPArtKeys* array, ushort rawkey);
 
 protected:
       static struct termios saved_attributes;

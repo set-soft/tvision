@@ -1,4 +1,21 @@
-$Log$.
+$Log$
+Revision 2.156  2002/06/18 14:51:16  set
+* Added: Code to remap characters on the fly. I rewrote the code in TView
+that sends the data to screen so it can remap characters before doing it.
+* Modified: As I was rewrinting the code in TView I changed it to avoid
+calling setCharacter which is much less efficient than setCharacters. Now
+I copy the text to a buffer and then I change the shadow attribute there.
+* Added: Euro sign support.
+* Added: Four latin 2 variants used in Linux.
+* Added: Now when you set the code page you can specify two code pages. One
+maps the font and the other the text handled by the user. This seems to be
+stupid but is needed to support Linux mechanism which works this way. If
+these code pages are different the code uses the on the fly remap.
+* Added: TVCodePage members to create a code page from an unicode array and
+to add it to the list of supported code pages.
+* Added: [Linux] Detection of the ACM. The user *must* use the correct ACM
+unless ISO 8859-1 is used or the ACM is trivial.
+
 Revision 2.155  2002/06/12 20:51:18  set
 * Added: Functions to map unicode into the internal code and more
 functionality to the code page debug stuff. With this I discovered that
