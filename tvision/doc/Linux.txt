@@ -1,10 +1,17 @@
 Driver: Linux
-Author: Salvador E. Tropea
+Author: Salvador E. Tropea, Robert Hoehne
+Status: Complete
+Revision: $Revision$
 
   This is the driver for the Linux console. It can't be used for X or
 other UNIX terminals. This driver is used when the terminal can be
 identified as "console" or "linux*".
 
+1. INTRODUCTION
+2. THE KEYBOARD
+3. ENCODINGS AND FONTS
+4. SECONDARY FONT AND SYSTEMS WITH 512 CHARACTERS
+5. CONFIGURATION VARIABLES
 
 1. INTRODUCTION
 
@@ -258,5 +265,6 @@ monochrome display.
 patching explained in 2.
 
   An example of configuration file is shown in 3.4.
+  Read the ConfigFile.txt for more information about configuration files.
 
 

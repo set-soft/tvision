@@ -51,7 +51,7 @@ static int vga_state_selector;
 static void *vgaState=0;
 
 char useBIOS_VGA_State=1;
-char saveVGA_State=1;
+char saveVGA_State=0;
 
 void rh_save_vga_state()
 {

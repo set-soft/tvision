@@ -459,7 +459,7 @@ void THWMouseDOS::Init()
     useMouseHandler=0;
 
  // Look in the user options
- long pollMouse=0;
+ long pollMouse=1;
  TScreen::optSearch("PollMouse",pollMouse);
  if (pollMouse)
     useMouseHandler=0;

@@ -224,6 +224,9 @@ djgpp/compress.pl
 +djgpp/distlist
 djgpp/obj/delete.me
 djgpp/tmp/delete.me
+doc/ConfigFile.txt
+doc/CodePages.txt
+doc/DOS.txt
 doc/Linux.txt
 doc/QNX.txt
 doc/X11.txt
