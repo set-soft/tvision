@@ -211,15 +211,15 @@ stDriver Drivers[]=
  #endif
 
  #ifdef TVOS_UNIX
-  #ifdef HAVE_ALLEGRO
-   { TV_AlconDriverCheck, 110, "Alcon" },
-  #endif // HAVE_ALLEGRO
   #ifdef HAVE_X11
    { TV_XDriverCheck, 100, "X11" },
   #endif // HAVE_X11
   #ifdef TVOSf_Linux
    { TV_LinuxDriverCheck, 90, "Linux" },
   #endif
+  #ifdef HAVE_ALLEGRO
+   { TV_AlconDriverCheck, 40, "Alcon" },
+  #endif // HAVE_ALLEGRO
   #ifdef TVOSf_QNXRtP
    { TV_QNXRtPDriverCheck, 90, "QNX" },
   #else
