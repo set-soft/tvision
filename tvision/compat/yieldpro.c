@@ -35,7 +35,7 @@ void CLY_YieldProcessor(int micros)
  #endif
 #endif
 
-#ifdef TVOSf_NT
+#ifdef TVComp_BCPP //TVOSf_NT
 void CLY_YieldProcessor(int micros)
 {
  extern void __tvWin32Yield(int micros);
@@ -45,7 +45,7 @@ void CLY_YieldProcessor(int micros)
 }
 #endif
 
-#if defined(TVOS_Win32) && !defined(TVOSf_NT)
+#if defined(TVOS_Win32) && !defined(TVComp_BCPP) //!defined(TVOSf_NT)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 

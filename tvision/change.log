@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.25  2001/12/18 02:34:11  set
+* Added: Fine grained protection against multiple inclutions in compatlayer
+header.
+
 Revision 2.24  2001/12/17 00:20:32  set
 * Added: A new URL to the Borland's FAQ that says TV is Public Domain. This
 is supported by all the TeamB people I contacted.
