@@ -614,6 +614,7 @@ sub FindCXXFLAGS
     $ret='-O2 -gstabs+3';
     $ret.=' -pipe' if ($OS eq 'UNIX');
     $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSf eq 'FreeBSD');
+    $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
    }
  print "$ret\n";
  $conf{'CXXFLAGS'}=$ret;
@@ -649,6 +650,7 @@ sub FindXCFLAGS
    {
     $ret='-O3 -fomit-frame-pointer -ffast-math';
     $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
    }
  print "$ret\n";
  $conf{'XCFLAGS'}=$ret;
@@ -684,6 +686,7 @@ sub FindXCXXFLAGS
    {
     $ret='-O3 -fomit-frame-pointer -ffast-math';
     $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
    }
  print "$ret\n";
  $conf{'XCXXFLAGS'}=$ret;
@@ -866,6 +869,9 @@ sub ModifyMakefiles
        $text=~s/RHIDE_OS_CFLAGS=(.*)\n/RHIDE_OS_CFLAGS=$CFLAGS\n/g;
        $text=~s/RHIDE_OS_CXXFLAGS=(.*)\n/RHIDE_OS_CXXFLAGS=$CXXFLAGS\n/g;
        $text=~s/RHIDE_AR=(.*)\n/RHIDE_AR=$GAR\n/g if ($GAR);
+       $rep ='rc';
+       $rep.='s' unless $conf{'UseRanLib'};
+       $text=~s/RHIDE_ARFLAGS=(.*)\n/RHIDE_ARFLAGS=$rep\n/g;
        foreach $rep (%ExtraModifyMakefiles)
          {
           $repv="$rep=@ExtraModifyMakefiles{$rep}\n";
@@ -969,6 +975,10 @@ sub CreateRHIDEenvs
     $text.="RHIDE_GXX=$GXX\n";
     $text.="RHIDE_LD=$GXX\n";
     $text.="RHIDE_AR=$GAR\n" if ($GAR);
+    $rep ='rc';
+    $rep.='s' unless $conf{'UseRanLib'};
+    $text.="RHIDE_ARFLAGS=$rep\n";
+    
     if ($useXtreme)
       {
        $text.="RHIDE_OS_CFLAGS=@conf{'XCFLAGS'}\n";
@@ -1211,6 +1221,7 @@ sub LookForGNUar
     print "$conf{'GNU_AR'} (cached)\n";
     return $conf{'GNU_AR'};
    }
+ $conf{'UseRanLib'}=0;
  $test=RunRedirect('ar --version',$ErrorLog);
  if ($test=~/GNU ar/)
    {
@@ -1227,7 +1238,9 @@ sub LookForGNUar
    }
  if ($OSf eq 'Darwin')
    {
-    print "ar\n";
+    $conf{'GNU_AR'}='ar';
+    $conf{'UseRanLib'}=1;
+    print "ar (not GNU but usable!)\n";
     return 'ar';
    }
  print "Unable to find GNU ar on this system.\n";

@@ -120,7 +120,7 @@ if ($OS eq 'UNIX')
    $MakeDefsRHIDE[3].='../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib ';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
-   ModifyMakefiles('linux/Makefile','compat/compat.mak');
+   ModifyMakefiles('linux/Makefile','compat/compat.mak','intl/dummy/Makefile');
    CreateRHIDEenvs('linux/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'DOS')
@@ -128,7 +128,7 @@ elsif ($OS eq 'DOS')
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
    $MakeDefsRHIDE[3]='TVOBJ=../../djgpp '.$here.'/djgpp '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   ModifyMakefiles('djgpp/Makefile','compat/compat.mak');
+   ModifyMakefiles('djgpp/Makefile','compat/compat.mak','intl/dummy/Makefile');
    CreateRHIDEenvs('djgpp/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'Win32')
@@ -137,7 +137,7 @@ elsif ($OS eq 'Win32')
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
-   ModifyMakefiles('win32/Makefile','compat/compat.mak');
+   ModifyMakefiles('win32/Makefile','compat/compat.mak','intl/dummy/Makefile');
    CreateRHIDEenvs('examples/rhide.env','win32/rhide.env','compat/rhide.env');
    # Repeated later for other targets
   }
@@ -702,7 +702,8 @@ sub GenerateMakefile
  $makeDir='win32' if ($OS eq 'Win32');
  # Write target rules:
  #$rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
- $rep= "static-lib:\n\t\$(MAKE) -C ".$makeDir;
+ $rep ="static-lib:\n\t\$(MAKE) -C ".$makeDir;
+ $rep.="\n\tranlib $makeDir/librhtv.a" if $conf{'UseRanLib'};
  $text=~s/\@target1_rule\@/$rep/g;
  if ($OS eq 'UNIX')
    {
