@@ -1,4 +1,16 @@
 $Log$
+Revision 1.163  2001/08/12 19:41:05  set
+* Fixed: A problem only found in RHIDE. Programs should never call
+TScreen::resume() directly but TApplication::resume() instead. RHIDE abuses
+of some Turbo Vision internals and hence needs to call TScreen::resume(). The
+problem is that TProgam::buffer is tied to TScreen::screenBuffer and if you
+call TScreen::resume() and it reallocates TScreen::screenBuffer then
+TProgam::buffer gets unsynchronized and TProgram writes to deallocated data.
+Andris sent me a patch to make it happend only in almost impossible cases,
+but it could theoretically happend anyways. So I added a new TProgram member
+called syncScreenBuffer(). If a program abuses TV calling TScreen::resume()
+directly, then it should call TProgram::syncScreenBuffer() inmediatly.
+.
 Revision 1.162  2001/08/12 16:47:42  set
 * Merged patches from Andris addressing compile issues related to gcc v2.97
 and newer releases:
