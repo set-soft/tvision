@@ -287,6 +287,7 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
     int foundOnVPath=0;
     if (stat(toStat,&st))
       {
+       //fprintf(stderr,"Buscando %s\n",toStat);
        // RHIDE 1.5 CVS filters the VPATH part, now I added it to common.imk.
        int i;
        char buf[PATH_MAX];
@@ -299,9 +300,20 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
               foundOnVPath=1;
           }
        if (!foundOnVPath)
-         {
-          fprintf(stderr,"Can't stat %s dependency\n",toStat);
-          exit(12);
+         {// Try without the base directory.
+          for (i=0; !foundOnVPath && incDirs[i].var; i++)
+             {
+              strcpy(buf,incDirs[i].dir);
+              strcat(buf,"/");
+              strcat(buf,s);
+              if (stat(buf,&st)==0)
+                 foundOnVPath=1;
+             }
+          if (!foundOnVPath)
+            {
+             fprintf(stderr,"Can't stat %s dependency\n",toStat);
+             exit(12);
+            }
          }
       }
     free(toStat);
@@ -323,8 +335,6 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
              // maybe is because the program is loading an old project.
              if (strncmp(s,projectBase,projectBaseL)==0)
                {
-                printf("Detectado absoluto que habría que corregir\n");
-                exit(30);
                 char *sub=s+projectBaseL;
                 char *toTest=(char *)malloc(strlen(sub)+3+1);
                 sprintf(toTest,"../%s",sub);
