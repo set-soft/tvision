@@ -37,19 +37,20 @@ ExOBJ=.obj
 ExEXE=.exe
 ExLIB=.lib
 
-#RHIDE_AR=blink
-RHIDE_AR=link
+RHIDE_AR=mlink
+#RHIDE_AR=link
 RHIDE_ARFLAGS=
 
 RHIDE_COMPILE_LINK=$(RHIDE_LD) $(LDFLAGS) /OUT:$(OUTFILE) $(OBJFILES) \
-	$(LIBRARIES) $(RHIDE_LIBDIRS) user32.lib $(RHIDE_LIBS)
+	$(LIBRARIES) $(RHIDE_LIBDIRS) user32.lib gdi32.lib $(RHIDE_LIBS)
 RHIDE_COMPILE_C=$(RHIDE_GCC) -c $(CFLAGS) $(INCLUDE_DIRS) -Fo$(OUTFILE) \
 	$(SOURCE_NAME)
 RHIDE_COMPILE_CC=$(RHIDE_GXX) -c $(CXXFLAGS) $(INCLUDE_DIRS) -Fo$(OUTFILE) \
 	$(SOURCE_NAME)
-#RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) $(OUTFILE) obj
-RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) /OUT:$(OUTFILE) \
-	$(ALL_PREREQ)
+RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) $(OUTFILE) obj ..\compat\obj
+# The command line capacity isn't enough for this:
+#RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) /OUT:$(OUTFILE) \
+#	$(ALL_PREREQ)
 # This is fake, the .S files are used only for DJGPP and they are protected
 # by preprocessor constructions. For this reason they can be used as C sources
 # to generate dummy .obj files.
@@ -62,6 +63,6 @@ ALL_PREREQ=$**
 
 #LIB_DIRS=$(RHIDE_OS_LIBS_PATH) -L.
 
-#blink.exe:: blink.c
-#	$(RHIDE_GCC) -e$(OUTFILE) $(ALL_PREREQ)
+mlink.exe:: mlink.c
+	$(RHIDE_GCC) /OUT:$(OUTFILE) kernel32.lib $(ALL_PREREQ)
 

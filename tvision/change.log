@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.594  2004/10/19 18:16:52  set
+* Modified: [Compilation] Removed time stamp from ?mk files.
+
 Revision 2.593  2004/10/19 18:06:20  set
 * Fixed: [Compilation] Missing ../compat path in extrimk.cc tool. Reported
 by Grzegorz.

@@ -687,6 +687,7 @@ makes/librhtv.imk
 makes/librhtv.mkf
 makes/librhtv.umk
 makes/maintain.mak
+makes/mlink.c
 makes/rhide.env
 makes/obj/delete.me                                                             
 misc.cc

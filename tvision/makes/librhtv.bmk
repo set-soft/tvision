@@ -36,7 +36,7 @@ all: blink.exe librhtv.lib
 
 MKF_EXT=.bmk
 !else
-all: librhtv.lib
+all: mlink.exe librhtv.lib
 !endif
 
 #
