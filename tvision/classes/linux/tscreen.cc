@@ -498,6 +498,8 @@ void stopcurses()
     endwin();
    }
  fclose(tty_file);
+ // Make it invalid so no function tries to use it
+ tty_file=0;
  
  #ifdef SAVE_TERMIOS
  tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);

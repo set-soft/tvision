@@ -1,4 +1,8 @@
 $Log$
+Revision 1.242.2.21  2002/02/20 01:29:30  set
+* Fixed: gcc 3.x problems with GetStrStream() macro. Reported and solution
+by Andris.
+
 Revision 1.242.2.20  2002/01/27 17:01:47  set
 * Merged Debian patches from Ivan.
 
@@ -1641,7 +1645,7 @@ Fixed the demohelp.h32 name (to be lowercase).
 
 Revision 1.6  1999/01/10 16:04:05  root (set)
 Added demo to the Linux distribution.
-.
+
 Revision 1.6  1999/01/10 00:47:21  set
 Added the Borland's TVision demo. I taked it from the Sigala's port.
 
