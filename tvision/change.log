@@ -1,4 +1,10 @@
 $Log$
+Revision 1.177  2001/08/30 20:42:19  set
+* Added: Now the install target is separated in three parts:
+install-headers, install-static and install-dynamic. The install target
+means the three, but you can just install the dynamic library. It helped me
+a lot while testing things with the editor.
+
 Revision 1.176  2001/08/29 23:27:07  set
 * Fixed: An error in the config.pl that put libintl.a for Linux target.
 
