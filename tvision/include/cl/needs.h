@@ -36,6 +36,7 @@ compiler.@p
   #define NEEDS_FNMATCH
   #define NEEDS_ITOA
   #define NEEDS_GETLINE
+  #define NEEDS_SNPRINTF
  #endif
  
  // DOS djgpp
@@ -43,6 +44,7 @@ compiler.@p
   #define NEEDS_GETOPT
   #define NEEDS_NL_LANGINFO
   #define NEEDS_GETLINE
+  #define NEEDS_SNPRINTF
  #endif
  
  // Linux

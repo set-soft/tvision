@@ -41,6 +41,7 @@ public:
  static const char *getText(const char *msgid, stTVIntl *&cache);
  static void        freeSt(stTVIntl *&cache);
  static stTVIntl   *emptySt();
+ static stTVIntl   *dontTranslateSt();
 
 protected:
  // Enable translations

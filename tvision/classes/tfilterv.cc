@@ -58,7 +58,7 @@ Boolean TFilterValidator::IsValidInput(char *S,Boolean)
 
 void TFilterValidator::Error()
 {
-  messageBox(_("Invalid character in input"),mfError | mfOKButton);
+  messageBox(__("Invalid character in input"),mfError | mfOKButton);
 }
 
 #if !defined( NO_STREAM )
