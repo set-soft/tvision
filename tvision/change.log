@@ -1,4 +1,8 @@
 $Log$
+Revision 1.175  2001/08/29 22:49:01  set
+* Added: A function to get the name of the shell to the compat layer
+library.
+
 Revision 1.174  2001/08/28 20:57:50  set
 * Modified: Disable the sched_yield() method in yieldpro.c. I don't know if
 it's working, I guess so, but top says the applications uses 99% of the
