@@ -14,8 +14,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TFindDialogRec ) && !defined( __TFindDialogRec )
 #define __TFindDialogRec
 
-#include <string.h>
-
 struct TFindDialogRec
 {
     TFindDialogRec( const char *str, ushort flgs )
