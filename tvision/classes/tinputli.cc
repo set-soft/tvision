@@ -242,11 +242,14 @@ Boolean TInputLineBase::insertChar(unsigned value)
     resizeData();
  if (insertModeOn())
    {
-    if (dataLen<maxLen)
+    if (!lineIsFull())
       {
        memmove(data+(curPos+1)*cellSize,data+curPos*cellSize,
                ((dataLen-curPos)+1)*cellSize);
        dataLen++;
+       if (firstPos>curPos)
+          firstPos=curPos;
+       assignPos(curPos++,value);
       }
    }
  else if (dataLen==curPos)
@@ -254,8 +257,7 @@ Boolean TInputLineBase::insertChar(unsigned value)
     assignPos(curPos+1,0);
     data[curPos+1]=0;
    }
- if (( insertModeOn() && !lineIsFull()) ||
-     (!insertModeOn() && !posIsEnd()))
+ else
    {
     if (firstPos>curPos)
        firstPos=curPos;
