@@ -126,6 +126,8 @@ protected:
     TPoint location;
     Boolean modified;
 
+#ifndef NO_STREAM
+
 private:
 
     static const char near dragFrame;
@@ -143,7 +145,10 @@ public:
     static const char * const near name;
     static TStreamable *build();
 
+#endif
 };
+
+#ifndef NO_STREAM
 
 inline ipstream& operator >> ( ipstream& is, TIndicator& cl )
     { return is >> (TStreamable&)cl; }
@@ -154,6 +159,8 @@ inline opstream& operator << ( opstream& os, TIndicator& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TIndicator* cl )
     { return os << (TStreamable *)cl; }
+
+#endif // NO_STREAM
 
 #endif  // Uses_TIndicator
 
@@ -270,6 +277,8 @@ public:
     uchar updateFlags;
     int keyState;
 
+#ifndef NO_STREAM
+
 private:
 
     virtual const char *streamableName() const
@@ -286,8 +295,10 @@ public:
     static const char * const name;
     static TStreamable *build();
 
+#endif
 };
 
+#ifndef NO_STREAM
 inline ipstream& operator >> ( ipstream& is, TEditor& cl )
     { return is >> (TStreamable&)cl; }
 inline ipstream& operator >> ( ipstream& is, TEditor*& cl )
@@ -297,6 +308,7 @@ inline opstream& operator << ( opstream& os, TEditor& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TEditor* cl )
     { return os << (TStreamable *)cl; }
+#endif // NO_STREAM
 
 #endif  // Uses_TEditor
 
@@ -323,6 +335,8 @@ public:
     virtual TPalette& getPalette() const;
     virtual void handleEvent( TEvent& );
 
+#ifndef NO_STREAM
+
 private:
 
     virtual const char *streamableName() const
@@ -339,8 +353,10 @@ public:
     static const char * const name;
     static TStreamable *build();
 
+#endif  // NO_STREAM
 };
 
+#ifndef NO_STREAM
 inline ipstream& operator >> ( ipstream& is, TMemo& cl )
     { return is >> (TStreamable&)cl; }
 inline ipstream& operator >> ( ipstream& is, TMemo*& cl )
@@ -350,6 +366,7 @@ inline opstream& operator << ( opstream& os, TMemo& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TMemo* cl )
     { return os << (TStreamable *)cl; }
+#endif  // NO_STREAM
 
 #endif  // Uses_TMemo
 
@@ -392,6 +409,7 @@ private:
 
     static const char * backupExt;
 
+#ifndef NO_STREAM
     virtual const char *streamableName() const
         { return name; }
 
@@ -405,9 +423,10 @@ public:
 
     static const char * const name;
     static TStreamable *build();
-
+#endif // NO_STREAM
 };
 
+#ifndef NO_STREAM
 inline ipstream& operator >> ( ipstream& is, TFileEditor& cl )
     { return is >> (TStreamable&)cl; }
 inline ipstream& operator >> ( ipstream& is, TFileEditor*& cl )
@@ -417,6 +436,7 @@ inline opstream& operator << ( opstream& os, TFileEditor& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TFileEditor* cl )
     { return os << (TStreamable *)cl; }
+#endif // NO_STREAM
 
 #endif  // Uses_TFileEditor
 
@@ -444,6 +464,7 @@ private:
     static const char * clipboardTitle;
     static const char * untitled;
 
+#ifndef NO_STREAM
     virtual const char *streamableName() const
         { return name; }
 
@@ -457,9 +478,10 @@ public:
 
     static const char * const name;
     static TStreamable *build();
-
+#endif // NO_STREAM
 };
 
+#ifndef NO_STREAM
 inline ipstream& operator >> ( ipstream& is, TEditWindow& cl )
     { return is >> (TStreamable&)cl; }
 inline ipstream& operator >> ( ipstream& is, TEditWindow*& cl )
@@ -469,6 +491,7 @@ inline opstream& operator << ( opstream& os, TEditWindow& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TEditWindow* cl )
     { return os << (TStreamable *)cl; }
+#endif // NO_STREAM
 
 #endif  // Uses_TEditWindow
 
