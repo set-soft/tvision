@@ -208,12 +208,13 @@ stDriver Drivers[]=
    // This is experimental, but believe it or not Cygwin have X11 support
    { TV_XDriverCheck,     100, "X11" },
   #endif // HAVE_X11
-  { TV_WinGrDriverCheck,   80, "WinGr" },
   #ifdef TVOSf_NT
    { TV_WinNTDriverCheck,  90, "WinNT" },
+   { TV_WinGrDriverCheck,  80, "WinGr" },
    { TV_Win32DriverCheck,  50, "Win32" },
   #else
    { TV_Win32DriverCheck,  90, "Win32" },
+   { TV_WinGrDriverCheck,  80, "WinGr" },
    { TV_WinNTDriverCheck,  50, "WinNT" },
   #endif
  #endif
