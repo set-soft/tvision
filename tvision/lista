@@ -146,6 +146,7 @@ compat/regex.c
 compat/rhide.env
 compat/ticks.c
 config.pl
+confignt.pl
 +configure.bat
 +configure
 +configset.bat
@@ -611,6 +612,7 @@ lista.dos
 Makefile
 rhide.env
 snapshot.pl
+TODO
 win32/Makefile
 win32/Makefile.ms
 win32/console.cc
