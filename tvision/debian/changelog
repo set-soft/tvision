@@ -1,8 +1,38 @@
 rhtvision (2.0.2-0.1) unstable; urgency=low
 
-  * New upstream version.
+  * New upstream version! CVS release 2.487 2003/07/16 14:00:57.
+  * Sorry for the lateness, but I am very busy now, too much work, though I
+    don't regret! I finally got a good job!!!
+  * Salvador did changes to the Debian packaging:
+    - Don't build-depend on recode (not required anymore).
+    - Added README file, it is similar to maintainer.notes.
+    - Added --no-libs-here --real-prefix=/usr to ./configure.
+    - If tar fails when doing the backup of files modified doing the build it
+    doesn't stop the package generation, because some tar failings are due to
+    files not existing or silly errors.
+    - Added usr/bin directory to the -dev package, since it will contain the
+    rhtv-config program.
+  * Added doc/I18n.txt and doc/Streams.txt to the -dev package.
+  * Now sets the flags for the compiler in the environment instead of in the
+    make invocation.
+  * Specify explicitly -g and -Wall compiling options.
+  * Supports DEB_BUILD_OPTIONS as per Policy 3.5.7.
+  * Bumped Standards-Version to 3.5.8.0 (and I hope it complies!).
+  * Removed a lot of obsolete files in files_to_backup.
+  * Remove on clean makes/rhide.env, redhat/librhtv-*.spec and
+    makes/libtvfintl.a.
+  * The debian/copyright file references the GPL license text in the
+    /usr/share/common-licenses/ directory, thanks Lintian!!!
+  * Remove final dots in the single line description of the packages, thanks
+    Lintian!!!
+  * There is a pending bug with this library which forces this to not be an
+    official final release: the .mo files are called tvision.mo, thus if the
+    user wants to install 2 different versions of the library, one will
+    overwrite the other and dpkg will complain, and if we force dpkg to
+    continue anyway, the translations will be messed up for one version of
+    the library. This is not Debian specific though.
 
- -- Salvador Eduardo Tropea <set@users.sf.net>  Fri, 30 May 2003 13:32:35 -0300
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Sun, 27 Jul 2003 19:00:47 -0300
 
 rhtvision (2.0.1-1) unstable; urgency=low
 
