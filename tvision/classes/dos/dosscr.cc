@@ -544,7 +544,7 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
        p=new char[size];
        if (p)
          {
-          DX=1;
+          DX=7;
           BX=BaseAddress & 0x0f;
           ES=(BaseAddress>>4) & 0xffff;
           AX=GET_CLIPBOARD_DATA;
