@@ -66,6 +66,8 @@ int      (*TGKey::GetKbdMapping)(int version)         =defaultGetKbdMapping;
 void     (*TGKey::Suspend)()                          =defaultSuspend;
 void     (*TGKey::Resume)()                           =defaultResume;
 int      (*TGKey::SetCodePage)(int id)                =defaultSetCodePage;
+int      (*TGKey::AltInternat2ASCII)(TEvent &event)   =defaultAltInternat2ASCII;
+
 
 /*****************************************************************************
   Default behaviors for the members
@@ -209,19 +211,19 @@ int TGKey::defaultSetCodePage(int id)
 {
  switch (id)
    {
-    case TVCodePage::KOI8r:
     case TVCodePage::PC855:
     case TVCodePage::PC866:
     case TVCodePage::ISORussian:
-    case TVCodePage::KOI_8r:
-    case TVCodePage::KOI_8crl:
+    case TVCodePage::KOI8r:
+    case TVCodePage::KOI8_CRL_NMSU:
     case TVCodePage::CP1251:
-    case TVCodePage::CP10007:
-    case TVCodePage::CP100072:
+    case TVCodePage::MacCyr:
+    case TVCodePage::MacOSUkrainian:
          // Not sure about the rest of russian code pages.
          FillKeyMapForCP(id,RussianKeyboard,sizeof(RussianKeyboard)/sizeof(stIntCodePairs));
          NonASCII2ASCII=Generic_NonASCII2ASCII;
          CompareASCII=Generic_CompareASCII;
+         AltInternat2ASCII=Generic_AltInternat2ASCII;
          break;
     case TVCodePage::PC737:
     case TVCodePage::PC869:
@@ -230,10 +232,12 @@ int TGKey::defaultSetCodePage(int id)
          FillKeyMapForCP(id,GreekKeyboard,sizeof(GreekKeyboard)/sizeof(stIntCodePairs));
          NonASCII2ASCII=Generic_NonASCII2ASCII;
          CompareASCII=Generic_CompareASCII;
+         AltInternat2ASCII=Generic_AltInternat2ASCII;
          break;
     default:
          NonASCII2ASCII=defaultNonASCII2ASCII;
          CompareASCII=defaultCompareASCII;
+         AltInternat2ASCII=defaultAltInternat2ASCII;
          return 0;
    }
  return 1;
@@ -256,7 +260,7 @@ int compare(const void *v1, const void *v2)
   
 ***************************************************************************/
 
-TGKey::FillKeyMapForCP(int id, stIntCodePairs *keyboard, size_t szKb)
+void TGKey::FillKeyMapForCP(int id, stIntCodePairs *keyboard, size_t szKb)
 {
  stIntCodePairs cp[256];
  TVCodePage::GetUnicodesForCP(id,cp);
@@ -283,3 +287,71 @@ int TGKey::Generic_CompareASCII(uchar val, uchar code)
  return val==code;
 }
 
+int TGKey::defaultAltInternat2ASCII(TEvent &)
+{
+ return 0;
+}
+
+#if 0
+#define SP1 kbBackSpace
+#define SP2 kbTab
+#define SP3 kbEnter
+#define SP4 kbEnter
+#define SP5 kbEsc
+#else
+#define SP1 0x80 | kbH
+#define SP2 0x80 | kbI
+#define SP3 0x80 | kbJ
+#define SP4 0x80 | kbM
+#define SP5 0x80 | kbOpenBrace
+#endif
+
+const uchar TGKey::kbByASCII[128]=
+{
+ 0,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
+ SP1,SP2,SP3,kbK,kbL,SP4,kbN,kbO,
+ kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
+ kbX,kbY,kbZ,SP5,kbBackSlash,kbCloseBrace,kb6,kbMinus,
+ kbSpace,kbAdmid,kbDobleQuote,kbNumeral,kbDolar,kbPercent,kbAmper,kbQuote,
+ kbOpenPar,kbClosePar,kbAsterisk,kbPlus,kbComma,kbMinus,kbStop,kbSlash,
+ kb0,kb1,kb2,kb3,kb4,kb5,kb6,kb7,
+ kb8,kb9,kbDoubleDot,kbColon,kbLessThan,kbEqual,kbGreaterThan,kbQuestion,
+ kbA_Roba,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
+ kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,
+ kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
+ kbX,kbY,kbZ,kbOpenBrace,kbBackSlash,kbCloseBrace,kbCaret,kbUnderLine,
+ kbGrave,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
+ kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,
+ kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
+ kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbBackSpace
+};
+
+/**[txh]********************************************************************
+
+  Description:
+  When using a "non-ASCII" keyboard the application gets Alt+Non-ASCII. This
+routine tries to figure out which key was used and changes the event to
+be Alt+ASCII. Example: A greek keyboard can generate Alt+Alfa, in this case
+the routine will convert it into Alt+A (because Alfa is in the key that A
+is located).
+  
+  Return: !=0 if the event was altered.
+  
+***************************************************************************/
+
+int TGKey::Generic_AltInternat2ASCII(TEvent &e)
+{
+ if (e.what==evKeyDown &&
+     e.keyDown.charScan.charCode>=0x80 &&
+     (e.keyDown.keyCode & (kbAltRCode | kbAltLCode)) &&
+     (e.keyDown.keyCode & kbKeyMask)==kbUnkNown)
+   {
+    uchar key=KeyMap[e.keyDown.charScan.charCode-0x80];
+    if (key<0x80)
+      {
+       e.keyDown.keyCode|=kbByASCII[key];
+       return 1;
+      }
+   }
+ return 0;
+}

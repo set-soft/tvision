@@ -130,8 +130,10 @@ public:
  // When a key character is over 128 and we want to know the ascii of
  // the key that generates it.
  static uchar  (*NonASCII2ASCII)(uchar val);
- // Compares two values according to the associated ASCII
+ // Compares two values according to the associated ASCII.
  static int    (*CompareASCII)(uchar val, uchar code);
+ // Finds the Alt that generated it.
+ static int    (*AltInternat2ASCII)(TEvent &event);
 
  // Routine to setup the input code page
  static int    (*SetCodePage)(int id);
@@ -170,6 +172,7 @@ protected:
  static void     defaultSuspend();
  static void     defaultResume();
  static int      defaultSetCodePage(int id);
+ static int      defaultAltInternat2ASCII(TEvent &event);
 
  // Greek table
  static stIntCodePairs GreekKeyboard[];
@@ -177,9 +180,12 @@ protected:
  static stIntCodePairs RussianKeyboard[];
  // Generic tables
  static uchar KeyMap[128];
+ static const uchar
+              kbByASCII[128];
  static void  FillKeyMapForCP(int id, stIntCodePairs *keyboard, size_t szKb);
  static uchar Generic_NonASCII2ASCII(uchar ascii);
  static int   Generic_CompareASCII(uchar val, uchar code);
+ static int   Generic_AltInternat2ASCII(TEvent &e);
 
  // Needed for configuration.
  static char    *KeyNames[];

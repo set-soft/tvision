@@ -129,40 +129,6 @@ const uchar TGKeyDOS::kbWithASCIIE0[256]=
  0,0,0,0,0,0,0,0  // F8-FF
 };
 
-#if 0
-#define SP1 kbBackSpace
-#define SP2 kbTab
-#define SP3 kbEnter
-#define SP4 kbEnter
-#define SP5 kbEsc
-#else
-#define SP1 0x80 | kbH
-#define SP2 0x80 | kbI
-#define SP3 0x80 | kbJ
-#define SP4 0x80 | kbM
-#define SP5 0x80 | kbOpenBrace
-#endif
-
-const uchar TGKeyDOS::kbByASCII[128]=
-{
- 0,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
- SP1,SP2,SP3,kbK,kbL,SP4,kbN,kbO,
- kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
- kbX,kbY,kbZ,SP5,kbBackSlash,kbCloseBrace,kb6,kbMinus,
- kbSpace,kbAdmid,kbDobleQuote,kbNumeral,kbDolar,kbPercent,kbAmper,kbQuote,
- kbOpenPar,kbClosePar,kbAsterisk,kbPlus,kbComma,kbMinus,kbStop,kbSlash,
- kb0,kb1,kb2,kb3,kb4,kb5,kb6,kb7,
- kb8,kb9,kbDoubleDot,kbColon,kbLessThan,kbEqual,kbGreaterThan,kbQuestion,
- kbA_Roba,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
- kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,
- kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
- kbX,kbY,kbZ,kbOpenBrace,kbBackSlash,kbCloseBrace,kbCaret,kbUnderLine,
- kbGrave,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
- kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,
- kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
- kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbBackSpace
-};
-
 unsigned TGKeyDOS::GetShiftStateBIOS(void)
 {
  DEF_REGS;

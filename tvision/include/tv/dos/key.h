@@ -50,7 +50,6 @@ protected:
  static int      greekMode;
  static const uchar kbWithASCII0[256];
  static const uchar kbWithASCIIE0[256];
- static const uchar kbByASCII[128];
  static const uchar PC737[128];
 };
 #endif // DOSKEY_HEADER_INCLUDED

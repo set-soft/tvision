@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.382  2002/12/11 12:41:07  set
+* Modified: I generalized the TGKey::defaultSetCodePage, it now supports
+russian and greek keyboards for various code pages. This code allows
+accessing to menues even when the user is in the "alternate mode" (i.e.
+Alt+A <-> Alt+Alpha).
+
 Revision 2.381  2002/12/10 19:47:53  set
 * Modified: THelpFile::getTopic to be virtual as suggested by Chipzz
 <chipzz@ULYSSIS.Org>.
