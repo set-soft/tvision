@@ -28,8 +28,10 @@
    InternalBusyCursor    When enabled we use our own mouse cursor for it
    Unicode16             Try using unicode16 mode.
    UnicodeFont           Name of the font to use for unicode16 mode.
+   UseUpdateThread       Uses a separated thread to update the window content.
 
 */
+#define _GNU_SOURCE
 
 #include <tv/configtv.h>
 
@@ -76,6 +78,9 @@
 #include <locale.h>
 #include <signal.h>
 #include <sys/time.h>
+#include <pthread.h>
+#include <sys/stat.h> // esperimento en system
+#include <wait.h>
 
 #ifdef TVOSf_Solaris
  // At least in the Solaris 7 box I tested looks like ITIMER_REAL is broken
@@ -133,6 +138,8 @@ void    (*TScreenX11::redrawBuf)(int x, int y, unsigned w, unsigned off)=
 TScreenX11::~TScreenX11()
 {
  if(!disp) return; //no X11 resources acquired.
+
+ STOP_UPDATE_THREAD;
  XDestroyIC(xic);
  XCloseIM(xim);
  XDestroyWindow(disp,mainWin);
@@ -141,6 +148,7 @@ TScreenX11::~TScreenX11()
 
 void TScreenX11::clearScreen()
 {
+ SEMAPHORE_ON;
  XSetForeground(disp,gc,colorMap[bg]);
  XFillRectangle(disp,mainWin,gc,0,0,maxX*fontW,maxY*fontH);
  XSetForeground(disp,gc,colorMap[fg]);
@@ -152,6 +160,7 @@ void TScreenX11::clearScreen()
  unsigned c=maxX*maxY;
  while (c--)
    screenBuffer[c]=*((ushort *)space);
+ SEMAPHORE_OFF;
 }
 
 inline
@@ -165,6 +174,7 @@ void TScreenX11::drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAtt
 
 void TScreenX11::setCharacter(unsigned offset, uint32 value)
 {
+ SEMAPHORE_ON;
  screenBuffer[offset]=value;
 
  unsigned x,y;
@@ -179,10 +189,12 @@ void TScreenX11::setCharacter(unsigned offset, uint32 value)
  drawChar(gc,x,y,newChar,newAttr);
  DrawCursor();
  XFlush(disp);
+ SEMAPHORE_OFF;
 }
 
 void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
 {
+ SEMAPHORE_ON;
  unsigned x,y;
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
@@ -210,6 +222,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
    }
  DrawCursor();
  XFlush(disp);
+ SEMAPHORE_OFF;
 }
 
 int TScreenX11::System(const char *command, pid_t *pidChild, int in, int out,
@@ -230,6 +243,7 @@ int TScreenX11::System(const char *command, pid_t *pidChild, int in, int out,
  pid_t cpid=fork();
  if (cpid==0)
    {// Ok, we are the child
+
     //   I'm not sure about it, but is the best I have right now.
     //   Doing it we can kill this child and all the subprocesses
     // it creates by killing the group. It also have an interesting
@@ -238,7 +252,6 @@ int TScreenX11::System(const char *command, pid_t *pidChild, int in, int out,
     // to the parents console. I think that's good.
     if (setsid()==-1)
        _exit(127);
-    char *argv[4];
    
     // If the caller asks for redirection replace the requested handles
     if (in!=-1)
@@ -248,15 +261,37 @@ int TScreenX11::System(const char *command, pid_t *pidChild, int in, int out,
     if (err!=-1)
        dup2(err,STDERR_FILENO);
 
-    argv[0]=getenv("SHELL");
-    if (!argv[0])
-       argv[0]="/bin/sh";
-    argv[1]="-c";
-    argv[2]=(char *)command;
-    argv[3]=0;
-    execvp(argv[0],argv);
-    // We get here only if exec failed
-    _exit(127);
+    if (IS_SECOND_THREAD_ON)
+      {// That's very Linux specific:
+       // For some (unknown) reason we can't use exec here. If we use exec then
+       // the update thread dies and the "monitoring" thread becomes a Zombie.
+       // The only safe way is to call system(), it have code to stop
+       // multithreading and then call exec. That's the only safe way.
+       //pthread_kill_other_threads_np(); <= Useless
+
+       // Note: this solution is incomplete, if the user tries to kill the
+       // child using pidChild then the update thread will misteriously die.
+       // For this reason I use a watchdog that checks if the thread worked
+       // in the last second. If not we revert to manual screen update.
+
+       system(command);
+       // Here we must exit but without deallocating resources! just exit,
+       // that's all
+       _exit(0);
+      }
+    else
+      {// This is much more efficient, but only works if pthreads are off.
+       char *argv[4];
+       argv[0]=getenv("SHELL");
+       if (!argv[0])
+          argv[0]="/bin/sh";
+       argv[1]="-c";
+       argv[2]=(char *)command;
+       argv[3]=0;
+       execvp(argv[0],argv);
+       // We get here only if exec failed
+       _exit(127);
+      }
    }
  if (cpid==-1)
    {// Fork failed do it manually
@@ -983,6 +1018,7 @@ void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
 
 void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned count)
 {
+ SEMAPHORE_ON;
  unsigned x,y;
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
@@ -1011,10 +1047,12 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
  DrawCursor();
 
  XFlush(disp);
+ SEMAPHORE_OFF;
 }
 
 void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
 {
+ SEMAPHORE_ON;
  uint16 newChar=value;
  uint16 newAttr=value>>16;
  offset*=2;
@@ -1030,6 +1068,7 @@ void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
  drawCharU16(gc,x,y,newChar);
  DrawCursor();
  XFlush(disp);
+ SEMAPHORE_OFF;
 }
 
 /*****************************************************************************
@@ -1040,6 +1079,7 @@ void TScreenX11::writeLineX11U16(int x, int y, int w, void *str, unsigned color)
 {
  if (!w) return; // Nothing to do
 
+ SEMAPHORE_ON;
  XSetBgFg(color);
 
  XChar2b *s=(XChar2b *)str;
@@ -1056,10 +1096,12 @@ void TScreenX11::writeLineX11U16(int x, int y, int w, void *str, unsigned color)
     }
  #endif
  XDrawImageString16(disp,mainWin,gc,x*fontW,y*fontH+x11FontOffset,s,w);
+ SEMAPHORE_OFF;
 }
 
 void TScreenX11::setCharactersX11U16(unsigned offset, ushort *values, unsigned w)
 {
+ SEMAPHORE_ON;
  int len   = 0;         /* longitud a escribir */
  int letra = 0;
  int color = 0;
@@ -1090,6 +1132,7 @@ void TScreenX11::setCharactersX11U16(unsigned offset, ushort *values, unsigned w
    }
   
  writeLineX11U16(x,y,len,tmp,color);
+ SEMAPHORE_OFF;
 }
 
 /******************* End of experimental code for testing should be removed */
@@ -1520,6 +1563,8 @@ TScreenX11::TScreenX11()
 
  if (createCursors())
     TScreen::showBusyState=ShowBusyState;
+
+ START_UPDATE_THREAD;
 }
 
 void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h)
@@ -1563,29 +1608,36 @@ void TScreenX11::DestroyXImageFont(int which)
 
 int TScreenX11::setWindowTitle(const char *aName)
 {
+ SEMAPHORE_ON;
  XTextProperty name;
  char *s=(char *)aName;
  XStringListToTextProperty(&s,1,&name);
  XSetWMName(disp,mainWin,&name);
  XFree((char *)name.value);
- 
+ SEMAPHORE_OFF;
+
  return 1;
 }
 
 const char *TScreenX11::getWindowTitle(void)
 {
+ SEMAPHORE_ON;
  XTextProperty name;
+ const char *ret=NULL;
  if (XGetWMName(disp,mainWin,&name))
    {
     char *s=newStr((char *)name.value);
     XFree((char *)name.value);
-    return s;
+    ret=s;
    }
- return 0;
+ SEMAPHORE_OFF;
+
+ return ret;
 }
 
 int TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
 {
+ SEMAPHORE_ON;
  XColor query;
  int i;
  ulong newMap[16];
@@ -1610,6 +1662,7 @@ int TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
     // Is just a dirty hack.
     FullRedraw();
    }
+ SEMAPHORE_OFF;
  return i;
 }
 
@@ -1628,6 +1681,7 @@ void TScreenX11::UnDrawCursor()
 {
  if (!cursorInScreen)
     return;
+ SEMAPHORE_ON;
  unsigned offset=cursorX+cursorY*maxX;
 
  if (drawingMode==codepage)
@@ -1655,6 +1709,7 @@ void TScreenX11::UnDrawCursor()
       }
    }
  cursorInScreen=0;
+ SEMAPHORE_OFF;
  return;
 }
 
@@ -1679,6 +1734,7 @@ void TScreenX11::DrawCursor()
  //fprintf(stderr,"DrawCursor: cursorEnabled=%d\n",cursorEnabled);
  if (cursorEnabled)
    {
+    SEMAPHORE_ON;
     cursorInScreen=!cursorInScreen;
 
     /* Create an image with the character under cursor */
@@ -1707,6 +1763,7 @@ void TScreenX11::DrawCursor()
                  XDrawLine(disp,mainWin,cursorGC,cursorPX,cursorPY+y,cursorPX+fontW-1,cursorPY+y);
             }
           XFlush(disp);
+          SEMAPHORE_OFF;
           return;
          }
        else
@@ -1725,6 +1782,7 @@ void TScreenX11::DrawCursor()
     /* Now put it in the screen */
     XPutImage(disp,mainWin,cursorGC,cursorImage,0,0,cursorPX,cursorPY,fontW,fontH);
     XFlush(disp);
+    SEMAPHORE_OFF;
    }
 }
 
@@ -1740,20 +1798,9 @@ void TScreenX11::EnableCursor()
  //DrawCursor();
 }
 
-/*****************************************************************************
- Events processing
-*****************************************************************************/
-
-void TScreenX11::ProcessGenericEvents()
+static
+void SubstractRef(timeval &curCursorTime, timeval &refCursorTime)
 {
- XEvent event;
- unsigned lastW, lastH;
- unsigned newPW, newPH;
-
- // Cursor blinking stuff.
- // Current time
- gettimeofday(&curCursorTime,0);
- // Substract the reference
  curCursorTime.tv_sec-=refCursorTime.tv_sec;
  if (curCursorTime.tv_usec<refCursorTime.tv_usec)
    {
@@ -1762,6 +1809,24 @@ void TScreenX11::ProcessGenericEvents()
    }
  else
     curCursorTime.tv_usec-=refCursorTime.tv_usec;
+}
+
+/*****************************************************************************
+ Events processing
+*****************************************************************************/
+
+void TScreenX11::ProcessGenericEvents()
+{
+ SEMAPHORE_ON;
+ XEvent event;
+ unsigned lastW, lastH;
+ unsigned newPW, newPH;
+
+ // Cursor blinking stuff.
+ // Current time
+ gettimeofday(&curCursorTime,0);
+ // Substract the reference
+ SubstractRef(curCursorTime,refCursorTime);
 
  if (curCursorTime.tv_sec>0 || curCursorTime.tv_usec>cursorDelay)
    {
@@ -1809,6 +1874,7 @@ void TScreenX11::ProcessGenericEvents()
           TVX11Clipboard::waiting=0;
           TVX11Clipboard::property=event.xselection.property;
          }
+       SEMAPHORE_OFF;
        return;
       }
     /* Not sure if needed, but documentation says it helps if the event
@@ -1905,6 +1971,7 @@ void TScreenX11::ProcessGenericEvents()
             break;
       }
    }
+ SEMAPHORE_OFF;
 }
 
 void TScreenX11::writeLineCP(int x, int y, int w, void *s, unsigned color)
@@ -1912,6 +1979,7 @@ void TScreenX11::writeLineCP(int x, int y, int w, void *s, unsigned color)
  if (w<=0)
     return; // Nothing to do
 
+ SEMAPHORE_ON;
  XSetBgFg(color);
  x*=fontW; y*=fontH;
  UnDrawCursor();
@@ -1923,6 +1991,7 @@ void TScreenX11::writeLineCP(int x, int y, int w, void *s, unsigned color)
     str++;
     x+=fontW;
    }
+ SEMAPHORE_OFF;
 }
 
 void TScreenX11::redrawBufCP(int x, int y, unsigned w, unsigned off)
@@ -1965,6 +2034,7 @@ void TScreenX11::writeLineU16(int x, int y, int w, void *s, unsigned color)
  if (w<=0)
     return; // Nothing to do
 
+ SEMAPHORE_ON;
  XSetBgFg(color);
  x*=fontW; y*=fontH;
  UnDrawCursor();
@@ -1977,6 +2047,7 @@ void TScreenX11::writeLineU16(int x, int y, int w, void *s, unsigned color)
     str++;
     x+=fontW;
    }
+ SEMAPHORE_OFF;
 }
 
 void TScreenX11::redrawBufU16(int x, int y, unsigned w, unsigned off)
@@ -2079,13 +2150,17 @@ int TVX11Clipboard::copy(int id, const char *b, unsigned len)
  memcpy(buffer,b,len);
  buffer[len]=0;
  //printf("Copiando: `%s' %d\n",buffer,length);
+ SEMAPHORE_ON;
  XSetSelectionOwner(TScreenX11::disp,clip,TScreenX11::mainWin,CurrentTime);
  XFlush(TScreenX11::disp);
+ int ret=0;
  if (XGetSelectionOwner(TScreenX11::disp,clip)==TScreenX11::mainWin)
-    return 1;
- TVOSClipboard::error=x11clipAnother;
+    ret=1;
+ else
+    TVOSClipboard::error=x11clipAnother;
+ SEMAPHORE_OFF;
  // The rest is done by TScreenX11
- return 0;
+ return ret;
 }
 
 /**[txh]********************************************************************
@@ -2104,6 +2179,7 @@ terminated because we ensure it.@*
 char *TVX11Clipboard::paste(int id, unsigned &lenRet)
 {
  if (id>1) return NULL;
+ SEMAPHORE_ON;
  Atom clip=id==0 ? XA_CLIPBOARD(TScreenX11::disp) : XA_PRIMARY;
 
  Window owner;
@@ -2115,6 +2191,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
  if (owner==None)
    {
     TVOSClipboard::error=x11clipNoSelection;
+    SEMAPHORE_OFF;
     return NULL;
    }
  // What a hell should I use as property here? I use XA_STRING because it was
@@ -2122,9 +2199,11 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
  XConvertSelection(TScreenX11::disp,clip,XA_STRING,XA_STRING,TScreenX11::mainWin,
                    CurrentTime);
  XFlush(TScreenX11::disp);
+ SEMAPHORE_OFF;
  waiting=1;
  while (waiting)
-   TScreenX11::ProcessGenericEvents();
+   if (!IS_SECOND_THREAD_ON)
+      TScreenX11::ProcessGenericEvents();
 
  if (property!=XA_STRING)
    {
@@ -2132,12 +2211,14 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
     return NULL;
    }
  // Check the size
+ SEMAPHORE_ON;
  Atom type;
  XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,0,0,0,
                     AnyPropertyType,&type,&format,&len,&bytes,&data);
  if (bytes<=0)
    {
     TVOSClipboard::error=x11clipNoData;
+    SEMAPHORE_OFF;
     return NULL;
    }
  result=XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,
@@ -2147,6 +2228,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
    {
     XFree(data);
     TVOSClipboard::error=x11clipX11Error;
+    SEMAPHORE_OFF;
     return NULL;
    }
  char *ret=new char[bytes+1];
@@ -2154,6 +2236,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
  ret[bytes]=0;
  XFree(data);
  lenRet=bytes;
+ SEMAPHORE_OFF;
  //printf("Recibiendo: `%s' %ld\n",ret,bytes);
 
  return ret;
@@ -2250,6 +2333,7 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
     return 0;
 
  // Change the requested fonts
+ SEMAPHORE_ON;
  if (changeP)
    {
     DestroyXImageFont(0);
@@ -2287,6 +2371,7 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
    {
     FullRedraw();
    }
+ SEMAPHORE_OFF;
  return 1;
 }
 
@@ -2297,6 +2382,7 @@ void TScreenX11::RestoreFonts()
 
 void TScreenX11::DoResize(unsigned w, unsigned h)
 {
+ SEMAPHORE_ON;
  UnDrawCursor();
  if (w!=fontW || h!=fontH)
    {
@@ -2321,6 +2407,7 @@ void TScreenX11::DoResize(unsigned w, unsigned h)
  /* Compute cursor position and draw it */
  SetCursorPos(cursorX,cursorY);
  DrawCursor();
+ SEMAPHORE_OFF;
 }
 
 TScreenFont256 *TScreenX11::ChooseClosestFont(unsigned fW, unsigned fH)
@@ -2388,6 +2475,7 @@ int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
       }
    }
 
+ SEMAPHORE_ON;
  if (nFont)
    {
     DestroyXImageFont(0);
@@ -2414,6 +2502,7 @@ int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
  memset(screenBuffer,0,maxX*maxY*sizeof(ushort));
 
  DoResize(nW,nH);
+ SEMAPHORE_OFF;
 
  return (nW==(unsigned)fW && nH==(unsigned)fH) ? 1 : 2;
 }
@@ -2540,18 +2629,189 @@ Boolean TScreenX11::createCursors()
 /* This is the function to change the cursor. */
 Boolean TScreenX11::ShowBusyState(Boolean busyState)
 {
+ SEMAPHORE_ON;
  if (busyState)
     XDefineCursor(disp,mainWin,busyCursor);
  else
     XDefineCursor(disp,mainWin,leftPtr);
  XFlush(disp); /* Show it right now */
+ SEMAPHORE_OFF;
  return defaultShowBusyState(busyState);
 }
 
 void TScreenX11::Beep()
 {
+ SEMAPHORE_ON;
  XBell(disp,50);
+ SEMAPHORE_OFF;
 }
+
+
+/**************************************************************************
+
+ Update thread stuff
+
+   This code is under test and for this reason must be enabled manually
+ defining the UseUpdateThread configuration variable.
+
+ Some important details: [glibc 2.2.5]
+
+ * Linux threads are implemented using processes (clone kernel syscall).
+   I think that they will never be really POSIX compliant if this mechanism
+   is used. One major flaw is that getpid() will return a different value
+   for each thread exposing the fake implementation.
+
+ * Looks like exec can't be reliably called from a multithread program. It
+   works perfectly for small and medium examples but does all kind of nasty
+   things when called from big programs like SETEdit. Looking at the glibc
+   code you can see system() implementation knows it and checks if we have
+   "threads", in this case it first disables all async events. This is done
+   with a macro and I couldn't find any function in glibc to do the same
+   from my code.
+
+ * According to POSIX when you do a fork the new process inherits all the
+   threads and calling exec terminates all threads. In this way fork/exec
+   work ok. In Linux implementation it doesn't happend. According to glibc
+   docs:
+     `pthread_kill_other_threads_np' is a non-portable LinuxThreads
+     extension.  It causes all threads in the program to terminate
+     immediately, except the calling thread which proceeds normally. It
+     is intended to be called just before a thread calls one of the
+     `exec' functions, e.g. `execve'.
+     ...
+     According to POSIX 1003.1c, a successful `exec*' in one of the
+     threads should automatically terminate all other threads in the
+     program.  This behavior is not yet implemented in LinuxThreads.
+     Calling `pthread_kill_other_threads_np' before `exec*' achieves
+     much of the same behavior, except that if `exec*' ultimately
+     fails, then all other threads are already killed.
+   But as threads aren't inherited you kill nothing or the parent threads :-(
+   If you call it and then try to create a new thread it is created but
+   your process dies with "Signal Real-time 0".
+
+ * The first time you create a "thread" an auxiliar process is created.
+   Looks like this process is the one in charge to coordinate the other
+   processes that emulates threads. This should be transparent, but it
+   isn't. If you fork/create a process group/system and then you kill the
+   group then it kills your threads and the auxiliar process becomes a
+   Zombie. Calling exec from big programs looks like you have chances to
+   get a thread switch and then the exec tries to attach to the "thread"
+   process. This confusion kills the thread, lets the child sleeping and
+   the auxiliar process becomes a Zombie.
+
+   I figure out that implementing POSIX threads is a complex task and that
+ I could be doing wrong things, but is also obvious that LinuxThreads as
+ implemented by glibc 2.2.5 is a nightmare.
+
+**************************************************************************/
+
+// Linux implementation of POSIX threads
+#if HAVE_LINUX_PTHREAD
+
+// Here to avoid pulling the headers everywhere
+static pthread_t th;
+static pthread_mutex_t mutex;
+int     TVX11UpdateThread::running=0;
+int     TVX11UpdateThread::initialized=0;
+timeval TVX11UpdateThread::refWatchDog,
+        TVX11UpdateThread::nowWatchDog;
+int     TVX11UpdateThread::watchDogVal=1;
+
+void *TVX11UpdateThread::UpdateThread(void *)
+{
+ // I tried it in the hope that could help to kill childs without affecting
+ // this thread, but isn't enough.
+ if (0)
+   {
+    sigset_t newMask;
+    sigemptyset(&newMask);
+    sigaddset(&newMask,SIGTERM);
+    pthread_sigmask(SIG_BLOCK,&newMask,NULL);
+   }
+
+ running=1;
+
+ while (running)
+   {
+    usleep(10);
+    watchDogVal=0;
+    TScreenX11::ProcessGenericEvents();
+   }
+ return NULL;
+}
+
+void TVX11UpdateThread::SemaphoreOn()
+{
+ if (initialized)
+    pthread_mutex_lock(&mutex);
+}
+
+void TVX11UpdateThread::SemaphoreOff()
+{
+ if (initialized)
+    pthread_mutex_unlock(&mutex);
+}
+
+int TVX11UpdateThread::CheckSecondThread()
+{
+ if (!initialized || !running)
+    return 0;
+
+ gettimeofday(&nowWatchDog,0);
+ timeval aux=nowWatchDog;
+ SubstractRef(nowWatchDog,refWatchDog);
+ if (nowWatchDog.tv_sec>=1)
+   {
+    if (watchDogVal)
+      {
+       printf("Oops! looks like the update thread is dead\n");
+       running=0;
+       return 0;
+      }
+    watchDogVal=1;
+    refWatchDog=aux;
+   }
+ return 1;
+}
+
+void TVX11UpdateThread::StartUpdateThread()
+{
+ long aux;
+ if (TScreen::optSearch("UseUpdateThread",aux) && aux==1)
+   {
+    // This initialization needs Unix 98 compliance.
+    // Linux is ok and the Solaris 7 manpages says that's also ok.
+    pthread_mutexattr_t mt_attr;
+    pthread_mutexattr_init(&mt_attr);
+    pthread_mutexattr_settype(&mt_attr,PTHREAD_MUTEX_RECURSIVE);
+    pthread_mutex_init(&mutex,&mt_attr);
+    // Now we can use the mutex
+    initialized=1;
+
+    gettimeofday(&refWatchDog,0);
+    if (pthread_create(&th,NULL,UpdateThread,NULL)==0)
+       printf("Update thread succesfuly created\n");
+    else
+       perror("Error creating update thread");
+   }
+}
+
+void TVX11UpdateThread::StopUpdateThread()
+{
+ if (IS_SECOND_THREAD_ON)
+   {
+    void *ret;
+    running=0;
+    printf("Waiting for update thread completion\n");
+    if (pthread_join(th,&ret)==0)
+       printf("Update thread finished OK\n");
+    else
+       perror("Error waiting for update thread completion");
+   }
+}
+#endif
+// End of Linux implementation of POSIX threads
+
 
 #else
 

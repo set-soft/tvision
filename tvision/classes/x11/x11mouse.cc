@@ -42,12 +42,15 @@ int THWMouseX11::getMouseEvent()
 {
  XEvent event;
 
+ SEMAPHORE_ON;
  while (1)
    {
     /* Get the next mouse event */
     if (XCheckMaskEvent(TScreenX11::disp,aMouseEvent,&event)!=True)
       {
-       TScreenX11::ProcessGenericEvents();
+       if (!IS_SECOND_THREAD_ON)
+          TScreenX11::ProcessGenericEvents();
+       SEMAPHORE_OFF;
        return 0;
       }
     /* Is that needed here? */
@@ -69,9 +72,11 @@ int THWMouseX11::getMouseEvent()
        //printf("Button Press %d mouseButtons=%d\n",event.xbutton.button,mouseButtons);
        //printf("Button Release %d (%d,%d) vs (%d,%d)\n",event.xbutton.button,event.xbutton.x/TScreenX11::fontW,event.xbutton.y/TScreenX11::fontH,mouseX,mouseY);
        //printf("Motion Notify %d,%d\n",mouseX,mouseY);
+       SEMAPHORE_OFF;
        return 1;
       }
    }
+ SEMAPHORE_OFF;
  return 0;
 }
 
