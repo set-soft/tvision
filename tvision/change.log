@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.607  2004/12/23 21:21:59  terrible
+* [Updated] Debian packaging to version 2.0.4-1, it seems Salvador didn't
+  run the version update script, so I made changes to Debian packaging
+  manually; maybe this fixes problems Sergio was having building the package
+  but I didn't try to compile it so I cross my fingers... :).
+
 Revision 2.606  2004/12/15 20:33:08  set
 * Fixed: Missing changes to cluster.h header in last patch.
 
