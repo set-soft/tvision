@@ -117,5 +117,6 @@ compiler.@p
  #define NEEDS_MKSTEMP
  #define NEEDS_NL_LANGINFO
  #define NEEDS_GETLINE
+ #define NEEDS_OPENDIR
 #endif
 

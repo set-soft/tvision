@@ -977,6 +977,8 @@ typedef unsigned long  ulong;
  #define RETURN_WHEN_NEVER_RETURNS return 0
  #undef  __attribute__
  #define __attribute__( value )
+ #undef  __inline__
+ #define __inline__ inline
  #pragma warning( disable : 4250 )
  /* SET: MSVC have a non-standard delete[] support. It doesn't follow last
     standard. And which is worst doesn't understand it.
@@ -1029,17 +1031,20 @@ typedef unsigned long  ulong;
   #define Include_io 1
  #endif
  #ifdef Uses_dirent
-  #undef  Include_dirent
-  /* Doesn't exist
-     #define Include_dirent 1 */
+  #undef  Include_cl_dirent
+  #define Include_cl_dirent 1
  #endif
  #ifdef Uses_ftell
   #undef  Include_stdio
   #define Include_stdio 1
  #endif
  #ifdef Uses_utime
-  #undef  Include_utime
-  #define Include_utime 1
+  #undef  Include_sys_utime
+  #define Include_sys_utime 1
+  #undef  utime
+  #define utime _utime
+  #undef  utimbuf
+  #define utimbuf _utimbuf
  #endif
  #ifdef Uses_mkstemp
   CLY_CFunc int mkstemp(char *_template);
@@ -1394,6 +1399,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_utime) && !defined(Included_utime)
  #define Included_utime 1
  #include <utime.h>
+#endif
+
+#if defined(Include_sys_utime) && !defined(Included_sys_utime)
+ #define Included_sys_utime 1
+ #include <sys/utime.h>
 #endif
 
 #if defined(Include_cl_utime) && !defined(Included_cl_utime)
