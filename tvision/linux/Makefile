@@ -20,7 +20,7 @@ vpath %.ii $(vpath_src)
 vpath %.m $(vpath_src)
 vpath %.asm $(vpath_src)
 vpath %.nsm $(vpath_src)
-vpath_header=../include /usr/include/X11
+vpath_header=$(TVSRC)
 vpath %.h $(vpath_header)
 vpath %.hpp $(vpath_header)
 vpath %.ha $(vpath_header)
@@ -38,7 +38,7 @@ RHIDE_OS_:=$(patsubst CYGWIN%,CYGWIN,$(shell uname))
 endif
 endif
 
-INCLUDE_DIRS=../include /usr/include/X11
+INCLUDE_DIRS=$(TVSRC)
 LIB_DIRS=
 C_DEBUG_FLAGS=
 C_OPT_FLAGS=
@@ -460,12 +460,9 @@ RHIDE_LD=gcc
 RHIDE_AR=ar
 RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
 RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++\
-	/usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib\
-	/usr/X11R6/include
-TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision\
-	/usr/X11R6/include
-RHIDE_OS_LIBS= ncurses m gpm X11
+RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
+TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision /usr/X11R6/include
+RHIDE_OS_LIBS=ncurses m gpm X11
 TVOBJ=../../linux /usr/src/tvision-head/linux /usr/lib /usr/X11R6/lib
 RHIDE_GCC=gcc
 RHIDE_GXX=gcc
@@ -473,12 +470,9 @@ RHIDE_LD=gcc
 RHIDE_AR=ar
 RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
 RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++\
-	/usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib\
-	/usr/X11R6/include
-TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision\
-	/usr/X11R6/include
-RHIDE_OS_LIBS= ncurses m gpm X11
+RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
+TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision /usr/X11R6/include
+RHIDE_OS_LIBS=ncurses m gpm X11
 TVOBJ=../../linux /usr/src/tvision-head/linux /usr/lib /usr/X11R6/lib
 %.o: %.c
 	$(RHIDE_COMPILE.c.o)
