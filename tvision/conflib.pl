@@ -1064,6 +1064,7 @@ sub DetectCPU
  if ($conf{'TV_CPU'})
    {
     print "$conf{'TV_CPU'} (cached)\n";
+    $CPU=$conf{'TV_CPU'};
     return;
    }
  $test='
