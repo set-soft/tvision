@@ -13,19 +13,19 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_TObject )
 
-#include <object.h>
+#include <tv/object.h>
 
 #endif
 
 #if defined( Uses_TNSCollection )
 
-#include <nscoll.h>
+#include <tv/nscoll.h>
 
 #endif
 
 #if defined( Uses_TNSSortedCollection )
 
-#include <nssorcol.h>
+#include <tv/nssorcol.h>
 
 #endif
 

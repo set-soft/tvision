@@ -38,67 +38,67 @@ const ushort
 
 #if defined( Uses_TSearchRec )
 
-#include <searchrc.h>
+#include <tv/searchrc.h>
 
 #endif
 
 #if defined( Uses_TFileInputLine )
 
-#include <filinpln.h>
+#include <tv/filinpln.h>
 
 #endif
 
 #if defined( Uses_TFileCollection )
 
-#include <filecoll.h>
+#include <tv/filecoll.h>
 
 #endif
 
 #if defined( Uses_TSortedListBox )
 
-#include <sortlibo.h>
+#include <tv/sortlibo.h>
 
 #endif
 
 #if defined( Uses_TFileList )
 
-#include <filelist.h>
+#include <tv/filelist.h>
 
 #endif
 
 #if defined( Uses_TFileInfoPane )
 
-#include <filinfpn.h>
+#include <tv/filinfpn.h>
 
 #endif
 
 #if defined( Uses_TFileDialog )
 
-#include <filedlg.h>
+#include <tv/filedlg.h>
 
 #endif
 
 #if defined( Uses_TDirEntry )
 
-#include <direntr.h>
+#include <tv/direntr.h>
 
 #endif
 
 #if defined( Uses_TDirCollection )
 
-#include <dircoll.h>
+#include <tv/dircoll.h>
 
 #endif
 
 #if defined( Uses_TDirListBox )
 
-#include <dirlibo.h>
+#include <tv/dirlibo.h>
 
 #endif
 
 #if defined( Uses_TChDirDialog )
 
-#include <chdirdlg.h>
+#include <tv/chdirdlg.h>
 
 #endif
 

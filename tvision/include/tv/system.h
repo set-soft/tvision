@@ -51,19 +51,19 @@ const ushort mbRightButton = 0x02;
 
 #if defined( Uses_TEvent )
 
-#include <event.h>
+#include <tv/event.h>
 
 #endif
 
 #if defined( Uses_TEventQueue )
 
-#include <eventqu.h>
+#include <tv/eventqu.h>
 
 #endif
 
 #if defined( Uses_TScreen )
 
-#include <screen.h>
+#include <tv/screen.h>
 
 #endif
 

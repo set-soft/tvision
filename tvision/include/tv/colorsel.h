@@ -34,49 +34,49 @@ TColorGroup& operator + ( TColorGroup& g1, TColorGroup& g2 );
 
 #if defined( Uses_TColorItem )
 
-#include <clritem.h>
+#include <tv/clritem.h>
 
 #endif
 
 #if defined( Uses_TColorGroup )
 
-#include <clrgroup.h>
+#include <tv/clrgroup.h>
 
 #endif
 
 #if defined( Uses_TColorSelector )
 
-#include <clrselct.h>
+#include <tv/clrselct.h>
 
 #endif
 
 #if defined( Uses_TMonoSelector )
 
-#include <mnoselct.h>
+#include <tv/mnoselct.h>
 
 #endif
 
 #if defined( Uses_TColorDisplay )
 
-#include <clrdisp.h>
+#include <tv/clrdisp.h>
 
 #endif
 
 #if defined( Uses_TColorGroupList )
 
-#include <clrgrpli.h>
+#include <tv/clrgrpli.h>
 
 #endif
 
 #if defined( Uses_TColorItemList )
 
-#include <clriteml.h>
+#include <tv/clriteml.h>
 
 #endif
 
 #if defined( Uses_TColorDialog )
 
-#include <clrdlg.h>
+#include <tv/clrdlg.h>
 
 #endif
 

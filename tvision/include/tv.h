@@ -579,8 +579,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __INC_TKEYS_H
 #endif
 
-#include <tvconfig.h>
-#include <ttypes.h>
+#include <tv/tvconfig.h>
+#include <tv/ttypes.h>
 
 #if defined( __INC_STRING_H )
 #include <string.h>
@@ -595,98 +595,98 @@ Modified by Robert H”hne to be used for RHIDE.
 #endif
 
 #if defined( __INC_TKEYS_H )
-#include <tkeys.h>
+#include <tv/tkeys.h>
 #endif
 
 #if defined( __INC_GKEY_H )
-#include <gkey.h>
+#include <tv/gkey.h>
 #endif
 
-#include <tvutil.h>
+#include <tv/tvutil.h>
 
 #if defined( __INC_TVOBJS_H )
-#include <tvobjs.h>
+#include <tv/tvobjs.h>
 #endif
 
 #if defined( __INC_TOBJSTRM_H )
-#include <tobjstrm.h>
+#include <tv/tobjstrm.h>
 #endif
 
 #if defined( __INC_DRAWBUF_H )
-#include <drawbuf.h>
+#include <tv/drawbuf.h>
 #endif
 
 #if defined( __INC_OBJECTS_H )
-#include <objects.h>
+#include <tv/objects.h>
 #endif
 
 #if defined( __INC_VALID_H)
-#include <validate.h>
+#include <tv/validate.h>
 #endif
 
 #if defined( __INC_SYSTEM_H )
-#include <system.h>
+#include <tv/system.h>
 #endif
 
 #if defined( __INC_MSGBOX_H )
-#include <msgbox.h>
+#include <tv/msgbox.h>
 #endif
 
 #if defined( __INC_RESOURCE_H )
-#include <resource.h>
+#include <tv/resource.h>
 #endif
 
 #if defined( __INC_VIEWS_H )
-#include <views.h>
+#include <tv/views.h>
 #endif
 
 #if defined( __INC_DIALOGS_H )
-#include <dialogs.h>
+#include <tv/dialogs.h>
 #endif
 
 #if defined( __INC_STDDLG_H )
-#include <stddlg.h>
+#include <tv/stddlg.h>
 #endif
 
 #if defined( __INC_COLORSEL_H )
-#include <colorsel.h>
+#include <tv/colorsel.h>
 #endif
 
 #if defined( __INC_MENUS_H )
-#include <menus.h>
+#include <tv/menus.h>
 #endif
 
 #if defined( __INC_TEXTVIEW_H )
-#include <textview.h>
+#include <tv/textview.h>
 #endif
 
 #if defined( __INC_INDICATO_H )
-#include <indicato.h>
+#include <tv/indicato.h>
 #endif
 
 #if defined( __INC_FINDREPL_H )
-#include <findrepl.h>
+#include <tv/findrepl.h>
 #endif
 
 #if defined( __INC_APP_H )
-#include <app.h>
+#include <tv/app.h>
 #endif
 
 #if defined( __INC_FILEVIEW_H )
-#include <fileview.h>
+#include <tv/fileview.h>
 #endif
 
 // SET: Start of the TEditor classes re-incorporated in 1.0.4
 #ifdef INCL_EDITORS_H
-#include <editors.h>
+#include <tv/editors.h>
 #endif
 
 #ifdef INCL_TVEDIT_H
-#include <tvedit.h>
+#include <tv/tvedit.h>
 #endif
 // SET: End of the TEditor classes
 
 // SET: Incorporated in 1.0.7
 #ifdef INCL_CALC_H
-#include <calc.h>
+#include <tv/calc.h>
 #endif

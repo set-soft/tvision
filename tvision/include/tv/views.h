@@ -204,55 +204,55 @@ const ushort
 
 #if defined( Uses_TCommandSet )
 
-#include <cmdset.h>
+#include <tv/cmdset.h>
 
 #endif
 
 #if defined( Uses_TPalette )
 
-#include <palette.h>
+#include <tv/palette.h>
 
 #endif
 
 #if defined( Uses_TView )
 
-#include <view.h>
+#include <tv/view.h>
 
 #endif
 
 #if defined( Uses_TFrame )
 
-#include <frame.h>
+#include <tv/frame.h>
 
 #endif
 
 #if defined( Uses_TScrollBar )
 
-#include <scrlbar.h>
+#include <tv/scrlbar.h>
 
 #endif
 
 #if defined( Uses_TScroller )
 
-#include <scroller.h>
+#include <tv/scroller.h>
 
 #endif
 
 #if defined( Uses_TListViewer )
 
-#include <lstviewr.h>
+#include <tv/lstviewr.h>
 
 #endif
 
 #if defined( Uses_TGroup )
 
-#include <group.h>
+#include <tv/group.h>
 
 #endif
 
 #if defined( Uses_TWindow )
 
-#include <window.h>
+#include <tv/window.h>
 
 #endif
 
