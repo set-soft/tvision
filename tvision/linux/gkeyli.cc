@@ -464,7 +464,7 @@ void TGKey::clear(void)
   tcflush(IN_FD,TCIFLUSH);
 }
 
-static MouseButtons=0;
+static int MouseButtons=0;
 const int MouseB1Down=0x20,MouseB2Down=0x21,MouseB3Down=0x22,MouseUp=0x23;
 
 void TGKey::fillTEvent(TEvent &e)
