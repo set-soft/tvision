@@ -1,4 +1,8 @@
 $Log$
+Revision 1.48  1999/05/19 23:27:55  set
+* Fixed: a bug in TStrListMaker destructor, ugh! looks like nobody used it
+;-). Patch by Laurynas Biveinis <lauras@softhome.net>.
+.
 Revision 1.47  1999/05/16 22:09:14  root (set)
 * Added: My DOS TSR to enhance the keyboard to the distribution.
 * Added: A .pif example showing how to prevent using the program in a window
