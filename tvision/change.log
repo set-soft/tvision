@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.437  2003/05/09 13:55:59  set
+* Added: A check to determine if the configure script is newer than the
+cache. If that's the case the cache is discarded.
+
 Revision 2.436  2003/05/09 12:25:05  set
 * Fixed: I forgot to initialize intlLabel in inputBoxRect.
 * Added: A small example for inputBox to the demo example.
