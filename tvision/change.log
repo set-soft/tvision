@@ -1,4 +1,8 @@
 $Log$
+Revision 1.242.2.19  2002/01/03 02:12:54  set
+* Fixed: Need to create win32/rhide.env for Cygwin/MinGW targets. Needed for
+RHIDE 1.4.9.
+
 Revision 1.242.2.18  2002/01/03 01:26:55  set
 * Fixed: getline code for BC++ 5.5 target. [lack of ssize_t]
 
@@ -1646,7 +1650,7 @@ be setup.
 Revision 1.4  1999/01/09 17:29:09  set
 Changed compress.bat for a Perl script that generates the manifest and
 version djgpp files and compress the files in the djgpp fashion. Asked by DJ.
-.
+
 Revision 1.3  1999/01/09 17:24:58  set
 Modifications from Linux version.
 
