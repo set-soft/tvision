@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.23  2003/04/02 13:36:35  set
+* Fixed: [MinGW] The configuration script shown the error messages created
+when running non-existent programs appear in the screen generating
+confusion. Now the command are executed redirecting stderr.
+
 Revision 2.399.2.22  2003/04/02 13:33:28  set
 * Fixed: [BC++] Warning about unused parameter in tgkey.cc.
 
