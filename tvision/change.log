@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.585  2004/10/08 21:13:58  set
+* Fixed: [Config][Solaris] dynamic lib creation when using native ld.
+* Fixed: [Config][Solaris and Darwin] the native snprintf function
+violates POSIX, now replaced by internal one.
+
 Revision 2.584  2004/10/08 15:04:54  set
 * Added: Tru64 (OSF1) support. Thanks to HP Test Drive. The system I used
 is an HP Tru64 Unix 5.1b running on a DS20E 2@667 MHz (ev67) [2 Alpha CPUs]
