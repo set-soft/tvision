@@ -655,6 +655,8 @@ TScreenUNIX::TScreenUNIX()
   startcurses();
   setVideoMode(screenMode);
   suspended = 0;
+
+  flags0=CodePageVar | UseScreenSaver;
 }
 
 void TScreenUNIX::Resume()

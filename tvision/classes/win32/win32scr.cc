@@ -10,6 +10,7 @@ some routines and adapted it to the new architecture.
   One important detail is that Vadim implemented it with threads. The
 thread that monitors the window size is different, that's why a lock is
 needed.
+ ToDo: Set UseScreenSaver when we are in full screen.
   
 ***************************************************************************/
 

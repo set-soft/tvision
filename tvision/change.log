@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.185  2002/06/27 20:52:22  set
+* Added: [X11] Explanation about WM/Desktop key conflicts to the mini doc.
+
 Revision 2.184  2002/06/27 20:36:58  set
 * Added: A doc directory and a file explaining implementation details of
 the X11 driver.

@@ -556,7 +556,10 @@ int TScreenLinux::InitOnce()
  // Setup the driver properties.
  // Our code page isn't fixed.
  // We can change the palette (but can't restore it perfectly)
- flags0=CanSetPalette | CodePageVar | CursorShapes;
+ // We can also change the cursor shape.
+ // Even when Linux have a blanker we run in full screen so screen savers
+ // could be used with some sense.
+ flags0=CanSetPalette | CodePageVar | CursorShapes | UseScreenSaver;
 
  return 0;
 }
