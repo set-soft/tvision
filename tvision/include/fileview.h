@@ -30,7 +30,7 @@ class TLineCollection : public TCollection
 public:
 
     TLineCollection(ccIndex lim, ccIndex delta) : TCollection(lim, delta) {}
-    virtual void  freeItem(void *p) { delete p; }
+    virtual void  freeItem(void *p) { delete (char *)p; }
 
 #if !defined( NO_STREAM )
 private:

@@ -151,7 +151,7 @@ void TNSCollection::freeAll()
 
 void TNSCollection::freeItem( void *item )
 {
-    delete item;
+    delete (char *)item;
 }
 
 ccIndex TNSCollection::indexOf(void *item)
