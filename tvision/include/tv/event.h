@@ -22,6 +22,7 @@ struct MouseEventType
 // This class is the base hardware interface with the mouse and shouldn't
 // be used directly. You should use TMouse instead which is derived from
 // it. That's why most members are protected.
+// See thwmouse.cc
 class THWMouse
 {
 protected:
@@ -32,6 +33,7 @@ protected:
  static void show();
  static void hide();
 
+ // Needed by some drivers to communicate the size of the screen.
  static void (*setRange)(ushort, ushort);
  static void getEvent(MouseEventType &me);
  // This function could fail according to the hardware.
@@ -55,7 +57,7 @@ protected:
  static void (*GetEvent)(MouseEventType &me);
 
  // SET: This is optional, is only needed if the harware uses forceEvent.
- static void (*drawMouse)(int x, int y);
+ static int  (*drawMouse)(int x, int y);
 
  // SET: Default behaviors
  static void defaultShow();
@@ -86,6 +88,9 @@ protected:
  // SET: Moved to the protected section
  static Boolean handlerInstalled;
  static Boolean noMouse;
+ // The following counter is incremented when the mouse pointer is updated
+ // by the driver. Only useful when done asynchronically.
+ static volatile unsigned drawCounter;
 };
 
 inline Boolean THWMouse::present()
@@ -116,6 +121,9 @@ public:
  static void getEvent( MouseEventType& );
  static void registerHandler( unsigned, void (*)() );
  static Boolean present();
+
+ static void resetDrawCounter();
+ static unsigned getDrawCounter();
 };
 
 inline void TMouse::show()
@@ -156,6 +164,16 @@ inline void TMouse::registerHandler(unsigned mask, void (*func)())
 inline Boolean TMouse::present()
 {
  return THWMouse::present();
+}
+
+inline void resetDrawCounter()
+{
+ drawCounter=0;
+}
+
+inline unsigned getDrawCounter()
+{
+ return drawCounter;
 }
 /****************************************************************************************/
 

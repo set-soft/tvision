@@ -1,8 +1,8 @@
 /* Keyboard handler routines header.
    Copyright by Salvador E. Tropea (SET) (1998,1999,2001)
    Covered by the GPL license. */
-#ifndef __GKEY_H__
-#define __GKEY_H__
+#ifndef GKEY_HEADER_INCLUDED
+#define GKEY_HEADER_INCLUDED
 // A type for the BIOS ASCII/Scan
 typedef union
 {
@@ -111,10 +111,6 @@ public:
  static unsigned (*getShiftState)();
  static void     (*fillTEvent)(TEvent &e);
 
- // Values that must be provided by any replacement
- //static int  Abstract;
- //static char ascii;
-
  // Very used by: menues and hotkeys (buttons, status bar, etc).
  // Get the ascii associated to Alt+key, example Alt+A => A
  static char     GetAltChar(unsigned short keyCode, uchar ascii);
@@ -147,21 +143,14 @@ public:
   linuxEterm=4,
   // DOS
   dosUS=0,
-  dosGreek737=20
+  dosGreek737=20,
+  dosUseBIOS=21,
+  dosUseDirect=22
  };
  static void   (*SetKbdMapping)(int version);
  static int      GetKbdMapping(void) { return Mode; };
 
- // PC specific
- //static int useBIOS;
- //static int translateKeyPad;
-
- // Here just for test
- //static unsigned short sFlags;
-
 protected:
- //static void GetRaw(void);
-
  static uchar    defaultNonASCII2ASCII(uchar val);
  static int      defaultCompareASCII(uchar val, uchar code);
  static void     defaultSetKbdMapping(int version);
@@ -191,4 +180,4 @@ extern unsigned short __tv_getshiftstate();
 extern unsigned short __tv_GetRaw();
 extern int __tv_kbhit();
 extern void __tv_clear();
-#endif
+#endif // GKEY_HEADER_INCLUDED
