@@ -1,4 +1,8 @@
 $Log$
+Revision 1.52  1999/05/23 22:58:08  root
+* Modified: Now, in Linux, left alt and right alt are different keys. I did
+it because that's the only way to paste with gpm.
+.
 Revision 1.51  1999/05/21 14:10:02  root (set)
 * Fixed: When I removed some code in TScreen I made stdout the output of the
 library, but then redirecting the stdout from the program and printing sent
