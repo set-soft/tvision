@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <stdio.h> // fprintf in writeData
 
 #define Uses_TStreamable
 #define Uses_TStreamableClass
@@ -193,7 +196,6 @@ void opstream::writePrefix( const TStreamable& t )
     writeString( t.streamableName() );
 }
 
-#include <stdio.h>
 
 void opstream::writeData( TStreamable& t )
 {

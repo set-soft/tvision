@@ -10,14 +10,15 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TRect
 #define Uses_TMenu
 #define Uses_TMenuItem
 #define Uses_TMenuBox
 #include <tv.h>
-
-#include <string.h>
 
 static TRect getRect( const TRect& bounds, TMenu *aMenu )
 {

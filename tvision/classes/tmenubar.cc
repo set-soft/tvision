@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TMenuBar
 #define Uses_TDrawBuffer
@@ -18,8 +21,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TRect
 #define Uses_TSubMenu
 #include <tv.h>
-
-#include <string.h>
 
 TMenuBar::TMenuBar( const TRect& bounds, TMenu *aMenu ) :
     TMenuView( bounds )

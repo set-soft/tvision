@@ -10,6 +10,11 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <assert.h>
+#include <ctype.h>
+#include <string.h>
 
 #define Uses_TMenuItem
 #define Uses_TMenu
@@ -24,10 +29,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TPalette
 #define Uses_TGKey
 #include <tv.h>
-
-#include <assert.h>
-#include <ctype.h>
-#include <string.h>
 
 #define cpMenuView "\x02\x03\x04\x05\x06\x07"
 

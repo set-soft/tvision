@@ -13,6 +13,10 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #ifdef __DJGPP__
 
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <stdlib.h>
+
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TFrame
@@ -28,7 +32,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <conio.h>
 #include <sys/farptr.h>
 #include <errno.h>
-#include <stdlib.h>
 
 static ushort Equipment;
 static uchar CrtInfo;

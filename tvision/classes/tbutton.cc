@@ -10,6 +10,10 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <ctype.h>
+#include <string.h>
 
 #define Uses_TButton
 #define Uses_TDrawBuffer
@@ -21,9 +25,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TPalette
 #define Uses_TGKey
 #include <tv.h>
-
-#include <ctype.h>
-#include <string.h>
 
 const ushort
     cmGrabDefault    = 61,

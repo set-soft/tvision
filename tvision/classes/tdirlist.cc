@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TDirListBox
 #define Uses_TEvent
@@ -19,8 +22,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TButton
 #define Uses_TStreamableClass
 #include <tv.h>
-
-#include <string.h>
 
 TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aScrollBar ) :
     TListBox( bounds, 1, aScrollBar ),

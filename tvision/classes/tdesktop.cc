@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <stdlib.h>
 
 #define Uses_TDeskTop
 #define Uses_TRect
@@ -19,7 +22,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #include <tv.h>
-#include <stdlib.h>
 
 TDeskInit::TDeskInit( TBackground *(*cBackground)( TRect ) ) :
     createBackground( cBackground )

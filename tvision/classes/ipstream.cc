@@ -10,6 +10,11 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <assert.h>
+#include <string.h>
+
 
 #define Uses_TStreamable
 #define Uses_TStreamableClass
@@ -18,9 +23,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_ipstream
 #define Uses_TPReadObjects
 #include <tv.h>
-
-#include <assert.h>
-#include <string.h>
 
 ipstream::ipstream( streambuf *sb )
 {

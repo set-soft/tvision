@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TKeys
 #define Uses_TWindow
@@ -21,8 +24,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_ipstream
 #define Uses_TPalette
 #include <tv.h>
-
-#include <string.h>
 
 const TPoint minWinSize = {16, 6};
 

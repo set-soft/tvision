@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TStatusLine
 #define Uses_TStatusItem
@@ -20,8 +23,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_ipstream
 #define Uses_TPalette
 #include <tv.h>
-
-#include <string.h>
 
 #define cpStatusLine "\x02\x03\x04\x05\x06\x07"
 
