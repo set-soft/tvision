@@ -761,7 +761,8 @@ sub GenerateMakefile
     #$rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so.$VersionMajor\n";
     $rep.="\tinstall -m 0644 linuxso/librhtv.so.$ver \$(libdir)\n";
     $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$ver\n";
-    $rep.="\t-ldconfig\n";
+    # FreeBSD: merge data from libdir
+    $rep.=($OSf eq 'FreeBSD') ? "\t-ldconfig -m \$(libdir)\n" : "\t-ldconfig\n";
    }
  $text=~s/\@install2_rule\@/$rep/g;
 

@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.100  2002/05/30 18:29:26  set
+* Fixed: Wilcard used by TVEdit *.* -> *
+* Fixed: Shell call used in TVEdit, now is system neutral. Both pointed out
+by Tapio.
+
 Revision 2.99  2002/05/30 17:47:25  set
 * Fixed: The column where the cursor is positioned to help Braille
 Terminals. Lamentably we must add a mechanism to unhide the cursor because
