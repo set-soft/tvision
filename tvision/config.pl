@@ -390,7 +390,7 @@ sub GenerateMakefile
 
 sub CreateConfigH
 {
- my $text="/* Generated automatically by the configure script */";
+ my $text="/* Generated automatically by the configure script */",$old;
 
  print "Generating configuration header\n";
 
@@ -402,6 +402,7 @@ sub CreateConfigH
  $text.="\n\n";
  $text.="#define TVOS_$OS\n#define TVOSf_$OSflavor\n";
 
- replace('include/tv/configtv.h',$text);
+ $old=cat('include/tv/configtv.h');
+ replace('include/tv/configtv.h',$text) unless $text eq $old;
 }
 

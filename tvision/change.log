@@ -1,4 +1,21 @@
 $Log$
+Revision 1.151  2000/05/20 20:02:21  set
+* Modified: The generated make file to use PHONY and force a real check of
+all the dependencies even if the library is already generated.
+* Added: Now the win32/Makefile file is generated from the djgpp's file
+during the configuration process. For this I modified the djgpp/vga* files to
+produce no code if they are compiled without djgpp.
+* Added: a thanks section to the main readme.
+* Added: some details in the readme, specially about RMS doubts and what I'm
+doing about it. Also to make clear the win32 and winnt targets are there and
+both works for win32.
+* Fixed: a NO_STREAMABLE instead of NO_STREAM in tparamte.cc. Reported by
+Egon Eckert <egon@chance.cz>.
+* Merged changes from Anatoli Soltan. Now the BC++ code runs under Windows
+95 too!
+* Fixed: Some warnings emitted by gcc 2.95.2 with the examples/demo code.
+* Added: getcwd to the compatlayer library.
+
 Revision 1.150  2000/05/16 02:08:05  set
 * Added: A new constructor for TListBox and TSortedListBox that accepts two
 scroll bars. I don't know why original TV lacks it when TListViewer have it
