@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.120  2002/06/04 15:45:22  set
+* Updated: The list of files to convert when using the UNIX tarball.
+
 Revision 2.119  2002/06/04 15:44:07  set
 * Modified: Now specialCharacters is part of the TView class and not just
 a variable. While we don't use namespaces I think we should try to avoid

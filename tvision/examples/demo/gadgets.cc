@@ -21,6 +21,7 @@
  * Andris Pavenis.
  * Modified by Mike Gorchak <mike@malva.ua> to report free memory on QNX.
  */
+#include <tv/configtv.h>
 
 // SET: moved the standard headers before tv.h
 #define Uses_string
