@@ -15,6 +15,7 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified by Salvador E. Tropea to compile for 64 bits architectures.
  */
 
 // SET: moved the standard headers before tv.h
@@ -102,7 +103,7 @@ void TTable::draw()
 void TTable::charFocused()
 {
     message(owner, evBroadcast, cmAsciiTableCmdBase + cmCharFocused,
-      (void *) (cursor.x + 32 * cursor.y));
+      (void *)(long)(cursor.x + 32 * cursor.y));
 }
 
 
