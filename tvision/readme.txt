@@ -110,7 +110,15 @@ directory.
   The library is distributed under the GPL license, it seems to be OK because
 according to a FAQ in the Inprise web site the base library is Public
 Domain. The file "copying" contains the GPL license and the file "copying.rh"
-contains the RHIDE copyright.
+contains the RHIDE copyright. Some portions of the contributed code are under
+the BSD license (QNX RtP driver). I took some code from the Sigala's port of
+TV (some examples), Sigala's port is under the BSD license, but I modified
+the code and my changes are covered by the GPL license. If you want the
+code under BSD look for Sigala's port. I also added some code from TV Tools,
+this package was created by Marc Stern <stern@mble.philips.be> and he states:
+"You can freely distribute them, modify them and use them for any purpose
+(even include it into commercial products).". For the purpose of this
+distribution the code is under GPL license.
 
   Recent news: Richard M. Stallman contacted me and put some doubts about the
 distribution of Borland's sources, he contacted somebody at Borland asking if
