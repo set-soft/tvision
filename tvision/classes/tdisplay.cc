@@ -468,3 +468,13 @@ Boolean TDisplay::setShowCursorEver(Boolean value)
  return ret;
 }
 
+Boolean TDisplay::setDontMoveHiddenCursor(Boolean value)
+{
+ Boolean ret=getDontMoveHiddenCursor();
+ if (value)
+    opts1|=DontMoveHiddenCursor;
+ else
+    opts1&= ~DontMoveHiddenCursor;
+ return ret;
+}
+

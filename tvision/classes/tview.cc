@@ -836,6 +836,7 @@ void TView::resetCursor()
   int ax,cx,dx;
   TView *self=this,*view;
   if ((~state) & (sfVisible /*| sfCursorVis*/ | sfFocused)) goto lab4;
+  if (TScreen::getDontMoveHiddenCursor() && ((~state) & sfCursorVis)) goto lab4;
   ax = cursor.y;
   dx = cursor.x;
 lab1:

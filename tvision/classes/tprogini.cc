@@ -38,6 +38,8 @@ TProgInit::TProgInit( TStatusLine *(*cStatusLine)( TRect ),
  long aux;
  if (config->Search("ShowCursorEver",aux))
     TScreen::setShowCursorEver(aux ? True : False);
+ if (config->Search("DontMoveHiddenCursor",aux))
+    TScreen::setDontMoveHiddenCursor(aux ? True : False);
 
  tsc=new TScreen();
 }

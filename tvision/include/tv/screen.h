@@ -144,6 +144,8 @@ public:
  // Driver options
  static Boolean  setShowCursorEver(Boolean value);
  static Boolean  getShowCursorEver() { return opts1 & ShowCursorEver ? True : False; };
+ static Boolean  setDontMoveHiddenCursor(Boolean value);
+ static Boolean  getDontMoveHiddenCursor() { return opts1 & DontMoveHiddenCursor ? True : False; };
  // Helper to look for the closest resolution from a list
  static Boolean  searchClosestRes(TScreenResolution *res, unsigned x, unsigned y,
                                   unsigned cant, unsigned &pos);
@@ -180,7 +182,10 @@ protected:
  // Special options
  enum Options1
  {
-  ShowCursorEver=1  // The main goal of thi option is to help Braille Terminals
+  ShowCursorEver=1,  // The main goal of this option is to verify the help
+                     // for Braille Terminals
+  DontMoveHiddenCursor=2 // This option disables the help for Braille
+                         // Terminals in favor of speed.
  };
  static uint32 opts1;
 
