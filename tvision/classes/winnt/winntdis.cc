@@ -92,6 +92,7 @@ void TDisplayWinNT::SetCursorShape(unsigned start, unsigned end)
     CONSOLE_CURSOR_INFO inf;
     inf.bVisible=start>=end ? False : True;
     inf.dwSize=inf.bVisible ? end-start : 1;
+    if (inf.dwSize>99) inf.dwSize=99;
     SetConsoleCursorInfo(hOut,&inf);
     curStart=start;
     curEnd=end;

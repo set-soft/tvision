@@ -71,8 +71,6 @@ void TDisplayXTerm::Init()
     getRows=GetRowsSeq;
     getCols=GetColsSeq;
    }
- setCrtMode=SetCrtMode;
- setCrtModeExt=SetCrtModeExt;
  checkForWindowSize=CheckForWindowSize;
  getWindowTitle=GetWindowTitle;
  setWindowTitle=SetWindowTitle;
@@ -153,19 +151,6 @@ ushort TDisplayXTerm::GetColsSeq()
  if (fscanf(TGKeyXTerm::fIn,"\E[8;%d;%dt",&nR,&nC)==2)
     return nC;
  return 80;
-}
-
-void TDisplayXTerm::SetCrtMode(ushort )
-{ // Just set the cursor to a known state
- cursorStart=86;
- cursorEnd  =99;
- fputs("\E[?25h",stdout);
-}
-
-void TDisplayXTerm::SetCrtModeExt(char *mode)
-{
- setCrtMode(0); // Just set the cursor to a known state
- system(mode);
 }
 
 int TDisplayXTerm::CheckForWindowSize(void)

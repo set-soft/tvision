@@ -15,6 +15,7 @@ same used in original Turbo Vision for compatibility purposes.
 #ifdef DEBUG_CURSOR
  #include <stdio.h>
 #endif
+#define Uses_stdlib
 #define Uses_TScreen
 #define Uses_TVCodePage
 #include <tv.h>
@@ -109,6 +110,7 @@ void TDisplay::defaultGetCursorShape(unsigned &start, unsigned &end)
 
 void TDisplay::defaultSetCrtMode(ushort)
 {
+ setCursorShape(86,99);
 }
 
 /**[txh]********************************************************************
@@ -116,8 +118,10 @@ void TDisplay::defaultSetCrtMode(ushort)
 program or other information that doesn't fit in an ushort.
 ***************************************************************************/
 
-void TDisplay::defaultSetCrtModeExt(char *)
+void TDisplay::defaultSetCrtModeExt(char *command)
 {
+ setCursorShape(86,99);
+ system(command);
 }
 
 /**[txh]********************************************************************

@@ -22,11 +22,9 @@ protected:
  static void   SetCursorShape(unsigned start, unsigned end);
  static ushort GetRows();
  static ushort GetCols();
- // Not available, but needs to do some job
- static void   SetCrtMode(ushort mode);
- // Not available, but needs to do some job
- static void   SetCrtModeExt(char *mode);
- // Not available, static ushort GetCrtModeExt()
+ // Not available static void   SetCrtMode(ushort mode);
+ // Not available static void   SetCrtModeExt(char *mode);
+ // Not available static ushort GetCrtModeExt()
  static int    CheckForWindowSize(void);
  // Not available static const char *getWindowTitle(void);
  // Not available static int setWindowTitle(const char *name);

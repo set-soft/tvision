@@ -24,10 +24,9 @@ protected:
  static ushort GetRowsSeq();
  static ushort GetColsIOCTL();
  static ushort GetColsSeq();
- // Not available, but does some defaults
- static void   SetCrtMode(ushort mode);
+ // Not available static void   SetCrtMode(ushort mode);
  // Not available static ushort getCrtMode();
- static void   SetCrtModeExt(char *mode);
+ // Not available static void   SetCrtModeExt(char *mode);
  static int    CheckForWindowSize(void);
  static const char *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
