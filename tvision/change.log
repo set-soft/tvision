@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.298  2002/09/11 18:25:17  set
+* Added: Darwin to the list of known OSs, is just to test.
+* Verified compilation and functionality for:
++ Debian GNU/Linux 3.0 Alpha EV67 (Tsunami Catamaran) COMPAQ AlphaServer
+DS20E 666 MHz.
++ Debian GNU/Linux 3.0 PPC 604ev5 (MachV) CHRP IBM,7043-150.
++ Debian GNU/Linux 3.0 SPARC Ultra60 TI UltraSparc II  (BlackBird) Spitfire
++ Solaris SunOS 5.8 Sun E220R.
+All using xterm+ssh started with the script found in examples/xterm.
+
 Revision 2.297  2002/09/11 16:46:24  terrible
 * Fixed: XOpenDisplay should receive NULL instead of "".
 

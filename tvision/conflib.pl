@@ -1153,7 +1153,7 @@ int main(void)
  printf("SPARC64\n");
  #elif defined(__sparc__) || defined(sparc)
  printf("SPARC\n");
- #elif defined(__PPC__) || defined(PPC)
+ #elif defined(__PPC__) || defined(PPC) || defined(__ppc__)
  printf("PPC\n");
  #elif defined(__hppa__)
  printf("HPPA\n");
