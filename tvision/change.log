@@ -1,4 +1,7 @@
 $Log$
+Revision 2.12  2001/11/25 00:39:38  set
+* Changed: call to new API name in demo example (to set window title).
+
 Revision 2.11  2001/11/25 00:34:04  set
 * Modified: TView because now the functions to set the shape of the cursor
 are compatible with BTV 2.0 and not BTV 1.03. Also a change in an extended
