@@ -269,13 +269,13 @@ Boolean TCluster::mark( int )
 
 void TCluster::movedTo( int item )
 {
- if (owner)
+ if (owner && (options & ofBeVerbose))
     message(owner,evBroadcast,cmClusterMovedTo,this);
 }
 
 void TCluster::press( int item )
 {
- if (owner)
+ if (owner && (options & ofBeVerbose))
     message(owner,evBroadcast,cmClusterPress,this);
 }
 

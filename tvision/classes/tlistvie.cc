@@ -29,6 +29,10 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #define cpListViewer "\x1A\x1A\x1B\x1C\x1D"
 
+// SET: By default I make it report more messages than original TV. In this
+// case the focusItem(ccIndex item) member generates a broadcast.
+unsigned TListViewer::extraOptions=ofBeVerbose;
+
 TListViewer::TListViewer( const TRect& bounds,
 			  ushort aNumCols,
 			  TScrollBar *aHScrollBar,
@@ -42,7 +46,7 @@ TListViewer::TListViewer( const TRect& bounds,
 {
     short arStep, pgStep;
 
-    options |= ofFirstClick | ofSelectable;
+    options |= ofFirstClick | ofSelectable | extraOptions;
     eventMask |= evBroadcast;
     if( aVScrollBar != 0 )
         {
@@ -179,6 +183,8 @@ void TListViewer::focusItem( ccIndex item )
                 topItem = item - size.y + 1;
             else
                 topItem = item - item % size.y - (size.y * (numCols-1));
+    if (owner && (options & ofBeVerbose))
+       message(owner,evBroadcast,cmListItemFocused,this);
 }
 
 void TListViewer::focusItemNum( ccIndex item )
