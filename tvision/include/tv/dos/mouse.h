@@ -1,5 +1,7 @@
 /**[txh]********************************************************************
 
+  Copyright (c) 2001 by Salvador E. Tropea
+
   Description: 
   That's the DOS low level mouse class.
   It have more than one driver inside that is selected externally.

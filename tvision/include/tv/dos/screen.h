@@ -1,3 +1,13 @@
+/**[txh]********************************************************************
+
+  Copyright (c) 2001 by Salvador E. Tropea
+
+  Description: 
+  Display and Screen `driver' classes for DOS.
+  
+***************************************************************************/
+
+
 // virtual to avoid problems with multiple inheritance
 class TDisplayDOS : virtual public TDisplay
 {

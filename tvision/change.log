@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.36  2002/01/27 17:05:10  set
+* Merged Ivan patches for Debian 1.1.4-1 package.
+
 Revision 2.35  2002/01/03 02:14:41  set
 * Fixed: Need to create win32/rhide.env for Cygwin/MinGW targets. Needed for
 RHIDE 1.4.9.
