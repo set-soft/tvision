@@ -13,7 +13,7 @@
 #undef False
 #include <X11/Xlib.h>
 
-#include <tv/x11scr.h>
+#include <tv/x11/screen.h>
 
 #include <stdio.h>
 /*****************************************************************************
