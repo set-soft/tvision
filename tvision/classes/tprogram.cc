@@ -53,7 +53,7 @@ TProgram::TProgram() :
     initScreen();
     state = sfVisible | sfSelected | sfFocused | sfModal | sfExposed;
     options = 0;
-    buffer = (ushort *)TScreen::screenBuffer;
+    buffer = TScreen::screenBuffer;
 
     if( createStatusLine != 0 &&
         (statusLine = createStatusLine( getExtent() )) != 0
@@ -320,7 +320,7 @@ void TProgram::setScreenMode( ushort mode, char *command )
           TScreen::setVideoMode( mode );
        }
     initScreen();
-    buffer = (ushort *)TScreen::screenBuffer;
+    buffer = TScreen::screenBuffer;
     r = TRect( 0, 0, TScreen::screenWidth, TScreen::screenHeight );
     changeBounds( r );
     setState(sfExposed, False);

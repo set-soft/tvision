@@ -1002,8 +1002,7 @@ void call50()
   buffer = ((TGroup *)(_view))->buffer+buf_offset;
   if (!in_shadow)
   {
-    if (((TGroup *)(_view))->buffer ==
-        ((ushort *)(TScreen::screenBuffer)))
+    if (((TGroup *)(_view))->buffer == TScreen::screenBuffer)
     {
 #if 0 // def __DJGPP__
       movedata(_my_ds(),(int) (((const ushort *)_Buffer) +skip_offset),
@@ -1019,8 +1018,7 @@ void call50()
     return;
   }
   // in_shadow
-  if (((TGroup *)(_view))->buffer ==
-      ((ushort *)(TScreen::screenBuffer)))
+  if (((TGroup *)(_view))->buffer == TScreen::screenBuffer)
   {
     int i;
     unsigned short attr = (shadowAttr & 0xff) << 8;
@@ -1130,7 +1128,7 @@ lab20:
     if (((TGroup *)(_view))->lockFlag) return;
     goto lab10;
   }
-  if ((((TGroup *)(_view))->buffer) != ((ushort *)(TScreen::screenBuffer)))
+  if ((((TGroup *)(_view))->buffer) != TScreen::screenBuffer)
   {
     call50();
     if (((TGroup *)(_view))->lockFlag) return;
