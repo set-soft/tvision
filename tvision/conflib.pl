@@ -131,6 +131,17 @@ sub RunRedirect
  $ret;
 }
 
+sub AddIncludes
+{
+ my (@dirs)=split(' ',$conf{'EXTRA_INCLUDE_DIRS'});
+ my ($res)='';
+ for (@dirs)
+    {
+     $res.=" -I$_";
+    }
+ return $res;
+}
+
 ###[txh]####################################################################
 #
 # Prototype: RunGCCTest($gcc,$extension,$prog,$flags)
@@ -158,6 +169,7 @@ sub RunGCCTest
  replace($file,$test."\n");
  $flags=$CFLAGS if ($ext eq 'c');
  $flags=$CXXFLAGS if ($ext eq 'cc');
+ $flags.=AddIncludes();
  $command="$cc -o test.exe $flags $file $switchs";
  #print "Running: $command\n";
  $label=$command.":\n";
@@ -540,11 +552,12 @@ sub FindCFLAGS
     $ret.=' -pipe' if ($OS eq 'UNIX');
     # Looks like that's common and some sysadmins doesn't configure gcc to
     # look there:
-    $ret.=' -I/usr/local/include' if ($OSf eq 'FreeBSD');
+    $conf{'EXTRA_INCLUDE_DIRS'}.=' /usr/local/include' if ($OSf eq 'FreeBSD');
     # Darwin is using a temporal size
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
     # QNX4 X11 is in /usr/X11R6
-    $ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
+    # This should be automatic now. (EXTRA_INCLUDE_DIRS).
+    #$ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
@@ -612,10 +625,12 @@ sub FindCXXFLAGS
    {
     $ret='-O2'; # -gstabs+3';
     $ret.=' -pipe' if ($OS eq 'UNIX');
-    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSf eq 'FreeBSD');
+    $ret.=' -L/usr/local/include' if ($OSf eq 'FreeBSD');
+    $conf{'EXTRA_INCLUDE_DIRS'}.=' /usr/local/include' if ($OSf eq 'FreeBSD');
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
     # QNX4 X11 is in /usr/X11R6
-    $ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
+    # This should be automatic now. (EXTRA_INCLUDE_DIRS).
+    #$ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
    }
  print "$ret\n";
  $conf{'CXXFLAGS'}=$ret;
