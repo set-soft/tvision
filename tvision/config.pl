@@ -47,7 +47,7 @@ if ($OS eq 'UNIX')
    LookForGPM($GPMVersionNeeded);
    LookForNCurses($NCursesVersionNeeded,$NCursesVersionRecomended);
    LookForKeysyms();
-   LookForOutB();
+   #LookForOutB();
   }
 LookForIntlSupport();
 LookForEndianess();
