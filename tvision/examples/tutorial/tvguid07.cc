@@ -21,12 +21,13 @@ UNIX.
 
 // same as tvguid06 except for improved draw method
 
-#include <stdlib.h>             // for exit(), rand()
+#define Uses_stdlib             // for exit(), rand()
 #include <iostream.h>
 #include <fstream.h>            // for ifstream
-#include <stdio.h>              // for puts() etc
+#define Uses_stdio.h>           // for puts() etc
 #define Uses_string             // for strlen etc
-#include <ctype.h>
+#define Uses_ctype
+#define Uses_IfStreamGetLine
 
 #define Uses_TEventQueue
 #define Uses_TEvent
@@ -69,7 +70,7 @@ void readFile( const char *fileName )
         {
         char buf[maxLineLength];
         while( lineCount < maxLines &&
-               fileToView.getline( buf, maxLineLength ) != 0 )
+               IfStreamGetLine(fileToView,buf,maxLineLength) )
             {
             lines[lineCount] = newStr( buf );
             lineCount++;

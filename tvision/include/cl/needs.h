@@ -74,6 +74,7 @@ compiler.@p
  #define NEEDS_OPENDIR
  #define NEEDS_MKSTEMP
  #define NEEDS_NL_LANGINFO
+ #define NEEDS_IFSTREAMGETLINE
 #endif
 
 
