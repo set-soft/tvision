@@ -9,7 +9,9 @@
 #include <sys/farptr.h>
 #include <go32.h>
 #include <dpmi.h>
-#include <conio.h>
+//#include <conio.h>
+extern "C" void intensevideo(void);
+extern "C" void blinkvideo(void);
 #include <pc.h>
 #include <stdlib.h>
 #include <stdio.h>

@@ -50,6 +50,7 @@ if ($OS eq 'UNIX')
    LookForOutB();
   }
 LookForIntlSupport();
+LookForEndianess();
 
 print "\n";
 GenerateMakefile();
@@ -173,6 +174,38 @@ sub GiveAdvice
     print "* No mouse support for console! please install the libgpm package needed\n";
     print "  for development. (i.e. libgpmg1-dev_1.13-5.deb).\n";
    }
+}
+
+sub LookForEndianess
+{
+
+ my $test;
+
+ print 'Checking endianess: ';
+
+ if (@conf{'TV_BIG_ENDIAN'} eq 'yes')
+   {
+    print "big endian (cached)\n";
+    return;
+   }
+ if (@conf{'TV_BIG_ENDIAN'} eq 'no')
+   {
+    print "little endian (cached)\n";
+    return;
+   }
+ $test='
+#include <stdio.h>
+int main(void)
+{
+ int a=1;
+ char *s=(char *)&a;
+ printf("%s\n",s[0]==1 ? "little" : "big");
+ return 0;
+}';
+ $test=RunGCCTest($GCC,'c',$test,'');
+ chop($test);
+ $conf{'TV_BIG_ENDIAN'}=($test eq "big") ? 'yes' : 'no';
+ print "$test endian\n";
 }
 
 sub LookForIntlSupport
@@ -459,6 +492,7 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
  $text.=ConfigIncDefYes('HAVE_GPM','GPM mouse support');
  $text.=ConfigIncDefYes('HAVE_OUTB_IN_SYS','out/in functions defined by glibc');
+ $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n#define TVOSf_$OSflavor\n";
 
