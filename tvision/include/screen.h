@@ -103,7 +103,9 @@ public:
     static uchar screenHeight;
     static Boolean hiResScreen;
     static Boolean checkSnow;
-    static long screenBuffer;
+    // SET: Changed to avoid problems, in fact some casts to int failed in
+    // Alpha/Linux. We found it with Dim Zegebart.
+    static ushort *screenBuffer;
     static ushort cursorLines;
 
     static void setCrtData();

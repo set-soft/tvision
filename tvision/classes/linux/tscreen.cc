@@ -398,7 +398,7 @@ uchar TScreen::screenWidth = 0;
 uchar TScreen::screenHeight = 0;
 Boolean TScreen::hiResScreen = False;
 Boolean TScreen::checkSnow = True;
-long TScreen::screenBuffer = -1;
+ushort *TScreen::screenBuffer = 0;
 ushort TScreen::cursorLines = 0;
 
 int TScreen_suspended = 1;
@@ -514,7 +514,7 @@ TScreen::TScreen()
   #endif
   LOG("screen size is " << (int) screenWidth << "x" <<
       (int) screenHeight);
-  screenBuffer = (int) new ushort[screenWidth * screenHeight];
+  screenBuffer = new ushort[screenWidth * screenHeight];
 
   /* vcs stuff */
   
@@ -587,7 +587,7 @@ TScreen::TScreen()
   {
     int i,len = screenWidth*screenHeight;
     for (i=0;i<len;i++)
-     ((ushort *)screenBuffer)[i] = 0x0720;
+        screenBuffer[i] = 0x0720;
   }
 #if 0
   resume();
@@ -628,7 +628,7 @@ TScreen::~TScreen()
   }
   TScreen_suspended = 1;
 #endif
-  delete[] (ushort *)screenBuffer;
+  delete screenBuffer;
   LOG("terminated");
   if (vcs_fd >= 0) close(vcs_fd);
   if (mono_mem)
@@ -696,26 +696,26 @@ void TScreen::clearScreen()
 void TScreen::setVideoMode( ushort mode )
 {
   if (screenBuffer)
-    delete[] (ushort *)screenBuffer;
+     delete screenBuffer;
   setCrtMode( fixCrtMode( mode ) );
   setCrtData();
   // allocating a zeroed screenBuffer, because this function
   // is called in most cases (in RHIDE) after a SIGWINCH
-  screenBuffer = (int) new ushort[screenWidth * screenHeight];
-  memset((void *)screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
+  screenBuffer = new ushort[screenWidth * screenHeight];
+  memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
 }
 
 // I'm not sure about it check it Robert
 void TScreen::setVideoMode( char *mode )
 {
   if (screenBuffer)
-    delete[] (ushort *)screenBuffer;
+     delete screenBuffer;
   setCrtMode( mode );
   setCrtData();
   // allocating a zeroed screenBuffer, because this function
   // is called in most cases (in RHIDE) after a SIGWINCH
-  screenBuffer = (int) new ushort[screenWidth * screenHeight];
-  memset((void *)screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
+  screenBuffer = new ushort[screenWidth * screenHeight];
+  memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
 }
 
 void TScreen::setCursorType(ushort ct)
@@ -778,7 +778,7 @@ void TScreen::getCharacter(unsigned offset,ushort *buf,unsigned count)
   }
   else                  /* standard out */
   {
-    memcpy(buf,(ushort *)screenBuffer+offset,count*sizeof(ushort));
+    memcpy(buf,screenBuffer+offset,count*sizeof(ushort));
   }
 }
 
@@ -812,7 +812,7 @@ void TScreen::setCharacter(unsigned dst,ushort *src,unsigned len)
   }
   else                  /* standard out */
   {
-    ushort *old = (ushort *)screenBuffer + dst;
+    ushort *old = screenBuffer + dst;
     ushort *old_right = old + len - 1;
     ushort *src_right = src + len - 1;
 

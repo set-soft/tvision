@@ -38,7 +38,7 @@ uchar TScreen::screenHeight = 0;
 uchar TDisplay::Page = 0;
 Boolean TScreen::hiResScreen = False;
 Boolean TScreen::checkSnow = True;
-long TScreen::screenBuffer = -1;
+ushort *TScreen::screenBuffer = 0;
 ushort TScreen::cursorLines = 0;
 
 extern REGS r_display;
