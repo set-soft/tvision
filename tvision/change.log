@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.321  2002/09/16 14:48:53  set
+* Fixed: Our TV includes TFileViewer in the library so I also fixed the
+delta bug there.
+
 Revision 2.320  2002/09/16 14:39:40  set
 * Fixed: The file viewer of the demo program didn't initialize the delta
 member generating aleatory memory corruptions. Seen on Cygwin and MinGW.

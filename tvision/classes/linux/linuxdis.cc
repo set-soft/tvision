@@ -298,12 +298,8 @@ void TDisplayLinux::SetCursorPosVCS(unsigned x, unsigned y)
 {
  unsigned char where[2]={x,y};
 
- if (cursorStart>=cursorEnd)
-    fputs("\E[?2c",stdout);
  lseek(vcsWfd,2,SEEK_SET);
  write(vcsWfd,where,sizeof(where));
- if (cursorStart>=cursorEnd)
-    fputs("\E[?1c",stdout);
  // Cache the value to avoid the need to read it
  curX=x; curY=y;
 }

@@ -77,7 +77,7 @@ void TScrollBar::drawPos( int pos )
        {
        b.moveChar( 1, aChars[2], getColor(1), s-1 );
        b.moveChar( pos, aChars[3], getColor(3), 1 );
-       if( (state & sfFocused) && TScreen::getShowCursorEver() )
+       if( state & sfFocused )
          {
          setCursor( pos , 0 );
          resetCursor();

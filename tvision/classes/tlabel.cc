@@ -66,7 +66,7 @@ void TLabel::draw()
     if( text != 0 )
         {
         b.moveCStr( 1, text, color );
-        if( light  && TScreen::getShowCursorEver() )
+        if( light )
             {// Usually this will do nothing because the focus is in the linked
              // object
             setCursor( 1 , 0 );

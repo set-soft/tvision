@@ -98,7 +98,7 @@ void TButton::drawTitle( TDrawBuffer &b,
         b.putChar( 0, specialChars[scOff] );
         b.putChar( s, specialChars[scOff+1] );
         }
-    if( (state & sfActive) && (state & sfSelected) && TScreen::getShowCursorEver() )
+    if( (state & sfActive) && (state & sfSelected) )
         {
         setCursor( i+l-1 , 0 );
         resetCursor();
