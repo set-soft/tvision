@@ -272,9 +272,10 @@ examples/tutorial/tvguid15.cc
 examples/tutorial/tvguid15.gpr
 examples/tutorial/tvguid16.cc
 examples/tutorial/tvguid16.gpr
-extra/doskeys/keyextend.asm
--extra/doskeys/keyextend.com
-extra/doskeys/keyextend.txt
+extra/doskeys/kextend.asm
+-extra/doskeys/kextend.com
+extra/doskeys/kextend.txt
+-extra/pifexamp/setedit.pif
 fileview.cc
 gkey.cc
 gkey.gpr

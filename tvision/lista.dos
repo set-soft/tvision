@@ -3,7 +3,7 @@ copying
 copying.rh
 djgpp/sacadeb.bat
 djgpp/compress.bat
-extra/doskeys/keyextend.asm
-extra/doskeys/keyextend.txt
+extra/doskeys/kextend.asm
+extra/doskeys/kextend.txt
 
 
