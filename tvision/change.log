@@ -1,4 +1,7 @@
 $Log$
+Revision 1.146  2000/04/29 17:09:42  set
+* Added: Mixer stuff.
+.
 Revision 1.145  2000/04/20 19:56:54  root (set)
 * Fixed: Some details in linux/tscreen.cc to try to compile it under other
 UNIX flavors. I disabled all the x86 specific code for other flavors (is i386
@@ -97,7 +100,8 @@ Revision 1.129  2000/02/01 00:03:12  root (set)
 finally Andris triggered the fix.
 
 Revision 1.128  2000/01/29 15:27:42  set
-* NEW: Merged patches from Vadim Beloborodov to support Win32 console.
+* NEW: Merged patches from Vadim Beloborodov <bvr@cc.pib.alex-ua.com> to
+support Win32 console.
 .
 Revision 1.127  2000/01/26 00:27:35  set
 * Added: A new couple of TScreen members to Set/Get the window title under

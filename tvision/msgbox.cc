@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 // they can inconditionally declare symbols like NULL
 #include <stdarg.h>
 #include <stdio.h>
-#include <string.h>
+#define Uses_string
 
 #define Uses_MsgBox
 #define Uses_TObject

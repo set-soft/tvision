@@ -195,7 +195,8 @@ sub LookForPrefix
    }
  else
    {
-    if (`rm --help`=~/(.*)\/BIN\/RM.EXE/)
+    $test=`rm --help`;
+    if ($test=~/(.*)\/BIN\/RM.EXE/)
       {
        $prefix=$1;
        if ($prefix=~/\/\/(\w)\/(.*)/)
@@ -209,7 +210,16 @@ sub LookForPrefix
       }
     else
       {
-       die "Some critical tools aren't installed please read the reame files";
+       if (!$test)
+         {
+          die "Some critical tools aren't installed please read the reame files";
+         }
+       else
+         {
+          print "Unable to determine installation prefix, please use --prefix option.\n";
+          print "You'll most probably need to quote the --prefix option (\"--prefix=path\").\n" if @ENV{'OS'} eq 'Windows_NT';
+          die;
+         }
       }
    }
  @conf{'prefix'}=$prefix;

@@ -33,7 +33,7 @@ void TEventQueue::mouseInt()
     if (draw_mouse(x,y)) mouseIntFlag = True;
     if( (mouseIntRegs.x.ax & 0x1e) != 0 && eventCount < eventQSize )
         {
-        eventQTail->what = TICKS();
+        eventQTail->what = CLY_Ticks();
         eventQTail->mouse = curMouse;
         if( ++eventQTail >= eventQueue + eventQSize )
             eventQTail = eventQueue;
