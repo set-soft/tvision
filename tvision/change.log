@@ -1,4 +1,7 @@
 $Log$
+Revision 1.20  1999/02/02 23:03:19  root (set)
+* Adapted the TEditor family to Linux (file I/O stuff and \r\n differences).
+
 Revision 1.19  1999/02/02 01:55:54  set
 * Added the TEditor, TFileEditor, TEditorWindow and TMemo classes. I taked
 the code from the old RHIDE BETA 4 and adapted it for the new keyboard and
