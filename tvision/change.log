@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.352  2002/11/05 13:27:36  set
+* Modified: [Win32] [WinGr driver] Console release in constructor. Patch by
+Pawel Piecuch <pawelp@piecyk.allegro.pl>.
+* Fixed: [Win32] [WinGr driver] Control characters passed with ASCII
+attached. Patch by Pawel Piecuch <pawelp@piecyk.allegro.pl>.
+
 Revision 2.351  2002/11/05 13:12:26  set
 * Fixed: The Linux driver initialization could use a NULL pointer to delete
 a requested font.
