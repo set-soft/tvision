@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.193  2002/07/01 13:02:47  set
+* Added: Font set/restore mechanism to TScreen.
+* Added: [X11] Full fonts support.
+* Added: [Linux] Partial fonts support, more things needs to be solved.
+* Added: A fonts test/demo example.
+* Added: GetCodePages call to memorize the current code pages in use.
+* Fixed: [X11] Initialization to allocate classHint, no fixed size, and to
+do it before indicating success.
+
 Revision 2.192  2002/07/01 12:57:39  set
 * Fixed: [X11] clipboard code.
 

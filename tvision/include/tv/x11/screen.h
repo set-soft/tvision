@@ -104,7 +104,7 @@ protected:
 
  static void   FullRedraw();
  inline
- static void   drawChar(unsigned x, unsigned y, uchar aChar, uchar aAttr);
+ static void   drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr);
 
  // Variables for this driver
  // Foreground and background colors
