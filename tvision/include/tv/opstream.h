@@ -43,6 +43,7 @@ public:
     void writeWord( ushort val ) { writeShort(val); };
     void writeString( const char * );
     void writeString16( const uint16 *str );
+    void writeString( const uint16 *str ) { writeString16(str); };
     /* Platform dependent: */
     void writeShort(ushort val);
     void writeInt(uint val);

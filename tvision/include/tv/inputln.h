@@ -6,7 +6,14 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Heavily modified by Salvador E. Tropea to support multibyte encodings.
+Now the original TInputLine is composed by:
 
+TInputLineBase -> TInputLineBaseT<T,D> |-> TInputLine
+                                       |-> TInputLineU16
+
+The template class is used to avoid maintaining two versions of the same
+code.
  *
  *
  */
@@ -135,27 +142,43 @@ int TInputLineBase::posIsEnd()
  return curPos>=dataLen;
 }
 
-class TInputLine : public TInputLineBase
+template <typename T, typename D>
+class TInputLineBaseT: public TInputLineBase
 {
 public:
- TInputLine(const TRect& bounds, int aMaxLen);
+ TInputLineBaseT(const TRect& bounds, int aMaxLen);
 
- virtual void    draw();
  virtual void    setData(void *rec);
+ virtual void    setDataFromStr(void *str);
  virtual void    assignPos(int index, unsigned val);
  virtual Boolean pasteFromOSClipboard();
  virtual void    copyToOSClipboard();
+ virtual void    draw();
+
+#if !defined( NO_STREAM )
+protected:
+ TInputLineBaseT(StreamableInit) : TInputLineBase(streamableInit) {}
+
+ virtual void writeData(opstream&);
+ virtual void *readData(ipstream&);
+#endif // NO_STREAM
+};
+
+class TInputLine : public TInputLineBaseT<char,TDrawBuffer>
+{
+public:
+ TInputLine(const TRect& bounds, int aMaxLen) :
+   TInputLineBaseT<char,TDrawBuffer>(bounds,aMaxLen) {};
+
  virtual Boolean insertChar(TEvent &event);
- virtual void    setDataFromStr(void *str);
 
 #if !defined( NO_STREAM )
  virtual const char *streamableName() const
      { return name; }
 
 protected:
- TInputLine(StreamableInit);
- virtual void writeData(opstream&);
- virtual void *readData(ipstream&);
+ TInputLine::TInputLine(StreamableInit) :
+   TInputLineBaseT<char,TDrawBuffer>(streamableInit) {}
 
 public:
  static const char * const name;
@@ -176,32 +199,21 @@ inline opstream& operator << ( opstream& os, TInputLine* cl )
 #endif // NO_STREAM
 
 
-
-
-
-class TInputLineU16 : public TInputLineBase
+class TInputLineU16 : public TInputLineBaseT<uint16,TDrawBufferU16>
 {
 public:
- TInputLineU16(const TRect& bounds, int aMaxLen);
+ TInputLineU16(const TRect& bounds, int aMaxLen) :
+   TInputLineBaseT<uint16,TDrawBufferU16>(bounds,aMaxLen) {};
 
- virtual void    draw();
- virtual void    setData(void *rec);
- virtual void    assignPos(int index, unsigned val);
- virtual Boolean pasteFromOSClipboard();
- virtual void    copyToOSClipboard();
  virtual Boolean insertChar(TEvent &event);
- virtual void    setDataFromStr(void *str);
 
- uint16 *data16;
- 
 #if !defined( NO_STREAM )
  virtual const char *streamableName() const
      { return name; }
 
 protected:
- TInputLineU16(StreamableInit);
- virtual void writeData(opstream&);
- virtual void *readData(ipstream&);
+ TInputLineU16(StreamableInit) :
+   TInputLineBaseT<uint16,TDrawBufferU16>(streamableInit) {}
  
 public:
  static const char * const name;
