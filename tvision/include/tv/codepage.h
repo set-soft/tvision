@@ -12,7 +12,10 @@
 
 class TVCodePageCol;
 class TStringCollection;
-struct stIntCodePairs;
+struct stIntCodePairs
+{
+ uint16 unicode,code;
+};
 
 // This is the internal structure used to describe a code page
 struct CodePage
