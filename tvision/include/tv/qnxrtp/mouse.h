@@ -26,8 +26,8 @@ class THWMouseQNXRtP: public THWMouse
       static int MousePositionY;
       static int MouseButtons;
 
-      static int MouseMikkiPositionX;
-      static int MouseMikkiPositionY;
+      static int MouseMickeyPositionX;
+      static int MouseMickeyPositionY;
 
    protected:
       static int  OpenDeviMouse();

@@ -1,4 +1,4 @@
-Driver: QNXRtP
+Driver: QNXRtP (QNX6)
 Author: Mike Gorchak
 Status: Just a few words
 Revision: $Revision$
@@ -19,13 +19,13 @@ charScan.charCode and field keyDown.keyCode is zero.
 
 3. Mouse support
 
-   Experimental mouse support in pure console mode was added. To  use
-mouse you need to run devi-hirun manually (it's  true  for  QNX  with
-versions 6.1, 6.2, 6.2.1). Run '/usr/photon/bin/devi-hirun -Pr [mouse
-options]', for example 'devi-hirun -Pr ps2 mousedev' for  the generic
-ps2 mouses. [-P] will prevent to connect devi-hirun as  input manager
-to the photon, [-r] will start devi-hirun in  resource  manager mode.
-Check the /dev/devi/ directory it must contain  the mouse0 device, if
-it exists, that's mean all is ok.
+   Mouse support in pure console mode was  added. To  use  mouse  you
+need to run devi-hirun manually (it's true for QNX with versions 6.1,
+6.2, 6.2.1).  Run  '/usr/photon/bin/devi-hirun -Pr [mouse options]' ,
+for example 'devi-hirun -Pr ps2 mousedev' for the generic ps2 mouses.
+[-P] will prevent  to  connect  devi-hirun as  input  manager to  the
+photon, [-r] will start devi-hirun in  resource  manager  mode. Check
+the /dev/devi/ directory it must  contain  the  mouse0  device, if it
+exists, that's mean all is ok.
 
 // Mike Gorchak.
