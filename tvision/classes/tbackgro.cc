@@ -17,6 +17,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_ipstream
 #define Uses_TStreamableClass
 #define Uses_TPalette
+#define Uses_TScreen
+#define Uses_TDeskTop
 #include <tv.h>
 
 #define cpBackground "\x01"      // background palette
@@ -32,7 +34,10 @@ void TBackground::draw()
 {
     TDrawBuffer b;
 
-    b.moveChar( 0, pattern, getColor(0x01), size.x );
+    char ch = pattern;
+    if( TScreen::avoidMoire && ch == TDeskTop::defaultBkgrnd )
+        ch = TView::noMoireFill;
+    b.moveChar( 0, ch, getColor(0x01), size.x );
     writeLine( 0, 0, size.x, size.y, b );
 }
 

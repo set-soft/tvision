@@ -1926,6 +1926,7 @@ void TVCodePage::RemapTVStrings(ushort *map)
  C(TIndicator,modifiedStar);
  C(TListViewer,columnSeparator);
  C(TDeskTop,defaultBkgrnd);
+ C(TView,noMoireFill);
  #undef C
 
  #define C(cla,name,len) RemapNString((uchar *)cla::name,(uchar *)cla::o##name,map,len)

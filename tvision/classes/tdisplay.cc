@@ -59,6 +59,7 @@ char        **TDisplay::environment               =NULL;
 TScreenColor  TDisplay::OriginalPalette[16];
 TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
+char          TDisplay::avoidMoire                =0;
 uint32        TDisplay::opts1                     =0;
 TVCodePage   *TDisplay::codePage                  =NULL;
 Boolean       TDisplay::busyState                 =False;

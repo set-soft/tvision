@@ -156,6 +156,10 @@ public:
     // I moved it to a class because I think is better to enclose them.
     static uchar specialChars[];
     static uchar ospecialChars[];
+    // SET: Replacements to avoid moire artifacts
+    static uchar noMoireUnFill;
+    static uchar noMoireFill;
+    static uchar onoMoireFill;
 
 private:
 

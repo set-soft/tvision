@@ -164,6 +164,9 @@ public:
  static TScreenResolution dosModesCell[];
  static int dosModes[];
 
+ // This flag indicates the user wants to avoid characters that produce moire artifacts
+ static char avoidMoire;
+
  // We must remove it
  static int dual_display;
 

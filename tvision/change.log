@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.508  2003/11/03 15:53:57  set
+* Modified: The behavior of menu short-cuts look-up. The original code from
+Borland was quite bad (never searched in the current menu) so Robert
+modified it to always search in the opened menu. But this is not good when
+the key is Alt+Key, in this case now the old behavior is used.
+
 Revision 2.507  2003/10/27 13:19:10  set
 * Fixed: A bug in dlgdsn example. Patch by Frank Liu
 <liug.mama.indstate.edu>.
