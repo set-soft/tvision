@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added: TInput1Line class by SET (based on TVTools idea).
 
  *
  *
@@ -101,6 +102,17 @@ inline opstream& operator << ( opstream& os, TInputLine& cl )
 inline opstream& operator << ( opstream& os, TInputLine* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
+
+#ifdef Uses_TInput1Line
+// This is based on TVTools idea, but I think is better to implement it
+// in this way and not like a macro.
+class TInput1Line : public TInputLine
+{
+public:
+ TInput1Line(int x, int y, int max) :
+   TInputLine(TRect(x,y,x+max+2,y+1), max)) {};
+};
+#endif // Uses_TInput1Line
 
 #endif  // Uses_TInputLine
 

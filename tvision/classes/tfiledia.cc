@@ -20,7 +20,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #define Uses_TRect
 #define Uses_TFileInputLine
 #define Uses_TButton
-#define Uses_TLabel
+#define Uses_T1Label
 #define Uses_TFileList
 #define Uses_THistory
 #define Uses_TScrollBar
@@ -53,7 +53,6 @@ TFileDialog::TFileDialog( const char *aWildCard,
     directory( 0 )
 { // SET: Enlarged the window 1 line and added 1 line to the list moving
   // labels 1 line up
-    const char *tmp;
     options |= ofCentered;
     // SET: Allow it to grow
     growMode = gfGrowAll;
@@ -65,10 +64,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
     fileName->growMode=gfGrowHiX;
     insert( fileName );
 
-    insert( new TLabel( TRect( 2, 1, 3+cstrlen(inputName), 2 ),
-                        inputName,
-                        fileName
-                      ) );
+    insert( new T1Label( 2, 1, inputName, fileName ) );
     THistory *his=new THistory(TRect(31,2,34,3),fileName,histId);
     // SET: This and more settings to make it grow nicely
     his->growMode=gfGrowLoX | gfGrowHiX;
@@ -82,8 +78,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
     insert(fileList=new TFileList(TRect(3,5,34,longNames ? 16 : 15),sb));
     fileList->growMode=gfGrowHiX | gfGrowHiY;
 
-    tmp = _("~F~iles");
-    insert( new TLabel( TRect( 2, 4, 3+cstrlen(tmp), 5 ), tmp, fileList ) );
+    insert( new T1Label( 2, 4, __("~F~iles"), fileList ) );
 
     ushort opt = bfDefault;
     TRect r( 35, 2, 46, 4 );

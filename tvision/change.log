@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.441  2003/05/14 13:53:37  set
+* Added: TSItem::append, TMenuItem::append, operator += (TMenuItem& ,
+TMenuItem&), operator += (TSubMenu& , TSubMenu& ), operator += ( TSubMenu&
+, TMenuItem& ), operator += ( TStatusDef& , TStatusDef& ), operator +=
+( TStatusDef& , TStatusItem& ), operator + ( TSItem& , TSItem& ) and
+operator += ( TSItem& , TSItem&  ). Most of them based on TVTools code or
+inspired and reworked.
+* Added: explanation about BSD code in TV and also code from TVTools to the
+readme.
+
 Revision 2.440  2003/05/13 15:06:16  set
 * Added: void *getData() member to TInputLine. It return the data member.
 That's needed to compile coded adapted to the Unicode branch where the
