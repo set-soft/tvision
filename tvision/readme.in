@@ -310,15 +310,28 @@ we can do a good tool from it.
 ---------------------------------
 
   The library compiles and runs in DOS and Linux. Only i386 Linux is fully
-supported, we are working to support Alpha too, currently I think you can
-get it working if you compile the library without warnings enabled, that's
-needed because there are errors in system.h file for Alpha (an invalid
-pointer convertion) that are reported only by C++ and not C, looks like
-nobody includes these headers in C++ programs. Another problem I know about
-Alpha is that egcs 2.91.66 generates some silly warnings, I think they are
-due to some bug in egcs, removing the -Werror switch you'll get a working
-library. Dim Zegebart <zager@post.comstar.ru> is the one testing the Alpha
-stuff.
+supported. The Linux+Alpha platform is also supported but not fully tested.
+I compiled the library in a remote system using ssh+Eterm (TERM=xterm) and
+the demo worked ok.
+
+  Note for Alpha:In the past we have problems with Alpha because the
+  system.h file for Alpha had some errors (an invalid pointer convertion)
+  exposed only by C++ compilers and not C, looks like nobody includes
+  these headers in C++ programs. Another problem I know about Alpha is that
+  egcs 2.91.66 generates some silly warnings, I think they are due to some
+  bug in egcs, removing the -Werror switch you'll get a working library.
+  Dim Zegebart <zager@post.comstar.ru> helped a lot testing this stuf.
+  Using gcc 2.95.2 and glibc 2.1.3 all compiles perfectly (Debian Potato
+  for Alpha).
+
+The Linux+Power PC and Linux+SPARC64 architectures are partially supported.
+The demo program compiles but there are some endian details that must be
+solved.
+  The FreeBSD+x86 platform seems to work, but you must install the GNU
+tools like make (it can be named gmake) and in the remote system I tested I
+got monochrome output, perhaps is just a wrong xterm terminfo description.
+  We are trying to support Solaris+GNU tools, the code compiles but doesn't
+work.
   There are some important things to note, specially what is supported in
 each case:
 
