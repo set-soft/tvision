@@ -1,0 +1,32 @@
+Source: rhtvision
+Section: libs
+Priority: optional
+Maintainer: Ivan Baldo <lubaldo@adinet.com.uy>
+Standards-Version: 2.4.0.0
+
+Package: rhtvision1-dev
+Architecture: i386
+Depends: rhtvision1, libc6-dev, libgpmg1-dev, ncurses3.4-dev
+Provides: rhtvision-dev
+Conflicts: rhtvision-dev
+Description: Development files for the RHTVision library - a TUI interface.
+ This is the statically linked library and header files for the development
+ of applications using the RHTVision library. You need to install this package
+ only if you want to develop or compile programs using the RHTVision library.
+
+Package: rhtvision1
+Architecture: i386
+Depends: ${shlibs:Depends}
+Description: The RHTVision library - an intuitive TUI interface for console applications.
+ This is the shared library for programs using the RHTVision library.
+ .
+ The RHTVision library gives an intuitive and user friendly TUI (Textual User
+ Interface) for programs using this library and running in a console.
+ .
+ This library is based on the Turbo Vision library made by Borland Corporation.
+ That library was released by Borland under a Public Domain license.
+ RHTVision is Borland's Turbo Vision library but with enhancements, some
+ changes and a GPL license.
+ .
+ There's a DOS version of this library as well.
+ 
