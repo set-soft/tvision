@@ -116,7 +116,7 @@ protected:
  // Our terminal state
  static struct termios outTermiosNew;
  // Last error
- static char *error;
+ static const char *error;
  // Kind of palette
  static int palette;
  enum

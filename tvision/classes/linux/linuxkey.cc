@@ -55,7 +55,7 @@ int            TGKeyLinux::oldInFlags;
 int            TGKeyLinux::newInFlags;
 struct termios TGKeyLinux::inTermiosOrig;
 struct termios TGKeyLinux::inTermiosNew;
-char          *TGKeyLinux::error=NULL;
+const char    *TGKeyLinux::error=NULL;
 int            TGKeyLinux::bufferKeys[MaxLenEscapeSequence];
 int            TGKeyLinux::keysInBuffer=0;
 int            TGKeyLinux::nextKey=-1;
