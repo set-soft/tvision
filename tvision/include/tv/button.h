@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added callback, code page stuff and various details by Salvador Eduardo Tropea.
 
  *
  *
@@ -32,6 +33,10 @@ class TRect;
 struct TEvent;
 class TDrawBuffer;
 
+// SET: callback function and return values
+typedef int (*TButtonCallBack)(unsigned command);
+const int btcbGoOn=0, btcbEndModal=1;
+
 class TButton : public TView
 {
 
@@ -51,6 +56,7 @@ public:
     void makeDefault( Boolean enable );
     virtual void press();
     virtual void setState( ushort aState, Boolean enable );
+    void setCallBack(TButtonCallBack cb) { callBack=cb; };
 
     const char *title;
     static char shadows[];
@@ -63,6 +69,7 @@ protected:
     ushort command;
     uchar flags;
     Boolean amDefault;
+    TButtonCallBack callBack;
 
 private:
 

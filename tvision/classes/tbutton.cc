@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added callback, code page stuff and various details by Salvador Eduardo Tropea.
 
  *
  *
@@ -50,12 +51,14 @@ TButton::TButton( const TRect& bounds,
     eventMask |= evBroadcast;
     if( !commandEnabled(aCommand) )
         state |= sfDisabled;
+    callBack=0;
 }
 
 TButton::~TButton()
 {
     DeleteArray(title); // SET
 }
+
 
 void TButton::draw()
 {
@@ -292,6 +295,12 @@ void TButton::press()
         e.message.infoPtr = this;
         putEvent( e );
         }
+    if (callBack) // SET: That's really useful
+      {
+       int ret=callBack(command);
+       if (ret==btcbEndModal && owner)
+          owner->endModal(command);
+      }
 }
 
 #if !defined( NO_STREAM )

@@ -1,4 +1,10 @@
 $Log$
+Revision 1.138  2000/02/27 15:06:18  set
+* Added: 32 bits versions of TRadioButtons and TCheckBoxes. They have the
+same name but just appends "32". These objects only override dataSize() to
+return 4. They are much better because: (1) You can have 32 items (not just
+16) and (2) structures doesn't need to be packed for 32 bits machines.
+.
 Revision 1.137  2000/02/05 22:22:20  set
 * Added: Now if a program executes a dialog while the desktop is locked it is
 temporally unlocked so the user can see the dialog and then is locked again.
