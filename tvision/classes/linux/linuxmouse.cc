@@ -13,8 +13,8 @@
 #define Uses_TScreen
 #include <tv.h>
 #include <termios.h>
-#include <tv/linuxscr.h>
-#include <tv/linuxmouse.h>
+#include <tv/linux/screen.h>
+#include <tv/linux/mouse.h>
 
 #ifdef HAVE_GPM
 extern "C" {

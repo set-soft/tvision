@@ -15,7 +15,7 @@
 #include <term.h>
 #include <sys/ioctl.h>
 
-#include <tv/linuxscr.h>
+#include <tv/linux/screen.h>
 
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
 // think it have much sense in non-Intel PCs. In fact looks like it gives

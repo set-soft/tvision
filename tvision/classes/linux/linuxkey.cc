@@ -35,7 +35,7 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #define Uses_FullSingleKeySymbols
 #define Uses_string
 #include <tv.h>
-#include <tv/linuxkey.h>
+#include <tv/linux/key.h>
 
 // New curses (ncurses) headers
 #ifdef TVOSf_FreeBSD

@@ -44,9 +44,9 @@ See ToDo in the mouse initialization.
 // Strange but rhide and setedit doesn't have this problem.
 // Andris Pavenis <pavenis@lanet.lv>
 #define SAVE_TERMIOS
-#include <tv/linuxscr.h>
-#include <tv/linuxkey.h>
-#include <tv/linuxmouse.h>
+#include <tv/linux/screen.h>
+#include <tv/linux/key.h>
+#include <tv/linux/mouse.h>
 
 #ifdef TVOSf_FreeBSD
  #include <ncurses.h>
