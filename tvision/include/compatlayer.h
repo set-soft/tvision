@@ -496,6 +496,8 @@ typedef unsigned long  ulong;
    // Why needed? that's a really idiot thing.
    #define alloca __builtin_alloca
   #endif
+  // MinGW lacks ioctl.h
+  #undef Include_ioctl
  #endif
 
  /* Win32/Cygwin -- OH! */

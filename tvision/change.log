@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.141  2003/12/03 20:22:53  set
+* Fixed: Moved changes to winnt/Makefile.nmk to winnt/msvcmake.in. Reported
+by gradha.
+
 Revision 2.399.2.140  2003/12/03 15:39:14  set
 * Fixed: Wrong ushort vs unsigned in Windows drivers. Patch from Grzegorz
 (gradha).
