@@ -30,8 +30,10 @@ and regex.
 
 ***************************************************************************/
 
-#ifndef CLY_CompatLayerIncluded
-#define CLY_CompatLayerIncluded
+// A global protection isn't suitable for all projects. Collisions should
+// be solved individually.
+//#ifndef CLY_CompatLayerIncluded
+//#define CLY_CompatLayerIncluded
 
 #include <tv/configtv.h>
 
@@ -1220,5 +1222,5 @@ int CLY_HaveLFNs()
  #define CLY_IsTrueEOL(a) (a=='\n')
 #endif
 
-#endif // CLY_CompatLayerIncluded
+//#endif // CLY_CompatLayerIncluded
 
