@@ -72,6 +72,23 @@ elsif ($OS eq 'Win32')
   }
 CreateConfigH();
 
+# Generate the BC++ makefile
+# 1) Get the list of files used by djgpp version
+$col=14;
+$a=ExtractItemsMak('djgpp/makefile',$col);
+# 2) Remove djgpp specific things
+$a=~s/vga.cc//;
+$a=~s/vgaregs.c//;
+$a=~s/vgastate.c//;
+# 3) Add BC++ specific
+$a.=' gkeyw32.cc';
+$a=~s/(\w+)\.(\w+)/\+$1\.obj/g;
+$a=~s/\t//g;
+# 4) Generate makefile from the template
+$ReplaceTags{'TV_OBJS_BCC'}=$a;
+ReplaceText('winnt/bccmake.in','winnt/Makefile');
+$a='';
+
 print "\nSuccesful configuration!\n\n";
 
 GiveAdvice();

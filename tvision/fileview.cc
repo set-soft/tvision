@@ -12,20 +12,14 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <stdio.h>
+#define Uses_stdio
 #define Uses_string
 #define Uses_stdlib
-#include <ctype.h>
+#define Uses_ctype
 #define Uses_fcntl
 #define Uses_sys_stat
 #define Uses_alloca
 #define Uses_filelength
-#ifdef _MSC_VER
-#include <io.h>
-#else
-#include <unistd.h>
-#endif
-
 
 #define Uses_MsgBox
 #define Uses_TKeys

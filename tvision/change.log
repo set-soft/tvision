@@ -1,4 +1,8 @@
 $Log$
+Revision 1.152  2000/05/22 23:52:32  set
+* Modified: Now the configtv.h isn't generated if the new one is identical.
+It avoids a masive recompile after configuring.
+.
 Revision 1.151  2000/05/20 20:02:21  set
 * Modified: The generated make file to use PHONY and force a real check of
 all the dependencies even if the library is already generated.
