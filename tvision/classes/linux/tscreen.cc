@@ -543,7 +543,7 @@ Boolean TScreen::hiResScreen = False;
 Boolean TScreen::checkSnow = True;
 ushort *TScreen::screenBuffer = 0;
 ushort TScreen::cursorLines = 0;
-volatile sig_atomic_t TScreen::windowSizeChanged=0;
+volatile sig_atomic_t TDisplay::windowSizeChanged=0;
 
 int TScreen_suspended = 1;
 
