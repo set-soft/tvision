@@ -16,11 +16,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-// We know the prototypes and it helps with the dummy
+// We know the prototypes and it helps with the dummy.
+// Note: Looks like some glibc 2.2.5 copies (not the one used in Debian)
+// defines the prototypes even if the header isn't explicitly included.
+// (Is that a valid behavior? or is just a bug).
+#ifndef textdomain
 char *textdomain(const char *domainname);
+#endif
+#ifndef bindtextdomain
 char *bindtextdomain(const char *domainname, const char *dirname);
+#endif
 #ifndef __DJGPP__
-char *gettext(const char *msgid);
+ #ifndef gettext
+ char *gettext(const char *msgid);
+ #endif
 #endif
 char *gettext__(const char *msgid);
 #ifdef __cplusplus

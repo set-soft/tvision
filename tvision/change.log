@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.133  2002/06/07 02:15:07  terrible
+* Updated: Debian packaging with small changes.
+
 Revision 2.132  2002/06/06 19:32:05  set
 * Fixed: The gcc 3.1 standard C++ streams doesn't define a public methode
 to open a stream from a C stream/file handle. It wasn't this way in 3.0 and
