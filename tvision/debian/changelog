@@ -6,6 +6,26 @@ rhtvision (1.1.2-0.1) unstable; urgency=low
 
 rhtvision (1.1.1-1) unstable; urgency=low
 
+  * New upstream release!!!
+  * Salvador (upstream) made minor changes to some descriptions on the
+    control file and README.Debian for better description of the
+    distribution issues.
+  * Salvador also made small modifications to debian/rules to adapt to
+    his changes of my previous patch for the -fPIC compilation of the
+    compat library.
+  * Now before building we backup upstream files that are regenerated
+    and on clean we restore that files from the backups, so you can
+    build, rebuild, clean, reclean and original files are maintained.
+    As a plus this allows me to do a diff file for the upstream without
+    hassles.
+  * Now removes all .cvsignore files from the packages.
+  * Added xlibs-dev to Build-Depends so that the library compiles with
+    enhanced support for Eterm 0.8.10+.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Fri, 28 Sep 2001 21:26:36 -0300
+
+rhtvision (1.1.1-0.1) unstable; urgency=low
+
   * New version automatically modified by version update scripts
 
  -- Salvador E. Tropea (SET) <salvador@inti.gov.ar>  Sun, 16 Sep 2001 16:10:03 -0300

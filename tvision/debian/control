@@ -2,7 +2,7 @@ Source: rhtvision
 Section: libs
 Priority: optional
 Maintainer: Ivan Baldo <lubaldo@adinet.com.uy>
-Build-Depends: perl, make, libncurses5-dev, libgpmg1-dev, gzip, debhelper (>=2.0.40)
+Build-Depends: perl, make, libncurses5-dev, libgpmg1-dev, gzip, debhelper (>=2.0.40), xlibs-dev
 Standards-Version: 3.5.2.0
 
 Package: rhtvision1.1.2-dev
