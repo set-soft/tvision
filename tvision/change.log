@@ -1,4 +1,10 @@
 $Log$
+Revision 1.145  2000/04/20 19:56:54  root (set)
+* Fixed: Some details in linux/tscreen.cc to try to compile it under other
+UNIX flavors. I disabled all the x86 specific code for other flavors (is i386
+and OS specific) and also changed some stuff that seems to be defined only
+by ncurses and not BSD's curses.
+
 Revision 1.144  2000/04/20 19:18:52  set
 * Modified: Some #ifdef __linux__ by TVOS_UNIX to test it under other
 flavors.
