@@ -31,6 +31,8 @@ protected:
  static int    CheckForWindowSize(void);
  static const char *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
+ static void   SetDisPaletteColorsXT(int from, int number, TScreenColor *colors);
+ static void   SetDisPaletteColorsEt(int from, int number, TScreenColor *colors);
 
  // Functions and members specific for this driver
  // Current cursor position
@@ -40,6 +42,17 @@ protected:
  // 1 when the size of the window where the program is running changed
  static volatile sig_atomic_t windowSizeChanged;
  static int hOut;   // Handle for the console output
+ // To distiguish between similar terminals
+ enum { XTerm, Eterm };
+ static int terminalType;
+ // How to restore the palette
+ static void   ResetPaletteColorsXT();
+ static void   ResetPaletteColorsEt();
+ static void (*ResetPaletteColors)();
+ // Color translation table
+ static char cMap[16];
+ // Which charset is currently selected (G0/G1)
+ static int selCharset;
 };
 
 // With this order the destructor will be called first for TScreen,
@@ -104,8 +117,6 @@ protected:
  // Tables to convert to ISO 2022 scheme
  static const uchar Code[256];
  static const uchar Modifier[256];
- // Which charset is currently selected (G0/G1)
- static int selCharset;
 };
 
 

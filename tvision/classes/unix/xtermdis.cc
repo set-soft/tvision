@@ -31,6 +31,10 @@ int                   TDisplayXTerm::cursorEnd  =99;  //  99 %
 // 1 when the size of the window where the program is running changed
 volatile sig_atomic_t TDisplayXTerm::windowSizeChanged=0;
 int                   TDisplayXTerm::hOut=-1;   // Handle for the console output
+int                   TDisplayXTerm::selCharset=0;
+int                   TDisplayXTerm::terminalType=TDisplayXTerm::XTerm;
+void                (*TDisplayXTerm::ResetPaletteColors)()=ResetPaletteColorsXT;
+char                  TDisplayXTerm::cMap[16]={0,4,2,6,1,5,3,7,8,12,10,14,9,13,11,15};
 
 // All the code is in TScreenLinux, but this is the right moment, by this
 // time TScreenLinux is suspended.
@@ -179,6 +183,52 @@ int TDisplayXTerm::SetWindowTitle(const char *name)
 {
  fprintf(stdout,"\E]2;%s\x7",name);
  return 1;
+}
+
+/*
+  Important note about palette:
+  Only XTerm from X 4.x and Eterm 0.9.x supports the palette manipulation.
+  As we don't have an easy way to determine the version of the terminal we
+are using this escape sequence must be "neutral".
+  The problem is that both terminals have problems with it. For this reason
+I added a Shift In (^O=\xF) to the sequence. When the sequence is
+interpreted this SI is executed and that's why I restore the value at the
+end (if (selCharset) ...). If the sequence isn't interpreted the SI finishes
+the sequence and the rest is discarded. In this way we don't mess the
+terminal state.
+*/
+// XTerm code
+void TDisplayXTerm::SetDisPaletteColorsXT(int from, int number, TScreenColor *colors)
+{
+ while (number-- && from<16)
+   {
+    fprintf(stdout,"\E]4;%d;#%2.2X%2.2X%2.2X\xF",cMap[from++],colors->R,colors->G,colors->B);
+    colors++;
+   }
+ if (selCharset)
+    fputc(14,stdout);
+}
+
+void TDisplayXTerm::ResetPaletteColorsXT()
+{// Just setup a default palette
+ SetDisPaletteColorsXT(0,16,PC_BIOSPalette);
+}
+
+// Eterm code, Linux console style
+void TDisplayXTerm::SetDisPaletteColorsEt(int from, int number, TScreenColor *colors)
+{
+ while (number-- && from<16)
+   {
+    fprintf(stdout,"\E]P%1.1X%2.2X%2.2X%2.2X\xF",cMap[from++],colors->R,colors->G,colors->B);
+    colors++;
+   }
+ if (selCharset)
+    fputc(14,stdout);
+}
+
+void TDisplayXTerm::ResetPaletteColorsEt()
+{
+ fputs("\E]R",stdout);
 }
 #endif // TVOS_UNIX && !TVOSf_QNXRtP
 

@@ -49,6 +49,7 @@ char        **TDisplay::argv                      =NULL;
 char        **TDisplay::environ                   =NULL;
 TScreenColor  TDisplay::OriginalPalette[16];
 TScreenColor  TDisplay::ActualPalette[16];
+char          TDisplay::paletteModified           =0;
 
 /*****************************************************************************
 

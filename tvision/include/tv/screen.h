@@ -133,14 +133,16 @@ protected:
 
  // Hardware Palette handling routines and variables.
  // This is low level and should be called from TScreen.
- static void      (*getDisPaletteColors)(int from, int number, TScreenColor *colors);
- static void      (*setDisPaletteColors)(int from, int number, TScreenColor *colors);
+ static void (*getDisPaletteColors)(int from, int number, TScreenColor *colors);
+ static void (*setDisPaletteColors)(int from, int number, TScreenColor *colors);
  // The shell/user palette
  static TScreenColor OriginalPalette[16];
  // The palette we are using
  static TScreenColor ActualPalette[16];
  // The PC BIOS palette
  static TScreenColor PC_BIOSPalette[16];
+ // To know if the palette changed (set by high level routines)
+ static char paletteModified;
  
  // Default behaviors
  static void        defaultClearScreen(uchar, uchar);
