@@ -803,13 +803,17 @@ void TScreenX11::AdjustCursorImage()
 }
 
 
-/************************** Experimental code for testing should be removed */
+/************************** Experimental code for testing should be removed
+                            or at least made better */
 static TVFontCollection *uF;
 static int firstGlyph, lastGlyph, numGlyphs;
 static XImage **unicodeGlyphs;
 static TVPartitionTree556 *u2c;
 static uchar *glyphs;
 static const char *tryUnicodeFont=NULL;
+static Font x11Font;
+static int  x11FontOffset;
+static int useX11Font=0;
 
 static
 const char *DataPaths[]=
@@ -861,7 +865,7 @@ void ConcatUpto(char *d, const char *o1, const char *o2, const char *o3,
 static
 int CanOpen(const char *file)
 {
- //printf("Testing %s\n",file);
+ printf("Testing %s\n",file);
  FILE *f=fopen(file,"rt");
  if (f)
    {
@@ -1009,6 +1013,7 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
     x+=fontW; b+=2; sb+=2;
    }
  DrawCursor();
+
  XFlush(disp);
 }
 
@@ -1031,7 +1036,148 @@ void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
  DrawCursor();
  XFlush(disp);
 }
+
+/*****************************************************************************
+  The following members are used to draw Unicode16 with X11 fonts.
+*****************************************************************************/
+
+void TScreenX11::writeLineX11U16(int x, int y, int w, void *str, unsigned color)
+{
+ if (!w) return; // Nothing to do
+
+ XSetBackground(disp,gc,colorMap[color>>4]);
+ XSetForeground(disp,gc,colorMap[color&15]);
+
+ XChar2b *s=(XChar2b *)str;
+ #ifndef TV_BIG_ENDIAN
+ // Lamentably X11 needs values in big endian style :-(
+ AllocLocalStr(aux,w*2);
+ s=(XChar2b *)aux;
+ uchar *ori=(uchar *)str;
+ int i;
+ for (i=0; i<w; i++)
+    {
+     s[i].byte2=*(ori++);
+     s[i].byte1=*(ori++);
+    }
+ #endif
+ XDrawImageString16(disp,mainWin,gc,x*fontW,y*fontH+x11FontOffset,s,w);
+}
+
+void TScreenX11::setCharactersX11U16(unsigned offset, ushort *values, unsigned w)
+{
+ int len   = 0;         /* longitud a escribir */
+ int letra = 0;
+ int color = 0;
+ int last  = -1;
+ AllocLocalUShort(tmp,w*2);
+ uint16 *dst=tmp;
+ uint16 *sb=screenBuffer+offset*2;
+
+ unsigned x,y;
+ x=offset%maxX;
+ y=offset/maxX;
+
+ while (w--)
+   {
+    sb[charPos]=letra=values[charPos];
+    sb[attrPos]=color=values[attrPos];
+    
+    if (color!=last)
+      {
+       if (last>=0)
+         {
+          writeLineX11U16(x,y,len,tmp,last);
+          dst=tmp; x+=len; len=0;
+         }
+       last=color;
+      }
+    *dst++=letra; values+=2; len++; sb+=2;
+   }
+  
+ writeLineX11U16(x,y,len,tmp,color);
+}
+
 /******************* End of experimental code for testing should be removed */
+
+// Look for one font in the specified foundry and family with the specified
+// height (in pixels) and a specified width (+/- 1 of tolerance).
+// The font must have "c" spacing and slant must be regular (not italic).
+// The encoding should be unicode.
+char *TScreenX11::SearchX11Font(const char *foundry, const char *family, int w, int h)
+{
+ AllocLocalStr(pattern,strlen(foundry)+strlen(family)+64);
+
+ char *ret=NULL;
+ int cant;
+ XFontStruct *info;
+ sprintf(pattern,"-%s-%s-*-r-*-*-%d-*-*-*-c-*-iso10646-*",foundry,family,h);
+ char **list=XListFontsWithInfo(disp,pattern,400,&cant,&info);
+ printf("matchs: %d\n",cant);
+ if (list)
+   {
+    char *oneLess,*oneMore,*exact;
+    oneLess=oneMore=exact=NULL;
+    int i=0;
+    while (!exact && i<cant)
+      {
+       if (info[i].max_bounds.width==w)
+          exact=list[i];
+       else
+         {
+          if (!oneLess && info[i].max_bounds.width==w-1)
+             oneLess=list[i];
+          else
+            {
+             if (!oneMore && info[i].max_bounds.width==w+1)
+                oneMore=list[i];
+            }
+         }
+       i++;
+      }
+    if (exact)
+       printf("w=%d\n",w);
+    else if (oneMore)
+       printf("w=%d\n",w+1);
+    else if (oneLess)
+       printf("w=%d\n",w-1);
+    if (!exact) exact=oneMore;
+    if (!exact) exact=oneLess;
+    if (exact)  ret=newStr(exact);
+    XFreeFontInfo(list,info,cant);
+   }
+
+ return ret;
+}
+
+char *TScreenX11::SearchX11Font(const char *foundry, const char *family)
+{
+ char *ret;
+ printf("h=%d\n",fontH);
+ ret=SearchX11Font(foundry,family,fontW,fontH);
+ if (!ret)
+   {
+    printf("h=%d\n",fontH+1);
+    ret=SearchX11Font(foundry,family,fontW,fontH+1);
+    if (!ret)
+      {
+       printf("h=%d\n",fontH-1);
+       ret=SearchX11Font(foundry,family,fontW,fontH-1);
+      }
+   }
+ return ret;
+}
+
+char *TScreenX11::SearchX11DefaultFont()
+{
+ char *ret=NULL;
+ int cant;
+ char **list=XListFonts(disp,"-*-*-*-r-*-*-*-*-*-*-c-*-iso10646-*",1,&cant);
+ if (cant)
+    ret=newStr(list[0]);
+ return ret;
+}
+
 
 TScreenX11::TScreenX11()
 {
@@ -1083,27 +1229,10 @@ TScreenX11::TScreenX11()
  if (optSearch("Font10x20",aux) && aux)
     fontW=10, fontH=20;
 
- if (fontW==10 || fontH==20)
-    defaultFont=&font10x20;
- else
-    defaultFont=&font8x16;
- TScreenFont256 *useFont;
- int freeFontData=1;
- if (!frCB || !(useFont=frCB(0,fontW,fontH)))
-   {
-    useFont=defaultFont;
-    freeFontData=0;
-   }
- fontW=useFont->w;
- fontH=useFont->h;
- fontWb=(useFont->w+7)/8;
- fontSz=fontWb*fontH;
- uchar *fontData=useFont->data;
-
- aux=0;
+ uchar *fontData=NULL;
+ int freeFontData=0;
  TScreenFont256 *secFont=NULL;
- if (frCB && optSearch("LoadSecondaryFont",aux) && aux)
-    secFont=frCB(1,fontW,fontH);
+ TScreenFont256 *useFont=NULL;
 
  /* Setting to fine tune this driver */
  aux=1;
@@ -1114,10 +1243,68 @@ TScreenX11::TScreenX11()
 
  /* If the user wants Unicode mode try to load a proper font */
  aux=0;
- if (optSearch("Unicode16",aux))
+ if (optSearch("Unicode16",aux) && aux)
    {
-    tryUnicodeFont=optSearch("UnicodeFont");
-    LoadFontAsUnicode();
+    aux=0;
+    if (optSearch("UseX11Fonts",aux) && aux)
+      {// Use X11 fonts for Unicode
+       char *x11FontName;
+       // Search a suitable font of fontWxfonH size (+/- 1)
+       x11FontName=SearchX11Font("misc","fixed");
+       if (!x11FontName)
+          // If none found try with a more generic pattern
+          x11FontName=SearchX11DefaultFont();
+       if (!x11FontName)
+          // None usable ...
+          printf("No suitable X11 font found :-(\n");
+          // We will try using internal fonts.
+       else
+         {
+          printf("Best font: %s\n",x11FontName);
+          // Ask X to load the font and return info about it.
+          XFontStruct *fontInfo=XLoadQueryFont(disp,x11FontName);
+          if (fontInfo)
+            {
+             useX11Font=1;
+             drawingMode=unicode16;
+             x11Font=fontInfo->fid;
+             x11FontOffset=fontInfo->max_bounds.ascent;
+             fontW=fontInfo->max_bounds.width;
+             fontH=x11FontOffset+fontInfo->max_bounds.descent;
+             printf("Font size: %dx%d\n",fontW,fontH);
+            }
+          DeleteArray(x11FontName);
+         }
+      }
+    if (drawingMode!=unicode16)
+      {// Use our fonts but encoded using Unicode
+       tryUnicodeFont=optSearch("UnicodeFont");
+       LoadFontAsUnicode();
+      }
+   }
+
+ if (drawingMode!=unicode16)
+   {// Unicode16 not requested or just failed
+    // Do the work for internal code page fonts
+    if (fontW==10 || fontH==20)
+       defaultFont=&font10x20;
+    else
+       defaultFont=&font8x16;
+    freeFontData=1;
+    if (!frCB || !(useFont=frCB(0,fontW,fontH)))
+      {
+       useFont=defaultFont;
+       freeFontData=0;
+      }
+    fontW=useFont->w;
+    fontH=useFont->h;
+    fontWb=(useFont->w+7)/8;
+    fontSz=fontWb*fontH;
+    fontData=useFont->data;
+   
+    aux=0;
+    if (frCB && optSearch("LoadSecondaryFont",aux) && aux)
+       secFont=frCB(1,fontW,fontH);
    }
 
  TDisplayX11::Init();
@@ -1125,9 +1312,19 @@ TScreenX11::TScreenX11()
  TScreen::clearScreen=clearScreen;
  if (drawingMode==unicode16)
    {
-    TScreen::setCharacter=setCharacterU16;
-    TScreen::setCharacters=setCharactersU16;
-    writeLine=writeLineU16;
+    if (useX11Font)
+      {
+       //TScreen::setCharacter=setCharacterU16; Use Default
+       TScreen::setCharacters=setCharactersX11U16;
+       writeLine=writeLineX11U16;
+       printf("Using X11 fonts\n");
+      }
+    else
+      {
+       TScreen::setCharacter=setCharacterU16;
+       TScreen::setCharacters=setCharactersU16;
+       writeLine=writeLineU16;
+      }
     redrawBuf=redrawBufU16;
    }
  else
@@ -1170,19 +1367,24 @@ TScreenX11::TScreenX11()
  screen=DefaultScreen(disp);
  gc=DefaultGC(disp,screen);
  visual=DefaultVisual(disp,screen);
+ if (useX11Font)
+    XSetFont(disp,gc,x11Font);
 
- /* Create what we'll use as font */
- CreateXImageFont(0,fontData,fontW,fontH);
- if (freeFontData)
-   {/* Provided by the call back */
-    DeleteArray(useFont->data);
-    delete useFont;
-   }
- if (secFont)
+ if (drawingMode==codepage)
    {
-    CreateXImageFont(1,secFont->data,fontW,fontH);
-    DeleteArray(secFont->data);
-    delete secFont;
+    /* Create what we'll use as font */
+    CreateXImageFont(0,fontData,fontW,fontH);
+    if (freeFontData)
+      {/* Provided by the call back */
+       DeleteArray(useFont->data);
+       delete useFont;
+      }
+    if (secFont)
+      {
+       CreateXImageFont(1,secFont->data,fontW,fontH);
+       DeleteArray(secFont->data);
+       delete secFont;
+      }
    }
 
  /* Create the cursor image */
@@ -1286,6 +1488,9 @@ TScreenX11::TScreenX11()
 
  /* A graphics context for the text cursor */
  cursorGC=XCreateGC(disp,mainWin,0,0);
+ if (useX11Font)
+    /* Select the same font for this context */
+    XSetFont(disp,cursorGC,x11Font);
 
  /* Create the cursor timer */
  gettimeofday(&refCursorTime,0);
@@ -1299,7 +1504,7 @@ TScreenX11::TScreenX11()
  // We can change the palette.
  // A redraw is needed after setting the palette. But currently is in the color setting.
  // We can set the fonts and even change their size.
- flags0=CanSetPalette   | CanReadPalette | CodePageVar    | CursorShapes /*| PalNeedsRedraw*/ |
+ flags0=CanSetPalette   | CanReadPalette | CodePageVar | CursorShapes /*| PalNeedsRedraw*/ |
         CanSetVideoSize | NoUserScreen;
  if (drawingMode==codepage)
     // We can't change the font when using Unicode16 mode
@@ -1439,7 +1644,8 @@ void TScreenX11::UnDrawCursor()
    
     XSetBackground(disp,cursorGC,colorMap[bg]);
     XSetForeground(disp,cursorGC,colorMap[fg]);
-    drawCharU16(cursorGC,cursorX*fontW,cursorY*fontH,newChar);
+    if (u2c)
+       drawCharU16(cursorGC,cursorX*fontW,cursorY*fontH,newChar);
    }
  cursorInScreen=0;
  return;
@@ -1467,8 +1673,11 @@ void TScreenX11::DrawCursor()
       {
        uint16 *buf=screenBuffer+offset*2;
        attr=buf[attrPos];
-       uint16 code=unicode2index(buf[charPos]);
-       memcpy(cursorData,glyphs+code*fontSz,fontSz);
+       if (u2c)
+         {
+          uint16 code=unicode2index(buf[charPos]);
+          memcpy(cursorData,glyphs+code*fontSz,fontSz);
+         }
       }
     int bg=attr>>4;
     int fg=attr & 0xF;

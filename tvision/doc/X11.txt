@@ -146,6 +146,10 @@ UnicodeFont            Name of the font to use for Unicode mode. Just the file
                        /usr/local/share/rhtvision
                        /usr/share/setedit
                        /usr/local/share/setedit
+UseX11Fonts            Use the X11 fonts instead of internal fonts. It have
+                       advantages: speed, number of available glyphs, etc.
+                       and disadavantages: not sure what you get, not exactly
+                       the same you get with other drivers, etc.
 
 * I don't know if anybody can be interested on it, but this driver compiles
 and run for Windows. You need to use Cygwin with the XFree86 port installed

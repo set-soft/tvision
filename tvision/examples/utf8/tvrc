@@ -4,5 +4,10 @@
  {
   Unicode16=1
   UnicodeFont="boxround.sft"
+  UseX11Fonts=1
+  FontWidth=12
+  FontHeight=13
+  ScreenHeight=40
  }
 }
+
