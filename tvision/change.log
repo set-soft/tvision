@@ -1,4 +1,7 @@
 $Log$
+Revision 2.4  2001/11/24 23:43:28  set
+* Added: A new driver for X11, it is quite functional and complete.
+
 Revision 2.3  2001/11/24 23:40:10  set
 * Merged: New code for the Linux terminals. It's currently only one driver
 (the mouse is the only exception) and should be split in three, but is
