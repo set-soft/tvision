@@ -26,24 +26,24 @@ const long rStreamMagic = 0x52504246uL; // 'FBPR'
 
 struct Count_type
 {
-    ushort lastCount __attribute__((packed));
-    ushort pageCount __attribute__((packed));
+ ushort lastCount CLY_Packed;
+ ushort pageCount CLY_Packed;
 };
 
 struct Info_type
 {
-    ushort infoType __attribute__((packed));
-    long infoSize __attribute__((packed));
+ ushort infoType CLY_Packed;
+ long   infoSize CLY_Packed;
 };
 
 struct THeader
 {
-    ushort signature __attribute__((packed));
-    union
-        {
-        Count_type count __attribute__((packed));
-        Info_type info __attribute__((packed));
-        };
+ ushort signature  CLY_Packed;
+ union
+ {
+  Count_type count CLY_Packed;
+  Info_type  info  CLY_Packed;
+ };
 };
 
 #pragma pack()
@@ -115,6 +115,9 @@ short TResourceFile::count()
     return index->getCount();
 }
 
+// Avoid replacing free by MSS's macro
+#include <tv/no_mss.h>
+
 void TResourceFile::remove( const char *key )
 {
     int i;
@@ -125,6 +128,8 @@ void TResourceFile::remove( const char *key )
         modified = True;
         }
 }
+
+#include <tv/yes_mss.h>
 
 void TResourceFile::flush()
 {

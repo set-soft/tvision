@@ -138,11 +138,16 @@ void TNSCollection::forEach( ccAppFunc action, void *arg )
         action( items[i], arg );
 }
 
+// Avoid replacing free by MSS's macro
+#include <tv/no_mss.h>
+
 void TNSCollection::free( void *item )
 {
     remove( item );
     freeItem( item );
 }
+
+#include <tv/yes_mss.h>
 
 void TNSCollection::freeAll()
 {

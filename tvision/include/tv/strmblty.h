@@ -24,6 +24,9 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TStreamableTypes ) && !defined( __TStreamableTypes )
 #define __TStreamableTypes
 
+// Avoid replacing new by MSS's macro
+#include <tv/no_mss.h>
+
 class TStreamableTypes : private TNSSortedCollection
 {
 
@@ -44,6 +47,8 @@ private:
     int compare( void *, void * );
 
 };
+
+#include <tv/yes_mss.h>
 
 #endif  // Uses_TStreamableTypes
 
