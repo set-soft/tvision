@@ -419,7 +419,7 @@ void TGKeyX11::FillTEvent(TEvent &e)
     return;
    }
  ushort Abstract=GKey();
- e.keyDown.charScan.charCode=Flags & kbAltLCode ? 0 : Symbol;
+ e.keyDown.charScan.charCode=((Flags & kbAltLCode) && (Symbol<32)) ? 0 : Symbol;
  e.keyDown.charScan.scanCode=Scan;
  e.keyDown.raw_scanCode=Scan;
  e.keyDown.keyCode=Abstract;

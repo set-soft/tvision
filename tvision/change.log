@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.377  2002/12/09 17:49:21  set
+* Modified: [X11] To read the keyboard using Unicode. So now the driver
+uses a conversion from Unicode to the current input code page. With this
+I got an almost working "russian keyboard". The problem is in my
+oversimplification used for the fonts where cyrillic characters with the
+same shape as latin characters are expressed as latin characters ...
+
 Revision 2.376  2002/12/09 14:45:34  set
 * Added: [Linux] A configuration variable to indicate the console fails to
 implement the cursor shape escape sequences. It seems to happend with some
