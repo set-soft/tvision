@@ -142,5 +142,31 @@ public:
     friend void TV_WindowSizeChanged(int sig);
 };
 
+#ifdef __linux__
+// SET: Added the following functionallity:
+// Linux specific stuff, enclose it in __linux__ section:
+//   If you want to setup a specific value define this variable in your code
+// and assign a value. If the variable isn't in your code the linker will use
+// a definition found in the library.
+extern unsigned TurboVision_screenOptions;
+
+//   This value makes the screen driver try to provide a mode that supports
+// a switch to the user screen.
+//   Current example: if the TScreen class have access to the /dev/vcsaN
+// devices for writing we can't provide user screen (no way to read the
+// screen and tcsetattr or endwin() fails). Even with that it's better than
+// using escape sequences, but RHIDE will work better if can switch. So I'm
+// adding it so Robert can ask for it (or not).
+const unsigned TurboVision_screenUserScreenNeeded=1;
+
+// SET: Moved/Redefined
+// Internally used by Linux driver, don't use
+extern int vcsWfd;          /* virtual console system descriptor */
+extern int vcsRfd;          /* SET: Same for reading */
+extern int tty_fd;          /* tty descriptor */
+#define canWriteVCS     (vcsWfd>=0)
+#define canReadVCS      (vcsRfd>=0)
+#define canOnlyWriteVCS (vcsWfd>=0 && vcsRfd<0)
+#endif
 #endif  // Uses_TScreen
 
