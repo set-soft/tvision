@@ -1,4 +1,17 @@
 $Log$
+Revision 1.54  1999/05/28 01:02:39  set
+* Added: Windows NT detection (using the OS environment variable) to the
+mouse class so now if NT is detected the mouse is polled and not hooked.
+Looks like NT's mouse driver emulation fails to call the RMCB and jumps to
+nowhere crashing. Now the mouse is functional in NT.
+* Added: A workaround for a bug in Windows NT 4.0 when setting the video
+modes with int 0x10. Looks like this bug isn't reproductable in all the
+machines but happends in the one I used. NT is clobbering the number of tics
+since midnight in the BIOS data area, the number that appears is big enough
+to generate a divide overflow in the next call to int 0x21 service 0x2C (get
+time), as that's an exception in the real mode code the djgpp program is
+killed or hangs.
+.
 Revision 1.53  1999/05/26 00:03:51  set
 * Fixed: a leak in TResourceFile constructor. Patch submited by Laurynas
 Biveinis <lauras@softhome.net>.
