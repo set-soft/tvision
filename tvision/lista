@@ -437,6 +437,10 @@ examples/tvhc/rhide.env
 examples/tvhc/tvhc.cc
 -examples/tvhc/tvhc.gpr
 examples/tvhc/tvhc.h
+examples/utf8/fileview.cc
+-examples/utf8/fileview.gpr
+examples/utf8/rhide.env
+examples/utf8/test.utf8
 examples/videomode/test.cc
 -examples/videomode/test.gpr
 examples/videomode/rhide.env
