@@ -19,10 +19,12 @@ int dual_display_supported()
   if (r.h.al != 0x1a) return 0;
   if (r.h.bh == 0x01) return 1;
 #endif
+/*
 #ifdef TVOSf_Linux
   extern unsigned short *mono_mem;
   return (mono_mem != NULL);
 #endif
+*/
   return 0;
 }
 

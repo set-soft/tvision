@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.201  2002/07/02 18:14:18  set
+* Fixed: dual.cc referenced dual_display that now is temporally inside
+TDisplay.
+
 Revision 2.200  2002/07/02 14:36:05  set
 * Fixed: [MSVC] a couple of warnings. From cl output sent by WintiX.
 
