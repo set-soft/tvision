@@ -71,8 +71,11 @@ takes only 400 bytes of memory.
 #define Uses_string
 #include <tv.h>
 
-#include <ncurses.h>
-#include <term.h>
+#ifdef TVOSf_Linux
+ // Just for testing
+ #include <ncurses.h>
+ #include <term.h>
+#endif
 
 int TGKey::useBIOS=1;
 int TGKey::translateKeyPad=1;
@@ -613,7 +616,7 @@ int main(int argc, char *argv[])
       if (cur_term->type.Strings[key])
          fprintf(stderr,"%d: `%s'\n",key,cur_term->type.Strings[key]);
      }*/
-  meta(0,TRUE);
+  //meta(0,TRUE);
   if (argc>1 && strcmp(argv[1],"rh52")==0)
      TGKey::SetKbdMapping(KBD_REDHAT52_STYLE);
 #else

@@ -155,7 +155,7 @@ sub RunGCCTest
  my ($file,$flags)=('test.'.$ext,'');
 
  unlink 'test.exe';
- replace($file,$test);
+ replace($file,$test."\n");
  $flags=$CFLAGS if ($ext eq 'c');
  $flags=$CXXFLAGS if ($ext eq 'cc');
  $command="$cc -o test.exe $flags $file $switchs";

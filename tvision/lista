@@ -120,6 +120,7 @@ compat/filelength.c
 compat/getcurdir.c
 compat/getopt.c
 compat/getshell.c
+compat/iffilelen.cc
 compat/isdir.c
 compat/isrelpath.c
 compat/iswild.c
