@@ -59,7 +59,8 @@ static char * className= "TVISION for windows"; /* Make the classname into a glo
 /* ------------------------------------------------------------------------- */
    TScreenWinGr::TScreenWinGr()
 /* ------------------------------------------------------------------------- */
-{ WNDCLASSEX  wincl;            /* Datastructure for the windowclass */
+{ FreeConsole();
+  WNDCLASSEX  wincl;            /* Datastructure for the windowclass */
   STARTUPINFO startinfo;  
   HINSTANCE   TvWinThisInstance= GetModuleHandle (NULL); 
   
