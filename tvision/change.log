@@ -1,4 +1,15 @@
 $Log$
+Revision 1.135  2000/02/05 00:14:55  root (set)
+* Modified: [UNIX] gkeyli.cc now should compile in most UNIX systems that
+have ncurses. All the funcy Linux stuff is conditional.
+* Modified: [UNIX] the KEY_MOUSE ncurses value seems to be new in 1.9.9 so to
+support older versions (as 1.8.6) now their use is conditional.
+* Fixed: The dependencies in the Linux Makefile to accomodate the new
+location of the headers.
+* Added: -I/usr/local/include and -L/usr/local/lib to FreeBSD compilation
+flags. Most of these changes are towards FreeBSD support with the help of
+some tests by Alex Matulich <alex@unicorn.us.com>.
+
 Revision 1.134  2000/02/04 02:18:44  root (set)
 * Fixed: Tab is an exception to the modifications done in 1.129.
 

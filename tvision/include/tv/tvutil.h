@@ -120,7 +120,7 @@ int TV_HaveLFNs()
 {
  return _use_lfn(0);
 }
-#else // Assume any other supports its (read Linux ;-)
+#else // Assume any other supports it (UNIX and Win32)
 inline
 int TV_HaveLFNs()
 {
