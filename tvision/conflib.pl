@@ -587,6 +587,7 @@ sub FindLDExtraDirs()
    }
  $ret='';
  $ret.='/usr/local/lib' if ($OSf eq 'FreeBSD');
+ $ret.='/usr/lib/mingw /lib/mingw' if ($conf{'MinGW_under_cygwin'} eq 'yes');
  $conf{'LDExtraDirs'}=$ret;
  $ret;
 }

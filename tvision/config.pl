@@ -183,7 +183,6 @@ $MakeDefsRHIDE[5].=' -shared' if ($OSf eq 'QNXRtP');
 $MakeDefsRHIDE[6]='RHIDE_LDFLAGS=';
 $MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
 $MakeDefsRHIDE[6].=' -shared -Wl,-soname,librhtv.so.'.$Version;
-$MakeDefsRHIDE[6].=' ESTO NO FUNCIONA -L/usr/lib/mingw -L/lib/mingw' if ($conf{'MinGW_under_cygwin'} eq 'yes');
 $libs=$conf{'X11Lib'};
 $libs=~s/(\S+)/-l$1/g;
 $MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
