@@ -213,8 +213,9 @@ RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
 RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++\
 	/usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
 TVSRC=/usr/src/tvision/include /usr/include/rhtvision ../../include
-RHIDE_OS_LIBS=ncurses m gpm 
+RHIDE_OS_LIBS= ncurses m gpm
 TVOBJ=/usr/src/tvision/linux /usr/lib ../../linux
+RHIDE_AR=ar
 INCLUDE_DIRS=../include
 LIB_DIRS=
 C_DEBUG_FLAGS=
@@ -579,17 +580,18 @@ DEPS_6=fileview.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/drawbuf.h ../include/tv/event.h\
 	../include/tv/filedlg.h ../include/tv/fileview.h\
 	../include/tv/group.h ../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/msgbox.h ../include/tv/nscoll.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/program.h ../include/tv/pstream.h\
-	../include/tv/rect.h ../include/tv/scroller.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/strmblcl.h ../include/tv/system.h\
-	../include/tv/tkeys.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
-	../include/tv/views.h ../include/tv/window.h
+	../include/tv/msgbox.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/program.h\
+	../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/scroller.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strmblcl.h\
+	../include/tv/system.h ../include/tv/tkeys.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h\
+	../include/tv/window.h ../include/tv/yes_mss.h
 obj/fileview.o:: $(DEPS_6)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_7=fpbase.cc ../include/compatlayer.h ../include/tv.h\
@@ -637,11 +639,12 @@ obj/gkeyli.o:: $(DEPS_10)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_11=histlist.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/stddlg.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvutil.h\
+	../include/tv/views.h ../include/tv/yes_mss.h
 obj/histlist.o:: $(DEPS_11)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_12=ifpstrea.cc ../include/compatlayer.h ../include/tv.h\
@@ -666,15 +669,16 @@ obj/iopstrea.o:: $(DEPS_13)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_14=ipstream.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/opstream.h ../include/tv/preadobj.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/strmblcl.h\
-	../include/tv/strmblty.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/opstream.h\
+	../include/tv/preadobj.h ../include/tv/pstream.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/strmblcl.h ../include/tv/strmblty.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/ipstream.o:: $(DEPS_14)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_15=misc.cc ../include/compatlayer.h ../include/tv.h\
@@ -719,61 +723,80 @@ DEPS_17=msgbox.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/window.h
 obj/msgbox.o:: $(DEPS_17)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_18=nbackgro.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_18=nbackgro.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nbackgro.o:: $(DEPS_18)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_19=nbutton.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_19=nbutton.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nbutton.o:: $(DEPS_19)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_20=ncalcdis.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_20=ncalcdis.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncalcdis.o:: $(DEPS_20)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_21=ncalcula.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_21=ncalcula.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncalcula.o:: $(DEPS_21)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_22=nchdirdi.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_22=nchdirdi.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nchdirdi.o:: $(DEPS_22)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_23=ncheckbo.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_23=ncheckbo.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncheckbo.o:: $(DEPS_23)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_24=nclrdisp.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_24=nclrdisp.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nclrdisp.o:: $(DEPS_24)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_25=ncluster.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_25=ncluster.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncluster.o:: $(DEPS_25)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_26=ncollect.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_26=ncollect.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncollect.o:: $(DEPS_26)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_27=ncolordi.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_27=ncolordi.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncolordi.o:: $(DEPS_27)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_28=ncolorgr.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_28=ncolorgr.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncolorgr.o:: $(DEPS_28)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_29=ncolorit.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_29=ncolorit.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncolorit.o:: $(DEPS_29)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_30=ncolorse.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_30=ncolorse.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ncolorse.o:: $(DEPS_30)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_31=ndesktop.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_31=ndesktop.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ndesktop.o:: $(DEPS_31)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_32=ndialog.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_32=ndialog.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ndialog.o:: $(DEPS_32)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_33=ndircoll.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_33=ndircoll.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ndircoll.o:: $(DEPS_33)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_34=ndirlist.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_34=ndirlist.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ndirlist.o:: $(DEPS_34)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_35=neditor.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_35=neditor.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/neditor.o:: $(DEPS_35)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_36=neditwi.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_36=neditwi.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/neditwi.o:: $(DEPS_36)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_37=newstr.cc ../include/compatlayer.h ../include/tv.h\
@@ -785,109 +808,144 @@ DEPS_37=newstr.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/tvutil.h ../include/tv/views.h
 obj/newstr.o:: $(DEPS_37)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_38=nfilecol.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_38=nfilecol.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nfilecol.o:: $(DEPS_38)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_39=nfiledia.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_39=nfiledia.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nfiledia.o:: $(DEPS_39)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_40=nfiledtr.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_40=nfiledtr.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nfiledtr.o:: $(DEPS_40)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_41=nfileinf.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_41=nfileinf.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nfileinf.o:: $(DEPS_41)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_42=nfileinp.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_42=nfileinp.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nfileinp.o:: $(DEPS_42)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_43=nfilelis.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_43=nfilelis.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nfilelis.o:: $(DEPS_43)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_44=nfilterv.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_44=nfilterv.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nfilterv.o:: $(DEPS_44)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_45=nframe.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_45=nframe.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nframe.o:: $(DEPS_45)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_46=ngroup.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_46=ngroup.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ngroup.o:: $(DEPS_46)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_47=nhistory.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_47=nhistory.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nhistory.o:: $(DEPS_47)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_48=nindicat.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_48=nindicat.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nindicat.o:: $(DEPS_48)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_49=ninputli.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_49=ninputli.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/ninputli.o:: $(DEPS_49)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_50=nlabel.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_50=nlabel.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nlabel.o:: $(DEPS_50)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_51=nlistbox.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_51=nlistbox.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nlistbox.o:: $(DEPS_51)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_52=nlistvie.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_52=nlistvie.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nlistvie.o:: $(DEPS_52)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_53=nmemo.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_53=nmemo.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nmemo.o:: $(DEPS_53)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_54=nmenubar.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_54=nmenubar.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nmenubar.o:: $(DEPS_54)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_55=nmenubox.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_55=nmenubox.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nmenubox.o:: $(DEPS_55)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_56=nmenuvie.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_56=nmenuvie.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nmenuvie.o:: $(DEPS_56)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_57=nmonosel.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_57=nmonosel.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nmonosel.o:: $(DEPS_57)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_58=nparamte.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_58=nparamte.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nparamte.o:: $(DEPS_58)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_59=nradiobu.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_59=nradiobu.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nradiobu.o:: $(DEPS_59)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_60=nrangeva.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_60=nrangeva.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nrangeva.o:: $(DEPS_60)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_61=nresourc.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_61=nresourc.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nresourc.o:: $(DEPS_61)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_62=nscrollb.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_62=nscrollb.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nscrollb.o:: $(DEPS_62)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_63=nscrolle.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_63=nscrolle.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nscrolle.o:: $(DEPS_63)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_64=nsortedc.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_64=nsortedc.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nsortedc.o:: $(DEPS_64)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_65=nsortedl.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_65=nsortedl.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nsortedl.o:: $(DEPS_65)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_66=nstatict.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_66=nstatict.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nstatict.o:: $(DEPS_66)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_67=nstatusl.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_67=nstatusl.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nstatusl.o:: $(DEPS_67)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_68=nstringc.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_68=nstringc.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nstringc.o:: $(DEPS_68)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_69=nstringl.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_69=nstringl.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nstringl.o:: $(DEPS_69)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_70=nvalidat.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_70=nvalidat.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nvalidat.o:: $(DEPS_70)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_71=nview.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_71=nview.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nview.o:: $(DEPS_71)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_72=nwindow.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_72=nwindow.cc ../include/compatlayer.h ../include/tv/configtv.h\
+	../include/tv/tvutil.h
 obj/nwindow.o:: $(DEPS_72)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_73=ofpstrea.cc ../include/compatlayer.h ../include/tv.h\
@@ -902,30 +960,33 @@ obj/ofpstrea.o:: $(DEPS_73)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_74=opstream.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/pwritobj.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/strmblcl.h\
-	../include/tv/strmblty.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
-obj/opstream.o:: $(DEPS_74)
-	$(RHIDE_COMPILE.cc.o)
-DEPS_75=pstream.cc ../include/compatlayer.h ../include/tv.h\
-	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/pwritobj.h\
 	../include/tv/stddlg.h ../include/tv/streambl.h\
 	../include/tv/strmblcl.h ../include/tv/strmblty.h\
 	../include/tv/system.h ../include/tv/tobjstrm.h\
 	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
+obj/opstream.o:: $(DEPS_74)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_75=pstream.cc ../include/compatlayer.h ../include/tv.h\
+	../include/tv/configtv.h ../include/tv/intl.h\
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strmblcl.h\
+	../include/tv/strmblty.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/pstream.o:: $(DEPS_75)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_76=rhscreen.cc
+DEPS_76=rhscreen.cc ../include/tv/configtv.h
 obj/rhscreen.o:: $(DEPS_76)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_77=sbackgro.cc ../include/compatlayer.h ../include/tv.h\
@@ -1098,7 +1159,7 @@ DEPS_88=scolorse.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/views.h
 obj/scolorse.o:: $(DEPS_88)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_89=screen.cc
+DEPS_89=screen.cc ../include/tv/configtv.h
 obj/screen.o:: $(DEPS_89)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_90=sdesktop.cc ../include/compatlayer.h ../include/tv.h\
@@ -1133,13 +1194,15 @@ DEPS_92=sdircoll.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/dircoll.h ../include/tv/direntr.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/strmblcl.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/strmblcl.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/sdircoll.o:: $(DEPS_92)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_93=sdirlist.cc ../include/compatlayer.h ../include/tv.h\
@@ -1186,21 +1249,23 @@ DEPS_95=seditwin.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/window.h
 obj/seditwin.o:: $(DEPS_95)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_96=sescreen.cc
+DEPS_96=sescreen.cc ../include/tv/configtv.h
 obj/sescreen.o:: $(DEPS_96)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_97=sfilecol.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/filecoll.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/searchrc.h\
-	../include/tv/sortcoll.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/strmblcl.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/searchrc.h ../include/tv/sortcoll.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/strmblcl.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/sfilecol.o:: $(DEPS_97)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_98=sfiledia.cc ../include/compatlayer.h ../include/tv.h\
@@ -1266,16 +1331,17 @@ DEPS_102=sfilelis.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/filecoll.h ../include/tv/filelist.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
 	../include/tv/listbox.h ../include/tv/lstviewr.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/searchrc.h\
-	../include/tv/sortcoll.h ../include/tv/sortlibo.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/strmblcl.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h\
+	../include/tv/searchrc.h ../include/tv/sortcoll.h\
+	../include/tv/sortlibo.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strmblcl.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
+	../include/tv/views.h ../include/tv/yes_mss.h
 obj/sfilelis.o:: $(DEPS_102)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_103=sfilterv.cc ../include/compatlayer.h ../include/tv.h\
@@ -1511,16 +1577,17 @@ obj/srangeva.o:: $(DEPS_119)
 DEPS_120=sresourc.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/rescoll.h ../include/tv/resource.h\
-	../include/tv/sortcoll.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/strmblcl.h\
-	../include/tv/strncoll.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/rescoll.h\
+	../include/tv/resource.h ../include/tv/sortcoll.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/strmblcl.h ../include/tv/strncoll.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/sresourc.o:: $(DEPS_120)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_121=sscrollb.cc ../include/compatlayer.h ../include/tv.h\
@@ -1579,15 +1646,17 @@ obj/sstatusl.o:: $(DEPS_124)
 DEPS_125=sstringc.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/resource.h ../include/tv/sortcoll.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/strmblcl.h ../include/tv/strncoll.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/resource.h\
+	../include/tv/sortcoll.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strmblcl.h\
+	../include/tv/strncoll.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/sstringc.o:: $(DEPS_125)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_126=sstringl.cc ../include/compatlayer.h ../include/tv.h\
@@ -1682,17 +1751,17 @@ DEPS_132=tchdirdi.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/inputln.h ../include/tv/intl.h\
 	../include/tv/ipstream.h ../include/tv/label.h\
 	../include/tv/listbox.h ../include/tv/lstviewr.h\
-	../include/tv/msgbox.h ../include/tv/nscoll.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/msgbox.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h ../include/tv/rect.h\
 	../include/tv/scrlbar.h ../include/tv/stddlg.h\
 	../include/tv/streambl.h ../include/tv/strmblcl.h\
 	../include/tv/sttctext.h ../include/tv/system.h\
 	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
 	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
 	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h\
-	../include/tv/window.h
+	../include/tv/window.h ../include/tv/yes_mss.h
 obj/tchdirdi.o:: $(DEPS_132)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_133=tcheckbo.cc ../include/compatlayer.h ../include/tv.h\
@@ -1728,29 +1797,32 @@ DEPS_135=tcluster.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/dialogs.h\
 	../include/tv/drawbuf.h ../include/tv/event.h ../include/tv/gkey.h\
 	../include/tv/group.h ../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/palette.h\
-	../include/tv/point.h ../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/palette.h ../include/tv/point.h\
+	../include/tv/pstream.h ../include/tv/rect.h\
 	../include/tv/resource.h ../include/tv/sitem.h\
 	../include/tv/sortcoll.h ../include/tv/stddlg.h\
 	../include/tv/streambl.h ../include/tv/strncoll.h\
 	../include/tv/system.h ../include/tv/tkeys.h\
 	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
 	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h
+	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tcluster.o:: $(DEPS_135)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_136=tcollect.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tcollect.o:: $(DEPS_136)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_137=tcolordi.cc ../include/compatlayer.h ../include/tv.h\
@@ -1864,13 +1936,14 @@ DEPS_144=tdircoll.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/dircoll.h ../include/tv/direntr.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tdircoll.o:: $(DEPS_144)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_145=tdirlist.cc ../include/compatlayer.h ../include/tv.h\
@@ -1881,15 +1954,16 @@ DEPS_145=tdirlist.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/dirlibo.h ../include/tv/drawbuf.h\
 	../include/tv/event.h ../include/tv/group.h ../include/tv/intl.h\
 	../include/tv/ipstream.h ../include/tv/listbox.h\
-	../include/tv/lstviewr.h ../include/tv/nscoll.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/rect.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/strmblcl.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
-	../include/tv/views.h ../include/tv/window.h
+	../include/tv/lstviewr.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/strmblcl.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h\
+	../include/tv/window.h ../include/tv/yes_mss.h
 obj/tdirlist.o:: $(DEPS_145)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_146=tdisplay.cc ../include/compatlayer.h ../include/tv.h\
@@ -1975,15 +2049,16 @@ obj/tevent.o:: $(DEPS_151)
 DEPS_152=tfilecol.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/filecoll.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/searchrc.h\
-	../include/tv/sortcoll.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/searchrc.h ../include/tv/sortcoll.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tfilecol.o:: $(DEPS_152)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_153=tfiledia.cc ../include/compatlayer.h ../include/tv.h\
@@ -1997,10 +2072,11 @@ DEPS_153=tfiledia.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/inputln.h ../include/tv/intl.h\
 	../include/tv/ipstream.h ../include/tv/label.h\
 	../include/tv/listbox.h ../include/tv/lstviewr.h\
-	../include/tv/msgbox.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/point.h ../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/msgbox.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/point.h\
+	../include/tv/pstream.h ../include/tv/rect.h\
 	../include/tv/scrlbar.h ../include/tv/searchrc.h\
 	../include/tv/sortcoll.h ../include/tv/sortlibo.h\
 	../include/tv/stddlg.h ../include/tv/streambl.h\
@@ -2008,7 +2084,8 @@ DEPS_153=tfiledia.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/system.h ../include/tv/tobjstrm.h\
 	../include/tv/ttypes.h ../include/tv/tvconfig.h\
 	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
-	../include/tv/views.h ../include/tv/window.h
+	../include/tv/views.h ../include/tv/window.h\
+	../include/tv/yes_mss.h
 obj/tfiledia.o:: $(DEPS_153)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_154=tfileedi.cc ../include/compatlayer.h ../include/tv.h\
@@ -2068,17 +2145,17 @@ DEPS_157=tfilelis.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/filelist.h ../include/tv/group.h ../include/tv/intl.h\
 	../include/tv/ipstream.h ../include/tv/listbox.h\
 	../include/tv/lstviewr.h ../include/tv/msgbox.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h ../include/tv/rect.h\
 	../include/tv/searchrc.h ../include/tv/sortcoll.h\
 	../include/tv/sortlibo.h ../include/tv/stddlg.h\
 	../include/tv/streambl.h ../include/tv/strmblcl.h\
 	../include/tv/system.h ../include/tv/tobjstrm.h\
 	../include/tv/ttypes.h ../include/tv/tvconfig.h\
 	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
-	../include/tv/views.h
+	../include/tv/views.h ../include/tv/yes_mss.h
 obj/tfilelis.o:: $(DEPS_157)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_158=tfilterv.cc ../include/compatlayer.h ../include/tv.h\
@@ -2242,14 +2319,15 @@ DEPS_169=tlistbox.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/dialogs.h ../include/tv/drawbuf.h\
 	../include/tv/event.h ../include/tv/intl.h ../include/tv/ipstream.h\
 	../include/tv/listbox.h ../include/tv/lstviewr.h\
-	../include/tv/nscoll.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/point.h ../include/tv/pstream.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/strmblcl.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/point.h\
+	../include/tv/pstream.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strmblcl.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
+	../include/tv/views.h ../include/tv/yes_mss.h
 obj/tlistbox.o:: $(DEPS_169)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_170=tlistvie.cc ../include/compatlayer.h ../include/tv.h\
@@ -2354,23 +2432,26 @@ obj/tmouse.o:: $(DEPS_176)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_177=tnscolle.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/object.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h
-obj/tnscolle.o:: $(DEPS_177)
-	$(RHIDE_COMPILE.cc.o)
-DEPS_178=tnssorte.cc ../include/compatlayer.h ../include/tv.h\
-	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/object.h\
 	../include/tv/opstream.h ../include/tv/pstream.h\
 	../include/tv/stddlg.h ../include/tv/system.h\
 	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
 	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
+obj/tnscolle.o:: $(DEPS_177)
+	$(RHIDE_COMPILE.cc.o)
+DEPS_178=tnssorte.cc ../include/compatlayer.h ../include/tv.h\
+	../include/tv/configtv.h ../include/tv/intl.h\
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/stddlg.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tnssorte.o:: $(DEPS_178)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_179=tobject.cc ../include/compatlayer.h ../include/tv.h\
@@ -2457,36 +2538,40 @@ obj/tprogram.o:: $(DEPS_184)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_185=tpwobj.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/pwritobj.h ../include/tv/stddlg.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/pwritobj.h\
+	../include/tv/stddlg.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tpwobj.o:: $(DEPS_185)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_186=tpwreado.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/object.h ../include/tv/opstream.h\
-	../include/tv/preadobj.h ../include/tv/pstream.h\
-	../include/tv/stddlg.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/object.h\
+	../include/tv/opstream.h ../include/tv/preadobj.h\
+	../include/tv/pstream.h ../include/tv/stddlg.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tpwreado.o:: $(DEPS_186)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_187=tpwritte.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/pwritobj.h ../include/tv/stddlg.h\
-	../include/tv/strmblcl.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/pwritobj.h\
+	../include/tv/stddlg.h ../include/tv/strmblcl.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tpwritte.o:: $(DEPS_187)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_188=tradiobu.cc ../include/compatlayer.h ../include/tv.h\
@@ -2518,33 +2603,35 @@ obj/trangeva.o:: $(DEPS_189)
 DEPS_190=trescoll.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/rescoll.h ../include/tv/resitem.h\
-	../include/tv/resource.h ../include/tv/sortcoll.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/strncoll.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/rescoll.h\
+	../include/tv/resitem.h ../include/tv/resource.h\
+	../include/tv/sortcoll.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strncoll.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/trescoll.o:: $(DEPS_190)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_191=tresfile.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/fpbase.h ../include/tv/fpstream.h\
 	../include/tv/intl.h ../include/tv/iopstrm.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/pstream.h ../include/tv/rescoll.h\
-	../include/tv/resfile.h ../include/tv/resitem.h\
-	../include/tv/resource.h ../include/tv/sortcoll.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/strncoll.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/pstream.h\
+	../include/tv/rescoll.h ../include/tv/resfile.h\
+	../include/tv/resitem.h ../include/tv/resource.h\
+	../include/tv/sortcoll.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strncoll.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tresfile.o:: $(DEPS_191)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_192=tscreen.cc ../include/compatlayer.h ../include/tv.h\
@@ -2594,14 +2681,15 @@ obj/tscropts.o:: $(DEPS_195)
 DEPS_196=tsortedc.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/sortcoll.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/sortcoll.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tsortedc.o:: $(DEPS_196)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_197=tsortedl.cc ../include/compatlayer.h ../include/tv.h\
@@ -2609,16 +2697,17 @@ DEPS_197=tsortedl.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/dialogs.h ../include/tv/drawbuf.h\
 	../include/tv/event.h ../include/tv/intl.h ../include/tv/ipstream.h\
 	../include/tv/listbox.h ../include/tv/lstviewr.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/sortcoll.h\
-	../include/tv/sortlibo.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/system.h\
-	../include/tv/tkeys.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
-	../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h\
+	../include/tv/sortcoll.h ../include/tv/sortlibo.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/system.h ../include/tv/tkeys.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
+	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tsortedl.o:: $(DEPS_197)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_198=tstatict.cc ../include/compatlayer.h ../include/tv.h\
@@ -2674,15 +2763,16 @@ obj/tstrinde.o:: $(DEPS_201)
 DEPS_202=tstringc.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/nscoll.h ../include/tv/nssorcol.h\
-	../include/tv/object.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/resource.h ../include/tv/sortcoll.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/strncoll.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/resource.h\
+	../include/tv/sortcoll.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strncoll.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tstringc.o:: $(DEPS_202)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_203=tstringl.cc ../include/compatlayer.h ../include/tv.h\
@@ -2721,14 +2811,15 @@ obj/tstrmcla.o:: $(DEPS_205)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_206=tstrmtyp.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/configtv.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/stddlg.h ../include/tv/strmblcl.h\
-	../include/tv/strmblty.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/ipstream.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/opstream.h\
+	../include/tv/pstream.h ../include/tv/stddlg.h\
+	../include/tv/strmblcl.h ../include/tv/strmblty.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/yes_mss.h
 obj/tstrmtyp.o:: $(DEPS_206)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_207=tsubmenu.cc ../include/compatlayer.h ../include/tv.h\
@@ -2894,7 +2985,7 @@ obj/tvtext1.o:: $(DEPS_215)
 DEPS_216=tvtext2.cc
 obj/tvtext2.o:: $(DEPS_216)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_217=tweaked.c
+DEPS_217=tweaked.c ../include/tv/configtv.h
 obj/tweaked.o:: $(DEPS_217)
 	$(RHIDE_COMPILE.c.o)
 DEPS_218=twindow.cc ../include/compatlayer.h ../include/tv.h\
@@ -2913,7 +3004,7 @@ DEPS_218=twindow.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/views.h ../include/tv/window.h
 obj/twindow.o:: $(DEPS_218)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_219=vesa.cc
+DEPS_219=vesa.cc ../include/compatlayer.h ../include/tv/configtv.h
 obj/vesa.o:: $(DEPS_219)
 	$(RHIDE_COMPILE.cc.o)
 all:: librhtv.a
