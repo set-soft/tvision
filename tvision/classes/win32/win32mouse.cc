@@ -44,7 +44,9 @@ void THWMouseWin32::Init()
  InitializeCriticalSection(&lockMouse);
  evMouseLength=0;
  evMouseIn=evMouseOut=&evMouseQueue[0];
- buttonCount=3;
+ // SET: This is supposed to report if mouse is present and how many buttons
+ // have. I put a detailed comment in winnt driver.
+ buttonCount=GetSystemMetrics(SM_CMOUSEBUTTONS);
 }
 
 void THWMouseWin32::DeInit()

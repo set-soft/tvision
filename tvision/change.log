@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.205  2002/07/03 15:38:47  set
+* Added: [DOS] PollMouse option to the tvrc to force mouse polling.
+
 Revision 2.204  2002/07/02 20:51:50  set
 * Fixed: [X11] Button 4 and 5 support. Now SETEdit supports mouse wheel ;-)
 
