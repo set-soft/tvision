@@ -101,7 +101,7 @@ int TVConfigFile::EatSpaces()
 
 int TVConfigFile::GetLine()
 {
- ssize_t read=getline(&line,&sLine,f);
+ ssize_t read=CLY_getline(&line,&sLine,f);
  if (read==-1) return -1;
  s=line;
  ErrorLine++;
@@ -491,7 +491,7 @@ Boolean TVMainConfigFile::Search(const char *section, const char *variable, long
 
 char *TVMainConfigFile::Search(const char *key)
 {
- if (!config || !key) return False;
+ if (!config || !key) return NULL;
  AllocLocalStr(b,strlen(key)+4);
  strcpy(b,"TV/");
  strcat(b,key);

@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.167  2002/06/24 14:59:25  set
+* Added: "Priority" variable to the configuration section of each driver.
+So now you can change the importance of each driver. The section names of
+the drivers are DOS, Linux, QNX, UNIX, Win32, WinNT, X11 and XTerm.
+
 Revision 2.166  2002/06/24 14:56:18  set
 * Added: A new class to manage a configuration file. Right now only one
 setting is accepted in this file: ShowCursorEver. See TVConfigFile in
