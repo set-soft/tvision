@@ -106,7 +106,10 @@ void TNewBackground::draw()
 	 {
 	 for( int j= 0; j < size.x; j++)
 		{
-		b.moveChar( j, lines[i][j], getColor(0x01), 1 );
+		if (i<23 && j<80)
+			b.moveChar( j, lines[i][j], getColor(0x01), 1 );
+		else
+			b.moveChar( j, '±', getColor(0x01), 1 );
 		}
 	 writeLine( 0, i, size.x, 1, b );
 	 }
