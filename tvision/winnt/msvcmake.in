@@ -53,7 +53,7 @@ OBJS=@TV_OBJS_MSVC@
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 
 {$(SRC2)}.c{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CC) $(CFLAGS) -c $? -Fo$*.o
 
 all:: libtv.lib
 

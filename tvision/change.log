@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.180  2002/06/26 16:55:17  set
+* Updated: The Win32 headers, some how S.F. CVS got unsynchronized.
+* Fixed: getopt and getline to compile with MSVC from output errors
+provided by WintiX.
+* Updated: Makefiles. CVS users will need to reconfigure.
+
 Revision 2.179  2002/06/26 16:52:15  set
 * Fixed: [MSVC] which header is needed for access function.
 * Fixed: [MSVC] rules to compile .c files and use of rm. Reported by WintiX
