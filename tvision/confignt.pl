@@ -10,7 +10,7 @@ SeeCommandLine();
 
 # 1) Get the list of files used by djgpp version
 $col=14;
-$a=ExtractItemsMak('djgpp/makefile',$col);
+$a=ExtractItemsMak('djgpp/Makefile',$col);
 # 2) Remove djgpp specific things
 $a=~s/vga.cc//;
 $a=~s/vgaregs.c//;
