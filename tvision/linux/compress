@@ -82,6 +82,7 @@ $r=$t[3].$mes[$t[4]].$t[5];
 $r='0'.$r if length($r)<7;
 $lsm =~ s/\!3/$r/g;
 replace('rhtvision.lsm',$lsm);
+replace('rhtvision.txt',$lsm);
 
 
 sub cat
