@@ -59,11 +59,7 @@ void TNSCollection::atRemove( ccIndex index )
         error(1,0);
 
     count--;
-#if 1 // memcpy is faster
-    memcpy( &items[index], &items[index+1], (count-index)*sizeof(void *) );
-#else
-    memmove( &items[index], &items[index+1], (count-index)*sizeof(void *) );
-#endif
+    CLY_memcpy( &items[index], &items[index+1], (count-index)*sizeof(void *) );
 }
 
 void TNSCollection::atFree( ccIndex index )

@@ -190,6 +190,23 @@ typedef unsigned long  ulong;
 #undef CLY_destroy
 #undef CLY_DONT_DEFINE_MIN_MAX
 #undef CLY_Redraw
+#undef CLY_SAFE_MEMCPY
+
+#ifdef HAVE_UNSAFE_MEMCPY
+ #define CLY_SAFE_MEMCPY 0
+#else
+ /* All known implementations supports overlap when copying forwards */
+ /* But it isn't portable:
+
+     The `memcpy' function copies SIZE bytes from the object beginning
+     at FROM into the object beginning at TO.  The behavior of this
+     function is undefined if the two arrays TO and FROM overlap; use
+     `memmove' instead if overlapping is possible.
+
+    Currently we assume that's safe, but any platform where it isn't can change it.
+ */
+ #define CLY_SAFE_MEMCPY 1
+#endif
 
 /* Most targets doesn't define destroy, but BC++ 5.6 defines
    _stl::destroy and looks like it collides with any destroy not defined
@@ -1600,6 +1617,13 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #if defined(TVOSf_QNXRtP)
   #include <strings.h> // QNX RtP requires this include for functions strcasecmp, etc.
  #endif // TVOSf_QNXRtP
+ #ifndef CLY_memcpy
+  #if CLY_SAFE_MEMCPY
+   #define CLY_memcpy(a,b,c) memcpy(a,b,c)
+  #else
+   #define CLY_memcpy(a,b,c) memmove(a,b,c)
+  #endif
+ #endif
 #endif
 
 #if defined(Include_limits) && !defined(Included_limits)

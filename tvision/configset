@@ -15,5 +15,5 @@ rm -f configure.cache
 rm -f Makefile
 perl config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
                --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
-               --with-debug --enable-maintainer-mode --without-static
+               --with-debug --enable-maintainer-mode --without-static "$@"
 
