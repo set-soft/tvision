@@ -494,6 +494,8 @@ TScreenX11::TScreenX11()
  TScreen::setCharacter=setCharacter;
  TScreen::setCharacters=setCharacters;
  TScreen::System=System;
+ TScreen::setWindowTitle=setWindowTitle;
+ TScreen::getWindowTitle=getWindowTitle;
 
  TGKeyX11::Init();
  THWMouseX11::Init();
@@ -626,6 +628,29 @@ TScreenX11::TScreenX11()
  XSetBackground(disp,gc,colorMap[0]);
  XSetForeground(disp,gc,colorMap[7]);
  clearScreen();
+}
+
+int TScreenX11::setWindowTitle(const char *aName)
+{
+ XTextProperty name;
+ char *s=(char *)aName;
+ XStringListToTextProperty(&s,1,&name);
+ XSetWMName(disp,mainWin,&name);
+ XFree((char *)name.value);
+ 
+ return 1;
+}
+
+const char *TScreenX11::getWindowTitle(void)
+{
+ XTextProperty name;
+ if (XGetWMName(disp,mainWin,&name))
+   {
+    char *s=newStr((char *)name.value);
+    XFree((char *)name.value);
+    return s;
+   }
+ return 0;
 }
 
 /*****************************************************************************

@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.66  2002/05/14 20:17:30  set
+* Modified: Now x11 headers are in the include/tv/x11 directory. Reported
+by miniEleph.
+
 Revision 2.65  2002/05/13 19:30:23  set
 * Modified: The intl/dummy/Makefile didn't define CC and GNU make used cc.
 
