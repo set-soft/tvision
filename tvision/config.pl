@@ -133,7 +133,7 @@ sub LookForIntlSupport
    {
     print "disabled by user request.\n";
     $conf{'intl'}='no';
-    `cp include/nointl.h include/intl.h`;
+    `cp include/tv/nointl.h include/tv/intl.h`;
     return;
    }
  if (@conf{'intl'} eq 'yes')
@@ -159,7 +159,7 @@ sub LookForIntlSupport
  $test='
 #include <stdio.h>
 #define FORCE_INTL_SUPPORT
-#include <intl.h>
+#include <tv/intl.h>
 int main(void)
 {
  printf("%s\n",_("OK"));
@@ -331,7 +331,10 @@ sub GenerateMakefile
 
  # Write install stuff
  $rep= "install -d -m 0755 \$(prefix)/include/rhtvision\n";
+ $rep.="\trm -f \$(prefix)/include/rhtvision/*.h\n";
  $rep.="\tinstall -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
+ $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv\n";
+ $rep.="\tinstall -m 0644 include/tv/*.h \$(prefix)/include/rhtvision/tv\n";
  # This should be created if the target is a new directory
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
  $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
@@ -364,6 +367,6 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
  $text.="\n";
 
- replace('include/configtv.h',$text);
+ replace('include/tv/configtv.h',$text);
 }
 

@@ -246,7 +246,7 @@ Binutils: I use binutils 2.8.1, newers should work.
 RHIDE: if you plan to use the project (.gpr) files you'll need the last
 version of RHIDE available. Any older version will crash when loading the
 projects.
-make: (only if you plan to use the makefiles) I use make 3.77 under DOS and
+make: (only if you plan to use the makefiles) I use make 3.78.1 under DOS and
 3.76.1 under Linux.
 Perl: (only if you need to run some special scripts, like the configure) Any
 perl 5 should work, I use 5.004 currently.

@@ -228,7 +228,7 @@ modes now.
 #include <go32.h>
 #include <pc.h>
 
-#include "video.h"
+#include <tv/video.h>
 extern int user_mode;
 
 static void *buffer = NULL;

@@ -1,7 +1,7 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
 #include <unistd.h>
-#if defined( DJGPP )
+#ifdef __DJGPP__
 #include <dpmi.h>
 #include <dir.h>
 #include <fcntl.h> // _use_lfn
@@ -11,12 +11,11 @@
 #include <ctype.h>
 #include <sys/stat.h>
 
-#include <ttypes.h>
-#include <tvutil.h>
+#include <tv.h>
 
 unsigned short win_ver()
 {
-#if defined( DJGPP )
+#ifdef __DJGPP__
   __dpmi_regs r;
   r.x.ax = 0x160a;
   __dpmi_int(0x2f,&r);
@@ -25,7 +24,7 @@ unsigned short win_ver()
   return 0;
 }
 
-#if defined( DJGPP )
+#ifdef __DJGPP__
 int getcurdir(int drive, char *buffer)
 {
   if (!drive) getwd(buffer);
