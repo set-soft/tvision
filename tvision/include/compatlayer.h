@@ -902,8 +902,8 @@ typedef unsigned long  ulong;
  #ifdef Uses_chdir
   #undef  Include_direct
   #define Include_direct 1
-  #undef chdir(a)
-  #define chdir(a) _chdir(a)
+  #undef  chdir
+  #define chdir _chdir
  #endif
  #ifdef Uses_getcwd
   #undef  Include_direct
