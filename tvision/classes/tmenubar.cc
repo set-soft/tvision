@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Salvador E. Tropea.
+Modified by Salvador E. Tropea. [Also added i18n support].
 
  *
  *
@@ -75,7 +75,7 @@ void TMenuBar::computeLength()
         while( p != 0 )
             {
             if( p->name != 0 )
-                l += cstrlen(p->name) + 2;
+                l += cstrlen(TVIntl::getText(p->name,p->intlName)) + 2;
             p = p->next;
             }
         }
@@ -121,7 +121,7 @@ void TMenuBar::draw()
             {
             if( p->name != 0 )
                 {
-                l = cstrlen(p->name);
+                l = cstrlen(TVIntl::getText(p->name,p->intlName));
                 if( x + l < size.x )
                     {
                     if( p->disabled )
@@ -142,7 +142,7 @@ void TMenuBar::draw()
                             color = cNormal;
 
                     b.moveChar( x, ' ', color, 1 );
-                    b.moveCStr( x+1, p->name, color );
+                    b.moveCStr( x+1, TVIntl::getText(p->name,p->intlName), color );
                     b.moveChar( x+l+1, ' ', color, 1 );
                     }
                 x += l + inc;
@@ -168,7 +168,7 @@ TRect TMenuBar::getItemRect( TMenuItem *item )
         {
         r.a.x = r.b.x;
         if( p->name != 0 )
-            r.b.x += cstrlen(p->name) + y;
+            r.b.x += cstrlen(TVIntl::getText(p->name,p->intlName)) + y;
         if( p == item )
             return r;
         p = p->next;

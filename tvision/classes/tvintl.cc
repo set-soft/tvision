@@ -142,3 +142,28 @@ char *TVIntl::getTextNew(const char *msgid)
  return ret;
 }
 
+const char *TVIntl::getText(const char *msgid, stTVIntl *&cache)
+{
+ if (!translate || !msgid) return msgid;
+ int curCP=TVCodePage::GetAppCodePage();
+ if (!cache)
+    cache=new stTVIntl;
+ else
+   {
+    if (curCP==cache->cp)
+       return cache->translation;
+    DeleteArray(cache->translation);
+   }
+ cache->translation=getTextNew(msgid);
+ cache->cp=curCP;
+ return cache->translation;
+}
+
+void TVIntl::freeSt(stTVIntl *&cache)
+{
+ if (!cache) return;
+ DeleteArray(cache->translation);
+ delete cache;
+ cache=NULL;
+}
+

@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Salvador E. Tropea.
+Modified by Salvador E. Tropea. [also added i18n support]
 
  *
  *
@@ -32,7 +32,7 @@ static TRect getRect( const TRect& bounds, TMenu *aMenu )
             {
             if( p->name != 0 )
                 {
-                short l = cstrlen(p->name) + 6;
+                short l = cstrlen(TVIntl::getText(p->name,p->intlName)) + 6;
                 if( p->command == 0 )
                     l += 3;
                 else
@@ -114,7 +114,7 @@ void TMenuBox::draw()
                     yCur = y;
                     }
                 frameLine( b, 10 );
-                b.moveCStr( 3, p->name, color );
+                b.moveCStr( 3, TVIntl::getText(p->name,p->intlName), color );
                 if( p->command == 0 )
                     b.putChar( size.x-4, rightArrow );
                 else if( p->param != 0 )
