@@ -1,5 +1,6 @@
 bc.cc
 borland.txt
+change.log
 classes/fpbase.cc
 classes/fpstream.cc
 classes/ifpstrea.cc
@@ -279,7 +280,7 @@ names/nvalidat.cc
 names/nview.cc
 names/nwindow.cc
 newstr.cc
-readme.src
+readme.txt
 rhscreen.cc
 screen.cc
 sescreen.cc

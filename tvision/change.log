@@ -1,0 +1,20 @@
+$Log$
+
+Release 1.0.1
+
+* Some changes in the readmes and gpr files.
+* Patches from Robert.
+
+date: 1998/12/14 23:36:35;  author: set;
+Converted all the calls to ctype functions to macros. These macros avoids
+passing negative values.
+Added right dependencies in gpr and makefiles.
+
+Release 1.0.0
+
+* Arranged the first release
+
+date: 1998/12/14 22:03:08;  author: set;
+Imported the pre-release 1.0.0. These are the files I sent to Robert for
+revision.
+
