@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.86  2003/06/02 14:48:51  set
+* Added: Support for more variants of RHIDE .mak files to extrimk.cc.
+
 Revision 2.399.2.85  2003/06/02 14:43:41  set
 * Fixed: Missing maintain.mak in distribution list.
 * Fixed: Compress scripts list generation.
