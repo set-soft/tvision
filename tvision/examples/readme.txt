@@ -22,6 +22,8 @@ learn what incompatibilities I found while porting the examples.
 
 demo     - That's the Borland's demo adapted by Sergio Sigala, I did some
            changes to compile it with this port.
+desklogo - An example of how to change the desktop appearance. Contributed by
+           Joel <jso@europay.com>.
 dyntxt   - Implements a StaticText with getData/setData member to make it
            "non-static".
 inplis   - That's interesting. It implements a class with pairs label/data
