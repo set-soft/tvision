@@ -44,6 +44,10 @@ uchar TView::ospecialChars[] =
     175, 174, 26, 27, ' ', ' ', 0
 };
 
+uchar TView::noMoireUnFill=' ';  // Just space
+uchar TView::noMoireFill=0xDB;   // Full block
+uchar TView::onoMoireFill=0xDB;  // Full block
+
 char TRadioButtons::button[] = " ( ) ";
 char TRadioButtons::obutton[] = " ( ) ";
 char TRadioButtons::check = 7; // 

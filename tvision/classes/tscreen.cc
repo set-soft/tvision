@@ -300,6 +300,9 @@ TScreen::TScreen() :
     currentDriverShortName=NULL;
     exit(1);
    }
+ long val=0;
+ if (optSearch("AvoidMoire",val))
+    avoidMoire=val;
 }
 
 TScreen::~TScreen()
