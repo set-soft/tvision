@@ -24,8 +24,6 @@ public:
     virtual ~TObject();
 
     static void destroy( TObject * );
-    // SET: It also sets the pointer to 0
-    #define destroy0(a) destroy(a); a=0
     virtual void shutDown();
 
 private:
@@ -46,6 +44,13 @@ inline void destroy( TObject *o )
     o->shutDown();
     delete o;
   }
+}
+
+// SET: It also sets the pointer to 0
+#define destroy0(o) \
+{ \
+ destroy(o);\
+ o=0;\
 }
 
 #endif  // Uses_TObject
