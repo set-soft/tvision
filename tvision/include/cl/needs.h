@@ -123,5 +123,7 @@ compiler.@p
  #define NEEDS_NL_LANGINFO
  #define NEEDS_GETLINE
  #define NEEDS_OPENDIR
+ // Internal implementation is broken.
+ #define NEEDS_SNPRINTF
 #endif
 

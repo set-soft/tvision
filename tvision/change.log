@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.183  2004/08/24 15:16:42  set
+* Added: Horizontal scroll bar to the TDirListBox.
+* Added: Visible cursor to the TDirListBox, it shows the state of the
+incremental search. It should also help for Braille terminals.
+
 Revision 2.399.2.182  2004/08/24 13:28:19  set
 * Added: Sorted directories for the non POSIX platforms in TDirListBox.
 * Modified: The TDirListBox code to be easier to maintain. I hope the
