@@ -1,4 +1,8 @@
 $Log$
+Revision 1.156  2000/06/06 00:28:30  root (set)
+* Added: A warning message to the configure script if gpm can't be found under
+Linux.
+
 Revision 1.155  2000/06/06 00:12:55  root (set)
 * Fixed: [Linux] the dynamic library unconditionally requested libgpm even
 when the configure detected it wasn't installed.
