@@ -12,6 +12,7 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Added code page example by Salvador E. Tropea (SET)
  */
 
 #define Uses_TRect
@@ -29,6 +30,8 @@
 #define Uses_TStaticText
 #define Uses_TDialog
 #define Uses_TEventQueue
+// Needed to remap the "system" menu character
+#define Uses_TVCodePage
 
 #include <tv.h>
 
@@ -38,6 +41,11 @@
 #include "mousedlg.h"
 #include "demohelp.h"
 #include "fileview.h"
+#include "calendar.h"
+
+uchar TVDemo::systemMenuIcon[]="~\360~";
+uchar TVDemo::osystemMenuIcon[]="~\360~";
+TVCodePageCallBack TVDemo::oldCPCallBack=NULL;
 
 //
 // Mouse Control Dialog Box function
@@ -211,7 +219,7 @@ void TVDemo::loadDesktop(fpstream &s)
 TMenuBar *TVDemo::initMenuBar(TRect r)
 {
     TSubMenu& sub1 =
-      *new TSubMenu( "~\360~", 0, hcSystem ) +
+      *new TSubMenu( (char *)systemMenuIcon, 0, hcSystem ) +
         *new TMenuItem( "~A~bout...", cmAboutCmd, kbNoKey, hcSAbout ) +
          newLine() +
         *new TMenuItem( "~P~uzzle", cmPuzzleCmd, kbNoKey, hcSPuzzle ) +
@@ -246,3 +254,16 @@ TMenuBar *TVDemo::initMenuBar(TRect r)
     r.b.y =  r.a.y + 1;
     return (new TMenuBar( r, sub1 + sub2 + sub3 + sub4 ) );
 }
+
+// Called each time the code page changes. In this example we only have
+// potential code page changes at start-up.
+void TVDemo::cpCallBack(ushort *map)
+{
+ TVCodePage::RemapString(systemMenuIcon,osystemMenuIcon,map);
+ TCalendarView::upArrowChar=TVCodePage::RemapChar(TCalendarView::oupArrowChar,map);
+ TCalendarView::downArrowChar=TVCodePage::RemapChar(TCalendarView::odownArrowChar,map);
+ // If the chain was already used call it
+ if (oldCPCallBack)
+    oldCPCallBack(map);
+}
+

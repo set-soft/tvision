@@ -34,6 +34,8 @@
 #define Uses_TChDirDialog
 #define Uses_TScreen
 #define Uses_TCalculator
+// Needed to remap the "system" menu character
+#define Uses_TVCodePage
 
 #include <tv.h>
 

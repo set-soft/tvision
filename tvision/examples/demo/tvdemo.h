@@ -55,4 +55,15 @@ private:
     void storeDesktop(fpstream& s);   // Store the current desktop
     void saveDesktop();               //  in a resource file
 
+    // In original demo that's a CP 437 specific code. I left it but I use
+    // it to show how to solve this using the new code page features of
+    // this port of TV.
+    static uchar systemMenuIcon[];    // Menu name for the "system menu"
+                                      // encoded in current code page
+    static uchar osystemMenuIcon[];   // Same encoded in CP 437, used as
+                                      // reference.
+public:
+                                      // Previous callback in the code page chain
+    static TVCodePageCallBack oldCPCallBack;
+    static void cpCallBack(ushort *map); // That's our callback
 };
