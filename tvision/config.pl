@@ -63,7 +63,7 @@ chop($here);
 $MakeDefsRHIDE[1]='TVSRC='.$here.'/include '.@conf{'prefix'}.'/include/rhtvision ../../include';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
-$MakeDefsRHIDE[2].='intl ' unless ($OS ne 'DOS') && (@conf{'intl'} eq 'no');
+$MakeDefsRHIDE[2].='intl ' if ($OS eq 'DOS') && (@conf{'intl'} eq 'yes');
 $MakeDefsRHIDE[2].='iconv ' if (@conf{'iconv'} eq 'yes');
 $MakeDefsRHIDE[2].='ncurses m ' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].='gpm ' if @conf{'HAVE_GPM'} eq 'yes';
