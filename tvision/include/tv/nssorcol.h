@@ -31,6 +31,8 @@ public:
     Boolean duplicates;
     virtual void *keyOf( void *item );
 
+    void reSort(); // SET: Sort it again
+
 protected:
 
     TNSSortedCollection() : duplicates(False) {}
