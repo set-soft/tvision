@@ -1,4 +1,9 @@
 $Log$
+Revision 1.171  2001/08/27 19:57:56  set
+* Modified: Now the yieldproc.c module uses the POSIX sched_yield function
+if available. It must be tested to see if that's good. Sugested by
+Robert Varga <nite@hq.alert.sk>.
+.
 Revision 1.170  2001/08/17 00:15:44  set
 * Modified: The debian files. Mainly to reflect the new dependencies and
 warn users about doubts in Borland's license. From Ivan Baldo.

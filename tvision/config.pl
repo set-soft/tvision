@@ -64,6 +64,7 @@ $MakeDefsRHIDE[1]='TVSRC='.$here.'/include '.@conf{'prefix'}.'/include/rhtvision
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 $MakeDefsRHIDE[2].='intl ' unless ($OS ne 'DOS') && (@conf{'intl'} eq 'no');
+$MakeDefsRHIDE[2].='iconv ' if (@conf{'iconv'} eq 'yes');
 $MakeDefsRHIDE[2].='ncurses m ' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].='gpm ' if @conf{'HAVE_GPM'} eq 'yes';
 if ($OS eq 'UNIX')
@@ -236,14 +237,16 @@ int main(void)
 
 sub LookForIntlSupport
 {
- my $vNeed=$_[0],$test,$a,$djdir;
+ my $vNeed=$_[0];
+ my ($test,$a,$djdir,$intllib,$intltest);
 
  print 'Checking for international support: ';
  if (@conf{'no-intl'} eq 'yes')
    {
     print "disabled by user request.\n";
     $conf{'intl'}='no';
-    `cp include/tv/nointl.h include/tv/intl.h`;
+    $conf{'iconv'}='no';
+    #`cp include/tv/nointl.h include/tv/intl.h`;
     return;
    }
  if (@conf{'intl'} eq 'yes')
@@ -266,7 +269,7 @@ sub LookForIntlSupport
        replace("$djdir/include/libintl.h",$a);
       }
    }
- $test='
+ $intltest='
 #include <stdio.h>
 #define FORCE_INTL_SUPPORT
 #include <tv/intl.h>
@@ -275,16 +278,32 @@ int main(void)
  printf("%s\n",_("OK"));
  return 0;
 }';
- $test=RunGCCTest($GCC,'c',$test,'-Iinclude/ '.($OS eq 'DOS' ? '-lintl' : ''));
+ $intllib=$OS eq 'DOS' ? '-lintl' : '';
+ $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$intllib);
  if ($test ne "OK\n")
    {
-    print "not available or not usable, disabling.\n";
-    $conf{'intl'}='no';
+    print "no, additional check required.\n";
+    print "Checking for extra libs for international support: ";
+    $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$intllib.' -liconv');
+    if ($test ne "OK\n")
+      {
+       print "none found\n";
+       print "International support absent or non-working\n";
+       $conf{'intl'}='no';
+       $conf{'iconv'}='no';
+      }
+    else
+      {
+       print "-liconv, OK\n";
+       $conf{'intl'}='yes';
+       $conf{'iconv'}='yes';
+      }
    }
  else
    {
     print "yes OK\n";
     $conf{'intl'}='yes';
+    $conf{'iconv'}='no';
    }
 }
 
