@@ -15,6 +15,7 @@ project.
 #include <limits.h>
 #include <unistd.h>
 #include <time.h>
+#include <ctype.h>
 
 #define ONE_DEP_BY_LINE 1
 
@@ -274,16 +275,33 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
  while (c)
    {
     s=c->name;
-    char *toStat;
+    char *toStat=NULL;
     struct stat st;
-    if (mk.baseDir)
-      {
-       toStat=new char[strlen(mk.baseDir)+strlen(s)+1];
-       strcpy(toStat,mk.baseDir);
-       strcat(toStat,s);
+
+    //fprintf(stderr,"Dependencia: %s\n",s);
+    if (s[0]=='/' || s[0]=='\\' || (isalpha(s[0]) && s[1]==':'))
+      {// Absolute path
+       //fprintf(stderr,"Chequeando con la base: %s (%d)\n",projectBase,projectBaseL);
+       if (strncmp(s,projectBase,projectBaseL)==0)
+         {
+          char *sub=s+projectBaseL;
+          toStat=(char *)malloc(strlen(sub)+3+1);
+          sprintf(toStat,"../%s",sub);
+          //fprintf(stderr,"Transformada a relativa: %s\n",toStat);
+         }
       }
-    else
-       toStat=strdup(s);
+    if (!toStat)
+      {
+       if (mk.baseDir)
+         {
+          toStat=new char[strlen(mk.baseDir)+strlen(s)+1];
+          strcpy(toStat,mk.baseDir);
+          strcat(toStat,s);
+          //fprintf(stderr,"Agregada base relativa: %s\n",toStat);
+         }
+       else
+          toStat=strdup(s);
+      }
     int foundOnVPath=0;
     if (stat(toStat,&st))
       {
