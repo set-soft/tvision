@@ -1,5 +1,5 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1999-2000 by SET */
+/* Copyright (C) 1999-2000 by Salvador Eduardo Tropea */
 
 #ifdef FORCE_INTL_SUPPORT
 #define HAVE_INTL_SUPPORT

@@ -8,3 +8,9 @@
 
 /* International support with gettext */
 #define HAVE_INTL_SUPPORT
+
+/* GPM mouse support */
+/*#define HAVE_GPM*/
+
+#define TVOS_DOS
+#define TVOSf_djgpp
