@@ -567,7 +567,7 @@ void TGKey::fillTEvent(TEvent &e)
        if (state & 8)
           sFlags|=kbAltLCode;
        Abstract=code | sFlags;
-       e.keyDown.charScan.charCode=0;
+       e.keyDown.charScan.charCode=code==kbTab ? '\t' : 0;
        e.keyDown.charScan.scanCode=0;
        e.keyDown.raw_scanCode=0;
        e.keyDown.keyCode=Abstract;
