@@ -39,6 +39,9 @@ dlgdsn   - That's a dialog design/code generator by Warlei Alves. I included
            it because it could be useful for people not using tools like
            EasyDiag and because Warlei told me he couldn't maintain it and
            asked me to maintain your project.
+           Note the code needs a lot of adjustments, I fixed a lot of bugs
+           by compiling using -Wall -Werror and I didn't know how to solve
+           some details.
 dyntxt   - Implements a StaticText with getData/setData member to make it
            "non-static".
 inplis   - That's interesting. It implements a class with pairs label/data
