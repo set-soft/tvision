@@ -1,9 +1,33 @@
+rhtvision (1.1.0-1) unstable; urgency=low
+
+  * New upstream version! Rejoice.
+  * Modified compat/ticks.c to include stdlib.h otherwise NULL is
+    undefined.
+  * Updated cleaning of generated files.
+  * Support for compiling the compatibility library with PIC code (thanks
+    Lintian for reporting this!).
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Fri, 10 Aug 2001 16:07:50 -0300
+
+rhtvision (1.0.9-4) unstable; urgency=low
+
+  * Long time ago, this package (and other depending package) had to be
+    removed from the Debian distribution because of yet unresolved legal
+    problems with Inprise, fortunately the package had not been distributed
+    with any official Debian release.
+  * Slight changes to upstream source to make it compile on current
+    unstable distribution.
+  * Debian control file updated for new dependencies.
+  * Standards version 3.5.2.0.
+  * Do not use now deprecated dh_testversion, use a versioned build-dependency
+    on DebHelper instead.
+  * Made it clear that this is not an official package and that it is not
+    redistributable (control file, copyright, README.Debian, etc.).
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Sun, 10 Jun 2001 19:05:26 -0300
+
 rhtvision (1.0.9-3) unstable; urgency=low
 
-  * -v-0.1 Personal use unofficial version
-  * -v-0.1 Personal use unofficial version
-  * -v-0.1 Personal use unofficial version
-  * -v-0.1 Personal use unofficial version
   * Standards version 3.1.0.
   * Added Build-Depends.
   * Architecture set to "any" instead of "i386 alpha" as requested by
