@@ -238,12 +238,25 @@ void TListViewer::handleEvent( TEvent& event )
 
     if( event.what == evMouseDown )
         {
+        // They must be before doubleClick to avoid "b4 double click"
+        if( event.mouse.buttons == mbButton4 )
+            {
+            focusItemNum(focused - size.y * numCols);
+            clearEvent( event );
+            return;
+            }
+        if( event.mouse.buttons == mbButton5 )
+            {
+            focusItemNum(focused + size.y * numCols);
+            clearEvent( event );
+            return;
+            }
         if( event.mouse.doubleClick && range > focused )
-        {
+            {
             selectItem( focused );
             clearEvent( event );
             return;
-        }
+            }
         colWidth = size.x / numCols + 1;
         oldItem =  focused;
         mouse = makeLocal( event.mouse.where );
