@@ -32,7 +32,6 @@
 #define Uses_TStatusLine
 
 #ifdef __linux__
-
 #define Uses_TScreen
 #endif
 
@@ -161,7 +160,6 @@ TDeskTop *TApp::initDeskTop( TRect r )
 #ifdef __linux__
 void ResumeApp(int signum)
 {
- TScreen::resume();
  TProgram::application->resume();
  TProgram::deskTop->setState(sfVisible,True);
  TProgram::deskTop->redraw();
@@ -190,7 +188,6 @@ void TApp::handleEvent (TEvent &event)
   if( event.what == evKeyDown && event.keyDown.keyCode == kbCtrlZ )
 	 {
      suspend();
-     TScreen::suspend();
      signal(SIGCONT,ResumeApp);
      kill(0,SIGSTOP);
     }

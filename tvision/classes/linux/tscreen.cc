@@ -838,6 +838,7 @@ void TScreen::resume()
   // SET: To go back from a temporal ncurses stop we must use just doupdate
   // or refresh. (see suspend).
   doupdate();
+  //InitPCCharsMapping(use_pc_chars);
 }
 
 TScreen::~TScreen()

@@ -1,5 +1,9 @@
 $Log$
-Revision 1.123  1999/12/05 13:28:08  root
+Revision 1.124  1999/12/19 19:50:08  root (set)
+* Added: Now the library also patches the Ctrl+Shift+Tab combination so the
+kernel reports it. Ivan reported it as a bug.
+
+Revision 1.123  1999/12/05 13:28:08  root (set)
 * Applied patchs from Ivan for the Debian files (sets architecture to any).
 
 Revision 1.122  1999/12/05 13:12:59  root (set)
