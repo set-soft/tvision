@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.329  2002/09/19 18:06:38  set
+* Fixed: static const class members looks like a logic construction and g++
+understands it, but it seems to be a non-standard thing and MSVC doesn't
+undertsand it. I changed it by the "anonymous enum" trick. From a report by
+WintiX.
+
 Revision 2.328  2002/09/18 20:01:28  set
 * Added: [Linux] driver documentation, this is a tricky driver and needs a
 lot of explanations. Isn't revised, it means it can contain all kind of
