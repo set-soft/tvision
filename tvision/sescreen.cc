@@ -4,6 +4,9 @@
 /* This file is for saving/restoring the screen in graphics and/or
    text modes. Many parts and most of the very good comments came
    from SET.
+
+   NOTE: by SET 1999-04: I think this code is broken and I check it latter
+   so I'm not fixing here the VESA stuff about using the __tb.
 */
 /*
   Hi Robert:

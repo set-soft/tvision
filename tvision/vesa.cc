@@ -1,5 +1,21 @@
-/* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* This file is part of RHIDE. */
+/**[txh]********************************************************************
+
+  Description:
+  That's the Robert's version of the VESA video modes handling routines.@*
+  Some stuff modified by me (SET):
+
+* Support for S3 text mode way to report planes.
+* Removed the need to allocate DOS memory for the VESA structures, that's
+bad because we reduce the available memory and because at least one VESA
+2.0 TSR for S3 boards have the bad idea to return more bytes than what the
+spec says overwriting memory. I know it from the FreeBE/AF project. So now
+I changed it to use the transfer buffer and copy it to malloced memory.
+BTW: this change saved 172 bytes of code and added 20 bytes of data.
+
+***************************************************************************/
+
+/* Copyright (C) 1996-1998 Robert H”hne, this file is part of RHTVision and
+   is under the GPL license */
 #ifdef __DJGPP__
 
 /*
@@ -31,7 +47,11 @@ before.
 #include <dpmi.h>
 #include <go32.h>
 
+// SET: I found this value is board dependant and Robert taked a value that
+// works with most of the boards.
 int rh_vesa_size=256*1024;
+
+typedef unsigned short ushort;
 
 extern int user_mode;
 
@@ -44,92 +64,81 @@ static int win_size;
 static unsigned win_seg_r;
 static unsigned win_seg_w;
 
-/*
- * The mode information structure (without padding)
-
- This struct is taken from libgrx (vesa.h)
- Because I don't want to go into trouble with packing
- this struct I reserve only one block of memory and use
- macros for accessing the members */
-
-static int mode_info_segment = -1;
-static int mode_info_selector;
-
-static int GetVesaModeInfo(int mode)
-{
-  __dpmi_regs r;
-  if (mode_info_segment == -1)
-    mode_info_segment = __dpmi_allocate_dos_memory(16,&mode_info_selector);
-  if (mode_info_segment == -1)
-    return 0;
-  r.x.ax = 0x4f01;
-  r.x.es = mode_info_segment;
-  r.x.di = 0;
-  r.x.cx = mode;
-  __dpmi_int(0x10,&r);
-  if (r.x.ax != 0x004f)
-    return 0;
-  return 1;
-}
-
-#define _BYTE(_index) _farpeekb(mode_info_selector,_index)
-#define _WORD(_index) _farpeekw(mode_info_selector,_index)
-
-/*
+// SET: I changed the stuff related to this structure, see in the header
+// comments of vesa.cc file.
+// Robert originally taked it from the vesa.h of GRX library, I changed some
+// comments to match the "VESA Super VGA Standard VS911022-14" text. And
+// changed to ushort type.
+#define PACK __attribute__((packed))
+/* This is for g++ 2.7.2 and below */
+#pragma pack(1)
 typedef struct {
-    short	ModeAttributes	  PACK;	    mode attributes
-*/
-#define ModeAttributes _WORD(0)
+ ushort modeAttributes   PACK;//mode attributes
+#define ModeAttributes   infoBk.modeAttributes
+ char   winAAttributes   PACK;// Window A attributes
+ char   winBAttributes   PACK;// Window B attributes
+#define WinAAttributes   infoBk.winAAttributes
+#define WinBAttributes   infoBk.winBAttributes
+ ushort winGranularity   PACK;// Window granularity
+#define WinGranularity   infoBk.winGranularity
+ ushort winSize          PACK;// Window size
+#define WinSize          infoBk.winSize
+ ushort winASegment      PACK;// Window A start segment
+ ushort winBSegment      PACK;// Window B start segment
+#define WinASegment      infoBk.winASegment
+#define WinBSegment      infoBk.winBSegment
+ void   (*WinFuncPtr)()  PACK;// Pointer to window function
+ ushort BytesPerScanLine PACK;// Bytes per scan line
+
+// ==== extended and optional information ==== Mandatory since VESA 1.2
+
+ ushort XResolution      PACK;// Horizontal resolution
+ ushort YResolution      PACK;// Vertical resolution
+ char   XCharSize        PACK;// Character cell width
+ char   YCharSize        PACK;// Character cell height
+ char   numberOfPlanes   PACK;// Number of memory planes
+#define NumberOfPlanes   infoBk.numberOfPlanes
 /*
-    char	WinAAttributes	  PACK;	    Window A attributes
-    char	WinBAttributes	  PACK;	    Window B attributes
+ char   BitsPerPixel     PACK;// Bits per pixel
+ char   NumberOfBanks    PACK;// Number of banks
+ char   MemoryModel      PACK;// Memory model type
+ char   BankSize         PACK;// Bank size in K
+ char   NumImagePages    PACK;// Number of image pages
+ char   reserved[1]      PACK;// Reserved for page function
+
+// ==== VESA 1.2 and later ====
+
+ char   RedMaskSize      PACK;// Size of direct color red mask in bits
+ char   RedMaskPos       PACK;// Bit position of LSB of red mask
+ char   GreenMaskSize    PACK;// Idem green
+ char   GreenMaskPos     PACK;
+ char   BlueMaskSize     PACK;// Idem blue
+ char   BlueMaskPos      PACK;
+ char   ReservedMaskSize PACK;// Idem reserved bits
+ char   ReservedMaskPos  PACK;
+ char   DirectScreenMode PACK;// Direct Color mode attributes
+ char   reserved2[216]   PACK;
 */
-#define WinAAttributes _BYTE(2)
-#define WinBAttributes _BYTE(3)
-/*
-    short	WinGranularity	  PACK;	    window granularity
-*/
-#define WinGranularity _WORD(4)
-/*
-    short	WinSize		  PACK;	    window size
-*/
-#define WinSize _WORD(6)
-/*
-    short	WinASegment	  PACK;	    Window A start segment
-    short	WinBSegment	  PACK;	    Window B start segment
-*/
-#define WinASegment _WORD(8)
-#define WinBSegment _WORD(10)
-/*
-    void	(*WinFuncPtr)()	  PACK;	    pointer to window function
-    short	BytesPerScanLine  PACK;	    bytes per scan line
-      ==== extended and optional information ====
-    short	XResolution	  PACK;	    horizontal resolution
-    short	YResolution	  PACK;	    vertical resolution
-    char	XCharSize	  PACK;	    character cell width
-    char	YCharSize	  PACK;	    character cell height
-    char	NumberOfPlanes	  PACK;	    number of memory planes
-*/
-#define NumberOfPlanes _BYTE(0x18)
-/*
-    char	BitsPerPixel	  PACK;	    bits per pixel
-    char	NumberOfBanks	  PACK;	    number of banks
-    char	MemoryModel	  PACK;	    memory model type
-    char	BankSize	  PACK;	    bank size in K
-    char	NumImagePages	  PACK;	    number of image pages
-    char	reserved[1]	  PACK;
-       ==== VESA 1.2 and later ====
-    char	RedMaskSize	  PACK;	    number of bits in red mask
-    char	RedMaskPos	  PACK;	    starting bit for red mask
-    char	GreenMaskSize	  PACK;
-    char	GreenMaskPos	  PACK;
-    char	BlueMaskSize	  PACK;
-    char	BlueMaskPos	  PACK;
-    char	ReservedMaskSize  PACK;	    reserved bits in pixel
-    char	ReservedMaskPos	  PACK;
-    char	DirectScreenMode  PACK;
 } VESAmodeInfoBlock;
-*/
+#pragma pack(4)
+// This block is globally accessed with the macros.
+static VESAmodeInfoBlock infoBk;
+
+
+static
+int GetVesaModeInfo(int mode)
+{
+ __dpmi_regs r;
+ r.x.ax = 0x4f01;
+ r.x.es = __tb>>4;    // SET: changed to use tb.
+ r.x.di = __tb & 0xF;
+ r.x.cx = mode;
+ __dpmi_int(0x10,&r);
+ if (r.x.ax!=0x004f)
+    return 0;
+ dosmemget(__tb,sizeof(infoBk),&infoBk);
+ return 1;
+}
 
 static int vesa_state_segment = -1;
 static int vesa_state_selector;
