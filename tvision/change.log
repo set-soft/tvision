@@ -1,4 +1,9 @@
 $Log$
+Revision 2.7  2001/11/25 00:12:12  set
+* Added the headers for the Linux and X11 drivers.
+* Changed the screen.h, event.h and gkey.h headers to declare the new class
+structure.
+
 Revision 2.6  2001/11/25 00:04:03  set
 * Changed classes/tdisplay.cc, classes/tscreen.cc and classes/thwmouse.cc
 by the new class structure. This is a complete rework of the classes but

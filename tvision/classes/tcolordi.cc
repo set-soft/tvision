@@ -33,12 +33,11 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TPalette
+#define Uses_TScreen
 // For the "Try" button:
 #define Uses_TProgram
 #define Uses_TDeskTop
 #include <tv.h>
-
-int getBlinkState();
 
 TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     TDialog( TRect( 0, 0, 61, 18 ), _("Colors") )
@@ -71,7 +70,7 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     forLabel = new TLabel( TRect( 45, 2, 46+cstrlen(tmp), 3 ), tmp, forSel );
     insert( forLabel );
 
-    int ib = getBlinkState() ? 0 : 2;
+    int ib = TScreen::getBlinkState() ? 0 : 2;
 
     bakSel = new TColorSelector( TRect( 45, 9, 57, 11 + ib),
                                  TColorSelector::csBackground );
