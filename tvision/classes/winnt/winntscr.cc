@@ -10,6 +10,10 @@ added some routines and adapted it to the new architecture.
 
   ToDo: Set UseScreenSaver when we are in full screen.
 
+  Configuration variables:
+  ScreenWidth
+  ScreenHeight
+
   Notes:
   1) I saw a problem in W98SE, it looks like a bug in Windows: If I
 suspend to a shell and the resume doing window size changes at exit the

@@ -10,6 +10,10 @@
 
   Description:
   This module implements the low level DOS screen access.
+
+  Configuration variables:
+  ScreenWidth
+  ScreenHeight
   
 ***************************************************************************/
 
@@ -144,8 +148,16 @@ TScreenDOS::TScreenDOS()
     maxX=aux;
  if (optSearch("ScreenHeight",aux))
     maxY=aux;
+ if (frCB)
+   {// Give a chance to the call back.
+    primaryFontSet=1;
+    appFonts[0].h=0;
+   }
  if (maxX!=startScreenWidth || maxY!=startScreenHeight)
-    setCrtModeRes(maxX,maxY);
+    setCrtModeRes(maxX,maxY); // if frCB installed it will use the application font
+ else
+    if (frCB)
+       SelectFont(charLines,False); // Try loading the application font
 
  user_mode=screenMode=getCrtMode();
  setCrtData();

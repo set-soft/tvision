@@ -794,6 +794,15 @@ TScreenLinux::TScreenLinux()
  tcgetattr(hOut,&outTermiosNew);
  suspended=0;
  setCursorType(0);
+
+ // Give a chance to the fonts callback
+ if (canSetFonts && frCB && GetLinuxFontGeometry())
+   {
+    TScreenFont256 *font=frCB(0,linuxFont.width,linuxFont.height);
+    SetFont(1,font,0,NULL);
+    DeleteArray(font->data);
+    delete font;
+   }
 }
 
 void TScreenLinux::Suspend()
