@@ -1,4 +1,29 @@
-$Log$.
+$Log$
+Revision 2.399.2.4  2003/02/17 12:48:21  set
+* Added: Unicode buffers support at low level. Achieved by the following
+changes. Still experimental and useless ;-)
+* Added: TVCodePage members to convert Unicode16 <-> Application Code Page
+for 1 char, a string and a char/attr buffer.
+* Added: TVFontCollection member to get the shapes for all the glyphs in
+a font. Currently used by X11 driver (is a hack) to create an Unicode font.
+* Added: TDisplay::drawingMode and getDrawingMode() to know the encoding
+used by the display. Currently codepage and unicode16 are supported.
+* Modified: TGroup to properly handle and draw from buffers that now can be
+of two different sizes.
+* Modified: Some default TScreen memebers to work with both types of
+encodings.
+* Modified: TView to support both kind of encodings as input and output. If
+needed TView does the proper translations. I tested the code using Unicode
+at low level and a code page at high level, it forces a conversion but
+works quite well. It will allow mixing Unicode and CodePage TView objects
+in the same application.
+* Modified: TScreen::setCharacter arguments, it triggered changes in
+various drivers, only UNIX drivers are updated.
+* Added: Unicode16 code to X11 driver. It currently tries to load one of
+the setedit fonts, if available creates an Unicode font and sets the screen
+mode to unicode16. The behavior should be selectable, but this is for
+testing.
+
 Revision 2.399.2.3  2003/02/14 13:43:26  set
 * Added: A base class for TDrawBuffer called TDrawBufferBase. It adds a
 "type" field to identify different types of draw buffers and a virtual

@@ -125,7 +125,12 @@ protected:
  static void   drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar);
  // Creates the mouse cursors
  static Boolean createCursors();
-
+ // Unicode font helpers
+ inline // Find which glyph represents the unicode value
+ static uint16  unicode2index(uint16 unicode);
+ inline // Ensure the glyph is available as XImage
+ static void    checkUnicodeGlyph(uint16 code);
+ 
  // Variables for this driver
  // Foreground and background colors
  static int       fg,bg;
