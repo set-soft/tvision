@@ -113,7 +113,7 @@ if ($OS eq 'UNIX')
    $MakeDefsRHIDE[3]='TVOBJ='.$LDExtraDirs.' ';
    # QNX 6.2 beta 3 workaround
    $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
-   $MakeDefsRHIDE[3].='../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib';
+   $MakeDefsRHIDE[3].='../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib ';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
    ModifyMakefiles('linux/Makefile','compat/compat.mak');
