@@ -1469,6 +1469,7 @@ int TScreenLinux::SetFont(int changeP, TScreenFont256 *fontP,
     if (fontS)
       {
        ourFont.charcount=512;
+       memcpy(ourFont.data,linuxFont.data,256*bytes);
        ExpandFont(ourFont.data+256*bytes,fontS);
        newSecondaryFontSet=1;
       }

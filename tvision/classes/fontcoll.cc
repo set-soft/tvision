@@ -356,6 +356,7 @@ TVFontCollection::TVFontCollection(const char *file, int cp) :
   TNSCollection(2,2)
 {
  error=0;
+ fontName=fileName=NULL;
  if (!file)
    {
     error=1;
