@@ -466,6 +466,7 @@ typedef struct
 #define SCAN_S 0x1f
 #define SCAN_J 0x24
 #define SCAN_M 0x32
+#define SCAN_Z 0x2C
 #define SCAN_PGUP 104
 #define SCAN_PGDN 109
 #define SCAN_BKSP 14
@@ -516,6 +517,7 @@ change_entry changes[] = {
   { kblCtrl,  SCAN_S,    kblNormal, SCAN_S,    0, 0},
   { kblCtrl,  SCAN_J,    kblNormal, SCAN_J,    0, 0},
   { kblCtrl,  SCAN_M,    kblNormal, SCAN_M,    0, 0},
+  { kblCtrl,  SCAN_Z,    kblNormal, SCAN_Z,    0, 0},
   { kblShift, SCAN_PGUP, kblNormal, SCAN_PGUP, 0, 0},
   { kblShift, SCAN_PGDN, kblNormal, SCAN_PGDN, 0, 0},
   { kblCtrl,  SCAN_BKSP, kblNormal, SCAN_BKSP, 0, 0},

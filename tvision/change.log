@@ -1,4 +1,8 @@
 $Log$
+Revision 1.63  1999/06/12 00:16:15  set
+* Fixed: Some calls to delete for memory allocated with new[]. Patchs from
+Laurinas, some of them overlaps with patches from Andris.
+.
 Revision 1.62  1999/06/11 23:55:14  set
 * Fixed: Some calls to delete operator passing a void *. Now falling back to
 char *. Also the new operator in HistRec class was returning 0 and the new
