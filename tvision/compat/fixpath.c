@@ -175,6 +175,7 @@ _fixpath(const char *in, char *out)
    I have modified it to be used on unix systems (like linux).
 */
 
+/* Copyright (C) 2002 Salvador E. Tropea */
 /* Copyright (C) 1996 DJ Delorie, see COPYING.DJ for details */
 /* Copyright (C) 1995 DJ Delorie, see COPYING.DJ for details */
 
@@ -182,6 +183,7 @@ _fixpath(const char *in, char *out)
 #define Uses_string
 #define Uses_limits
 #define Uses_getcurdir
+#define Uses_stdlib
 #include <compatlayer.h>
 
 inline static int
@@ -207,6 +209,20 @@ void _fixpath(const char *in, char *out)
 {
   const char    *ip = in;
   char          *op = out;
+
+
+  /* Convert ~ to the HOME environment variable */
+  if (*ip == '~' && (is_slash(ip[1]) || !ip[1]))
+  {
+    const char *home = getenv("HOME");
+    if (home)
+    {
+      strcpy(op,home);
+      op += strlen(op);
+      ip++;
+      if (!*ip) return;
+    }
+  }
 
   /* Convert relative path to absolute */
   if (!is_slash(*ip))
