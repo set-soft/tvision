@@ -15,8 +15,8 @@
  * writeInt and writeLong.
  *
  */
-#include <stdio.h> // fprintf in writeData
-#define Uses_string // Needed for Win32
+#define Uses_stdio // fprintf in writeData
+#define Uses_string
 #define Uses_PubStreamBuf
 #define Uses_TStreamable
 #define Uses_TStreamableClass

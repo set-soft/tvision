@@ -682,7 +682,7 @@ static int keyboard_patch_available=0;
 static struct kbentry entry;
 
 static struct vt_mode oldvtmode;
-static int our_vt;
+static int our_vt=-1;
 static int console_sigs_set = 0;
 static int atexit_done_console_sigs = 0;
 int install_console_sigs = 1;
@@ -739,10 +739,27 @@ static void init_console_sigs()
     return;
 
   // -------- Get our console number
+  #if 1
   if (sscanf(ttyname(STDOUT_FILENO),"/dev/tty%2d",&our_vt) != 1)
   {
     return;
   }
+  #else
+  // Code from Andris that we should test
+  char *tty_name=ttyname(STDOUT_FILENO);
+  if (tty_name)
+  {
+     if (sscanf(tty_name,"/dev/tty%2d",&our_vt) != 1)
+       if (sscanf(tty_name,"/dev/pts/%2d",&our_vt) != 1)
+       {
+          return;
+       }
+  }
+  else if (our_vt==-1)
+  {
+     return;
+  }
+  #endif
 
   // -------- Tell our console to inform us about switches
   struct vt_mode newvtmode;

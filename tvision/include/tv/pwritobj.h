@@ -29,7 +29,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TPWrittenObjects : public TNSSortedCollection
 {
 
-    friend opstream;
+    friend class opstream;
 
 public:
 
@@ -61,7 +61,7 @@ private:
 class TPWObj
 {
 
-    friend TPWrittenObjects;
+    friend class TPWrittenObjects;
 
 private:
 

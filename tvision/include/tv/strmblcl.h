@@ -33,9 +33,9 @@ typedef TStreamable *(*BUILDER)();
 class TStreamableClass
 {
 
-    friend TStreamableTypes;
-    friend opstream;
-    friend ipstream;
+    friend class TStreamableTypes;
+    friend class opstream;
+    friend class ipstream;
 
 public:
 

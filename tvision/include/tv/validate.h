@@ -35,7 +35,7 @@ class TInputLine;
 // Abstract TValidator object
 class TValidator : public TObject
 #if !defined( NO_STREAM )
-                                  , TStreamable
+    , protected TStreamable
 #endif // NO_STREAM
 {
 public:
