@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.224  2004/12/07 14:41:17  set
+* Added: [config] --debug option to select debug switches.
+
 Revision 2.399.2.223  2004/12/06 18:05:55  set
 * Fixed(?): XFree86 reports Ctrl+2 without any symbol (only ASCII).
 Reported by Sergio Núñez (snunez/esquemas/com).
