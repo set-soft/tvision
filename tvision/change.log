@@ -1,4 +1,9 @@
 $Log$
+Revision 1.89  1999/08/07 21:30:11  set
+* Added: Now TListViewer is verbose and sends a broadcast when a new item is
+focused. It can be used to update other views according to it.
+* Updated Robert Hoehne's license text.
+.
 Revision 1.88  1999/08/03 02:04:57  set
 * Added: Now TClusters (TRadioButton and TCheckBox) sends broadcasts to your
 owner each time the movedTo and press member are called. This behavior is the
