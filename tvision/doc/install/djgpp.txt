@@ -5,7 +5,7 @@ download it from: http://www.delorie.com/djgpp/
 $Id$
 
 1. INTRODUCTION
-2. COMPILING
+2. COMPILING AND INSTALLING
 
 
 1. INTRODUCTION
