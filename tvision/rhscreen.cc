@@ -180,6 +180,13 @@ void rh_SaveVideo(int cols,int rows)
   }
 }
 
+// SET: Added to release the memory of this module.
+void rh_SaveVideoReleaseMemory(void)
+{
+ free(user_screen);
+}
+
+
 void rh_RestoreVideo()
 {
   if (vesa_mode)

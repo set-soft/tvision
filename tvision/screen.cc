@@ -12,12 +12,13 @@ ushort user_mode;
 int screen_saving = MODE_RH;
 
 void rh_SaveVideo(int,int);
+void rh_SaveVideoReleaseMemory(void);
 void rh_RestoreVideo();
 void set_SaveVideo(int,int);
 void set_RestoreVideo();
 
 #ifndef __DJGPP__
-static ushort *user_buffer;
+static ushort *user_buffer=0;
 static int user_buffer_size;
 static int user_cursor_x,user_cursor_y;
 extern int vcs_fd;
@@ -39,6 +40,17 @@ void SaveScreen()
     TScreen::getCharacter(0,user_buffer,user_buffer_size);
     TScreen::GetCursor(user_cursor_x,user_cursor_y);
   }
+#endif
+}
+
+// SET: Added to release the memory allocated here
+void SaveScreenReleaseMemory(void)
+{
+#ifdef __DJGPP__
+  if (screen_saving == MODE_RH)
+     rh_SaveVideoReleaseMemory();
+#else
+  free(user_buffer);
 #endif
 }
 

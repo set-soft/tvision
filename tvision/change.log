@@ -1,4 +1,13 @@
 $Log$
+Revision 1.32  1999/04/04 01:42:36  set
+* Fixed: Problems in intl.h with glibc>=2.1. Patch provided by Andris.
+* Fixed: TChDirDialog used a fixed maxlength for the directory name instead
+of using a limit from the headers. Patch provided by Andris.
+* Fixed: TTerminal::prevLine was 100% broken. I rewrote it. Reported by
+Andris.
+* Fixed?: a label at the end of the post inst files for Debian. Ivan told me
+what was needed, not sure if I did it ok.
+.
 Revision 1.31  1999/04/01 01:28:52  set
 * Fixed: Now you can set a VESA video mode using void TDisplay::setCrtMode.
 It wasn't possible before because it ever used service 0, now if the mode is
