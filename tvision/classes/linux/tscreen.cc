@@ -33,7 +33,7 @@ int dual_display = 0;
 char TScreen::suspended = 1;
 char TScreen::initialized = 0;
 
-#ifdef __FreeBSD__
+#ifdef TVOSf_FreeBSD
 #include <ncurses.h>
 #else
 #include <curses.h>
@@ -43,7 +43,7 @@ char TScreen::initialized = 0;
 
 //#define DEBUG
 #ifdef DEBUG
-#ifdef __linux__
+#ifdef TVOS_UNIX
 extern char *program_invocation_short_name;
 #define LOG(s) cerr << program_invocation_short_name << ": " << s << "\r\n"
 #else
@@ -708,7 +708,7 @@ TScreen::TScreen()
     screenWidth = 80;
     screenHeight = 25;
   }
-  #ifdef __FreeBSD__
+  #ifdef TVOSf_FreeBSD
   /*
    * Kludge: until we find a right way to fix the "last-line" display
    * problem, this is a solution.
