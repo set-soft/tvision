@@ -1,4 +1,11 @@
 $Log$
+Revision 1.195  2001/09/16 12:44:19  set
+* Fixed: [Linux] Now <sys/ioperm.h> is included only when needed
+(i386+Linux). After fixing it the code compiled for Linux: Alpha, PPC
+(RS/6000) and SPARC (Ultra60 w/2 CPUs) and FreeBSD+x86. Some big endian
+details must be solved but the demo works for all the platforms. Some
+configuration details must also be solved.
+
 Revision 1.194  2001/09/09 22:10:48  set
 * Fixed: [BC++/Win32] Some unused variable warnings. It looks like BC++ 5.5
 needs something like if (unused) unused=0; to understand we don't want it.
