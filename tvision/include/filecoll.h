@@ -18,8 +18,8 @@ class TSearchRec;
 
 const unsigned fcolAlphabetical=0, fcolDirsFirst=1, fcolDirsLast=2,
                fcolTypeMask=0x1F;
-const unsigned fcolCaseInsensitive=0x20, fcolCaseSensitive=0;
-const unsigned fcolParentLast=0x40, fcolParentFirst=0;
+const unsigned fcolCaseInsensitive=0x20, fcolCaseSensitive=0, fcolCaseBit=5;
+const unsigned fcolParentLast=0x40, fcolParentFirst=0, fcolParentBit=6;
 
 class TFileCollection: public TSortedCollection
 {
