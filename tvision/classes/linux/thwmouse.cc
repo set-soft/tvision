@@ -14,7 +14,7 @@
 
 //#define DEBUG
 #ifdef DEBUG
-#ifdef __linux__
+#ifdef TVOSf_Linux
 extern char *program_invocation_short_name;
 #define LOG(s) cerr << program_invocation_short_name << ": " << s << "\n"
 #else
@@ -69,10 +69,16 @@ void get_mouse_char()
   mouse_char = TScreen::getCharacter(last_x+last_y*TScreen::screenWidth);
 }
 
+#ifdef TV_BIG_ENDIAN
+ #define MouseAttrMask 0x007F;
+#else
+ #define MouseAttrMask 0x7F00;
+#endif
+
 static
 void set_mouse_char()
 {
-  unsigned short c = mouse_char ^ 0x7F00;
+  unsigned short c = mouse_char ^ MouseAttrMask;
   TScreen::setCharacter(last_x+last_y*TScreen::screenWidth,c);
 }
 
