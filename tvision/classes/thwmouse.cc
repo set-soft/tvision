@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Mouse module, Copyright 2001-2002 by Salvador E. Tropea
+  Mouse module, Copyright 2001-2003 by Salvador E. Tropea
   Description:
   This is the base class for low level mouse input.
   Most members are pointers to functions defined by each platform dependent
@@ -23,6 +23,7 @@ same used in original Turbo Vision for compatibility purposes.
 Boolean  THWMouse::handlerInstalled=False;
 Boolean  THWMouse::noMouse         =False;
 uchar    THWMouse::buttonCount     =0;
+uchar    THWMouse::oldButtonCount  =0;
 uchar    THWMouse::btBeforeForce   =0;
 char     THWMouse::visible         =0;
 char     THWMouse::forced          =0;
@@ -58,7 +59,7 @@ void THWMouse::defaultHide()
 }
 
 void THWMouse::defaultSuspend() {}
-void THWMouse::defaultResume() {}
+void THWMouse::defaultResume() { buttonCount=oldButtonCount; }
 void THWMouse::defaultSetRange(ushort /*rx*/, ushort /*ry*/) {}
 int  THWMouse::defaultDrawMouse(int /*x*/, int /*y*/) { return 0; }
 
@@ -104,6 +105,7 @@ void THWMouse::suspend()
     return;
  if (visible)
     Hide();
+ oldButtonCount=buttonCount;
  buttonCount=0;
  Suspend();
 }

@@ -79,6 +79,9 @@ protected:
  // if the mouse is present, a value of 0 is mouse not available. See the
  // present() member.
  static uchar buttonCount;
+ // SET: Suspend sets buttonCount to 0 to disable the mouse. The default
+ // resume behavior is to restore this value.
+ static uchar oldButtonCount;
  // SET: Just to avoid redundant calls
  static char  visible;
  // SET: Data used to force an event externally
