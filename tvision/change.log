@@ -1,10 +1,14 @@
 $Log$
+Revision 1.229  2001/10/17 21:52:58  set
+* Added: A #undef gettext in intl.h for DOS. I hope it solve collisions with
+conio.h that are popping again (with old gettext versions).
+
 Revision 1.228  2001/10/17 00:28:12  set
 * Modified: The Win32 port uses a case sensitive glob to match wildcards in
 directories but Win32 isn't really case sensitive (is HPFS case sensitive?).
 Owen Rudge <owen@osplus.co.uk> reported problems because *.txt and *.TXT
 doesn't match the same files. So I disabled the case sensitive comparisson.
-.
+
 Revision 1.227  2001/10/17 00:00:29  set
 * Added: to the readme notes about some success compiling for Linux+HPPA+gcc
 3.0 reported by Joël Soete <JSO@EUROPAY.COM>. [ISO-1]

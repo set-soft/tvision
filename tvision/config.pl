@@ -616,7 +616,7 @@ sub GenerateMakefile
  $rep.="\trm -f djgpp/obj/*.o\n";
  $rep.="\trm -f intl/dummy/*.o\n";
  $rep.="\trm -f intl/dummy/*.a\n";
- $rep.="\t-examples/clean\n";
+ $rep.="\t-\$(MAKE) -C examples clean\n";
  $text=~s/\@clean\@/$rep/g;
 
  replace('Makefile',$text);
@@ -626,7 +626,7 @@ sub CreateConfigH
 {
  my $text="/* Generated automatically by the configure script */",$old;
 
- print "Generating configuration header\n";
+ print 'Generating configuration header: ';
 
  $text.=ConfigIncDef('HAVE_DEFINE_KEY','ncurses 4.2 or better have define_key (In Linux)');
  $text.=ConfigIncDefYes('HAVE_KEYSYMS','The X11 keysyms are there');
@@ -643,6 +643,14 @@ sub CreateConfigH
  $text.="#define TVCompf_$Compf\n";
 
  $old=cat('include/tv/configtv.h');
- replace('include/tv/configtv.h',$text) unless $text eq $old;
+ if ($text eq $old)
+   {
+    print "no changes\n";
+   }
+ else
+   {
+    print "created new header\n";
+    replace('include/tv/configtv.h',$text);
+   }
 }
 

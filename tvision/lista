@@ -190,8 +190,7 @@ djgpp/vgastate.c
 djgpp/vgastate.h
 drivers2.cc
 dual.cc
-+examples/clean.bat
-+examples/clean
+examples/Makefile
 examples/patchenv.pl
 examples/rhide.env
 examples/demo/ascii.cc
