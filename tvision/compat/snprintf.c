@@ -161,6 +161,13 @@ struct DATA {
             (p)->counter++; /* SET: Moved outside if */ \
             }
 
+/* SET: put a char, no increment */
+#define PUT_EOS(p) \
+            { \
+            if ((p)->counter <= (p)->length) \
+              *(p)->holder = 0; \
+            }
+
 #define PUT_PLUS(d, p) \
             if ((d) > 0. && (p)->justify == RIGHT) \
               PUT_CHAR('+', p)
@@ -588,7 +595,7 @@ CLY_vsnprintf(char *string, size_t length, const char * format, va_list args)
       for (state = 1; *data.pf && state;) {
         switch (*(++data.pf)) {
           case '\0': /* a NULL here ? ? bail out */
-            *data.holder = '\0';
+            PUT_EOS(&data);
             return data.counter;
             break;
           case 'f':  /* float, double */
@@ -696,7 +703,7 @@ CLY_vsnprintf(char *string, size_t length, const char * format, va_list args)
     }
   }
 
-  *data.holder = '\0'; /* the end ye ! */
+  PUT_EOS(&data); /* the end ye ! */
 
   return data.counter;
 }
