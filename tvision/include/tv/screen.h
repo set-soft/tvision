@@ -184,6 +184,8 @@ protected:
  };
  static uint32 opts1;
 
+ // Helper to access TVCodePage and set the default values
+ static void SetDefaultCodePages(int idScr, int idApp, int idInp);
  // Hardware Palette handling routines and variables.
  // This is low level and should be called from TScreen.
  static void (*getDisPaletteColors)(int from, int number, TScreenColor *colors);

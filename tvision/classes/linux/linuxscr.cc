@@ -634,6 +634,7 @@ int TScreenLinux::InitOnce()
  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : installedACM,
                          forcedScrCP!=-1 ? forcedScrCP : installedSFM,
                          forcedInpCP!=-1 ? forcedInpCP : installedACM);
+ SetDefaultCodePages(installedACM,installedSFM,installedACM);
  if (tioclinuxOK && GetLinuxFontGeometry())
    {
     canSetFonts=1;

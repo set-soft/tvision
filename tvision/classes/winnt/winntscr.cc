@@ -162,6 +162,7 @@ int TScreenWinNT::InitOnce()
  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : outCP,
                          forcedScrCP!=-1 ? forcedScrCP : outCP,
                          forcedInpCP!=-1 ? forcedInpCP : inCP);
+ SetDefaultCodePages(outCP,outCP,inCP);
 
  return 1;
 }

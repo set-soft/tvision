@@ -116,6 +116,8 @@ protected:
  static void      CreateCodePagesCol();
  static void      ChangeDefaultCodePages(int idScr, int idApp)
                   { defAppCP=idApp; defScrCP=idScr; }
+ static void      SetDefaultCodePages(int idScr, int idApp, int idInp)
+                  { defAppCP=idApp; defScrCP=idScr; defInpCP=idInp; }
 
  static const char alphaChar=1, lowerChar=2, upperChar=4, digitChar=8;
  static TVCodePageCol *CodePages;
@@ -190,6 +192,7 @@ protected:
  static uchar  High32FramesSwap[];
 
  friend class TScreen;
+ friend class TDisplay;
 };
 
 #endif

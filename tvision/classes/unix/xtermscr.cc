@@ -179,6 +179,8 @@ TScreenXTerm::TScreenXTerm()
  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::ISOLatin1Linux,
                          forcedScrCP!=-1 ? forcedScrCP : TVCodePage::ISOLatin1Linux,
                          forcedInpCP!=-1 ? forcedInpCP : TVCodePage::ISOLatin1Linux);
+ SetDefaultCodePages(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
+                     TVCodePage::ISOLatin1Linux);
 
  if (terminalType==Eterm)
    {// Only 8 colors + brightness (8*2+8*2)
