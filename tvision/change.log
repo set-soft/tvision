@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.91  2002/05/28 19:28:32  set
+* Fixed: [www] The link to Sigala's port and the supported platforms.
+
 Revision 2.90  2002/05/28 18:32:49  set
 * [QNX] Applied patches from Mike:
 - Added more recognized keys.
