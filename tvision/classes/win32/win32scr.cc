@@ -32,6 +32,7 @@ I also added the resize window stuff.
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
+#define Uses_TVCodePage
 #include <tv.h>
 #include <tv/win32/win32clip.h>
 
@@ -125,6 +126,9 @@ int TScreenWin32::InitConsole()
 
  DWORD EventThreadID;
  EventThreadHandle=CreateThread(NULL,0,HandleEvents,NULL,0,&EventThreadID);
+
+ UINT cp=GetConsoleOutputCP();
+ codePage=new TVCodePage(cp,cp);
 
  return 1;
 }
@@ -433,6 +437,9 @@ int TScreenWin32::SetVideoModeRes(unsigned w, unsigned h, int fW, int fH)
     screenHeight=ConsoleInfo.dwSize.Y;
     DeleteArray(screenBuffer);
     screenBuffer=new ushort[screenHeight*screenWidth];
+    // This is something silly TV code spects: after a video mode change the
+    // cursor should go to the "default" state.
+    setCursorType(cursorLines);
     // Cache the data about it and initialize related stuff
     setCrtData();
    }

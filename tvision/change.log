@@ -1,4 +1,31 @@
-$Log$
+$Log$.
+Revision 2.242  2002/08/12 15:49:19  set
+* Fixed: [Win32/WinNT] The mouse didn't resume. (Missing mouse after
+returning from a shell)
+* Fixed: Useless code in fontcoll.cc, reported by BC++.
+* Modified: [Win32/WinNT] I rewrote the whole suspend/resume stuff. Now I
+use a separated screen buffer for the application. It makes the screen/
+cursor much more easy. Pro: this mechanism is really good and is a good
+thing in the Windows API. Contra: I'm facing some bizarre problems with
+Windows screen updates, most probably is partially my fault, but it exposes
+some Windows bug.
+* Added: [Win32/WinNT] Debug helpers to the TSscreen* classes. Lamentably
+the free Turbo Debugger can't even load the debug information of TV
+applications (not enough memory). Is amazing that a debugger that can debug
+Windows applications have such a huge limitation.
+* Modified: [Win32/WinNT] To check for successful initialization. According
+to Win32 API references some trivial operation can fail and must be tested.
+* Added: [Win32] Code to avoid ^Break. I copied Anatoli's code found in
+WinNT driver.
+* Added: [Win32/WinNT] Windows resize! now you can specify a 90x30 video
+mode and the window will try to resize to it (or the closest size available)
+Lamentably in Win32 you don't have control over the font used by a console
+application :-(
+* Fixed: [Win32/WinNT] The initialization of the drivers didn't indicate
+the application wasn't suspended. It produced problems when
+suspending/resuming to a shell.
+* Added: [Win32/WinNT] Example on how to change the video mode to tvex.cc.
+
 Revision 2.241  2002/08/12 15:44:09  set
 * Fixed: Extra stdio include in TProgram, used for debug.
 * Fixed: The fonts example to remove debug tests.

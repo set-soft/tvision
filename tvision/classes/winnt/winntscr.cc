@@ -35,6 +35,7 @@ I think they aren't useful but I left it here in case I need this example.
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
+#define Uses_TVCodePage
 #include <tv.h>
 #include <tv/win32/win32clip.h>
 
@@ -139,6 +140,9 @@ int TScreenWinNT::InitOnce()
  GetCursorShapeLow(curStart,curEnd);
  GetCursorPosLow(currentCursorX,currentCursorY);
 
+ UINT cp=GetConsoleOutputCP();
+ codePage=new TVCodePage(cp,cp);
+
  return 1;
 }
 
@@ -155,6 +159,7 @@ TScreenWinNT::TScreenWinNT()
  #else
  Resume();
  #endif
+ setCrtData();
 
  initialized=1;
  suspended=0;
@@ -443,6 +448,9 @@ int TScreenWinNT::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
    }
  // Now we can shrink the buffer to the needed size
  SetConsoleScreenBufferSize(hCurrentOut,newSize);
+ // This is something silly TV code spects: after a video mode change the
+ // cursor should go to the "default" state.
+ setCursorType(cursorLines);
  // Ok! we did it.
  return fW!=-1 || fH!=-1 || newSize.X!=(int)w || newSize.Y!=(int)h ? 2 : 1;
 }
@@ -454,5 +462,67 @@ int TScreenWinNT::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
 #include <tv/winnt/key.h>
 
 #endif // TVOSf_WIN32
+/*
+Win32 API reference names 45 code pages. Only 20 of them are supported.
 
+Code page identifiers:
+
+*037	EBCDIC
+ 437	MS-DOS  United States          *
+*500	EBCDIC "500V1"
+*708	Arabic (ASMO 708)
+*709	Arabic (ASMO 449+, BCON V4)
+*710	Arabic (Transparent Arabic)
+*720	Arabic (Transparent ASMO)
+ 737	Greek (formerly 437G)          *
+ 775	Baltic                         *
+ 850	MS-DOS  Multilingual (Latin I) *
+ 852	MS-DOS  Slavic (Latin II)      *
+ 855	IBM Cyrillic (primarily Russian*
+ 857	IBM Turkish                    *
+ 860	MS-DOS  Portuguese
+ 861	MS-DOS Icelandic
+*862	Hebrew
+ 863	MS-DOS Canadian-French
+*864	Arabic
+ 865	MS-DOS Nordic
+ 866	MS-DOS Russian                 *
+ 869	IBM Modern Greek               *
+*874	Thai
+*875	EBCDIC
+*932	Japan
+*936	Chinese (PRC, Singapore)
+*949	Korean
+*950	Chinese (Taiwan, Hong Kong)
+*1026	EBCDIC
+*1200	Unicode (BMP of ISO 10646)
+ 1250	Windows 3.1 Eastern European   *
+ 1251	Windows 3.1 Cyrillic           *
+ 1252	Windows 3.1 US (ANSI)          *
+ 1253	Windows 3.1 Greek              *
+ 1254	Windows 3.1 Turkish            *
+*1255	Hebrew
+*1256	Arabic
+ 1257	Baltic                         *
+*1361	Korean (Johab)
+*10000	Macintosh Roman
+*10001	Macintosh Japanese
+*10006	Macintosh Greek I
+ 10007	Macintosh Cyrillic
+*10029	Macintosh Latin 2
+*10079	Macintosh Icelandic
+*10081	Macintosh Turkish
+-----------------
+My registry also says:
+
+20866
+28591
+28592
+28595
+28597
+
+As a Windows 9x is shipped working with only one code page I can't test what
+a hell are these code pages. They seems to be some variant of 866 and some
+kind of ISO cp, just a guess.
+*/
 

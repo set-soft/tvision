@@ -323,8 +323,8 @@ CP 1250 Win Latin 2         1250
 CP 1251 Win Russian         1251
 CP 1252 Win Latin 1         1252
 CP 1253 Win Greek           1253
-CP 1254 Win Latin?          1254
-CP 1257 Win Latin?          1257
+CP 1254 Win Turkish         1254
+CP 1257 Win Baltic          1257
 Mac Cyr. CP 10007           10007
 ISO 8859-1 Latin 1          88791
 ISO 8859-2 Latin 2          88792
@@ -1070,7 +1070,7 @@ CodePage TVCodePage::stPC1253=
 
 // PC1254 Windows
 CodePage TVCodePage::stPC1254=
-{ "CP 1254 Win Latin?",
+{ "CP 1254 Win Turkish",
   1254,
  { 0x20,0x20, 44,159,429,430,431,432, 94,433,304, 60,440,0x20,0x20,0x20,
    0x20, 96, 39,434,435,  7, 45,341,126,436,297, 62,441,0x20,0x20,450,
@@ -1087,7 +1087,7 @@ CodePage TVCodePage::stPC1254=
 
 // PC1257 Windows
 CodePage TVCodePage::stPC1257=
-{ "CP 1257 Win Latin?",
+{ "CP 1257 Win Baltic",
   1257,
  { 0x20,0x20, 44,0x20,429,430,431,432,0x20,433,0x20, 60,0x20,345,350,344,
    0x20, 96, 39,434,435,  7, 45,341,0x20,436,0x20, 62,0x20,339,349,0x20,

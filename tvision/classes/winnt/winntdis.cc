@@ -7,6 +7,15 @@
   Win32 Display routines.
   The original implementation was done by Anatoli, I removed some code, added
 some routines and adapted it to the new architecture.
+
+  Notes:
+  1) At least in W98SE the cursor can't be hided if we are windowed. I think
+that's some bug in Windows. Something interesting: when I resize the window
+and it can't go full screen anymore the colors get wrong (as observed in
+NT 4.0) looks like Windows uses another drawing technic. In this particular
+mode the cursor can be hided properly.
+  2) The API reference I have says the cursor size can range from 1 to 100,
+but in my system 99 is the maximum.
   
 ***************************************************************************/
 #include <tv/configtv.h>
@@ -109,7 +118,7 @@ void TDisplayWinNT::SetCursorShape(unsigned start, unsigned end)
 void TDisplayWinNT::SetCursorShapeLow(unsigned start, unsigned end)
 {
  CONSOLE_CURSOR_INFO inf;
- inf.bVisible=start>=end ? False : True;
+ inf.bVisible=start>=end ? FALSE : TRUE;
  inf.dwSize=inf.bVisible ? end-start : 1;
  if (inf.dwSize>99) inf.dwSize=99;
  SetConsoleCursorInfo(hOut,&inf);
