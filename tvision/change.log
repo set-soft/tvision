@@ -1,4 +1,12 @@
 $Log$
+Revision 1.162  2001/08/12 16:47:42  set
+* Merged patches from Andris addressing compile issues related to gcc v2.97
+and newer releases:
+1) Internal string functions must be declared (#include <string.h>).
+2) Is no longer valid to directly cast a pointer to a integer smaller than
+it, two casts are needed.
+3) Friend classes must be explicitly named as classes.
+.
 Revision 1.161  2001/08/05 00:27:56  set
 * Fixed: Problems with the detection of input/output functions provided by
 libc 2.1.3.
