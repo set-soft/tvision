@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.142  2002/06/11 14:34:29  set
+* Fixed: TEventQueue::resume() didn't indicate it was resumed if mouse
+initialization failed.
+* Fixed: [Linux] Suspend used the input before keyboard was resumed. Now
+the file handle used for input is ever in non-block mode. This isn't stdin
+so I think I can do it. From a report by Tapio.
+* Fixed: [Linux] The driver assumed that Gpm_close set gpm_fd to -1, is not
+true for GPM 1.17.8.
+* Fixed: [Linux] The mouse driver didn't set Suspend correctly.
+
 Revision 2.141  2002/06/11 12:15:07  set
 * Added: [XTerm] Alt+numbers to the Xterm example script.
 * Fixed: The screen.h doesn't have any relation with the original header

@@ -217,8 +217,11 @@ void TScreenXTerm::Suspend()
  fputs("\E(B\E)0\xF",stdout);
  // Restore cursor position, attributes and charset
  fputs("\E8",stdout);
- // Restore console mode
- tcsetattr(hOut,TCSAFLUSH,&outTermiosOrig);
+ // Ensure all is processed before leaving
+ fflush(stdout);
+ // Restore console mode, I think drain is better here, but the previous flush
+ // is needed anyways.
+ tcsetattr(hOut,TCSADRAIN,&outTermiosOrig);
  LOG("TScreenXTerm Suspend");
 }
 
