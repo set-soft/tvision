@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.385  2002/12/13 18:11:40  set
+* Added: A new example: A Borland's Help file browser. It can display TC++
+and BC++ help files. Contributed by Jan Van Buggenhout <Chipzz@ULYSSIS.Org>
+
 Revision 2.384  2002/12/12 19:02:57  set
 * Modified: [DOS] Removed the old greek keyboard hack, the generic approach
 should work for all drivers.
