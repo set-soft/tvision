@@ -17,5 +17,18 @@
 const char   *TVOSClipboard::name="None";
 int           TVOSClipboard::available=0;
 int         (*TVOSClipboard::copy)(int id, const char *buffer, unsigned len)=NULL;
-char       *(*TVOSClipboard::paste)(int id)=NULL;
+char       *(*TVOSClipboard::paste)(int id, unsigned &length)=NULL;
 void        (*TVOSClipboard::destroy)()=NULL;
+int           TVOSClipboard::error=0;
+int           TVOSClipboard::errors=0;
+const char  **TVOSClipboard::nameErrors=NULL;
+
+
+const char *TVOSClipboard::getError()
+{
+ if (error>errors || !error || !nameErrors)
+    return NULL;
+ return nameErrors[error];
+}
+
+
