@@ -85,7 +85,7 @@ uint16 utf8_2_u16(const char *b)
     while (c & (0x80>>n))
       n++;
 
-    c&=?(1<<(8-n))-1;
+    c&=(1<<(8-n))-1;
 
     while (--n>0)
       {
