@@ -20,6 +20,10 @@
   InpCP
   ExtProgVideoMode
   VideoMode
+  VGABIOSState      0 use registers, 1 use BIOS (default)
+  SaveVGAState      0 don't try to save/restore VGA chip state,
+                    1 try to save it using the strategy indicated by
+                    VGABIOSState (default)
   
 ***************************************************************************/
 
@@ -89,6 +93,8 @@ extern void SaveScreenReleaseMemory();
 extern void RestoreScreen();
 extern void ScreenUpdate();
 extern ushort user_mode;
+extern char useBIOS_VGA_State;
+extern char saveVGA_State;
 
 void setBlinkState();
 void setIntenseState();
@@ -130,6 +136,12 @@ TScreenDOS::TScreenDOS()
  THWMouseDOS::Init();
  TGKeyDOS::Init();
 
+ long aux;
+ if (optSearch("VGABIOSState",aux))
+    useBIOS_VGA_State=aux;
+ if (optSearch("SaveVGAState",aux))
+    saveVGA_State=aux;
+
  // Set the code page
  int dosCodePage=437; // United States code page, for all versions before 3.3
  // get DOS version number, in the form of a normal number
@@ -159,7 +171,6 @@ TScreenDOS::TScreenDOS()
  unsigned startScreenWidth=GetCols(), startScreenHeight=GetRows();
 
  unsigned maxX=startScreenWidth, maxY=startScreenHeight;
- long aux;
  if (optSearch("ScreenWidth",aux))
     maxX=aux;
  if (optSearch("ScreenHeight",aux))
@@ -226,7 +237,8 @@ void TScreenDOS::Resume()
 
 TScreenDOS::~TScreenDOS()
 {
- SaveScreenReleaseMemory();
+ suspend();                 // First suspend
+ SaveScreenReleaseMemory(); // Now we can release the memory
  ReleaseMemFonts();
  THWMouseDOS::DeInit();
 }

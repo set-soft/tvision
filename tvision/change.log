@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.326  2002/09/17 13:00:29  set
+* Fixed: [MinGW] Some perl interpreter returns paths with back slashes and
+MSYS tools doesn't tolerate mixed slashes.
+
 Revision 2.325  2002/09/16 20:51:38  set
 * Added: [Cygwin] The X11 libraries seems to be linked statically and I
 don't know how to do it dynamically. It pulls various X libraries like

@@ -51,9 +51,11 @@ static int vga_state_selector;
 static void *vgaState=0;
 
 char useBIOS_VGA_State=1;
+char saveVGA_State=1;
 
 void rh_save_vga_state()
 {
+ if (!saveVGA_State) return;
  if (useBIOS_VGA_State)
    {// SET: It fails for some Matrox boards.
     __dpmi_regs r;
@@ -83,6 +85,7 @@ void rh_save_vga_state()
 
 void rh_restore_vga_state()
 {
+ if (!saveVGA_State) return;
  if (useBIOS_VGA_State)
    {// SET: It fails for some Matrox boards.
     __dpmi_regs r;

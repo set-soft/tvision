@@ -13,6 +13,7 @@
   AppCP
   ScrCP
   InpCP
+  UseShellScreen
 
 *****************************************************************************/
 #include <tv/configtv.h>
