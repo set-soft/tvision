@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.122  2003/09/29 15:59:33  set
+* Added: Some code to detect KOI-8 FreeBSD terminals and avoid damaging
+some cyrillic characters. It must be tested. From a report by Nikolai
+Dershak <derja@gaz.cv.ua>
+
 Revision 2.399.2.121  2003/09/02 13:34:57  set
 * Updated: QNX configuration. Patch from Mike.
 * Fixed: configset script to cut lines propperly.
