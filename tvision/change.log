@@ -1,4 +1,9 @@
 $Log$
+Revision 1.83  1999/07/31 19:47:52  set
+* Fixed: A couple of warnings about delete (void *) reported by gcc 2.95 in
+the examples.
+* Fixed: A call to delete without [] in dirent.h. Patch by Laurynas.
+.
 Revision 1.82  1999/07/27 22:06:03  root (set)
 * Fixed: Some calls to delete instead of delete[] and delete instead of free.
 Patches and suggestions by Laurynas Biveinis <lauras@softhome.net>.
