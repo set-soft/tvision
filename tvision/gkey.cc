@@ -74,7 +74,7 @@ takes only 400 bytes of memory.
 #include <ncurses.h>
 #include <term.h>
 
-int TGKey::useBIOS=0;
+int TGKey::useBIOS=1;
 int TGKey::translateKeyPad=1;
 KeyType TGKey::rawCode;
 unsigned short TGKey::sFlags;
