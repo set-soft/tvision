@@ -85,7 +85,7 @@ uint32 TChDirDialog::dataSize()
 void TChDirDialog::shutDown()
 {
     dirList = 0;
-    dirList = 0;
+    dirInput = 0;
     okButton = 0;
     chDirButton = 0;
     TDialog::shutDown();

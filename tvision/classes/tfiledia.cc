@@ -281,52 +281,52 @@ Boolean TFileDialog::valid(ushort command)
     char fName[PATH_MAX];
     char name[PATH_MAX];
     char dir[PATH_MAX];
-    if( command == cmValid )
+
+    if (!TDialog::valid(command))
+        return False;
+
+    if ((command == cmValid) || (command == cmCancel))
         return True;
 
-    if( TDialog::valid( command ) == True)
+    getFileName( fName );
+    if (command != cmFileClear)
+    {
+        if(isWild(fName))
         {
-        if (command == cmCancel) return True;
-        getFileName( fName );
-        if( command != cmFileClear )
+            expandPath(fName, dir, name);
+            if (checkDirectory(dir))
             {
-            if( isWild( fName ) )
-                {
-                expandPath(fName, dir, name);
-                if( checkDirectory( dir ) )
-                    {
-                    delete (char *)directory;
-                    directory = newStr( dir );
-                    strcpy( wildCard, name );
-                    if( command != cmFileInit )
-                        fileList->select();
-                    fileList->readDirectory( directory, wildCard );
-                    }
-                }
-            else if( isDir( fName ) )
-                {
-                if( checkDirectory( fName ) )
-                    {
-                    delete (char *)directory;
-		    strcat( fName, DIRSEPARATOR_ );
-                    directory = newStr( fName );
-                    if( command != cmFileInit )
-                        fileList->select();
-                    fileList->readDirectory( directory, wildCard );
-                    }
-                }
-            else if( validFileName( fName ) )
-                return True;
-            else
-                {
-                messageBox( _("Invalid file name."), mfError | mfOKButton );
-                return False;
-                }
+                delete (char *)directory;
+                directory = newStr(dir);
+                strcpy(wildCard, name);
+                if (command != cmFileInit)
+                    fileList->select();
+                fileList->readDirectory(directory, wildCard);
             }
-        else
-            return True;
         }
-    return False;
+        else if (isDir(fName))
+        {
+            if (checkDirectory(fName))
+            {
+                delete (char *)directory;
+                strcat(fName, DIRSEPARATOR_);
+                directory = newStr(fName);
+                if (command != cmFileInit)
+                    fileList->select();
+                fileList->readDirectory(directory, wildCard);
+            }
+        }
+        else if (validFileName(fName))
+            return True;
+        else
+        {
+            messageBox( _("Invalid file name."), mfError | mfOKButton );
+            return False;
+        }
+    }
+    else
+       return True;
+    return False; // To shut up GCC's warning
 }
 
 #if !defined( NO_STREAM )

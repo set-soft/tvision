@@ -73,12 +73,15 @@ TPalette& TLabel::getPalette() const
     return palette;
 }
 
+#define validLink() (link && (link->options & ofSelectable) && \
+                     !(link->state & sfDisabled))
+
 void TLabel::handleEvent( TEvent& event )
 {
     TStaticText::handleEvent(event);
     if( event.what == evMouseDown )
         {
-        if( link != 0 )
+        if( validLink() )
             link->select();
         clearEvent( event );
         }
@@ -90,7 +93,7 @@ void TLabel::handleEvent( TEvent& event )
                 uctoupper(event.keyDown.charScan.charCode) ==  c )
           )
             {
-            if (link != 0 )
+            if( validLink() )
                 link->select();
             clearEvent( event );
             }
