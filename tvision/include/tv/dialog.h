@@ -45,7 +45,7 @@ Modified by Robert H”hne to be used for RHIDE.
 /*       28 = ListViewer selected                                         */
 /*       29 = ListViewer divider                                          */
 /*       30 = InfoPane                                                    */
-/*       31 = Reserved                                                    */
+/*       31 = Cluster disabled                                            */
 /*       32 = Reserved                                                    */
 /* ---------------------------------------------------------------------- */
 

@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added palette color and draw code for disabled clusters by Salvador E. Tropea
 
  *
  *
@@ -28,7 +29,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TGKey
 #include <tv.h>
 
-#define cpCluster "\x10\x11\x12\x12"
+#define cpCluster "\x10\x11\x12\x12\x1F"
 
 // SET: To report the movedTo and press as broadcasts, set it to 0 if you
 // don't like it.
@@ -67,9 +68,10 @@ TCluster::~TCluster()
 
 uint32  TCluster::dataSize()
 {
-// I have changed value from ushort to uint32, but to be compatible
-// I set dataSize to 2.
-    return sizeof(ushort);
+ // I have changed value from ushort to uint32, but to be compatible
+ // I set dataSize to 2.
+ // SET: I added TRadioButtons32 and TCheckBox32
+ return sizeof(ushort);
 }
 
 void TCluster::drawBox( const char *icon, char marker)
@@ -77,7 +79,7 @@ void TCluster::drawBox( const char *icon, char marker)
     TDrawBuffer b;
     ushort color;
 
-    ushort cNorm = getColor( 0x0301 );
+    ushort cNorm = state & sfDisabled ? getColor( 0x0505 ) : getColor( 0x0301 );
     ushort cSel = getColor( 0x0402 );
     for( int i = 0; i <= size.y; i++ )
         {
@@ -259,7 +261,7 @@ void TCluster::setData(void * rec)
 void TCluster::setState( ushort aState, Boolean enable )
 {
     TView::setState( aState, enable );
-    if( aState == sfSelected )
+    if( aState == sfSelected || aState == sfDisabled )
         drawView();
 }
 
