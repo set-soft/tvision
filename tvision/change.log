@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.584  2004/10/08 15:04:54  set
+* Added: Tru64 (OSF1) support. Thanks to HP Test Drive. The system I used
+is an HP Tru64 Unix 5.1b running on a DS20E 2@667 MHz (ev67) [2 Alpha CPUs]
+It have a very buggy port of GNU tools, but is usable.
+* Fixed: [Compilation] Some C libraries (not GNU) declares "struct timeval"
+with a "forward" declaration and you must pull sys/time.h. I saw it before
+but forgot to apply the patch.
+* Added: [DOCs] More information about the UNIX systems where I succesfuly
+compiled.
+
 Revision 2.583  2004/10/05 22:33:23  terrible
 * [Debian] Updated to 2.0.3-2 (minor changes mostly cosmetic).
 
@@ -7,7 +17,7 @@ Revision 2.582  2004/10/05 21:43:21  set
 stream dependencies fails for Mandrake 10.0 (gcc 3.4.1 + glibc 2.3.3 +
 binutils 2.14.90.0.7 20031029). So now I'm changing to the mechanism we
 used for BC++ when 3.4.1 is detected.
-.
+
 Revision 2.581  2004/10/05 00:19:29  set
 * Added/Fixed: [DOS] The default keyboard code assumed the start and end of
 the BIOS circular buffer. Now it reads these values from the BIOS data

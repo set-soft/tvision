@@ -67,11 +67,16 @@ compiler.@p
   #define NEEDS_ITOA
   #define NEEDS_NL_LANGINFO
   #define NEEDS_GETLINE
+  #define NEEDS_SNPRINTF
  #endif
 
  #ifdef TVOSf_QNX4
   #define NEEDS_SNPRINTF
  #endif // TVOSf_QNX4
+
+ #ifdef TVOSf_Darwin
+  #define NEEDS_SNPRINTF
+ #endif
 
  // Generic UNIX system
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)

@@ -191,8 +191,17 @@ else
 $MakeDefsRHIDE[6]='RHIDE_LDFLAGS=';
 if ($OSf ne 'Darwin')
   {
+   $soname='-soname';
+   if ($OSf eq 'Solaris')
+     {
+      system("$GCC -v 2> test.ld");
+      $test=cat('test.ld');
+      unlink 'test.ld';
+      # Why?! I think gcc should translate it when using the native ld.
+      $soname='-h' if $test=~'ccs/bin/ld';
+     }
    $MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
-   $MakeDefsRHIDE[6].=' -shared -Wl,-soname,librhtv.so.'.$Version;
+   $MakeDefsRHIDE[6].=' -shared -Wl,'.$soname.',librhtv.so.'.$Version;
   }
 else
   {# Darwin semantic for dynamic libs is quite different
