@@ -87,7 +87,7 @@ and any ISO2022 terminal (Xterminals and DEC almost sure). (SET)
 ***************************************************************************/
 
 static
-void InitPCCharsMapping()
+void InitPCCharsMapping(int use_pc_chars)
 {
  int i;
  // By default take the above translation
@@ -95,6 +95,8 @@ void InitPCCharsMapping()
     {
      PC2curses[i]=pctoascii[i];
     }
+ if (use_pc_chars)
+    return;
  // Patch the curses available values from terminfo
  PC2curses[0xDA]=ACS_ULCORNER; // Ú
  PC2curses[0xC9]=ACS_ULCORNER; // É We don't have doubles in curses
@@ -252,8 +254,7 @@ void startcurses()
   /* Save the terminal attributes so we can restore them later. */
   /* for our screen */
   tcgetattr (tty_fd, &new_term);
-  if (!use_pc_chars)
-     InitPCCharsMapping();
+  InitPCCharsMapping(use_pc_chars);
 }
 
 void stopcurses()
