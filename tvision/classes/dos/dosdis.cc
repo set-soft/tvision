@@ -740,29 +740,6 @@ void TDisplayDOS::Init()
 
 TDisplayDOS::~TDisplayDOS() {}
 
-#if 0
-// Old code I don't yet discard
-static unsigned getCodePage()
-{
-    //  get version number, in the form of a normal number
-    AX = 0x3000;
-    INTR(0x21,r);
-    unsigned ver = (AH) | ((AL & 0xff) << 8);
-    if( ver < 0x30C )
-        return 437; // United States code page, for all versions before 3.3
-
-    AX = 0x6601;
-    INTR(0x21,r);
-    return BX;
-}
-
-void TDisplayDOS::updateIntlChars()
-{
-    if(getCodePage() != 437 )
-        TFrame::frameChars[30] = 'Í';
-}
-#endif
-
 #else // DJGPP
 
 #include <tv/dos/screen.h>
