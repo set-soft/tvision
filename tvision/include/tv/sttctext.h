@@ -19,8 +19,8 @@ Modified by Salvador E. Tropea: added i18n support, added T1StaticText.
 /*        1 = Text                                                        */
 /* ---------------------------------------------------------------------- */
 
-#if defined( Uses_TStaticText ) && !defined( __TStaticText )
-#define __TStaticText
+#if defined( Uses_TStaticText ) && !defined( TStaticText_defined )
+#define TStaticText_defined
 
 class TRect;
 
@@ -74,7 +74,10 @@ inline opstream& operator << ( opstream& os, TStaticText* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 
-#ifdef Uses_T1StaticText
+#endif  // Uses_TStaticText
+
+#if defined( Uses_T1StaticText ) && !defined( T1StaticText_defined )
+#define T1StaticText_defined
 // This is based on TVTools idea, but I think is better to implement it
 // in this way and not like a macro.
 // I was forced to use growTo for the i18n stuff and the fact that
@@ -88,6 +91,4 @@ public:
    { growTo(cstrlen(TVIntl::getText(aText,intlText))+1,1); };
 }
 #endif // Uses_T1StaticText
-
-#endif  // Uses_TStaticText
 
