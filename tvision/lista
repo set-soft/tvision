@@ -1,6 +1,8 @@
 bc.cc
 borland.txt
 change.log
+classes/calcdisp.cc
+classes/calculat.cc
 classes/fpbase.cc
 classes/fpstream.cc
 classes/ifpstrea.cc
@@ -135,8 +137,6 @@ dual.cc
 examples/common.env
 examples/demo/ascii.cc
 examples/demo/ascii.h
-examples/demo/calc.cc
-examples/demo/calc.h
 examples/demo/calendar.cc
 examples/demo/calendar.h
 -examples/demo/demo.gpr
@@ -284,6 +284,7 @@ fileview.cc
 gkey.cc
 gkey.gpr
 histlist.cc
+include/calc.h
 include/editors.h
 include/tvedit.h
 include/video.h
@@ -421,6 +422,8 @@ mouse.cc
 msgbox.cc
 names/nbackgro.cc
 names/nbutton.cc
+names/ncalcdis.cc
+names/ncalcula.cc
 names/nchdirdi.cc
 names/ncheckbo.cc
 names/nclrdisp.cc
@@ -478,6 +481,8 @@ screen.cc
 sescreen.cc
 stream/sbackgro.cc
 stream/sbutton.cc
+stream/ncalcula.cc
+stream/nchdirdi.cc
 stream/schdirdi.cc
 stream/scheckbo.cc
 stream/sclrdisp.cc
