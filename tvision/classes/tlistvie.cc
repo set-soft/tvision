@@ -179,10 +179,6 @@ void TListViewer::draw()
 void TListViewer::focusItem( ccIndex item )
 {
     focused = item;
-    if( vScrollBar != 0 )
-        vScrollBar->setValue( item );
-    else
-        drawView();
 
     if( item < topItem )
         {
@@ -201,6 +197,10 @@ void TListViewer::focusItem( ccIndex item )
                 topItem = item - item % size.y - (size.y * (numCols-1));
             }
         }
+    if( vScrollBar != 0 )
+        vScrollBar->setValue( item );
+    else
+        drawView();
     if (owner && (options & ofBeVerbose))
        message(owner,evBroadcast,cmListItemFocused,this);
 }
@@ -223,10 +223,6 @@ void TListViewer::focusItemCentered( ccIndex item )
         }
     center = True;
     focused = item;
-    if( vScrollBar != 0 )
-        vScrollBar->setValue( item );
-    else
-        drawView();
 
     if( item < topItem )
         {
@@ -243,6 +239,10 @@ void TListViewer::focusItemCentered( ccIndex item )
                 topItem = range - size.y;
             }
         }
+    if( vScrollBar != 0 )
+        vScrollBar->setValue( item );
+    else
+        drawView();
     if (owner && (options & ofBeVerbose))
        message(owner,evBroadcast,cmListItemFocused,this);
     center = False;

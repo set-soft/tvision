@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.180  2004/08/18 20:19:39  set
+* Modified: TDirListBox to show the directories alphabetically sorted.
+
 Revision 2.399.2.179  2004/08/17 14:23:17  set
 * Fixed: [gcc] Errors in the examples when using 3.4.1. Patch by Andris.
 
