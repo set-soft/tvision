@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.28  2003/04/07 13:38:19  set
+* Fixed: The dialog design example to use the new API style.
+
 Revision 2.399.2.27  2003/04/07 13:35:22  set
 * Modified: Now TMenu and TStatusLine are "i18n award". It means that when
 translations are enabled these classes translates their strings on the fly

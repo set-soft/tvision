@@ -167,3 +167,11 @@ void TVIntl::freeSt(stTVIntl *&cache)
  cache=NULL;
 }
 
+stTVIntl *TVIntl::emptySt()
+{
+ stTVIntl *p=new stTVIntl;
+ p->translation=NULL;
+ p->cp=-1;
+ return p;
+}
+

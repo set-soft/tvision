@@ -13,6 +13,7 @@ Added palette color and draw code for disabled clusters by Salvador E. Tropea
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
+//#define Uses_stdio
 #define Uses_ctype
 #define Uses_string
 #define Uses_TKeys
@@ -48,11 +49,13 @@ TCluster::TCluster( const TRect& bounds, TSItem *aStrings ) :
         i++;
 
     strings = new TStringCollection( i, 0 );
+    intlStrings = new TStringCollection( i, 0 );
 
     while( aStrings != 0 )
         {
         p = aStrings;
         strings->atInsert( strings->getCount(), newStr(aStrings->value) );
+        intlStrings->atInsert( intlStrings->getCount(), TVIntl::emptySt() );
         aStrings = aStrings->next;
         delete(p);
         }
@@ -64,6 +67,15 @@ TCluster::TCluster( const TRect& bounds, TSItem *aStrings ) :
 TCluster::~TCluster()
 {
     destroy( (TCollection *)strings );
+    destroy( (TCollection *)intlStrings );
+}
+
+const char *TCluster::getItemText( ccIndex item )
+{
+    const char *key = (const char *)strings->at( item );
+    stTVIntl *cache = (stTVIntl *)intlStrings->at( item );
+    //printf("getText(%s,...) [%d]\n",key,item);
+    return TVIntl::getText( key, cache );
 }
 
 uint32  TCluster::dataSize()
@@ -88,7 +100,7 @@ void TCluster::drawBox( const char *icon, char marker)
             int cur = j * size.y + i;
             int col = column( cur );
             if ( ( cur < strings->getCount() ) &&
-                (col+cstrlen((char *)strings->at(cur))+5 < maxViewWidth) &&
+                (col+cstrlen(getItemText(cur))+5 < maxViewWidth) &&
                 (col<size.x) )
                {
                 if( (cur == sel) && (state & sfSelected) != 0 )
@@ -99,7 +111,7 @@ void TCluster::drawBox( const char *icon, char marker)
                 b.moveCStr( col, icon, color );
                 if( mark(cur) )
                     b.putChar( col+2, marker );
-                b.moveCStr( col+5, (char *)(strings->at(cur)), color );
+                b.moveCStr( col+5, getItemText(cur), color );
                 if( showMarkers && (state & sfSelected) != 0 && cur == sel )
                     {
                     b.putChar( col, specialChars[0] );
@@ -222,7 +234,7 @@ void TCluster::handleEvent( TEvent& event )
             default:
                 for( int i = 0; i < strings->getCount(); i++ )
                     {
-                    char c = hotKey( (char *)(strings->at(i)) );
+                    char c = hotKey( getItemText(i) );
                     if( TGKey::GetAltCode(c) == event.keyDown.keyCode ||
                         ( ( owner->phase == phPostProcess ||
                             (state & sfFocused) != 0
@@ -300,7 +312,7 @@ int TCluster::column( int item )
                 }
 
             if( i < strings->getCount() )
-                l = cstrlen( (char *)(strings->at(i)) );
+                l = cstrlen( getItemText(i) );
             if( l > width )
                 width = l;
             }

@@ -239,9 +239,9 @@ TConstEdit::TConstEdit():
    AddBtn = new TButton(TRect(31, 4, 43, 6), _("~A~dd"), cmAdd,  bfBroadcast );
    ClearBtn = new TButton(TRect(31, 6, 43, 8), _("C~l~ear"), cmCClear, bfBroadcast );
    DelBtn = new TButton(TRect(31, 8, 43, 10), _("~D~elete"), cmDel, bfBroadcast );
-   SortRB = new TRadioButtons(TRect(2, 14, 31, 15), new TSItem(_("None"),
-                                                 new TSItem(_("Id"),
-                                                 new TSItem(_("Value"), 0))));
+   SortRB = new TRadioButtons(TRect(2, 14, 31, 15), new TSItem(__("None"),
+                                                 new TSItem(__("Id"),
+                                                 new TSItem(__("Value"), 0))));
    insert(sb);
    insert(new TLabel( TRect(1, 1, 15, 2), _("~V~alue list:"), List ) );
    insert(LVal);
