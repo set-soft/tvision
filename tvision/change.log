@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.268  2002/08/26 13:35:29  set
+* Added: The test code I use for Linux/Console cyrillic support.
+
 Revision 2.267  2002/08/23 14:46:34  set
 * Added: [X11] min. size hints. KDE and E 0.16.5 supports it. Patch by
 Roman Valyushenko <smhs@mail.ru>.

@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Salvador E. Tropea (atReplace and other stuff)
  *
  *
  */
@@ -91,6 +92,13 @@ void TNSCollection::atPut( ccIndex index, void *item )
         error(1,0);
 
     items[index] = item;
+}
+
+// by SET
+void TNSCollection::atReplace( ccIndex index, void *item )
+{
+    freeItem( at( index ) );
+    atPut( index, item );
 }
 
 void TNSCollection::remove( void *item )

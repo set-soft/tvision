@@ -43,6 +43,7 @@ public:
 
     virtual void atInsert( ccIndex index, void *item );
     void atPut( ccIndex index, void *item );
+    void atReplace( ccIndex index, void *item ); // SET: Why not? ;-)
     virtual ccIndex insert( void *item );
 
     virtual void error( ccIndex code, ccIndex info );

@@ -85,6 +85,8 @@ public:
  static Boolean Search(const char *section, const char *variable, long &val);
  static char   *Search(const char *key);
  static char   *Search(const char *section, const char *variable);
+ static int     Add(const char *key, const char *name, long value);
+ static int     Add(const char *key, const char *name, const char *value);
 
 protected:
  static TVConfigFile *config;

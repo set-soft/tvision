@@ -738,4 +738,30 @@ char *TVMainConfigFile::Search(const char *section, const char *variable)
  return v;
 }
 
+int TVMainConfigFile::Add(const char *section, const char *name, long value)
+{
+ int lSection=section ? strlen(section)+1 : 0;
+ AllocLocalStr(b,lSection+4);
+ strcpy(b,"TV");
+ if (section)
+   {
+    b[2]='/';
+    strcpy(b+3,section);
+   }
+ return config->AddInt(b,name,value,TVConfigFile::fromApplication);
+}
+
+int TVMainConfigFile::Add(const char *section, const char *name,
+                                const char *value)
+{
+ int lSection=section ? strlen(section)+1 : 0;
+ AllocLocalStr(b,lSection+4);
+ strcpy(b,"TV");
+ if (section)
+   {
+    b[2]='/';
+    strcpy(b+3,section);
+   }
+ return config->AddString(b,name,value,TVConfigFile::fromApplication);
+}
 
