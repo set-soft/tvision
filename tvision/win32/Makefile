@@ -1,6 +1,6 @@
 # Makefile for gcc-2.95.2 (mingw32)
-CFLAGS=-O2 -gstabs+3 -D_WIN32
-CXXFLAGS=-O2 -gstabs+3 -D_WIN32
+CFLAGS=-O2 -Wall -Werror -gstabs+3
+CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -fno-exceptions -fno-rtti
 
 vpath %.cc ../names ../stream ./ ../ ../classes/win32 ../classes ../examples/tutorial ../examples/demo
 vpath %.o ./obj ./obj_demo
