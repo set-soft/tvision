@@ -82,7 +82,6 @@ if ($Compf eq 'Cygwin')
   }
 LookForIntlSupport();
 LookForEndianess();
-# TODO: implement it.
 LookForAllegro() if @conf{'alcon'} eq 'yes';
 
 print "\n";
@@ -141,9 +140,9 @@ if (@conf{'alcon'} eq 'yes')
      {
       # TODO: change this for the output of allegro-config.
       $MakeDefsRHIDE[1].='/usr/local/lib /usr/X11R6/lib';
+      $MakeDefsRHIDE[2].=' alld m pthread Xxf86dga Xxf86vm Xext X11 dl';
       # No idea where to put this. And doesn't seem to be needed anyway :-?
       #$MakeDefsRHIDE[?].=' -Wl,-export-dynamic';
-      $MakeDefsRHIDE[2].=' alld m pthread Xxf86dga Xxf86vm Xext X11 dl';
      }
    else
      {
@@ -947,7 +946,7 @@ int main(int argc, char *argv[])
  if (!length($test))
    {
     $conf{'HAVE_LINUX_PTHREAD'}='no';
-    print " no, disabling X11 update thread option\n";
+    print " no\n";
     return;
    }
  $conf{'HAVE_LINUX_PTHREAD'}='yes';
@@ -956,9 +955,40 @@ int main(int argc, char *argv[])
 
 sub LookForAllegro
 {
- print 'Looking for Allegro library: [Not yet implemented]';
- $conf{'HAVE_ALLEGRO'}='yes';
- print "OK\n";
+ print 'Looking for Allegro library: ';
+ $test='
+#include <allegro.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+ install_allegro(SYSTEM_AUTODETECT, &errno, atexit);
+ install_timer();
+ install_mouse();
+ allegro_exit();
+ printf("OK\n");
+ return 0;
+}
+END_OF_MAIN()
+';
+ if ($OS eq 'UNIX')
+   {
+    $test=RunGCCTest($GCC,'c',$test,`allegro-config --libs`);
+   }
+ else
+   {
+    $test=RunGCCTest($GCC,'c',$test,'-lalleg');
+   }
+ if (!length($test))
+   {
+    $conf{'HAVE_ALLEGRO'}='no';
+    print "Couldn't compile allegro test\n";
+   }
+ else
+   {
+    $conf{'HAVE_ALLEGRO'}='yes';
+    print "OK\n";
+   }
 }
 
 sub GenerateMakefile
