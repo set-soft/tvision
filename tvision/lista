@@ -234,6 +234,7 @@ doc/html.frt
 -doc/libdocs.epr
 doc/Linux.txt
 doc/QNX.txt
+doc/Streams.txt
 doc/TVReference.html
 doc/Win32.txt
 doc/WinGr.txt

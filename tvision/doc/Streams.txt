@@ -1,0 +1,81 @@
+This is an incomplete and inaccurate collection of data about TV streams.
+Use it carefuly.
+
+Classes hierarchy:
+
+   +--------------------------- pstream ----------------------------+
+   |                               |                                |
+   v                               v                                v
+opstream ---------+  +--------- fpbase ---------+  +------------ ipstream
+   |              |  |             |            |  |                |
+   |              v  v             v            v  v                |
+   |           ofpstream       fpstream      ifpstream              |
+   |                                                                |
+   +------------------------> iopstream <---------------------------+
+
+pstream: Holds a streambuf (protected bp, readable with rdbuf()). These
+stream buffers acts like streams but storing data in a memory buffer.
+It also keeps the list of registered objects.
+
+opstream: defines all the output operations.
+
+ipstream: defines all the input operations.
+
+iopstream: it just joins the facilities from opstream and ipstream.
+
+fpbase: Holds a filebuf (private and readable with rdbuf()). It just adds to
+pstream what's needed to handle file buffers instead of stream buffers, like
+open.
+A very important detail is that a filebuf is a class derived from streambuf
+and hence all streambuf operations are valid. In fact fpbase constructors
+sets the bp value to the filebuf using init().
+
+ofpstream: just makes all the output operations available for files.
+
+ifpstream: just makes all the input operations available for files.
+
+fpstream: defines a read/write open.
+
+----------------
+
+Why all of this?
+
+This was designed to provide "persistence". The idea is to create *binary*
+files that can hold objects. For this the library keeps a list of registered
+objects, each one have a name and function to be called to read the object
+from disk.
+
+----------------
+
+What's used by each class from the standard C++ lib:
+
+pstream:
+Basically nothing, it have a streambuf pointer but never uses it.
+The code uses some some ios flags:
+ios::eofbit, ios::failbit and ios::badbit
+
+opstream: (seek, flush, put a char and put various chars)
+* CLY_PubSeekOff (seek) attributes: CLY_std(ios::beg), CLY_std(ios::cur) and
+all of type CLY_IOSSeekDir.
+* CLY_PubSync() (flush)
+* sputc (put a char)
+* sputn (put chars)
+* CLY_std(ios::out)
+
+ipstream: (seek, flush, get a char and get various chars)
+* CLY_PubSeekOff (seek) attributes: CLY_std(ios::beg), CLY_std(ios::cur) and
+all of type CLY_IOSSeekDir.
+* sbumpc (read a char)
+* sgetn  (read chars)
+* CLY_std(ios::in)
+* CLY_std(ios::eofbit)
+
+fpbase: (open, close, open from file h, set buffer and attach)
+* Create a filebuf from a file handle.
+* open (CLY_OpenModeT modes)
+* CLY_PubSetBuf (set the buffer)
+* is_open
+* attach [optional]
+* close
+
+
