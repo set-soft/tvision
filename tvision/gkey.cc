@@ -480,7 +480,7 @@ int main(int argc, char *argv[])
   startcurses();
   patch_keyboard();
   if (argc>1 && strcmp(argv[1],"rh52")==0)
-     TGKey::SetKbdMapping(KDB_REDHAT52_STYLE);
+     TGKey::SetKbdMapping(KBD_REDHAT52_STYLE);
 #else
   //TGKey::useBIOS=1;
   CtrlCOff();
