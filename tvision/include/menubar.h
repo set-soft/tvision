@@ -38,8 +38,11 @@ public:
     TMenuBar( const TRect& bounds, TSubMenu &aMenu );
     ~TMenuBar();
 
+    void computeLength();
     virtual void draw();
     virtual TRect getItemRect( TMenuItem *item );
+    virtual void changeBounds(const TRect& bounds);
+    
 #if !defined( NO_STREAM )
 private:
 

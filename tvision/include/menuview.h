@@ -50,6 +50,15 @@ public:
                            TMenu *aMenu,
                            TMenuView *aParentMenu
                          );
+    // SET: Looks like some users really likes the original behavior of
+    // having 1 space around menu items. As it reduces the number of menues
+    // we can have I added a conditional way to control it. The code is in
+    // TMenuBar, when you create a menu bar (or chanBounds it) the Bar
+    // calculates the length of the items and if they are greater than size.x
+    // enters in the compatMenu mode. "Norberto Alfredo Bensa (Beto)"
+    // <norberto.bensa@abaconet.com.ar> sent me an uncoditional patch that I used
+    // as base. This variable is 0 by default (TMenuView constructor)
+    int compactMenu;
 
 protected:
 
@@ -106,13 +115,14 @@ inline TMenuView::TMenuView( const TRect& bounds,
                              TMenu *aMenu,
                              TMenuView *aParent
                            ) :
-    TView(bounds), parentMenu( aParent ), menu( aMenu ), current( 0 )
+    TView(bounds), compactMenu ( 0 ), parentMenu( aParent ), menu( aMenu ),
+    current( 0 )
 {
      eventMask |= evBroadcast;
 }
 
 inline TMenuView::TMenuView( const TRect& bounds ) :
-    TView(bounds), parentMenu(0), menu(0), current(0)
+    TView(bounds), compactMenu(0), parentMenu(0), menu(0), current(0)
 {
      eventMask |= evBroadcast;
 }

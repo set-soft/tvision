@@ -43,9 +43,14 @@ public:
     virtual void handleEvent( TEvent& event );
     virtual const char* hint( ushort aHelpCtx );
     void update();
+    void computeLength(); // SET: see compactStatus
+    virtual void changeBounds(const TRect& bounds);
 
     static char hintSeparator[];
     static char ohintSeparator[];
+
+    // SET: Look the comments in TMenuView, same purpose
+    int compactStatus;
 
 protected:
 
