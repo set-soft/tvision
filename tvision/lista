@@ -516,9 +516,9 @@ include/tv/view.h
 include/tv/win32/key.h
 include/tv/win32/mouse.h
 include/tv/win32/screen.h
-include/tv/x11key.h
-include/tv/x11mouse.h
-include/tv/x11scr.h
+include/tv/x11/key.h
+include/tv/x11/mouse.h
+include/tv/x11/screen.h
 include/tv/yes_mss.h
 include/tv/window.h
 intl/dummy/intldummy.c
