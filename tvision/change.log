@@ -1,4 +1,10 @@
 $Log$
+Revision 1.136  2000/02/05 20:42:18  set
+* Added: Add and Done buttons to the FileOpenDialog, they are controlled by
+the fdDoneButton and fdAddButton options. They are suitable for selecting
+files used in a list (list of MP3s and project in my editor). Seuggested for
+RHIDE by Waldemar Schultz <schultz@ma.tum.de>.
+.
 Revision 1.135  2000/02/05 00:14:55  root (set)
 * Modified: [UNIX] gkeyli.cc now should compile in most UNIX systems that
 have ncurses. All the funcy Linux stuff is conditional.

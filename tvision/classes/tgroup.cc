@@ -205,7 +205,19 @@ ushort TGroup::execView( TView* p )
     setCurrent(p, enterSelect);
     if( saveOwner == 0 )
         insert(p);
+
+    // Just be foolproof
+    int oldLock=lockFlag;
+    if (lockFlag)
+      {
+       lockFlag=1; unlock();
+      }
+
     ushort retval = p->execute();
+
+    // Re-lock if needed
+    lockFlag=oldLock;
+
     if( saveOwner == 0 )
         remove(p);
     setCurrent(saveCurrent, leaveSelect);
