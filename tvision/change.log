@@ -1,4 +1,11 @@
 $Log$.
+Revision 2.399.2.13  2003/02/19 13:52:12  set
+* Added: [X11] now the keyboard driver reports the Unicode16 of the key.
+* Modified: A lot of internal details in TInputLine in order to reduce the
+direct access to the data member.
+* Added: Code to test a dialog in the UTF-8 example. Also a printf to
+verify the Unicodes reported by the keyboard.
+
 Revision 2.399.2.12  2003/02/19 13:50:42  set
 * Added: An example of how to hardcore the contents of the tvrc file in the
 executable to the UTF-8 example.

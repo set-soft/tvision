@@ -1,4 +1,4 @@
-/**[txh]********************************************************************
+;/**[txh]********************************************************************
 
   Copyright 1996-2003 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
@@ -168,6 +168,9 @@ int            TVCodePage::defInpCP=437;
 uint16         TVCodePage::appToUnicode[256];
 TVPartitionTree556
               *TVCodePage::unicodeToApp=NULL;
+uint16         TVCodePage::inpToUnicode[256];
+TVPartitionTree556
+              *TVCodePage::unicodeToInp=NULL;
 // User provided function to call each time we change the code page.
 // This is called before sending a broadcast.
 void         (*TVCodePage::UserHook)(ushort *map)=NULL;
@@ -1382,7 +1385,7 @@ TVCodePage::TVCodePage(int idApp, int idScr, int idInp)
  TGKey::SetCodePage(idInp);
  if (idApp!=curAppCP)
    {
-    curAppCP=idApp;
+    curAppCP=idApp; // After filling the tables
     RemapTVStrings(GetTranslate(curAppCP));
    }
 }
@@ -1484,6 +1487,28 @@ to translate values on the fly. @x{::CreateRemap}.
 
 void TVCodePage::CreateOnTheFlyInpRemap(int idInp, int idApp)
 {
+ // Unicode tables
+ // Create a table to convert 8 bits inp. code page into 16 bits unicode
+ ushort *internals=GetTranslate(idInp);
+ unsigned i;
+ for (i=0; i<256; i++)
+     inpToUnicode[i]=UnicodeForInternalCode(internals[i]);
+
+ if (!unicodeToInp || curInpCP!=idInp)
+   {
+    // Create a "partition tree" to convert a 16 bits unicode into 8 bits inp
+    // code page
+    delete unicodeToInp;
+    unicodeToInp=NULL;
+    if (idInp!=idApp)
+      {
+       unicodeToInp=new TVPartitionTree556();
+       for (i=0; i<256; i++)
+           unicodeToInp->add(appToUnicode[i],i);
+      }
+   }
+
+ // Remap tables
  if (idInp==idApp)
    {
     NeedsOnTheFlyInpRemap=0;
@@ -1523,8 +1548,8 @@ void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
  TGKey::SetCodePage(idInp);
  if (curAppCP!=idApp)
    {
-    curAppCP=idApp;
-    FillTables(curAppCP);
+    FillTables(idApp);
+    curAppCP=idApp; // After filling the tables
     RemapTVStrings(GetTranslate(curAppCP));
    }
 }
@@ -1585,10 +1610,13 @@ void TVCodePage::FillTables(int id)
 
  // Create a "partition tree" to convert a 16 bits unicode into 8 bits app
  // code page
- delete unicodeToApp;
- unicodeToApp=new TVPartitionTree556();
- for (i=0; i<256; i++)
-     unicodeToApp->add(appToUnicode[i],i);
+ if (!unicodeToApp || id!=curAppCP)
+   {
+    delete unicodeToApp;
+    unicodeToApp=new TVPartitionTree556();
+    for (i=0; i<256; i++)
+        unicodeToApp->add(appToUnicode[i],i);
+   }
 
  /* Dump tables
  fputs("uchar          TVCodePage::AlphaTable[256]=\n{\n",stderr);
@@ -2793,6 +2821,37 @@ char TVCodePage::convertU16_2_CP(uint16 val)
 uint16 TVCodePage::convertCP_2_U16(char val)
 {
  return appToUnicode[(uchar)val];
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an Unicode value to input code page.
+  
+  Return: application code page value, 0 is the fallback.
+  
+***************************************************************************/
+
+char TVCodePage::convertU16_2_InpCP(uint16 val)
+{
+ if (!unicodeToInp)
+    return convertU16_2_CP(val);
+ uint16 ret=unicodeToInp->search(val);
+ return ret==0xFFFF ? 0 : (uchar)ret;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an input code page value to Unicode.
+  
+  Return: The Unicode that represents this value.
+  
+***************************************************************************/
+
+uint16 TVCodePage::convertInpCP_2_U16(char val)
+{
+ return inpToUnicode[(uchar)val];
 }
 
 /**[txh]********************************************************************
