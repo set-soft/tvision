@@ -1,3 +1,12 @@
+rhtvision (1.0.5-2) unstable; urgency=low
+
+  * I don't use dh_installexamples anymore, since it doesn't work for
+    me, instead I install the examples manually. So, there isn't
+    anymore the /usr/doc/rhtvision1-dev/examples/examples directory,
+    instead, there's only one examples directory.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Tue,  1 Jun 1999 19:02:12 -0300
+
 rhtvision (1.0.5-1) unstable; urgency=low
 
   * New upstream version:

@@ -73,6 +73,7 @@ install-stamp: build-stamp
 	cp linux/librhtv.a debian/tmp/usr/lib/librhtv_g.a
 	cp linux/librhtv.a debian/tmp/usr/lib/librhtv.a
 	cp include/*.h debian/tmp/usr/include/rhtvision
+	cp -r examples debian/tmp/usr/doc/rhtvision1-dev/
 
 	dh_link usr/lib/librhtv.so.$(version) usr/lib/librhtv.so.$(version_major)   usr/lib/librhtv.so.$(version) usr/lib/librhtv.so
 	dh_movefiles -p rhtvision1
@@ -108,7 +109,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installexamples
+#	dh_installexamples
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installinit
