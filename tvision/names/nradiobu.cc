@@ -2,3 +2,4 @@
 #include <tv/ttypes.h>
 #include <tv/tvutil.h>
 n(TRadioButtons)
+n(TRadioButtons32)

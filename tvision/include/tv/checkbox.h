@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added TCheckBoxes32 and code page stuff by Salvador Eduardo Tropea.
 
  *
  *
@@ -59,6 +60,26 @@ public:
 #endif
 };
 
+// SET: That's a 32 bits version, the only difference is that it uses a
+// 32 bits value for set/getData
+
+class TCheckBoxes32 : public TCheckBoxes
+{
+public:
+ TCheckBoxes32(const TRect& bounds,TSItem *aStrings) :
+   TCheckBoxes(bounds,aStrings) {};
+ virtual uint32 dataSize();
+private:
+#if !defined( NO_STREAM )
+ virtual const char *streamableName() const { return name; }
+protected:
+ TCheckBoxes32(StreamableInit);
+public:
+ static const char * const name;
+ static TStreamable *build();
+#endif
+};
+
 #if !defined( NO_STREAM )
 inline ipstream& operator >> ( ipstream& is, TCheckBoxes& cl )
     { return is >> (TStreamable&)cl; }
@@ -68,6 +89,16 @@ inline ipstream& operator >> ( ipstream& is, TCheckBoxes*& cl )
 inline opstream& operator << ( opstream& os, TCheckBoxes& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TCheckBoxes* cl )
+    { return os << (TStreamable *)cl; }
+
+inline ipstream& operator >> ( ipstream& is, TCheckBoxes32& cl )
+    { return is >> (TStreamable&)cl; }
+inline ipstream& operator >> ( ipstream& is, TCheckBoxes32*& cl )
+    { return is >> (void *&)cl; }
+
+inline opstream& operator << ( opstream& os, TCheckBoxes32& cl )
+    { return os << (TStreamable&)cl; }
+inline opstream& operator << ( opstream& os, TCheckBoxes32* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 

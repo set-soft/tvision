@@ -2,5 +2,6 @@
 #include <tv/ttypes.h>
 #include <tv/tvutil.h>
 n(TCheckBoxes)
+n(TCheckBoxes32)
 
 

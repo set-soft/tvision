@@ -7,4 +7,8 @@ TStreamableClass RRadioButtons( TRadioButtons::name,
                                 TRadioButtons::build,
                                 __DELTA(TRadioButtons)
                               );
+TStreamableClass RRadioButtons32( TRadioButtons32::name,
+                                  TRadioButtons32::build,
+                                  __DELTA(TRadioButtons32)
+                                );
 
