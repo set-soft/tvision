@@ -1,6 +1,7 @@
 /* Internationalization support routines header.
    Copyright by Salvador E. Tropea (SET) (2003)
    Covered by the GPL license. */
+/* TODO: Implement the propper dummies for systems without intl support */
 
 #ifdef FORCE_INTL_SUPPORT
  #define HAVE_INTL_SUPPORT 1
@@ -11,6 +12,7 @@
 #ifndef TVIntl_Included
 #define TVIntl_Included
 
+#ifdef __cplusplus
 struct stTVIntl
 {
  char *translation;
@@ -83,5 +85,32 @@ protected:
  #define TEXTDOMAIN(a) TVIntl::textDomain(a)
 #endif
 
-#endif // TVIntl_Included
+#else /* __cplusplus */
+
+#ifndef _
+ #ifdef HAVE_INTL_SUPPORT
+  char *gettext(const char *msgid);
+  #define _(msg) gettext(msg)
+ #else
+  #define _(msg) (msg)
+ #endif
+#endif
+
+#ifndef __
+ #define __(msg) (msg)
+#endif
+
+#ifndef BINDTEXTDOMAIN
+ char *bindtextdomain(const char *domainname, const char *dirname);
+ #define BINDTEXTDOMAIN(a,b) bindtextdomain(a,b)
+#endif
+
+#ifndef TEXTDOMAIN
+ char *textdomain(const char *domainname);
+ #define TEXTDOMAIN(a) textdomain(a)
+#endif
+
+#endif /* __cplusplus */
+
+#endif /* TVIntl_Included */
 
