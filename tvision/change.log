@@ -1,4 +1,8 @@
 $Log$
+Revision 1.120  1999/11/20 14:52:55  set
+* Fixed: Problem with rhgdb messing terminal settings. Patch from Andris to
+enable the old code that saves/restores the terminfo stuff.
+.
 Revision 1.119  1999/11/04 01:12:09  set
 * Updated Debian files from Ivan.
 .

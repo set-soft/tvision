@@ -88,32 +88,11 @@ class TNewDeskTop : public TDeskTop
 public:
     TNewDeskTop( const TRect& r );
     static TBackground* initBackground( TRect r );
-    void draw();
-
 };
-
-//==========================================================================
-//                    draw the deskTop
-//==========================================================================
-void TNewDeskTop::draw()
-{
-
-  TDrawBuffer b;
-  ushort color = getColor( 1 );    //set color
-
-  for(int i=0; i < 23; i++)
-	 {
-	 b.moveStr( 0, lines[i], color );
-	 writeLine(0,i,strlen(lines[i]),1,b);
-	 }
-}
-
-
 
 //------------------------------------------------------------------------
 class TNewBackground : public TBackground
 {
-
 public:
     TNewBackground( const TRect& r, char pattern );
     void draw();

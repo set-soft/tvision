@@ -65,29 +65,7 @@ class TNewDeskTop : public TDeskTop
 public:
 	 TNewDeskTop( const TRect& r );
 	 static TBackground* initBackground( TRect r );
-	 void draw();
-
 };
-
-//==========================================================================
-//                    draw the deskTop
-//==========================================================================
-void TNewDeskTop::draw()
-{
-
-  TDrawBuffer b;
-  ushort color = getColor( 1 );    //set color
-
-  for(int col= 0; col < size.y; col++)
-	 {
-	 for( int lin= 0; lin < size.x; lin++)
-		{
-		b.moveChar( lin, logo[(col + lin) % strlen(logo)], color, 1 );
-		}
-	 writeLine( 0, col, size.x, 1, b );
-	 }
-
-}
 
 //------------------------------------------------------------------------
 class TNewBackground : public TBackground
