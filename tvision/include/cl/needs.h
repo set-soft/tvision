@@ -25,6 +25,7 @@ compiler.@p
   #define NEEDS_GETOPT
   #define NEEDS_MKSTEMP
   #define NEEDS_NL_LANGINFO
+  #define NEEDS_GETLINE
  #endif
  
  // Win32 Cygwin
@@ -34,12 +35,14 @@ compiler.@p
   #define NEEDS_NL_LANGINFO
   #define NEEDS_FNMATCH
   #define NEEDS_ITOA
+  #define NEEDS_GETLINE
  #endif
  
  // DOS djgpp
  #ifdef TVCompf_djgpp
   #define NEEDS_GETOPT
   #define NEEDS_NL_LANGINFO
+  #define NEEDS_GETLINE
  #endif
  
  // Linux
@@ -62,6 +65,7 @@ compiler.@p
   #define NEEDS_FILELENGTH
   #define NEEDS_ITOA
   #define NEEDS_NL_LANGINFO
+  #define NEEDS_GETLINE
  #endif
 
  // Generic UNIX system
@@ -73,6 +77,7 @@ compiler.@p
   #define NEEDS_FILELENGTH
   #define NEEDS_ITOA
   #define NEEDS_NL_LANGINFO
+  #define NEEDS_GETLINE
  #endif
 #endif
 
@@ -89,6 +94,7 @@ compiler.@p
  #define NEEDS_MKSTEMP
  #define NEEDS_NL_LANGINFO
  #define NEEDS_IFSTREAMGETLINE
+ #define NEEDS_GETLINE
 #endif
 
 
@@ -107,4 +113,6 @@ compiler.@p
  #define NEEDS_GETOPT
  #define NEEDS_MKSTEMP
  #define NEEDS_NL_LANGINFO
+ #define NEEDS_GETLINE
 #endif
+

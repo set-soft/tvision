@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 1.242.2.15  2002/01/01 01:27:12  set
+* Added: Code to avoid collisions between the last changes in tv/intl.h and
+djgpp's conio. Note that gettext instructs users on how to change libc to
+avoid such a collision.
+* Changed: Version to 1.1.4.
+
 Revision 1.242.2.14  2001/12/31 21:47:31  set
 * Modified: Now if gettext isn't detected the configuration uses the fake
 internationalization dummy. It can be disabled with --no-intl. Why? it allows
