@@ -145,6 +145,8 @@ protected:
  static void mapColor(int col);
  // Closes and releases all, called from TDisplayLinux
  static void DeallocateResources();
+ // Analyzes the console code page
+ static int  AnalyzeCodePage();
  // Terminal state before starting
  static struct termios outTermiosOrig;
  // Our terminal state
