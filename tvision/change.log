@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.363  2002/11/28 18:42:26  set
+* Fixed: The files list said intl/dtou.pl instead of intl/utod.pl.
+
 Revision 2.362  2002/11/28 17:53:41  set
 * Fixed: [X11] Squash! finally killed the f*cking bug. It was the mother of
 race conditions. The strange thing is how useless was efence to detect it.
