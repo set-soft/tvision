@@ -11,7 +11,7 @@ if ($r!~/$Version/)
 
 # Adjust Debian version
 $r=cat('../debian/changelog');
-if ($i=!/$version/)
+if ($r!~/$Version/)
   {
    chdir('../../debian');
    system("dch -v$version"."-0.1 \"Personal use unofficial version\"");
