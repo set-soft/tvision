@@ -1,0 +1,7 @@
+tvision/readme.txt
+tvision/copying*
+tvision/borland.txt
+tvision/linuxso/libtv*
+tvision/linuxso/instlib
+tvision/include/*.h
+

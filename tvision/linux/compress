@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-$oldv='1.0.1';
-$newv='1.0.2';
+$oldv='1.0.2';
+$newv='1.0.3';
 @files=('../readme.txt');
 
 # Patch the version number
@@ -22,11 +22,13 @@ foreach $i (@files)
 
 # Generate the tar files
 $bindist="rhtvision-$newv.bin.i386.elf.static.linux.tar.gz";
+$binddist="rhtvision-$newv.bin.i386.elf.dynamic.linux.tar.gz";
 $srcdist="rhtvision-$newv.src.tar.gz";
 chdir('../..');
-unlink("rhtvision-$newv.src.tar.gz","rhtvision-$newv.bin.i386.elf.static.linux.tar.gz");
+unlink($srcdist,$bindist,$binddist);
 system("tar -X tvision/linux/exclude.txt -zcvf $srcdist tvision");
 system("tar -zcvf $bindist --exclude=*CVS `cat tvision/linux/inclubin.txt`");
+system("tar -zcvf $binddist --exclude=*CVS `cat tvision/linux/includbi.txt`");
 
 # Generate the lsm distribution file (Linux Software Map entry).
 $lsm=
@@ -42,9 +44,11 @@ Maintained-by:  salvador\@inti.gov.ar (Salvador E. Tropea)
 Primary-site:   www.geocities.com /SiliconValley/Vista/6552
                 !1
                 !2
+                !4
 Alternate-site: sunsite.unc.edu /pub/Linux/devel/lang/c++
                 !1
                 !2
+                !4
 Original-site:  ftp.borland.com /pub/borlandcpp/devsupport/archive/turbovision
                 232k tv.zip
 Platforms:      Linux, GNU g++, gpm, ncurses
@@ -55,6 +59,8 @@ $r= int((-s $srcdist)/1024+0.5)."k $srcdist";
 $lsm =~ s/\!1/$r/g;
 $r= int((-s $bindist)/1024+0.5)."k $bindist";
 $lsm =~ s/\!2/$r/g;
+$r= int((-s $binddist)/1024+0.5)."k $binddist";
+$lsm =~ s/\!4/$r/g;
 @t=localtime(time());
 @mes=('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
 $r=$t[3].$mes[$t[4]].$t[5];

@@ -7,3 +7,9 @@
 *CVS/*
 *cvs
 *CVS
+*linuxso/libtv*
+*linuxso/instlib
+*linuxso/Makefile
+*linuxso/gkeyli.cc
+*linuxso/.cvsignore
+
