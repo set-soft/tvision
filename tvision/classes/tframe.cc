@@ -291,7 +291,8 @@ lab10:
   dx++;
   {
     uchar * framechars = (uchar *)malloc(dx);
-    for (i=0;i<dx;i++) framechars[i] = (uchar)frameChars[FrameMask[i]];
+    for (i=0;i<dx;i++)
+        framechars[i] = (uchar)frameChars[FrameMask[i]];
     frameBuf.moveBuf(0,framechars,color,dx);
     free(framechars);
   }

@@ -24,6 +24,8 @@ public:
     virtual ~TObject();
 
     static void destroy( TObject * );
+    // SET: It also sets the pointer to 0
+    #define destroy0(a) destroy(a); a=0
     virtual void shutDown();
 
 private:

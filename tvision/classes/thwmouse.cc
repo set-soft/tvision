@@ -95,44 +95,66 @@ int draw_mouse(int x,int y)
 
 _go32_dpmi_seginfo mouseIntInfo;
 
+#if 1
+// SET: I think we should really test it, Robert is using a call of the v3.0+
+// to set the mouse handler and one from v6.0+ to restore, why not using the
+// same for both? My doubt is that the v6.0+ is for *alternate* handler and
+// supports upto 3 different.
+// Todo: it never checks the return value!!!
 void THWMouse::registerHandler( unsigned mask, void (*func)() )
 {
   REGS r;
-#if 1
   static int oldes = 0;
   static int olddx = 0;
-#endif
+  
   if (func == NULL)
-  {
-#if 1
+  { // INT 33 - MS MOUSE v6.0+ - SET ALTERNATE MOUSE USER HANDLER
     DX = olddx;
     ES = oldes;
     AX = 0x0018;
-#else
-    DX = ES = 0;
-    AX = 0x000C;
-#endif
     CX = mask;
     INTR(0x33,r);
     return;
   }
   else
-  {
+  { // INT 33 - MS MOUSE v3.0+ - EXCHANGE INTERRUPT SUBROUTINES
     DX = mouseIntInfo.rm_offset;
     ES = mouseIntInfo.rm_segment;
-#if 1
     AX = 0x0014;
-#else
-    AX = 0x000C;
-#endif
     CX = mask;
     INTR(0x33,r);
-#if 1
     oldes = ES;
     olddx = DX;
-#endif
   }
 }
+#else
+// SET: I moved it here to keep the old routine and clean the currently used.
+// I don't know why Robert dropped it. The main drawback is that you kill
+// any old mouse handler. Looks like v1.0 didn't implement a way to get the
+// current handler, not strange since that's a Microsoft spec. So it kills
+// the mouse of the debuggy. I think it was the reason.
+void THWMouse::registerHandler( unsigned mask, void (*func)() )
+{
+  REGS r;
+  if (func == NULL)
+  { // MS MOUSE v1.0+ - DEFINE INTERRUPT SUBROUTINE PARAMETERS
+    DX = ES = 0;
+    AX = 0x000C;
+    CX = mask;
+    INTR(0x33,r);
+    return;
+  }
+  else
+  { // MS MOUSE v1.0+ - DEFINE INTERRUPT SUBROUTINE PARAMETERS
+    DX = mouseIntInfo.rm_offset;
+    ES = mouseIntInfo.rm_segment;
+    AX = 0x000C;
+    CX = mask;
+    INTR(0x33,r);
+  }
+}
+#endif
+
 extern _go32_dpmi_registers mouseIntRegs;
 extern MouseEventType tempMouse;
 
@@ -291,7 +313,11 @@ THWMouse::~THWMouse()
 {
   suspend();
   if (handlerInstalled == True)
+  {
     registerHandler( 0xFFFF, 0 );
+    // SET: to avoid a leak reported.
+    _go32_dpmi_free_real_mode_callback(&mouseIntInfo);
+  }
 }
 
 void THWMouse::suspend()

@@ -85,7 +85,10 @@ void TEventQueue::suspend()
 
 TEventQueue::~TEventQueue()
 {
-	 suspend();
+ suspend();
+ // SET: Destroy the mouse object
+ if (mouse)
+    delete mouse;
 }
 
 void TEventQueue::getMouseEvent(	TEvent& ev )

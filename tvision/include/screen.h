@@ -67,7 +67,8 @@ protected:
 
     TDisplay() { updateIntlChars(); };
     TDisplay( const TDisplay& ) { updateIntlChars(); };
-    ~TDisplay() {};
+    // SET: Remove the font. I forgot to do it when added font support.
+    ~TDisplay() { if (font) {delete font; font=0;} };
 
     static TFont *font;
 

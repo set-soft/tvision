@@ -55,6 +55,11 @@ public:
     ccIndex getCount()
         { return count; }
 
+    // SET: I added it to create collections with static strings inserted
+    // in it. I think that's a common case and strduping each insertion is
+    // a real waste.
+    void setOwnerShip(Boolean option) { shouldDelete=option; }
+
 protected:
 
     TNSCollection();
