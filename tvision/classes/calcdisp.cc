@@ -155,7 +155,7 @@ void TCalcDisplay::calcKey(unsigned char key, unsigned code)
 {
     char stub[2] = " ";
     double r;
-    char *decPoint=nl_langinfo(DECIMAL_POINT);
+    char *decPoint=nl_langinfo(RADIXCHAR);
 
     if (code==kbBackSpace)
        key=8;
