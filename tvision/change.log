@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.166  2002/06/24 14:56:18  set
+* Added: A new class to manage a configuration file. Right now only one
+setting is accepted in this file: ShowCursorEver. See TVConfigFile in
+configfile.cc and TProgInit::config.
+
 Revision 2.165  2002/06/20 20:13:59  set
 * Fixed: CLY_GetDefaultFileAttr(CLY_mode_t *mode) for UNIX, it didn't set
 writemask making new files to look like R.O.

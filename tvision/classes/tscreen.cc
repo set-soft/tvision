@@ -15,6 +15,7 @@ same used in original Turbo Vision for compatibility purposes.
 #define Uses_stdlib
 #define Uses_string
 #define Uses_TScreen
+#define Uses_TVConfigFile
 #include <tv.h>
 #include <tv/drivers.h>
 
@@ -131,37 +132,58 @@ int TScreen::defaultSystem(const char *command, pid_t *pidChild)
   Real members
 *****************************************************************************/
 
+struct stDriver
+{
+ // Test function for this driver
+ drvChecker  driver;
+ // The drivers with more priority are tried first
+ int         priority;
+ // Configuration section name for this driver
+ const char *name;
+};
+
 static
-drvChecker Drivers[]=
+stDriver Drivers[]=
 {
  #ifdef TVOS_DOS
- TV_DOSDriverCheck,
+ { TV_DOSDriverCheck, 100, "DOS" },
  #endif
+
  #ifdef TVOS_UNIX
   #ifdef HAVE_X11
-   TV_XDriverCheck,
+   { TV_XDriverCheck, 100, "X11" },
   #endif // HAVE_X11
   #ifdef TVOSf_Linux
-   TV_LinuxDriverCheck,
+   { TV_LinuxDriverCheck, 90, "Linux" },
   #endif
   #ifdef TVOSf_QNXRtP
-   TV_QNXRtPDriverCheck,
+   { TV_QNXRtPDriverCheck, 90, "QNX" },
   #else
-   TV_XTermDriverCheck,
-   TV_UNIXDriverCheck,
+   { TV_XTermDriverCheck, 60, "XTerm" },
+   { TV_UNIXDriverCheck, 10, "UNIX" },
   #endif // TVOSf_QNXRtP
  #endif
+
  #ifdef TVOS_Win32
   #ifdef TVOSf_NT
-   TV_WinNTDriverCheck,
-   TV_Win32DriverCheck,
+   { TV_WinNTDriverCheck, 100, "WinNT" },
+   { TV_Win32DriverCheck,  50, "Win32" },
   #else
-   TV_Win32DriverCheck,
-   TV_WinNTDriverCheck,
+   { TV_Win32DriverCheck, 100, "Win32" },
+   { TV_WinNTDriverCheck,  50, "WinNT" },
   #endif
  #endif
- 0
 };
+
+const int nDrivers=sizeof(Drivers)/sizeof(stDriver);
+
+static
+int cmpDrivers(const void *v1, const void *v2)
+{
+ int p1=((stDriver *)v1)->priority;
+ int p2=((stDriver *)v2)->priority;
+ return (p1<p2)-(p1>p2);
+}
 
 /**[txh]********************************************************************
 
@@ -186,8 +208,20 @@ TScreen::TScreen() :
     return;
  initCalled=1;
 
- int i;
- for (i=0; Drivers[i] && !(driver=Drivers[i]()); i++);
+ // Check if the user changed priorities
+ int changed=0,i;
+ long priority;
+ for (i=0; i<nDrivers; i++)
+     if (TVMainConfigFile::Search(Drivers[i].name,"Priority",priority))
+       {
+        Drivers[i].priority=(int)priority;
+        changed++;
+       }
+ // Sort the list if needed
+ if (changed)
+    qsort(Drivers,nDrivers,sizeof(stDriver),cmpDrivers);
+ // Now call the initializations
+ for (i=0; i<nDrivers && !(driver=Drivers[i].driver()); i++);
  if (!driver)
    {
     fprintf(stderr,"Error: Unsupported hardware\n");
