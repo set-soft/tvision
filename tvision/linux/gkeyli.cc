@@ -96,7 +96,6 @@ unsigned short getshiftstate(void)
 }
 #else  // TVOSf_Linux
 // I don't know if other UNIX flavors have an equivalent IOCTL
-inline
 unsigned short getshiftstate(void)
 {
  return 0;
