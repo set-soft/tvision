@@ -2,7 +2,7 @@
 # Modified for use with MS NMAKE 
 # Run: nmake -f Makefile.nmk all
 
-CFLAGS=-O2 -D_WIN32 /GR- /GX-
+CFLAGS=-O2 -I../include -D_WIN32 /GR- /GX-
 CXXFLAGS=-O2 -I../include -D_WIN32 /GR- /GX-
 
 OBJDIR=obj_ms

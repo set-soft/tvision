@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.181  2002/06/27 18:24:26  set
+* Fixed: [MSVC] C code compile rule, patch from WintiX.
+
 Revision 2.180  2002/06/26 16:55:17  set
 * Updated: The Win32 headers, some how S.F. CVS got unsynchronized.
 * Fixed: getopt and getline to compile with MSVC from output errors

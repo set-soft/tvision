@@ -381,8 +381,8 @@ typedef unsigned long  ulong;
   #ifdef Uses_getline
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
-   // Looks like it isn't defined
-   typedef long ssize_t;
+   #undef  Uses_CLY_ssize_t
+   #define Uses_CLY_ssize_t 1
   #endif
  #endif
 
@@ -836,6 +836,8 @@ typedef unsigned long  ulong;
  #ifdef Uses_getline
   #undef  Uses_CLY_getline
   #define Uses_CLY_getline 1
+  #undef  Uses_CLY_ssize_t
+  #define Uses_CLY_ssize_t 1
  #endif
 
  /* ifstream::getline behaves strangely in BC++
@@ -870,10 +872,6 @@ typedef unsigned long  ulong;
   #define Include_strstream 1
  #endif
  #define UsingNamespaceStd
- #ifndef CLY_BCpp_ssize_t
-  #define CLY_BCpp_ssize_t 1
-  typedef long ssize_t;
- #endif
 #endif
 
 
@@ -1071,6 +1069,8 @@ typedef unsigned long  ulong;
  #ifdef Uses_getline
   #undef  Uses_CLY_getline
   #define Uses_CLY_getline 1
+  #undef  Uses_CLY_ssize_t
+  #define Uses_CLY_ssize_t 1
  #endif
 
  /* ifstream::getline behaves strangely in BC++
@@ -1190,6 +1190,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_sys_types) && !defined(Included_sys_types)
  #define Included_sys_types 1
  #include <sys/types.h>
+#endif
+/* Platforms where sys/tyes.h doesn't define ssize_t: */
+#if defined(Uses_CLY_ssize_t) && !defined(CLY_ssize_t)
+ #define CLY_ssize_t 1
+ typedef long ssize_t;
 #endif
 
 #if defined(Include_string) && !defined(Included_string)
