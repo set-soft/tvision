@@ -65,7 +65,7 @@ void TInputLine::SetValidator(TValidator * aValidator)
 
 TInputLine::~TInputLine()
 {
-    delete data;
+    delete[] data;
     destroy(validator);
 }
 
