@@ -33,6 +33,8 @@
 #include <tv.h>
 #include "strmoper.h"
 
+UsingNamespaceStd
+
 bool fileExists(const char * FileName)
 {
    FILE * test;
