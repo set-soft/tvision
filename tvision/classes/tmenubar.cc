@@ -86,7 +86,10 @@ bar to select the no/compact mode.@*
 void TMenuBar::changeBounds(const TRect& bounds)
 {
  TMenuView::changeBounds(bounds);
+ int oldCompact=compactMenu;
  computeLength();
+ if (compactMenu!=oldCompact)
+    draw();
 }
 
 void TMenuBar::draw()
