@@ -48,7 +48,7 @@ void        (*TDisplay::getDisPaletteColors)(int from, int number, TScreenColor 
                                                   =TDisplay::defaultGetDisPaletteColors;
 int         (*TDisplay::setDisPaletteColors)(int from, int number, TScreenColor *colors)
                                                   =TDisplay::defaultSetDisPaletteColors;
-int         (*TDisplay::setCrtModeRes)(unsigned w, unsigned h, int fW, int fH)
+int         (*TDisplay::setCrtModeRes_p)(unsigned w, unsigned h, int fW, int fH)
                                                   =TDisplay::defaultSetCrtModeRes;
 Boolean     (*TDisplay::showBusyState)(Boolean state)
                                                   =TDisplay::defaultShowBusyState;

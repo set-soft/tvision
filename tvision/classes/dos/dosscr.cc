@@ -129,9 +129,9 @@ TScreenDOS::TScreenDOS()
  TScreen::getCharacters=getCharacters;
  TScreen::setCharacter=setCharacter;
  TScreen::setCharacters=setCharacters;
- TScreen::System=System;
+ TScreen::System_p=System;
  TScreen::getFontGeometry=GetFontGeometry;
- TScreen::setFont=SetFont;
+ TScreen::setFont_p=SetFont;
  TScreen::restoreFonts=RestoreFonts;
 
  TVDOSClipboard::Init();

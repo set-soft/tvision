@@ -61,7 +61,7 @@ void TDisplayQNX4::Init()
    TDisplay::getCols=GetCols;
    TDisplay::getCrtMode=GetCrtMode;
    TDisplay::setCrtMode=SetCrtMode;
-   TDisplay::setCrtModeRes=SetCrtModeRes;
+   TDisplay::setCrtModeRes_p=SetCrtModeRes;
    TDisplay::setCrtModeExt=SetCrtModeExt;
    TDisplay::checkForWindowSize=CheckForWindowSize;
 }

@@ -758,7 +758,7 @@ void TDisplayDOS::Init()
  TDisplay::setCrtMode=SetCrtMode;
  TDisplay::getCrtMode=GetCrtMode;
  TDisplay::setCrtModeExt=SetCrtModeExt;
- TDisplay::setCrtModeRes=SetCrtModeRes;
+ TDisplay::setCrtModeRes_p=SetCrtModeRes;
  TDisplay::getWindowTitle=GetWindowTitle;
  TDisplay::setWindowTitle=SetWindowTitle;
  TDisplay::setDisPaletteColors=SetDisPaletteColors;

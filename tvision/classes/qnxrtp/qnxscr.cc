@@ -96,7 +96,7 @@ TScreenQNXRtP::TScreenQNXRtP()
    TScreen::getCharacter=getCharacter;
    TScreen::setCharacter=setCharacter;
    TScreen::setCharacters=setCharacters;
-   TScreen::System=System;
+   TScreen::System_p=System;
 
    TGKeyQNXRtP::Init();
 

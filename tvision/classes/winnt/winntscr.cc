@@ -140,10 +140,10 @@ int TScreenWinNT::InitOnce()
  setCharacters=SetCharacters;
  getCharacter=GetCharacter;
  getCharacters=GetCharacters;
- TScreen::System=System;
+ TScreen::System_p=System;
  TScreen::Resume=Resume;
  TScreen::Suspend=Suspend;
- setCrtModeRes=SetCrtModeRes;
+ setCrtModeRes_p=SetCrtModeRes;
 
  TVWin32Clipboard::Init();
  TGKeyWinNT::Init();

@@ -171,7 +171,7 @@ static char * className= "TVISION for windows"; /* Make the classname into a glo
 /* ------------------------------------------------------------------------- */
    void TScreenWinGr::Init()
 /* ------------------------------------------------------------------------- */
-{ TScreen::System=          System;
+{ TScreen::System_p=        System;
   TScreen::Resume=          Resume;
   TScreen::Suspend=         Suspend;
   TScreen::clearScreen=     clearScreen;
