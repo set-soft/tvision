@@ -174,6 +174,11 @@ void TMyApp::testFont()
 
 void TMyApp::testRestore()
 {
+ if (!changed1 && !changed2)
+   {
+    messageBox("\03No need to restore the font",mfInformation | mfOKButton);
+    return;
+   }
  TScreen::restoreFonts();
  messageBox("\03Font restored",mfInformation | mfOKButton);
  changed1=changed2=0;
