@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.231  2002/07/23 12:27:14  set
+* Fixed: getopt changes were incomplete.
+
 Revision 2.230  2002/07/22 20:40:53  set
 * Added: [MSVC] some code to solve link problems.
 

@@ -16,6 +16,7 @@ contain fonts with all the supported symbols.
 #define Uses_stdlib
 #define Uses_string
 #define Uses_dirent
+#define Uses_limits
 #define Uses_TVCodePage
 #define Uses_TVFontCollection
 #include <tv.h>
