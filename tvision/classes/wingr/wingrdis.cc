@@ -11,6 +11,7 @@
 #include <tv/configtv.h>
 
 #define Uses_stdio
+#define Uses_stdlib
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TEvent
