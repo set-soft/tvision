@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-$oldv='1.0.1';
-$newv='1.0.2';
+$oldv='1.0.2';
+$newv='1.0.3';
 @files=('../readme.txt');
 
 # Patch the version number
