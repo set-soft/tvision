@@ -1,4 +1,8 @@
 $Log$
+Revision 1.221  2001/10/12 02:54:44  set
+-----------------------------------------------------------------------------
+v1.1.3 release. Switching to stable.
+
 Revision 1.220  2001/10/10 14:56:15  set
 * Fixed: The TRangeValidator was supposed to support hexa numbers but
 didn't accept A-Fa-f. Also changed the complex and slow scanfs to

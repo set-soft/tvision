@@ -53,7 +53,7 @@ rhtv.lib: $(OBJS)
 
 tvex.exe: objs\tvex.obj rhtv.lib
 	$(CC) $(LDFLAGS) -etvex.exe objs\tvex.obj rhtv.lib
-	
+
 {.}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
@@ -65,22 +65,25 @@ tvex.exe: objs\tvex.obj rhtv.lib
 
 {..\classes\WinNT}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
-	
+
 {..\names}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
-	
+
 {..\stream}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
-	
+
 {..}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
-	
+
 {..}.c{objs}.obj:
 	$(CC) -c $(CFLAGS) $(INC) -nobjs $<
-	
+
 {..\compat}.c{objs}.obj:
 	$(CC) -c $(CFLAGS) $(INC) -nobjs $<
-	
+
+{..\compat}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
 objs\tscreen.obj: ..\classes\WinNT\tscreen.cc
 objs\tdsiplay.obj: ..\classes\WinNT\tdsiplay.cc
 objs\tfont.obj: ..\classes\WinNT\tfont.cc
@@ -92,4 +95,4 @@ clean:
 	-del *.exe
 	-del *.tds
 	-del *.lib
-	
+
