@@ -216,7 +216,9 @@ init_syntax_once ()
 #ifndef _AIX /* Already did AIX, up at the top.  */
  #if defined(TVComp_MSC)
   #include <malloc.h>
-  #define  alloca(a) _alloca(a)
+  #ifndef alloca
+   #define alloca(a) _alloca(a)
+  #endif // alloca
  #else
   char *alloca();
  #endif

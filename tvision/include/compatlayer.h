@@ -1327,11 +1327,14 @@ typedef unsigned long  ulong;
  #undef  CLY_DummyTStreamRW
  #define CLY_DummyTStreamRW(cla) void write(opstream &os) { cla::write(os); }; \
                                  void *read(ipstream &is) { return cla::read(is); };
- #if _MSC_VER >= 1300
+ // From Mike:
+ // v1300 is MSVC 7.00, not fully ISO C++ 1998
+ // v1310 is MSVC 7.10 (aka .NET 2003 Architect), ISO C++ 1998 compliant
+ #if _MSC_VER > 1300
   // Taked from gcc 3.1 definitions
   #define CLY_filebuf        std::filebuf
   #define CLY_int_filebuf    CLY_filebuf
-  #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
+  #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"))
   #define CLY_streambuf      std::streambuf
   #define CLY_ISOCpp98 1
   #define CLY_OpenModeT      std::ios::openmode
@@ -1370,6 +1373,9 @@ typedef unsigned long  ulong;
   #define IOMANIP_HEADER  <iomanip>
   #undef  IOSTREAM_HEADER
   #define IOSTREAM_HEADER <iostream>
+  #if defined(Include_ioctl)
+     #undef Include_ioctl
+  #endif // Include_ioctl
  #else
   #define CLY_filebuf        filebuf
   #define CLY_int_filebuf    filebuf
