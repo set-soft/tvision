@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1996,1997,1998,1999 by Salvador E. Tropea (SET),
+# Copyright (C) 1999,2000 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -35,12 +35,12 @@ $GCC=CheckGCC();
 # Check if gcc can compile C++
 $GXX=CheckGXX();
 # Is the right djgpp?
-if ($OS eq 'dos')
+if ($OS eq 'DOS')
   {
    LookForDJGPP($DJGPPVersionNeeded);
   }
 
-if ($OS eq 'linux')
+if ($OS eq 'UNIX')
   {
    LookForGPM($GPMVersionNeeded);
    LookForNCurses($NCursesVersionNeeded,$NCursesVersionRecomended);
@@ -112,17 +112,17 @@ sub GiveAdvice
     print "\n";
     print "* The international support was disabled because gettext library could not\n";
     print "  be detected.\n";
-    if ($OS eq 'linux')
+    if ($OSflavor eq 'Linux')
       {
        print "  Starting with glibc 2.0 this is included in libc, perhaps your system\n";
        print "  just lacks the propper header file.\n";
       }
-    elsif ($OS eq 'dos')
+    elsif ($OS eq 'DOS')
       {
        print "  Install the gtxtNNNb.zip package from the v2gnu directory of djgpp's\n";
        print "  distribution. Read the readme file for more information.\n";
       }
-    elsif ($OS eq 'win32')
+    elsif ($OS eq 'Win32')
       {
        print "  That's normal for Win32.\n";
       }
@@ -151,7 +151,7 @@ sub LookForIntlSupport
     print "no (cached)\n";
     return;
    }
- if ($OS eq 'dos')
+ if ($OS eq 'DOS')
    { # gettext 0.10.32 port have a bug in the headers, correct it
     $djdir=@ENV{'DJDIR'};
     $a=cat("$djdir/include/libintl.h");
@@ -170,7 +170,7 @@ int main(void)
  printf("%s\n",_("OK"));
  return 0;
 }';
- $test=RunGCCTest($GCC,'c',$test,'-Iinclude/ '.($OS eq 'dos' ? '-lintl' : ''));
+ $test=RunGCCTest($GCC,'c',$test,'-Iinclude/ '.($OS eq 'DOS' ? '-lintl' : ''));
  if ($test ne "OK\n")
    {
     print "not available or not usable, disabling.\n";
@@ -237,20 +237,27 @@ int main(void)
  $test=RunGCCTest($GCC,'c',$test,'-lgpm');
  if (!length($test))
    {
-    print "\nError: gpm library not found, please install gpm $vNeed or newer\n";
-    print "Look in $ErrorLog for potential compile errors of the test\n";
-    CreateCache();
-    die "Missing library\n";
+    #print "\nError: gpm library not found, please install gpm $vNeed or newer\n";
+    #print "Look in $ErrorLog for potential compile errors of the test\n";
+    #CreateCache();
+    #die "Missing library\n";
+    $conf{'HAVE_GPM'}='no';
+    print " no, disabling mouse support\n";
+    return;
    }
  if (!CompareVersion($test,$vNeed))
    {
-    print "$test, too old\n";
-    print "Please upgrade your gpm library to version $vNeed or newer.\n";
-    print "You can try with $test forcing the configure scripts.\n";
-    CreateCache();
-    die "Old library\n";
+    #print "$test, too old\n";
+    #print "Please upgrade your gpm library to version $vNeed or newer.\n";
+    #print "You can try with $test forcing the configure scripts.\n";
+    #CreateCache();
+    #die "Old library\n";
+    $conf{'HAVE_GPM'}='no';
+    print " too old, disabling mouse support\n";
+    return;
    }
- @conf{'gpm'}=$test;
+ $conf{'gpm'}=$test;
+ $conf{'HAVE_GPM'}='yes';
  print "$test OK\n";
 }
 
@@ -314,18 +321,18 @@ sub GenerateMakefile
     die "Can't find Makefile.in!!\n";
    }
  $rep='static-lib';
- $rep.=' dynamic-lib' if ($OS eq 'linux');
+ $rep.=' dynamic-lib' if ($OS eq 'UNIX');
  $text=~s/\@targets\@/$rep/g;
  $text=~s/\@OS\@/$OS/g;
  $text=~s/\@prefix\@/@conf{'prefix'}/g;
 
- $makeDir='linux' if ($OS eq 'linux');
- $makeDir='djgpp' if ($OS eq 'dos');
- $makeDir='win32' if ($OS eq 'win32');
+ $makeDir='linux' if ($OS eq 'UNIX');
+ $makeDir='djgpp' if ($OS eq 'DOS');
+ $makeDir='win32' if ($OS eq 'Win32');
  # Write target rules:
  $rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
  $text=~s/\@target1_rule\@/$rep/g;
- if ($OS eq 'linux')
+ if ($OS eq 'UNIX')
    {
     $rep="linuxso/librhtv.so.$Version";
     $rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl --no-inst-message";
@@ -345,7 +352,7 @@ sub GenerateMakefile
  # This should be created if the target is a new directory
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
  $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
- if ($OS eq 'linux')
+ if ($OS eq 'UNIX')
    {
     $rep.="\trm -f \$(libdir)/librhtv.so\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.1\n";
@@ -372,7 +379,9 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_KEYSYMS','The X11 keysyms are there');
  $conf{'HAVE_INTL_SUPPORT'}=@conf{'intl'};
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
- $text.="\n";
+ $text.=ConfigIncDefYes('HAVE_GPM','GPM mouse support');
+ $text.="\n\n";
+ $text.="#define TVOS_$OS\n#define TVOSf_$OSflavor\n";
 
  replace('include/tv/configtv.h',$text);
 }

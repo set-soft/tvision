@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1996,1997,1998,1999 by Salvador E. Tropea (SET),
+# Copyright (C) 1999,2000 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # Common configuration routines.
@@ -7,6 +7,7 @@
 
 $ErrorLog='errormsg.txt';
 $MakeDefsRHIDE={};
+$OSflavor='';
 
 sub GetCache
 {
@@ -118,11 +119,11 @@ sub RunGCCTest
  $label=$command.":\n";
  `echo $label >> $ErrorLog`;
 
- if ($OS eq 'dos')
+ if ($OS eq 'DOS')
    {
     `redir -ea $ErrorLog $command`;
    }
- elsif ($OS eq 'win32')
+ elsif ($OS eq 'Win32')
    {
     `sh -c "$command 2>> $ErrorLog"`;
    }
@@ -144,7 +145,7 @@ sub RunGCCTest
 # 1) Look for cached prefix key.@*
 # 2) Look for prefix environment variable.@*
 # 3) Look for PREFIX environment variable.@*
-# Linux:@*
+# UNIX:@*
 # 4) Find where make is installed and guess from it.@*
 # 5) If not found default to /usr@*
 # DOS:@*
@@ -177,7 +178,7 @@ sub LookForPrefix
     LookIfFHS();
     return;
    }
- if ($OS eq 'linux')
+ if ($OS eq 'UNIX')
    {
     if (`which make`=~/(.*)\/bin\/make/)
       {
@@ -188,7 +189,7 @@ sub LookForPrefix
       $prefix='/usr';
      }
    }
- elsif ($OS eq 'dos')
+ elsif ($OS eq 'DOS')
    {
     $prefix=@ENV{'DJDIR'};
    }
@@ -218,7 +219,7 @@ sub LookForPrefix
 
 sub LookIfFHS
 {
- if ($OS eq 'linux')
+ if ($OS eq 'UNIX')
    {
     print 'Checking if this system follows the FHS: ';
     if ($conf{'fhs'})
@@ -442,7 +443,7 @@ int main(void)
 #   Determines the flags to be used for compilation. Mechanism:@*
 # 1) Cached CFLAGS key.@*
 # 2) Environment variable CFLAGS.@*
-# 3) -O2 -gstabs+3 (-pipe if Linux).@*
+# 3) -O2 -gstabs+3 (-pipe if UNIX) (_WIN32 if Win32).@*
 #   The result is stored in the 'CFLAGS' configuration key.
 #
 # Return: The value determined.
@@ -464,8 +465,10 @@ sub FindCFLAGS
  if (!$ret)
    {
     $ret='-O2 -gstabs+3';
-    $ret.=' -pipe' if ($OS eq 'linux');
-    $ret.=' -D_WIN32' if ($OS eq 'win32');
+    # In UNIX pipes are in memory and allows multithreading so they are
+    # usually faster. In Linux that's faster.
+    $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -D_WIN32' if ($OS eq 'Win32');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
@@ -482,7 +485,7 @@ sub FindCFLAGS
 # 2) Environment variable CXXFLAGS.@*
 # 3) Cached CFLAGS key.@*
 # 4) Environment variable CFLAGS.@*
-# 5) -O2 -gstabs+3 (-pipe if Linux).@*
+# 5) -O2 -gstabs+3 (-pipe if UNIX) (_WIN32 if Win32).@*
 #   The result is stored in the 'CXXFLAGS' configuration key.
 #
 # Return: The value determined.
@@ -506,8 +509,8 @@ sub FindCXXFLAGS
  if (!$ret)
    {
     $ret='-O2 -gstabs+3';
-    $ret.=' -pipe' unless ($OS eq 'dos');
-    $ret.=' -D_WIN32' if ($OS eq 'win32');
+    $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -D_WIN32' if ($OS eq 'Win32');
    }
  print "$ret\n";
  $conf{'CXXFLAGS'}=$ret;
@@ -540,21 +543,32 @@ sub DetectOS
  
  if ($os=~/MS\-DOS/)
    {
-    $OS='dos';
+    $OS='DOS';
+    $OSflavor='djgpp';
     $stdcxx='-lstdcxx';
     $defaultCXX='gxx';
     $supportDir='djgpp';
    }
  elsif ($os=~/[Ll]inux/)
    {
-    $OS='linux';
+    $OS='UNIX';
+    $OSflavor='Linux';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='linux';
+   }
+ elsif ($os=~/FreeBSD/)
+   {
+    $OS='UNIX';
+    $OSflavor='FreeBSD';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='linux';
    }
  elsif ($os=~/CYGWIN/)
    {
-    $OS='win32';
+    $OS='Win32';
+    $OSflavor='Mingw';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='win32';
@@ -563,7 +577,7 @@ sub DetectOS
    {
     die('Unknown OS, you must do things by yourself');
    }
- print "$OS\n";
+ print "$OS [$OSflavor]\n";
  $OS;
 }
 
