@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.157  2002/06/18 16:41:24  set
+* Modified: [QNX] New batch of patches for the QNX console from Mike. This
+driver is now finished according to Mike.
+
 Revision 2.156  2002/06/18 14:51:16  set
 * Added: Code to remap characters on the fly. I rewrote the code in TView
 that sends the data to screen so it can remap characters before doing it.

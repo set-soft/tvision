@@ -198,6 +198,7 @@ struct stCodePageLang TScreenLinux::langCodePages[]=
 {
  { "ca,da,nl,et,fr,de,fi,is,it,no,pt,es,sv", TVCodePage::ISOLatin1Linux },
  { "hr,cs,hu,pl,ro,sk,sl",                   TVCodePage::ISOLatin2Linux },
+ // ru_RU.KOI8-R is common, but not reliable according to Alexey Godin
  { "ru",                                     TVCodePage::KOI8r          },
  { NULL,                                     0                          }
  //{ "el",                                     TVCodePage::ISOGreek       },
