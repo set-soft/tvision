@@ -753,9 +753,10 @@ static void init_console_sigs()
   if (tty_name)
     {
      if (sscanf(tty_name,"/dev/tty%2d",&our_vt)!=1)
-        // Code from Andris that we should test
-        //if (sscanf(tty_name,"/dev/pts/%2d",&our_vt)!=1)
-        return;
+        // SET: Some Slackware systems (I think that is what Andris uses)
+        // define /dev/ttyNN as symlinks to /dev/vc/NN:
+        if (sscanf(tty_name,"/dev/vc/%2d",&our_vt)!=1)
+           return;
     }
   else if (our_vt==-1)
     return;

@@ -1,4 +1,17 @@
 $Log$
+Revision 1.207  2001/09/25 02:17:04  set
+* Fixed: Problems in TEditor class when handling UNIX files.
+* Fixed: A bug introduced by JASC while adapting teditorf.cc to work for
+big endian platforms. It rendered TEditor buffers as only spaces ;-)
+* Fixed: Tons of warnings, some of them bugs that made impossible to
+compile the Dialog Design program.
+* Fixed: One of the desklogo examples was supposed to show the use of ^Z
+signal handling but forgot to include signal.h (generated obvious errors).
+* Fixed: Removed header dependencies from all examples, now they depend
+only on headers included with #include "". I did it because patchenv.pl
+can't handle multiple directories and I think that isn't really necesary.
+In this way I'll never let pass system dependent dependencies.
+
 Revision 1.206  2001/09/23 20:05:12  set
 * Modified: Moved all the macros to define if we need \r\n or \n from
 setedit to the compatlayer library.
