@@ -35,7 +35,7 @@ clean: clean-debian debianbackup.tar
 	test -e debianbackup.tar && tar -xf debianbackup.tar
 	rm -f debianbackup.tar
 # FIXME: ask upstream about adding the next 3 files to his clean target:
-	rm -f linuxso/gkeyli.cc linuxso/instlib configure.cache
+	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env
 	rm -f build-stamp
 
 clean-debian:

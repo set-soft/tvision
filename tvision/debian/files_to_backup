@@ -38,5 +38,7 @@ linux/Makefile
 linux/rhide.env
 linuxso/Makefile
 linuxso/compat.mak
+linuxso/makemak.pl
 win32/Makefile
+win32/rhide.env
 include/tv/configtv.h

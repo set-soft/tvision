@@ -3,6 +3,21 @@ rhtvision (2.0.0-0.1) unstable; urgency=low
   * New version automatically modified by version update scripts
 
  -- Salvador E. Tropea (SET) <salvador@inti.gov.ar>  Mon, 10 Dec 2001 22:14:25 -0300
+ 
+rhtvision (1.1.4-1) unstable; urgency=low
+
+  * The "Ivan hates computers after having good vacations" release.
+    Well, I was on Punta del Este, good beachs, good womans, some fun
+    at night, and no computers :). My hate for computers is temporary
+    and it happens everytime I have good vacations, so don't worry.
+  * New stable version, it fixes some memory leaks, improves
+    compilation, some other tiny things, etc.
+  * No need to remove the configure.cache file from debian/rules, it
+    is done by the upstream makefile now.
+  * Added linuxso/makemak.pl and win32/rhide.env to the files_to_backup.
+  * Remove linuxso/rhide.env symlink on clean.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Tue,  8 Jan 2002 12:08:52 -0300
 
 rhtvision (1.1.3-3) unstable; urgency=low
 
