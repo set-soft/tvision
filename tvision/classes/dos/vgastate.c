@@ -175,7 +175,7 @@ buffer must be large enough to hold all the information.
 
 int VGAStateSave(void *buffer)
 {
- uchar *s=buffer;
+ uchar *s=(uchar *)buffer;
  if (!s) return 0;
  VGASaveRegs(s);
  VGASavePal(s+VGARegsCant);
@@ -196,7 +196,7 @@ int VGAStateSave(void *buffer)
 
 int VGAStateLoad(void *buffer)
 {
- uchar *s=buffer;
+ uchar *s=(uchar *)buffer;
  if (!s) return 0;
  LoadBIOSDTA(s+VGARegsCant+VGAPalSize);
  VGALoadPal(s+VGARegsCant);

@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.186  2004/09/17 14:20:38  set
+* Fixed: [Examples] [dlgdsn] The getFileName function returned a pointer to
+a local buffer. Now it returns a newly allocated string. Reported by Nicola
+Asuni.
+
 Revision 2.399.2.185  2004/08/30 13:13:06  set
 * Fixed: [MSVC] MSVC 6.0 also failed to compile the WinGr driver, so we are
 just disabling it for MSVC.
