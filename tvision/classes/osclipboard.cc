@@ -3,9 +3,9 @@
   Copyright (c) 2002 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
-  Module: TVOSClipboard
-  Header: osclipboard.h
-  Description: 
+  Header: TVOSClipboard
+  Module: OS Clipboard
+  Comments:
   OS independent clipboard system class. Uses to access the OS clipboard.@*
   It was created to abstract the X11 and Windows clipboards.
   

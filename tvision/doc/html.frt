@@ -82,7 +82,9 @@ Constant="Turbo Vision reference"
 
 # Description for the help
 Constant="This document describes the functions of Turbo Vision that didn't
-exist in the original version of the library.
+exist in the original version of the library.@*
+Note that only a few things are documented here, I need help to populate
+this file.
 @p
 This document applies to version 2.0.0
 of the Turbo Vision library.

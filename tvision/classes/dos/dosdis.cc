@@ -6,11 +6,12 @@
   Copyright (c) 1998-2002 by Salvador E. Tropea (SET)
   Tweaked video modes by Christian Domp <chrisd@europeonline.com>
 
-  Description:
-  This module implements the low level DOS screen access.
+  Module: DOS Display
+  Comments:
+  This module implements the low level DOS screen access.@p
 
-  Todo:
-  * The palette map could be changed by during suspend. Currently not
+  Todo:@*
+  * The palette map could be changed during suspend. Currently not
   suported. But is a really bizarre case and is restored if VGA state saving
   is used.
   

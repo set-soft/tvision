@@ -1,7 +1,11 @@
 /**[txh]********************************************************************
 
-  Display module, Copyright 2001-2002 by Salvador E. Tropea
-  Description:
+  Copyright 2001-2002 by Salvador E. Tropea
+  This file is covered by the GPL license.
+  
+  Module: Display
+  Include: TDisplay
+  Comments:
   This is the base class for low level screen output.
   Most members are pointers to functions defined by each platform dependent
 driver. Default members are provided.

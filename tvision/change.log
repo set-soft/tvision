@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.341  2002/09/27 13:46:39  set
+* Modified: [X11] The methode used to make the cursor blink. Using sigalarm
+the sleep funtion stops working, according to GNU library docs it shouldn't
+happen, but in most libc implementations could. So now what I do is just
+check the current time. I think that's slower, but safer.
+
 Revision 2.340  2002/09/25 20:29:01  set
 * Modified: The readme file to be more clear about what is supported and
 what to read.

@@ -765,17 +765,6 @@ TScreenFont256 TScreenX11::font8x16={ 8,16,shapeFont8x16 };
 TScreenFont256 TScreenX11::font10x20={ 10,20,shapeFont10x20 };
 TScreenFont256 *TScreenX11::defaultFont=&font8x16;
 
-static
-void microAlarm(unsigned int usec)
-{
- struct itimerval newV;
- newV.it_interval.tv_usec=0;
- newV.it_interval.tv_sec=0;
- newV.it_value.tv_usec=(long int)usec;
- newV.it_value.tv_sec=0;
- setitimer(ITIMER_USED,&newV,0);
-}
-
 void TScreenX11::AdjustCursorImage()
 {
  if (cursorImage)
