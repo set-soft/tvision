@@ -599,9 +599,10 @@ int main(int argc, char *argv[])
 #ifdef __linux__
   void startcurses();
   void stopcurses();
-  void patch_keyboard();
+  void resume_keyboard();
+  void suspend_keyboard();
   startcurses();
-  patch_keyboard();
+  resume_keyboard();
   if (argc>1 && strcmp(argv[1],"rh52")==0)
      TGKey::SetKbdMapping(KBD_REDHAT52_STYLE);
 #else
@@ -625,6 +626,7 @@ int main(int argc, char *argv[])
      }
   } while (key!=kbEsc);
 #ifdef __linux__
+  suspend_keyboard();
   stopcurses();
 #endif
 }
