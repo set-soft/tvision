@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.158  2002/06/18 20:28:23  set
+* Added: [Linux] A comment about LANG variable. Sent by Alexey Godin.
+
 Revision 2.157  2002/06/18 16:41:24  set
 * Modified: [QNX] New batch of patches for the QNX console from Mike. This
 driver is now finished according to Mike.

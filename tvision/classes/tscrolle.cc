@@ -22,6 +22,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TPalette
+#define Uses_TScreen
 #include <tv.h>
 
 #define cpScroller "\x06\x07"
@@ -38,6 +39,9 @@ TScroller::TScroller( const TRect& bounds,
     delta.x = delta.y = limit.x = limit.y = 0;
     options |= ofSelectable;
     eventMask |= evBroadcast;
+    // This class can be "Braille friendly"
+    if (TScreen::getShowCursorEver())
+       state |= sfCursorVis;
 }
 
 void TScroller::shutDown()
