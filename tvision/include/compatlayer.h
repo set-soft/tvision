@@ -30,10 +30,11 @@ and regex.
 
 ***************************************************************************/
 
-// A global protection isn't suitable for all projects. Collisions should
-// be solved individually.
-//#ifndef CLY_CompatLayerIncluded
-//#define CLY_CompatLayerIncluded
+/* A global protection isn't suitable for all projects. Collisions should
+   be solved individually.
+#ifndef CLY_CompatLayerIncluded
+#define CLY_CompatLayerIncluded
+*/
 
 #include <tv/configtv.h>
 
@@ -66,7 +67,7 @@ typedef          __int64 int64;
 #else
  #error Can not define uint64 type: unknown compiler.
 #endif
-#endif // CLY_DoNotDefineSizedTypes
+#endif /* CLY_DoNotDefineSizedTypes */
 
 #if defined(CLY_DefineUTypes) || defined(__cplusplus)
 /* The following are just aliases and the size is platform dependant */
@@ -74,7 +75,7 @@ typedef unsigned char  uchar;
 typedef unsigned short ushort;
 typedef unsigned int   uint;
 typedef unsigned long  ulong;
-#endif // CLY_DefineUTypes
+#endif /* CLY_DefineUTypes */
 
 
 #ifdef Uses_stdio
@@ -83,7 +84,7 @@ typedef unsigned long  ulong;
 #endif
 
 #ifdef Uses_CLYFileAttrs
- // For mode_t
+ /* For mode_t */
  #undef  Uses_sys_stat
  #define Uses_sys_stat 1
 #endif
@@ -134,7 +135,7 @@ typedef unsigned long  ulong;
 #undef UsingNamespaceStd
 
 #ifdef TVComp_GCC
-// GNU C is supported for various OSs:
+/* GNU C is supported for various OSs: */
 
  #ifdef Uses_string
   #undef  Include_string
@@ -193,16 +194,16 @@ typedef unsigned long  ulong;
  #define NEVER_RETURNS __attribute__((noreturn))
  #define RETURN_WHEN_NEVER_RETURNS
  #define CLY_Packed __attribute__((packed))
- // SET: Anything allocated with new[] should be deleted with [].
- // Pointed out by Laurynas Biveinis.
+ /* SET: Anything allocated with new[] should be deleted with [].
+    Pointed out by Laurynas Biveinis. */
  #define DeleteArray(a) delete[] a
  #ifdef Uses_getcurdir
   #undef  getcurdir
   #define getcurdir CLY_getcurdir
  #endif
- // Not yet supported for Win9x with Ming
- // SET: I guess they can be defined for Win9x, but Anatoli's code seems to
- // be using NETAPI32.DLL functions that only exists under NT.
+ /* Not yet supported for Win9x with Ming
+    SET: I guess they can be defined for Win9x, but Anatoli's code seems to
+    be using NETAPI32.DLL functions that only exists under NT. */
  #undef  CLY_IsUNCShare
  #define CLY_IsUNCShare(a) (0)
  #undef  CLY_IsUNC
@@ -215,14 +216,14 @@ typedef unsigned long  ulong;
   #undef  Include_strstream
   #define Include_strstream 1
  #endif
- // ifstream::getline behaves strangely in BC++
- // I take the gcc implementation.
+ /* ifstream::getline behaves strangely in BC++
+    I take the gcc implementation. */
  #define IfStreamGetLine(istream,buffer,size) \
          istream.getline(buffer,size)
 
- // ISO C++ 1998 standard changed a lot of details in the standard C++
- // library. GCC implemented it in version 3.0. BC++ implemented some
- // stuff in versions like BC++ 5.5. So that's a real mess.
+ /* ISO C++ 1998 standard changed a lot of details in the standard C++
+    library. GCC implemented it in version 3.0. BC++ implemented some
+    stuff in versions like BC++ 5.5. So that's a real mess. */
  #if __GNUC__>=3
   #define CLY_ISOCpp98 1
   #define CLY_OpenModeT      std::ios::openmode
@@ -299,9 +300,9 @@ typedef unsigned long  ulong;
   #endif
   #define PATHSEPARATOR ';'
   #define PATHSEPARATOR_ ";"
-  // SET: Not sure why Vadim wanted it. Perhaps to make the port more usable
-  // for users accustomed to back slashes, but then the library isn't uniform
-  // across platforms
+  /* SET: Not sure why Vadim wanted it. Perhaps to make the port more usable
+     for users accustomed to back slashes, but then the library isn't uniform
+     across platforms */
   #define DIRSEPARATOR '\\'
   #define DIRSEPARATOR_ "\\"
   #define CLY_IsValidDirSep(a) (a=='/' || a=='\\')
@@ -333,7 +334,7 @@ typedef unsigned long  ulong;
    #define Include_io 1
   #endif
   #ifdef Uses_utime
-   // I can't beleive they forgot the header when the function is there!
+   /* I can't beleive they forgot the header when the function is there! */
    #undef  Include_cl_utime
    #define Include_cl_utime 1
    #undef  Include_time
@@ -362,9 +363,13 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_nl_langinfo
    #define Uses_CLY_nl_langinfo 1
   #endif
+  #ifdef Uses_getline
+   #undef  Uses_CLY_getline
+   #define Uses_CLY_getline 1
+  #endif
  #endif
 
- // Win32/Cygwin -- OH!
+ /* Win32/Cygwin -- OH! */
  #ifdef TVCompf_Cygwin
   #define CLY_Have_UGID 1
   #undef  FA_ARCH
@@ -432,9 +437,13 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_nl_langinfo
    #define Uses_CLY_nl_langinfo 1
   #endif
+  #ifdef Uses_getline
+   #undef  Uses_CLY_getline
+   #define Uses_CLY_getline 1
+  #endif
  #endif
  
- // Under DOS djgpp defines it
+ /* Under DOS djgpp defines it */
  #ifdef TVCompf_djgpp
   #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
@@ -507,11 +516,15 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_nl_langinfo
    #define Uses_CLY_nl_langinfo 1
   #endif
+  #ifdef Uses_getline
+   #undef  Uses_CLY_getline
+   #define Uses_CLY_getline 1
+  #endif
  #endif
 
- // Common to all UNIX systems
+ /* Common to all UNIX systems */
  #ifdef TVOS_UNIX
-  // Filesystem
+  /* Filesystem */
   #define CLY_Have_UGID 1
   #undef  FA_ARCH
   #undef  FA_DIREC
@@ -528,7 +541,7 @@ typedef unsigned long  ulong;
    #undef  OS_HaveLFNs
    #define OS_HaveLFNs 1
   #endif
-  // Non standard
+  /* Non standard */
   #ifdef Uses_string
    CLY_CFunc char *strlwr(char *s);
    CLY_CFunc char *strupr(char *s);
@@ -543,7 +556,7 @@ typedef unsigned long  ulong;
   #ifdef Uses_fixpath
    CLY_CFunc void _fixpath(const char *in, char *out);
   #endif
-  // POSIX
+  /* POSIX */
   #ifdef Uses_glob
    #undef  Include_glob
    #define Include_glob 1
@@ -570,7 +583,7 @@ typedef unsigned long  ulong;
    #undef  Include_unistd
    #define Include_unistd 1
   #endif
-  // Headers
+  /* Headers */
   #ifdef Uses_direct
    #undef  Include_direct
    #define Include_direct 1
@@ -581,7 +594,7 @@ typedef unsigned long  ulong;
   #endif
  #endif
 
- // Linux (glibc)
+ /* Linux (glibc) */
  #ifdef TVOSf_Linux
   #ifdef Uses_nl_langinfo
    #undef  Include_langinfo
@@ -592,13 +605,21 @@ typedef unsigned long  ulong;
    #define Include_getopt 1
   #endif
   #ifdef Uses_CLYFileAttrs
-   // Is that a bug? shouldn't be sys/stat.h enough?
+   /* Is that a bug? shouldn't be sys/stat.h enough? */
    #undef  Include_sys_types
    #define Include_sys_types 1
   #endif
+  #ifdef Uses_getline
+   #undef  Include_stdio
+   #define Include_stdio 1
+   /* That's a GNU extension and needs it */
+   #undef  _GNU_SOURCE
+   #define _GNU_SOURCE
+   #define CLY_getline getline
+  #endif
  #endif
 
- // Solaris using gcc but not glibc
+ /* Solaris using gcc but not glibc */
  #ifdef TVOSf_Solaris
   #ifdef Uses_getopt
    #undef  Include_cl_getopt
@@ -608,9 +629,13 @@ typedef unsigned long  ulong;
    #undef  Include_langinfo
    #define Include_langinfo 1
   #endif
+  #ifdef Uses_getline
+   #undef  Uses_CLY_getline
+   #define Uses_CLY_getline 1
+  #endif
  #endif
 
- // Generic UNIX system
+ /* Generic UNIX system */
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)
   #ifdef Uses_getopt
    #undef  Include_cl_getopt
@@ -620,12 +645,16 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_nl_langinfo
    #define Uses_CLY_nl_langinfo 1
   #endif
+  #ifdef Uses_getline
+   #undef  Uses_CLY_getline
+   #define Uses_CLY_getline 1
+  #endif
  #endif
-#endif // TVComp_GCC
+#endif /* TVComp_GCC */
 
 
 
-// BC++ 5.5 for Win32 is supported
+/* BC++ 5.5 for Win32 is supported */
 #ifdef TVComp_BCPP
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
@@ -662,7 +691,7 @@ typedef unsigned long  ulong;
  #ifdef Uses_unistd
   #undef  Include_cl_unistd
   #define Include_cl_unistd 1
-  // Most unistd equivalents are here:
+  /* Most unistd equivalents are here: */
   #undef  Include_io
   #define Include_io 1
  #endif
@@ -713,7 +742,7 @@ typedef unsigned long  ulong;
  #ifdef Uses_fixpath
   CLY_CFunc void _fixpath(const char *in, char *out);
  #endif
- // Checks for UNCs under NT provided by Anantoli Soltan
+ /* Checks for UNCs under NT provided by Anantoli Soltan */
  CLY_CFunc int CLY_IsUNC(const char* path);
  CLY_CFunc int CLY_IsUNCShare(const char* path);
  #ifdef Uses_HaveLFNs
@@ -785,9 +814,13 @@ typedef unsigned long  ulong;
   #undef  Uses_CLY_nl_langinfo
   #define Uses_CLY_nl_langinfo 1
  #endif
+ #ifdef Uses_getline
+  #undef  Uses_CLY_getline
+  #define Uses_CLY_getline 1
+ #endif
 
- // ifstream::getline behaves strangely in BC++
- // I take the gcc implementation, here is a replacement.
+ /* ifstream::getline behaves strangely in BC++
+    I take the gcc implementation, here is a replacement. */
  #define IfStreamGetLine(istream,buffer,size) \
          CLY_IfStreamGetLine(istream,buffer,size)
  #ifdef Uses_IfStreamGetLine
@@ -821,8 +854,8 @@ typedef unsigned long  ulong;
 
 
 
-// MSVC will be supported if volunteers tests it or Microsoft decides to
-// give it for free ;-). After all Borland released BC++ 5.5.
+/* MSVC will be supported if volunteers tests it or Microsoft decides to
+   give it for free ;-). After all Borland released BC++ 5.5. */
 #if (defined(_MSVC) || defined(__MSC_VER)) && !defined(_MSC_VER)
  #define _MSC_VER
 #endif
@@ -904,9 +937,9 @@ typedef unsigned long  ulong;
  #undef  __attribute__
  #define __attribute__( value )
  #pragma warning( disable : 4250 )
- // SET: MSVC have a non-standard delete[] support. It doesn't follow last
- // standard. And which is worst doesn't understand it.
- // Vadim Beloborodov pointed out this missfeature.
+ /* SET: MSVC have a non-standard delete[] support. It doesn't follow last
+    standard. And which is worst doesn't understand it.
+    Vadim Beloborodov pointed out this missfeature. */
  #define DeleteArray(a) delete (void *)a
  #undef  FA_ARCH
  #define FA_ARCH   0x01
@@ -916,16 +949,16 @@ typedef unsigned long  ulong;
  #define FA_RDONLY 0x04
  #define PATHSEPARATOR ';'
  #define PATHSEPARATOR_ ";"
- // SET: Not sure why Vadim wanted it. Perhaps to make the port more usable
- // for users accustomed to back slashes, but then the library isn't uniform
- // across platforms
+ /* SET: Not sure why Vadim wanted it. Perhaps to make the port more usable
+    for users accustomed to back slashes, but then the library isn't uniform
+    across platforms */
  #define DIRSEPARATOR '\\'
  #define DIRSEPARATOR_ "\\"
  #define CLY_IsValidDirSep(a) (a=='/' || a=='\\')
  #ifdef Uses_fixpath
   CLY_CFunc void _fixpath(const char *in, char *out);
  #endif
- // Not yet supported for Win9x with MSVC
+ /* Not yet supported for Win9x with MSVC */
  #undef  CLY_IsUNCShare
  #define CLY_IsUNCShare(a) (0)
  #undef  CLY_IsUNC
@@ -993,9 +1026,13 @@ typedef unsigned long  ulong;
   #undef  Uses_CLY_nl_langinfo
   #define Uses_CLY_nl_langinfo 1
  #endif
+ #ifdef Uses_getline
+  #undef  Uses_CLY_getline
+  #define Uses_CLY_getline 1
+ #endif
 
- // ifstream::getline behaves strangely in BC++
- // I take the gcc implementation. I hope MSVC is like it.
+ /* ifstream::getline behaves strangely in BC++
+    I take the gcc implementation. I hope MSVC is like it. */
  #define IfStreamGetLine(istream,buffer,size) \
          istream.getline(buffer,size)
 
@@ -1101,6 +1138,12 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #define Uses_fstream 1
 #endif
 
+#ifdef Uses_CLY_getline
+ /* Prototypes uses ssize_t and size_t */
+ #undef  Include_sys_types
+ #define Include_sys_types 1
+#endif
+
 #if defined(Include_sys_types) && !defined(Included_sys_types)
  #define Included_sys_types 1
  #include <sys/types.h>
@@ -1114,7 +1157,7 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_limits) && !defined(Included_limits)
  #define Included_limits 1
  #include <limits.h>
- #ifndef PATH_MAX // BC++ and MSVC
+ #ifndef PATH_MAX /* BC++ and MSVC */
   #define PATH_MAX 512
  #endif
 #endif
@@ -1122,10 +1165,10 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_fcntl) && !defined(Included_fcntl)
  #define Included_fcntl 1
  #include <fcntl.h>
- #ifndef O_TEXT // UNIX
+ #ifndef O_TEXT /* UNIX */
   #define O_TEXT (0)
  #endif
- #ifndef O_BINARY // UNIX
+ #ifndef O_BINARY /* UNIX */
   #define O_BINARY (0)
  #endif
 #endif
@@ -1153,7 +1196,7 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #endif
 
 #if defined(Include_malloc) && !defined(Included_malloc)
- // BC++ and MSVC defines alloca here
+ /* BC++ and MSVC defines alloca here */
  #define Included_malloc 1
  #include <malloc.h>
 #endif
@@ -1176,7 +1219,7 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_langinfo) && !defined(Included_langinfo)
  #define Included_langinfo 1
  #include <langinfo.h>
- // Workaround a bug in glibc
+ /* Workaround a bug in glibc */
  #if !defined(RADIXCHAR) && defined(DECIMAL_POINT)
   #define RADIXCHAR DECIMAL_POINT
  #endif
@@ -1226,42 +1269,37 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 
 #if defined(Include_glob) && !defined(Included_glob)
  #define Included_glob 1
- // POSIX
+ /* POSIX */
  #include <glob.h>
 #endif
 
 #if defined(Include_cl_glob) && !defined(Included_cl_glob)
  #define Included_cl_glob 1
- // Replacement
+ /* Replacement */
  #include <cl/glob.h>
 #endif
 
 #if defined(Include_fnmatch) && !defined(Included_fnmatch)
  #define Included_fnmatch 1
- // POSIX
+ /* POSIX */
  #include <fnmatch.h>
 #endif
 
 #if defined(Include_cl_fnmatch) && !defined(Included_cl_fnmatch)
  #define Included_cl_fnmatch 1
- // Replacement
+ /* Replacement */
  #include <cl/fnmatch.h>
-#endif
-
-#if defined(Include_sys_types) && !defined(Included_sys_types)
- #define Included_sys_types 1
- #include <sys/types.h>
 #endif
 
 #if defined(Include_regex) && !defined(Included_regex)
  #define Included_regex 1
- // POSIX
+ /* POSIX */
  #include <regex.h>
 #endif
 
 #if defined(Include_cl_regex) && !defined(Included_cl_regex)
  #define Included_cl_regex 1
- // Replacement
+ /* Replacement */
  #include <cl/regex.h>
 #endif
 
@@ -1344,7 +1382,7 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #define Uses_CLYFileAttrsDef
 /* Equivalent to mode_t */
 #ifdef CLY_Have_UGID
-// In systems with User and Group ID the mode is an structure
+/* In systems with User and Group ID the mode is an structure */
 typedef struct
 {
  mode_t mode,writemask;
@@ -1412,16 +1450,24 @@ typedef int nl_item;
 
 #define nl_langinfo CLY_nl_langinfo
 CLY_CFunc char *CLY_nl_langinfo(nl_item item);
-#endif // defined(Uses_CLY_nl_langinfo) && !defined(CLY_nl_langinfo_Defined)
+#endif /* defined(Uses_CLY_nl_langinfo) && !defined(CLY_nl_langinfo_Defined) */
+
+#ifdef Uses_CLY_getline
+CLY_CFunc ssize_t CLY_getstr(char **lineptr, size_t *n, FILE *stream,
+                             char terminator, int offset, int limit);
+CLY_CFunc ssize_t CLY_getline(char **lineptr, size_t *n, FILE *stream);
+CLY_CFunc ssize_t CLY_getline_safe(char **lineptr, size_t *n, FILE *stream,
+                                   int limit);
+#endif
 
 #undef CLY_High16
 #undef CLY_Low16
 #ifdef TV_BIG_ENDIAN
- // Most RISC machines
+ /* Most RISC machines */
  #define CLY_High16(a)  ((a) & 0xFF)
  #define CLY_Low16(a)   ((a) >> 8)
 #else
- // Intel machines
+ /* Intel machines */
  #define CLY_High16(a)  ((a) >> 8)
  #define CLY_Low16(a)   ((a) & 0xFF)
 #endif
@@ -1444,11 +1490,11 @@ int CLY_HaveLFNs()
 }
 #endif
 
-// Is that an EOL char?
-// Ask for no
+/* Is that an EOL char? */
+/* Ask for no */
 #undef  CLY_IsntEOL
 #define CLY_IsntEOL(a) (a!='\r' && a!='\n')
-// Ask for yes
+/* Ask for yes */
 #undef  CLY_IsEOL
 #define CLY_IsEOL(a)   (a=='\r' || a=='\n')
 
@@ -1457,9 +1503,9 @@ int CLY_HaveLFNs()
 #undef CLY_IsTrueEOL
 #ifdef CLY_UseCrLf
  #define CLY_LenEOL     2
- // This asks if the EOL is really usable for the OS
+ /* This asks if the EOL is really usable for the OS */
  #define CLY_IsTrueEOL(a) (a=='\r' || a=='\n')
- // String containing EOL
+ /* String containing EOL */
  #define CLY_crlf "\r\n"
 #else
  #define CLY_LenEOL     1
@@ -1469,5 +1515,5 @@ int CLY_HaveLFNs()
 
 #undef CLY_CFunc
 
-//#endif // CLY_CompatLayerIncluded
+/*#endif // CLY_CompatLayerIncluded */
 
