@@ -1,4 +1,24 @@
-$Log$
+$Log$.
+Revision 2.436  2003/05/09 12:25:05  set
+* Fixed: I forgot to initialize intlLabel in inputBoxRect.
+* Added: A small example for inputBox to the demo example.
+* I got a copy of: Borland Turbo Vision (C++) Bug/Enhancement List created
+by Marc Stern <stern@mble.philips.be> it contains a lot of bug fixes and
+enhancements for TV. Most of them were already in current code and others
+didn't apply (compiler dependent or related to obsolete stuff). But I
+applied:
+* inputBox enhancements: size according to contents and centered buttons.
+* TDialog enhancement: support for TDialogs inside TDialogs (palette trick).
+* TGroup enhancement: more robust when faulty code selects an unselectable
+  or hidden item and the group is shutDown(). Marek Bojarski
+  <bojarski@if.uj.edu.pl> idea.
+* TGroup fix: setCurrent didn't verify if the focus really changed.
+* TWindow enhancement: if arrows aren't used by the focused TView and they
+  reach the TWindow then they behave as Shift/Tab (change focused). Seems to
+  be useful.
+* tvutils.h enhancement: defined min/max for any data type (using
+  templates). Vincent Van Den Berghe idea.
+
 Revision 2.435  2003/05/07 19:37:55  set
 * Added: [Linux] Now the Ctrl+Tab is mapped to Tab so TV applications can
 use it.
