@@ -3,7 +3,7 @@ $oldv='1.0.2';
 $newv='1.0.3';
 @files=('../readme.txt');
 
-# Update the makefile if needed
+#  Update the makefile if needed
 print 'makefile: ';
 if (-M 'makefile' > -M 'libtv.gpr')
   {
