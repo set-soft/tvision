@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to add functionality.
 
  *
  *
@@ -36,6 +37,19 @@ TSortedListBox::TSortedListBox( const TRect& bounds,
                                 ushort aNumCols,
                                 TScrollBar *aScrollBar) :
     TListBox(bounds, aNumCols, aScrollBar),
+    shiftState( 0 ),
+    searchPos( USHRT_MAX )
+{
+    showCursor();
+    setCursor(1, 0);
+}
+
+// SET:
+TSortedListBox::TSortedListBox( const TRect& bounds,
+                                ushort aNumCols,
+                                TScrollBar *aHScrollBar,
+                                TScrollBar *aVScrollBar) :
+    TListBox(bounds, aNumCols, aHScrollBar, aVScrollBar),
     shiftState( 0 ),
     searchPos( USHRT_MAX )
 {

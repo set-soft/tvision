@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to add functionality.
 
  *
  *
@@ -26,6 +27,17 @@ TListBox::TListBox( const TRect& bounds,
                     ushort aNumCols,
                     TScrollBar *aScrollBar ) :
     TListViewer(bounds, aNumCols, 0, aScrollBar),
+    items( 0 )
+{
+    setRange(0);
+}
+
+// SET:
+TListBox::TListBox( const TRect& bounds,
+                    ushort aNumCols,
+                    TScrollBar *aHScrollBar,
+                    TScrollBar *aVScrollBar) :
+    TListViewer(bounds, aNumCols, aHScrollBar, aVScrollBar),
     items( 0 )
 {
     setRange(0);

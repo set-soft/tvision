@@ -30,6 +30,8 @@ class TListBox : public TListViewer
 public:
 
     TListBox( const TRect& bounds, ushort aNumCols, TScrollBar *aScrollBar );
+    TListBox( const TRect& bounds, ushort aNumCols, TScrollBar *aHScrollBar,
+              TScrollBar *aVScrollBar );
     ~TListBox();
 
     virtual uint32 dataSize();
