@@ -5,6 +5,7 @@
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TDrawBuffer
+#define Uses_TGKey
 #include <tv.h>
 
 #include <ctype.h>
@@ -196,9 +197,11 @@ void startcurses()
   tty_fd = fileno(tty_file);
   if (!newterm(terminal,stdin,tty_file))
   {
-    fprintf(stderr,"Not connected to a terminal\n");
+    fprintf(stderr,"Not connected to a terminal (newterm for %s)\n",terminal);
     exit(-1);
   }
+  if (strncmp(terminal,"xterm",5)==0)
+     TGKey::SetKbdMapping(KBD_XTERM_STYLE);
   stdscr->_flags |= _ISPAD;
 #if 1
   keypad(stdscr, TRUE);
