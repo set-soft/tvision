@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added TCheckBoxes32 and code page stuff by Salvador Eduardo Tropea.
 
  *
  *
@@ -30,6 +31,11 @@ void TCheckBoxes::press(int item)
     TCluster::press(item);
 }
 
+uint32 TCheckBoxes32::dataSize()
+{
+    return 4;
+}
+
 #if !defined( NO_STREAM )
 
 TStreamable *TCheckBoxes::build()
@@ -38,6 +44,15 @@ TStreamable *TCheckBoxes::build()
 }
 
 TCheckBoxes::TCheckBoxes( StreamableInit ) : TCluster( streamableInit )
+{
+}
+
+TStreamable *TCheckBoxes32::build()
+{
+    return new TCheckBoxes32( streamableInit );
+}
+
+TCheckBoxes32::TCheckBoxes32( StreamableInit ) : TCheckBoxes( streamableInit )
 {
 }
 

@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added TRadioButtons32 and code page stuff by Salvador Eduardo Tropea.
 
  *
  *
@@ -63,6 +64,23 @@ public:
 #endif // NO_STREAM
 };
 
+class TRadioButtons32 : public TRadioButtons
+{
+public:
+ TRadioButtons32(const TRect& bounds,TSItem *aStrings) :
+   TRadioButtons(bounds,aStrings) {};
+ virtual uint32 dataSize();
+private:
+#if !defined( NO_STREAM )
+ virtual const char *streamableName() const { return name; }
+protected:
+ TRadioButtons32(StreamableInit);
+public:
+ static const char * const name;
+ static TStreamable *build();
+#endif // NO_STREAM
+};
+
 #if !defined( NO_STREAM )
 inline ipstream& operator >> ( ipstream& is, TRadioButtons& cl )
     { return is >> (TStreamable&)cl; }
@@ -72,6 +90,16 @@ inline ipstream& operator >> ( ipstream& is, TRadioButtons*& cl )
 inline opstream& operator << ( opstream& os, TRadioButtons& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TRadioButtons* cl )
+    { return os << (TStreamable *)cl; }
+
+inline ipstream& operator >> ( ipstream& is, TRadioButtons32& cl )
+    { return is >> (TStreamable&)cl; }
+inline ipstream& operator >> ( ipstream& is, TRadioButtons32*& cl )
+    { return is >> (void *&)cl; }
+
+inline opstream& operator << ( opstream& os, TRadioButtons32& cl )
+    { return os << (TStreamable&)cl; }
+inline opstream& operator << ( opstream& os, TRadioButtons32* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 
