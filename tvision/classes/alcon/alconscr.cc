@@ -1,6 +1,8 @@
 // -*- mode:C++; tab-width: 4 -*-
 #include <tv/configtv.h>
 
+//#define Uses_stdio // DEBUG
+
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
@@ -62,7 +64,7 @@ TScreenAlcon::TScreenAlcon()
        fontW=aux;
     if (optSearch("FontHeight",aux))
        fontH=aux;
-   
+
     uchar *fontData=NULL;
     int freeFontData=1;
     TScreenFont256 *secFont=NULL;
@@ -90,6 +92,20 @@ TScreenAlcon::TScreenAlcon()
       }
     if (res)
        return;
+
+    // Secondary font.
+    aux=0;
+    if (frCB && optSearch("LoadSecondaryFont",aux) && aux)
+      {
+       secFont=frCB(1,fontW,fontH);
+       if (secFont)
+         {
+          AlCon_SetFont(1,secFont->data,fontW,fontH);
+          DeleteArray(secFont->data);
+          delete secFont;
+         }
+      }
+
     /*
         Even though we initialised AlCon with a wanted screen
         width and height, it might have had to change it in order
@@ -116,6 +132,7 @@ TScreenAlcon::TScreenAlcon()
     TScreen::setDisPaletteColors=SetDisPaletteColors;
     // Fonts stuff
     TScreen::getFontGeometry=GetFontGeometry;
+    // The following can be enabled when SetFont implements a "resize"
     //TScreen::getFontGeometryRange=GetFontGeometryRange;
     TScreen::setFont_p=SetFont;
     TScreen::restoreFonts=RestoreFonts;
@@ -137,7 +154,9 @@ TScreenAlcon::TScreenAlcon()
     // Wicked. But works.
     screenBuffer = new uint16[screenWidth * screenHeight];
     
-    flags0|=CanSetPalette | CanReadPalette | CanSetBFont | CanSetSBFont;
+    flags0|=CanSetPalette | CanReadPalette | CanSetBFont | CanSetSBFont |
+            // TODO: ¡¡Mentira!! es sólo para probar ;-), falta implementar el resize.
+            CanSetVideoSize;
 }
 
 

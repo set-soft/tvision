@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.138.2.8  2004/10/22 14:55:51  set
+* Added: [AlCon] Palette support.
+
 Revision 2.399.2.138.2.7  2004/10/22 14:12:21  set
 * Added: [AlCon] RestoreFont implementation.
 * Added: [AlCon] Use of secondary font. Now the font example works.

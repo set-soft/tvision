@@ -20,7 +20,7 @@
 #define PRINTF(FORMAT, args...)  printf("%s " FORMAT, __PRETTY_FUNCTION__, ## args)
 
 // Forward declarations.
-static void AlCon_LoadCustomFont(const char *filename, uchar *fdata);
+static void AlCon_LoadCustomFont(const char *filename, uchar *fdata, unsigned fw, unsigned fh);
 
 // Globals internal to AlCon.
 static FONT *Alcon_CurrentFont=NULL;
@@ -85,7 +85,7 @@ static int cursorPX, cursorPY;
    can set a reasonable default screen size.
 */
 static int AlCon_ScreenWidth, AlCon_ScreenHeight;
-static int AlCon_FontWidth = 8, AlCon_FontHeight = 16;
+static int AlCon_FontWidth=8, AlCon_FontHeight=16;
 
 static int colors[16];
 static int fg,bg;
@@ -94,7 +94,7 @@ static char AlCon_UseSecFont=0;
 static unsigned char *chars, *attrs;
 static unsigned char curAttr;
 static char AlCon_CursorShapeFrom, AlCon_CursorShapeTo;
-static int al_text_mode;
+//static int al_text_mode;
 static int al_mouse_buttons = 0;
 static int al_mouse_wheel;
 
@@ -396,6 +396,8 @@ void AlCon_CPrintf(AL_CONST char *format, ...)
     AlCon_PutStr(s);
 }
 
+#if 0
+// Avoiding to redraw characters that didn't change: 2.5 times faster
 void AlCon_PutBuf(unsigned offset, uint16 *values, int count)
 {
  unsigned x,y;
@@ -404,7 +406,6 @@ void AlCon_PutBuf(unsigned offset, uint16 *values, int count)
 
  uchar *b=(uchar *)values,newChar,newAttr;
  uchar *sc=(uchar *)(chars+offset);
- unsigned oldAttr=0x100;
  AlCon_DisableAsync();
  unsigned char aux[2];
  aux[1]=0;
@@ -425,6 +426,61 @@ void AlCon_PutBuf(unsigned offset, uint16 *values, int count)
    }
  AlCon_EnableAsync();
 }
+#else
+// Avoiding to redraw characters that didn't change: 2.5 times faster
+// Grouping chars of the same colour: 9 to 15% faster
+void AlCon_PutBuf(unsigned offset, uint16 *values, int count)
+{
+ unsigned x,y,xf;
+ x=(offset%AlCon_ScreenWidth)*AlCon_FontWidth;
+ y=(offset/AlCon_ScreenWidth)*AlCon_FontHeight;
+
+ uchar *b=(uchar *)values,newChar,newAttr,oldAttr;
+ AlCon_DisableAsync();
+ uchar aux[count+1];
+ newChar=b[charPos];
+ newAttr=b[attrPos];
+ while (count)
+   {
+    if (newChar!=chars[offset] || newAttr!=attrs[offset])
+      {
+       uchar *ind=aux;
+       oldAttr=newAttr;
+       xf=x;
+       do
+         {
+          *(ind++)=chars[offset]=newChar;
+          attrs[offset]=newAttr;
+          xf+=AlCon_FontWidth;
+          count--;
+          if (!count)
+             break;
+          offset++;
+          b+=2;
+          newChar=b[charPos];
+          newAttr=b[attrPos];
+         }
+       while (newAttr==oldAttr && newChar!=chars[offset] && newAttr!=attrs[offset]);
+       *ind=0;
+       int nBg,nFg;
+       nBg=oldAttr>>4;
+       nFg=oldAttr & 0xF;
+       AlCon_TextOut((char *)aux,x,y,nFg,nBg);
+       x=xf;
+      }
+    else
+      {
+       x+=AlCon_FontWidth;
+       count--;
+       offset++;
+       b+=2;
+       newChar=b[charPos];
+       newAttr=b[attrPos];
+      }
+   }
+ AlCon_EnableAsync();
+}
+#endif
 
 // TODO: Optimize!!!
 void AlCon_Redraw()
@@ -455,7 +511,6 @@ void AlCon_Redraw()
 void AlCon_GetScrChars(unsigned offset, uint16 *buffer, unsigned count)
 {
  unsigned char *b=(unsigned char *)buffer;
- int i;
 
  offset/=2;
  while (count--)
@@ -470,11 +525,10 @@ void AlCon_GetScrChars(unsigned offset, uint16 *buffer, unsigned count)
 void AlCon_PutChar(unsigned offset, uint16 value)
 {
  ASSERT(Alcon_CurrentFont);
- int i,nBg,nFg;
+ int nBg,nFg;
  unsigned char *b=(unsigned char *)&value;
  unsigned char aux[2];
  unsigned x,y;
- int prevMode;
  aux[1]=0;
 
  offset/=2;
@@ -541,8 +595,9 @@ void AlCon_SetCursorShape(int from, int to)
    ASSERT(from >= 0);
    ASSERT(to < AlCon_FontHeight);
    
-   memset(Alcon_CursorData[1]->dat, 0, AlCon_FontHeight);
-   memset(Alcon_CursorData[1]->dat + from, 0xFF, to - from + 1);
+   unsigned wb=(AlCon_FontWidth+7)/8;
+   memset(Alcon_CursorData[1]->dat, 0, wb*AlCon_FontHeight);
+   memset(Alcon_CursorData[1]->dat + wb*from, 0xFF, wb*(to - from + 1));
    AlCon_CursorShapeFrom = from;
    AlCon_CursorShapeTo = to;
 }
@@ -554,6 +609,18 @@ void AlCon_GetCursorShape(int *from, int *to)
       *from = AlCon_CursorShapeFrom;
    if (to)
       *to = AlCon_CursorShapeTo;
+}
+
+void Alcon_CreateNewCursor()
+{
+   Alcon_CursorData[0] =0;
+   unsigned wb=(AlCon_FontWidth+7)/8;
+   if (Alcon_CursorData[1])
+      free(Alcon_CursorData[1]);
+   Alcon_CursorData[1] =(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+wb*AlCon_FontHeight);
+   Alcon_CursorData[1]->w = AlCon_FontWidth;
+   Alcon_CursorData[1]->h = AlCon_FontHeight;
+   AlCon_SetCursorShape(87 * AlCon_FontHeight / 100, AlCon_FontHeight - 1);
 }
 
 void AlCon_HideCursor()
@@ -627,15 +694,11 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
    }
   
    /* Load a binary font. Hack to get the font/screen properties set. */
-   AlCon_LoadCustomFont(0,fdata);
+   AlCon_LoadCustomFont(0,fdata,AlCon_FontWidth,AlCon_FontHeight);
    //AlCon_LoadCustomFont("rom-PC437.016");
   
    /* Create default cursor shape */
-   Alcon_CursorData[0] =0;
-   Alcon_CursorData[1] =(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH) + AlCon_FontHeight);
-   Alcon_CursorData[1]->w = AlCon_FontWidth;
-   Alcon_CursorData[1]->h = AlCon_FontHeight;
-   AlCon_SetCursorShape(87 * AlCon_FontHeight / 100, AlCon_FontHeight - 1);
+   Alcon_CreateNewCursor();
   
    /* Create the text mode palette */
    AlCon_SetDisPaletteColors(0,16,pal ? pal : BIOSPalette);
@@ -1069,9 +1132,12 @@ uchar AlCon_ShapeFont8x16[]=
 
 void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h)
 {
- // Presume the font is 8 pixels wide and contains 256 characters.
+ unsigned sizeChanged=w!=(unsigned)AlCon_FontWidth ||
+                      h!=(unsigned)AlCon_FontHeight;
  AlCon_FontWidth =w;
  AlCon_FontHeight=h;
+ unsigned wb=(w+7)/8;
+ unsigned sizeGlyph=wb*h;
 
  FONT_GLYPH **p=which ? Alcon_ASCIIDataS : Alcon_ASCIIDataP;
  // Copy font from buffer to internal structure.
@@ -1080,11 +1146,12 @@ void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h)
      if (p[i])
         free(p[i]);
         
-     p[i]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+AlCon_FontHeight);
+     p[i]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+sizeGlyph);
      p[i]->w=AlCon_FontWidth;
      p[i]->h=AlCon_FontHeight;
  
-     memcpy(p[i]->dat,&fnt[i*AlCon_FontHeight],AlCon_FontHeight);
+     memcpy(p[i]->dat,fnt,sizeGlyph);
+     fnt+=sizeGlyph;
     }
  Alcon_PrimaryFont.height  =
  Alcon_SecondaryFont.height=
@@ -1093,6 +1160,9 @@ void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h)
  // Set the size of the font and screen.
  AlCon_ScreenWidth =SCREEN_W/AlCon_FontWidth;
  AlCon_ScreenHeight=SCREEN_H/AlCon_FontHeight;
+
+ if (sizeChanged)
+    Alcon_CreateNewCursor();
 }
 
 /**[txh]********************************************************************
@@ -1107,28 +1177,32 @@ void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h)
 ***************************************************************************/
 
 static
-void AlCon_LoadCustomFont(const char *filename, uchar *fdata)
+void AlCon_LoadCustomFont(const char *filename, uchar *fdata, unsigned fw,
+                          unsigned fh)
 {
    ASSERT(screen && "You have to call set_gfx_mode before.");
    static bool one_custom_font_loaded = false;
+   unsigned wb=(fw+7)/8;
 
    FILE *file = NULL;
    if (filename)
       file = fopen(filename, "rb");
 
-   uchar *font_buffer, buffer[4096];
-   int read_bytes;
+   unsigned maxRead=wb*fh*0x100;
+   uchar *font_buffer, buffer[maxRead];
+   int read_bytes=0;
    if (!file) {
       if (fdata) {
-         font_buffer = fdata;
-         read_bytes=AlCon_FontHeight*0x100;
+         font_buffer=fdata;
+         read_bytes=maxRead;
       } else {
-         font_buffer = AlCon_ShapeFont8x16;
+         font_buffer=AlCon_ShapeFont8x16;
+         wb=1; fw=8; fh=16;
          read_bytes=4096;
       }
    } else {
-      font_buffer = buffer;
-      int read_bytes = fread(font_buffer, 1, 4096, file);
+      font_buffer=buffer;
+      int read_bytes=fread(font_buffer, 1, maxRead, file);
       fclose(file);
       if (read_bytes < 256) {// Absurd size limit
          allegro_message("Absurd custom font size (%d bytes)", read_bytes);
@@ -1146,8 +1220,7 @@ void AlCon_LoadCustomFont(const char *filename, uchar *fdata)
    Alcon_CursorFont.vtable=font->vtable;
    Alcon_CursorFont.data=&Alcon_CursorMonoFont;
 
-   // Presume the font is 8 pixels wide and contains 256 characters.
-   AlCon_SetFont(0,font_buffer,8,read_bytes/0x100);
+   AlCon_SetFont(0,font_buffer,fw,read_bytes/(0x100*wb));
 }
 
 /**[txh]********************************************************************
