@@ -1,5 +1,5 @@
 /* X11 display routines.
-   Copyright (c) 2001 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
@@ -15,6 +15,7 @@
 
 #include <tv/x11scr.h>
 
+//#include <stdio.h>
 /*****************************************************************************
 
   TDisplayX11 display stuff, that's very easy because we control all the
@@ -49,8 +50,10 @@ void TDisplayX11::Init()
 
 void TDisplayX11::SetCursorPos(unsigned x, unsigned y)
 {
+ TScreenX11::UnDrawCursor();
  cursorX=x; cursorY=y;
  cursorPX=x*fontW; cursorPY=y*fontH;
+ TScreenX11::DrawCursor();
 }
 
 void TDisplayX11::GetCursorPos(unsigned &x, unsigned &y)
@@ -70,6 +73,11 @@ void TDisplayX11::SetCursorShape(unsigned start, unsigned end)
  cShapeTo  =end*fontH/100;
  if ((unsigned)cShapeFrom>fontH) cShapeFrom=fontH;
  if ((unsigned)cShapeTo>fontH)   cShapeTo  =fontH;
+ if (start>=end)
+    TScreenX11::DisableCursor();
+ else
+    TScreenX11::EnableCursor();
+ //fprintf(stderr,"Seteando X11: %d a %d\n",cShapeFrom,cShapeTo);
 }
 
 ushort TDisplayX11::GetRows()

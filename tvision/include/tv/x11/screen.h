@@ -55,6 +55,7 @@ public:
 
  friend class TGKeyX11;
  friend class THWMouseX11;
+ friend class TDisplayX11;
 
 protected:
  // Default: void   Resume();
@@ -75,6 +76,8 @@ protected:
  static void   sigAlm(int sig);
  static void   UnDrawCursor();
  static void   DrawCursor();
+ static void   DisableCursor();
+ static void   EnableCursor();
 
  // Events processing
  // Events loop

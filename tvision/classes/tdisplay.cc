@@ -1,3 +1,20 @@
+/**[txh]********************************************************************
+
+  Display module, Copyright 2001-2002 by Salvador E. Tropea
+  Description:
+  This is the base class for low level screen output.
+  Most members are pointers to functions defined by each platform dependent
+driver. Default members are provided.
+  This is a complete new file created from concepts that José Angel Sanchez
+Caso provide me and coded from scratch. The names of some members are the
+same used in original Turbo Vision for compatibility purposes.
+  
+***************************************************************************/
+
+//#define DEBUG_CURSOR
+#ifdef DEBUG_CURSOR
+ #include <stdio.h>
+#endif
 #define Uses_TScreen
 #include <tv.h>
 
@@ -171,12 +188,18 @@ disable the cursor a value of 0 is used.
 void TDisplay::setCursorType(ushort val)
 {
  setCursorShape(val & 0xFF,val>>8);
+ #ifdef DEBUG_CURSOR
+ fprintf(stderr,"Seteando 0x%0X => %X %X\n",val,val & 0xFF,val>>8);
+ #endif
 }
 
 ushort TDisplay::getCursorType()
 {
  unsigned start,end;
  getCursorShape(start,end);
+ #ifdef DEBUG_CURSOR
+ fprintf(stderr,"Obteniendo: start %X end %X => 0x%0X\n",start,end,(start | (end<<8)));
+ #endif
  return (ushort)(start | (end<<8));
 }
 

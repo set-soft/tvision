@@ -1,3 +1,15 @@
+/**[txh]********************************************************************
+
+  Mouse module, Copyright 2001-2002 by Salvador E. Tropea
+  Description:
+  This is the base class for low level mouse input.
+  Most members are pointers to functions defined by each platform dependent
+driver. Default members are provided.
+  This is a complete new file created from concepts that José Angel Sanchez
+Caso provide me and coded from scratch. The names of some members are the
+same used in original Turbo Vision for compatibility purposes.
+  
+***************************************************************************/
 // Definitions are located at the event.h header
 
 #define Uses_TEvent
