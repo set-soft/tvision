@@ -497,7 +497,7 @@ int TGKeyLinux::GetRaw()
  if (result==-3) // Forced modifier
    {
     result=lastKeyCode;
-    ascii=0;
+    ascii=result>127 ? result : 0;
    }
  else
     ascii=result;
@@ -510,7 +510,7 @@ int TGKeyLinux::GetRaw()
     lastModifiers|=kbExtraFlags[result];
     lastKeyCode=kbToName[result];
    }
- lastModifiers|=GetLinuxShiftState(); 
+ lastModifiers|=GetLinuxShiftState();
  return 1;
 }
 
