@@ -49,6 +49,8 @@
 //#define HELP_FILENAME "DEMOHELP.H16"
 //#endif
 
+__link(RCalculator);
+__link(RCalcDisplay);
 //
 // main: create an application object.  Constructor takes care of all
 //   initialization.  Calling run() from TProgram makes it tick and
