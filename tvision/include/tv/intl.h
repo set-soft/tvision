@@ -2,7 +2,7 @@
 /* Copyright (C) 1999-2000 by Salvador Eduardo Tropea */
 
 #ifdef FORCE_INTL_SUPPORT
-#define HAVE_INTL_SUPPORT
+#define HAVE_INTL_SUPPORT 1
 #else
 #include <tv/configtv.h>
 # ifdef _WIN32
