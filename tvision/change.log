@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.138.2.2  2004/04/20 15:21:56  set
+* Added: doc/Alcon.txt to document the details about Alcon driver.
+
 Revision 2.399.2.138.2.1  2004/04/19 20:27:19  set
 * Added: Backported some stuff from the trunk. Needed to compile setedit.
 * Added: The skeleton for "LookForAllegro" in the config.

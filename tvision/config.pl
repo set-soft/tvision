@@ -955,6 +955,8 @@ int main(int argc, char *argv[])
 
 sub LookForAllegro
 {
+ my ($test,$a,@b,$c,$paths,$libs);
+
  print 'Looking for Allegro library: ';
  $test='
 #include <allegro.h>
@@ -988,6 +990,34 @@ END_OF_MAIN()
    {
     $conf{'HAVE_ALLEGRO'}='yes';
     print "OK\n";
+    # Setup the allegro path and name
+    if ($OS eq 'UNIX')
+      {
+       $a=`allegro-config --libs`;
+       chomp($a);
+       @b=split(/ /,$a);
+       $paths=$libs=' ';
+       foreach $c (@b)
+         {
+          if ($c=~/-L(.*)/)
+            {
+             $paths.="$1 ";
+            }
+          elsif ($c=~/-l(.*)/)
+            {
+             $libs.="$1 ";
+            }
+         }
+       #print "Path: $paths\n";
+       #print "Libs: $libs\n";
+       $conf{'allegro-path'}=$paths;
+       $conf{'allegro-libs'}=$libs;
+      }
+    else
+      {
+       $conf{'allegro-path'}=' ';
+       $conf{'allegro-libs'}=' alleg ';
+      }
    }
 }
 
