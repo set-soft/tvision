@@ -4,6 +4,11 @@
 // and fixed a small bug.
 //
 // Author: Jay Perez. Modified by Barnaby Falls
+#include <mem.h>                       // memset
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #define Uses_TBackground
 #define Uses_TListBox
@@ -39,13 +44,8 @@
 __link( RView )
 __link( RDialog )
 __link( RButton )
-#include <mem.h>                       // memset
 
 #include <dos.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <strstrea.h>
 #include <iomanip.h>
 #include <conio.h>

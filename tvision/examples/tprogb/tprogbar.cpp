@@ -1,3 +1,8 @@
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <mem.h>                       // memset
+
 #define Uses_TStaticText
 #define Uses_TStatusDef
 #define Uses_TStatusItem
@@ -19,12 +24,8 @@
 __link( RView )
 __link( RDialog )
 __link( RButton )
-#include <mem.h>                       // memset
 
 #include <dos.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include "tprogbar.h"
 
 const int sampleIterations = 21 ;

@@ -5,6 +5,7 @@
 //  revised November 27,1993
 //  C.Porter 70262,1047
 // ***********************************************************************
+#include <stdlib.h>
 
 #define Uses_TApplication
 #define Uses_TBackground
@@ -25,7 +26,6 @@
 #define Uses_TStatusLine
 
 #include <tv.h>
-#include <stdlib.h>
 #include "lst_view.h"
 
 char *cityList[] = { "Boston MA.   ",

@@ -8,6 +8,12 @@
  *
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
+ 
+// SET: moved the standard headers before tv.h
+#include <ctype.h>
+#include <limits.h>
+#include <string.h>
+#include <sys/stat.h>
 
 #define Uses_TStreamableClass
 #define Uses_TPoint
@@ -32,11 +38,6 @@
 #if !defined( __UTIL_H )
 #include "util.h"
 #endif  // __UTIL_H
-
-#include <ctype.h>
-#include <limits.h>
-#include <string.h>
-#include <sys/stat.h>
 
 // THelpViewer
 

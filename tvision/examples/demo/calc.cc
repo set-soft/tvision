@@ -15,6 +15,11 @@
  * Modified by Sergio Sigala <ssigala@globalnet.it>
  */
 
+// SET: moved the standard headers before tv.h
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
 #define Uses_TRect
 #define Uses_TEvent
 #define Uses_TButton
@@ -30,9 +35,6 @@ __link( RView )
 __link( RDialog )
 __link( RButton )
 
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <strstream.h>
 #include <iomanip.h>
 

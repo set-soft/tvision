@@ -5,13 +5,14 @@
 //    Member functions for DynamicText class
 //
 
+#include <string.h>
+
 #define Uses_TView
 #define Uses_TStreamableClass
 #define Uses_TPalette
 #include <tv.h>
 
 #include "dyntext.h"
-#include <string.h>
 
 #define cpDynamicText "\x06"
 

@@ -15,7 +15,6 @@
 #define __CALC_H
 
 #include <math.h>
-#include <stdlib.h>
 
 #define DISPLAYLEN  25      // Length (width) of calculator display
 

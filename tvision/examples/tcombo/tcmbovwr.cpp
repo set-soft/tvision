@@ -24,12 +24,13 @@
 /*                                                                       */
 /*************************************************************************/
 
+#include <string.h>
+
 #define Uses_TComboViewer
 #define Uses_TKeys
 #define Uses_TStreamableClass
 #define Uses_TPalette
 #include "tcombobx.h"
-#include <string.h>
 
 #define cpComboViewer "\x06\x06\x07\x06\x06"
 
