@@ -47,6 +47,10 @@ LookForPrefix();
 LookForGNUMake();
 # Same for ar, it could be `gar'
 $GAR=LookForGNUar();
+# Look for recode and version
+LookForRecode();
+# Look for xgettext
+LookForGettextTools();
 # Is the right djgpp?
 if ($OS eq 'DOS')
   {
@@ -201,6 +205,12 @@ print "Makefiles for examples.\n";
 chdir('examples');
 `perl patchenv.pl`;
 chdir('..');
+
+$ReplaceTags{'recode'}=$conf{'recode'} eq 'no' ? '@echo' : 'recode';
+$ReplaceTags{'recode_sep'}=$conf{'recode_sep'};
+$ReplaceTags{'copy_recode'}='perl utod.pl'; #($OS eq 'UNIX') ? 'perl utod.pl' : 'cp';
+print "Makefiles for translations.\n";
+ReplaceText('intl/gnumake.in','intl/Makefile');
 
 print "\nSuccesful configuration!\n\n";
 
@@ -712,9 +722,63 @@ int main(void)
    }
 }
 
+sub LookForGettextTools
+{
+ my $test;
+
+ print 'Looking for xgettext: ';
+ if (@conf{'xgettext'})
+   {
+    print @conf{'xgettext'}." (cached)\n";
+    return;
+   }
+ $test=`xgettext --version`;
+ if ($test=~/(\d+\.\d+(\.\d+)?)/)
+   {
+    print "$1\n";
+    $conf{'xgettext'}=$1;
+   }
+ else
+   {
+    print "no\n";
+    $conf{'xgettext'}='no';
+   }
+}
+
+sub LookForRecode
+{
+ my $test;
+
+ print 'Looking for recode: ';
+ if (@conf{'recode'})
+   {
+    print @conf{'recode'}." (cached)\n";
+    return;
+   }
+ $test=`recode --version`;
+ if ($test=~/(\d+\.\d+(\.\d+)?)/)
+   {
+    print "$1\n";
+    $conf{'recode'}=$1;
+    if (CompareVersion($test,'3.5'))
+      {
+       $conf{'recode_sep'}='..';
+      }
+    else
+      {
+       $conf{'recode_sep'}=':';
+      }
+   }
+ else
+   {
+    print "no\n";
+    $conf{'recode'}='no';
+   }
+}
+
 sub GenerateMakefile
 {
- my ($text,$rep,$makeDir,$ver);
+ my ($text,$rep,$makeDir,$ver,$internac);
 
  print "Generating Makefile\n";
  $text=cat('Makefile.in');
@@ -723,8 +787,10 @@ sub GenerateMakefile
     CreateCache();
     die "Can't find Makefile.in!!\n";
    }
+ $internac=@conf{'xgettext'} ne 'no';
  $rep='static-lib';
  $rep.=' dynamic-lib' if ($OS eq 'UNIX');
+ $rep.=' internac' if ($internac);
  $text=~s/\@targets\@/$rep/g;
  $text=~s/\@OS\@/$OS/g;
  $text=~s/\@prefix\@/@conf{'prefix'}/g;
@@ -736,18 +802,19 @@ sub GenerateMakefile
  #$rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
  $rep ="static-lib:\n\t\$(MAKE) -C ".$makeDir;
  $rep.="\n\tranlib $makeDir/librhtv.a" if $conf{'UseRanLib'};
- $text=~s/\@target1_rule\@/$rep/g;
+ $rep.="\n";
  if ($OS eq 'UNIX')
    {
     #$rep="linuxso/librhtv.so.$Version";
     #$rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl --no-inst-message";
-    $rep="dynamic-lib:\n\tcd linuxso; perl makemak.pl --no-inst-message";
-    $text=~s/\@target2_rule\@/$rep/g;
+    $rep.="\ndynamic-lib:\n\tcd linuxso; perl makemak.pl --no-inst-message\n";
    }
- else
+ if ($internac)
    {
-    $text=~s/\@target2_rule\@//g;
+    $rep.="\ninternac:\n";
+    $rep.="\t\$(MAKE) -C intl\n";
    }
+ $text=~s/\@target_rules\@/$rep/g;
  $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy\n";
  $rep.="\tcp intl/dummy/libtvfintl.a $makeDir\n";
  $rep.="\tranlib $makeDir/libtvfintl.a\n" if $conf{'UseRanLib'};
@@ -757,7 +824,8 @@ sub GenerateMakefile
  # Write install stuff
  # What versions of the library we will install
  $rep= 'install-static ';
- $rep.='install-dynamic' if ($OS eq 'UNIX');
+ $rep.='install-dynamic ' if ($OS eq 'UNIX');
+ $rep.='install-internac ' if $internac;
  $text=~s/\@installers\@/$rep/g;
 
  # Headers
@@ -795,23 +863,21 @@ sub GenerateMakefile
  $rep.="\tinstall -m 0644 include/cl/*.h \$(prefix)/include/rhtvision/cl\n";
  $text=~s/\@install_headers\@/$rep/g;
  
- # Static library
- $rep ="install-static: static-lib\n";
- $rep.="\tinstall -d -m 0755 \$(libdir)\n";
- $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
- $text=~s/\@install1_rule\@/$rep/g;
-
  # Dummy replacement for i8n library
  $rep ="install-intl-dummy: intl-dummy\n";
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
  $rep.="\tinstall -m 0644 intl/dummy/libtvfintl.a \$(libdir)/libtvfintl.a\n";
  $text=~s/\@intl_dummy_install_rule\@/$rep/g;
 
- $rep='';
+ # Static library
+ $rep ="install-static: static-lib\n";
+ $rep.="\tinstall -d -m 0755 \$(libdir)\n";
+ $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
+
  if ($OS eq 'UNIX')
    {# Dynamic library
     $ver=($OSf eq 'FreeBSD') ? $VersionMajor : $Version;
-    $rep= "install-dynamic: dynamic-lib\n";
+    $rep.="\ninstall-dynamic: dynamic-lib\n";
     $rep.="\trm -f \$(libdir)/librhtv.so\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.$VersionMajor\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.$ver\n";
@@ -823,7 +889,11 @@ sub GenerateMakefile
     # FreeBSD: merge data from libdir
     $rep.=($OSf eq 'FreeBSD') ? "\t-ldconfig -m \$(libdir)\n" : "\t-ldconfig\n";
    }
- $text=~s/\@install2_rule\@/$rep/g;
+ if ($internac)
+   {
+    $rep.="\ninstall-internac:\n\tmake -C intl install\n";
+   }
+ $text=~s/\@install_rules\@/$rep/g;
 
  $rep= "clean:\n";
  $rep.="\trm -f linuxso/librhtv.so*\n";

@@ -1,14 +1,13 @@
 prefix=@prefix@
 libdir=$(prefix)/lib
 OS=@OS@
+export
 
 .PHONY: @targets@ @installers@ install-headers clean intl-dummy examples
 
 all: @targets@ intl-dummy
 
-@target1_rule@
-
-@target2_rule@
+@target_rules@
 
 @intl_dummy_rule@
 
@@ -18,9 +17,7 @@ examples:
 install-headers:
 	@install_headers@
 
-@install1_rule@
-
-@install2_rule@
+@install_rules@
 
 @intl_dummy_install_rule@
 

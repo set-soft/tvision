@@ -257,6 +257,10 @@ examples/cyrillic/linuxkoi8/test.cc
 -examples/cyrillic/linuxkoi8/test.gpr
 examples/cyrillic/linuxkoi8/test.mak
 examples/cyrillic/linuxkoi8/trivial.acm
+examples/cyrillic/x11koi8/rhide.env
+examples/cyrillic/x11koi8/test.cc
+-examples/cyrillic/x11koi8/test.gpr
+examples/cyrillic/x11koi8/test.mak
 examples/demo/ascii.cc
 examples/demo/ascii.h
 examples/demo/calendar.cc
@@ -613,8 +617,14 @@ include/tv/x11/mouse.h
 include/tv/x11/screen.h
 include/tv/yes_mss.h
 include/tv/window.h
+intl/dtou.pl
 intl/dummy/intldummy.c
 intl/dummy/Makefile
+intl/es.po
+intl/gnumake.in
+intl/Makefile
+intl/tvision.po
+intl/ru.po
 +linux/compress
 linux/inclubin.txt
 linux/includbi.txt
@@ -752,9 +762,6 @@ rhide.env
 snapshot.pl
 THANKS
 TODO
-tvision.es
-tvision.po
-tvision.ru
 win32/Makefile
 win32/demo.mak
 win32/obj/delete.me

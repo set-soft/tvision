@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.355  2002/11/25 15:03:12  set
+* Added: TGKey now have a member to set the code page for the translation
+tables.
+* Added: TVCodePage calls TGKey::SetCodePage.
+* Fixed: TMenuView didn't use the TVCodePage toupper/lower system.
+* Modified: Moved KOI8r tables from Linux driver to TGKey, so they can be
+shared with X11 driver.
+* Added: An example showing how to force cyrillics for X11 applications, it
+also works for Linux console and should work for DOS.
+
 Revision 2.354  2002/11/25 14:59:02  set
 * Fixed: In systems using ACMs with unknown Unicodes the translation table
 got 0xFFFF and when using it some memory corruption could appear. Reported
