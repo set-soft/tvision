@@ -1023,7 +1023,10 @@ typedef unsigned long  ulong;
 /* MSVC will be supported if volunteers tests it or Microsoft decides to
    give it for free ;-). After all Borland released BC++ 5.5. */
 #if (defined(_MSVC) || defined(__MSC_VER)) && !defined(_MSC_VER)
- #define _MSC_VER
+ #if !defined(__MSC_VER) // let M$ compiler be version 1.00, if nothing else has been defined.
+    #define __MSC_VER 100
+ #endif
+ #define _MSC_VER __MSC_VER
 #endif
 
 #ifdef TVComp_MSC
@@ -1321,7 +1324,15 @@ typedef unsigned long  ulong;
   #undef  Include_stdio
   #define Include_stdio 1
   #define CLY_snprintf  snprintf
-  #define CLY_vsnprintf vsnprintf
+  #ifdef TVComp_MSC
+   #if _MSC_VER>=1300 // from MSVC .NET first release - v13.0.
+      #define CLY_vsnprintf _vsnprintf
+   #else
+      #define CLY_vsnprintf vsnprintf
+   #endif
+  #else
+   #define CLY_vsnprintf vsnprintf
+  #endif
  #else
   #undef  Include_stdarg
   #define Include_stdarg 1

@@ -444,8 +444,8 @@ char *THelpTopic::wrapText( char *text, int size, int& offset, Boolean wrap,
         i -= offset;
         }
     textToLine(text, offset, min(i,lineBufLen), lineBuf);
-    if (lineBuf[min(strlen(lineBuf) - 1, lineBufLen)] == '\n')
-        lineBuf[min(strlen(lineBuf) - 1, lineBufLen)] = 0;
+    if (lineBuf[min(strlen(lineBuf) - 1, (size_t)lineBufLen)] == '\n')
+        lineBuf[min(strlen(lineBuf) - 1, (size_t)lineBufLen)] = 0;
     offset += min(i,lineBufLen);
     return lineBuf;
 }

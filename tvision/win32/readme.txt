@@ -23,7 +23,7 @@ prompt, at least in v1.0.7/8 it doesn't support Win32 console applications
 information and without international support:
 $ perl config.pl --no-intl --cflags=-O2 --cxxflags=-O2
 
-  MSVC (5.0/6.0) is also supported, but I don't have access to it so I can't
+  MSVC (5.0/6.0/7.0) is also supported, but I don't have access to it so I can't
 be sure if it works ok. You should have no problems or at most very simple
 ones. Also note that Vadim wrote the MSVC make file with GNU tools in mind
 (he used rm instead of just del ;-). I'll sugest you to first try compiling
@@ -70,5 +70,5 @@ with the already configured Makefile:
 
   The library is slower than the DOS version or the Linux/VCSA version.
 That's because the Win32 console API isn't fast.
-
-
+  You can obtain some GNU utilities compiled by MSVC for Win32 from 'GNU
+utilities for Win32` project located at http://unxutils.sourceforge.net/
