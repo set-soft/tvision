@@ -1,4 +1,9 @@
 $Log$
+Revision 1.38  1999/04/28 22:57:09  set
+* Enclosed all the monochrome code that makes I/O access to the MDA registers
+and maps the video memory under Linux with #ifdef __i386__ because looks like
+it isn't good idea for Alpha machines ;-).
+.
 Revision 1.37  1999/04/27 22:34:24  set
 * Ported the TParamText class from TV 2.0. The old version seems to be from
 1.03 and wasn't portable, in fact it failed to even compile under Alpha
