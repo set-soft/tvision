@@ -1453,7 +1453,7 @@ sub LookForGNUinstall
     print "ginstall\n";
     return 'ginstall';
    }
- if (!LookForFileInPath('install'))
+ if (!LookForFileInPath('install'.$ExeExt))
    {
     print "Unable to find 'install' on this system.\n";
     print "Please install it and be sure it's in your path.\n";
