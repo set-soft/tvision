@@ -1,4 +1,9 @@
 $Log$
+Revision 1.5  1999/01/09 20:13:10  set
+Incorporated nine examples that implements various widgets. They are very
+small applications so the user can see how a simple TVision application can
+be setup.
+.
 Revision 1.4  1999/01/09 17:29:09  set
 Changed compress.bat for a Perl script that generates the manifest and
 version djgpp files and compress the files in the djgpp fashion. Asked by DJ.
