@@ -1,0 +1,4 @@
+*.so*
+Makefile
+instlib
+gkeyli.cc
