@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.291  2002/09/09 13:31:35  set
+* Fixed: The wheel increment wasn't setup for scroll bars loaded from disk.
+Currently they are just setup with the default value to avoid breaking the
+compatibility with all programs.
+
 Revision 2.290  2002/09/06 18:26:15  set
 * Added: Mouse wheel support to TScroller.
 
