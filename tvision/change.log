@@ -1,4 +1,10 @@
 $Log$
+Revision 1.122  1999/12/05 13:12:59  root
+* Modified: Now the initialization of the TScreen is called from TProgInit.
+I must test it under DOS. The old methode failed for the examples.
+* Added: [Linux] An example on how to suspend an application with ^Z and then
+resume it.
+.
 Revision 1.121  1999/12/02 23:47:57  set
 * Fixed: A bug in the DeskLogo examples. Pointed as a problem by Arvin
 Baccay <arvinbaccay@yahoo.com>.
