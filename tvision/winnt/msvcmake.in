@@ -1,0 +1,65 @@
+# Makefile for MS VC 5.0-6.0
+# Modified for use with MS NMAKE 
+# Run: nmake -f makefile.nmk all
+
+CFLAGS=-O2 -D_WIN32 /GR- /GX-
+CXXFLAGS=-O2 -I../include -D_WIN32 /GR- /GX-
+
+OBJDIR=obj_ms
+
+#clean default extension list
+.SUFFIXES:
+#append extensions to list
+.SUFFIXES: .cc .cpp .c
+
+SRC1 = ../
+SRC2 = ../compat
+SRC3 = ../names
+SRC4 = ../stream
+SRC5 = ../classes
+SRC6 = ../classes/dos
+SRC7 = ../classes/win32
+SRC8 = ../classes/winnt
+#SRC7 = ./examples/tutorial
+#SRC3 = ./
+
+CC=cl /nologo
+CXX=cl /nologo /TP
+
+OBJS=@TV_OBJS_MSVC@
+
+{$(SRC1)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRC2)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRC3)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRC4)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRC5)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRC6)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRC7)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+   
+{$(SRC8)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+   
+
+all:: libtv.lib
+
+libtv.lib : $(OBJS)
+	-rm -f libtv.lib
+	lib /OUT:libtv.lib $(OBJS)
+
+clean:
+	rm -f $(OBJS)
+	rm -f $(TUTORIAL)
+

@@ -18,14 +18,19 @@ $a=~s/vgastate.c//;
 $a=~s/vesa.cc//;
 # 3) Add BC++ specific
 #$a.=' gkeyw32.cc';
+$b=$a;
 $a=~s/(\w+)\.(\w+)/\+$1\.obj/g;
 $a=~s/\t//g;
+# 3b) MSVC specific
+$b=~s/(\w+)\.(\w+)/\$\(OBJDIR\)\/$1\.o/g;
 # 4) Generate makefile from the template
 $ReplaceTags{'TV_OBJS_BCC'}=$a;
+$ReplaceTags{'TV_OBJS_MSVC'}=$b;
 
 $ReplaceTags{'DYNRTL'} = $conf{'dynrtl'} ? "DYNRTL = 1" : "";
 
 ReplaceText('winnt/bccmake.in','winnt/Makefile');
+ReplaceText('winnt/msvcmake.in','winnt/Makefile.nmk');
 
 sub SeeCommandLine
 {

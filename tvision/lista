@@ -710,6 +710,9 @@ winnt/include/msvc/dirent.h
 winnt/include/msvc/strstream.h
 winnt/include/tv/configtv.h
 winnt/Makefile
+winnt/Makefile.nmk
+winnt/msvcmake.in
+winnt/obj_ms/delete.me
 winnt/objs/delete.me
 winnt/readme.txt
 winnt/tvex.cc
