@@ -16,15 +16,17 @@ exlude some particular files by configuration.
 #include <tv/configtv.h>
  
 #define Uses_string
-#include <stdio.h>
-#ifdef _MSC_VER
-#include <io.h>
+#define Uses_stdio
+#ifdef TVComp_MSC
+ #include <io.h>
 #else
-#define Uses_unistd
+ #define Uses_unistd
 #endif
 #define Uses_alloca
 #define Uses_stdlib
+#define Uses_ctype
 #define Uses_HaveLFNs
+#define Uses_dirent
 
 #define Uses_MsgBox
 #define Uses_TFileList
@@ -35,22 +37,20 @@ exlude some particular files by configuration.
 #define Uses_TStreamableClass
 #define Uses_sys_stat
 
-#if defined(__TURBOC__) || defined(__DJGPP__) || defined(TVOS_UNIX)
- #ifndef TVOS_UNIX
-  #include <dir.h>
- #endif
- #include <dirent.h>
+#if defined(TVCompf_djgpp)
+ // DJGPP
  #define Uses_fnmatch
+ #include <dir.h>
+#elif defined(TVComp_BCPP) || defined(TVCompf_Cygwin) || defined(TVOS_UNIX)
+ // UNIX, Win32/BC++, Win32/Cygwin
  #define Uses_glob
-#else
- #include <direct.h>
 #endif
+
 
 #include <tv.h>
 
 #include <errno.h>
-#include <ctype.h>
-#if defined(__TURBOC__)
+#if defined(TVComp_BCPP)
 #include <dos.h>
 #endif
 
@@ -139,7 +139,7 @@ void TFileList::readDirectory( const char *dir, const char *wildCard )
 
 
 /******** struct DirSearchRec ********/
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 // DJGPP
 typedef struct TSearchRec DirSearchRec;
 
@@ -154,7 +154,7 @@ struct __dj_DIR {
 extern "C" size_t _file_time_stamp(unsigned);
 
 #else
-#if defined(TVOS_Win32) && !defined(__TURBOC__)
+#if defined(TVOS_Win32) && !defined(TVComp_BCPP) && !defined(TVCompf_Cygwin)
 // MingW
 struct DirSearchRec : public TSearchRec
 {
@@ -172,11 +172,10 @@ struct DirSearchRec : public TSearchRec
 };
 
 #else
-// Linux and BC++ under NT
+// Linux, BC++/Win32 and CygWin
 struct DirSearchRec : public TSearchRec
 {
   /* SS: changed */
-
   void readFf_blk(char *filename, struct stat &s)
   {
     attr = FA_ARCH;
@@ -185,7 +184,6 @@ struct DirSearchRec : public TSearchRec
     size = s.st_size;
     time = s.st_mtime;
   }
-
 };
 #endif
 #endif
@@ -208,7 +206,7 @@ int ExcludeSpecialName(const char *name)
 }
 
 /******** void readDirectory( const char *aWildCard ) ********/
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 // DOS+DJGPP target
 // this is really faster than the glob methode
 void TFileList::readDirectory( const char *aWildCard )
@@ -283,7 +281,7 @@ void TFileList::readDirectory( const char *aWildCard )
 }
 
 #else
-#if defined(TVOS_Win32) && !defined(__TURBOC__)
+#if defined(TVOS_Win32) && !defined(TVComp_BCPP) && !defined(TVCompf_Cygwin)
 // Win32+MingW
 void TFileList::readDirectory( const char *aWildCard )
 {
@@ -376,7 +374,7 @@ void TFileList::readDirectory( const char *aWildCard )
     }
 }
 #else
-// Linux and Win32+BC++
+// Linux, BC++/Win32 and CygWin
 void TFileList::readDirectory( const char *aWildCard )
 {
   /* SS: changed */
@@ -404,7 +402,7 @@ void TFileList::readDirectory( const char *aWildCard )
    * Rainer Keuchel <r_keuchel@smaug.netwave.de>
    * Date: 18 Jan 1997 22:52:12 +0000
    */
-  #ifdef __linux__
+  #ifdef TVOSf_Linux
   # define __gl_options GLOB_PERIOD
   #else
   # define __gl_options 0
@@ -485,7 +483,7 @@ void TFileList::readDirectory( const char *aWildCard )
      message( owner, evBroadcast, cmFileFocused, &noFile );
     }
 }
-#endif // Linux and Win32+BC++
+#endif // Linux, BC++/Win32 and CygWin
 #endif // !DOS+DJGPP
 /******** end of void readDirectory ********/
 

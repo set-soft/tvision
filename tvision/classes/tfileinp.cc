@@ -18,10 +18,10 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TFileDialog
 #include <tv.h>
 
-#if defined(TVOSf_djgpp)
+#if defined(TVCompf_djgpp)
 #include <dir.h>
 #endif
-#if defined(__TURBOC__)
+#if defined(TVComp_BCPP)
 #include <dir.h>
 #include <dos.h>
 #endif

@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #define Uses_string //strcpy()
-//#include <strstrea.h>
+//#define Uses_strstream
 #include <iomanip.h>
 
 #define Uses_TApplication

@@ -12,6 +12,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
+#include <tv/configtv.h>
 #define Uses_string
 #define Uses_sys_stat
 #define Uses_TDirListBox
@@ -21,6 +22,9 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #define Uses_TDirEntry
 #define Uses_TButton
 #define Uses_TStreamableClass
+#if defined(TVCompf_djgpp) || defined(TVComp_BCPP)
+ #define Uses_dir // getdisk()
+#endif
 #include <tv.h>
 
 TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aScrollBar ) :
@@ -60,7 +64,7 @@ Boolean TDirListBox::isSelected( ccIndex item )
     return Boolean( item == cur );
 }
 
-#ifdef TVOS_UNIX
+#ifndef CLY_HaveDriveLetters
 
 void TDirListBox::showDrives( TDirCollection * )
 {
@@ -68,8 +72,7 @@ void TDirListBox::showDrives( TDirCollection * )
 
 #else
 
-#if defined(TVOSf_djgpp) || defined(__TURBOC__)
-#include <dir.h> // getdisk()
+#if defined(TVCompf_djgpp) || defined(TVComp_BCPP)
 #include <dos.h>
 #else
 #include <io.h>
@@ -118,7 +121,7 @@ void TDirListBox::showDrives( TDirCollection *dirs )
         dirs->insert( new TDirEntry( s, oldc ) );
         }
 }
-#endif // __DJGPP__
+#endif // CLY_HaveDriveLetters
 
 #if 0
 extern "C" unsigned short ffattrib(struct ffblk *);
@@ -130,7 +133,7 @@ extern "C" char *ffname(struct ffblk *);
 #define N(s) s.ff_name
 #endif
 
-#ifdef TVOS_UNIX
+#if defined(TVOS_UNIX) || defined(TVCompf_Cygwin)
 #include <dirent.h>
 
 void TDirListBox::showDirs( TDirCollection *dirs )
@@ -218,7 +221,7 @@ void TDirListBox::showDirs( TDirCollection *dirs )
 }
 
 #else
-#if !defined(TVOSf_djgpp) && !defined(__TURBOC__)
+#if !defined(TVCompf_djgpp) && !defined(TVComp_BCPP)
 void TDirListBox::showDirs( TDirCollection *dirs )
 {
     const int indentSize = 2;
@@ -293,7 +296,7 @@ void TDirListBox::showDirs( TDirCollection *dirs )
         *(i+2) = graphics[2];
         }
 }
-#else //__DJGPP__
+#else // DJGPP
 void TDirListBox::showDirs( TDirCollection *dirs )
 {
     const int indentSize = 2;
@@ -370,14 +373,14 @@ void TDirListBox::showDirs( TDirCollection *dirs )
         }
 }
 #endif
-#endif // __DJGPP__
+#endif // DJGPP
 
 void TDirListBox::newDirectory( const char *str )
 {
     strcpy( dir, str );
     TDirCollection *dirs = new TDirCollection( 5, 5 );
-#ifndef TVOS_UNIX
-    #if defined(TVOS_djgpp) || defined(__TURBOC__)
+    #ifdef CLY_HaveDriveLetters
+    #if defined(TVCompf_djgpp) || defined(TVComp_BCPP)
     // SET: Old programs created for original TV can pass backslashes here
     // and the code in showDirs assumes they are all forward.
     for (int i=0; dir[i]; i++)
@@ -391,7 +394,7 @@ void TDirListBox::newDirectory( const char *str )
     if( strcmp( dir, drives ) == 0 )
         showDrives( dirs );
     else
-#endif // __DJGPP__
+    #endif // CLY_HaveDriveLetters
         showDirs( dirs );
     newList( dirs );
     focusItem( cur );

@@ -13,9 +13,9 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #if 0
-#include <strstrea.h>
+ #define Uses_strstream
 #else
-#include <stdio.h>
+ #define Uses_stdio
 #endif
 #define Uses_string
 

@@ -12,8 +12,9 @@ virtual because I want to override the behavior in the editor.@p
 SET
 
 ***************************************************************************/
+#include <tv/configtv.h>
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 
 #define Uses_TScreen
 #include <tv.h>

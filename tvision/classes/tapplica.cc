@@ -12,8 +12,7 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <stdio.h>
-
+#define Uses_stdio
 #define Uses_TEventQueue
 #define Uses_TScreen
 #define Uses_TObject
@@ -23,7 +22,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 static TEventQueue *teq = 0;
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 #include <dpmi.h>
 
 #define REGS __dpmi_regs
@@ -44,7 +43,7 @@ static int mouse_buffer_allocated = 0;
 
 static void restore_mouse_state()
 {
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
   REGS r;
   if (mouse_buffer_allocated)
   {
@@ -59,7 +58,7 @@ static void restore_mouse_state()
 
 static void save_mouse_state()
 {
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
   REGS r;
   if (!mouse_buffer_allocated)
   {

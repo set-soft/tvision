@@ -9,7 +9,7 @@
 
 #include <stdlib.h>
 #include <stdarg.h>
-//#include <strstrea.h>
+//#define Uses_strstream
 #include <iomanip.h>
 
 #define Uses_TDialog

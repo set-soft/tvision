@@ -6,17 +6,18 @@
 /*   Copyright (c) 1991 by Borland International            */
 /*                                                          */
 /*----------------------------------------------------------*/
-#include <limits.h>
+#include <tv/configtv.h>
+
+#define Uses_limits
 #define Uses_string
-#include <fstream.h>
 #define Uses_fcntl
 #define Uses_filelength
-#ifdef _MSC_VER
-#include <io.h>
+#ifdef TVComp_MSC
+ #include <io.h>
 #else
-#define Uses_unistd
+ #define Uses_unistd
 #endif
-#include <stdio.h>
+#define Uses_stdio
 #define Uses_sys_stat
 
 #define Uses_TGroup
@@ -28,6 +29,7 @@
 #define Uses_TStreamableClass
 #define Uses_IOS_BIN
 #include <tv.h>
+#include <fstream.h>
 
 inline uint32 min( uint32 u1, uint32 u2 )
 {

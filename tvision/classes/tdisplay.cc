@@ -10,8 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
@@ -566,5 +567,5 @@ int TDisplay::SetWindowTitle(const char *name)
 
  return regs.x.ax;
 }
-#endif // __DJGPP__
+#endif // DJGPP
 
