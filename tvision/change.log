@@ -1,4 +1,8 @@
 $Log$
+Revision 1.144  2000/04/20 19:18:52  set
+* Modified: Some #ifdef __linux__ by TVOS_UNIX to test it under other
+flavors.
+.
 Revision 1.143  2000/04/13 01:07:02  set
 * Fixed: [DOS] Now when BIOS is selected the keyboard is polled really using
 BIOS. Previous code used djgpp's kbhit() and it doesn't really call BIOS.
