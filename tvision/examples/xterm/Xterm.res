@@ -110,7 +110,7 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift  Ctrl ~Alt <Key>F12: string(0x1b) string(\"[24;6~\") \n\
  ~Shift  Ctrl  Alt <Key>F12: string(0x1b) string(\"[24;7~\") \n\
   Shift  Ctrl  Alt <Key>F12: string(0x1b) string(\"[24;8~\") \n\
- ~Shift ~Ctrl ~Alt <Key>Up: string(0x1b) string(\"[A\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Up: string(0x1b) string(\"OA\") \n\
   Shift ~Ctrl ~Alt <Key>Up: string(0x1b) string(\"[2A\") \n\
  ~Shift ~Ctrl  Alt <Key>Up: string(0x1b) string(\"[3A\") \n\
   Shift ~Ctrl  Alt <Key>Up: string(0x1b) string(\"[4A\") \n\
@@ -118,7 +118,7 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift  Ctrl ~Alt <Key>Up: string(0x1b) string(\"[6A\") \n\
  ~Shift  Ctrl  Alt <Key>Up: string(0x1b) string(\"[7A\") \n\
   Shift  Ctrl  Alt <Key>Up: string(0x1b) string(\"[8A\") \n\
- ~Shift ~Ctrl ~Alt <Key>Down: string(0x1b) string(\"[B\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Down: string(0x1b) string(\"OB\") \n\
   Shift ~Ctrl ~Alt <Key>Down: string(0x1b) string(\"[2B\") \n\
  ~Shift ~Ctrl  Alt <Key>Down: string(0x1b) string(\"[3B\") \n\
   Shift ~Ctrl  Alt <Key>Down: string(0x1b) string(\"[4B\") \n\
@@ -126,7 +126,7 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift  Ctrl ~Alt <Key>Down: string(0x1b) string(\"[6B\") \n\
  ~Shift  Ctrl  Alt <Key>Down: string(0x1b) string(\"[7B\") \n\
   Shift  Ctrl  Alt <Key>Down: string(0x1b) string(\"[8B\") \n\
- ~Shift ~Ctrl ~Alt <Key>Right: string(0x1b) string(\"[C\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Right: string(0x1b) string(\"OC\") \n\
   Shift ~Ctrl ~Alt <Key>Right: string(0x1b) string(\"[2C\") \n\
  ~Shift ~Ctrl  Alt <Key>Right: string(0x1b) string(\"[3C\") \n\
   Shift ~Ctrl  Alt <Key>Right: string(0x1b) string(\"[4C\") \n\
@@ -134,7 +134,7 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift  Ctrl ~Alt <Key>Right: string(0x1b) string(\"[6C\") \n\
  ~Shift  Ctrl  Alt <Key>Right: string(0x1b) string(\"[7C\") \n\
   Shift  Ctrl  Alt <Key>Right: string(0x1b) string(\"[8C\") \n\
- ~Shift ~Ctrl ~Alt <Key>Left: string(0x1b) string(\"[D\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Left: string(0x1b) string(\"OD\") \n\
   Shift ~Ctrl ~Alt <Key>Left: string(0x1b) string(\"[2D\") \n\
  ~Shift ~Ctrl  Alt <Key>Left: string(0x1b) string(\"[3D\") \n\
   Shift ~Ctrl  Alt <Key>Left: string(0x1b) string(\"[4D\") \n\
@@ -152,7 +152,7 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift  Ctrl ~Alt <Key>KP_5: string(0x1b) string(\"[6E\") \n\
  ~Shift  Ctrl  Alt <Key>KP_5: string(0x1b) string(\"[7E\") \n\
   Shift  Ctrl  Alt <Key>KP_5: string(0x1b) string(\"[8E\") \n\
- ~Shift ~Ctrl ~Alt <Key>End: string(0x1b) string(\"[F\") \n\
+ ~Shift ~Ctrl ~Alt <Key>End: string(0x1b) string(\"OF\") \n\
   Shift ~Ctrl ~Alt <Key>End: string(0x1b) string(\"[2F\") \n\
  ~Shift ~Ctrl  Alt <Key>End: string(0x1b) string(\"[3F\") \n\
   Shift ~Ctrl  Alt <Key>End: string(0x1b) string(\"[4F\") \n\
@@ -160,7 +160,7 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift  Ctrl ~Alt <Key>End: string(0x1b) string(\"[6F\") \n\
  ~Shift  Ctrl  Alt <Key>End: string(0x1b) string(\"[7F\") \n\
   Shift  Ctrl  Alt <Key>End: string(0x1b) string(\"[8F\") \n\
- ~Shift ~Ctrl ~Alt <Key>Home: string(0x1b) string(\"[H\") \n\
+ ~Shift ~Ctrl ~Alt <Key>Home: string(0x1b) string(\"OH\") \n\
   Shift ~Ctrl ~Alt <Key>Home: string(0x1b) string(\"[2H\") \n\
  ~Shift ~Ctrl  Alt <Key>Home: string(0x1b) string(\"[3H\") \n\
   Shift ~Ctrl  Alt <Key>Home: string(0x1b) string(\"[4H\") \n\
@@ -277,7 +277,23 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
   Shift ~Ctrl  Alt <Key>y: string(0x1b) string(\"Y\") \n\
  ~Shift ~Ctrl  Alt <Key>z: string(0x1b) string(\"z\") \n\
   Shift ~Ctrl  Alt <Key>z: string(0x1b) string(\"Z\") \n" \
--xrm "*metaSendsEscape: true"
+-xrm "*metaSendsEscape: true" \
+-xrm "*VT100*color0:  black" \
+-xrm "*VT100*color1:  #a80000" \
+-xrm "*VT100*color2:  #00A800" \
+-xrm "*VT100*color3:  #A85400" \
+-xrm "*VT100*color4:  #0000A8" \
+-xrm "*VT100*color5:  #A800A8" \
+-xrm "*VT100*color6:  #00A8A8" \
+-xrm "*VT100*color7:  #A8A8A8" \
+-xrm "*VT100*color8:  #545454" \
+-xrm "*VT100*color9:  #FC5454" \
+-xrm "*VT100*color10: #54FC54" \
+-xrm "*VT100*color11: #FCFC54" \
+-xrm "*VT100*color12: #5454FC" \
+-xrm "*VT100*color13: #FC54FC" \
+-xrm "*VT100*color14: #54FCFC" \
+-xrm "*VT100*color15: white"
 # Ctrl  <Key>Prior: string(0x1b) string(\"[5;5~\") \n\
 #       <Key>Prior: string(0x1b) string(\"[5~\") \n \
  

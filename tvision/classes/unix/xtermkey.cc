@@ -324,8 +324,8 @@ stCsiKey csiKeys3[cCsiKeys3]=
  { 'S', kbF4 }
 };
 
-// Eterm: O Letter
-const int cCsiKeys4=20;
+// Eterm: O Letter and Application mode
+const int cCsiKeys4=26;
 static
 stEtKey csiKeys4[cCsiKeys4]=
 {
@@ -333,6 +333,12 @@ stEtKey csiKeys4[cCsiKeys4]=
  { 'b', kbDown, kblCtrl },
  { 'c', kbRight, kblCtrl },
  { 'd', kbLeft, kblCtrl },
+ { 'A', kbUp, 0 },
+ { 'B', kbDown, 0 },
+ { 'C', kbRight, 0 },
+ { 'D', kbLeft, 0 },
+ { 'F', kbEnd, 0 },
+ { 'H', kbHome, 0 },
  // Keypad
  { 'M', kbEnter, 0 },
  { 'j', kbAsterisk, 0 },
