@@ -1,261 +1,116 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:15
+# 2003-06-02 11:53
 #
 
-../makes/obj/beep$(ExOBJ):: beep.c \
-	beep.c \
-	$(MAKEFILE_DEPS) 
+../makes/obj/beep$(ExOBJ):: beep.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/drivevalid$(ExOBJ):: drivevalid.c \
-	drivevalid.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/drivevalid$(ExOBJ):: drivevalid.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/expandpath$(ExOBJ):: expandpath.c \
-	expandpath.c \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/expandpath$(ExOBJ):: expandpath.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fexpand$(ExOBJ):: fexpand.c \
-	fexpand.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/fexpand$(ExOBJ):: fexpand.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fileattrs$(ExOBJ):: fileattrs.c \
-	fileattrs.c \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/fileattrs$(ExOBJ):: fileattrs.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fileexists$(ExOBJ):: fileexists.c \
-	fileexists.c \
-	$(INCLUDE_DIR)/cl/unistd.h \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/fileexists$(ExOBJ):: fileexists.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/filelength$(ExOBJ):: filelength.c \
-	filelength.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/filelength$(ExOBJ):: filelength.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fixpath$(ExOBJ):: fixpath.c \
-	fixpath.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/cl/unistd.h \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/fixpath$(ExOBJ):: fixpath.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fnmatch$(ExOBJ):: fnmatch.c \
-	fnmatch.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/fnmatch$(ExOBJ):: fnmatch.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getcurdir$(ExOBJ):: getcurdir.c \
-	getcurdir.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/cl/unistd.h \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/getcurdir$(ExOBJ):: getcurdir.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getline$(ExOBJ):: getline.c \
-	getline.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/getline$(ExOBJ):: getline.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getopt$(ExOBJ):: getopt.c \
-	getopt.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/getopt$(ExOBJ):: getopt.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getopt1$(ExOBJ):: getopt1.c \
-	getopt1.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/getopt1$(ExOBJ):: getopt1.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getshell$(ExOBJ):: getshell.c \
-	getshell.c \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/getshell$(ExOBJ):: getshell.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/glob$(ExOBJ):: glob.c \
-	glob.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/glob$(ExOBJ):: glob.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/globfree$(ExOBJ):: globfree.c \
-	globfree.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/globfree$(ExOBJ):: globfree.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/iffilelen$(ExOBJ):: iffilelen.cc \
-	iffilelen.cc \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/iffilelen$(ExOBJ):: iffilelen.cc  
 	$(RHIDE_COMPILE_CC)
 
-../makes/obj/isdir$(ExOBJ):: isdir.c \
-	isdir.c \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/isdir$(ExOBJ):: isdir.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/isrelpath$(ExOBJ):: isrelpath.c \
-	isrelpath.c \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/isrelpath$(ExOBJ):: isrelpath.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/iswild$(ExOBJ):: iswild.c \
-	iswild.c \
-	$(MAKEFILE_DEPS) 
+../makes/obj/iswild$(ExOBJ):: iswild.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/itoa$(ExOBJ):: itoa.c \
-	itoa.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/itoa$(ExOBJ):: itoa.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/mkstemp$(ExOBJ):: mkstemp.c \
-	mkstemp.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/mkstemp$(ExOBJ):: mkstemp.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/nl_langinfo$(ExOBJ):: nl_langinfo.c \
-	nl_langinfo.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/nl_langinfo$(ExOBJ):: nl_langinfo.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/ntdirent$(ExOBJ):: ntdirent.c \
-	ntdirent.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/ntdirent$(ExOBJ):: ntdirent.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/pathvalid$(ExOBJ):: pathvalid.c \
-	pathvalid.c \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/pathvalid$(ExOBJ):: pathvalid.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/regex$(ExOBJ):: regex.c \
-	regex.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/regex$(ExOBJ):: regex.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/releasec$(ExOBJ):: releasec.c \
-	releasec.c \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/releasec$(ExOBJ):: releasec.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/snprintf$(ExOBJ):: snprintf.c \
-	snprintf.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/snprintf$(ExOBJ):: snprintf.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/ssc_streams$(ExOBJ):: ssc_streams.cc \
-	ssc_streams.cc \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/ssc_streams$(ExOBJ):: ssc_streams.cc  
 	$(RHIDE_COMPILE_CC)
 
-../makes/obj/strlwr$(ExOBJ):: strlwr.c \
-	strlwr.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/strlwr$(ExOBJ):: strlwr.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/strupr$(ExOBJ):: strupr.c \
-	strupr.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/strupr$(ExOBJ):: strupr.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/ticks$(ExOBJ):: ticks.c \
-	ticks.c \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/ticks$(ExOBJ):: ticks.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/unc$(ExOBJ):: unc.c \
-	unc.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/unc$(ExOBJ):: unc.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/unc_95$(ExOBJ):: unc_95.c \
-	unc_95.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/unc_95$(ExOBJ):: unc_95.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/unc_nt$(ExOBJ):: unc_nt.c \
-	unc_nt.c \
-	$(INCLUDE_DIR)/cl/needs.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/unc_nt$(ExOBJ):: unc_nt.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/validfilename$(ExOBJ):: validfilename.c \
-	validfilename.c \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/validfilename$(ExOBJ):: validfilename.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/yieldpro$(ExOBJ):: yieldpro.c \
-	yieldpro.c \
-	$(INCLUDE_DIR)/tv/configtv.h \
-	$(MAKEFILE_DEPS) 
+../makes/obj/yieldpro$(ExOBJ):: yieldpro.c  
 	$(RHIDE_COMPILE_C)
 
