@@ -1,4 +1,7 @@
 $Log$
+Revision 1.242.2.1  2001/11/25 15:03:51  set
+* Merged Ivan patches for package 1.1.3-3
+
 Revision 1.242  2001/11/06 23:31:08  set
 * Fixed: A typo in compatlayer.h, it defined sdtio instead of stdio ;-).
 Reported by "Jerzy Witkowski" <jwi@pl.ibm.com>.

@@ -119,7 +119,7 @@ void TNewBackground::draw()
   // 3) The len of the string is called outside the loop too.
   // 4) The video memory is accessed only once per line, not once per
   // character.
-  // And of course it only the getClipRect() is redrawed.
+  // And off course only getClipRect() is redrawed.
   TDrawBuffer b;
   int lin,len,col,counter,width;
   ushort color=getColor(0x01);
@@ -146,8 +146,7 @@ void TNewBackground::draw()
 TvApp::TvApp() : TProgInit( &TvApp::initStatusLine,
 			 &TvApp::initMenuBar, &TvApp::initDeskTop )
 {
- //deskTop->redraw(); SET: It readraws only the desktop (not menu or status bar)
- redraw(); // SET: It calls to the application redraw => all is drawed again
+ deskTop->redraw(); //SET: This extra redraw is needed to use the new palette
 }
 
 TMenuBar *TvApp::initMenuBar( TRect r )
@@ -213,7 +212,7 @@ void TvApp::AboutDialog()
 
 TPalette& TvApp::getPalette() const
 {
- // SET: The following isn't commendable because that's executed too often
+ // SET: The following isn't recommendable because that's executed too often
  static TPalette palette(TApplication::getPalette());
  if (appPalette == apColor)
  {                     // modification of application palette
