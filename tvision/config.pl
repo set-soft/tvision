@@ -260,7 +260,8 @@ int main(void)
  char *s=(char *)&a;
  printf("%s\n",s[0]==1 ? "little" : "big");
  return 0;
-}';
+}
+';
  $test=RunGCCTest($GCC,'c',$test,'');
  chop($test);
  $conf{'TV_BIG_ENDIAN'}=($test eq "big") ? 'yes' : 'no';
@@ -309,7 +310,8 @@ int main(void)
 {
  printf("%s\n",_("OK"));
  return 0;
-}';
+}
+';
  $intllib=(($OS eq 'DOS') || ($OS eq 'Win32')) ? '-lintl' : '';
  $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$intllib);
  if ($test ne "OK\n")
@@ -357,7 +359,8 @@ int main(void)
  if (XK_Return!=0)
     printf("OK\n");
  return 0;
-}';
+}
+';
  $test=RunGCCTest($GCC,'c',$test,'');
  if ($test eq "OK\n")
    {
@@ -395,7 +398,8 @@ int main(void)
 {
  printf("OK\n");
  return 0;
-}';
+}
+';
  $test=RunGCCTest($GCC,'c',$test,'');
  $conf{'HAVE_OUTB_IN_SYS'}=($test eq "OK\n") ? 'yes' : 'no';
  print "@conf{'HAVE_OUTB_IN_SYS'}\n";
@@ -420,7 +424,8 @@ int main(void)
  int version;
  printf("%s",Gpm_GetLibVersion(&version));
  return 0;
-}';
+}
+';
  $test=RunGCCTest($GCC,'c',$test,'-lgpm');
  if (!length($test))
    {
@@ -469,7 +474,8 @@ int main(void)
 {
  printf(NCURSES_VERSION);
  return 0;
-}';
+}
+';
  $result=RunGCCTest($GCC,'c',$test,'-lncurses');
  if (!length($result))
    {# Try again with -lcurses, In Solaris ncurses is installed this way
@@ -503,7 +509,8 @@ int main(void)
 {
  printf("Ok\n");
  return 0;
-}';
+}
+';
  $result=RunGCCTest($GCC,'c',$test,'-l'.$conf{'NameCurses'});
  chop($result);
  if ($result eq 'Ok')

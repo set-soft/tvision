@@ -16,7 +16,7 @@ BTW: this change saved 172 bytes of code and added 20 bytes of data.
 
 /* Copyright (C) 1996-1998 Robert H”hne, this file is part of RHTVision and
    is under the GPL license */
-#include <tv/configtv.h>
+#include <compatlayer.h>
 
 #ifdef TVCompf_djgpp
 /*
@@ -70,58 +70,57 @@ static unsigned win_seg_w;
 // Robert originally taked it from the vesa.h of GRX library, I changed some
 // comments to match the "VESA Super VGA Standard VS911022-14" text. And
 // changed to ushort type.
-#define PACK __attribute__((packed))
 /* This is for g++ 2.7.2 and below */
 #pragma pack(1)
 typedef struct {
- ushort modeAttributes   PACK;//mode attributes
+ ushort modeAttributes   CLY_Packed;//mode attributes
 #define ModeAttributes   infoBk.modeAttributes
- char   winAAttributes   PACK;// Window A attributes
- char   winBAttributes   PACK;// Window B attributes
+ char   winAAttributes   CLY_Packed;// Window A attributes
+ char   winBAttributes   CLY_Packed;// Window B attributes
 #define WinAAttributes   infoBk.winAAttributes
 #define WinBAttributes   infoBk.winBAttributes
- ushort winGranularity   PACK;// Window granularity
+ ushort winGranularity   CLY_Packed;// Window granularity
 #define WinGranularity   infoBk.winGranularity
- ushort winSize          PACK;// Window size
+ ushort winSize          CLY_Packed;// Window size
 #define WinSize          infoBk.winSize
- ushort winASegment      PACK;// Window A start segment
- ushort winBSegment      PACK;// Window B start segment
+ ushort winASegment      CLY_Packed;// Window A start segment
+ ushort winBSegment      CLY_Packed;// Window B start segment
 #define WinASegment      infoBk.winASegment
 #define WinBSegment      infoBk.winBSegment
- void   (*WinFuncPtr)()  PACK;// Pointer to window function
- ushort BytesPerScanLine PACK;// Bytes per scan line
+ void   (*WinFuncPtr)()  CLY_Packed;// Pointer to window function
+ ushort BytesPerScanLine CLY_Packed;// Bytes per scan line
 
 // ==== extended and optional information ==== Mandatory since VESA 1.2
 
- ushort XResolution      PACK;// Horizontal resolution
- ushort YResolution      PACK;// Vertical resolution
- char   XCharSize        PACK;// Character cell width
- char   YCharSize        PACK;// Character cell height
- char   numberOfPlanes   PACK;// Number of memory planes
+ ushort XResolution      CLY_Packed;// Horizontal resolution
+ ushort YResolution      CLY_Packed;// Vertical resolution
+ char   XCharSize        CLY_Packed;// Character cell width
+ char   YCharSize        CLY_Packed;// Character cell height
+ char   numberOfPlanes   CLY_Packed;// Number of memory planes
 #define NumberOfPlanes   infoBk.numberOfPlanes
 /*
- char   BitsPerPixel     PACK;// Bits per pixel
- char   NumberOfBanks    PACK;// Number of banks
- char   MemoryModel      PACK;// Memory model type
- char   BankSize         PACK;// Bank size in K
- char   NumImagePages    PACK;// Number of image pages
- char   reserved[1]      PACK;// Reserved for page function
+ char   BitsPerPixel     CLY_Packed;// Bits per pixel
+ char   NumberOfBanks    CLY_Packed;// Number of banks
+ char   MemoryModel      CLY_Packed;// Memory model type
+ char   BankSize         CLY_Packed;// Bank size in K
+ char   NumImagePages    CLY_Packed;// Number of image pages
+ char   reserved[1]      CLY_Packed;// Reserved for page function
 
 // ==== VESA 1.2 and later ====
 
- char   RedMaskSize      PACK;// Size of direct color red mask in bits
- char   RedMaskPos       PACK;// Bit position of LSB of red mask
- char   GreenMaskSize    PACK;// Idem green
- char   GreenMaskPos     PACK;
- char   BlueMaskSize     PACK;// Idem blue
- char   BlueMaskPos      PACK;
- char   ReservedMaskSize PACK;// Idem reserved bits
- char   ReservedMaskPos  PACK;
- char   DirectScreenMode PACK;// Direct Color mode attributes
- char   reserved2[216]   PACK;
+ char   RedMaskSize      CLY_Packed;// Size of direct color red mask in bits
+ char   RedMaskPos       CLY_Packed;// Bit position of LSB of red mask
+ char   GreenMaskSize    CLY_Packed;// Idem green
+ char   GreenMaskPos     CLY_Packed;
+ char   BlueMaskSize     CLY_Packed;// Idem blue
+ char   BlueMaskPos      CLY_Packed;
+ char   ReservedMaskSize CLY_Packed;// Idem reserved bits
+ char   ReservedMaskPos  CLY_Packed;
+ char   DirectScreenMode CLY_Packed;// Direct Color mode attributes
+ char   reserved2[216]   CLY_Packed;
 */
 } VESAmodeInfoBlock;
-#pragma pack(4)
+#pragma pack()
 // This block is globally accessed with the macros.
 static VESAmodeInfoBlock infoBk;
 

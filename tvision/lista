@@ -389,6 +389,7 @@ include/tv/indicato.h
 include/tv/intl.h
 include/tv/menus.h
 include/tv/msgbox.h
+include/tv/no_mss.h
 include/tv/objects.h
 include/tv/resource.h
 include/tv/stddlg.h
@@ -490,6 +491,7 @@ include/tv/submenu.h
 include/tv/terminal.h
 include/tv/textdev.h
 include/tv/view.h
+include/tv/yes_mss.h
 include/tv/window.h
 intl/dummy/intldummy.c
 intl/dummy/Makefile

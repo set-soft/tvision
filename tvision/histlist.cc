@@ -16,6 +16,9 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #include <stdlib.h>
 
+// Avoid replacing new by MSS's macro
+#include <tv/no_mss.h>
+
 class HistRec
 {
     
@@ -177,6 +180,8 @@ void clearHistory()
     new (historyBlock) HistRec( 0, "" );
     lastRec = next( historyBlock );
 }
+
+#include <tv/yes_mss.h>
 
 void initHistory()
 {

@@ -1,4 +1,17 @@
 $Log$
+Revision 1.202  2001/09/21 01:20:43  set
+* Added: Now the library is `MSS aware'. Laurynas sent me some patches for
+it and I adapted them. MSS is a memory debugger.
+* Modified: Uniformized the use of __attribute__((packed)) [Laurynas
+patches] and added to the compatlayer.
+* Modified: Now the uint* and uchar, uint, ulong, etc. types are part of
+compatlayer. I saw a collision with types defined but GNU libc (only for C
+sources where you can't define the same type twice :-(. Currently is solved
+case by case but I think it could be solved computing what headers are
+requested. It looks like for some ancient reason sys/types.h defines it.
+This action changed all name files.
+* Modified: The Boolean type is now also part of compatlayer.
+
 Revision 1.201  2001/09/20 22:26:53  set
 * Fixed: The keyboard internal structure wasn't "endian aware". Wow! now
 the mouse, shadows and keyboard seems to work for PPC and SPARC.
