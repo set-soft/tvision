@@ -37,7 +37,7 @@ TMenuBar *TEditorApp::initMenuBar( TRect r )
 {
 
       TSubMenu& sub1 = *new TSubMenu( __("~F~ile"), kbAltF ) +
-        *new TMenuItem( __("~O~pen"), cmOpen, kbF3 ) +
+        *new TMenuItem( __("~O~pen"), cmOpen, kbF3, hcNoContext, "F3" ) +
         *new TMenuItem( __("~N~ew"), cmNew, kbNoKey ) +
         *new TMenuItem( __("~S~ave"), cmSave, kbF2, hcNoContext, "F2" ) +
         *new TMenuItem( __("S~a~ve as..."), cmSaveAs, kbNoKey ) +
