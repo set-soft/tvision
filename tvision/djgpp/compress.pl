@@ -1,4 +1,9 @@
 #!/usr/bin/perl
+# Copyright (C) 1999-2003 by Salvador E. Tropea (SET),
+# see copyrigh file for details
+#
+# Creates a distribution zip file.
+#
 require "../miscperl.pl";
 
 GetVersion('../');
@@ -26,9 +31,15 @@ foreach $i (@ARGV)
 # Update the makefile if needed
 print 'makefile: ';
 if (-M 'makefile' > -M 'librhtv.gpr')
-  {
+  {# This fixes some details:
+   system('gprexp librhtv.gpr');
+   # Export the file:
    system('gpr2mak librhtv.gpr');
-   system('mv librhtv.mak makefile');
+   # Now fix the remaining. This is needed only for RHIDE 1.5 CVS
+   $a=cat('librhtv.mak');
+   $a=~s/$here/\.\.\//mg;
+   replace('Makefile',$a);
+   unlink('librhtv.mak');
    print "(1) updated";
   }
 else
@@ -37,6 +48,7 @@ else
   }
 if (-M '../compat/compat.mak' > -M '../compat/compat.gpr')
   {
+   system('gprexp ../compat/compat.gpr');
    system('gpr2mak ../compat/compat.gpr');
    print "(2) updated\n";
   }
@@ -52,6 +64,7 @@ foreach $i (@files)
    print "$r: ";
    if (!(-e $r) || (-M $r > -M $i))
      {
+      system("gprexp $i");
       system("gpr2mak $i");
       print "updated\n";
      }
