@@ -1,4 +1,11 @@
 $Log$
+Revision 1.13  1999/01/22 00:34:11  set
+* Added clarification in the readme.txt about: license, RHIDE version needed
+no-rtti stuff.
+* Made the n() macro in tvutil.h visible only when Uses_n is defined.
+(Problems reported by Jerzy Witkowski <jwi@pl.ibm.com>).
+* Fixed the examples to avoid warnings about NULL redefined.
+.
 Revision 1.12  1999/01/19 22:54:22  set
 * Fixed the gkey.gpr to be usable by anyone ;-). I added an rhide.env file to
 give just another example on how to use it with TVision.
