@@ -1285,6 +1285,8 @@ void TScreenX11::ProcessGenericEvents()
       {
        case Expose:
             {
+             if (windowSizeChanged) // Ignore them until the application gets
+                break;              // notified about the new size
              /*printf("Expose: %d %d %d %d\n",event.xexpose.x,event.xexpose.y,
                     event.xexpose.width,event.xexpose.height);*/
              int x=event.xexpose.x/fontW;

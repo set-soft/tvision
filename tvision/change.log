@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.395  2003/01/16 20:15:58  set
+* Fixed(?): Bug in the TEditor class. It looks like the condition that
+paints the empty part of the lines was wrong and didn't paint lines longer
+than half the width. Reported by Frederic BARBAISE
+<frederic.barbaise@numericable.fr>.
+
 Revision 2.394  2003/01/10 13:21:14  set
 * Fixed: Cyrillic examples had wrong key assigned to Exit (typo). Roman
 found it.
