@@ -252,8 +252,9 @@ void startcurses()
                       "program 2> file\r\n\r\n"));
      exit(-1);
     }
-  tty_file=stdout;
-  tty_fd = fileno(tty_file);
+  // SET: open it as a different file because we don't want to mix both
+  tty_file=fopen(ttyname(fileno(stdout)),"w+b");
+  tty_fd=fileno(tty_file);
 
   // old buggy code: if (!newterm(terminal,stdin,tty_file))
   // SET: according to man newterm that's the right order! It was a really
