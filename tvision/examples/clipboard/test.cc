@@ -117,7 +117,7 @@ void TMyApp::testCopy(int clip)
     messageBox("Sorry but this OS doesn't have such a clipboard",mfError | mfOKButton);
     return;
    }
- int res=TVOSClipboard::copy(clip,aMessage,strlen(aMessage)+1);
+ int res=TVOSClipboard::copy(clip,aMessage,strlen(aMessage));
  if (!res)
    {
     messageBox(mfError | mfOKButton,"Error copying to clipboard: %s",

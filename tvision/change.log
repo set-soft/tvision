@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.191  2002/07/01 12:53:39  set
+* Fixed: More error reporting details in all clipboard implementations.
+* Updated: [DJGPP+Win32] Project and makefiles.
+
 Revision 2.190  2002/07/01 12:49:03  set
 Revision 2.189  2002/06/29 20:11:05  set
 * Added: [Win32] Clipboard class.
