@@ -256,6 +256,7 @@ TMyApp::TMyApp() :
     demoDialogData->checkBoxData = 1;
     demoDialogData->radioButtonData = 2;
     strcpy( demoDialogData->inputLineData, "Phone Mum!" );
+    sprintf( demoDialogData->inputLineRangeData, "%d", 16 );
 }
 
 TMyApp::~TMyApp()
