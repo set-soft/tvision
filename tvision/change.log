@@ -1,4 +1,13 @@
 $Log$
+Revision 1.21  1999/02/07 13:56:54  set
+* Added a "Try" button to the TColorDialog. It makes a redraw of the screen
+and generates a cmUpdateColorsChanged broadcast. The broadcast should be used
+by special classes that needs to know that the colors changed, the only one
+I know about is my own editor that have a color's cache. This idea was based
+on a crazy report by "a.meyer" <hexx3000@schaltzentrale.mvnet.de> ;-).
+* Added a Uses_TColorCommands request for the cmUpdateColorsChanged located
+in colorsel.h.
+.
 Revision 1.20  1999/02/02 23:03:19  root (set)
 * Adapted the TEditor family to Linux (file I/O stuff and \r\n differences).
 
