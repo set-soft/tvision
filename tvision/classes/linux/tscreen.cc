@@ -864,7 +864,7 @@ TScreen::~TScreen()
      RestoreScreen();
   suspended=1;
 
-  delete screenBuffer;
+  DeleteArray(screenBuffer);
   LOG("terminated");
   if (vcsWfd>=0)
      close(vcsWfd);
@@ -941,26 +941,39 @@ void TScreen::clearScreen()
 
 void TScreen::setVideoMode( ushort mode )
 {
-  if (screenBuffer)
-     delete screenBuffer;
+  int oldWidth=screenWidth;
+  int oldHeight=screenHeight;
   setCrtMode( fixCrtMode( mode ) );
   setCrtData();
   // allocating a zeroed screenBuffer, because this function
   // is called in most cases (in RHIDE) after a SIGWINCH
-  screenBuffer = new ushort[screenWidth * screenHeight];
+  if (screenWidth!=oldWidth || screenHeight!=oldHeight || !screenBuffer)
+    {
+     // Realloc screen buffer only if actually needed (it doesn't exist
+     // or screen size is changed)
+     if (screenBuffer)
+        DeleteArray(screenBuffer);
+     screenBuffer = new ushort[screenWidth*screenHeight];
+    }
   memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
 }
 
-// I'm not sure about it check it Robert
 void TScreen::setVideoMode( char *mode )
 {
-  if (screenBuffer)
-     delete screenBuffer;
+  int oldWidth=screenWidth;
+  int oldHeight=screenHeight;
   setCrtMode( mode );
   setCrtData();
   // allocating a zeroed screenBuffer, because this function
   // is called in most cases (in RHIDE) after a SIGWINCH
-  screenBuffer = new ushort[screenWidth * screenHeight];
+  if (screenWidth!=oldWidth || screenHeight!=oldHeight || !screenBuffer)
+    {
+     // Realloc screen buffer only if actually needed (it doesn't exist
+     // or screen size is changed)
+     if (screenBuffer)
+        DeleteArray(screenBuffer);
+     screenBuffer = new ushort[screenWidth*screenHeight];
+    }
   memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
 }
 

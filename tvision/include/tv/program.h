@@ -78,6 +78,7 @@ const int
     apBlackWhite = 1,
     apMonochrome = 2;
 
+
 class TProgram : public TGroup, public virtual TProgInit
 {
 
@@ -100,6 +101,13 @@ public:
 
     virtual void suspend() {}
     virtual void resume() {}
+
+    // This is a very nasty function only needed if you call
+    // TScreen::resume bypassing TProgram::resume. In this case
+    // the buffers could get unsychronized. This is done by
+    // RHIDE.
+    void syncScreenBuffer();
+    //   { buffer = TScreen::screenBuffer; }
 
     static TStatusLine *initStatusLine( TRect );
     static TMenuBar *initMenuBar( TRect );
