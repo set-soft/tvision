@@ -1,4 +1,9 @@
 $Log$
+Revision 1.187  2001/09/04 18:32:14  set
+* Added: inline TMenuItem& operator + ( TMenuItem& s, TMenuItem& i ).
+It makes the creation of nested menues more readable. Sugested by Dean
+Wakerley <dean@wakerley.com>.
+
 Revision 1.186  2001/09/04 18:05:42  set
 * Fixed: It was impossible to use CFLAGS options that contained
 option=value because it confused patchenv.pl failing to configure the
