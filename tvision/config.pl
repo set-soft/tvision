@@ -47,6 +47,7 @@ if ($OS eq 'UNIX')
    LookForGPM($GPMVersionNeeded);
    LookForNCurses($NCursesVersionNeeded,$NCursesVersionRecomended);
    LookForKeysyms();
+   LookForOutB();
   }
 LookForIntlSupport();
 
@@ -260,6 +261,36 @@ int main(void)
    }
 }
 
+#
+# GlibC 2.1.3 defines it by itself, lamentably doesn't have any protection
+# mechanism to avoid collisions with the kernel headers, too bad.
+#
+sub LookForOutB
+{
+ my $test;
+
+ print 'Looking for outb definition in sys/io.h: ';
+ if (@conf{'HAVE_OUTB_IN_SYS'})
+   {
+    print "@conf{'HAVE_OUTB_IN_SYS'} (cached)\n";
+    return;
+   }
+ $test='
+#include <stdio.h>
+#include <sys/io.h>
+#ifdef __i386__
+static volatile void Test(void) { outb(0x300,10); }
+#endif
+int main(void)
+{
+ printf("OK\n");
+ return 0;
+}';
+ $test=RunGCCTest($GCC,'c',$test,'');
+ $conf{'HAVE_OUTB_IN_SYS'}=($test eq "OK\n") ? 'yes' : 'no';
+ print "@conf{'HAVE_OUTB_IN_SYS'}\n";
+}
+
 sub LookForGPM
 {
  my $vNeed=$_[0],$test;
@@ -427,6 +458,7 @@ sub CreateConfigH
  $conf{'HAVE_INTL_SUPPORT'}=@conf{'intl'};
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
  $text.=ConfigIncDefYes('HAVE_GPM','GPM mouse support');
+ $text.=ConfigIncDefYes('HAVE_OUTB_IN_SYS','out/in functions defined by glibc');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n#define TVOSf_$OSflavor\n";
 

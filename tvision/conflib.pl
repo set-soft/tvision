@@ -816,7 +816,7 @@ sub ConfigIncDef
 
  $text ="\n\n/* $_[1] */\n";
  $text.='/*' unless (@conf{$_[0]});
- $text.="#define $_[0]";
+ $text.="#define $_[0] 1";
  $text.='*/' unless (@conf{$_[0]});
  $text;
 }
@@ -837,7 +837,7 @@ sub ConfigIncDefYes
 
  $text ="\n\n/* $_[1] */\n";
  $text.='/*' unless (@conf{$_[0]} eq 'yes');
- $text.="#define $_[0]";
+ $text.="#define $_[0] 1";
  $text.='*/' unless (@conf{$_[0]} eq 'yes');
  $text;
 }
