@@ -837,10 +837,9 @@ void TScreenX11::LoadFontAsUnicode()
 }
 
 inline
-void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
+uint16 TScreenX11::unicode2index(uint16 unicode)
 {
- // Find the internal code and convert it into an index
- uint16 code=u2c->isearch(aChar);
+ uint16 code=u2c->isearch(unicode);
  //printf("D U+%04X -> %d |",aChar,code);
  if (code==0xFFFF)
    {
@@ -849,7 +848,12 @@ void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
    }
  else
     code-=firstGlyph;
- // Find the XImage
+ return code;
+}
+
+inline
+void TScreenX11::checkUnicodeGlyph(uint16 code)
+{
  if (!unicodeGlyphs[code])
    {// Not yet created, create it
     char *data=(char *)malloc(fontSz);
@@ -859,6 +863,15 @@ void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
     /* Set the bit order, this is faster */
     unicodeGlyphs[code]->byte_order=unicodeGlyphs[code]->bitmap_bit_order=MSBFirst;
    }
+}
+
+inline
+void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
+{
+ // Find the internal code and convert it into an index
+ uint16 code=unicode2index(aChar);
+ // Find the XImage
+ checkUnicodeGlyph(code);
  XPutImage(disp,mainWin,gc,unicodeGlyphs[code],0,0,x,y,fontW,fontH);
 }
 
@@ -1340,11 +1353,7 @@ void TScreenX11::DrawCursor()
       {
        uint16 *buf=screenBuffer+offset*2;
        attr=buf[attrPos];
-       uint16 code=u2c->isearch(buf[charPos]);
-       if (code==0xFFFF)
-          code=0;
-       else
-          code-=firstGlyph;
+       uint16 code=unicode2index(buf[charPos]);
        memcpy(cursorData,glyphs+code*fontSz,fontSz);
       }
     int bg=attr>>4;
@@ -1610,18 +1619,8 @@ void TScreenX11::writeLineU16(int x, int y, int w, void *s, unsigned color)
  uint16 *str=(uint16 *)s;
  while (w--)
    {
-    uint16 code=u2c->isearch(*str);
-    if (code==0xFFFF)
-       code=0;
-    else
-       code-=firstGlyph;
-    if (!unicodeGlyphs[code])
-      {
-       char *data=(char *)malloc(fontSz);
-       memcpy(data,glyphs+code*fontSz,fontSz);
-       unicodeGlyphs[code]=XCreateImage(disp,visual,1,XYBitmap,0,data,fontW,fontH,8,0);
-       unicodeGlyphs[code]->byte_order=unicodeGlyphs[code]->bitmap_bit_order=MSBFirst;
-      }
+    uint16 code=unicode2index(*str);
+    checkUnicodeGlyph(code);
     XPutImage(disp,mainWin,gc,unicodeGlyphs[code],0,0,x,y,fontW,fontH);
     str++;
     x+=fontW;
