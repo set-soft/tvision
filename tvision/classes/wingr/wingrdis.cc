@@ -653,7 +653,7 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
   TDisplayWinGr::fonts= NULL; }
 
 /* ------------------------------------------------------------------------- */
-   void TDisplayWin32::Beep()
+   void TDisplayWinGr::Beep()
 /* ------------------------------------------------------------------------- */
 {  MessageBeep(0xFFFFFFFF); }
 
