@@ -29,7 +29,7 @@
 #include <tv.h>
 
 #include <stdarg.h>
-#include <strstrea.h>
+#include <strstream.h>
 #include <iomanip.h>
 
 TMenuBar *TEditorApp::initMenuBar( TRect r )

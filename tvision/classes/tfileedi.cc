@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/stat.h>
 
 #define Uses_TGroup
 #define Uses_TEditor
@@ -20,6 +21,13 @@
 #define Uses_ipstream
 #define Uses_TStreamableClass
 #include <tv.h>
+
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+#ifndef O_TEXT
+#define O_TEXT 0
+#endif
 
 inline uint32 min( uint32 u1, uint32 u2 )
 {
@@ -187,21 +195,38 @@ static void writeBlock( ofstream& f, char *buf, unsigned len )
         }
 }
 
+// SET: from my editor:
+static
+int edTestForFile(const char *name)
+{
+ struct stat st;
+
+ if (stat(name,&st)==0)
+    return S_ISREG(st.st_mode);
+ return 0;
+}
+
 Boolean TFileEditor::saveFile()
 {
-    char drive[MAXDRIVE];
-    char dir[MAXDIR];
-    char file[MAXFILE];
-    char ext[MAXEXT];
-
-    if( (editorFlags & efBackupFiles) != 0 )
-        {
-        fnsplit( fileName, drive, dir, file, ext );
-        char backupName[MAXPATH];
-        fnmerge( backupName, drive, dir, file, backupExt );
-        unlink( backupName );
-        rename( fileName, backupName );
-        }
+    // SET: That's similar to what I use in TCEdit and is partially a hack
+    // to avoid fnsplit & fnmerge in Linux (originally from Robert).
+    if ((editorFlags & efBackupFiles) &&
+        edTestForFile(fileName)) // Forget about it if that's a new file
+      {
+       char *dot,*slash;
+       int flen = strlen(fileName);
+       char backupName[PATH_MAX];
+       strcpy(backupName,fileName);
+       dot = strrchr(backupName,'.');
+       slash = strrchr(backupName,'/');
+       if (dot < slash) // directory has a dot but not the filename
+         dot = NULL;
+       if (!dot)
+         dot = backupName + flen;
+       strcpy(dot,backupExt);
+       unlink( backupName );
+       rename( fileName, backupName );
+      }
 
     ofstream f( fileName, ios::out | ios::bin );
 
