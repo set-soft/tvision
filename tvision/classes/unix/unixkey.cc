@@ -24,7 +24,7 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 *****************************************************************************/
 #include <tv/configtv.h>
 
-#ifdef TVOS_UNIX
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #define Uses_stdio
 #define Uses_unistd
@@ -540,4 +540,5 @@ void TGKeyUNIX::Init()
  TGKey::fillTEvent   =FillTEvent;
  TGKey::SetKbdMapping=TGKeyUNIX::SetKbdMapping;
 }
-#endif // TVOS_UNIX
+#endif // TVOS_UNIX && !TVOSf_QNXRtP
+

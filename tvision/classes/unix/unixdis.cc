@@ -2,7 +2,7 @@
 /* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
 #include <tv/configtv.h>
 
-#ifdef TVOS_UNIX
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_unistd
@@ -119,5 +119,5 @@ int TDisplayUNIX::CheckForWindowSize(void)
  windowSizeChanged=0;
  return ret;
 }
-#endif // TVOS_UNIX
+#endif // TVOS_UNIX && !TVOSf_QNXRtP
 

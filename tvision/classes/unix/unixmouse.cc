@@ -2,7 +2,7 @@
 /* Copyright (C) 1999-2001 Salvador Eduardo Tropea */
 #include <tv/configtv.h>
 
-#ifdef TVOS_UNIX
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #define Uses_stdlib
 #define Uses_string
@@ -135,4 +135,5 @@ THWMouseXTerm::~THWMouseXTerm()
 {
 }
 
-#endif // TVOS_UNIX
+#endif // TVOS_UNIX && !TVOSf_QNXRtP
+
