@@ -1,4 +1,13 @@
 $Log$
+Revision 1.9  1999/01/18 22:55:18  root
+* Copied the changes from DOS.
+* Added the versions of libraries I use for Linux in the change.log.
+
+Revision 1.10  1999/01/18 22:41:54  set
+* Fixed the djgpp makefile switchs.
+* Added code to the compress perl script to regenerate the makefile if the
+it's older than the project.
+
 Revision 1.9  1999/01/13 23:26:57  set
 * Added "delete.me" files to ensure the empty directories are packaged.
 * Silly boy, silly boy, I don't how but some silly options were included in

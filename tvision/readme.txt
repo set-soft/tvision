@@ -131,8 +131,9 @@ the version with debug information to your libs directory.
 -------------------
 
 Linux:
-  In Linux you'll need ncurses (I use 3.4) and gpm. If you are using libc5
-you'll need gettext too (libintl) that isn't needed for glibc.
+  In Linux you'll need ncurses (I use 3.4) and gpm (I use 1.3). If you are
+using libc5 you'll need gettext too (libintl) that isn't needed for glibc
+(I use 2.0.7).
   The binary distribution was created with Debian 2.0 (glibc2, ncurses3, etc).
 
 DOS:
