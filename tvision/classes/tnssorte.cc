@@ -80,3 +80,35 @@ Boolean TNSSortedCollection::search( void *key, ccIndex& index )
     return res;
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  It sorts the collection again. This is useful when the value returned by
+keyOf can be changed and you need to sort the collection according to the
+new value returned by keyOf.
+  It is currently implemented using buble sort algorithm, a better solution
+is welcome.
+  Added by SET.
+  
+***************************************************************************/
+
+void TNSSortedCollection::reSort()
+{
+ Boolean sorted;
+ do
+   {
+    sorted=True;
+    for (int i=1; i<count; i++)
+       {
+        if (compare(keyOf(items[i]),keyOf(items[i-1]))<0)
+          {
+           void *aux=items[i-1];
+           items[i-1]=items[i];
+           items[i]=aux;
+           sorted=False;
+          }
+       }
+   }
+ while (!sorted);
+}
+
