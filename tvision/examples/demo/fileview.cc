@@ -12,6 +12,7 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified by Salvador E. Tropea <set@ieee.org>
  */
 
 // SET: moved the standard headers before tv.h
@@ -108,13 +109,13 @@ void TFileViewer::readFile( const char *fName )
     else
         {
         char line[maxLineLength+1];
+        // SET: Changed to use getline as suggested by Andris.
+        // New standards makes the use of get incorrect.
         while( !lowMemory() &&
                !fileToView.eof() && 
-               fileToView.get( line, sizeof line ) != 0 
+               fileToView.getline( line, sizeof line )
              )
             {
-            char c;
-            fileToView.get(c);      // grab trailing newline
             limit.x = max( limit.x, strlen( line ) );
             fileLines->insert( newStr( line ) );
             }

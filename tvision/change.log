@@ -1,4 +1,10 @@
 $Log$
+Revision 1.216  2001/10/07 22:05:20  set
+* Added: A nl_langinfo replacement to compatlayer library, it just
+implements part of the functionallity. BTW according to glibc people using
+localeconv is for lames ... it looks like djgpp, MinGW, CygWin, BC++, etc.
+users are lames ...
+.
 Revision 1.215  2001/10/07 20:27:32  set
 * Fixed: I forgot to install the cl/*.h files!
 * Added: A mechanism to create the .deb packages without root priviledges.
