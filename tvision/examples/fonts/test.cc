@@ -222,6 +222,12 @@ void TMyApp::testFontSecondary()
     TScreen::restoreFonts();
     changed1=0;
    }
+
+ unsigned w,h;
+ TScreen::getFontGeometry(w,h);
+ if (w!=8 || h!=16)
+    messageBox("\03The default font doesn't match the size of the test font, the next operation will fail",mfInformation | mfOKButton);
+
  TScreenFont256 font;
  font.w=8;
  font.h=16;
@@ -231,6 +237,8 @@ void TMyApp::testFontSecondary()
     messageBox("\03Restored primary font and defined secondary font. Look at the dialog title.",mfInformation | mfOKButton);
     changed2=1;
    }
+ else
+    messageBox("\03Error setting the secondary font.",mfError | mfOKButton);
 }
 
 int main(int argc, char *argv[], char **envir)

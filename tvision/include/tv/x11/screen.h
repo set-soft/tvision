@@ -79,7 +79,9 @@ protected:
  static int    GetFontGeometry(unsigned &w, unsigned &h);
  static int    GetFontGeometryRange(unsigned &wmin, unsigned &hmin,
                                     unsigned &umax, unsigned &hmax);
- static int    SetFont(int which, TScreenFont256 *font, int fontCP, int appCP=-1);
+ static int    SetFont(int changeP, TScreenFont256 *fontP,
+                       int changeS, TScreenFont256 *fontS,
+                       int fontCP=-1, int appCP=-1);
  static void   RestoreFonts();
  
 protected:
@@ -101,6 +103,8 @@ protected:
  // Font helpers
  static void   CreateXImageFont(int which, uchar *font, unsigned w, unsigned h);
  static void   DestroyXImageFont(int which);
+ // It creates the XImage used for the cursor.
+ static void   AdjustCursorImage();
 
  static void   FullRedraw();
  inline
@@ -149,6 +153,12 @@ protected:
  static XSizeHints *sizeHints;
  // Window class and resources name
  static XClassHint *classHint;
+ // Default fonts
+ static TScreenFont256  font8x16;
+ static TScreenFont256  font10x20;
+ static TScreenFont256 *defaultFont;
+ static uchar shapeFont10x20[];
+ static uchar shapeFont8x16[];
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen
