@@ -1,4 +1,7 @@
 $Log$
+Revision 1.77  1999/07/12 23:36:58  root (set)
+* Added: An Eterm theme example and instructions to install it.
+
 Revision 1.76  1999/07/07 23:02:04  set
 * Added: a new couple of members to TCommandSet, they are used to enable or
 disable a range of commands. I usedit in the editor to disable all the editor
