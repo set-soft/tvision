@@ -481,8 +481,8 @@ screen.cc
 sescreen.cc
 stream/sbackgro.cc
 stream/sbutton.cc
-stream/ncalcula.cc
-stream/nchdirdi.cc
+stream/scalcula.cc
+stream/schdirdi.cc
 stream/schdirdi.cc
 stream/scheckbo.cc
 stream/sclrdisp.cc
