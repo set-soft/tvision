@@ -22,9 +22,9 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 
-#include <tv/x11scr.h>
-#include <tv/x11key.h>
-#include <tv/x11mouse.h>
+#include <tv/x11/screen.h>
+#include <tv/x11/key.h>
+#include <tv/x11/mouse.h>
 
 #include <locale.h>
 #include <signal.h>

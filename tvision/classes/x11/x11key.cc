@@ -17,8 +17,8 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
-#include <tv/x11scr.h>
-#include <tv/x11key.h>
+#include <tv/x11/screen.h>
+#include <tv/x11/key.h>
 
 /*****************************************************************************
 

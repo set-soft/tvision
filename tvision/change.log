@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.65  2002/05/13 19:30:23  set
+* Modified: The intl/dummy/Makefile didn't define CC and GNU make used cc.
+
 Revision 2.64  2002/05/13 15:26:49  set
 * Fixed: X11 cursor, again.
 
