@@ -115,6 +115,9 @@ public:
     // SET: Changed to avoid problems, in fact some casts to int failed in
     // Alpha/Linux. We found it with Dim Zegebart.
     static ushort *screenBuffer;
+    // SET: Indicates if the screen was initialized by the TScreen constructor
+    static char initialized;
+    static char suspended;
     static ushort cursorLines;
 
     static void setCrtData();

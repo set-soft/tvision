@@ -24,7 +24,10 @@
 #endif
 
 int dual_display = 0;
-int TScreen_suspended = 1;
+// SET: Starts as suspended to avoid TScreen::suspend() calls and other
+// similar stuff before initializing
+char TScreen::suspended = 1;
+char TScreen::initialized = 0;
 
 #ifdef __FreeBSD__
 #include <ncurses.h>
@@ -410,7 +413,7 @@ void stopcurses()
  // I know the name of only some attributes: 0=normal (what we need),
  // 1=bold, 4=underline, 5=blink, 7=inverse and I think they are 9:
  TScreen::SendToTerminal(tparm(set_attributes,0,0,0,0,0,0,0,0,0));
- if (!TScreen_suspended)
+ if (!TScreen::suspended)
    {
     // 3) Clear the screen
     clear();
@@ -794,12 +797,13 @@ TScreen::TScreen()
   startcurses();
   SaveScreen();
   setVideoMode(screenMode);
-  TScreen_suspended = 0;
+  suspended = 0;
+  initialized=1;
 }
 
 void TScreen::resume()
-{
-  if (!TScreen_suspended)
+{ // Avoid wrong actions
+  if (!initialized || !suspended)
      return;
   if (!dual_display)
      SaveScreen();
@@ -811,7 +815,7 @@ void TScreen::resume()
   tcsetattr(tty_fd, TCSANOW, &new_term);
   #endif
 
-  TScreen_suspended=0;
+  suspended=0;
   // SET: To go back from a temporal ncurses stop we must use just doupdate
   // or refresh. (see suspend).
   doupdate();
@@ -827,9 +831,9 @@ TScreen::~TScreen()
   tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
   #endif
 
-  if (!TScreen_suspended)
+  if (!suspended)
      RestoreScreen();
-  TScreen_suspended = 1;
+  suspended=1;
 
   delete screenBuffer;
   LOG("terminated");
@@ -852,7 +856,7 @@ TScreen::~TScreen()
 
 void TScreen::suspend()
 {
-  if (TScreen_suspended) return;
+  if (suspended) return;
   old_col = old_back = old_fore = -1;
   // FIXME: When I know, how to get the cursor state
   setCursorType(0x0607); // make the cursor visible
@@ -870,7 +874,7 @@ void TScreen::suspend()
     
     RestoreScreen();
   }
-  TScreen_suspended = 1;
+  suspended=1;
 }
 
 ushort TScreen::fixCrtMode( ushort mode )

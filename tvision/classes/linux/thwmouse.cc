@@ -72,7 +72,7 @@ void show_mouse_char()
 
 int draw_mouse(int x,int y)
 {
-  if (TScreen_suspended) return 0;
+  if (TScreen::suspended) return 0;
   if (x != last_x || y != last_y)
   {
     if (visible) reset_mouse_char();

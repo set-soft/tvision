@@ -42,6 +42,11 @@ Boolean TScreen::checkSnow = True;
 // malloced pointer, the screenBuffer isn't used to access the screen.
 ushort *TScreen::screenBuffer = (ushort *)-1;
 ushort TScreen::cursorLines = 0;
+// SET: Indicates if the screen was initialized by the TScreen constructor
+char TScreen::initialized = 0;
+// SET: Starts as suspended to avoid TScreen::suspend() calls and other
+// similar stuff before initializing
+char TScreen::suspended = 1;
 
 extern REGS r_display;
 
@@ -56,8 +61,6 @@ extern REGS r_display;
 #define BX (r.x.bx)
 #define CX (r.x.cx)
 #define DX (r.x.dx)
-
-int TScreen_suspended = 1;
 
 void SaveScreen();
 void SaveScreenReleaseMemory();
@@ -112,13 +115,14 @@ int getBlinkState();
 TScreen::TScreen()
 {
   user_mode = screenMode = startupMode = getCrtMode();
-  TScreen_suspended = 1;
+  suspended = 1;
   resume();
 }
 
 void TScreen::resume()
 {
-  if (!TScreen_suspended) return;
+  if (!initialized || !suspended)
+     return;
   if (!dual_display)
   {
     SaveScreen();
@@ -137,7 +141,7 @@ void TScreen::resume()
     emulate_mouse = 1;
   }
   setCrtData();
-  TScreen_suspended = 0;
+  suspended = 0;
 }
 
 TScreen::~TScreen()
@@ -152,13 +156,13 @@ TScreen::~TScreen()
 
 void TScreen::suspend()
 {
-  if (TScreen_suspended) return;
+  if (suspended) return;
   if (!dual_display)
   {
     was_blink = getBlinkState();
     RestoreScreen();
   }
-  TScreen_suspended = 1;
+  suspended = 1;
 }
 
 ushort TScreen::fixCrtMode( ushort mode )
