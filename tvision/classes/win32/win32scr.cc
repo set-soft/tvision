@@ -26,6 +26,7 @@ needed.
 
 #define Uses_TScreen
 #define Uses_TEvent
+#define Uses_TGKey
 #include <tv.h>
 
 #define WIN32_LEAN_AND_MEAN
@@ -35,21 +36,32 @@ needed.
 #include <tv/win32/mouse.h>
 #include <tv/win32/key.h>
 
+#include <stdio.h>
+
 CHAR_INFO                 *TScreenWin32::buffer=NULL;
 CONSOLE_SCREEN_BUFFER_INFO TScreenWin32::info;
 int                        TScreenWin32::ExitEventThread=0;
 HANDLE                     TScreenWin32::EventThreadHandle=NULL;
+DWORD                      TScreenWin32::oldConsoleMode,
+                           TScreenWin32::newConsoleMode;
+unsigned                   TScreenWin32::xCurStart,
+                           TScreenWin32::yCurStart;
 
 TScreenWin32::TScreenWin32()
 {
  InitConsole();
  flags0=CodePageVar;
- user_mode=screenMode=startupMode=getCrtMode();
+ screenMode=startupMode=getCrtMode();
+ cursorLines=startupCursor=getCursorType();
+ screenWidth =GetCols();
+ screenHeight=GetRows();
+ screenBuffer=new ushort[screenHeight*screenWidth];
+ ZeroMemory(screenBuffer,screenHeight*screenWidth*sizeof(ushort));
+
+ SaveScreen();
+ GetCursorPos(xCurStart,yCurStart);
  initialized=1;
- screenBuffer=new ushort[GetRows()*GetCols()];
- ZeroMemory(screenBuffer,GetRows()*GetCols()*sizeof(ushort));
- suspended=1;
- resume();
+ setCrtData();
 }
 
 void TScreenWin32::InitConsole()
@@ -59,11 +71,10 @@ void TScreenWin32::InitConsole()
  hIn =GetStdHandle(STD_INPUT_HANDLE);
 
  // Enable mouse input
- DWORD mode;
- GetConsoleMode(hIn,&mode);
- mode|=ENABLE_MOUSE_INPUT|ENABLE_WINDOW_INPUT;
- mode&=~(ENABLE_LINE_INPUT|ENABLE_ECHO_INPUT);
- SetConsoleMode(hIn,mode);
+ GetConsoleMode(hIn,&oldConsoleMode);
+ newConsoleMode=oldConsoleMode | ENABLE_MOUSE_INPUT|ENABLE_WINDOW_INPUT;
+ newConsoleMode&=~(ENABLE_LINE_INPUT|ENABLE_ECHO_INPUT|ENABLE_PROCESSED_INPUT);
+ SetConsoleMode(hIn,newConsoleMode);
 
  GetConsoleScreenBufferInfo(hOut,&ConsoleInfo);
 
@@ -144,20 +155,26 @@ DWORD WINAPI TScreenWin32::HandleEvents(void* p)
 
 void TScreenWin32::Resume()
 {
+ GetCursorPos(xCurStart,yCurStart);
  SaveScreen();
  setCrtData();
+ GetConsoleMode(hIn,&oldConsoleMode);
+ SetConsoleMode(hIn,newConsoleMode);
 }
 
 void TScreenWin32::Suspend()
 {
  RestoreScreen();
+ SetCursorPos(xCurStart,yCurStart);
+ SetConsoleMode(hIn,oldConsoleMode);
 }
 
 TScreenWin32::~TScreenWin32()
 {
- RestoreScreen();
+ Suspend();
  suspended=1;
  SaveScreenReleaseMemory();
+ setCursorType(startupCursor);
  DoneConsole();
  if (screenBuffer)
    {
@@ -177,7 +194,7 @@ void TScreenWin32::clearScreen()
 
 void TScreenWin32::setCharacter(unsigned offset, ushort value)
 {
- setCharacter(offset,&value,1);
+ setCharacters(offset,&value,1);
 }
 
 void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)
@@ -236,8 +253,8 @@ void TScreenWin32::SaveScreen()
    }
  buffer=new CHAR_INFO[info.dwSize.Y*info.dwSize.X];
  if (buffer)
-   {
-    SMALL_RECT rect={ 0,0, info.dwSize.X,info.dwSize.Y };
+   {// SET: The rectangle is 0 to size-1
+    SMALL_RECT rect={ 0,0, info.dwSize.X-1,info.dwSize.Y-1 };
     COORD      start={0,0};
     ReadConsoleOutput(hOut,buffer,info.dwSize,start,&rect);
   }
@@ -247,7 +264,7 @@ void TScreenWin32::RestoreScreen()
 {
  if (buffer)
    {
-    SMALL_RECT rect={ 0,0, info.dwSize.X,info.dwSize.Y };
+    SMALL_RECT rect={ 0,0, info.dwSize.X-1,info.dwSize.Y-1 };
     COORD      start={0,0};
     WriteConsoleOutput(hOut,buffer,info.dwSize,start,&rect);
    }
@@ -306,6 +323,17 @@ int TScreenWin32::System(const char *command, pid_t *pidChild)
    }
  *pidChild=cpid;
  return 0;
+}
+
+TScreen *TV_Win32DriverCheck()
+{
+ TScreenWin32 *drv=new TScreenWin32();
+ if (!TScreen::initialized)
+   {
+    delete drv;
+    return 0;
+   }
+ return drv;
 }
 #endif
 

@@ -79,7 +79,7 @@ void TDisplayWin32::SetCursorShape(unsigned start, unsigned end)
  SetConsoleCursorInfo(hOut,&ConsoleCursorInfo);
 }
 
-ushort TDisplayWin32::GetRows();
+ushort TDisplayWin32::GetRows()
 {
 #if 0
  ushort Rows=ConsoleInfo.srWindow.Bottom-ConsoleInfo.srWindow.Top+1;
@@ -125,7 +125,7 @@ int TDisplayWin32::CheckForWindowSize(void)
 
 ***************************************************************************/
 
-char *TDisplayWin32::GetWindowTitle(void)
+const char *TDisplayWin32::GetWindowTitle(void)
 {
  char buf[mxTitleSize];
  DWORD ret=GetConsoleTitle(buf,mxTitleSize);

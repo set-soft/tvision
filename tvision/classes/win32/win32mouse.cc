@@ -19,14 +19,17 @@ here an events handler with a queue.
 #include <stdlib.h>
 #define Uses_TEvent
 #define Uses_TEventQueue
+#define Uses_TGKey
+#define Uses_TScreen
 #include <tv.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-//#include <tv/win32/screen.h>
+#include <tv/win32/screen.h>
 #include <tv/win32/mouse.h>
 #include <tv/win32/key.h>
+#include <stdio.h>
 
 MouseEventType  *THWMouseWin32::evMouseIn;
 MouseEventType  *THWMouseWin32::evLastMouseIn=NULL;
@@ -37,9 +40,11 @@ CRITICAL_SECTION THWMouseWin32::lockMouse;
 
 void THWMouseWin32::Init()
 {
+ THWMouse::GetEvent=THWMouseWin32::GetEvent;
  InitializeCriticalSection(&lockMouse);
  evMouseLength=0;
  evMouseIn=evMouseOut=&evMouseQueue[0];
+ buttonCount=3;
 }
 
 void THWMouseWin32::DeInit()
@@ -52,16 +57,16 @@ void THWMouseWin32::putConsoleMouseEvent(MouseEventType& mouse)
  EnterCriticalSection(&lockMouse);
  if (evMouseLength<eventMouseQSize)
    {// Compress mouse events
-    if (evLastMouseIn && evMouseLength && (evLastMouseIn->buttons==mouse.buttons))
+    /*if (evLastMouseIn && evMouseLength && (evLastMouseIn->buttons==mouse.buttons))
        *evLastMouseIn=mouse;
     else
-      {
+      {*/
        evMouseLength++;
        *evMouseIn=mouse;
        evLastMouseIn=evMouseIn;
        if (++evMouseIn>=&evMouseQueue[eventMouseQSize])
           evMouseIn=&evMouseQueue[0];
-      }
+      //}
    }
  LeaveCriticalSection(&lockMouse);
 }
@@ -73,10 +78,13 @@ void THWMouseWin32::GetEvent(MouseEventType &me)
  if (hasmouseevent)
    {
     evMouseLength--;
-    mouse=*evMouseOut;
+    me=*evMouseOut;
     if (++evMouseOut>=&evMouseQueue[eventMouseQSize])
        evMouseOut=&evMouseQueue[0];
    }
+ else
+    // If no event is available use the last values so TV reports no changes
+    me=TEventQueue::curMouse;
  LeaveCriticalSection(&lockMouse);
 }
 
@@ -84,7 +92,7 @@ void THWMouseWin32::HandleMouseEvent()
 {
  INPUT_RECORD ir;
  DWORD dwRead;
- ReadConsoleInput(hIn,&ir,1,&dwRead);
+ ReadConsoleInput(TScreenWin32::hIn,&ir,1,&dwRead);
  if ((dwRead==1) && (ir.EventType==MOUSE_EVENT))
    {
     MouseEventType mouse;

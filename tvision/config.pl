@@ -126,7 +126,7 @@ elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
+   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile','compat/compat.mak');
    CreateRHIDEenvs('examples/rhide.env','win32/rhide.env');
@@ -141,7 +141,7 @@ if ($OS ne 'Win32')
    $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2);
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
+   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile','compat/compat.mak');
    # No the examples because they are needed by the current target

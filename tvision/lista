@@ -7,6 +7,15 @@ classes/dos/dosdis.cc
 classes/dos/doskey.cc
 classes/dos/dosmouse.cc
 classes/dos/dosscr.cc
+classes/dos/rhscreen.cc
+classes/dos/screen.cc
+classes/dos/sescreen.cc
+classes/dos/vesa.cc
+classes/dos/vga.cc
+classes/dos/vgaregs.c
+classes/dos/vgaregs.h
+classes/dos/vgastate.c
+classes/dos/vgastate.h
 classes/fpbase.cc
 classes/fpstream.cc
 classes/ifpstrea.cc
@@ -49,6 +58,7 @@ classes/tfilelis.cc
 classes/tfilterv.cc
 classes/tfont.cc
 classes/tframe.cc
+classes/tgkey.cc
 classes/tgroup.cc
 classes/thistory.cc
 classes/thistvie.cc
@@ -107,10 +117,10 @@ classes/linux/linuxdis.cc
 classes/linux/linuxkey.cc
 classes/linux/linuxmouse.cc
 classes/linux/linuxscr.cc
-classes/win32/tdisplay.cc
-classes/win32/tfont.cc
-classes/win32/thwmouse.cc
-classes/win32/tscreen.cc
+classes/win32/win32dis.cc
+classes/win32/win32key.cc
+classes/win32/win32mouse.cc
+classes/win32/win32scr.cc
 classes/winnt/tdisplay.cc
 classes/winnt/tfont.cc
 classes/winnt/thwmouse.cc
@@ -192,11 +202,6 @@ djgpp/compress.pl
 +djgpp/distlist
 djgpp/obj/delete.me
 djgpp/tmp/delete.me
-djgpp/vga.cc
-djgpp/vgaregs.c
-djgpp/vgaregs.h
-djgpp/vgastate.c
-djgpp/vgastate.h
 drivers2.cc
 dual.cc
 examples/Makefile
@@ -391,6 +396,7 @@ include/tv/app.h
 include/tv/applictn.h
 include/tv/colorsel.h
 include/tv/dialogs.h
+include/tv/drivers.h
 include/tv/dos/key.h
 include/tv/dos/mouse.h
 include/tv/dos/screen.h
@@ -507,6 +513,9 @@ include/tv/submenu.h
 include/tv/terminal.h
 include/tv/textdev.h
 include/tv/view.h
+include/tv/win32/key.h
+include/tv/win32/mouse.h
+include/tv/win32/screen.h
 include/tv/x11key.h
 include/tv/x11mouse.h
 include/tv/x11scr.h
@@ -590,9 +599,6 @@ names/nwindow.cc
 newstr.cc
 readme.in
 readme.txt
-rhscreen.cc
-screen.cc
-sescreen.cc
 stream/sbackgro.cc
 stream/sbutton.cc
 stream/scalcdis.cc
@@ -644,7 +650,6 @@ stream/sstringl.cc
 stream/sview.cc
 stream/swindow.cc
 version.txt
-vesa.cc
 fromdos.pl
 fromunix.pl
 lista
@@ -658,7 +663,6 @@ win32/Makefile
 win32/Makefile.ms
 win32/demo.mak
 win32/demo.ms
-win32/gkey.cc
 win32/obj/delete.me
 win32/obj_demo/delete.me
 win32/readme.txt
