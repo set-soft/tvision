@@ -31,7 +31,7 @@
 #define Uses_TStatusItem
 #define Uses_TStatusLine
 
-#ifdef __linux__
+#ifdef TVOS_UNIX
 #define Uses_TScreen
 #endif
 
@@ -157,7 +157,7 @@ TDeskTop *TApp::initDeskTop( TRect r )
 
 }
 
-#ifdef __linux__
+#ifdef TVOS_UNIX
 void ResumeApp(int signum)
 {
  TProgram::application->resume();
@@ -183,7 +183,7 @@ void TApp::handleEvent (TEvent &event)
 				 }
 		}
 	 }
-  #ifdef __linux__
+  #ifdef TVOS_UNIX
   else
   if( event.what == evKeyDown && event.keyDown.keyCode == kbCtrlZ )
 	 {
