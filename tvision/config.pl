@@ -551,7 +551,6 @@ int main(void)
           print "yes OK (X$1 rev $2)\n";
           return;
          }
-         die;
       }
     $conf{'HAVE_X11'}='no';
     print "no, disabling X11 version\n";
