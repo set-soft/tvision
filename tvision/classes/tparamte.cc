@@ -18,8 +18,7 @@
  * 1) The limit is now a constant defined in tparamTextMaxLen, so you can
  * adjust it.
  * 2) If SAFE_CODE is defined (default) the setText() member checks the
- * lenght of the string. I use a slow trick, but is better than corrupting
- * memory.
+ * lenght of the string. I use snprintf to limit the size.
  *
  * Portability note:
  * getText( char *s, int maxLen ) and BTV uses: getText( char *s )
@@ -27,9 +26,10 @@
  * to write in a string without knowing the length is a very bad idea.
  *
  */
-#include <stdio.h>
-#include <stdarg.h>
+#define Uses_stdio
+#define Uses_stdarg
 #define Uses_string
+#define Uses_snprintf
 
 #define Uses_TParamText
 #include <tv.h>
@@ -68,20 +68,17 @@ void TParamText::setText( char *fmt, ... )
 {
     va_list ap;
 
-    va_start( ap, fmt );
     #ifdef SAFE_CODE
     // Slow but we can check the overflow
-    FILE *f=fopen("/dev/null","wb");
-    int len=vfprintf(f,fmt,ap);
-    fclose(f);
-    if (len>=tparamTextMaxLen)
-      {
-       *str=EOS;
-       return;
-      }
-    #endif
+    va_start( ap, fmt );
+    int len=CLY_vsnprintf(str, (size_t)tparamTextMaxLen, fmt, ap);
+    va_end( ap );
+    str[tparamTextMaxLen-1]=0;
+    #else
+    va_start( ap, fmt );
     vsprintf( str, fmt, ap );
     va_end( ap );
+    #endif
 
     drawView();
 }

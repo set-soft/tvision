@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to add mfDontShowAgain, vsnprintf usage and
+i18n.
 
  *
  *
@@ -13,8 +15,8 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <stdarg.h>
-#include <stdio.h>
 #define Uses_string
+#define Uses_stdio
 
 #define Uses_MsgBox
 #define Uses_TObject
@@ -29,6 +31,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TCheckBoxes
 #define Uses_TSItem
 #define Uses_TScreen
+#define Uses_AllocLocal
+#define Uses_snprintf
 #include <tv.h>
 
 static const char *buttonName[] =
@@ -71,16 +75,22 @@ ushort messageBoxRect( const TRect &r, const char *msg, ushort aOptions )
        rlocal.b.y++;
       }
 
-    dialog = new TDialog( rlocal, _(Titles[aOptions & 0x3]) );
+    dialog = new TDialog( rlocal, Titles[aOptions & 0x3] );
+
+    stTVIntl *intlMessage=NULL;
+    if (aOptions & mfDontTranslate)
+       intlMessage=TVIntl::dontTranslateSt();
+    else
+       TVIntl::getText(msg,intlMessage);
 
     dialog->insert(
         new TStaticText(TRect(3, 2, dialog->size.x - 2, height - 3),
-                        msg) );
+                        msg,intlMessage) );
 
     if (aOptions & mfDontShowAgain)
       {
        dsa=new TCheckBoxes(TRect(2,height-2,dialog->size.x-2,height-1),
-                           new TSItem(_("Don't warn you next time"),0));
+                           new TSItem(__("Don't warn you next time"),0));
        dialog->insert(dsa);
       }
 
@@ -127,11 +137,20 @@ ushort messageBoxRect( const TRect &r,
                        ... )
 {
     va_list argptr;
+
+    char *intlFmt=TVIntl::getTextNew(fmt);
+
     va_start( argptr, fmt );
-    char msg[256];
-    vsprintf( msg, fmt, argptr );
+    int l=CLY_vsnprintf(NULL, (size_t)0, intlFmt, argptr);
     va_end( argptr );
-    return messageBoxRect( r, msg, aOptions );
+    AllocLocalStr(msg,l+1);
+
+    va_start( argptr, fmt );
+    CLY_vsnprintf(msg, (size_t)l+1, intlFmt, argptr);
+    va_end( argptr );
+
+    DeleteArray(intlFmt);
+    return messageBoxRect( r, msg, aOptions | mfDontTranslate );
 }
 
 static TRect makeRect()
@@ -150,18 +169,20 @@ ushort messageBox( const char *msg, ushort aOptions )
 ushort messageBox( ushort aOptions, const char *fmt, ... )
 {
     va_list argptr;
-#if 0
-    va_start( argptr, aOptions );
-#else
-    va_start( argptr, fmt );
-#endif
 
-    char msg[256];
-    vsprintf( msg, fmt, argptr );
-#if 1
+    char *intlFmt=TVIntl::getTextNew(fmt);
+
+    va_start( argptr, fmt );
+    int l=CLY_vsnprintf(NULL, (size_t)0, intlFmt, argptr);
     va_end( argptr );
-#endif
-    return messageBoxRect( makeRect(), msg, aOptions );
+    AllocLocalStr(msg,l+1);
+
+    va_start( argptr, fmt );
+    CLY_vsnprintf(msg, (size_t)l+1, intlFmt, argptr);
+    va_end( argptr );
+
+    DeleteArray(intlFmt);
+    return messageBoxRect( makeRect(), msg, aOptions | mfDontTranslate );
 }
 
 ushort inputBox( const char *Title, const char *aLabel, char *s, int limit )
@@ -189,16 +210,17 @@ ushort inputBoxRect( const TRect &bounds,
     control = new TInputLine( r, limit );
     dialog->insert( control );
 
-    r = TRect(2, 2, 3 + strlen(aLabel), 3);
-    dialog->insert( new TLabel( r, aLabel, control ) );
+    stTVIntl *intlLabel;
+    r = TRect(2, 2, 3 + strlen(TVIntl::getText(aLabel,intlLabel)), 3);
+    dialog->insert( new TLabel( r, aLabel, control, intlLabel ) );
 
     r = TRect( dialog->size.x - 24, dialog->size.y - 4,
                dialog->size.x - 14, dialog->size.y - 2);
-    dialog->insert( new TButton(r, _("~O~K"), cmOK, bfDefault));
+    dialog->insert( new TButton(r, __("~O~K"), cmOK, bfDefault));
 
     r.a.x += 12;
     r.b.x += 12;
-    dialog->insert( new TButton(r, _("Cancel"), cmCancel, bfNormal));
+    dialog->insert( new TButton(r, __("Cancel"), cmCancel, bfNormal));
 
     r.a.x += 12;
     r.b.x += 12;

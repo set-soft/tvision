@@ -182,7 +182,7 @@ Boolean TChDirDialog::valid( ushort command )
     return True;
   if( changeDir( dirInput->data ) != 0 )
   {
-    messageBox( _("Invalid directory"), mfError | mfOKButton );
+    messageBox( __("Invalid directory"), mfError | mfOKButton );
     return False;
   }
   return True;

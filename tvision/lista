@@ -171,6 +171,7 @@ compat/mkstemp.c
 compat/ntdirent.c
 compat/pathvalid.c
 compat/releasec.c
+compat/snprintf.c
 compat/strlwr.c
 compat/strupr.c
 compat/unc.c

@@ -101,7 +101,7 @@ TStatusLine *TEditorApp::initStatusLine( TRect r )
 
 void TEditorApp::outOfMemory()
 {
-    messageBox(_("Not enough memory for this operation."), mfError | mfOKButton );
+    messageBox(__("Not enough memory for this operation."), mfError | mfOKButton );
 }
 
 typedef char *_charPtr;
@@ -122,7 +122,7 @@ ushort doEditDialogDefault( int dialog, va_list arg )
     switch( dialog )
         {
         case edOutOfMemory:
-            return messageBox( _("Not enough memory for this operation."),
+            return messageBox( __("Not enough memory for this operation."),
                                mfError | mfOKButton );
         case edReadError:
             {
@@ -153,13 +153,13 @@ ushort doEditDialogDefault( int dialog, va_list arg )
             return messageBox( GetStrStream(os,buf), mfInformation | mfYesNoCancel );
             }
         case edSaveUntitled:
-            return messageBox( _("Save untitled file?"),
+            return messageBox( __("Save untitled file?"),
                                mfInformation | mfYesNoCancel );
         case edSaveAs:
             {
             return execDialog( new TFileDialog( "*",
-                                                _("Save file as"),
-                                                _("~N~ame"),
+                                                __("Save file as"),
+                                                __("~N~ame"),
                                                 fdOKButton,
                                                 101 ), va_arg( arg, _charPtr ) );
             }
@@ -170,7 +170,7 @@ ushort doEditDialogDefault( int dialog, va_list arg )
             }
 
         case edSearchFailed:
-            return messageBox( _("Search string not found."),
+            return messageBox( __("Search string not found."),
                                mfError | mfOKButton );
         case edReplace:
             {
@@ -188,7 +188,7 @@ ushort doEditDialogDefault( int dialog, va_list arg )
             if( pt->y <= t.y )
                 r.move( 0, TProgram::deskTop->size.y - r.b.y - 2 );
             va_end( arg );
-            return messageBoxRect( r, _("Replace this occurence?"),
+            return messageBoxRect( r, __("Replace this occurence?"),
                                    mfYesNoCancel | mfInformation );
 	  }
         default:

@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.417  2003/04/15 15:30:44  set
+* Modified: Files distribution list to reflect new QNX package.
+
 Revision 2.416  2003/04/15 15:17:44  set
 * Fixed: The new intl.h header only worked for C++ code but the
 configuration script tests it using C code. Now it also defines things for

@@ -136,7 +136,7 @@ void THelp::run()
 {
   if (access(fileName,R_OK)!=0)
   {
-    messageBox(_("File not found"), mfOKButton | mfError);
+    messageBox(__("File not found"), mfOKButton | mfError);
     endModal(cmQuit);
     return;
   }

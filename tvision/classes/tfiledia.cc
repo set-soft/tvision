@@ -247,7 +247,7 @@ Boolean TFileDialog::checkDirectory( const char *str )
         return True;
     else
         {
-        messageBox( _("Invalid drive or directory"), mfError | mfOKButton );
+        messageBox( __("Invalid drive or directory"), mfError | mfOKButton );
         fileName->select();
         return False;
         }
@@ -297,7 +297,7 @@ Boolean TFileDialog::valid(ushort command)
             return True;
         else
         {
-            messageBox( _("Invalid file name."), mfError | mfOKButton );
+            messageBox( __("Invalid file name."), mfError | mfOKButton );
             return False;
         }
     }

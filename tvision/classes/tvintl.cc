@@ -152,6 +152,8 @@ const char *TVIntl::getText(const char *msgid, stTVIntl *&cache)
     cache=new stTVIntl;
  else
    {
+    if (cache->cp==-2)
+       return msgid;
     if (curCP==cache->cp)
        return cache->translation ? cache->translation : msgid;
     DeleteArray(cache->translation);
@@ -176,4 +178,13 @@ stTVIntl *TVIntl::emptySt()
  p->cp=-1;
  return p;
 }
+
+stTVIntl *TVIntl::dontTranslateSt()
+{
+ stTVIntl *p=new stTVIntl;
+ p->translation=NULL;
+ p->cp=-2;
+ return p;
+}
+
 
