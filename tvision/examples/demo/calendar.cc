@@ -15,15 +15,12 @@
  */
 
 // SET: moved the standard headers before tv.h
-#include <string.h>
-#include <stdlib.h>
+#define Uses_string
+#define Uses_stdlib
 #include <ctype.h>
 #include <stdio.h>
 #include <time.h>
-
-#ifdef _MSC_VER
-#include <malloc.h> //alloca()
-#endif
+#define Uses_alloca
 
 #define Uses_TRect
 #define Uses_TEvent

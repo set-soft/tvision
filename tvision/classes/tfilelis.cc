@@ -10,15 +10,16 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
-#include <string.h>
+#define Uses_string
 #include <stdio.h>
 #ifdef _MSC_VER
 #include <io.h>
-#include <malloc.h> //alloca()
 #else
-#include <unistd.h>
+#define Uses_unistd
 #endif
-#include <stdlib.h>
+#define Uses_alloca
+#define Uses_stdlib
+#define Uses_HaveLFNs
 
 #define Uses_MsgBox
 #define Uses_TFileList
@@ -27,27 +28,30 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #define Uses_TEvent
 #define Uses_TGroup
 #define Uses_TStreamableClass
+#define Uses_sys_stat
+
+#if defined(__TURBOC__) || defined(__DJGPP__)
+#include <dir.h>
+#include <dirent.h>
+#define Uses_fnmatch
+#define Uses_glob
+#else
+#include <direct.h>
+#endif
+
 #include <tv.h>
 
 #include <errno.h>
 #include <ctype.h>
-#ifndef _WIN32
-#ifdef __DJGPP__
-#include <dir.h>
-#endif
-#include <sys/stat.h>
-#include <dirent.h>
-#include <fnmatch.h>
-#include <glob.h>
-#else
-#include <direct.h>
+#if defined(__TURBOC__)
+#include <dos.h>
 #endif
 
 TFileList::TFileList( const TRect& bounds,
           TScrollBar *aScrollBar) :
     TSortedListBox( bounds, 2, aScrollBar )
 {
- if (TV_HaveLFNs())
+ if (CLY_HaveLFNs())
     setNumCols(1);
 }
 
@@ -126,7 +130,10 @@ void TFileList::readDirectory( const char *dir, const char *wildCard )
   readDirectory( path );
 }
 
-#ifdef __DJGPP__
+
+/******** struct DirSearchRec ********/
+#ifdef TVOSf_djgpp
+// DJGPP
 typedef struct TSearchRec DirSearchRec;
 
 struct __dj_DIR {
@@ -140,8 +147,8 @@ struct __dj_DIR {
 extern "C" size_t _file_time_stamp(unsigned);
 
 #else
-#ifdef _WIN32
-
+#if defined(TVOS_Win32) && !defined(__TURBOC__)
+// MingW
 struct DirSearchRec : public TSearchRec
 {
 	void readFf_blk(_finddata_t  &s)
@@ -158,6 +165,7 @@ struct DirSearchRec : public TSearchRec
 };
 
 #else
+// Linux and BC++ under NT
 struct DirSearchRec : public TSearchRec
 {
   /* SS: changed */
@@ -174,8 +182,12 @@ struct DirSearchRec : public TSearchRec
 };
 #endif
 #endif
+/******** end of struct DirSearchRec ********/
 
-#ifdef __DJGPP__ // this is really faster then the glob methode
+
+/******** void readDirectory( const char *aWildCard ) ********/
+#ifdef TVOSf_djgpp
+// this is really faster then the glob methode
 void TFileList::readDirectory( const char *aWildCard )
 {
   DIR *dir;
@@ -242,7 +254,8 @@ void TFileList::readDirectory( const char *aWildCard )
 }
 
 #else
-#ifdef _WIN32
+#if defined(TVOS_Win32) && !defined(__TURBOC__)
+// MingW
 void TFileList::readDirectory( const char *aWildCard )
 {
   long dir;
@@ -333,6 +346,7 @@ void TFileList::readDirectory( const char *aWildCard )
   }
 }
 #else
+// Linux and BC++ under NT
 void TFileList::readDirectory( const char *aWildCard )
 {
   /* SS: changed */
@@ -348,9 +362,9 @@ void TFileList::readDirectory( const char *aWildCard )
   struct stat s;
 
   strcpy( path, aWildCard );
-  if (!isWild(path)) strcat(path, "*");
-  fexpand( path );
-  expandPath(path, dir, file);
+  if (!CLY_IsWild(path)) strcat(path, "*");
+  CLY_fexpand( path );
+  CLY_ExpandPath(path, dir, file);
   TFileCollection *fileList = new TFileCollection( 5, 5 );
 
   /* find all filenames that match our wildcards */
@@ -445,6 +459,7 @@ void TFileList::readDirectory( const char *aWildCard )
 }
 #endif
 #endif
+/******** end of void readDirectory ********/
 
 #if !defined( NO_STREAM )
 TStreamable *TFileList::build()

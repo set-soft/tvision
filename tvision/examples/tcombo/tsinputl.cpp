@@ -20,7 +20,7 @@
 /*************************************************************************/
 
 #include <ctype.h>
-#include <string.h>
+#define Uses_string
 
 #define Uses_TEvent
 #define Uses_TKeys

@@ -10,7 +10,7 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
-#include <string.h>
+#define Uses_string
 
 #define Uses_TFileInputLine
 #define Uses_TEvent
@@ -18,8 +18,12 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TFileDialog
 #include <tv.h>
 
-#ifdef __DJGPP__
+#if defined(TVOSf_djgpp)
 #include <dir.h>
+#endif
+#if defined(__TURBOC__)
+#include <dir.h>
+#include <dos.h>
 #endif
 
 TFileInputLine::TFileInputLine( const TRect& bounds, short aMaxLen ) :

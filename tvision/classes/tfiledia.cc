@@ -11,9 +11,10 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
-#include <string.h>
+#define Uses_string
+#define Uses_ctype
 #include <stdio.h>
-
+#define Uses_HaveLFNs
 #define Uses_TFileDialog
 #define Uses_MsgBox
 #define Uses_TRect
@@ -31,7 +32,6 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #include <tv.h>
 
 #include <errno.h>
-#include <ctype.h>
 
 // File dialog flags
 const int
@@ -74,7 +74,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
     his->growMode=gfGrowLoX | gfGrowHiX;
     insert(his);
     
-    int longNames=TV_HaveLFNs(); // SET
+    int longNames=CLY_HaveLFNs(); // SET
     TScrollBar *sb = longNames ?
                      new TScrollBar( TRect( 34, 5, 35, 16 ) ) :
                      new TScrollBar( TRect( 3, 15, 34, 16 ) );
@@ -140,7 +140,7 @@ void TFileDialog::sizeLimits(TPoint& min, TPoint& max)
 
 TFileDialog::~TFileDialog()
 {
-    DeleteArray(directory);
+    DeleteArray((char *)directory);
 }
 
 void TFileDialog::shutDown()
@@ -149,28 +149,6 @@ void TFileDialog::shutDown()
     fileList = 0;
     TDialog::shutDown();
 }
-
-Boolean relativePath( const char *path )
-{
-    if( path[0] != EOS && (path[0] == '/' || path[0] == '\\' || 
-                           (ucisalpha(path[0]) && path[1] == ':')) )
-        return False;
-    else
-        return True;
-}
-
-#if 0 // not longer used
-static void noWildChars( char *dest, const char *src )
-{
-    while( *src != EOS )
-        {
-        if( *src != '?' && *src != '*' )
-            *dest++ = *src;
-        src++;
-        }
-    *dest = EOS;
-}
-#endif
 
 static void trim( char *dest, const char *src )
 {
@@ -196,12 +174,12 @@ void TFileDialog::getFileName( char *s )
   char buf[PATH_MAX];
 
   trim( buf, fileName->data );
-  if ( relativePath( buf ) == True )
+  if ( CLY_IsRelativePath( buf ) )
   {
     strcpy( buf, directory );
     trim( buf + strlen(buf), fileName->data );
   }
-  fexpand( buf );
+  CLY_fexpand( buf );
   strcpy( s, buf );
 }
 
@@ -242,16 +220,16 @@ void TFileDialog::readDirectory()
 
 void TFileDialog::setUpCurDir()
 {
-    DeleteArray(directory);
+    DeleteArray((char *)directory);
     char curDir[PATH_MAX];
-    getCurDir( curDir );
+    CLY_GetCurDirSlash(curDir);
     directory = newStr( curDir );
 }
 
 void TFileDialog::setData( void *rec )
 {
     TDialog::setData( rec );
-    if( *(char *)rec != EOS && isWild( (char *)rec ) )
+    if( *(char *)rec != EOS && CLY_IsWild( (char *)rec ) )
         {
         valid( cmFileInit );
         fileName->select();
@@ -265,7 +243,7 @@ void TFileDialog::getData( void *rec )
 
 Boolean TFileDialog::checkDirectory( const char *str )
 {
-    if( pathValid( str ) )
+    if( CLY_PathValid( str ) )
         return True;
     else
         {
@@ -290,9 +268,9 @@ Boolean TFileDialog::valid(ushort command)
     getFileName( fName );
     if (command != cmFileClear)
     {
-        if(isWild(fName))
+        if(CLY_IsWild(fName))
         {
-            expandPath(fName, dir, name);
+            CLY_ExpandPath(fName, dir, name);
             if (checkDirectory(dir))
             {
                 delete (char *)directory;
@@ -303,7 +281,7 @@ Boolean TFileDialog::valid(ushort command)
                 fileList->readDirectory(directory, wildCard);
             }
         }
-        else if (isDir(fName))
+        else if (CLY_IsDir(fName))
         {
             if (checkDirectory(fName))
             {
@@ -315,7 +293,7 @@ Boolean TFileDialog::valid(ushort command)
                 fileList->readDirectory(directory, wildCard);
             }
         }
-        else if (validFileName(fName))
+        else if (CLY_ValidFileName(fName))
             return True;
         else
         {

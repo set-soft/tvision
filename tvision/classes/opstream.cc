@@ -13,8 +13,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <stdio.h> // fprintf in writeData
-#include <string.h> // Needed for Win32
-
+#define Uses_string // Needed for Win32
+#define Uses_PubStreamBuf
 #define Uses_TStreamable
 #define Uses_TStreamableClass
 #define Uses_TPWrittenObjects
@@ -43,25 +43,25 @@ opstream::~opstream()
 opstream& opstream::seekp( streampos pos )
 {
     objs->freeAll();
-    bp->seekoff( pos, ios::beg );
+    bp->PubSeekOff( pos, ios::beg );
     return *this;
 }
 
 opstream& opstream::seekp( streamoff pos, ios::seek_dir dir )
 {
     objs->freeAll();
-    bp->seekoff( pos, dir );
+    bp->PubSeekOff( pos, dir );
     return *this;
 }
 
 streampos opstream::tellp()
 {
-    return bp->seekoff( 0, ios::cur, ios::out );
+    return bp->PubSeekOff( 0, ios::cur, ios::out );
 }
 
 opstream& opstream::flush()
 {
-    bp->sync();
+    bp->PubSync();
     return *this;
 }
 

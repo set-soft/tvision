@@ -12,7 +12,7 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 #include <stdlib.h>
 #include <time.h>
-#include <string.h>
+#define Uses_string
 #include <stdio.h>
 
 #define Uses_TFileInputLine
@@ -53,7 +53,7 @@ void TFileInfoPane::draw()
 
     strcpy( path, ((TFileDialog *)owner)->directory );
     strcat( path, ((TFileDialog *)owner)->wildCard );
-    fexpand( path );
+    CLY_fexpand( path );
 
     color = getColor(0x01);
     b.moveChar( 0, ' ', color, size.x );

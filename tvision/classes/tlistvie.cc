@@ -12,12 +12,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
-
-#ifdef _MSC_VER
-#include <malloc.h> //alloca()
-#endif
-
+#define Uses_string
+#define Uses_alloca
 #define Uses_TKeys
 #define Uses_TListViewer
 #define Uses_TScrollBar
@@ -145,7 +141,7 @@ void TListViewer::draw()
             b.moveChar( curCol, ' ', color, width );
             if( item < range )
                 {
-                #ifdef _MSC_VER
+                #ifndef __GNUC__
                 char *text=(char *)alloca(width+indent+1);
                 char *buf=(char *)alloca(width+1);
                 #else

@@ -111,7 +111,8 @@ the routine so I wanted to avoid a lose in performance. SET.
 
 void TDrawBuffer::moveCStr( unsigned indent, const char *str, unsigned attrs )
 {
-#if !defined( __i386__ )
+#if !defined(__i386__) || !defined(__GNUC__)
+//$todo: implement it in asm for Win32
   uchar bh = attrs >> 8, ah = attrs & 0xff;
   uchar al;
   ushort *dest = data+indent;
@@ -148,8 +149,8 @@ void TDrawBuffer::moveCStr( unsigned indent, const char *str, unsigned attrs )
 // EBX is used as a base for the dynamic jmp      \n\
 // table and the code misserably crash.           \n\
 // I found it thanks to the disassemble window.   \n\
-     pushl %%ebx
-     
+     pushl %%ebx                                  \n\
+                                                  \n\
      // showed                                    \n\
      // save the attributes in EBX                \n\
         movl %%eax,%%ebx                          \n\
@@ -207,7 +208,8 @@ SET.
 
 void TDrawBuffer::moveStr( unsigned indent, const char *str, unsigned attr )
 {
-#if !defined( __i386__ )
+#if !defined(__i386__) || !defined(__GNUC__)
+//$todo: implement it in asm
   ushort *dest = data+indent;
   ushort *end = data+maxViewWidth;
   while (*str && dest<end)

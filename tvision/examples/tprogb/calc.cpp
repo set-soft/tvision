@@ -35,6 +35,7 @@
 #define Uses_TDrawBuffer
 #define Uses_TStreamableClass
 #define Uses_TStreamable
+#define Uses_string
  
 #include <tv.h>
 __link( RView )
@@ -42,7 +43,6 @@ __link( RDialog )
 __link( RButton )
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 

@@ -1,8 +1,8 @@
-#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
 
+#define Uses_string
 #define Uses_TStaticText
 #define Uses_TStatusDef
 #define Uses_TStatusItem

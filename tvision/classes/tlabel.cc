@@ -21,9 +21,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStreamableClass
 #define Uses_TPalette
 #define Uses_TGKey
+#define Uses_ctype
 #include <tv.h>
-
-#include <ctype.h>
 
 #define cpLabel "\x07\x08\x09\x09"
 

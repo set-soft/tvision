@@ -29,11 +29,20 @@ if (-M 'makefile' > -M 'librhtv.gpr')
   {
    system('gpr2mak librhtv.gpr');
    system('mv librhtv.mak makefile');
-   print "updated\n";
+   print "(1) updated";
   }
 else
   {
-   print "uptodate\n";
+   print "(1) uptodate";
+  }
+if (-M '../compat/compat.mak' > -M '../compat/compat.gpr')
+  {
+   system('gpr2mak ../compat/compat.gpr');
+   print "(2) updated\n";
+  }
+else
+  {
+   print "(2) uptodate\n";
   }
 
 # Patch the version number in the readme.txt

@@ -12,7 +12,7 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
+#define Uses_string
 
 #define Uses_TKeys
 #define Uses_TWindow
@@ -61,7 +61,7 @@ TWindow::TWindow( const TRect& bounds,
 
 TWindow::~TWindow()
 {
-    DeleteArray(title);
+    DeleteArray((char *)title);
 }
 
 void TWindow::close()

@@ -7,16 +7,17 @@
 /*                                                          */
 /*----------------------------------------------------------*/
 #include <limits.h>
-#include <string.h>
+#define Uses_string
 #include <fstream.h>
-#include <fcntl.h>
+#define Uses_fcntl
+#define Uses_filelength
 #ifdef _MSC_VER
 #include <io.h>
 #else
-#include <unistd.h>
+#define Uses_unistd
 #endif
 #include <stdio.h>
-#include <sys/stat.h>
+#define Uses_sys_stat
 
 #define Uses_TGroup
 #define Uses_TEditor
@@ -25,14 +26,8 @@
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TStreamableClass
+#define Uses_IOS_BIN
 #include <tv.h>
-
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
-#ifndef O_TEXT
-#define O_TEXT 0
-#endif
 
 inline uint32 min( uint32 u1, uint32 u2 )
 {
@@ -180,7 +175,7 @@ Boolean TFileEditor::saveAs()
     Boolean res = False;
     if( editorDialog( edSaveAs, fileName ) != cmCancel )
         {
-        fexpand( fileName );
+        CLY_fexpand( fileName );
         message( owner, evBroadcast, cmUpdateTitle, 0 );
         res = saveFile();
         if( isClipboard() == True )

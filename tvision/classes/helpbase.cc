@@ -12,7 +12,7 @@
 // SET: moved the standard headers before tv.h
 #include <ctype.h>
 #include <limits.h>
-#include <string.h>
+#define Uses_string
 #include <sys/stat.h>
 
 #define Uses_TStreamableClass

@@ -16,15 +16,15 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Internal release number. Used to check the version of the release
 // in programs that are very sensitive, like my editor.
 #define TV_MAJOR_VERSION  1
-#define TV_MIDDLE_VERSION 0
-#define TV_MINOR_VERSION  10
-#define TV_VERSION "1.0.10"
+#define TV_MIDDLE_VERSION 1
+#define TV_MINOR_VERSION  0
+#define TV_VERSION "1.1.0"
 
 #define Uses_EventCodes
 #define Uses_ViewCommands
 #define Uses_ipstream
 #define Uses_opstream
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 
 // SET: Start of the TEditor classes re-incorporated in 1.0.4
 #ifdef Uses_TEditWindow
@@ -34,6 +34,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #ifdef Uses_TFileEditor
 #define Uses_TEditor
+#define Uses_limits
 #endif
 
 #ifdef Uses_TMemo
@@ -55,7 +56,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #ifdef Uses_TCalcDisplay
 #define Uses_TView
 #define INCL_CALC_H
-#define __INC_STDLIB_H
+#define INCLUDE_STDLIB_H
 #endif
 
 #ifdef Uses_TEditorApp
@@ -64,14 +65,14 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: End of the TEditor classes
 
 #if defined( Uses_TGKey )
-#define __INC_GKEY_H
+#define INCLUDE_GKEY_H
 #endif
 
 #if defined( Uses_TFileViewer )
 #define Uses_TCollection
 #define Uses_TScroller
 #define Uses_TWindow
-#define __INC_FILEVIEW_H
+#define INCLUDE_FILEVIEW_H
 #endif
 
 #if defined( Uses_TRangeValidator )
@@ -87,304 +88,308 @@ Modified by Robert H”hne to be used for RHIDE.
 #if !defined( NO_STREAM )
 #define Uses_TStreamable
 #endif
-#define __INC_VALID_H
+#define INCLUDE_VALID_H
 #endif
 
 #if defined( Uses_TApplication )
 #define Uses_TProgram
-#define __INC_APP_H
+#define INCLUDE_APP_H
 #endif
 
 #if defined( Uses_TProgram )
 #define Uses_TEvent
 #define Uses_TGroup
-#define __INC_APP_H
-#define __INC_TIME_H
+#define INCLUDE_APP_H
+#define INCLUDE_TIME_H
 #endif
 
 #if defined( Uses_TDeskTop )
 #define Uses_TGroup
-#define __INC_APP_H
+#define INCLUDE_APP_H
 #endif
 
 #if defined( Uses_TBackground )
 #define Uses_TView
-#define __INC_APP_H
+#define INCLUDE_APP_H
 #endif
 
 #if defined( Uses_TReplaceDialogRec )
-#define __INC_FINDREPL_H
+#define INCLUDE_FINDREPL_H
+#define Uses_string
 #endif
 
 #if defined( Uses_TFindDialogRec )
-#define __INC_FINDREPL_H
-#define __INC_STRING_H
+#define INCLUDE_FINDREPL_H
+#define Uses_string
 #endif
 
 #if defined( Uses_TIndicator )
 #define Uses_TView
-#define __INC_INDICATO_H
+#define INCLUDE_INDICATO_H
 #endif
 
 #if defined( Uses_TTerminal )
 #define Uses_TTextDevice
-#define __INC_TEXTVIEW_H
+#define INCLUDE_TEXTVIEW_H
 #endif
 
 #if defined( Uses_TTextDevice )
 #define Uses_TScroller
-#define __INC_TEXTVIEW_H
+#define INCLUDE_TEXTVIEW_H
 #endif
 
 #if defined( Uses_TStatusLine )
 #define Uses_TView
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TStatusDef )
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TStatusItem )
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TMenuBox )
 #define Uses_TMenuView
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TMenuBar )
 #define Uses_TMenuView
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TMenuView )
 #define Uses_TView
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TMenu )
 #define Uses_TMenuItem
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TSubMenu )
 #define Uses_TMenuItem
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 #if defined( Uses_TMenuItem )
-#define __INC_MENUS_H
+#define INCLUDE_MENUS_H
 #endif
 
 // SET: Just include the file to get the cm* definitions, it includes a
 // Broadcast for colors changed.
 #ifdef Uses_TColorCommands
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TColorDialog )
 #define Uses_TDialog
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TColorItemList )
 #define Uses_TListViewer
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TColorGroupList )
 #define Uses_TListViewer
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TColorDisplay )
 #define Uses_TView
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TMonoSelector )
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TMonoSelector )
 #define Uses_TCluster
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TColorSelector )
 #define Uses_TView
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TColorGroup )
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TColorItem )
-#define __INC_COLORSEL_H
+#define INCLUDE_COLORSEL_H
 #endif
 
 #if defined( Uses_TChDirDialog )
 #define Uses_TDialog
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TDirListBox )
 #define Uses_TListBox
-#define __INC_STDDLG_H
+#define Uses_limits
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TDirCollection )
 #define Uses_TCollection
 #define Uses_TDirEntry
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TDirEntry )
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TFileDialog )
 #define Uses_TDialog
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
+#define Uses_limits
 #endif
 
 #if defined( Uses_TFileInfoPane )
 #define Uses_TView
 #define Uses_TSearchRec
-#define __INC_STDDLG_H
-#define __INC_TIME_H
+#define INCLUDE_STDDLG_H
+#define INCLUDE_TIME_H
 #endif
 
 #if defined( Uses_TFileList )
 #define Uses_TSortedListBox
 #define Uses_TFileCollection
 #define Uses_TSearchRec
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TSortedListBox )
 #define Uses_TListBox
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TFileCollection )
 #define Uses_TSortedCollection
 #define Uses_TSearchRec
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TFileInputLine )
 #define Uses_TInputLine
-#define __INC_STDDLG_H
+#define INCLUDE_STDDLG_H
 #endif
 
 #if defined( Uses_TSearchRec )
-#define __INC_STDDLG_H
-#define __INC_TIME_H
+#define INCLUDE_STDDLG_H
+#define INCLUDE_TIME_H
+#define Uses_limits
 #endif
 
 #if defined( Uses_THistory )
 #define Uses_TView
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_THistoryWindow )
 #define Uses_TWindow
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_THistoryViewer )
 #define Uses_TListViewer
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TLabel )
 #define Uses_TStaticText
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TParamText )
 #define Uses_TStaticText
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TStaticText )
 #define Uses_TView
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TListBox )
 #define Uses_TListViewer
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TCheckBoxes )
 #define Uses_TCluster
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TRadioButtons )
 #define Uses_TCluster
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TCluster )
 #define Uses_TView
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TSItem )
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TButton )
 #define Uses_TView
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TInputLine )
 #define Uses_TView
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TDialog )
 #define Uses_TWindow
-#define __INC_DIALOGS_H
+#define INCLUDE_DIALOGS_H
 #endif
 
 #if defined( Uses_TWindow )
 #define Uses_TGroup
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TGroup )
 #define Uses_TView
 #define Uses_TRect
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TListViewer )
 #define Uses_TView
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TScroller )
 #define Uses_TView
 #define Uses_TPoint
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TScrollBar )
 #define Uses_TView
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TFrame )
 #define Uses_TView
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TView )
@@ -394,19 +399,19 @@ Modified by Robert H”hne to be used for RHIDE.
 #endif
 #define Uses_TDrawBuffer
 #define Uses_TPoint
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TPalette )
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TCommandSet )
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_ViewCommands )
-#define __INC_VIEWS_H
+#define INCLUDE_VIEWS_H
 #endif
 
 #if defined( Uses_TStrListMaker )
@@ -416,7 +421,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #endif
 #define Uses_TStrIndexRec
 #define Uses_TStringList // Forced by TStringList::name!
-#define __INC_RESOURCE_H
+#define INCLUDE_RESOURCE_H
 #endif
 
 #if defined( Uses_TStringList )
@@ -424,58 +429,58 @@ Modified by Robert H”hne to be used for RHIDE.
 #if !defined( NO_STREAM )
 #define Uses_TStreamable
 #endif
-#define __INC_RESOURCE_H
+#define INCLUDE_RESOURCE_H
 #endif
 
 #if defined( Uses_TStrIndexRec )
-#define __INC_RESOURCE_H
+#define INCLUDE_RESOURCE_H
 #endif
 
 #if defined( Uses_TResourceFile )
 #define Uses_TObject
-#define __INC_RESOURCE_H
+#define INCLUDE_RESOURCE_H
 #endif
 
 #if defined( Uses_TResourceItem )
-#define __INC_RESOURCE_H
+#define INCLUDE_RESOURCE_H
 #endif
 
 #if defined( Uses_TResourceCollection )
 #define Uses_TStringCollection
-#define __INC_RESOURCE_H
+#define INCLUDE_RESOURCE_H
 #endif
 
 #if defined( Uses_TStringCollection )
 #define Uses_TSortedCollection
-#define __INC_RESOURCE_H
+#define INCLUDE_RESOURCE_H
 #endif
 
 #if defined( Uses_MsgBox )
-#define __INC_MSGBOX_H
+#define INCLUDE_MSGBOX_H
 #endif
 
 #if defined( Uses_TScreen )
-#define __INC_SYSTEM_H
+#define INCLUDE_SYSTEM_H
 #endif
 
 #if defined( Uses_TEventQueue )
 #define Uses_TEvent
-#define __INC_SYSTEM_H
+#define INCLUDE_SYSTEM_H
 #endif
 
 #if defined( Uses_TEvent )
 #define Uses_TPoint
-#define __INC_SYSTEM_H
+#define INCLUDE_SYSTEM_H
 #endif
 
 #if defined( Uses_EventCodes )
-#define __INC_SYSTEM_H
+#define INCLUDE_SYSTEM_H
 #endif
 
 #if defined( Uses_TSortedCollection )
 #define Uses_TNSSortedCollection
 #define Uses_TCollection
-#define __INC_OBJECTS_H
+#define INCLUDE_OBJECTS_H
 #endif
 
 #if defined( Uses_TCollection )
@@ -483,100 +488,101 @@ Modified by Robert H”hne to be used for RHIDE.
 #if !defined( NO_STREAM )
 #define Uses_TStreamable
 #endif
-#define __INC_OBJECTS_H
+#define INCLUDE_OBJECTS_H
 #endif
 
 #if defined( Uses_TRect )
 #define Uses_TPoint
-#define __INC_OBJECTS_H
+#define INCLUDE_OBJECTS_H
 #endif
 
 #if defined( Uses_TPoint )
-#define __INC_OBJECTS_H
+#define INCLUDE_OBJECTS_H
 #endif
 
 #if defined( Uses_TDrawBuffer )
-#define __INC_DRAWBUF_H
+#define INCLUDE_DRAWBUF_H
 #endif
 
 #if defined( Uses_fpstream )
 #define Uses_fpbase
 #define Uses_iopstream
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_ofpstream )
 #define Uses_fpbase
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_ifpstream )
 #define Uses_fpbase
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_fpbase )
 #define Uses_pstream
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
+#define Uses_FILEBUF_OPENPROT
 #endif
 
 #if defined( Uses_iopstream )
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_opstream )
 #define Uses_pstream
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_ipstream )
 #define Uses_pstream
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_pstream )
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_TPReadObjects )
 #define Uses_TNSCollection
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_TPWrittenObjects )
 #define Uses_TNSSortedCollection
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_TStreamableTypes )
 #define Uses_TNSSortedCollection
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_TStreamableClass )
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_TStreamable )
-#define __INC_TOBJSTRM_H
+#define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_TNSSortedCollection )
 #define Uses_TNSCollection
-#define __INC_TVOBJS_H
+#define INCLUDE_TVOBJS_H
 #endif
 
 #if defined( Uses_TNSCollection )
 #define Uses_TObject
-#define __INC_TVOBJS_H
+#define INCLUDE_TVOBJS_H
 #endif
 
 #if defined( Uses_TObject )
-#define __INC_TVOBJS_H
+#define INCLUDE_TVOBJS_H
 #endif
 
 #if defined( Uses_TKeys )
-#define __INC_TKEYS_H
+#define INCLUDE_TKEYS_H
 #endif
 
 // That's the file generated by the configure script:
@@ -585,98 +591,96 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv/tvconfig.h>
 // Basic data types used in many places:
 #include <tv/ttypes.h>
+// Compatibility layer
+#include <compatlayer.h>
 
-#if defined( __INC_STRING_H )
-#include <string.h>
-#endif
-
-#if defined( __INC_STDLIB_H )
+#if defined( INCLUDE_STDLIB_H )
 #include <stdlib.h>
 #endif
 
-#if defined( __INC_TIME_H )
+#if defined( INCLUDE_TIME_H )
 #include <time.h>
 #endif
 
-#if defined( __INC_TKEYS_H )
+#if defined( INCLUDE_TKEYS_H )
 #include <tv/tkeys.h>
 #endif
 
-#if defined( __INC_GKEY_H )
+#if defined( INCLUDE_GKEY_H )
 #include <tv/gkey.h>
 #endif
 
 #include <tv/tvutil.h>
 
-#if defined( __INC_TVOBJS_H )
+#if defined( INCLUDE_TVOBJS_H )
 #include <tv/tvobjs.h>
 #endif
 
-#if defined( __INC_TOBJSTRM_H )
+#if defined( INCLUDE_TOBJSTRM_H )
 #include <tv/tobjstrm.h>
 #endif
 
-#if defined( __INC_DRAWBUF_H )
+#if defined( INCLUDE_DRAWBUF_H )
 #include <tv/drawbuf.h>
 #endif
 
-#if defined( __INC_OBJECTS_H )
+#if defined( INCLUDE_OBJECTS_H )
 #include <tv/objects.h>
 #endif
 
-#if defined( __INC_VALID_H)
+#if defined( INCLUDE_VALID_H)
 #include <tv/validate.h>
 #endif
 
-#if defined( __INC_SYSTEM_H )
+#if defined( INCLUDE_SYSTEM_H )
 #include <tv/system.h>
 #endif
 
-#if defined( __INC_MSGBOX_H )
+#if defined( INCLUDE_MSGBOX_H )
 #include <tv/msgbox.h>
 #endif
 
-#if defined( __INC_RESOURCE_H )
+#if defined( INCLUDE_RESOURCE_H )
 #include <tv/resource.h>
 #endif
 
-#if defined( __INC_VIEWS_H )
+#if defined( INCLUDE_VIEWS_H )
 #include <tv/views.h>
 #endif
 
-#if defined( __INC_DIALOGS_H )
+#if defined( INCLUDE_DIALOGS_H )
 #include <tv/dialogs.h>
 #endif
 
-#if defined( __INC_STDDLG_H )
+#if defined( INCLUDE_STDDLG_H )
 #include <tv/stddlg.h>
 #endif
 
-#if defined( __INC_COLORSEL_H )
+#if defined( INCLUDE_COLORSEL_H )
 #include <tv/colorsel.h>
 #endif
 
-#if defined( __INC_MENUS_H )
+#if defined( INCLUDE_MENUS_H )
 #include <tv/menus.h>
 #endif
 
-#if defined( __INC_TEXTVIEW_H )
+#if defined( INCLUDE_TEXTVIEW_H )
 #include <tv/textview.h>
 #endif
 
-#if defined( __INC_INDICATO_H )
+#if defined( INCLUDE_INDICATO_H )
 #include <tv/indicato.h>
 #endif
 
-#if defined( __INC_FINDREPL_H )
+#if defined( INCLUDE_FINDREPL_H )
 #include <tv/findrepl.h>
 #endif
 
-#if defined( __INC_APP_H )
+#if defined( INCLUDE_APP_H )
 #include <tv/app.h>
 #endif
 
-#if defined( __INC_FILEVIEW_H )
+#if defined( INCLUDE_FILEVIEW_H )
 #include <tv/fileview.h>
 #endif
 

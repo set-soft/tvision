@@ -16,7 +16,7 @@
 
 // SET: moved the standard headers before tv.h
 #include <stdio.h>
-#include <string.h>
+#define Uses_string
 #include <stdlib.h>
 #include <ctype.h>
 

@@ -27,7 +27,8 @@ Modified by Robert H”hne to be used for RHIDE.
 const P_id_type P_id_notFound = UINT_MAX;
 
 typedef TStreamable *(*BUILDER)();
-#define __DELTA( d ) (FP_OFF((TStreamable *)(d *)1)-1)
+//#define __DELTA( d ) (FP_OFF((TStreamable *)(d *)1)-1)
+#define __DELTA( d ) ((int)((TStreamable *)(d *)1)-1)
 
 class TStreamableClass
 {

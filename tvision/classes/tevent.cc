@@ -11,7 +11,7 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  */
 
-#include <string.h>
+#define Uses_string
 #define Uses_TEventQueue
 #define Uses_TEvent
 #define Uses_TScreen
@@ -96,6 +96,13 @@ TEventQueue::~TEventQueue()
     delete mouse;
 }
 
+#ifdef TVOSf_NT
+// it works better (faster)
+#define AUTO_DELAY_VAL 0
+#else
+#define AUTO_DELAY_VAL 1
+#endif
+
 void TEventQueue::getMouseEvent(	TEvent& ev )
 {
 	 if( mouseEvents == True )
@@ -139,7 +146,7 @@ void TEventQueue::getMouseEvent(	TEvent& ev )
 		  if(	ev.mouse.buttons != 0 && ev.what	- autoTicks	> autoDelay	)
 				{
 				autoTicks =	ev.what;
-				autoDelay =	1;
+				autoDelay =	AUTO_DELAY_VAL;
 				ev.what = evMouseAuto;
 				lastMouse =	ev.mouse;
 				return;
@@ -154,7 +161,7 @@ void TEventQueue::getMouseState(	TEvent &	ev	)
 	 if( eventCount == 0	)
 		  {
 		  TMouse::getEvent(ev.mouse);
-		  ev.what =	TICKS();
+		  ev.what =	CLY_Ticks();
 		  }
 	 else
 		  {

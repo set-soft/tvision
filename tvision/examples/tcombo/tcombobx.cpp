@@ -26,7 +26,7 @@
 /*                                                                       */
 /*************************************************************************/
 
-#include <string.h>
+#define Uses_string
 
 #define Uses_TComboBox
 #define Uses_TComboWindow

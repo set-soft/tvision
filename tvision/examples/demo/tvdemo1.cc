@@ -16,7 +16,7 @@
  
 // SET: moved the standard headers before tv.h
 #include <stdio.h>
-#include <string.h>
+#define Uses_string
 
 #define Uses_TView
 #define Uses_TRect
@@ -32,6 +32,7 @@
 #define Uses_TWindow
 #define Uses_TDeskTop
 #define Uses_TScreen
+#define Uses_IOS_BIN
 #include <tv.h>
 
 #include "tvdemo.h"

@@ -12,10 +12,10 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 
 #define Uses_TCommandSet
+#define Uses_string
 #include <tv.h>
 
 #include <stdlib.h>
-#include <string.h>
 
 #define MAX_COMMANDS (32 * 2048) /* 65536 commands */
 #define COMMANDS_COUNT (MAX_COMMANDS / 32)

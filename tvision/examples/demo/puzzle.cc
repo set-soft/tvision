@@ -15,7 +15,7 @@
  */
 
 // SET: moved the standard headers before tv.h
-#include <string.h>
+#define Uses_string
 #include <stdio.h>	/* SS: for sprintf(...) */
 #include <stdlib.h>
 #include <ctype.h>

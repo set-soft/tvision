@@ -5,7 +5,7 @@
 //
 // Author: Jay Perez. Modified by Barnaby Falls
 #include <stdio.h>
-#include <string.h>
+#define Uses_string
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>

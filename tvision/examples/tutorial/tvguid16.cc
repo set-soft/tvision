@@ -23,11 +23,11 @@ objects inserted in the dialog.
 // same as tvguid15 except for saving and restoring dialog contents
 // modify TMyApp::newDialog
 
-#include <stdlib.h>             // for exit(), random()
+#include <stdlib.h>             // for exit(), rand()
 #include <iostream.h>
 #include <fstream.h>            // for ifstream
 #include <stdio.h>              // for puts() etc
-#include <string.h>             // for strlen etc
+#define Uses_string             // for strlen etc
 #include <ctype.h>
 
 #define Uses_TEventQueue
@@ -317,8 +317,7 @@ void TMyApp::newWindow()
 
     /* SS: micro change here */
 
-    //r.move( random(34), random(11) ); // randomly move around screen
-    r.move( random() % 34, random() % 11 ); // randomly move around screen
+    r.move( rand() % 34, rand() % 11 ); // randomly move around screen
     TDemoWindow *window = new TDemoWindow ( r, "Demo Window", ++winNumber);
     deskTop->insert(window);    // put window into desktop and draw it
 }

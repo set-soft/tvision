@@ -22,9 +22,9 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
+#define Uses_string
 #include <tv.h>
 #include <stdio.h>
-#include <string.h>
 
 #include <unistd.h>
 #include <ctype.h>

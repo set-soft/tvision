@@ -12,7 +12,7 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
+#define Uses_string
 
 #define Uses_TKeys
 #define Uses_TMonoSelector
@@ -53,7 +53,7 @@ void TMonoSelector::handleEvent( TEvent& event )
 
 Boolean TMonoSelector::mark( int item )
 {
-    return Boolean(monoColors[item] == value);
+    return Boolean(monoColors[item] == (uchar)value);
 }
 
 void TMonoSelector::newColor()

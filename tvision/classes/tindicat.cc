@@ -17,7 +17,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #else
 #include <stdio.h>
 #endif
-#include <string.h>
+#define Uses_string
 
 #define Uses_TIndicator
 #define Uses_TDrawBuffer

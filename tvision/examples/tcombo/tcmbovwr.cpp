@@ -24,7 +24,7 @@
 /*                                                                       */
 /*************************************************************************/
 
-#include <string.h>
+#define Uses_string
 
 #define Uses_TComboViewer
 #define Uses_TKeys

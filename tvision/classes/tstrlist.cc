@@ -12,7 +12,7 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
+#define Uses_string
 
 #define Uses_TStrIndexRec
 #define Uses_TStrListMaker
@@ -58,7 +58,7 @@ void TStrListMaker::put( ushort key, char *str )
         }
     int len = strlen( str );
     strings[strPos] = len;
-    movmem( str, strings+strPos+1, len );
+    memmove( strings+strPos+1, str, len );
     strPos += len+1;
     cur.count++;
 }

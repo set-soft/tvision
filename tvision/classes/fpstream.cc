@@ -13,6 +13,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 
 #define Uses_fpbase
 #define Uses_fpstream
+#define Uses_IOS_BIN
 #include <tv.h>
 
 fpstream::fpstream()

@@ -73,10 +73,12 @@ inline opstream& operator << ( opstream& os, TFileList* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 
+
 inline void TFileList::newList( TFileCollection *f )
 {
     TSortedListBox::newList( f );
 }
+
 
 inline TFileCollection *TFileList::list()
 {

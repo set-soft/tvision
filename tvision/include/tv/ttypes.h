@@ -51,5 +51,12 @@ const int ccNotFound = -1;
 extern uchar specialChars[];
 extern uchar o_specialChars[];
 
+#if defined(__GNUC__)
+typedef unsigned long long uint64;
+#elif defined(__TURBOC__) || defined(_MSVC)
+typedef unsigned __int64 uint64;
+#else
+#error Can not define uint64 type: unknown compiler.
+#endif
 
 #endif	// __TTYPES_H

@@ -33,13 +33,13 @@ class fpstream : public fpbase, public iopstream
 public:
 
     fpstream();
-    fpstream( const char *, int, int = filebuf::openprot );
+    fpstream( const char *, int, int = FILEBUF_OPENPROT );
     fpstream( int );
     fpstream( int, char *, int );
     ~fpstream();
 
     filebuf * rdbuf();
-    void open( const char *, int, int = filebuf::openprot );
+    void open( const char *, int, int = FILEBUF_OPENPROT );
 
 };
 

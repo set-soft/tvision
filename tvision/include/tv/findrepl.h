@@ -30,8 +30,6 @@ struct TFindDialogRec
 #if defined( Uses_TReplaceDialogRec ) && !defined( __TReplaceDialogRec )
 #define __TReplaceDialogRec
 
-#include <string.h>
-
 struct TReplaceDialogRec
 {
     TReplaceDialogRec( const char *str, const char *rep, ushort flgs )

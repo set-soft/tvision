@@ -1,7 +1,7 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
 #include <stdlib.h>
-#include <string.h>
+#define Uses_string
 #include <time.h>
 #include <stdio.h>
 

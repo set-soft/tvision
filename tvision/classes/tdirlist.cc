@@ -12,8 +12,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
-
+#define Uses_string
+#define Uses_sys_stat
 #define Uses_TDirListBox
 #define Uses_TEvent
 #define Uses_TDirCollection
@@ -60,7 +60,7 @@ Boolean TDirListBox::isSelected( ccIndex item )
     return Boolean( item == cur );
 }
 
-#if (!defined(__DJGPP__) && !defined(_WIN32))
+#ifdef TVOS_UNIX
 
 void TDirListBox::showDrives( TDirCollection * )
 {
@@ -68,7 +68,7 @@ void TDirListBox::showDrives( TDirCollection * )
 
 #else
 
-#ifndef _WIN32
+#if defined(TVOSf_djgpp) || defined(__TURBOC__)
 #include <dir.h> // getdisk()
 #include <dos.h>
 #else
@@ -130,9 +130,8 @@ extern "C" char *ffname(struct ffblk *);
 #define N(s) s.ff_name
 #endif
 
-#if (!defined(__DJGPP__) && !defined(_WIN32))
+#ifdef TVOS_UNIX
 #include <dirent.h>
-#include <sys/stat.h>
 
 void TDirListBox::showDirs( TDirCollection *dirs )
 {
@@ -219,7 +218,7 @@ void TDirListBox::showDirs( TDirCollection *dirs )
 }
 
 #else
-#ifdef _WIN32
+#if !defined(TVOSf_djgpp) && !defined(__TURBOC__)
 void TDirListBox::showDirs( TDirCollection *dirs )
 {
     const int indentSize = 2;
@@ -377,8 +376,8 @@ void TDirListBox::newDirectory( const char *str )
 {
     strcpy( dir, str );
     TDirCollection *dirs = new TDirCollection( 5, 5 );
-#if (defined(__DJGPP__) || defined(_WIN32))
-    #ifndef _WIN32
+#ifndef TVOS_UNIX
+    #if defined(TVOS_djgpp) || defined(__TURBOC__)
     // SET: Old programs created for original TV can pass backslashes here
     // and the code in showDirs assumes they are all forward.
     for (int i=0; dir[i]; i++)

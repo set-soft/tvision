@@ -32,13 +32,15 @@ class fpbase : virtual public pstream
 public:
 
     fpbase();
-    fpbase( const char *, int, int = filebuf::openprot );
+    fpbase( const char *, int, int = FILEBUF_OPENPROT );
     fpbase( int );
     fpbase( int, char *, int );
     ~fpbase();
 
-    void open( const char *, int, int = filebuf::openprot );
+    void open( const char *, int, int = FILEBUF_OPENPROT );
+    #ifndef __TURBOC__
     void attach( int );
+    #endif
     void close();
     void setbuf( char *, int );
     filebuf * rdbuf();

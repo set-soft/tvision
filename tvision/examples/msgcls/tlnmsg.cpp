@@ -22,7 +22,7 @@
  *                                                                    *
  **********************************************************************/
 
-#include <string.h>
+#define Uses_string
 
 #include "tlnmsg.h"
 //#include "const.h"     // for command constants

@@ -6,7 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Salvador E. Tropea (release CPU and other stuff)
+
  *
  *
  */
@@ -28,17 +29,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #define Uses_TGKey
 #include <tv.h>
 
-// SET: CPU release
-#ifdef __DJGPP__
-#include <dpmi.h>
-#else
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h> //for Sleep
-#else
-#include <unistd.h>
-#endif
-#endif
+#include <compatlayer.h>
+
 // Public variables
 
 TStatusLine * TProgram::statusLine = 0;
@@ -103,7 +95,7 @@ inline Boolean hasMouse( TView *p, void *s )
                      p->mouseInView( ((TEvent *)s)->mouse.where ));
 }
 
-#if (defined( __DJGPP__ ) || defined(_WIN32))
+#ifndef TVOS_UNIX
 inline
 clock_t Clock(void)
 {
@@ -257,15 +249,7 @@ void TProgram::idle()
     // SET: Release the CPU unless the user doesn't want it.
     if( !doNotReleaseCPU )
         {
-        #ifdef __DJGPP__
-        __dpmi_yield(); // DJGPP
-        #else
-        # ifdef _WIN32
-        Sleep(100);     // Win32
-        # else
-        usleep(1000);   // Linux
-        # endif
-        #endif
+         CLY_ReleaseCPU(); // defined in ticks.cc
         }
 }
 

@@ -9,7 +9,7 @@ static uchar CrtInfo;
 static uchar CrtRows;
 
 #include <stdlib.h>
-#include <string.h>
+#define Uses_string
 #include <unistd.h>
 #include <term.h>
 #include <sys/ioctl.h>

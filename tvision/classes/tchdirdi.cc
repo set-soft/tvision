@@ -14,12 +14,12 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 // they can inconditionally declare symbols like NULL
 #include <ctype.h>
 #include <stdio.h>
-#include <string.h>
+#define Uses_string
 #ifdef _MSC_VER
 #include <io.h>
 #include <direct.h>
 #else
-#include <unistd.h>
+#define Uses_unistd
 #endif
 
 #define Uses_MsgBox
@@ -111,13 +111,13 @@ void TChDirDialog::handleEvent( TEvent& event )
             switch( event.message.command )
                 {
                 case cmRevert:
-                    getCurDir( curDir );
+                    CLY_GetCurDirSlash(curDir);
                     break;
                 case cmChangeDir:
                     {
                     TDirEntry *p = dirList->list()->at( dirList->focused );
                     strcpy( curDir, p->dir() );
-#if (defined(__DJGPP__) || defined(_WIN32))
+#if (defined(TVOS_DOS) || defined(TVOS_Win32))
                     if( strcmp( curDir, _("Drives") ) == 0 )
                         break;
                     else if( driveValid( curDir[0] ) )
@@ -141,7 +141,7 @@ void TChDirDialog::handleEvent( TEvent& event )
                     return;
                 }
             dirList->newDirectory( curDir );
-#if (defined(__DJGPP__) || defined(_WIN32))
+#if (defined(TVOS_DOS) || defined(TVOS_Win32))
             int len = strlen( curDir );
 	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
@@ -165,11 +165,11 @@ void TChDirDialog::setUpDialog()
     if( dirList != 0 )
         {
 	char curDir[PATH_MAX];
-        getCurDir( curDir );
+        CLY_GetCurDirSlash( curDir );
         dirList->newDirectory( curDir );
         if( dirInput != 0 )
             {
-#if (defined(__DJGPP__) || defined(_WIN32))
+#if (defined(TVOS_DOS) || defined(TVOS_Win32))
             int len = strlen( curDir );
 	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
