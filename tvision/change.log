@@ -1,4 +1,13 @@
 $Log$
+Revision 1.194  2001/09/09 22:10:48  set
+* Fixed: [BC++/Win32] Some unused variable warnings. It looks like BC++ 5.5
+needs something like if (unused) unused=0; to understand we don't want it.
+* Fixed: [BC++/Win32] Some comparisson between signed and unsigned.
+* Added: Now both compress scripts (djgpp and linux) updates the BC++ 5.5
+makefile.
+* Modified: intl.h to define HAVE_INTL_SUPPORT as 1 like in the
+configuration file or gcc will get mad.
+.
 Revision 1.193  2001/09/09 19:58:18  set
 * Modified: version to 1.1.1.
 * Added: Comments about the modification of the cursor behavior.
