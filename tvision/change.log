@@ -1,4 +1,7 @@
 $Log$
+Revision 1.242.2.18  2002/01/03 01:26:55  set
+* Fixed: getline code for BC++ 5.5 target. [lack of ssize_t]
+
 Revision 1.242.2.17  2002/01/02 00:07:23  set
 * Fixed: The configuration forced tvfintl for Linux.
 * Fixed: RHIDE 1.4.9 includes rhide.env in generated makefiles so the new
@@ -1498,7 +1501,7 @@ Revision 1.31  1999/04/01 01:28:52  set
 It wasn't possible before because it ever used service 0, now if the mode is
 greater than 0x100 I use VBE.
 .
-Revision 1.30  1999/03/24 23:03:38  root
+Revision 1.30  1999/03/24 23:03:38  set
 * Incorporated the 1.0.3-6 Debian package diffs.
 * Fixed: Problem with dependencies of the .so library (by Ivan).
 .
