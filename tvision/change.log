@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.43  2003/04/21 16:06:17  set
+* Fixed: [Cygwin] it have snprintf, no need for replacement. It makes DJGPP
+the only one without it, I guess it will be solved in 2.04.
+
 Revision 2.399.2.42  2003/04/21 15:45:32  set
 * Fixed: The snprintf replacement (coded by Caolan McNamara
 <caolan@skynet.ie>, thanks Caolan!) didn't return the expected value.
