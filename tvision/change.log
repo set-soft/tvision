@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.117  2002/06/04 13:21:54  set
+* Modified: Added comments and removed dead code on the last changes.
+
 Revision 2.116  2002/06/03 20:56:23  set
 * Added: Now TDeskTop moves the cursor to the bottom of the screen when
 an object lost the focus and we are in the "Braille friendly" mode. Until
