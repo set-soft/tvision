@@ -21,16 +21,6 @@ TODO: Cuando entra o setea el modo asegurarse que el cursor es lo que yo pienso.
 
 TODO:
 TurboVision_screenOptions
-Un mecanismo para deshabilitar el uso de vcs como opción
-   * Environment variable support.
-   * Date: Wed, 29 Jan 1997 16:51:40 +0100 (MET)
-  char env[PATH_MAX] = "", *p;
-  if ((p = getenv("TVOPT")) != NULL)
-  {
-     LOG("environment variable TVOPT=" << p);
-     for (char *d = env; *p != '\0'; p++)
-       *d++ = uctolower(*p);
-  }
 See ToDo in the mouse initialization.
 
 When using no lat1 chars we had it:

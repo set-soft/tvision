@@ -212,14 +212,14 @@ void TDisplayLinux::setUpEnviron()
     return;
  // Linux argv is before the environment and in one chunck.
  // Do some check
- if (environ[0]==NULL || argv[0]>environ[0])
+ if (environment[0]==NULL || argv[0]>environment[0])
     return;
 
  // Meassure the chunck
  int i;
  origEnvir=argv[0];
- for (i=0; environ[i]; i++); i--;
- maxLenTit=(environ[i]+strlen(environ[i]))-origEnvir+1;
+ for (i=0; environment[i]; i++); i--;
+ maxLenTit=(environment[i]+strlen(environment[i]))-origEnvir+1;
 
  // Allocate a copy
  newEnvir=(char *)malloc(maxLenTit);
@@ -230,9 +230,9 @@ void TDisplayLinux::setUpEnviron()
  for (i=0; i<argc; i++)
      argv[i]+=diff;
 
- // Adjust the environ pointers
- for (i=0; environ[i]; i++)
-     environ[i]+=diff;
+ // Adjust the environment pointers
+ for (i=0; environment[i]; i++)
+     environment[i]+=diff;
 
  // Clear the old environment, but let argv[0]
  int len0=strlen(argv[0]);
