@@ -40,10 +40,10 @@ sub PatchFile
        # Skip comments
        next if (substr($search,0,1) eq '#');
        # Get the name of the variable
-       if ($search =~ /(.*)=(.*)/)
+       if ($search =~ /([\w_]*)(\s*)=(\s*)(.*)/)
          {
           $name=$1;
-          $value=$2;
+          $value=$4;
           #print "$name\n$value\n";
           print '.';
          }
