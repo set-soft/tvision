@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.55  2002/05/08 12:31:57  set
+* Fixed: [UNIX] The .gpr include directory was hardcoded instead of using
+TVSRC. From a report by miniEleph.
+
 Revision 2.54  2002/05/07 19:06:26  set
 * Modified: [X11] Now only the changed text is updated. In the test case
 it produced a 290% increase in speed.

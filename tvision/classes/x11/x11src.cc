@@ -605,7 +605,12 @@ TScreenX11::TScreenX11()
  cursorGC=XCreateGC(disp,mainWin,0,0);
 
  /* Create the cursor timer */
- signal(SIGALRM,sigAlm);
+ struct sigaction action;
+ action.sa_handler=sigAlm;
+ sigemptyset(&action.sa_mask);
+ action.sa_flags=0;
+ sigaction(SIGALRM,&action,NULL);
+ //signal(SIGALRM,sigAlm); To avoid SVID vs BSD differences
  microAlarm(cursorDelay);
 
  XSetBackground(disp,gc,colorMap[0]);
