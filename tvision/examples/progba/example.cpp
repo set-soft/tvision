@@ -151,9 +151,7 @@ Boolean TMyApplication::isCancel(TDialog *pd)
    pd->getEvent(event);
    pd->handleEvent(event);
    if(event.what==evCommand && event.message.command==cmCancel) {
-      Boolean oldState=TScreen::showBusyState(False);
       Boolean ret=messageBox("Are you sure you want to Cancel",mfConfirmation|mfYesButton|mfNoButton)==cmYes ? True : False;
-      TScreen::showBusyState(oldState);
       return ret;
    }
    else
