@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 1.240  2001/10/25 00:32:12  set
+* Fixed: The gkey.cc program assumed that Linux is the only UNIX ;-) I
+noticed it while trying to test the keyboard routines running Solaris.
+
 Revision 1.239  2001/10/23 00:57:43  set
 * Fixed: Some compilation problems when using the last CVS snapshot of gcc
 3.1. All in the examples and related to specify std namespace as the
