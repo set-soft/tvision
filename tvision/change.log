@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.7  2003/02/17 18:12:02  set
+* Added: [X11] Two configuration variables to control if we want Unicode 16
+mode and which SFT to use. Also added a search in various directories and
+TV_FONTS environment variable. Documented.
+
 Revision 2.399.2.6  2003/02/17 12:59:01  set
 * Added: The first Unicode example. It loads an UTF-8 encoded file and
 displays it using a class derived from TScroller. The code is based on the

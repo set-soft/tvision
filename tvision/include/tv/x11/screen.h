@@ -76,6 +76,7 @@ protected:
  static void   setCharacterU16(unsigned offset, uint32 value);
  static void   setCharacters(unsigned dst, ushort *src, unsigned len);
  static void   setCharactersU16(unsigned offset, ushort *values, unsigned count);
+ static void   setCharactersX11U16(unsigned offset, ushort *values, unsigned w);
  static int    System(const char *command, pid_t *pidChild, int in, int out, int err);
  static int    setWindowTitle(const char *aName);
  static const char *getWindowTitle(void);
@@ -104,6 +105,7 @@ protected:
  // Internal line update
  static void   writeLineCP(int x, int y, int w, void *str, unsigned color);
  static void   writeLineU16(int x, int y, int w, void *str, unsigned color);
+ static void   writeLineX11U16(int x, int y, int w, void *str, unsigned color);
  static void   (*writeLine)(int x, int y, int w, void *str, unsigned color);
  // Internal rectangle update
  static void   redrawBufCP(int x, int y, unsigned w, unsigned off);
@@ -190,6 +192,9 @@ protected:
  static char busyCursorMask[];
  // For testing purposes should be removed
  void LoadFontAsUnicode();
+ char *SearchX11Font(const char *foundry, const char *family, int w, int h);
+ char *SearchX11Font(const char *foundry, const char *family);
+ char *SearchX11DefaultFont();
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen
