@@ -1,3 +1,18 @@
+rhtvision (2.0.0-0.5) unstable; urgency=low
+
+  * New beta from CVS dated 11 Sep 2002.
+  * Now is on feature freeze and testing period!!!
+  * Installs doc/X11.txt document (noticed by Salvador).
+  * Added information about APT repository in README.Debian.
+  * README.Debian wasn't being installed on the shared library package, only
+    in the -dev (static library) package, I don't know why dh_installdocs
+    just installs it for the 1st. package mentioned in debian/control only,
+    instead of installing it for all packages.
+  * debian/maintainer.notes: it was very outdated, now contains accurate and
+    more useful information.
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Wed, 11 Sep 2002 15:00:44 -0300
+
 rhtvision (2.0.0-0.4) unstable; urgency=low
 
   * New alpha from CVS dated 5 Sep 2002.

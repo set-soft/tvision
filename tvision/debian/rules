@@ -78,8 +78,10 @@ install: build
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installdocs -p $(package)$(version) extra/eterm/ borland.txt copying copying.rh readme.txt
-	dh_installdocs -p $(package)$(version)-dev borland.txt copying copying.rh readme.txt
+	dh_installdocs -A borland.txt copying copying.rh readme.txt doc/X11.txt
+	dh_installdocs -p $(package)$(version) extra/eterm/ debian/README.debian
+	mv debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.debian \
+		debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.Debian
 	dh_installexamples -p $(package)$(version)-dev examples/*
 	find $(destdir) debian/$(package)$(version) \
         \( -name '.cvsignore' -o -name 'CVS' -prune \) -exec rm -rf '{}' \;
