@@ -69,9 +69,7 @@ int port_access=0;
 FILE *tty_file=0;
 unsigned short *mono_mem = NULL; /* mmapped mono video mem */
 int mono_mem_desc=-1;
-#ifndef __SAVECURSOR_OK
 extern int cur_x,cur_y;
-#endif
 
 enum { PAL_MONO, PAL_LOW, PAL_HIGH, PAL_LOW2 };
 static int palette;
@@ -548,116 +546,97 @@ static void mapColor(char *&p, int col)
 static void writeBlock(int dst, int len, ushort *old, ushort *src)
 {
   char out[4096], *p = out;
-  int col = -1;
+  int col=-1;
   int altSet=0,needAltSet;
 
-#if 0
-#define C___() write(2,out,p-out)
-#else
-#define C___()
-#endif
-
-#define C__()\
-  do { write(tty_fd, out, p - out); C___(); } while(0)
-
-#define C_() \
-  if (p > out+4000) \
-  { \
-    C__();\
-    p = out; \
-  }
-
-#ifdef __SAVECURSOR_OK
-  safeput(p, save_cursor );
-#endif
-  safeput(p, tparm(cursor_address, dst / TScreen::screenWidth,
-          dst % TScreen::screenWidth));
-  while (len-- > 0)
-  {
-    int code = *src & 0xff;
-    int newcol = *src >> 8;
-  
-    *old++ = *src++;
-    if (col == -1 || col != newcol) /* change color ? */
+  safeput(p,tparm(cursor_address,dst/TScreen::screenWidth,
+          dst%TScreen::screenWidth));
+  while (len-->0)
     {
-      col = newcol;
-      if (palette > PAL_MONO)
-        mapColor(p, col);
-      else if (palette == PAL_MONO)
-      {
-        safeput(p, exit_attribute_mode);
-        if (col == 0x0f) safeput(p, enter_bold_mode);
-        else if (col == 0x70)
+     int code  =CLY_Low16(*src);
+     int newcol=CLY_High16(*src);
+   
+     *old++=*src++;
+     if (col!=newcol) /* change color ? */
+       {
+        col = newcol;
+        if (palette>PAL_MONO)
+           mapColor(p, col);
+        else if (palette==PAL_MONO)
+          {
+           safeput(p, exit_attribute_mode);
+           if (col==0x0f)
+              safeput(p, enter_bold_mode);
+           else
+             if (col==0x70)
                 safeput(p, enter_reverse_mode);
-      }
-    }
-
-    switch (TerminalType)
-      {
-       case GENER_TERMINAL:
-            //if (!use_pc_chars || code < ' ') Now is always
-              {
-               code=PC2curses[code];
-               needAltSet=code & A_ALTCHARSET;
-               if (needAltSet && !altSet)
+          }
+       }
+ 
+     switch (TerminalType)
+       {
+        case GENER_TERMINAL:
+             code=PC2curses[code];
+             needAltSet=code & A_ALTCHARSET;
+             if (needAltSet && !altSet)
+               {
+                altSet=1;
+                safeput(p,enter_alt_charset_mode);
+               }
+             else
+               if (!needAltSet && altSet)
                  {
-                  altSet=1;
-                  safeput(p,enter_alt_charset_mode);
+                  altSet=0;
+                  safeput(p,exit_alt_charset_mode);
                  }
-               else
-                 if (!needAltSet && altSet)
-                   {
-                    altSet=0;
-                    safeput(p,exit_alt_charset_mode);
-                   }
-              }
-            *p++=code;
-            break;
-       case LINUX_TERMINAL:
-            /* SET: The following uses information I got from Linux kernel.
-               The file drivers/char/console.c have all the parsing of the
-               escape sequences. I put more information at the end of this
-               file.
-               Some characters are ever interpreted as control codes, here
-               I use a bitmap for them taked directly from the kernel.
-               The kernel code also sugest to use UTF-8 to print those
-               codes.
-               Note that Unicode 0xF000 | character means that character
-               must pass unchanged to the screen
-            */
-            #define CTRL_ALWAYS 0x0800f501  /* Cannot be overridden by disp_ctrl */
-            #define ENTER_UTF8  "\e%G"
-            #define EXIT_UTF8   "\e%@"
-            if (code<32 && ((CTRL_ALWAYS>>code) & 1))
-              {/* This character can't be printed, we must use unicode */
-               /* Enter UTF-8 and start constructing 0xF000 code */
-               safeput(p,ENTER_UTF8 "\xEF\x80");
-               /* Set the last 6 bits */
-               *p++=code | 0x80;
-               /* Escape UTF-8 */
-               safeput(p,EXIT_UTF8);
-              }
-            else if (code==128+27)
-              {/* A specially evil code: Meta+ESC, it can't be printed */
-               /* Just send Unicode 0xF09B to screen */
-               safeput(p,ENTER_UTF8 "\xEF\x82\x9B" EXIT_UTF8);
-              }
-            else
-               /* The rest pass directly unchanged */
-               *p++=code;
-            break;
-      }
-    C_();
-  }
+             *p++=code;
+             break;
+        case LINUX_TERMINAL:
+             /* SET: The following uses information I got from Linux kernel.
+                The file drivers/char/console.c have all the parsing of the
+                escape sequences. I put more information at the end of this
+                file.
+                Some characters are ever interpreted as control codes, here
+                I use a bitmap for them taked directly from the kernel.
+                The kernel code also sugest to use UTF-8 to print those
+                codes.
+                Note that Unicode 0xF000 | character means that character
+                must pass unchanged to the screen
+             */
+             #define CTRL_ALWAYS 0x0800f501  /* Cannot be overridden by disp_ctrl */
+             #define ENTER_UTF8  "\e%G"
+             #define EXIT_UTF8   "\e%@"
+             if (code<32 && ((CTRL_ALWAYS>>code) & 1))
+               {/* This character can't be printed, we must use unicode */
+                /* Enter UTF-8 and start constructing 0xF000 code */
+                safeput(p,ENTER_UTF8 "\xEF\x80");
+                /* Set the last 6 bits */
+                *p++=code | 0x80;
+                /* Escape UTF-8 */
+                safeput(p,EXIT_UTF8);
+               }
+             else if (code==128+27)
+               {/* A specially evil code: Meta+ESC, it can't be printed */
+                /* Just send Unicode 0xF09B to screen */
+                safeput(p,ENTER_UTF8 "\xEF\x82\x9B" EXIT_UTF8);
+               }
+             else
+                /* The rest pass directly unchanged */
+                *p++=code;
+             break;
+       }
+     if (p>out+4000)
+       {
+        write(tty_fd,out,p-out);
+        p=out;
+       }
+    }
   if (altSet)
      safeput(p,exit_alt_charset_mode);
-#ifdef __SAVECURSOR_OK
-  safeput(p, restore_cursor);
-#else
-  safeput(p, tparm(cursor_address, cur_y, cur_x));
-#endif
-  if (palette == PAL_MONO) safeput(p, exit_attribute_mode);
-  C__();
+  if (palette==PAL_MONO)
+     safeput(p,exit_attribute_mode);
+  safeput(p,tparm(cursor_address,cur_y,cur_x));
+  write(tty_fd,out,p-out);
 }
 
 ushort TScreen::startupMode = 0xFFFF;
