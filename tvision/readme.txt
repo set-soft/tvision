@@ -228,11 +228,21 @@ this TVision. The examples are shipped only with the sources distribution.
 
 
 
-7. Examples:
------------
+7. Targets supported, limitations:
+---------------------------------
 
-  The library compiles and runs in DOS and Linux, but there are some
-important things to note, specially what is supported in each case:
+  The library compiles and runs in DOS and Linux. Only i386 Linux is fully
+supported, we are working to support Alpha too, currently I think you can
+get it working if you compile the library without warnings enabled, that's
+needed because there are errors in system.h file for Alpha (an invalid
+pointer convertion) that are reported only by C++ and not C, looks like
+nobody includes these headers in C++ programs. Another problem I know about
+Alpha is that egcs 2.91.66 generates some silly warnings, I think they are
+due to some bug in egcs, removing the -Werror switch you'll get a working
+library. Dim Zegebart <zager@post.comstar.ru> is the one testing the Alpha
+stuff.
+  There are some important things to note, specially what is supported in
+each case:
 
 [Sorted alphabetically]
 
