@@ -108,6 +108,7 @@ config.pl
 +configure
 +configset.bat
 +configset
+conflib.pl
 copying
 copying.rh
 debian/README.debian
