@@ -4,10 +4,7 @@
  *      Copyright (c) 1994 by Borland International
  *      All Rights Reserved.
  *
-
-Modified by Robert H”hne to be used for RHIDE.
-
- *
+ *  Modified by Salvador E. Tropea (SET) for RHTVision port.
  *
  */
 
@@ -23,37 +20,32 @@ Modified by Robert H”hne to be used for RHIDE.
 
 class TRect;
 
+const int tparamTextMaxLen=256;
+#define SAFE_CODE 1  // Don't corrupt memory if tparamTextMaxLen is small
+
 class TParamText : public TStaticText
 {
-
 public:
-    TParamText( const TRect& bounds, const char *aText, int aParamCount );
+ TParamText( const TRect& bounds );
+ ~TParamText();
 
-    virtual uint32 dataSize();
-    virtual void getText( char *buf, int maxLen );
-    virtual void setData( void *rec );
+ virtual void getText( char *str, int maxLen );
+ virtual void setText( char *fmt, ... );
+ virtual int  getTextLen();
 
 protected:
+ char *str;
 
-    short paramCount;
-    void *paramList;
 #if !defined( NO_STREAM )
 private:
-
-    virtual const char *streamableName() const
+  virtual const char *streamableName() const
         { return name; }
-
 protected:
-
-    TParamText( StreamableInit );
-    virtual void write( opstream& );
-    virtual void *read( ipstream& );
-
+  TParamText( StreamableInit );
 public:
-
-    static const char * const name;
-    static TStreamable *build();
-#endif // NO_STREAM
+  static const char * const name;
+  static TStreamable *build();
+#endif
 };
 
 #if !defined( NO_STREAM )

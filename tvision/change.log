@@ -1,4 +1,12 @@
 $Log$
+-----------------------------------------------------------------------------
+v1.0.5 released. Sources uploaded to DJ's server and my home page. Linux
+sources uploaded to my home page. Sources sent to www.linux.org.ar (DanX).
+
+Revision 1.36  1999/04/21 22:46:34  set
+* Fixed: The open dialog didn't allow to open files using [];,=+ That's OK
+for plain DOS, but when running in Win9x+GUI the LFN API supports it.
+
 Revision 1.35  1999/04/18 22:19:18  root
 * Applied changes to the Debian files from Ivan.
 .
