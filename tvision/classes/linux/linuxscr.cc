@@ -11,13 +11,14 @@
 the font doesn't map 1 to 1 with the code page. If you don't understand it
 please read the Console Tools documentation (html docs). Where each concept
 is explained.
+  UseVCS=1
+  UseMDA=1
+  PatchKeys=1
 
 *****************************************************************************/
 /*
 ToDo: Add support for the ISO codepages as used by Linux, not just the standard
 + my frames.
-
-TODO: Cuando entra o setea el modo asegurarse que el cursor es lo que yo pienso.
 
 TODO:
 TurboVision_screenOptions
@@ -31,20 +32,6 @@ When using no lat1 chars we had it:
        TerminalType=GENER_TERMINAL;
       }
 This is not supported any more
-
-Moverlo a un flag en la inicialización:
-
-  Description:
-  Finds if this terminal have variable code page of that's fixed.
-  
-  Return: 
-  True if the terminal have a variable code page.
-  
-Boolean TScreen::codePageVariable()
-{
- return (TerminalType==GENER_TERMINAL ||
-         TerminalType==XTERM_TERMINAL) ? False : True;
-}
 
 Important limitations:
 
@@ -685,8 +672,18 @@ TScreenLinux::TScreenLinux()
  initialized=1;
 
  // Determine which subdriver to use (VCS R/W, VCS W or plain terminal)
- DetectVCS();
- DetectSecondaryDisplay();
+ {
+  long useVCS=1;
+  TScreen::optSearch("UseVCS",useVCS);
+  if (useVCS)
+     DetectVCS();
+ }
+ {
+  long useMDA=1;
+  TScreen::optSearch("UseMDA",useMDA);
+  if (useMDA)
+     DetectSecondaryDisplay();
+ }
 
  // Don't need special rights anymore
  seteuid(getuid());

@@ -245,6 +245,8 @@ public:
  static void   getPaletteColors(int from, int number, TScreenColor *colors);
  static void   setPaletteColors(int from, int number, TScreenColor *colors);
  static void   resetPalette(); // Sets the original palette
+ // It looks for a configuration variable that belongs to the current driver
+ static Boolean optSearch(const char *variable, long &val);
 
  // SET: flags capabilities flags
  enum Capabilities1
@@ -275,6 +277,7 @@ public:
 protected:
  // SET: Capabilities flags
  static uint32 flags0;
+ static const char *currentDriverShortName;
 
  // SET: Default behaviors:
  static void   defaultSetVideoMode(ushort mode);

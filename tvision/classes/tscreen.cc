@@ -38,7 +38,9 @@ char     TScreen::suspended=1;
 char     TScreen::initialized=0;
 char     TScreen::initCalled=0;
 uint32   TScreen::flags0=0;
-TScreen *TScreen::driver=0;
+TScreen *TScreen::driver=NULL;
+const char
+        *TScreen::currentDriverShortName=NULL;
 
 
 /*****************************************************************************
@@ -221,10 +223,15 @@ TScreen::TScreen() :
  if (changed)
     qsort(Drivers,nDrivers,sizeof(stDriver),cmpDrivers);
  // Now call the initializations
- for (i=0; i<nDrivers && !(driver=Drivers[i].driver()); i++);
+ for (i=0; i<nDrivers && !driver; i++)
+    {
+     currentDriverShortName=Drivers[i].name;
+     driver=Drivers[i].driver();
+    }
  if (!driver)
    {
     fprintf(stderr,"Error: Unsupported hardware\n");
+    currentDriverShortName=NULL;
     exit(1);
    }
 }
@@ -281,3 +288,9 @@ void TScreen::resetPalette()
  setDisPaletteColors(0,16,OriginalPalette);
  paletteModified=0;
 }
+
+Boolean TScreen::optSearch(const char *variable, long &val)
+{
+ return TVMainConfigFile::Search(currentDriverShortName,variable,val);
+}
+

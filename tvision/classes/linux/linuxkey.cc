@@ -32,6 +32,7 @@
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
+#define Uses_TScreen
 #include <tv.h>
 
 #include <termios.h>
@@ -172,7 +173,9 @@ int TGKeyLinux::InitOnce()
    }
  // Check if we can patch the keyboard
  canPatchKeyboard=0;
- if (ourVT!=-1 && ioctl(hIn,KDGKBENT,&entry)==0)
+ long optPatchKeys=1; // Default is patch the keyboard
+ TScreen::optSearch("PatchKeys",optPatchKeys);
+ if (optPatchKeys && ourVT!=-1 && ioctl(hIn,KDGKBENT,&entry)==0)
    {
     canPatchKeyboard=1;
     keyMapInit();
