@@ -3,6 +3,7 @@
 *.bkp
 *.dst
 *.a
+*.exe
 *cvs/*
 *CVS/*
 *cvs
