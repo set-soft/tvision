@@ -1,4 +1,8 @@
 $Log$
+Revision 1.137  2000/02/05 22:22:20  set
+* Added: Now if a program executes a dialog while the desktop is locked it is
+temporally unlocked so the user can see the dialog and then is locked again.
+.
 Revision 1.136  2000/02/05 20:42:18  set
 * Added: Add and Done buttons to the FileOpenDialog, they are controlled by
 the fdDoneButton and fdAddButton options. They are suitable for selecting
