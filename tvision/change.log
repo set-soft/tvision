@@ -1,31 +1,34 @@
-$Log$.
+$Log$
+Revision 2.551  2004/06/25 19:30:54  set
+* Added: [MSVC] a simple bool/true/false replacement to compatlayer.
+
 Revision 2.550  2004/06/25 14:17:32  set
 * Fixed: [MSVC] the WinGr driver can't be compiled with 4.0 because it uses
 too much features only available in newer versions.
 * Fixed: [MSVC] the lack of snprintf request in cl/needs.h.
 * Both from Arnold Wiegert reports.
-.
+
 Revision 2.549  2004/06/24 20:47:46  set
 * Fixed: [MSVC] Cast to (char *) for alloca return value in ntdirent.c.
 * Fixed: K&R 1 prototypes in regex.c.
 * Fixed: [MSVC] Lack of ioctl in 4.0
 * Fixed: Forced stddef.h because of size_t use everywhere.
 * All the above from Arnold Wiegert, also previous patch.
-.
+
 Revision 2.548  2004/06/23 20:11:04  set
 * Added: [MSVC] Version 4.0 seems to report version 1000 and lacks
 snprintf. I also needs new.h instead of new.
-.
+
 Revision 2.547  2004/06/23 19:40:51  set
 * Modified: [MSVC] Use of /Tp<file> instead of /TP in makefiles. It looks
 like MSVC 4.0 only supports it. Reported by by Arnold Wiegert.
-.
+
 Revision 2.546  2004/06/14 14:43:39  set
 - From valgrind:
 * Fixed: TVIntl::emptySt() new/delete[] missmatch
 * Fixed: TFileDialog::valid new[]/delete missmatch
 * Added: TVOSClipboard clean-up at exit.
-.
+
 Revision 2.545  2004/06/14 14:42:42  set
 * Fixed: [X11] A race condition in the update thread code. It was possible
 that a SIGALRM arrived after destroying the TScreen class and before we
