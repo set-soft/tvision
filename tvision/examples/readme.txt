@@ -38,5 +38,11 @@ sdlg2    - Same as sdlg but more advanced.
 tcombo   - Implements a Combo Box widget. The implementation is clean and
            complete. That's a true example ;-).
 tprogb   - Another progress bar, less flexible.
+tutorial - It contains a very simple example application made in 16 steps to
+           show how each thing is added. It was part of some tutorial from
+           Borland. I taked it from the Sergio Sigala port. No modifications
+           were needed, I just changed #include <tvision/tv.h> by
+           #include <th.h> that's the common use. I added some extra
+           comments.
 
 Salvador Eduardo Tropea (set-soft@usa.net)
