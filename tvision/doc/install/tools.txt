@@ -1,0 +1,137 @@
+  This file gives a list of tools and libraries you used by the package. The
+list isn't complete so please report any missing stuff.
+  The list is oriented to systems using the GNU tools, not for Borland and
+Miscrosoft environments.
+  IMPORTANT! most Linux systems have the needed libraries installed but
+rarely have the headers installed. They are provided in separated packages
+intended for development (XXXX-dev).
+
+TOOLS
+=====
+
+Binutils:
+---------
+
+  They include the linker and assembler. They must be the GNU versions.
+
+Compiler:
+---------
+
+  The code was compiled with GCC 2.7.x, 2.8.x, 2.95.x, egcs 1.x, 3.x and may
+be other versions. As I can't have systems with all of them I can't be sure
+all of them can be currently used.
+  I suggest gcc 2.8.1 or newer because 2.7.2 had some bugs in the C++ library
+and its workaround could go away soon.
+  I don't recommend gcc 2.9.6 nor egcs 1.x because these compilers have too
+much bugs. Workarounds for these problems were created but as I don't have
+these compilers new code could break. I recommend using a more stable
+compiler.
+  The gcc 2.95.x compilers gave me very good results.
+  The code cleanly compiled with gcc 3.0, 3.1.x, 3.2.x and 3.3 but each
+release of gcc 3.x likes to break something in the C++ stuff so be patient
+and report any problems. One particular detail is that gcc 3.x is much more
+slower than gcc 2.95.x when compiling C++ code. This is because the standard
+C++ library now follows the ISO 1998 standard much more closely and hence
+does a heavy use of templates, it looks like gcc 3.x performance to compile
+such a code is really bad.
+  At the moment of this writing (june 2003) my recommendation is gcc 2.95.4.
+
+bzip2:
+------
+
+  Optionally (configuration option) used to create the tarball distributions.
+
+fileutils:
+----------
+
+  They are rm, cp, mv, etc. and all UNIX systems have them. DJGPP users must
+install them.
+
+gettext:
+--------
+
+  Needed for internationalization. They aren't mandatory. Note: this is one
+of those packages that likes to break its API.
+  Note: Solaris provides its own implementation but it isn't supported.
+
+gzip:
+-----
+
+  Used only to create the tarball distributions.
+
+make:
+-----
+
+  Obviously mandatory. You must install GNU make, other make tools aren't
+enough. The executable can be called gmake to avoid collisions with the
+native make tool.
+
+Perl:
+-----
+
+  The configuration script and others are Perl scripts, you'll need Perl
+5.x. I strongly recommend using it even when the tarball and zip files
+usually contains preconfigured sources that will compile out-of-the-box in
+many systems.
+
+RHIDE:
+------
+
+  RHIDE users can configure the package and the compile it using the RHIDE
+projects. But you'll need a really new RHIDE, some times even from CVS. So I
+no longer recommend using RHIDE unless you are going to debug or modify the
+code.
+  At the moment of this writing (june 2003) I use RHIDE 1.5 from CVS.
+
+shellutils:
+-----------
+
+  They are pwd, uname, etc. and all UNIX systems have them. DJGPP users must
+install them.
+
+tar:
+----
+
+  Used only to create the tarball distributions.
+  Note: not all tar implementations are usable, get GNU tar if you have
+problems with it.
+
+textutils:
+----------
+
+  They are cat, split, etc. and all UNIX systems have them. DJGPP users must
+install them.
+
+
+LIBRARIES
+=========
+
+gpm:
+----
+
+  It provides mouse functionality for the Linux console. I tested versions
+1.13, 1.14, 1.17.x and 1.19.x.
+  Note: binaries compiled with a version usually fails to work if you change
+the gpm daemon version.
+
+ncurses:
+--------
+
+  This is mandatory for UNIX systems where the X11 isn't available. But is
+recommended for all UNIX systems because it is used when the terminal isn't
+known. Versions 3.4 and newer were used. I remmember also testing with 4.2,
+5.0, 5.2 and 5.3.
+  Note: none of the listed versions compiles ok using gcc 3.3 and -Wall
+because the headers contains chars as array indexes.
+
+X libraries:
+------------
+
+  They are needed to create a UNIX application that can connect to an X
+server and provide a good text emulation. It works even better than the
+ncurses driver. That's a must for UNIX systems with X11 installed.
+  CygWin also provides X11 under Win32 systems. This is just a curiosity.
+When I tested it the performance was really poor but the test application
+was functional.
+
+

@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.101  2003/06/18 19:57:23  set
+* Fixed: [DOS] When pasting from Windows clipboard and it was empty the
+routine didn't set the length to 0 returning an aleatory length.
+* Fixed: Missing dgettext in international dummy.
+
 Revision 2.399.2.100  2003/06/17 12:46:51  set
 * Added: [BC++] A simple makefile to call the main makefile and clean the
 package.

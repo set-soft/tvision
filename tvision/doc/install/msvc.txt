@@ -1,0 +1,28 @@
+  This file describes how to compile the package for Win32 systems using
+Microsoft Visual C compiler. Note that I don't have it and Microsoft doesn't
+offer reduced versions for free like Borland does. For this reason this
+target ever lags behind. I need volunteer to test this target periodically.
+
+$Id$
+
+1. INTRODUCTION
+2. HOW TO COMPILE
+
+
+
+1. INTRODUCTION
+
+  This target is supported because users helped to make it possible. If you
+find any problem just do the same the other users did: help to fix them.
+  You can also create Win32 versions of this package using BorlandC Builder,
+Cygwin or MinGW.
+  Versions 5.0, 6.0 and 7.0 compiled the code.
+
+2. HOW TO COMPILE
+
+  I'm trying to unify the compilation process but I need volunteers to help
+testing the new MSVC makefiles. For this reason you should use the old
+mechanism explained in winnt/readme.txt
+  The winnt/Makefile.nmk file contains the information needed to create the
+executable just use it with nmake.
+

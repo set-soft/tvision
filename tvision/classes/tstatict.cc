@@ -56,11 +56,19 @@ void TStaticText::draw()
     int i, j, l, p, y;
     TDrawBuffer b;
     int maxLen = size.x*size.y;
-    AllocLocalStr(s,maxLen+1);
+    // +2 to hold the \x3 center char (SET)
+    AllocLocalStr(s,maxLen+2);
 
     color = getColor(1);
-    getText(s, maxLen);
+    getText(s, maxLen+1);
     l = strlen(s);
+    // Check if the size if bigger than allowed and the extra char isn't the
+    // center char (SET)
+    if ((l > maxLen) && s[0]!=3)
+        {
+        l--;
+        s[maxLen+1] = 0;
+        }
     p = 0;
     y = 0;
     center = False;
