@@ -1,4 +1,7 @@
 $Log$
+Revision 1.18  1999/02/02 00:56:55  set
+* Minor changes in the readme.txt and porting.txt to give some hints.
+.
 Revision 1.17  1999/01/31 20:12:44  set
 * Added support for S3 (buggy) BIOSes in vesa.cc. It helps to support VESA
 text modes when using S3 boards. Reported and tested by Jerzy Witkowski
