@@ -705,8 +705,7 @@ names/nvalidat.cc
 names/nview.cc
 names/nwindow.cc
 newstr.cc
-qnxrtp/tvision-dev.qpg
-qnxrtp/genpackage.sh
+qnxrtp/tvision.qpg
 readme.in
 readme.txt
 searchstrs.sh

@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.416  2003/04/15 15:17:44  set
+* Fixed: The new intl.h header only worked for C++ code but the
+configuration script tests it using C code. Now it also defines things for
+C code. Reported by Mike.
+
 Revision 2.415  2003/04/15 14:42:22  set
 * Patches from Mike:
 * Added: [QNX] pterm specific functions for more keycombination detect. Now
