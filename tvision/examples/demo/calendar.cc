@@ -137,7 +137,7 @@ int dayOfWeek(int day, int month, int year)
 
 void TCalendarView::draw()
 {
-    char *str=alloca(size.x+1);
+    char *str=(char *)alloca(size.x+1);
 
     unsigned current = 1 - dayOfWeek(1, month, year);
     unsigned  days = daysInMonth[month] + ((year % 4 == 0 && month == 2) ? 1 : 0);

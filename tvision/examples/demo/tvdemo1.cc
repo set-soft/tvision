@@ -31,7 +31,7 @@
 #define Uses_TApplication
 #define Uses_TWindow
 #define Uses_TDeskTop
-
+#define Uses_TScreen
 #include <tv.h>
 
 #include "tvdemo.h"
@@ -64,6 +64,7 @@ int main(int argc, char **argv)
 {
     TVDemo *demoProgram = new TVDemo(argc, argv);
 
+    TScreen::SetWindowTitle("Turbo Vision Demo Program");
     demoProgram->run();
 
     TObject::destroy( demoProgram );
