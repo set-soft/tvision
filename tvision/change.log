@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.57  2002/05/10 15:21:13  set
+* Modified: [X11 Solaris] It looks like Solaris 7 (at least the one I have
+access) have a broken ITIMER_REAL.
+
 Revision 2.56  2002/05/10 14:17:27  set
 * Modified: [X11] to use sigaction, seems that signal behaves different in
 Solaris.

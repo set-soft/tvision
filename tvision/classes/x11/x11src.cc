@@ -499,11 +499,14 @@ TScreenX11::TScreenX11()
  THWMouseX11::Init();
 
  /* Initialize common variables */
- startupCursor=getCursorType();
+ cShapeFrom=14;
+ cShapeTo=16;
+ cursorLines=startupCursor=getCursorType();
  screenMode=startupMode=getCrtMode();
  screenWidth =GetCols();
  screenHeight=GetRows();
  screenBuffer=new ushort[screenWidth*screenHeight];
+ SetCursorShape(0,0);
 
  /* Get screen and graphic context */
  screen=DefaultScreen(disp);
@@ -525,8 +528,6 @@ TScreenX11::TScreenX11()
  cursorData=(char *)malloc(fontH);
  cursorImage=XCreateImage(disp,visual,1,XYBitmap,0,cursorData,fontW,fontH,8,0);
  cursorImage->byte_order=cursorImage->bitmap_bit_order=MSBFirst;
- cShapeFrom=14;
- cShapeTo=16;
 
  /* Set the locales */
  if (setlocale(LC_ALL,"")==NULL)
