@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.46  2002/04/30 18:43:04  set
+* Fixed: rhide.env files are now included by .mak files and the old syntax
+to include another .env files isn't valid for make. Using "include" works
+for both.
+* Added: .mak files for the examples to the CVS.
+
 Revision 2.45  2002/04/30 18:13:10  set
 * Fixed: When running in a generic color terminal (using 8 colors) no color
 remapping was applied. As a result the colors were messed.
