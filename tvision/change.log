@@ -1,4 +1,7 @@
 $Log$
+Revision 1.119  1999/11/04 01:12:09  set
+* Updated Debian files from Ivan.
+.
 Revision 1.118  1999/11/04 01:01:52  set
 * Modified: The code used to disable ^Q/^S is now more generic and also
 disables ^C, ^/ and ^Z.
