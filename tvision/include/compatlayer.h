@@ -850,6 +850,10 @@ typedef unsigned long  ulong;
   #define Include_strstream 1
  #endif
  #define UsingNamespaceStd
+ #ifndef CLY_BCpp_ssize_t
+  #define CLY_BCpp_ssize_t 1
+  typedef long ssize_t;
+ #endif
 #endif
 
 
