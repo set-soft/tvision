@@ -12,6 +12,10 @@ thread that monitors the window size is different, that's why a lock is
 needed.
  ToDo: Set UseScreenSaver when we are in full screen.
 
+ Configuration variables:
+ ScreenWidth
+ ScreenHeight
+
  Notes:
 1) I changed all the code related to the save/restore state using a new
 screen buffer. I comment more in the "WinNT" driver. One really strange

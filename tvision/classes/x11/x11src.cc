@@ -12,6 +12,10 @@
 
    Configuration variables:
    Font10x20=0 Selects the 10x20 font instead of 8x16
+   ScreenWidth
+   ScreenHeight
+   FontWidth
+   FontHeight
 */
 
 #include <tv/configtv.h>
@@ -764,21 +768,6 @@ TScreenX11::TScreenX11()
 {
  int col;
 
- maxX=80; maxY=25;
-
- long Font10x20=0;
- TScreen::optSearch("Font10x20",Font10x20);
-
- if (Font10x20)
-    defaultFont=&font10x20;
- else
-    defaultFont=&font8x16;
-
- fontW=defaultFont->w;
- fontH=defaultFont->h;
- fontWb=(defaultFont->w+7)/8;
- uchar *fontData=defaultFont->data;
-
  /* Try to connect to the X server */
  disp=XOpenDisplay("");
  /* If we fail just return */
@@ -798,12 +787,33 @@ TScreenX11::TScreenX11()
  /* Initialize driver */
  initialized=1;
 
+ maxX=80; maxY=25;
+ fontW=8; fontH=16;
+
  /* Look for defaults */
  long aux;
  if (optSearch("ScreenWidth",aux))
     maxX=aux;
  if (optSearch("ScreenHeight",aux))
     maxY=aux;
+ if (optSearch("FontWidth",aux))
+    fontW=aux;
+ if (optSearch("FontHeight",aux))
+    fontH=aux;
+ if (optSearch("Font10x20",aux) && aux)
+    fontW=10, fontH=20;
+
+ if (!frCB || !(defaultFont=frCB(0,fontW,fontH)))
+   {
+    if (fontW==10 || fontH==20)
+       defaultFont=&font10x20;
+    else
+       defaultFont=&font8x16;
+   }
+ fontW=defaultFont->w;
+ fontH=defaultFont->h;
+ fontWb=(defaultFont->w+7)/8;
+ uchar *fontData=defaultFont->data;
 
  TDisplayX11::Init();
 

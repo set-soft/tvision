@@ -18,13 +18,16 @@ motivation to expend my time working on 8 bpp modes if nobody needs it.
 enhancements can be done. If you know about X11 programming and have some
 time please consider helping with it.
 
-* The driver uses 8x16 fixed fonts, no X fonts. In the future I plan to code a
-driver supporting X11 fonts. Why? simple: because in this way I can change
-the screen encoding on the fly and I know all the needed symbols will be
-available. The library supports over than 40 encodings which needs over than
-580 symbols in the fonts. They cover the latin variants, cyrillics and greek
-alphabets. I don't think such a thing is common for X fonts, in fact True
-Types usually have only ASCII characters.
+* The driver uses 8x16 and 10x20 fixed fonts, no X fonts. In the future I
+plan to code a driver supporting X11 fonts. Why? simple: because in this way
+I can change the screen encoding on the fly and I know all the needed symbols
+will be available. The library supports over than 40 encodings which needs
+over than 580 symbols in the fonts. They cover the latin variants, cyrillics
+and greek alphabets. Not all X fonts supports all the needed symbols, in fact
+True Types usually have only ASCII characters. Additionally we need fixed
+width fonts.
+  Currently the fonts provided by SETEdit project have more variety than the
+XFree86 fixed font, which in fact are included.
 
 * I use monochromatic XImage objects for the fonts and I let X to expand the
 colors. XFree86 seems to quite ineficient doing it, while Solaris' X is much
@@ -33,8 +36,8 @@ internal bitmap and then doing the blit in one operation. But this needs
 special care about different color depths and colors organizations. I guess
 the color values returned by X can make it easy, but never tried.
 
-* Currently the X11 clipboard mechanisms aren't implemented. Don't know if
-I'll implement them at library level.
+* The implemented clipboards are XA_CLIPBOARD and XA_PRIMARY. Only XA_STRING
+format is supported.
 
 * I don't have a default icon, if you can create one please send it to me.
 
@@ -89,4 +92,10 @@ Shift+Alt+Fx (__ALT to __ALT_SHIFT in Function keys).
 b) Debian GNU/Linux Woody: That's version 0.16.4. A very nice package called
 e16keyedit is available (I think it can be backported to Potato). It makes
 easier to redefine the keys used by E.
+
+* The ScreenWidth and ScreenHeight configuration variables are supported.
+They are very important because using them the window will be created with
+the desired size. If you change the size after initialization the window
+resize will be visible and part of the window could become outside the
+screen.
 

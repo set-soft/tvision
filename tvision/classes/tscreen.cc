@@ -9,10 +9,6 @@ driver. Default members are provided.
 Caso provide me and coded from scratch. The names of some members are the
 same used in original Turbo Vision for compatibility purposes.
 
-  Config variables:
-  ScreenWidth
-  ScreenHeight
-  
 ***************************************************************************/
 
 #define Uses_stdio

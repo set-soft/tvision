@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.250  2002/08/12 16:05:49  set
+* Added: 2 new configuration variables: ScreenWidth and ScreenHeight. I
+added support for it to the X11, XTerm, DOS, Win32 and WinNT drivers, but
+only tested the first 2.
+* Modified: Now if a variable search in a driver section fails a new search
+in the "global" TV section is done. It allows creating default values for
+all drivers.
+
 Revision 2.249  2002/08/12 16:04:31  set
 * Added: A TScreen methode to find the short name of the current driver.
 

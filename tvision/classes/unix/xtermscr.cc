@@ -4,8 +4,11 @@
   Copyright (c) 2002 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
-  guardar los atributos anteriores.
-  En particular colores.
+  Configuration variables:
+  ScreenWidth
+  ScreenHeight
+  FontWidth
+  FontHeight
 
 *****************************************************************************/
 #include <tv/configtv.h>
@@ -202,13 +205,18 @@ TScreenXTerm::TScreenXTerm()
 
  // Look for defaults
  unsigned maxX=startScreenWidth, maxY=startScreenHeight;
+ unsigned fW=fontW, fH=fontH;
  long aux;
  if (optSearch("ScreenWidth",aux))
     maxX=aux;
  if (optSearch("ScreenHeight",aux))
     maxY=aux;
+ if (optSearch("FontWidth",aux))
+    fW=aux;
+ if (optSearch("FontHeight",aux))
+    fH=aux;
  if (maxX!=startScreenWidth || maxY!=startScreenHeight)
-    setCrtModeRes(maxX,maxY);
+    setCrtModeRes(maxX,maxY,fW,fH);
 
  cursorLines=getCursorType();
  screenMode =getCrtMode();
