@@ -162,9 +162,7 @@ void AlCon_EnableAsync()
 
 void AlCon_CursorHome()
 {
- AlCon_ScareCursor();
- cursorX=cursorY=cursorPX=cursorPY=1;
- AlCon_UnScareCursor();
+ AlCon_GotoXY(1, 1);
 }
 
 void AlCon_GotoXY(int x, int y)
