@@ -1,5 +1,5 @@
 /* QNX RtP screen routines header.
-   Copyright (c) 2002 by Mike Gorchak
+   Copyright (c) 2002-2003 by Mike Gorchak
    Covered by the BSD license. */
 
 #if defined(TVOSf_QNXRtP) && !defined(QNXRTPSCR_HEADER_INCLUDED)
@@ -61,8 +61,7 @@ class TScreenQNXRtP: public TDisplayQNXRtP, public TScreen
       static ushort getCharacter(unsigned dst);
       static void   setCharacter(unsigned offset, ushort value);
       static void   setCharacters(unsigned dst, ushort* src, unsigned len);
-      static int    System(const char* command, pid_t* pidChild, int in,
-                           int out, int err);
+      static int    System(const char* command, pid_t* pidChild, int in, int out, int err);
 
    protected:
       static void SpecialKeysDisable(int fd);

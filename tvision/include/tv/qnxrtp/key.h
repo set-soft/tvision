@@ -1,5 +1,5 @@
 /* QNX RtP keyboard handler routines header.
-   Copyright (c) 2002 by Mike Gorchak
+   Copyright (c) 2002-2003 by Mike Gorchak
    Covered by the BSD license. */
 
 #if defined(TVOSf_QNXRtP) && !defined(QNXRTPKEY_HEADER_INCLUDED)
@@ -32,11 +32,11 @@ class TGKeyQNXRtP: public TGKey
       static void     SetKbdMapping(int version);
       static void     Init();
 
-protected:
+   protected:
       static ushort GetRaw();
       static ushort MakeArtKeys(QNXRtPArtKeys* array, ushort rawkey);
 
-protected:
+   protected:
       static struct termios saved_attributes;
       static ushort sFlags;
       static ushort undecoded;

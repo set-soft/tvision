@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.518  2003/11/24 16:32:51  set
+* Added: A new configuration option: AltKeysSetting. It controls the how
+alt keys are interpreted. From a talk with Frank Liu.
+
 Revision 2.517  2003/11/24 16:29:58  set
 * Modified: Synchronyzed the code for the update thread with my home CVS.
 
