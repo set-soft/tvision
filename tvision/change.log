@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.178  2004/08/17 13:20:58  set
+* Modified: Boolean TInputLine::insertChar(TEvent &event) to insertCharEv
+because the C++ polimorphism is quite crapy for this case.
+
 Revision 2.399.2.177  2004/08/12 19:01:32  set
 * Added: Compatibility with gcc 3.4 streams. It isn't fully compatible with
 3.1-3.3 but defines a special filebuf that can be created from a C stream.
