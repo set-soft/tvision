@@ -138,9 +138,10 @@ if (@conf{'alcon'} eq 'yes')
    if ($OS eq 'UNIX')
      {
       # TODO: change this for the output of allegro-config.
-      #$MakeDefsRHIDE[2].=' -L/usr/local/lib -L/usr/X11R6/lib -Wl,-export-dynamic -lalleg-4.1.13 -lalleg_unsharable';
-      # No idea what to put here :-?
-      $MakeDefsRHIDE[2].=' alleg-4.1.13 alleg_unsharable';
+      $MakeDefsRHIDE[1].='/usr/local/lib /usr/X11R6/lib';
+      # No idea where to put this. And doesn't seem to be needed anyway :-?
+      #$MakeDefsRHIDE[?].=' -Wl,-export-dynamic';
+      $MakeDefsRHIDE[2].=' alld m pthread Xxf86dga Xxf86vm Xext X11 dl';
      }
    else
      {
