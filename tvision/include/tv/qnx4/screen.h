@@ -1,8 +1,18 @@
-/* QNX 4 screen routines header.
-    */
+/* QNX 4 screen routines source.
+   Copyright (c) 1998-2003 by Mike Gorchak
+   Covered by the BSD license. */
 
 #if defined(TVOSf_QNX4) && !defined(QNX4SCR_HEADER_INCLUDED)
 #define QNX4SCR_HEADER_INCLUDED
+
+#define NUM_MODES 18
+
+struct _VideoModes
+{
+   unsigned int videomode;
+   unsigned int x;
+   unsigned int y;
+};
 
 class TDisplayQNX4: virtual public TDisplay
 {
@@ -17,20 +27,25 @@ class TDisplayQNX4: virtual public TDisplay
       static void   SetCursorShape(unsigned start, unsigned end);
       static ushort GetRows();
       static ushort GetCols();
+      static ushort GetCrtMode();
       static void   SetCrtMode(ushort mode);
+      static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
       static void   SetCrtModeExt(char* mode);
       static int    CheckForWindowSize(void);
       static const char* GetWindowTitle(void);
       static int    SetWindowTitle(const char* name);
 
    protected:
-      static ushort ScreenSizeX;
-      static ushort ScreenSizeY;
       static ushort CursorLastX;
       static ushort CursorLastY;
       static ushort CursorShapeStart;
       static ushort CursorShapeEnd;
       static char   ConsoleMode;
+      static ushort IgnoreConsoleResizing;
+      static struct _VideoModes modes[NUM_MODES];
+
+   public:
+      static ushort ConsoleResizing;
 };
 
 class TScreenQNX4: public TDisplayQNX4, public TScreen
@@ -50,6 +65,7 @@ class TScreenQNX4: public TDisplayQNX4, public TScreen
       static void   setCrtData();
       static void   clearScreen();
       static void   setVideoMode(ushort mode);
+      static int    setVideoModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
       static void   setVideoModeExt(char* mode);
       static void   getCharacters(unsigned offset,ushort* buf, unsigned count);
       static ushort getCharacter(unsigned dst);
@@ -59,9 +75,16 @@ class TScreenQNX4: public TDisplayQNX4, public TScreen
 
    protected:
       static int    InitTermLib();
+      static void   SpecialKeysDisable(int fd);
+      static void   SpecialKeysRestore(int fd);
 
    protected:
       static unsigned char DefaultRadioButton;
+      static cc_t oldKeys[5];
+      static ushort oldScreenSizeX;
+      static ushort oldScreenSizeY;
+      static ushort ForceModeChange;
+      static ushort* UserScreenData;
 };
 
 #endif // QNX4SCR_HEADER_INCLUDED

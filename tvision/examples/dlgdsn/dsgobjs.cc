@@ -149,7 +149,7 @@ static char * TheClassName[vtDialog + 1] = { "TUser",
 
 // Commom changeBounds code fragment for editable classes
 #define _chgbnds_(a) a::changeBounds(bounds); \
-        setPos(origin, size); ObjEdit->Redraw(); \
+        setPos(origin, size); ObjEdit->CLY_Redraw(); \
         EditDlg->modified = true;
 
 // Commom setState code fragment for all editable classes
@@ -208,7 +208,7 @@ static bool GridState = true;
 void SetGrid(bool enable)
 {
    GridState = enable;
-   EditDlg->Redraw();
+   EditDlg->CLY_Redraw();
 }
 
 bool GetGrid()
@@ -824,7 +824,7 @@ void TDsgObj::dsgUpdate()
    if (r != me->getBounds()) me->changeBounds(r);
    if (tabStop()) ObjectLinker()->doReOrder();
    ((TDDialog *)me->owner)->setModified(True);
-   me->owner->Redraw();
+   me->owner->CLY_Redraw();
 }
 
 /* TDDialog =============================================================*/

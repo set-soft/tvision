@@ -231,6 +231,17 @@ void _fixpath(const char *in, char *out)
     op += strlen(op);
   }
 
+#if defined(TVOSf_QNX4)
+    /* Skip the first slashes, which are a node number part */
+    /* Full QNX4 pathname is //node/dirpath/filename        */
+    if ((ip==in) && (is_slash(*ip)) && (is_slash(*(ip+1))))
+    {
+      *op=*ip;
+      ip++;
+      op++;
+    }
+#endif // TVOSf_QNX4
+
   /* Step through the input path */
   while (*ip)
   {

@@ -29,7 +29,7 @@
 #define Uses_ctype
 #define Uses_time
 #define Uses_iomanip
-#ifdef TVOSf_QNXRtP
+#if defined(TVOSf_QNXRtP) || defined(TVOSf_QNX4)
  #define Uses_stdio
  #define Uses_sys_stat
 #endif // TVOSf_QNXRtP
@@ -38,6 +38,10 @@
 #define Uses_TView
 #define Uses_TDrawBuffer
 #include <tv.h>
+
+#ifdef TVOSf_QNX4
+ #include <sys/osinfo.h>
+#endif // TVOSf_QNX4
 
 #include "gadgets.h"
 
@@ -80,7 +84,7 @@ void THeapView::update()
 
 long THeapView::heapSize()
 {
- #ifdef TVOSf_QNXRtP
+ #if defined(TVOSf_QNXRtP)
    struct stat st;
    long rval=0;
 
@@ -106,6 +110,32 @@ long THeapView::heapSize()
    }
 
    return rval;
+ #elif defined(TVOSf_QNX4)
+
+   _osinfo CurrInfo;
+   unsigned long rval;
+   
+   qnx_osinfo(0, &CurrInfo);
+   rval=CurrInfo.freepmem;
+
+   if (rval>1024UL*512UL) // one half megabyte !
+   {
+      if (rval>1024UL*1024UL*32UL) // if above 32Mb free
+      {
+         sprintf(heapStr, "%10dMb", rval/1024UL/1024UL);
+      }
+      else
+      {
+         sprintf(heapStr, "%10dKb", rval/1024UL);
+      }
+   }
+   else
+   {
+      sprintf(heapStr, "%12d", rval);
+   }
+
+   return rval;
+
  #else
 	/* SS: changed */
 	strcpy(heapStr, "Hello world!");

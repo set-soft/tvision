@@ -64,8 +64,14 @@ void TVDemo::testInputBox()
 {
     char buffer[20];
     strcpy(buffer,"Initial value");
-    inputBox("Test for the inputBox","Enter a number",buffer,20);
-    messageBox(mfInformation | mfOKButton,"Value entered: %s",buffer);
+    if (inputBox("Test for the inputBox","Enter a number",buffer,20)!=cmCancel)
+    {
+        messageBox(mfInformation | mfOKButton,"Value entered: %s",buffer);
+    }
+    else
+    {
+        messageBox("\x3""Input canceled", mfInformation | mfOKButton);
+    }
 }
 
 //

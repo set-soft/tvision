@@ -33,17 +33,19 @@ different.
 #include <tv.h>
 
 const int cmTest80x25=100;
-const int cmTest80x50=101;
-const int cmTest90x30=102;
-const int cmTest94x34=103;
-const int cmTest132x25=104;
-const int cmTest132x50=105;
-const int cmTest80x25b=106;
-const int cmTest80x50b=107;
-const int cmTest90x30b=108;
-const int cmTest94x34b=109;
-const int cmTest132x25b=110;
-const int cmTest132x50b=111;
+const int cmTest80x28=101;
+const int cmTest80x50=102;
+const int cmTest90x30=103;
+const int cmTest94x34=104;
+const int cmTest132x25=105;
+const int cmTest132x50=106;
+const int cmTest80x25b=107;
+const int cmTest80x28b=108;
+const int cmTest80x50b=109;
+const int cmTest90x30b=110;
+const int cmTest94x34b=111;
+const int cmTest132x25b=112;
+const int cmTest132x50b=113;
 
 class TMyApp : public TApplication
 {
@@ -84,6 +86,10 @@ void TMyApp::handleEvent(TEvent &event)
             testMode(TScreen::smCO80x25,80,25);
             break;
 
+       case cmTest80x28:
+            testMode(TScreen::smCO80x28,80,28);
+            break;
+
        case cmTest80x50:
             testMode(TScreen::smCO80x50,80,50);
             break;
@@ -106,6 +112,10 @@ void TMyApp::handleEvent(TEvent &event)
 
        case cmTest80x25b:
             testMode(80,25);
+            break;
+
+       case cmTest80x28b:
+            testMode(80,28);
             break;
 
        case cmTest80x50b:
@@ -152,6 +162,7 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
        *new TMenuItem("E~x~it",cmQuit,kbNoKey,hcNoContext,"Alt-X")+
      *new TSubMenu("~M~ode",kbAltM)+
        *new TMenuItem("~8~0x25",cmTest80x25,kbNoKey,hcNoContext)+
+       *new TMenuItem("80x~2~8",cmTest80x28,kbNoKey,hcNoContext)+
        *new TMenuItem("80x~5~0",cmTest80x50,kbNoKey,hcNoContext)+
        *new TMenuItem("~9~0x30",cmTest90x30,kbNoKey,hcNoContext)+
        *new TMenuItem("9~4~x34",cmTest94x34,kbNoKey,hcNoContext)+
@@ -159,6 +170,7 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
        *new TMenuItem("1~3~2x50",cmTest132x50,kbNoKey,hcNoContext)+
      *new TSubMenu("~R~esolution",kbAltR)+
        *new TMenuItem("~8~0x25",cmTest80x25b,kbNoKey,hcNoContext)+
+       *new TMenuItem("80x~2~8",cmTest80x28b,kbNoKey,hcNoContext)+
        *new TMenuItem("80x~5~0",cmTest80x50b,kbNoKey,hcNoContext)+
        *new TMenuItem("~9~0x30",cmTest90x30b,kbNoKey,hcNoContext)+
        *new TMenuItem("9~4~x34",cmTest94x34b,kbNoKey,hcNoContext)+
