@@ -1,4 +1,14 @@
 $Log$
+Revision 1.107  1999/09/24 00:28:24  set
+* Added: Better handling of some situations in TScreen, patch from Robert:
+"I made now a patch for tscreen.cc to use at firts the infromation
+from terminfo to decide if we can use PAL_LOW ot PAL_HIGH
+and as next I used in mapcolor as the first choice the
+set_a_foreground and set_a_background strings and only if
+they are not defined using set_foreground and set_background.
+The reason for this is, that I analized some terminfo records and
+found, that often the set_a_... are defined but not the set_..."
+.
 Revision 1.106  1999/09/23 23:55:42  root (set)
 * Fixed: Relative symlinks for dynamic libraries [Linux]. Patch by Ivan.
 * Fixed: Pemission 644 and not 755 for libraries [Linux]. Patch by Ivan.
