@@ -1,4 +1,10 @@
 $Log$
+
+--------- CVS tag r_2_0_3 and r_2_0_3nu
+
+Revision 2.600  2004/11/23 00:31:47  terrible
+* Updated: Debian packaging to version 2.0.3-3 (no changes really).
+
 Revision 2.599  2004/11/02 20:06:39  set
 * Added: [Compilation][MSVC] Option to compile with debug information.
 >From information sent by Grzegorz.
@@ -9,7 +15,7 @@ using -l.
 Revision 2.598  2004/10/29 16:12:37  set
 * Fixed: [DOS] The default encoding wasn't CP437. From a report by
 jessehardy/126/com, a chinese user of RHIDE using code page 936.
-.
+
 Revision 2.597  2004/10/29 15:21:30  set
 * Fixed: [Compilation][MSVC] Typo in mlink.cc and wrong reference to
 ../compat/obj in common.nmk. Both patches from Grzegorz. With this the

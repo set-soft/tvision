@@ -47,6 +47,7 @@ protected:
  static int      translateKeyPad;
  static const uchar kbWithASCII0[256];
  static const uchar kbWithASCIIE0[256];
+ static char        useFixKbdBuffer;
 };
 #endif // DOSKEY_HEADER_INCLUDED
 

@@ -5,7 +5,9 @@ download it from: http://www.delorie.com/djgpp/
 $Id$
 
 1. INTRODUCTION
-2. COMPILING AND INSTALLING
+2. GETTEXT COLLISION
+3. COMPILING AND INSTALLING
+4. LAST DJGPP ENVIRONMENT TESTED
 
 
 1. INTRODUCTION
@@ -21,7 +23,17 @@ textutils.
 won't work. The 2.01 version have some bugs that affect this package so I
 suggest a newer version.
 
-2. COMPILING
+2. GETTEXT COLLISION
+
+  DJGPP versions older than 2.04 contains a collision between conio's gettext
+function and libintl's gettext function. Both are named "gettext". The
+documentation included in the gettext (libintl) package (i.e. gtxt040b.zip)
+explains how to solve this collision. You'll need to replace conio.o from
+libc.a and change conio.h.
+  Without it you'll get errors from the linker. Older versions of the linker
+didn't complain about it.
+
+3. COMPILING
 
   Once you installed all the needed tools your system will become some kind
 of GNU/DOS system. For this reason you can just follow the instructions found
@@ -30,5 +42,43 @@ configure.bat file instead of configure script, but as you don't have to type
 the extension it looks almost the same as in UNIX:
 
 c:\djgpp\contrib\tvision>configure
+
+4. LAST DJGPP ENVIRONMENT TESTED
+
+  The last compilation test was performed in the following system:
+
+OS: Windows 98 SE
+
+Core utils:
+djdev203 Development Kit and Runtime (June 2002 Refresh)
+gcc343b.zip : GCC 3.4.3 C compiler binaries for DJGPP 
+gpp343b.zip : GCC 3.4.3 C++ compiler binaries for DJGPP 
+bnu215b.zip : GNU binutils-2.15 binaries for DJGPP
+gtxt040b GNU Gettext 0.10.40 binaries for DJGPP V2
+licv192b GNU libiconv 1.9.2 for DJGPP V2
+mak3791b GNU Make 3.79.1 binaries for DJGPP V2
+fil41b GNU Fileutils 4.1 for DJGPP 2.x, release 7 (binaries)
+perl561b Perl 5.6.1b release 3 for DJGPP V2 (binaries)
+
+Other utils:
+bsh204d GNU Bash 2.04 binary for DJGPP
+bz2-102b bzip2 1.0.2 for DJGPP V2
+CVS 1.10 for DJGPP (local only) - Binary Distribution (patchlevel 3 - 05/2000)
+dif281b GNU Diffutils 2.8.1 for DJGPP V2   
+djtzn203 Extra Timezone Support Files
+faq230b DJGPP FAQ List edition 2.30 for DJGPP v2.03
+find41b GNU findutils 4.1 for DJGPP V2
+gdb611b.zip - gdb-6.1.1  (binary archive for DJGPP)
+gdb611.zip - gdb-6.1.1  (source archive for DJGPP)
+grep24b GNU grep 2.4 binaries for DJGPP V2
+gzip13b GNU gzip 1.3 binaries for DJGPP V2
+lss374b GNU Less v374 binaries (DJGPP v2)
+pat254b GNU Patch 2.5.4 binaries for DJGPP v2
+rcode35b.zip GNU Recode 3.5 binaries for DJGPP V2
+Sh-utils 2.0.11 Apr 18, 2002 - Prashant TR <tr@midpec.com>
+tar112ab GNU tar 1.12a binaries for DJGPP V2
+txi47b GNU Texinfo 4.7 binaries for DJGPP V2
+txt20b GNU Textutils 2.0 binaries for DJGPP V2   
+Which version 2.11 modified to work with DJGPP by David Cullen
 
 

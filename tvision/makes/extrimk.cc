@@ -320,6 +320,16 @@ char *SearchSrc(char *toStat)
 }
 
 static
+int IsAbsolute(const char *s)
+{
+ #if defined(__DJGPP__)
+ return *s=='/' || (isalpha(*s) && s[1]==':');
+ #else
+ return *s=='/';
+ #endif
+}
+
+static
 void GenerateDepFor(node *p, FILE *d, stMak &mk)
 {
  char *baseName=strdup(p->name);
@@ -356,7 +366,7 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
     char *toStat;
     struct stat st;
 
-    if (mk.baseDir && !isCompat)
+    if (mk.baseDir && !isCompat && !IsAbsolute(s))
       {
        toStat=new char[strlen(mk.baseDir)+strlen(s)+1];
        strcpy(toStat,mk.baseDir);

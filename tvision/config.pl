@@ -162,6 +162,18 @@ if ($OS eq 'UNIX')
 elsif ($OS eq 'DOS')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
+   # DJGPP's gcc includes djgpp.ver from the same directory where specs
+   $a=`redir -eo $GCC -v`;
+   if ($a=~/(\w:)(.*)\/specs/i)
+     {
+      $here=RunRedirect('pwd',$ErrorLog);
+      chop($here);
+      chdir("$1$2");
+      $a=RunRedirect('pwd',$ErrorLog);
+      chop($a);
+      chdir($here);
+      $MakeDefsRHIDE[0].=" $a"
+     }
    $MakeDefsRHIDE[3]='TVOBJ=../../makes ';
    $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
@@ -191,33 +203,36 @@ else
   }
 # Flags to link as a dynamic lib
 $MakeDefsRHIDE[6]='RHIDE_LDFLAGS=';
-if ($OSf ne 'Darwin')
+if ($OS eq 'UNIX')
   {
-   $soname='-soname';
-   if ($OSf eq 'Solaris')
+   if ($OSf ne 'Darwin')
      {
-      system("$GCC -v 2> test.ld");
-      $test=cat('test.ld');
-      unlink 'test.ld';
-      # Why?! I think gcc should translate it when using the native ld.
-      $soname='-h' if $test=~'ccs/bin/ld';
+      $soname='-soname';
+      if ($OSf eq 'Solaris')
+        {
+         system("$GCC -v 2> test.ld");
+         $test=cat('test.ld');
+         unlink 'test.ld';
+         # Why?! I think gcc should translate it when using the native ld.
+         $soname='-h' if $test=~'ccs/bin/ld';
+        }
+      $MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
+      $MakeDefsRHIDE[6].=' -shared -Wl,'.$soname.',librhtv.so.'.$Version;
      }
-   $MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
-   $MakeDefsRHIDE[6].=' -shared -Wl,'.$soname.',librhtv.so.'.$Version;
+   else
+     {# Darwin semantic for dynamic libs is quite different
+      $MakeDefsRHIDE[6].='-dynamiclib -install_name '.$realPrefix.'/lib/librhtv.'.$Version.'.dylib';
+      $MakeDefsRHIDE[6].=' -compatibility_version '.$Version.' -current_version '.$Version;
+     }
+   $libs=$conf{'X11Lib'};
+   $libs=~s/(\S+)/-l$1/g;
+   $MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
+   $MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
+   $MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
+   $MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
+   $MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
+   $MakeDefsRHIDE[6].=' libtvfintl.a' if ($OSf eq 'Darwin') && $UseDummyIntl;
   }
-else
-  {# Darwin semantic for dynamic libs is quite different
-   $MakeDefsRHIDE[6].='-dynamiclib -install_name '.$realPrefix.'/lib/librhtv.'.$Version.'.dylib';
-   $MakeDefsRHIDE[6].=' -compatibility_version '.$Version.' -current_version '.$Version;
-  }
-$libs=$conf{'X11Lib'};
-$libs=~s/(\S+)/-l$1/g;
-$MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
-$MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
-$MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
-$MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
-$MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
-$MakeDefsRHIDE[6].=' libtvfintl.a' if ($OSf eq 'Darwin') && $UseDummyIntl;
 $MakeDefsRHIDE[7]="LIB_VER=$Version";
 $MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
 

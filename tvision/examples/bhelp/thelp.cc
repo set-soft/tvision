@@ -15,6 +15,7 @@ compilers.
 #define Uses_stdlib
 #define Uses_stdio
 #define Uses_access
+#define Uses_string
 #define Uses_TKeys
 #define Uses_ifpstream
 #define Uses_IOS_BIN
