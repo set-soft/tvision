@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea: added i18n support, enlarged the dialog,
+horizontal scroll bar in items, etc.
 
  *
  *
@@ -40,66 +42,74 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv.h>
 
 TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
-    TDialog( TRect( 0, 0, 61, 18 ), __("Colors") )
+    TDialog( TRect( 0, 0, 77, 18 ), __("Colors") )
     , TWindowInit( &TColorDialog::initFrame )
 {
     const char *tmp;
+    stTVIntl *intlTmp = NULL;
     options |= ofCentered;
     pal = aPalette;
 
-    TScrollBar *sb = new TScrollBar( TRect( 18, 3, 19, 14 ) );
+    TScrollBar *sb = new TScrollBar( TRect( 31, 3, 32, 14 ) );
     insert( sb );
 
-    groups = new TColorGroupList( TRect( 3, 3, 18, 14 ), sb, aGroups);
+    groups = new TColorGroupList( TRect( 3, 3, 31, 14 ), sb, aGroups);
     insert( groups );
-    tmp = _("~G~roup");
-    insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, groups ) );
+    tmp = TVIntl::getText( __("~G~roup"), intlTmp);
+    insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, groups, intlTmp ) );
+    intlTmp = NULL;
 
-    sb = new TScrollBar( TRect( 41, 3, 42, 14 ) );
+    sb = new TScrollBar( TRect( 57, 3, 58, 13 ) );
     insert( sb );
+    TScrollBar *sbH = new TScrollBar( TRect( 34, 13, 57, 14 ) );
+    sbH->setParams(0,0,40,5,1);
+    insert( sbH );
 
-    TView *p = new TColorItemList( TRect( 21, 3, 41, 14 ), sb, aGroups->items );
+    TView *p = new TColorItemList( TRect( 34, 3, 57, 13 ), sb, aGroups->items, sbH );
     insert( p );
-    tmp = _("~I~tem");
-    insert( new TLabel( TRect( 20, 2, 21+cstrlen(tmp), 3 ), tmp, p ) );
+    tmp = TVIntl::getText( __("~I~tem"), intlTmp);
+    insert( new TLabel( TRect( 33, 2, 34+cstrlen(tmp), 3 ), tmp, p, intlTmp ) );
+    intlTmp = NULL;
 
-    forSel = new TColorSelector( TRect( 45, 3, 57, 7 ),
+    forSel = new TColorSelector( TRect( 61, 3, 73, 7 ),
                                  TColorSelector::csForeground );
     insert( forSel );
-    tmp = _("~F~oreground");
-    forLabel = new TLabel( TRect( 45, 2, 46+cstrlen(tmp), 3 ), tmp, forSel );
+    tmp = TVIntl::getText( __("~F~oreground"), intlTmp);
+    forLabel = new TLabel( TRect( 61, 2, 62+cstrlen(tmp), 3 ), tmp, forSel, intlTmp );
     insert( forLabel );
+    intlTmp = NULL;
 
     int ib = TScreen::getBlinkState() ? 0 : 2;
 
-    bakSel = new TColorSelector( TRect( 45, 9, 57, 11 + ib),
+    bakSel = new TColorSelector( TRect( 61, 9, 73, 11 + ib),
                                  TColorSelector::csBackground );
     insert( bakSel );
-    tmp = _("~B~ackground");
-    bakLabel = new TLabel( TRect( 45, 8, 46+cstrlen(tmp), 9 ), tmp, bakSel );
+    tmp = TVIntl::getText( __("~B~ackground"), intlTmp);
+    bakLabel = new TLabel( TRect( 61, 8, 62+cstrlen(tmp), 9 ), tmp, bakSel, intlTmp );
     insert( bakLabel );
+    intlTmp = NULL;
 
-    display = new TColorDisplay( TRect( 44, 12 + ib, 58, 14 + ib),
+    display = new TColorDisplay( TRect( 60, 12 + ib, 74, 14 + ib),
                                  _("Text ") );
     insert( display );
 
-    monoSel = new TMonoSelector( TRect( 44, 3, 59, 7 ) );
+    monoSel = new TMonoSelector( TRect( 60, 3, 75, 7 ) );
     monoSel->hide();
     insert( monoSel );
-    tmp = _("Color");
-    monoLabel = new TLabel( TRect( 43, 2, 44+cstrlen(tmp), 3 ), tmp,
-                            monoSel );
+    tmp = TVIntl::getText( __("Color"), intlTmp);
+    monoLabel = new TLabel( TRect( 59, 2, 60+cstrlen(tmp), 3 ), tmp,
+                            monoSel, intlTmp );
     monoLabel->hide();
     insert( monoLabel );
 
     if( aGroups != 0 && aGroups->items != 0 && pal)
         display->setColor( (uchar *)&pal->data[ aGroups->items->index ] );
 
-    insert( new TButton( TRect( 24 - 10*ib, 15, 34 - 10*ib, 17 ),
+    insert( new TButton( TRect( 31 - 10*ib, 15, 44 - 10*ib, 17 ),
                          __("~T~ry"), cmTryColors, bfNormal ) );
-    insert( new TButton( TRect( 36 - 10*ib, 15, 46 - 10*ib, 17 ),
+    insert( new TButton( TRect( 46 - 10*ib, 15, 59 - 10*ib, 17 ),
                          __("~O~K"), cmOK, bfDefault ) );
-    insert( new TButton( TRect( 48 - 10*ib, 15, 58 - 10*ib, 17 ),
+    insert( new TButton( TRect( 61 - 10*ib, 15, 74 - 10*ib, 17 ),
                          __("Cancel"),
                          cmCancel,
                          bfNormal ) );
