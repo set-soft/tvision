@@ -13,3 +13,4 @@ TStreamableClass RChDirDialog( TChDirDialog::name,
                              );
 
 #endif
+

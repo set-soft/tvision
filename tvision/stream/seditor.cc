@@ -13,3 +13,4 @@ TStreamableClass REditor( TEditor::name,
                         );
 
 #endif
+

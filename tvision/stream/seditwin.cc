@@ -12,3 +12,4 @@ TStreamableClass REditWindow( TEditWindow::name,
                             );
 
 #endif
+

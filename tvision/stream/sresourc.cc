@@ -9,3 +9,4 @@ TStreamableClass RResourceCollection( TResourceCollection::name,
                                       __DELTA(TResourceCollection)
                                     );
 #endif
+

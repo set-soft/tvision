@@ -11,3 +11,4 @@ TStreamableClass RColorDisplay( TColorDisplay::name,
                               );
 
 #endif
+

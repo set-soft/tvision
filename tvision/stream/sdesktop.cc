@@ -10,3 +10,4 @@ TStreamableClass RDeskTop( TDeskTop::name,
                          );
 
 #endif
+

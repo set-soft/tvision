@@ -12,3 +12,4 @@ TStreamableClass RWindow( TWindow::name,
                         );
 
 #endif
+

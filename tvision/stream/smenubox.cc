@@ -10,3 +10,4 @@ TStreamableClass RMenuBox( TMenuBox::name,
                          );
 
 #endif
+

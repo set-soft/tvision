@@ -15,3 +15,4 @@ TStreamableClass RCheckBoxes32( TCheckBoxes32::name,
                               );
 
 #endif
+

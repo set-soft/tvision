@@ -12,3 +12,4 @@ TStreamableClass RDialog( TDialog::name,
                         );
 
 #endif
+

@@ -11,3 +11,4 @@ TStreamableClass RFileInputLine( TFileInputLine::name,
                                );
 
 #endif
+

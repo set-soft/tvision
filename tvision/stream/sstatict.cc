@@ -11,3 +11,4 @@ TStreamableClass RStaticText( TStaticText::name,
                             );
 
 #endif
+
