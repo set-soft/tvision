@@ -413,12 +413,14 @@ void startcurses()
   InitPCCharsMapping(use_pc_chars);
   // SET: Hook the signal generated when the size of the window changes
   signal(SIGWINCH,TV_WindowSizeChanged);
+  #ifdef TVOSf_Linux
   // SET: There is no reason to have 1s of delay for ESC in an interactive
   // program. Now the code supports Alt+Key in xterms so constructing an
   // escape sequence by hand isn't need at all. I also tested in Linux
   // console and I was able to simulate Alt+F pressing ESC-F so 100ms is
   // enough.
   ESCDELAY=100;
+  #endif
 }
 
 void stopcurses()
@@ -522,18 +524,18 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
   int altSet=0,needAltSet;
 
 #if 0
-#define ___C() write(2,out,p-out)
+#define C___() write(2,out,p-out)
 #else
-#define ___C()
+#define C___()
 #endif
 
-#define __C()\
-  do { write(tty_fd, out, p - out); ___C(); } while(0)
+#define C__()\
+  do { write(tty_fd, out, p - out); C___(); } while(0)
 
-#define _C() \
+#define C_() \
   if (p > out+4000) \
   { \
-    __C();\
+    C__();\
     p = out; \
   }
 
@@ -566,7 +568,7 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
       {
        code=PC2curses[code];
        //code=pctoascii[code];
-       needAltSet=code & WA_ALTCHARSET;
+       needAltSet=code & A_ALTCHARSET;
        if (needAltSet && !altSet)
          {
           altSet=1;
@@ -580,7 +582,7 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
            }
       }
     *p++ = code;
-    _C();
+    C_();
   }
   if (altSet)
      safeput(p,exit_alt_charset_mode);
@@ -590,7 +592,7 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
   safeput(p, tparm(cursor_address, cur_y, cur_x));
 #endif
   if (palette == PAL_MONO) safeput(p, exit_attribute_mode);
-  __C();
+  C__();
 }
 
 ushort TScreen::startupMode = 0xFFFF;
@@ -612,8 +614,13 @@ extern ushort user_mode;
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
 // think it have much sense in non-Intel PCs. In fact looks like it gives
 // some problems when compiling for Alpha (__alpha__).
+//   Also make it only for Linux until I know how to do it for FreeBSD.
 
-#ifdef __i386__
+#if defined(__i386__) && defined(TVOSf_Linux)
+#define 386LowLevel
+#endif
+
+#ifdef 386LowLevel
 #include <asm/io.h>
 
 static inline
@@ -644,7 +651,7 @@ void TScreen::GetCursor(int &x,int &y)
 
 void TScreen::SetCursor(int x,int y)
 {
- #ifdef __i386__
+ #ifdef 386LowLevel
   if (dual_display || screenMode == 7)
   {
     unsigned short loc = y*80+x;
@@ -770,7 +777,7 @@ TScreen::TScreen()
   if (canOnlyWriteVCS)
      TDisplay::SetCursor(0,0);
 
-  #ifdef __i386__
+  #ifdef 386LowLevel
   port_access = !ioperm(0x3b4, 7, 1);
   if (port_access)
   {
@@ -955,7 +962,7 @@ void TScreen::setVideoMode( char *mode )
 
 void TScreen::setCursorType(ushort ct)
 {
- #ifdef __i386__
+ #ifdef 386LowLevel
   if (dual_display || screenMode == 7)
   {
     if (ct == 0x2000) // cursor off
@@ -976,7 +983,7 @@ void TScreen::setCursorType(ushort ct)
 
 ushort TScreen::getCursorType()
 {
- #ifdef __i386__
+ #ifdef 386LowLevel
   if (dual_display || screenMode == 7)
   {
     unsigned short ct;
