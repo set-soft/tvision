@@ -29,7 +29,7 @@
 #define Uses_PubStreamBuf
 #include <tv.h>
 
-ipstream::ipstream( CLY_std(streambuf) *sb )
+ipstream::ipstream( CLY_streambuf *sb )
 {
     objs = new TPReadObjects();
     pstream::init( sb );
@@ -43,13 +43,13 @@ ipstream::~ipstream()
 
 CLY_StreamPosT ipstream::tellg()
 {
-    return bp->CLY_PubSeekOff( 0, CLY_std(ios::cur), CLY_std(ios::in) );
+    return bp->CLY_PubSeekOff( 0, CLY_IOSCur, CLY_IOSIn );
 }
 
 ipstream& ipstream::seekg( CLY_StreamPosT pos )
 {
     objs->removeAll();
-    bp->CLY_PubSeekOff( pos, CLY_std(ios::beg) );
+    bp->CLY_PubSeekOff( pos, CLY_IOSBeg );
     clear(); //is added by V.Bugrov for clear eof bit
     return *this;
 }
@@ -67,7 +67,7 @@ uchar ipstream::readByte()
     // Added modified code by V. Bugrov
     int result = bp->sbumpc();
     if (result == EOF)
-       setstate(CLY_std(ios::eofbit));
+       setstate(CLY_IOSEOFBit);
     return (uchar)result; // This cast is safe here
 }
 
@@ -85,7 +85,7 @@ type ipstream::read##name()\
  type temp; size_t i;\
  i=bp->sgetn((char *)&temp,sizeof(type));\
  if (i<sizeof(type))\
-    setstate(CLY_std(ios::eofbit));\
+    setstate(CLY_IOSEOFBit);\
  return temp;\
 }
 DefineReadDep(Short,ushort);
@@ -142,7 +142,7 @@ type ipstream::read##name()\
  type temp; size_t i;\
  i=bp->sgetn((char *)&temp,sizeof(type));\
  if (i<sizeof(type))\
-    setstate(CLY_std(ios::eofbit));\
+    setstate(CLY_IOSEOFBit);\
  Swap##name((char *)&temp);\
  return temp;\
 }
@@ -155,7 +155,7 @@ void ipstream::readBytes( void *data, size_t sz )
     // Added modified code by V. Bugrov here.
     size_t i = bp->sgetn( (char *)data, sz );
     if (i < sz)
-       setstate(CLY_std(ios::eofbit));
+       setstate(CLY_IOSEOFBit);
 }
 
 char *ipstream::readString()

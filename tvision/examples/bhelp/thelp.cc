@@ -140,7 +140,7 @@ void THelp::run()
     endModal(cmQuit);
     return;
   }
-  fpstream *helpStrm = new fpstream(fileName, ios::in);
+  fpstream *helpStrm = new fpstream(fileName, CLY_IOSIn);
   TBorlandHelpFile *helpFile = new TBorlandHelpFile(*helpStrm);
   ushort start = helpFile->indexscreen;
   if (searchstring && *searchstring)

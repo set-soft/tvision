@@ -888,7 +888,7 @@ void writeSymbFile( TProtectedStream *symbFile )
 
     *symbFile << header1;
     refTable->forEach(doWriteSymbol, symbFile);
-    symbFile->seekp(-3L, ios::end);
+    symbFile->seekp(-3L, CLY_IOSEnd);
     *symbFile << ";\n";
 
 }
@@ -982,10 +982,10 @@ int main(int argc, char **argv)
 
     checkOverwrite( symbName );
 
-    TProtectedStream textStrm(textName, ios::in);
-    TProtectedStream symbStrm(symbName, ios::out);
+    TProtectedStream textStrm(textName, CLY_IOSIn);
+    TProtectedStream symbStrm(symbName, CLY_IOSOut);
 
-    helpStrm =  new fpstream(helpName, ios::out|ios::binary);
+    helpStrm =  new fpstream(helpName, CLY_IOSOut | CLY_IOSBin);
     processText(textStrm, *helpStrm, symbStrm);
     return 0;
 }

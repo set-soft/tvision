@@ -43,9 +43,9 @@ TV_OBJS_ =  +beep.obj +drivevalid.obj +expandpath.obj +fexpand.obj +fileattrs.ob
 +fileexists.obj +filelength.obj +fixpath.obj +fnmatch.obj +getcurdir.obj +getline.obj\
 +getopt.obj +getopt1.obj +getshell.obj +glob.obj +globfree.obj +iffilelen.obj +isdir.obj\
 +isrelpath.obj +iswild.obj +itoa.obj +mkstemp.obj +nl_langinfo.obj +ntdirent.obj\
-+pathvalid.obj +regex.obj +releasec.obj +snprintf.obj +strlwr.obj +strupr.obj +ticks.obj\
-+unc.obj +unc_95.obj +unc_nt.obj +validfilename.obj +yieldpro.obj +calcdisp.obj\
-+calculat.obj +codepage.obj
++pathvalid.obj +regex.obj +releasec.obj +snprintf.obj +ssc_streams.obj +strlwr.obj\
++strupr.obj +ticks.obj +unc.obj +unc_95.obj +unc_nt.obj +validfilename.obj +yieldpro.obj\
++calcdisp.obj +calculat.obj +codepage.obj
 OBJS = $(TV_OBJS_:+=objs\)
 
 all: rhtv.lib tvex.exe

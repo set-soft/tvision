@@ -4,9 +4,13 @@
  Note: I included CLY_IfStreamGetLine here. I know it could be confusing but
  adding a new file isn't good.
 */
+#include <tv/configtv.h>
+#ifndef HAVE_SSC
+
 #define Uses_filelength
 #define Uses_fstream
 #include <compatlayer.h>
+
 #include <cl/needs.h>
 
 UsingNamespaceStd
@@ -15,8 +19,8 @@ UsingNamespaceStd
 long CLY_ifsFileLength(ifstream &f)
 {
  std::streampos pos=f.tellg();
- long ret=f.seekg(0,std::ios::end).tellg();
- f.seekg(pos,std::ios::beg);
+ long ret=f.seekg(0,CLY_IOSEnd).tellg();
+ f.seekg(pos,CLY_IOSBeg);
  return ret;
 }
 #else
@@ -38,3 +42,5 @@ int CLY_IfStreamGetLine(ifstream &is, char *buffer, unsigned len)
  return 0;
 }
 #endif // NEEDS_IFSTREAMGETLINE
+
+#endif

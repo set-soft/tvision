@@ -24,7 +24,7 @@ Andris Pavenis and Christoph Bauer.
 
 UsingNamespaceStd
 
-pstream::pstream( streambuf *sb )
+pstream::pstream( CLY_streambuf *sb )
 {
     init( sb );
 }
@@ -61,17 +61,17 @@ int pstream::rdstate() const
 
 int pstream::eof() const
 {
-    return state & ios::eofbit;
+    return state & CLY_IOSEOFBit;
 }
 
 int pstream::fail() const
 {
-    return state & (ios::failbit | ios::badbit);
+    return state & (CLY_IOSFailBit | CLY_IOSBadBit);
 }
 
 int pstream::bad() const
 {
-    return state & (ios::badbit);
+    return state & (CLY_IOSBadBit);
 }
 
 int pstream::good() const
@@ -99,7 +99,7 @@ int pstream::operator! () const
     return fail();
 }
 
-streambuf * pstream::rdbuf() const
+CLY_streambuf * pstream::rdbuf() const
 {
     return bp;
 }
@@ -118,7 +118,7 @@ void pstream::error( StreamableError, const TStreamable& )
     abort();
 }
 
-void pstream::init( streambuf *sbp )
+void pstream::init( CLY_streambuf *sbp )
 {
     state = 0;
     bp = sbp;

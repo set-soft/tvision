@@ -38,6 +38,26 @@ and regex.
 
 #include <tv/configtv.h>
 
+#ifdef Uses_fstream_simple
+ #ifdef HAVE_SSC
+  #define Uses_SSC_Streams 1
+ #else
+  #define Uses_fstream
+ #endif
+#endif
+
+#ifdef Uses_iostream_simple
+ #ifdef HAVE_SSC
+  #define Uses_SSC_Streams 1
+ #else
+  #define Uses_iostream
+ #endif
+#endif
+
+#ifdef Uses_SSC_Streams
+ #define Uses_stdio
+#endif
+
 /* MSS memory leak debugger */
 #ifdef MSS
  #include <mss.h>
@@ -123,6 +143,8 @@ typedef unsigned long  ulong;
 #undef DIRSEPARATOR_
 #undef CLY_ISOCpp98
 #undef CLY_filebuf
+#undef CLY_int_filebuf
+#undef CLY_streambuf
 #undef CLY_OpenModeT
 #undef CLY_StreamPosT
 #undef CLY_StreamOffT
@@ -133,6 +155,17 @@ typedef unsigned long  ulong;
 #undef CLY_HaveFBAttach
 #undef CLY_FBOpen
 #undef CLY_IOSBin
+#undef CLY_IOSOut
+#undef CLY_IOSIn
+#undef CLY_IOSApp
+#undef CLY_IOSAtE
+#undef CLY_IOSBeg
+#undef CLY_IOSCur
+#undef CLY_IOSEnd
+#undef CLY_IOSBadBit
+#undef CLY_IOSEOFBit
+#undef CLY_IOSFailBit
+#undef CLY_IOSGoodBit
 #undef CLY_PubSeekOff
 #undef CLY_PubSync
 #undef CLY_std
@@ -246,14 +279,16 @@ typedef unsigned long  ulong;
     stuff in versions like BC++ 5.5. So that's a real mess. */
  #if __GNUC__>=3
   // gcc 3.1 needs a special filebuf
+  #define CLY_filebuf       std::filebuf
   #if __GNUC_MINOR__<1
-   #define CLY_filebuf       std::filebuf
-   #define CLY_NewFBFromFD(f) new CLY_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
+   #define CLY_int_filebuf   CLY_filebuf
+   #define CLY_NewFBFromFD(f) new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
   #else
    #undef  CLY_DefineSpecialFileBuf
    #define CLY_DefineSpecialFileBuf 1
-   #define CLY_NewFBFromFD(f) new CLY_filebuf(f,ios::in|ios::out|ios::binary)
+   #define CLY_NewFBFromFD(f) new CLY_int_filebuf(f,ios::in|ios::out|ios::binary)
   #endif
+  #define CLY_streambuf      std::streambuf
   #define CLY_ISOCpp98 1
   #define CLY_OpenModeT      std::ios::openmode
   #define CLY_StreamPosT     std::streampos
@@ -263,6 +298,17 @@ typedef unsigned long  ulong;
   #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
   #define CLY_FBOpen(a,b,c)  open(a,b)
   #define CLY_IOSBin         std::ios::binary
+  #define CLY_IOSOut         std::ios::out
+  #define CLY_IOSIn          std::ios::in
+  #define CLY_IOSApp         std::ios::app
+  #define CLY_IOSAtE         std::ios::ate
+  #define CLY_IOSBeg         std::ios::beg
+  #define CLY_IOSCur         std::ios::cur
+  #define CLY_IOSEnd         std::ios::end
+  #define CLY_IOSBadBit      std::ios::badbit
+  #define CLY_IOSEOFBit      std::ios::eofbit
+  #define CLY_IOSFailBit     std::ios::failbit
+  #define CLY_IOSGoodBit     std::ios::goodbit
   #define CLY_PubSeekOff     pubseekoff
   #define CLY_PubSync        pubsync
   #define CLY_std(a)         std::a
@@ -281,6 +327,8 @@ typedef unsigned long  ulong;
   #define IOSTREAM_HEADER <iostream>
  #else
   #define CLY_filebuf        filebuf
+  #define CLY_int_filebuf    filebuf
+  #define CLY_streambuf      streambuf
   #define CLY_OpenModeT      int
   #define CLY_StreamPosT     streampos
   #define CLY_StreamOffT     streamoff
@@ -291,6 +339,17 @@ typedef unsigned long  ulong;
   #define CLY_HaveFBAttach   1
   #define CLY_FBOpen(a,b,c)  open(a,b,c)
   #define CLY_IOSBin         ios::bin
+  #define CLY_IOSOut         ios::out
+  #define CLY_IOSIn          ios::in
+  #define CLY_IOSApp         ios::app
+  #define CLY_IOSAtE         ios::ate
+  #define CLY_IOSBeg         ios::beg
+  #define CLY_IOSCur         ios::cur
+  #define CLY_IOSEnd         ios::end
+  #define CLY_IOSBadBit      ios::badbit
+  #define CLY_IOSEOFBit      ios::eofbit
+  #define CLY_IOSFailBit     ios::failbit
+  #define CLY_IOSGoodBit     ios::goodbit
   #define CLY_PubSeekOff     seekoff
   #define CLY_PubSync        sync
   #define CLY_std(a)         a
@@ -890,6 +949,8 @@ typedef unsigned long  ulong;
  #endif
 
  #define CLY_filebuf        filebuf
+ #define CLY_int_filebuf    filebuf
+ #define CLY_streambuf      streambuf
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff
@@ -899,6 +960,17 @@ typedef unsigned long  ulong;
  #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
  #define CLY_IOSBin         ios::binary
+ #define CLY_IOSOut         ios::out
+ #define CLY_IOSIn          ios::in
+ #define CLY_IOSApp         ios::app
+ #define CLY_IOSAtE         ios::ate
+ #define CLY_IOSBeg         ios::beg
+ #define CLY_IOSCur         ios::cur
+ #define CLY_IOSEnd         ios::end
+ #define CLY_IOSBadBit      ios::badbit
+ #define CLY_IOSEOFBit      ios::eofbit
+ #define CLY_IOSFailBit     ios::failbit
+ #define CLY_IOSGoodBit     ios::goodbit
  #define CLY_PubSeekOff     pubseekoff
  #define CLY_PubSync        pubsync
  #define CLY_std(a)         a
@@ -1166,6 +1238,8 @@ typedef unsigned long  ulong;
          istream.getline(buffer,size)
 
  #define CLY_filebuf        filebuf
+ #define CLY_int_filebuf    filebuf
+ #define CLY_streambuf      streambuf
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff
@@ -1176,6 +1250,17 @@ typedef unsigned long  ulong;
  #define CLY_HaveFBAttach   1
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
  #define CLY_IOSBin         ios::binary
+ #define CLY_IOSOut         ios::out
+ #define CLY_IOSIn          ios::in
+ #define CLY_IOSApp         ios::app
+ #define CLY_IOSAtE         ios::ate
+ #define CLY_IOSBeg         ios::beg
+ #define CLY_IOSCur         ios::cur
+ #define CLY_IOSEnd         ios::end
+ #define CLY_IOSBadBit      ios::badbit
+ #define CLY_IOSEOFBit      ios::eofbit
+ #define CLY_IOSFailBit     ios::failbit
+ #define CLY_IOSGoodBit     ios::goodbit
  #define CLY_PubSeekOff     seekoff
  #define CLY_PubSync        sync
  #define CLY_std(a)         a
@@ -1207,6 +1292,63 @@ typedef unsigned long  ulong;
   #undef  Include_stdarg
   #define Include_stdarg 1
  #endif
+#endif
+
+// Simple Streams Compatibility hack *EXPERIMENTAL*
+#ifdef HAVE_SSC
+ #undef CLY_filebuf
+ #undef CLY_int_filebuf
+ #undef CLY_streambuf
+ #undef CLY_OpenModeT
+ #undef CLY_StreamPosT
+ #undef CLY_StreamOffT
+ #undef CLY_IOSSeekDir
+ #undef CLY_FBOpenProtDef
+ #undef CLY_NewFBFromFD
+ #undef CLY_PubSetBuf
+ #undef CLY_HaveFBAttach
+ #undef CLY_FBOpen
+ #undef CLY_IOSBin
+ #undef CLY_IOSOut
+ #undef CLY_IOSIn
+ #undef CLY_IOSApp
+ #undef CLY_IOSAtE
+ #undef CLY_IOSBeg
+ #undef CLY_IOSCur
+ #undef CLY_IOSEnd
+ #undef CLY_IOSBadBit
+ #undef CLY_IOSEOFBit
+ #undef CLY_IOSFailBit
+ #undef CLY_IOSGoodBit
+ #undef CLY_PubSeekOff
+ #undef CLY_PubSync
+
+ #define CLY_filebuf        SSC_filebuf
+ #define CLY_int_filebuf    SSC_filebuf
+ #define CLY_streambuf      SSC_streambuf
+ #define CLY_OpenModeT      SSC_ios::openmode
+ #define CLY_StreamPosT     SSC_ios::seekoff
+ #define CLY_StreamOffT     SSC_ios::seekoff
+ #define CLY_IOSSeekDir     SSC_ios::seekdir
+ #define CLY_FBOpenProtDef  0666
+ #define CLY_NewFBFromFD(f) new SSC_filebuf(f,SSC_ios::in|SSC_ios::out|SSC_ios::binary)
+ #define CLY_PubSetBuf(a,b) setbuf(a,b)
+ #define CLY_HaveFBAttach   1
+ #define CLY_FBOpen(a,b,c)  open(a,b,c)
+ #define CLY_IOSBin         SSC_ios::binary
+ #define CLY_IOSOut         SSC_ios::out
+ #define CLY_IOSIn          SSC_ios::in
+ #define CLY_IOSApp         SSC_ios::app
+ #define CLY_IOSAtE         SSC_ios::ate
+ #define CLY_IOSBeg         SSC_ios::beg
+ #define CLY_IOSCur         SSC_ios::cur
+ #define CLY_IOSEnd         SSC_ios::end
+ #define CLY_IOSBadBit      SSC_ios::badbit
+ #define CLY_IOSEOFBit      SSC_ios::eofbit
+ #define CLY_IOSFailBit     SSC_ios::failbit
+ #define CLY_IOSGoodBit     SSC_ios::goodbit
+ #define CLY_PubSeekOff     seekoff
+ #define CLY_PubSync        sync
 #endif
 
 CLY_CFunc void CLY_YieldProcessor(int micros);
@@ -1617,6 +1759,10 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Uses_iostream) && !defined(Included_iostream)
  #define Included_iostream 1
  #include IOSTREAM_HEADER
+#endif
+
+#if defined(Uses_SSC_Streams) && !defined(Included_SSC_Streams)
+ #include <tv/ssc_streams.h>
 #endif
 
 #if defined(Uses_CLYFileAttrs) && !defined(Uses_CLYFileAttrsDef)

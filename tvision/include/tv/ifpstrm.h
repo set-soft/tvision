@@ -29,16 +29,16 @@ class ifpstream : public fpbase, public ipstream
 public:
     ifpstream();
     ifpstream( const char *,
-                      CLY_OpenModeT = CLY_std(ios::in),
+                      CLY_OpenModeT = CLY_IOSIn,
                       int = CLY_FBOpenProtDef
                     );
     ifpstream( int );
     ifpstream( int, char *, int );
     ~ifpstream();
 
-    CLY_std(filebuf) *rdbuf();
+    CLY_filebuf *rdbuf();
     void open( const char *,
-                      CLY_OpenModeT = CLY_std(ios::in),
+                      CLY_OpenModeT = CLY_IOSIn,
                       int = CLY_FBOpenProtDef
                     );
 };

@@ -68,7 +68,7 @@ TResourceFile::TResourceFile( fpstream *aStream ) : TObject()
        repeat = 0;
        if ((unsigned long)basePos <= (streamSize - sizeof(THeader)))
            {
-           stream->seekg(basePos, ios::beg);
+           stream->seekg(basePos, CLY_IOSBeg);
            stream->readBytes(header, sizeof(THeader));
            if (header->signature == 0x5a4d)
                {
@@ -92,9 +92,9 @@ TResourceFile::TResourceFile( fpstream *aStream ) : TObject()
 
     if (found)
     {
-        stream->seekg(basePos + sizeof(long) * 2, ios::beg);
+        stream->seekg(basePos + sizeof(long) * 2, CLY_IOSBeg);
         *stream >> indexPos;
-        stream->seekg(basePos + indexPos, ios::beg);
+        stream->seekg(basePos + indexPos, CLY_IOSBeg);
         *stream >> index;
     }
     else
@@ -139,10 +139,10 @@ void TResourceFile::flush()
 
     if (modified == True)
     {
-        stream->seekg(basePos + indexPos, ios::beg);
+        stream->seekg(basePos + indexPos, CLY_IOSBeg);
         *stream << index;
         lenRez =  stream->tellp() - basePos -  long(sizeof(long) * 2);
-        stream->seekg(basePos, ios::beg);
+        stream->seekg(basePos, CLY_IOSBeg);
         *stream << rStreamMagic;
         *stream << lenRez;
         *stream << indexPos;
@@ -158,7 +158,7 @@ void *TResourceFile::get( const char *key)
 
     if (! index->search((char *)key, i))
         return  0;
-    stream->seekg(basePos + ((TResourceItem*)(index->at(i)))->pos, ios::beg);
+    stream->seekg(basePos + ((TResourceItem*)(index->at(i)))->pos, CLY_IOSBeg);
     *stream >> p;
     return p;
 }
@@ -182,7 +182,7 @@ void TResourceFile::put(TStreamable *item, const char *key)
         index->atInsert(i, p);
     }
     p->pos =  indexPos;
-    stream->seekp(basePos + indexPos, ios::beg);
+    stream->seekp(basePos + indexPos, CLY_IOSBeg);
     *stream << item;
     indexPos = stream->tellp() - basePos;
     p->size  = indexPos - p->pos;

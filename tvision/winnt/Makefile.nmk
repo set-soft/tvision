@@ -37,9 +37,9 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/fileexists.o $(OBJDIR)/filelength.o $(OBJDIR)/fixpath.o $(OBJDIR)/fnmatch.o $(OBJDIR)/getcurdir.o $(OBJDIR)/getline.o\
 	$(OBJDIR)/getopt.o $(OBJDIR)/getopt1.o $(OBJDIR)/getshell.o $(OBJDIR)/glob.o $(OBJDIR)/globfree.o $(OBJDIR)/iffilelen.o $(OBJDIR)/isdir.o\
 	$(OBJDIR)/isrelpath.o $(OBJDIR)/iswild.o $(OBJDIR)/itoa.o $(OBJDIR)/mkstemp.o $(OBJDIR)/nl_langinfo.o $(OBJDIR)/ntdirent.o\
-	$(OBJDIR)/pathvalid.o $(OBJDIR)/regex.o $(OBJDIR)/releasec.o $(OBJDIR)/snprintf.o $(OBJDIR)/strlwr.o $(OBJDIR)/strupr.o $(OBJDIR)/ticks.o\
-	$(OBJDIR)/unc.o $(OBJDIR)/unc_95.o $(OBJDIR)/unc_nt.o $(OBJDIR)/validfilename.o $(OBJDIR)/yieldpro.o $(OBJDIR)/calcdisp.o\
-	$(OBJDIR)/calculat.o $(OBJDIR)/codepage.o
+	$(OBJDIR)/pathvalid.o $(OBJDIR)/regex.o $(OBJDIR)/releasec.o $(OBJDIR)/snprintf.o $(OBJDIR)/ssc_streams.o $(OBJDIR)/strlwr.o\
+	$(OBJDIR)/strupr.o $(OBJDIR)/ticks.o $(OBJDIR)/unc.o $(OBJDIR)/unc_95.o $(OBJDIR)/unc_nt.o $(OBJDIR)/validfilename.o $(OBJDIR)/yieldpro.o\
+	$(OBJDIR)/calcdisp.o $(OBJDIR)/calculat.o $(OBJDIR)/codepage.o
 
 tvex: libtv.lib
 	$(CXX) $(CXXFLAGS) tvex.cc -link libtv.lib user32.lib gdi32.lib

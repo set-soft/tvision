@@ -29,15 +29,15 @@ class ofpstream : public fpbase, public opstream
 public:
  ofpstream();
  ofpstream(const char *,
-           CLY_OpenModeT = CLY_std(ios::out),
+           CLY_OpenModeT = CLY_IOSOut,
            int = CLY_FBOpenProtDef);
  ofpstream(int);
  ofpstream(int, char *, int);
  ~ofpstream();
 
- CLY_std(filebuf) *rdbuf();
+ CLY_filebuf *rdbuf();
  void open(const char *,
-           CLY_OpenModeT = CLY_std(ios::out),
+           CLY_OpenModeT = CLY_IOSOut,
            int = CLY_FBOpenProtDef);
 };
 

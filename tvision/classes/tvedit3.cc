@@ -29,11 +29,9 @@
 #define Uses_TDeskTop
 #define Uses_TEditorApp
 #define Uses_TVEdConstant
-#define Uses_StrStream
-#define Uses_iomanip
+#define Uses_stdarg
 
 #include <tv.h>
-#include <stdarg.h>
 
 TMenuBar *TEditorApp::initMenuBar( TRect r )
 {

@@ -26,7 +26,7 @@ ifpstream::ifpstream()
 }
 
 ifpstream::ifpstream( const char* name, CLY_OpenModeT omode, int prot ) :
-        fpbase( name, omode | ios::in | CLY_IOSBin, prot )
+        fpbase( name, omode | CLY_IOSIn | CLY_IOSBin, prot )
 {
 }
 
@@ -42,14 +42,14 @@ ifpstream::~ifpstream()
 {
 }
 
-filebuf *ifpstream::rdbuf()
+CLY_filebuf *ifpstream::rdbuf()
 {
     return fpbase::rdbuf();
 }
 
 void ifpstream::open( const char *name, CLY_OpenModeT omode, int prot )
 {
-    fpbase::open( name, omode | ios::in | CLY_IOSBin, prot );
+    fpbase::open( name, omode | CLY_IOSIn | CLY_IOSBin, prot );
 }
 
 

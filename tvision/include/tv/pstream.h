@@ -34,7 +34,7 @@ public:
     enum StreamableError { peNotRegistered, peInvalidType };
     enum PointerTypes { ptNull, ptIndexed, ptObject };
 
-    pstream(CLY_std(streambuf) *);
+    pstream(CLY_streambuf *);
     virtual ~pstream();
 
     int rdstate() const;
@@ -46,7 +46,7 @@ public:
     operator void *() const;
     int operator ! () const;
 
-    CLY_std(streambuf) *rdbuf() const;
+    CLY_streambuf *rdbuf() const;
 
     static void initTypes();
     // SET: called atexit to kill the collection
@@ -59,10 +59,10 @@ public:
 protected:
     pstream();
 
-    CLY_std(streambuf) *bp;
+    CLY_streambuf *bp;
     int state;
 
-    void init(CLY_std(streambuf) *);
+    void init(CLY_streambuf *);
     void setstate( int );
 
     static TStreamableTypes * types;
