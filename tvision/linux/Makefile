@@ -883,18 +883,17 @@ DEPS_17=linuxmouse.cc ../include/compatlayer.h ../include/tv.h\
 obj/linuxmouse.o:: $(DEPS_17)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_18=linuxscr.cc ../include/compatlayer.h ../include/tv.h\
-	../include/tv/codepage.h ../include/tv/configtv.h\
-	../include/tv/drawbuf.h ../include/tv/event.h ../include/tv/gkey.h\
-	../include/tv/intl.h ../include/tv/ipstream.h\
-	../include/tv/linux/key.h ../include/tv/linux/log.h\
-	../include/tv/linux/mouse.h ../include/tv/linux/screen.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/point.h ../include/tv/pstream.h\
-	../include/tv/screen.h ../include/tv/stddlg.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvutil.h ../include/tv/unix/mouse.h\
-	../include/tv/views.h
+	../include/tv/configtv.h ../include/tv/drawbuf.h\
+	../include/tv/event.h ../include/tv/gkey.h ../include/tv/intl.h\
+	../include/tv/ipstream.h ../include/tv/linux/key.h\
+	../include/tv/linux/log.h ../include/tv/linux/mouse.h\
+	../include/tv/linux/screen.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/point.h\
+	../include/tv/pstream.h ../include/tv/screen.h\
+	../include/tv/stddlg.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvutil.h\
+	../include/tv/unix/mouse.h ../include/tv/views.h
 obj/linuxscr.o:: $(DEPS_18)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_19=misc.cc ../include/compatlayer.h ../include/tv.h\
@@ -3296,16 +3295,16 @@ DEPS_228=x11mouse.cc ../include/compatlayer.h ../include/tv.h\
 obj/x11mouse.o:: $(DEPS_228)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_229=x11src.cc ../include/compatlayer.h ../include/tv.h\
-	../include/tv/codepage.h ../include/tv/configtv.h\
-	../include/tv/event.h ../include/tv/gkey.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/objects.h\
-	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/screen.h\
-	../include/tv/stddlg.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvutil.h\
-	../include/tv/views.h ../include/tv/x11/key.h\
-	../include/tv/x11/mouse.h ../include/tv/x11/screen.h
+	../include/tv/configtv.h ../include/tv/event.h ../include/tv/gkey.h\
+	../include/tv/intl.h ../include/tv/ipstream.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h\
+	../include/tv/screen.h ../include/tv/stddlg.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvutil.h ../include/tv/views.h\
+	../include/tv/x11/key.h ../include/tv/x11/mouse.h\
+	../include/tv/x11/screen.h
 obj/x11src.o:: $(DEPS_229)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_230=xtermdis.cc ../include/compatlayer.h ../include/tv.h\
@@ -3345,17 +3344,18 @@ DEPS_232=xtermmouse.cc ../include/compatlayer.h ../include/tv.h\
 obj/xtermmouse.o:: $(DEPS_232)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_233=xtermscr.cc ../include/compatlayer.h ../include/tv.h\
-	../include/tv/configtv.h ../include/tv/drawbuf.h\
-	../include/tv/event.h ../include/tv/gkey.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/linux/log.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/point.h ../include/tv/pstream.h\
-	../include/tv/screen.h ../include/tv/stddlg.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvutil.h ../include/tv/unix/mouse.h\
-	../include/tv/unix/xtkey.h ../include/tv/unix/xtmouse.h\
-	../include/tv/unix/xtscreen.h ../include/tv/views.h
+	../include/tv/codepage.h ../include/tv/configtv.h\
+	../include/tv/drawbuf.h ../include/tv/event.h ../include/tv/gkey.h\
+	../include/tv/intl.h ../include/tv/ipstream.h\
+	../include/tv/linux/log.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/point.h\
+	../include/tv/pstream.h ../include/tv/screen.h\
+	../include/tv/stddlg.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvutil.h\
+	../include/tv/unix/mouse.h ../include/tv/unix/xtkey.h\
+	../include/tv/unix/xtmouse.h ../include/tv/unix/xtscreen.h\
+	../include/tv/views.h
 obj/xtermscr.o:: $(DEPS_233)
 	$(RHIDE_COMPILE.cc.o)
 all:: librhtv.a
