@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea: added i18n support.
 
  *
  *
@@ -34,6 +35,7 @@ class TLabel : public TStaticText
 public:
 
     TLabel( const TRect& bounds, const char *aText, TView *aLink );
+    TLabel( const TRect& bounds, const char *aText, TView *aLink, stTVIntl *aIntlText );
 
     virtual void draw();
     virtual TPalette& getPalette() const;
@@ -45,6 +47,8 @@ public:
 protected:
 
     Boolean light;
+    void init( TView *aLink );
+
 #if !defined( NO_STREAM )
 private:
 

@@ -58,7 +58,7 @@ TDialog *createFindDialog()
     TInputLine *control = new TInputLine( TRect( 3, 3, 32, 4 ), 80 );
     d->insert( control );
     d->insert(
-        new TLabel( TRect( 2, 2, 15, 3 ), _("~T~ext to find"), control ) );
+        new TLabel( TRect( 2, 2, 15, 3 ), __("~T~ext to find"), control ) );
     d->insert(
         new THistory( TRect( 32, 3, 35, 4 ), control, 10 ) );
 
@@ -84,12 +84,12 @@ TDialog *createReplaceDialog()
     TInputLine *control = new TInputLine( TRect( 3, 3, 34, 4 ), 80 );
     d->insert( control );
     d->insert(
-        new TLabel( TRect( 2, 2, 15, 3 ), _("~T~ext to find"), control ) );
+        new TLabel( TRect( 2, 2, 15, 3 ), __("~T~ext to find"), control ) );
     d->insert( new THistory( TRect( 34, 3, 37, 4 ), control, 10 ) );
 
     control = new TInputLine( TRect( 3, 6, 34, 7 ), 80 );
     d->insert( control );
-    d->insert( new TLabel( TRect( 2, 5, 12, 6 ), _("~N~ew text"), control ) );
+    d->insert( new TLabel( TRect( 2, 5, 12, 6 ), __("~N~ew text"), control ) );
     d->insert( new THistory( TRect( 34, 6, 37, 7 ), control, 11 ) );
 
     d->insert( new TCheckBoxes( TRect( 3, 8, 37, 12 ),

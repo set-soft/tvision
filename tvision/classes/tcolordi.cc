@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea: added i18n support.
 
  *
  *
@@ -44,6 +45,7 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     , TWindowInit( &TColorDialog::initFrame )
 {
     const char *tmp;
+    stTVIntl *intlTmp = NULL;
     options |= ofCentered;
     pal = aPalette;
 
@@ -52,32 +54,36 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
 
     groups = new TColorGroupList( TRect( 3, 3, 18, 14 ), sb, aGroups);
     insert( groups );
-    tmp = _("~G~roup");
-    insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, groups ) );
+    tmp = TVIntl::getText( __("~G~roup"), intlTmp);
+    insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, groups, intlTmp ) );
+    intlTmp = NULL;
 
     sb = new TScrollBar( TRect( 41, 3, 42, 14 ) );
     insert( sb );
 
     TView *p = new TColorItemList( TRect( 21, 3, 41, 14 ), sb, aGroups->items );
     insert( p );
-    tmp = _("~I~tem");
-    insert( new TLabel( TRect( 20, 2, 21+cstrlen(tmp), 3 ), tmp, p ) );
+    tmp = TVIntl::getText( __("~I~tem"), intlTmp);
+    insert( new TLabel( TRect( 20, 2, 21+cstrlen(tmp), 3 ), tmp, p, intlTmp ) );
+    intlTmp = NULL;
 
     forSel = new TColorSelector( TRect( 45, 3, 57, 7 ),
                                  TColorSelector::csForeground );
     insert( forSel );
-    tmp = _("~F~oreground");
-    forLabel = new TLabel( TRect( 45, 2, 46+cstrlen(tmp), 3 ), tmp, forSel );
+    tmp = TVIntl::getText( __("~F~oreground"), intlTmp);
+    forLabel = new TLabel( TRect( 45, 2, 46+cstrlen(tmp), 3 ), tmp, forSel, intlTmp );
     insert( forLabel );
+    intlTmp = NULL;
 
     int ib = TScreen::getBlinkState() ? 0 : 2;
 
     bakSel = new TColorSelector( TRect( 45, 9, 57, 11 + ib),
                                  TColorSelector::csBackground );
     insert( bakSel );
-    tmp = _("~B~ackground");
-    bakLabel = new TLabel( TRect( 45, 8, 46+cstrlen(tmp), 9 ), tmp, bakSel );
+    tmp = TVIntl::getText( __("~B~ackground"), intlTmp);
+    bakLabel = new TLabel( TRect( 45, 8, 46+cstrlen(tmp), 9 ), tmp, bakSel, intlTmp );
     insert( bakLabel );
+    intlTmp = NULL;
 
     display = new TColorDisplay( TRect( 44, 12 + ib, 58, 14 + ib),
                                  _("Text ") );
@@ -86,9 +92,9 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     monoSel = new TMonoSelector( TRect( 44, 3, 59, 7 ) );
     monoSel->hide();
     insert( monoSel );
-    tmp = _("Color");
+    tmp = TVIntl::getText( __("Color"), intlTmp);
     monoLabel = new TLabel( TRect( 43, 2, 44+cstrlen(tmp), 3 ), tmp,
-                            monoSel );
+                            monoSel, intlTmp );
     monoLabel->hide();
     insert( monoLabel );
 

@@ -7,6 +7,8 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Salvador E. Tropea: added i18n support.
+
  *
  *
  */
@@ -41,20 +43,22 @@ TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     , TWindowInit( &TChDirDialog::initFrame )
 {
     const char *tmp;
+    stTVIntl *intlTmp=NULL;
     options |= ofCentered;
 
     dirInput = new TInputLine( TRect( 3, 3, 30, 4 ), FILENAME_MAX );
     insert( dirInput );
-    tmp = _("Directory ~n~ame");
-    insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, dirInput ));
+    tmp = TVIntl::getText( __("Directory ~n~ame"), intlTmp );
+    insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, dirInput, intlTmp ));
+    intlTmp = NULL;
     insert( new THistory( TRect( 30, 3, 33, 4 ), dirInput, histId ) );
 
     TScrollBar *sb = new TScrollBar( TRect( 32, 6, 33, 16 ) );
     insert( sb );
     dirList = new TDirListBox( TRect( 3, 6, 32, 16 ), sb );
     insert( dirList );
-    tmp = _("Directory ~t~ree");
-    insert( new TLabel( TRect( 2, 5, 3+cstrlen(tmp), 6 ), tmp, dirList ) );
+    tmp = TVIntl::getText( __("Directory ~t~ree"), intlTmp );
+    insert( new TLabel( TRect( 2, 5, 3+cstrlen(tmp), 6 ), tmp, dirList, intlTmp ) );
 
     okButton = new TButton( TRect( 35, 6, 45, 8 ), _("~O~K"), cmOK, bfDefault );
     insert( okButton );
