@@ -3,6 +3,19 @@ $oldv='1.0.2';
 $newv='1.0.3';
 @files=('../readme.txt');
 
+# Update the makefile if needed
+print 'makefile: ';
+if (-M 'makefile' > -M 'libtv.gpr')
+  {
+   system('gpr2mak libtv.gpr');
+   system('mv libtv.mak makefile');
+   print "updated\n";
+  }
+else
+  {
+   print "uptodate\n";
+  }
+
 # Patch the version number
 foreach $i (@files)
   {
