@@ -1,0 +1,11 @@
+Driver: WinGr
+Author: Jose Angel Sanchez Caso (JASC)
+Status: Not complete, random suggestions and details
+$Revision$
+
+  This driver isn't finished yet.
+  That's a graphical Win32 driver. Note that graphical just means we emulate
+the text drawing it. It doesn't mean the application will use Windows GUI for
+buttons, menues, etc.
+  If you want to test this driver use a configuration file to chnage the
+priority of the driver, use something like 200.

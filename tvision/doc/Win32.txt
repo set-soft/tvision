@@ -1,0 +1,103 @@
+Driver: Win32 and WinNT
+Author: Vadim Beloborodov, Anatoli Soltan, Salvador E. Tropea
+Status: Complete
+$Revision$
+
+  This file documents details specific to the Win32 and WinNT drivers. Both
+drivers can be used for Win32 systems, this means the WinNT driver is also ok
+for Windows 95. When we say "Win32" we refer to the 32 bits versions of
+Windows. The first Win32 version of Windows released to the market was
+Windows 95. You can divide Win32 platforms in two big groups: The Windows 95
+and other Win32 versions that runs on top of DOS, they are Windows 95, 98 and
+Me (Millenium). And the Windows NT and others that doesn't run on top of DOS,
+they are Windows NT, 2000 and XP. These are the names upto year 2002, newer
+releases are supposed to be all in the Windows NT family.
+
+1. INTRODUCTION
+2. FEATURES
+3. IMPORTANT DETAILS
+4. CONFIGURATION VARIABLES
+
+
+1. INTRODUCTION
+
+  Currently you'll find two different drivers, they are quite similar and
+will converge in the future. Currently the differences are really small
+because I (SET) recoded both drivers and added a lot of important things. In
+the process I made them more similar.
+  The differences are:
+
+Win32: It uses a separated thread to read the input events, all the keyboard
+       and mouse events are stored in a queue. The screen update is simpler
+       but slower.
+WinNT: Uses only one execution thread, events are polled and the queue is
+       maintained by the OS. The screen is updated using a buffer to assemble
+       the text and then it's sent in one call. It seems to be faster.
+
+  Which driver have more priority depends on the compiler you used to create
+the application. If Borland compiler was used the WinNT driver will have more
+priority and if MinGW/Cygwin was used Win32 will have more priority. This is
+just because Vadim contributed the first Win32 code that compiled only with
+MinGW and Anatoli contributed the first WinNT driver that compiled only with
+Borland C++ compiler and only worked for Windows NT family. With the time
+they became more and more similar.
+  You can change which driver is used using a configuration file.
+  These are a simple drivers that uses the Win32 console API. That's the set
+of services offered by Win32 OS to use text mode. I must admit the API is
+well documented and quite clean. Lamentably is not hard to hit bugs and
+stupid limitations that you can do nothing to overcome.
+
+
+2. FEATURES
+
+  The drivers supports:
+
+* Window size. Note the size must fit in the screen, if the screen isn't big
+enough you'll get the bigger posible size. Also note this depends on some
+things you can't control: screen resolution, font size and window position.
+Only the third could be controlled. Also note it ever fails if the
+application is running in full screen and resized applications won't be able
+to go fullscreen.
+* Window title set/restore.
+* Most keyboard combinations.
+* Restore user screen. In some cases the text cursor seems to be lost after
+running the application, this seems to be a bug in Win32 API triggered by
+some missuse from my part. If you minimize the window and restore it, or just
+hide it under another window and then make it visible again the cursor
+appears. It doesn't happend in all situations and the code specifically
+restores it.
+
+
+3. IMPORTANT DETAILS
+
+  These drivers seems to be slower on Windows 9x family and faster on Windows
+NT family when compared to the DOS driver running windowed. I think that's
+because Windows NT doesn't draw all the information sent to the screen,
+instead the content is refreshed periodically. It doesn't apply to the
+Windows 9x version running fullscreen where the speed is really slow, this is
+even worst for the Win32 driver. I would like to get feedback about it.
+  When you try to resize an application that's windowed using the mouse what
+you do is change the size of the font. It only works when the font size is
+set to "Auto". If the value is fixed you can just reduce the size of the
+window and get scroll bars. At least that's how Windows 98 SE works.
+  At least on my system the window can go to full screen only when the size
+is 80x25 or 80x50. Otherwise the color palette changes and the application
+must remain windowed. I don't know why the palette changes and you can't
+control the color palette.
+
+
+4. CONFIGURATION VARIABLES
+
+  Only a few configuration variables are supported, none specific for these
+drivers. The supported variables are: ScreenWidth, ScreenHeight, AppCP, ScrCP
+and InpCP.
+  Note that ScreenWidth and ScreenHeight are limited as explained in
+"Features" and the code page shouldn't be forced because:
+
+1) The API supports a very limited set of code pages.
+2) The fonts are fixed and encoded as the OS reports.
+3) The API have mechanisms to inform the current code page. This code page is
+hard to change for Windows 95 family.
+
+  For more information about configuration files read the corresponding doc.
+
