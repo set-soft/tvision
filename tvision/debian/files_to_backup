@@ -1,5 +1,6 @@
 Makefile
 compat/rhide.env
+compat/compat.mak
 examples/demo/demo.mak
 examples/desklogo/desklogo.mak
 examples/desklogo/set-logo.mak
