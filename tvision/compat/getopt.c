@@ -85,7 +85,7 @@ char *alloca ();
 #endif	/* GNU C library.  */
 
 /* SET: more headers needed, __alloca isn't valid */
-#if defined(TVCompf_djgpp) || defined(TVOS_Win32)
+#if defined(TVCompf_djgpp) || defined(TVOS_Win32) || defined(TVOSf_Solaris)
 #include <stdlib.h>
 #endif
 
@@ -192,7 +192,7 @@ static enum
 } ordering;
 
 /* SET: I don't understand why hello.c doesn't make it */
-#if defined(__GNU_LIBRARY__) || defined(TVCompf_djgpp) || defined(TVOS_Win32)
+#if defined(__GNU_LIBRARY__) || defined(TVCompf_djgpp) || defined(TVOS_Win32) || defined(TVOSf_Solaris)
 /* We want to avoid inclusion of string.h with non-GNU libraries
    because there are many ways it can cause trouble.
    On some systems, it contains special magic macros that don't work
