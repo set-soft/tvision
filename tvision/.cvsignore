@@ -1,2 +1,6 @@
 build-stamp
 install-stamp
+errormsg.txt
+configure.cache
+Makefile
+
