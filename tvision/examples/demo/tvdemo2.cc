@@ -36,6 +36,8 @@
 #define Uses_TCalculator
 // Needed to remap the "system" menu character
 #define Uses_TVCodePage
+// Needed for the inputBoxTest
+#define Uses_MsgBox
 
 #include <tv.h>
 
@@ -59,6 +61,13 @@ void TVDemo::shell()
     redraw();
 }
 
+void TVDemo::testInputBox()
+{
+    char buffer[20];
+    strcpy(buffer,"Initial value");
+    inputBox("Test for the inputBox","Enter a number",buffer,20);
+    messageBox(mfInformation | mfOKButton,"Value entered: %s",buffer);
+}
 
 //
 // DemoApp::handleEvent()
@@ -128,6 +137,10 @@ void TVDemo::handleEvent(TEvent &event)
  
         case cmRestoreCmd:          //  Restore saved desktop
                 retrieveDesktop();
+                break;
+
+        case cmTestInputBox:
+                testInputBox();
                 break;
 
             default:                    //  Unknown command
