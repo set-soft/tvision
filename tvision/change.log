@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.147  2004/03/12 19:22:13  set
+* Added: [config] Some stuff to the configure and makefiles to maintain
+compatibility with packages that uses "auto tools". Patch by Aurelian
+Melinte (LinCS/tiger project).
+
 Revision 2.399.2.146  2004/03/03 17:34:15  set
 * Fixed: Typos in big-endian fix.
 
