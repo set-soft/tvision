@@ -61,7 +61,8 @@ public:
   { return (char)toLowerTable[(uchar)val]; }
  static int     isAlpha(char val)
   { return AlphaTable[(uchar)val]; }
- static int     InternalCodeForUnicode(ushort unicode);
+ static int     InternalCodeForUnicode(uint16 unicode);
+ static uint16  UnicodeForInternalCode(uint16 code);
  static TVCodePageCallBack SetCallBack(TVCodePageCallBack map);
 
  static Boolean OnTheFlyRemapNeeded() { return NeedsOnTheFlyRemap ? True : False; }
