@@ -18,7 +18,7 @@ EXDEP=genimk.cc extrimk.cc
 all: makes
 
 # The list of "targets"
-mkfs_list=librhtv $(EXDIR)/bhelp/thelp $(EXDIR)/clipboard/test \
+mkfs_list=$(EXDIR)/bhelp/thelp $(EXDIR)/clipboard/test \
 	$(EXDIR)/cyrillic/linuxkoi8/test $(EXDIR)/cyrillic/x11koi8/test \
 	$(EXDIR)/demo/demo $(EXDIR)/desklogo/desklogo $(EXDIR)/desklogo/set-logo \
 	$(EXDIR)/desklogo/tv_logo $(EXDIR)/dlgdsn/libtest $(EXDIR)/dyntxt/dyntext \
@@ -35,11 +35,12 @@ mkfs_list=librhtv $(EXDIR)/bhelp/thelp $(EXDIR)/clipboard/test \
 	$(EXDIR)/tutorial/tvguid13 $(EXDIR)/tutorial/tvguid14 \
 	$(EXDIR)/tutorial/tvguid15 $(EXDIR)/tutorial/tvguid16 \
 	$(EXDIR)/tvedit/tvedit $(EXDIR)/tvhc/tvhc $(EXDIR)/videomode/test
-allprjs=$(mkfs_list) ../compat/compat
+imks_list=librhtv ../compat/compat
+allprjs=$(mkfs_list) $(imks_list)
 # Makefiles for them
 mkfs_files=$(addsuffix .mkf,$(mkfs_list))
 # Dependencies for them
-imks_files=$(addsuffix .imk,$(allprjs))
+imks_files=$(addsuffix .imk,$(imks_list)) $(addsuffix .umk,$(mkfs_list))
 
 # Tool to extract dependencies
 extrimk.exe: extrimk.cc
