@@ -1,4 +1,15 @@
 $Log$
+Revision 2.14  2001/11/25 14:59:58  set
+* Changed: classes/WinNT to winnt, it avoids some problems.
+* Compiled all the stuff to verify that I incorporated all the needed code,
+it changed makefiles and other stuff.
+* Merged Ivan patched for debian package 1.1.3-3, but they are outdated for
+this new 2.0.0 branch.
+* Added include/tv/drivers.h, it defines prototypes for all the drivers
+entry points.
+* Added classes/tgkey.cc, it replaces gkey.cc but is the abstract driver
+base containing common code for all the platforms.
+
 Revision 2.13  2001/11/25 00:41:41  set
 * Added: Definitions for middle mouse button and also buttons 4 and 5.
 
