@@ -19,7 +19,8 @@
 #include <sys/mman.h>
 #include <stdarg.h>
 #ifdef __GLIBC__
-#include <sys/perm.h>
+// Works for glibc 2.0 and glibc 2.1 for Alpha.
+#include <sys/io.h>
 #endif
 
 int dual_display = 0;
@@ -228,6 +229,7 @@ void TV_WindowSizeChanged(int sig)
 static struct termios old_term,new_term;
 #endif
 
+// This routine was heavily modified, and I think it needs more work (SET)
 void startcurses()
 {
   int xterm=0;
@@ -239,27 +241,18 @@ void startcurses()
   tcgetattr (STDOUT_FILENO, &old_term);
   #endif
 
-  /* The following chunck of code is to have a valid tty for output, even
-     if stdout is redirected */
-  char *tty = ttyname(fileno(stdout));
-  char *ttyi = ttyname(fileno(stdin));
-  if (ttyi || tty)
-  {
-    if (tty)
-      tty_file = fopen(tty,"w+b");
-    else
-      tty_file = fopen(ttyi,"w+b");
-  }
-  else
-  {
-    fprintf(stderr,"Not connected to a terminal\n");
-    exit(-1);
-  }
-  if (!tty_file)
-  {
-    fprintf(stderr,"Could not open terminal '%s'\n", tty ? tty : ttyi);
-    exit(-1);
-  }
+  // SET: Original code tried to open a tty at any cost, eg: if stdout was
+  // redirected it tried to open stdin's tty for writing. I don't see the
+  // point of such an effort and in fact crashes the library, so here I just
+  // explain to the user how to run the application in the right way.
+  if (!isatty(fileno(stdout)))
+    {
+     fprintf(stderr,_("\r\nError! that's an interactive application, don't redirect stdout\r\n"
+                      "If you want to collect information redirect stderr like this:\r\n\r\n"
+                      "program 2> file\r\n\r\n"));
+     exit(-1);
+    }
+  tty_file=stdout;
   tty_fd = fileno(tty_file);
 
   // old buggy code: if (!newterm(terminal,stdin,tty_file))
