@@ -1411,4 +1411,88 @@ sub LookForGNUar
  die;
 }
 
+sub LookForGNUinstall
+{
+ my ($test,$test2,$res);
+
+ print 'Looking for install tool: ';
+
+ if ($conf{'GNU_INSTALL'})
+   {
+    print "$conf{'GNU_INSTALL'} (cached)\n";
+    return $conf{'GNU_INSTALL'};
+   }
+ $conf{'SOLARIS_INSTALL'}=0;
+ $test=RunRedirect('install --version',$ErrorLog);
+ if ($test=~/Free Software Foundation/)
+   {
+    $conf{'GNU_INSTALL'}='install';
+    print "install\n";
+    return 'install';
+   }
+ $test2=RunRedirect('ginstall --version',$ErrorLog);
+ if ($test2=~/Free Software Foundation/)
+   {
+    $conf{'GNU_INSTALL'}='ginstall';
+    print "ginstall\n";
+    return 'ginstall';
+   }
+ if (!($test=~/install/))
+   {
+    print "Unable to find 'install' on this system.\n";
+    print "Please install it and be sure it's in your path.\n";
+    print "Also use `install' or `ginstall' name for the binary.\n";
+    die;
+   }
+ $res='install';
+ # Solaris install is bizarre.
+ if ($OSf eq 'Solaris')
+   {
+    $conf{'SOLARIS_INSTALL'}=1;
+   }
+ # NetBSD install moves by default!!
+ elsif ($OSf eq 'NetBSD')
+   {
+    $res='install -c';
+   }
+ $conf{'GNU_INSTALL'}=$res;
+ print "$res\n";
+ return $res;
+}
+
+sub GenInstallDir()
+{
+ my ($mode,$dir)=@_;
+
+ return "\$(INSTALL) -d -m $mode $dir\n";
+}
+
+sub GenInstallFiles()
+{
+ my ($mode,$files,$dir)=@_;
+ my (@f,$fl,$ret,$first);
+
+ if ($conf{'SOLARIS_INSTALL'})
+   {# Silly, crappy one ;-)
+    @f=glob($files);
+    return "\$(INSTALL) -m $mode -f $dir $files\n" if scalar(@f)==1;
+    $ret='';
+    $first=1;
+    foreach $fl (@f)
+      {
+       if ($first)
+         {
+          $first=0;
+         }
+       else
+         {
+          $ret.="\t";
+         }
+       $ret.="\$(INSTALL) -m $mode -f $dir $fl\n";
+      }
+    return $ret;
+   }
+ return "\$(INSTALL) -m $mode $files $dir\n";
+}
+
 1;
