@@ -1,4 +1,10 @@
 $Log$
+Revision 1.184  2001/09/03 23:11:23  set
+* Added: Options for the TFileCollection to sort .* files after the rest.
+* Added: Options for the TFileCollection that affects TFileList so some
+files aren't listed: *~, *.bkp and .*. I also reindented and cleaned some
+code in tfilelis.cc.
+
 Revision 1.183  2001/09/03 20:20:28  set
 * Added: Now any TCluster (radio buttons, check boxes, etc.) that have a
 state sfDisabled is painted with a different color. I mapped it to color

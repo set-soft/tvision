@@ -48,7 +48,7 @@ void TColorSelector::draw()
                 b.moveChar( j*3, icon, c, 3 );
                 if( c == color )
                     {
-                    b.putChar( j*3+1, 8 );
+                    b.putChar( j*3+1, mark );
                     if( c == 0 )
                         b.putAttribute( j*3+1, 0x70 );
                     }
