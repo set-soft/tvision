@@ -617,11 +617,15 @@ extern ushort user_mode;
 //   Also make it only for Linux until I know how to do it for FreeBSD.
 
 #if defined(__i386__) && defined(TVOSf_Linux)
-#define h386LowLevel
+ #define h386LowLevel
 #endif
 
 #ifdef h386LowLevel
-#include <asm/io.h>
+ /* GLibC 2.1.3 defines it in sys/io.h, which is already included, and doesn't
+    check for collisions :-( */
+ #ifndef outb
+  #include <asm/io.h>
+ #endif
 
 static inline
 unsigned char I(unsigned char i)
