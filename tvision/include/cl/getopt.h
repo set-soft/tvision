@@ -76,7 +76,7 @@ extern int optopt;
 
 struct option
 {
-#if	__STDC__ || defined(__TURBOC__) || defined(_MSC_VER)
+#if	__STDC__ || defined(TVComp_BCPP) || defined(TVComp_MSC)
   const char *name;
 #else
   char *name;
@@ -94,8 +94,8 @@ struct option
 #define required_argument	1
 #define optional_argument	2
 
-#if __STDC__ || defined(__TURBOC__) || defined(_MSC_VER)
-#if defined(__GNU_LIBRARY__) || defined(__TURBOC__) || defined(_MSC_VER)
+#if __STDC__ || defined(TVComp_BCPP) || defined(TVComp_MSC)
+#if defined(__GNU_LIBRARY__) || defined(TVComp_BCPP) || defined(TVComp_MSC)
 /* Many other libraries have conflicting prototypes for getopt, with
    differences in the consts, in stdlib.h.  To avoid compilation
    errors, only prototype getopt for the GNU C library.  */

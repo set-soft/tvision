@@ -10,10 +10,16 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef _WIN32
+#ifdef TVOS_Win32
 
 #define Uses_string
+#define Uses_stdlib
+
+#ifdef TVCompf_Cygwin
+#define Uses_unistd
+#endif
 
 #define Uses_TScreen
 #define Uses_TEvent
@@ -282,6 +288,7 @@ void SaveScreenReleaseMemory(void)
 	buffer = NULL;
 }
 
+#ifndef TVCompf_Cygwin
 int TV_System(const char *command, pid_t *pidChild)
 {
   // fork mechanism not implemented, indicate the child finished
@@ -289,6 +296,46 @@ int TV_System(const char *command, pid_t *pidChild)
      *pidChild=0;
   return system(command);
 }
+#else
+// fork mechanism is implemented in Cygwin, so linux code should work -- OH!
+// SET: Call to an external program, optionally forking
+int TV_System(const char *command, pid_t *pidChild)
+{
+ if (!pidChild)
+    return system(command);
+
+ pid_t cpid=fork();
+ if (cpid==0)
+   {// Ok, we are the child
+    //   I'm not sure about it, but is the best I have right now.
+    //   Doing it we can kill this child and all the subprocesses
+    // it creates by killing the group. It also have an interesting
+    // effect that I must evaluate: By doing it this process lose
+    // the controlling terminal and won't be able to read/write
+    // to the parents console. I think that's good.
+    if (setsid()==-1)
+       _exit(127);
+    char *argv[4];
+
+    argv[0]=getenv("SHELL");
+    if (!argv[0])
+       argv[0]="/bin/sh";
+    argv[1]="-c";
+    argv[2]=(char *)command;
+    argv[3]=0;
+    execvp(argv[0],argv);
+    // We get here only if exec failed
+    _exit(127);
+   }
+ if (cpid==-1)
+   {// Fork failed do it manually
+    *pidChild=0;
+    return system(command);
+   }
+ *pidChild=cpid;
+ return 0;
+}
+#endif
 
 /**[txh]********************************************************************
 
@@ -304,5 +351,5 @@ Boolean TScreen::codePageVariable()
 {
  return True;
 }
-#endif // _WIN32
+#endif // TVOS_Win32
 

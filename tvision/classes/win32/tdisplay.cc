@@ -1,7 +1,9 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
 /* Modified by Vadim Beloborodov to be used on WIN32 console */
-#ifdef _WIN32
+#include <tv/configtv.h>
+
+#ifdef TVOS_Win32
 
 #define Uses_TDisplay
 #define Uses_TScreen
@@ -190,4 +192,4 @@ int TDisplay::SetWindowTitle(const char *name)
  return SetConsoleTitle(name);
 }
 
-#endif // _WIN32
+#endif // TVOS_Win32

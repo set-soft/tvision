@@ -10,8 +10,9 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef _WIN32
+#ifdef TVOS_Win32
 
 #include <stdlib.h>
 #define Uses_TEvent
@@ -98,5 +99,5 @@ void THWMouse::getEvent( MouseEventType& me )
 	}
 }
 
-#endif // _WIN32
+#endif // TVOS_Win32
 

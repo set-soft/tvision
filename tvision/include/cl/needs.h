@@ -11,13 +11,13 @@ compiler.@p
 
 #include <tv/configtv.h>
 
-#ifdef __GNUC__
+#ifdef TVComp_GCC
  // GNU c is supported for various OSs:
  
  #define NEEDS_GETCURDIR
  
- // Under Win32 MingW defines it in specs
- #ifdef __MINGW32__
+ // Win32 MinGW
+ #ifdef TVCompf_MinGW
   #define NEEDS_FIXPATH
   #define NEEDS_GLOB
   #define NEEDS_FNMATCH
@@ -26,13 +26,19 @@ compiler.@p
   #define NEEDS_MKSTEMP
  #endif
  
- // Under DOS djgpp defines it
- #ifdef __DJGPP__
+ // Win32 Cygwin
+ #ifdef TVCompf_Cygwin
+  #define NEEDS_FIXPATH
+  #define NEEDS_FILELENGTH
+ #endif
+ 
+ // DOS djgpp
+ #ifdef TVCompf_djgpp
   #define NEEDS_GETOPT
  #endif
  
- // Under Linux defines it
- #ifdef __linux__
+ // Linux
+ #ifdef TVOSf_Linux
   // Strings
   #define NEEDS_STRLWR
   #define NEEDS_STRUPR
@@ -54,7 +60,7 @@ compiler.@p
 
 
 // BC++ 5.5 for Win32 is supported
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
  #define NEEDS_FIXPATH
  #define NEEDS_GLOB
  #define NEEDS_FNMATCH
@@ -72,7 +78,7 @@ compiler.@p
 #define _MSC_VER
 #endif
 
-#ifdef _MSC_VER
+#ifdef TVComp_MSC
  #define NEEDS_GETCURDIR
  #define NEEDS_FIXPATH
  #define NEEDS_GLOB

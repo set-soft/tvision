@@ -1,7 +1,6 @@
 #ifndef __UNISTD_H
 #define __UNISTD_H
 
-#include <dir.h>
 //#define PATH_MAX MAXPATH
 
 #ifndef F_OK
