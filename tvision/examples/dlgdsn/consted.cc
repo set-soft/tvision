@@ -75,9 +75,9 @@ TDialog * ConstInputDlg(TValidator * aValid)
    TInputLine * ip_id = new TInputLine(TRect (10, 2, 48, 3), 50);
    TInputLine * ip_vl = new TInputLine(TRect (10, 3, 17, 4), 5);
    if (aValid) ip_vl->SetValidator(aValid);
-   d->insert(new TLabel( TRect(1, 2, 10, 3), _("~I~dent:"), ip_id ) );
+   d->insert(new TLabel( TRect(1, 2, 10, 3), __("~I~dent:"), ip_id ) );
    d->insert(ip_id);
-   d->insert(new TLabel( TRect(1, 3, 10, 4), _("~V~alue:"), ip_id ) );
+   d->insert(new TLabel( TRect(1, 3, 10, 4), __("~V~alue:"), ip_id ) );
    d->insert(ip_vl);
    d->insert(new TButton( TRect(28, 5, 38, 7), _("~O~k"), cmOK, bfDefault) );
    d->insert(new TButton( TRect(38, 5, 48, 7), _("~C~ancel"), cmCancel, 0) );
@@ -243,10 +243,10 @@ TConstEdit::TConstEdit():
                                                  new TSItem(__("Id"),
                                                  new TSItem(__("Value"), 0))));
    insert(sb);
-   insert(new TLabel( TRect(1, 1, 15, 2), _("~V~alue list:"), List ) );
+   insert(new TLabel( TRect(1, 1, 15, 2), __("~V~alue list:"), List ) );
    insert(LVal);
    insert(List);
-   insert(new TLabel( TRect(1, 13, 12, 14), _("~O~rder by:"), SortRB ) );
+   insert(new TLabel( TRect(1, 13, 12, 14), __("~O~rder by:"), SortRB ) );
    insert(SortRB);
    insert(EditBtn);
    insert(AddBtn);

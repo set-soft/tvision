@@ -7,6 +7,8 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Salvador E. Tropea: added i18n support.
+
  *
  *
  */
@@ -26,13 +28,25 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 
 TStaticText::TStaticText( const TRect& bounds, const char *aText ) :
     TView( bounds ),
-    text( newStr( aText ) )
+    text( newStr( aText ) ),
+    intlText( NULL ),
+    noIntl( 0 )
+{
+}
+
+TStaticText::TStaticText( const TRect& bounds, const char *aText,
+                          stTVIntl *aIntlText ) :
+    TView( bounds ),
+    text( newStr( aText ) ),
+    intlText( aIntlText ),
+    noIntl( 0 )
 {
 }
 
 TStaticText::~TStaticText()
 {
     DeleteArray((char *)text);
+    TVIntl::freeSt( intlText );
 }
 
 void TStaticText::draw()
@@ -98,13 +112,19 @@ TPalette& TStaticText::getPalette() const
     return palette;
 }
 
+const char *TStaticText::getText()
+{
+     return noIntl ? text : TVIntl::getText( text, intlText );
+}
+
 void TStaticText::getText( char *s, int maxLen )
 {
     if( text == 0 )
         *s = EOS;
     else
     {
-        strncpy( s, text, maxLen );
+        const char *iText = getText();
+        strncpy( s, iText, maxLen );
         s[maxLen] = 0;
     }
 }
@@ -120,6 +140,7 @@ void *TStaticText::read( ipstream& is )
 {
     TView::read( is );
     text = is.readString();
+    intlText = NULL;
     return this;
 }
 

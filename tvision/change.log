@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.29  2003/04/07 13:41:05  set
+* Added: Support for the new i18n features to TCluster it affects
+TCheckBoxes and TRadioButtons.
+
 Revision 2.399.2.28  2003/04/07 13:38:19  set
 * Fixed: The dialog design example to use the new API style.
 

@@ -1100,7 +1100,7 @@ Boolean TDDialog::loadFromFile(const char * FileName)
 /* TDLabel ==============================================================*/
 
 TDLabel::TDLabel(const TRect& bounds):
-         TLabel(bounds, _("~L~abel"), EditDlg),
+         TLabel(bounds, __("~L~abel"), EditDlg),
          TDsgObj( vtLabel )
          { setViewData(*((TDsgObjData *)attributes)); }
 

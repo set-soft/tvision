@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Salvador Eduardo Tropea to add more functionality.
+Modified by Salvador Eduardo Tropea to add more functionality + i18n support.
 Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
@@ -54,6 +54,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
 { // SET: Enlarged the window 1 line and added 1 line to the list moving
   // labels 1 line up
     const char *tmp;
+    stTVIntl *intlTmp = NULL;
     options |= ofCentered;
     // SET: Allow it to grow
     growMode = gfGrowAll;
@@ -82,8 +83,8 @@ TFileDialog::TFileDialog( const char *aWildCard,
     insert(fileList=new TFileList(TRect(3,5,34,longNames ? 16 : 15),sb));
     fileList->growMode=gfGrowHiX | gfGrowHiY;
 
-    tmp = _("~F~iles");
-    insert( new TLabel( TRect( 2, 4, 3+cstrlen(tmp), 5 ), tmp, fileList ) );
+    tmp = TVIntl::getText( __("~F~iles"), intlTmp);
+    insert( new TLabel( TRect( 2, 4, 3+cstrlen(tmp), 5 ), tmp, fileList, intlTmp ) );
 
     ushort opt = bfDefault;
     TRect r( 35, 2, 46, 4 );

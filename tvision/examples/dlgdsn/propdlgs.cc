@@ -426,7 +426,7 @@ TItemsEditor::TItemsEditor():
    sb = new TScrollBar(TRect(30, 2, 31, 14));
    List = new TSafeListBox(TRect(2, 2, 30, 14), 1, sb);
    insert(sb);
-   insert(new TLabel( TRect(1, 1, 15, 2), _("~I~tems list:"), List ) );
+   insert(new TLabel( TRect(1, 1, 15, 2), __("~I~tems list:"), List ) );
    insert(List);
    insert( new TButton(TRect(31, 2, 43, 4), _("~O~k"), cmOK, 0 ) );
    insert( new TButton(TRect(31, 4, 43, 6), _("~C~ancel"), cmCancel, 0 ) );
