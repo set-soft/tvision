@@ -35,7 +35,7 @@ TMenuBar *TMyApp::initMenuBar( TRect r )
          *new TMenuItem("~O~pen",200,kbF3,hcNoContext,"F3")+
          *new TMenuItem("~N~ew", 200,kbF4,hcNoContext,"F4")+
          newLine()+
-         *new TMenuItem("E~x~it",cmQuit,cmQuit,hcNoContext,"Alt-X")+
+         *new TMenuItem("E~x~it",cmQuit,kbAltX,hcNoContext,"Alt-X")+
      *new TSubMenu("~W~indow", kbAltW )+
          *new TMenuItem("~N~ext",cmNext,kbF6,hcNoContext,"F6")+
          *new TMenuItem("~Z~oom",cmZoom,kbF5,hcNoContext,"F5")
