@@ -13,7 +13,7 @@ $ErrorLog='errormsg.txt';
 # I never tested with an older version, you can try reducing it.
 $GPMVersionNeeded='1.13';
 # I never tested with an older version, you can try reducing it.
-$NCursesVersionNeeded='3.4';
+$NCursesVersionNeeded='1.9.9';
 # Adds some nice stuff to define key sequences.
 $NCursesVersionRecomended='4.2';
 $DJGPPVersionNeeded='2.0.2';
@@ -37,12 +37,19 @@ if ($OS eq 'linux')
   {
    LookForGPM($GPMVersionNeeded);
    LookForNCurses($NCursesVersionNeeded,$NCursesVersionRecomended);
+   LookForKeysyms();
   }
 LookForIntlSupport();
 LookForPrefix();
 
+print "\n";
 GenerateMakefile();
-print "Succesful configuration!\n";
+ModifyMakefiles('linux/Makefile','djgpp/makefile','examples/common.env');
+CreateRHIDEenvs('linux/rhide.env','djgpp/rhide.env');
+CreateConfigH();
+
+print "\nSuccesful configuration!\n\n";
+
 GiveAdvice();
 CreateCache();
 unlink $ErrorLog;
@@ -289,7 +296,8 @@ sub LookForIntlSupport
    }
  $test='
 #include <stdio.h>
-#include <yesintl.h>
+#define FORCE_INTL_SUPPORT
+#include <intl.h>
 int main(void)
 {
  printf("%s\n",_("OK"));
@@ -299,14 +307,44 @@ int main(void)
  if ($test ne "OK\n")
    {
     print "not available or not usable, disabling.\n";
-    `cp include/nointl.h include/intl.h`;
     $conf{'intl'}='no';
    }
  else
    {
     print "yes OK\n";
-    `cp include/yesintl.h include/intl.h`;
     $conf{'intl'}='yes';
+   }
+}
+
+sub LookForKeysyms
+{
+ my $test;
+
+ print 'Looking for X keysyms definitions: ';
+ if (@conf{'HAVE_KEYSYMS'})
+   {
+    print "@conf{'HAVE_KEYSYMS'} (cached)\n";
+    return;
+   }
+ $test='
+#include <stdio.h>
+#include <X11/keysym.h>
+int main(void)
+{
+ if (XK_Return!=0)
+    printf("OK\n");
+ return 0;
+}';
+ $test=RunGCCTest($GCC,'c',$test,'');
+ if ($test eq "OK\n")
+   {
+    $conf{'HAVE_KEYSYMS'}='yes';
+    print " yes OK\n";
+   }
+ else
+   {
+    $conf{'HAVE_KEYSYMS'}='no';
+    print " no, disabling enhanced support for Eterm 0.8.10+\n";
    }
 }
 
@@ -389,6 +427,11 @@ int main(void)
  if (!CompareVersion($test,$vReco))
    {
     print "Warning: $vReco version is recommended\n";
+    $conf{'HAVE_DEFINE_KEY'}=0;
+   }
+ else
+   {
+    $conf{'HAVE_DEFINE_KEY'}=1;
    }
 }
 
@@ -553,6 +596,83 @@ sub GenerateMakefile
  $text=~s/\@install_rule\@/$rep/g;
 
  replace('Makefile',$text);
+}
+
+#
+# It fixes the Makefiles generated from the .gpr files
+#
+sub ModifyMakefiles
+{
+ my $a,$text;
+
+ print 'Configuring makefiles: ';
+ foreach $a (@_)
+   {
+    print "$a ";
+    $text=cat($a);
+    if ($text)
+      {
+       $text=~s/RHIDE_GCC=(.*)\n/RHIDE_GCC=$GCC\n/;
+       $text=~s/RHIDE_GXX=(.*)\n/RHIDE_GXX=$GXX\n/;
+       $text=~s/RHIDE_LD=(.*)\n/RHIDE_LD=$GXX\n/;
+       replace($a,$text);
+      }
+   }
+ print "\n";
+}
+
+#
+# It creates the needed rhide.env files to configure RHIDE in case the user
+# wants to use RHIDE after configuring.
+#
+sub CreateRHIDEenvs
+{
+ my $a,$text;
+
+ print 'Configuring RHIDE: ';
+ foreach $a (@_)
+   {
+    print "$a ";
+    $text ='';
+    $text.="RHIDE_GCC=$GCC\n" unless ($GCC eq 'gcc');
+    $text.="RHIDE_GXX=$GXX\n" unless ($GXX eq 'gcc');
+    $text.="RHIDE_LD=$GXX\n"  unless ($GXX eq 'gcc');
+    if ($text)
+      {
+       replace($a,$text);
+      }
+    else
+      {
+       unlink $a;
+      }
+   }
+ print "\n";
+}
+
+sub CreateConfigH
+{
+ my $text="/* Generated automatically by the configure script */";
+
+ print "Generating configuration header\n";
+
+ $text.="\n\n/* ncurses 4.2 or better have define_key */\n";
+ $text.='/*' unless (@conf{'HAVE_DEFINE_KEY'});
+ $text.="#define HAVE_DEFINE_KEY";
+ $text.='*/' unless (@conf{'HAVE_DEFINE_KEY'});
+
+ $text.="\n\n/* The X11 keysyms are there */\n";
+ $text.='/*' unless (@conf{'HAVE_KEYSYMS'} eq 'yes');
+ $text.="#define HAVE_KEYSYMS";
+ $text.='*/' unless (@conf{'HAVE_KEYSYMS'} eq 'yes');
+
+ $text.="\n\n/* International support with gettext */\n";
+ $text.='/*' unless (@conf{'intl'} eq 'yes');
+ $text.="#define HAVE_INTL_SUPPORT";
+ $text.='*/' unless (@conf{'intl'} eq 'yes');
+
+ $text.="\n";
+
+ replace('include/configtv.h',$text);
 }
 
 sub cat
