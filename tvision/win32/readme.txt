@@ -4,7 +4,10 @@ the Win32 family members (98, 2000, etc.).
 
   The Win32 version port was contributed by Vadim Beloborodov.
   After some adjustments (with the help of Ronald Landheer) we are getting it
-working for Cygwin also.
+working for Cygwin also. In version 2.0 things changed a lot, internally, and
+I had to make a lot of changes in the code. I also added some new members
+taking a look at a Win32 API reference. I must admit the API is clean and
+simple and the 2.0 code is quite compact and simple.
 
 * What compilers are supported?
 
@@ -18,7 +21,7 @@ ones. Also note that Vadim wrote the MSVC make file with GNU tools in mind
 (he used rm instead of just del ;-). I'll sugest you to first try compiling
 with MinGW and after it (you'll get a working makefile and GNU tools) try
 with MSVC.
-  If you are looking for a Borland C++ port take a look to the
+  If you are looking for a Borland C++ port take a look at the
 ../winnt/readme.txt file.
 
 * Why this target have special instructions and isn't explained in the main
@@ -29,13 +32,14 @@ think the port is very stable and functional, but some details remains to be
 solved.
   If you will use Cygwin you can just follow the regular compilation
 instructions. Basically go to ../ and run ./configure then just run make.
-Note you need perl, fileutils, a generic shell in called /bin/sh (could be a
+Note you need perl, fileutils, a generic shell called /bin/sh (could be a
 link to bash) and make installed.
   The main problem is with MinGW and MSVC, they lack most of the interesting
 GNU tools used for the configuration process. The configuration process uses
 uname to find the name of the OS, cp, rm, mv and install to work with files
 and perl to run the scripts. Of course MSVC lacks it and lamentably MinGW
-does it too.
+does it too. Some user told me recent versions of MinGW have the tools but I
+didn't have time to check it.
   To run the configuration process you need:
 
 1) MinGW.

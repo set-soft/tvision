@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.61  2002/05/13 13:03:35  set
+* Modified: [UNIX] Now the FHS detection is more strict, the existance of
+share/doc is not enough, share/man and shared/info must exist.
+* Fixed: [UNIX] The FHS detection looks in $prefix and not in /usr.
+
 Revision 2.60  2002/05/10 18:52:23  set
 * Fixed: [UNIX] makemak.pl assumed perl is installed in /usr/bin/perl, it
 doesn't have to be true. Now the makefile uses: "perl makemak.pl".

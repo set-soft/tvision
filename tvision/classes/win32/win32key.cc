@@ -22,11 +22,16 @@ here an events handler with a queue.
 #define Uses_TKeys
 #define Uses_TKeys_Extended
 #define Uses_ctype
+#define Uses_TDisplay
+#define Uses_TScreen
 #include <tv.h>
 #include <string.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+
+#include <tv/win32/screen.h>
+#include <tv/win32/key.h>
 
 KeyDownEvent    *TGKeyWin32::evKeyboardIn;
 KeyDownEvent    *TGKeyWin32::evKeyboardOut;
@@ -56,7 +61,7 @@ int TGKeyWin32::KbHit(void)
  return evKeyboardLength>0;
 }
 
-void TGKeyWin32::fillTEvent(TEvent &e)
+void TGKeyWin32::FillTEvent(TEvent &e)
 {
  getConsoleKeyboardEvent(e.keyDown);
  e.what=evKeyDown;
@@ -413,7 +418,7 @@ void TGKeyWin32::HandleKeyEvent()
 {
  INPUT_RECORD ir;
  DWORD dwRead;
- PeekConsoleInput(hIn,&ir,1,&dwRead);
+ PeekConsoleInput(TScreenWin32::hIn,&ir,1,&dwRead);
  if ((dwRead==1) && (ir.EventType==KEY_EVENT))
    {
     if (ir.Event.KeyEvent.bKeyDown)
@@ -424,13 +429,13 @@ void TGKeyWin32::HandleKeyEvent()
            strchr(testChars,ir.Event.KeyEvent.uChar.AsciiChar))
          {
           uchar chr;
-          ReadConsole(hIn,&chr,1,&dwRead,NULL);
+          ReadConsole(TScreenWin32::hIn,&chr,1,&dwRead,NULL);
           ir.Event.KeyEvent.uChar.AsciiChar=chr;
           dwRead=0;
          }
        else
          {
-          ReadConsoleInput(hIn,&ir,1,&dwRead);
+          ReadConsoleInput(TScreenWin32::hIn,&ir,1,&dwRead);
           dwRead = 0;
          }
        //translate event
@@ -441,7 +446,7 @@ void TGKeyWin32::HandleKeyEvent()
     ProcessControlKeyState(&ir);
    }
  if (dwRead==1)
-    ReadConsoleInput(hIn,&ir,1,&dwRead);
+    ReadConsoleInput(TScreenWin32::hIn,&ir,1,&dwRead);
 }
 
 void TGKeyWin32::ProcessControlKeyState(INPUT_RECORD *ir)
