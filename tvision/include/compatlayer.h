@@ -1894,6 +1894,22 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #include <cl/utime.h>
 #endif
 
+#if defined(Uses_allegro) && defined(HAVE_ALLEGRO)
+ // Currently a trivial condition
+ #undef  Include_allegro
+ #define Include_allegro 1
+#endif
+
+#if defined(Include_allegro)
+ #if !defined(Included_allegro)
+  #define Included_allegro 1
+  #include <allegro.h>
+ #endif
+#else
+ #undef  END_OF_MAIN
+ #define END_OF_MAIN()
+#endif
+
 #if defined(Include_strstream) && !defined(Included_strstream)
  #define Included_strstream 1
  #include <strstream.h>
