@@ -29,6 +29,9 @@ foreach $i (@ARGV)
   }
 
 # Update the makefile if needed
+$here=`pwd`;
+chop $here;
+$here=~s/djgpp//;
 print 'makefile: ';
 if (-M 'makefile' > -M 'librhtv.gpr')
   {# This fixes some details:
