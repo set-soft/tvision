@@ -1,4 +1,14 @@
 $Log$
+Revision 2.132  2002/06/06 19:32:05  set
+* Fixed: The gcc 3.1 standard C++ streams doesn't define a public methode
+to open a stream from a C stream/file handle. It wasn't this way in 3.0 and
+3.1 pre-releases (which were supposed to be ISO C++ compliant). To overcome
+this problem I wrote a wrapper for std::filebuf. That's ultra compiler
+version specific and I don't know how many time will be supported. This
+idea was suggested by Andris. The modifications are small, but implied some
+work to understand how stdc++ works. BTW: stdc++ itself needs a similar
+trick for cout/cin associated with stdout/stdin ...
+
 Revision 2.131  2002/06/05 20:24:51  set
 * Fixed: The tutorial number 16 didn't initialize the data for one of the
 input line examples producing random garbage. Reported by Mike.
@@ -314,7 +324,7 @@ Revision 2.66  2002/05/14 20:17:30  set
 * Modified: Now x11 headers are in the include/tv/x11 directory. Reported
 by miniEleph.
 
-Revision 2.65  2002/05/13 19:30:23  set
+Revision 2.65  2002/05/13 19:30:22  set
 * Modified: The intl/dummy/Makefile didn't define CC and GNU make used cc.
 
 Revision 2.64  2002/05/13 15:26:49  set

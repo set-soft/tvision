@@ -14,6 +14,7 @@ examples/sdlg2/test.mak
 examples/tcombo/test.mak
 examples/terminal/test.mak
 examples/tprogb/test.mak
+examples/tvhc/tvhc.mak
 examples/tutorial/tvguid01.mak
 examples/tutorial/tvguid02.mak
 examples/tutorial/tvguid03.mak
@@ -33,3 +34,4 @@ examples/tutorial/tvguid16.mak
 examples/tvedit/tvedit.mak
 linux/Makefile
 linuxso/makemak.pl
+win32/rhide.env

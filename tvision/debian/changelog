@@ -1,3 +1,12 @@
+rhtvision (2.0.0-0.2) unstable; urgency=low
+
+  * New alpha from CVS dated 5 Jun 2002.
+  * Backup examples/tvhc/tvhc.mak.
+  * Don't remove win32/rhide.env but instead backup it.
+  * Don't remove winnt/Makefile.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Thu,  6 Jun 2002 15:47:59 -0300
+
 rhtvision (2.0.0-0.1) unstable; urgency=low
 
   * New alpha upstream release with a lot of changes and improvements,
