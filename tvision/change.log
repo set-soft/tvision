@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.399.2.84  2003/05/30 20:00:43  set
+* Modified: Removed recode detection from configure script (no longer used)
+* Added: --real-prefix and --no-libs-here options for cases where the
+lib is installed to a temporal directory and then moved to their final
+destinations as when creating the .debs.
+* Modified: To avoid debug info by default.
+* Updated: readme.txt file.
+* Modified: Debian package stuff to include rhtv-config and use the new
+configuration switches. Also removed recode as dependency.
+
 Revision 2.399.2.83  2003/05/29 18:35:24  set
 * Added: [BC++] Definition of __inline__ as inline in compatlayer.h. This
 will avoid command line definitions.

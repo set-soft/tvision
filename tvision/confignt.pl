@@ -10,12 +10,13 @@ SeeCommandLine();
 
 # 1) Get the list of files used by djgpp version
 $col=14;
-$a=ExtractItemsMak('djgpp/Makefile',$col);
+$a=ExtractItemsImk('makes/librhtv.imk',$col);
+$a.=' '.ExtractItemsImk('compat/compat.imk',$col);
 # 2) Remove djgpp specific things
-$a=~s/vga.cc//;
-$a=~s/vgaregs.c//;
-$a=~s/vgastate.c//;
-$a=~s/vesa.cc//;
+$a=~s/vga.o//;
+$a=~s/vgaregs.o//;
+$a=~s/vgastate.o//;
+$a=~s/vesa.o//;
 # 3) Add BC++ specific
 #$a.=' gkeyw32.cc';
 $b=$a;

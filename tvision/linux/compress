@@ -77,13 +77,13 @@ foreach $i (@files)
   }
 # Add example makefiles
 @files=glob('tvision/examples/*/*.umk');
-$r.=join(' ',@files);
+$r.=' '.join(' ',@files);
 @files=glob('tvision/examples/*/*/*.umk');
-$r.=join(' ',@files);
+$r.=' '.join(' ',@files);
 @files=glob('tvision/examples/*/*.mkf');
-$r.=join(' ',@files);
+$r.=' '.join(' ',@files);
 @files=glob('tvision/examples/*/*/*.mkf');
-$r.=join(' ',@files);
+$r.=' '.join(' ',@files);
 # Sort the list
 @files=split(/ /,$r);
 @files=sort(@files);
