@@ -1,4 +1,19 @@
-$Log$.
+$Log$
+Revision 2.399.2.14  2003/02/21 15:55:15  set
+* Added: Unicode 16 support to TInputLine, now is composed by three
+classes: TInputLineBase (abstract), TInputLine (8 bits) and TInputLineU16
+(16 bits). Some stuff needs solutions and is marked with TODO.
+* Added: Unicode<->Input Code Page conversions to TVCodePage.
+* Added: 16 bits strings read & write members to i/opstream.
+* Added: An optional argument to moveStr to limit the size of the copy. It
+avoided the use of a temporal buffer in TInputLine::draw.
+* Added: "inputMode" to TGKey, like drawingMode. To know if the driver is
+using Unicode or not.
+* Added: fillCharCode member to ensure we get Unicode in the TEvent (even
+when running in 8 bits mode).
+* Added: [X11] Unicode 16 support using the new stuff in TGKey.
+* Added: TInputLine demonstration to UTF-8 example, seems to work.
+
 Revision 2.399.2.13  2003/02/19 13:52:12  set
 * Added: [X11] now the keyboard driver reports the Unicode16 of the key.
 * Modified: A lot of internal details in TInputLine in order to reduce the

@@ -63,13 +63,13 @@ unsigned strlen16(const uint16 *s)
 
 TInputLineBase::TInputLineBase(const TRect& bounds, int aMaxLen) :
     TView(bounds),
-    maxLen(aMaxLen-1 ),
     curPos(0),
     firstPos(0),
     selStart(0),
     selEnd(0),
-    dataLen(0),
-    validator(NULL)
+    validator(NULL),
+    maxLen(aMaxLen-1),
+    dataLen(0)
 {
  state|=sfCursorVis;
  options|=ofSelectable | ofFirstClick;
@@ -130,7 +130,7 @@ void TInputLine::draw()
 {
  int l, r;
  TDrawBuffer b;
- 
+
  uchar color=(state & sfFocused) ? getColor(2) : getColor(1);
  
  b.moveChar(0,' ',color,size.x);
@@ -507,6 +507,9 @@ void TInputLineBase::handleEvent(TEvent& event)
 void TInputLineBase::selectAll( Boolean enable )
 {
  selStart=0;
+ // This is here just for compatibility purposes
+ dataLen=strlen(data);
+ 
  if (enable)
     curPos=selEnd=dataLen;
  else
@@ -519,7 +522,7 @@ void TInputLineBase::selectAll( Boolean enable )
 
 void TInputLine::setData(void *rec)
 {
- uint32 ds=dataSize()-1;
+ unsigned ds=dataSize()-1;
  memcpy(data,rec,ds);
  data[ds]=EOS;
  dataLen =strlen(data);
@@ -533,6 +536,26 @@ void TInputLineU16::setData(void *rec)
  *((uint16 *)(data+ds))=EOS;
  dataLen=strlen16(data16);
  selectAll(True);
+}
+
+void TInputLine::setDataFromStr(void *str)
+{
+ unsigned ds=dataSize()-1, i;
+ char *s=(char *)str;
+ for (i=0; i<ds && *s; i++)
+     data[i]=s[i];
+ data[i]=EOS;
+ dataLen=i;
+}
+
+void TInputLineU16::setDataFromStr(void *str)
+{
+ unsigned ds=(dataSize()-1)/2, i;
+ uint16 *s=(uint16 *)str;
+ for (i=0; i<ds && *s; i++)
+     data16[i]=s[i];
+ data16[i]=EOS;
+ dataLen=i;
 }
 
 void TInputLineBase::setState(ushort aState, Boolean enable)

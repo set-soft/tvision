@@ -682,6 +682,7 @@ names/nframe.cc
 names/ngroup.cc
 names/nhistory.cc
 names/nindicat.cc
+names/ninput16.cc
 names/ninputli.cc
 names/nlabel.cc
 names/nlistbox.cc
@@ -741,6 +742,7 @@ stream/sframe.cc
 stream/sgroup.cc
 stream/shistory.cc
 stream/sindicat.cc
+stream/sinput16.cc
 stream/sinputli.cc
 stream/slabel.cc
 stream/slistbox.cc

@@ -61,7 +61,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
     strcpy( wildCard, aWildCard );
 
     fileName = new TFileInputLine( TRect( 3, 2, 31, 3 ), PATH_MAX );
-    strcpy( fileName->data, wildCard );
+    fileName->setDataFromStr( wildCard );
     fileName->growMode=gfGrowHiX;
     insert( fileName );
 
@@ -172,12 +172,13 @@ static void trim( char *dest, const char *src )
 void TFileDialog::getFileName( char *s )
 {
   char buf[PATH_MAX];
+  const char *file=(const char *)fileName->getData();
 
-  trim( buf, fileName->data );
+  trim( buf, file );
   if ( CLY_IsRelativePath( buf ) )
   {
     strcpy( buf, directory );
-    trim( buf + strlen(buf), fileName->data );
+    trim( buf + strlen(buf), file );
   }
   CLY_fexpand( buf );
   strcpy( s, buf );
