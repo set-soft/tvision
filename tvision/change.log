@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.99  2003/06/17 12:43:33  set
+* Added: A script to generate the RPMs in an easy way.
+
 Revision 2.399.2.98  2003/06/13 20:40:30  set
 * Added: Files and instructions to create RPMs. They are bbcat's .spec
 files with some additions and corrections. Things I'm not sure they will
