@@ -1,4 +1,8 @@
 $Log$
+Revision 1.4  1999/01/09 17:29:09  set
+Changed compress.bat for a Perl script that generates the manifest and
+version djgpp files and compress the files in the djgpp fashion. Asked by DJ.
+.
 Revision 1.3  1999/01/09 17:24:58  set
 Modifications from Linux version.
 .

@@ -83,6 +83,15 @@ debug information.
 
 
 
+Examples:
+---------
+
+  I included a collection of nine examples I got from the net and ported to
+this TVision. The examples are shipped only with the sources distribution.
+
+
+
+
 How to submit a patch:
 ---------------------
 

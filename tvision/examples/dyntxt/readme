@@ -1,0 +1,54 @@
+Dynamic Text Demonstration
+Copyright (C) 1992 by James H. Price, all rights reserved
+
+Introduction
+
+  This program implements a "dynamic text" class.
+
+  The demo consists of the following files:
+
+    DYNTEXT.H                    Header file for DynamicText
+    DYNTEXT.CPP                  Member functions for HintStatusLine
+    TESTDYN.CPP                  A simple TurboVision demo program
+    TESTDYN.PRJ                  Project file for the demo
+    README                       This file
+
+
+Operation:
+
+DynamicText is a simple descendent of TView.  In my current app, I
+use it primarily to display totals under a column of input lines,
+with the totals updated on the fly as the user inputs data.
+
+A couple of notes on its use:
+
+1.  It has an optional "right justify" flag.  If set to True (the
+default), the text will be drawn at the right edge of the view;
+otherwise it's drawn at the left edge.
+
+2.  Unlike TStaticText, it has getData() and setData functions, so if
+you use it in a TDialog (the expected case) you'll need to add a
+field for it in any structure you pass to the dialog via
+TDialog::getData() and TDialog::setData.
+
+3.  It has a simple draw function: no centering, no wrapping across
+multiple lines, etc, the way TStaticText does.
+
+4.  Note that the length of the text string is set by the value
+passed in the TRect parameter.  If the string passed is larger than
+the TRect width, the string is truncated.
+
+Other:
+
+I'll be happy to answer questions about the program, but I don't
+intend to really 'support' it.  Extending and/or maintaining the code
+is left as an exercise for the user!
+
+Any rights which Borland may have to TurboVision-based code remain in
+force.  Otherwise, feel free to use this code as you see fit.  I'm
+reasonably certain that it works as described, but of course, you use
+it at your own risk.  If you distribute this as source code, please
+include this file.
+
+Jim Price  76264,3534
+21 Sept 92
