@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.257  2002/08/13 13:49:47  set
+* Fixed: I forgot to include the videomode example in the distribution list
+
 Revision 2.256  2002/08/13 13:37:48  set
 * Fixed: The TDrawBuffer patch tested in the wrong order generating more
 problems than the avoided =-P

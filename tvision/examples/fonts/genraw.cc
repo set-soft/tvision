@@ -66,7 +66,8 @@ void WriteHeader(uchar *data, int w, int h, char *name)
 
 int main(int argc, char *argv[])
 {
- new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
+ new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
+                TVCodePage::ISOLatin1Linux);
 
  if (argc<2 || argc>3)
    {
