@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.171  2002/06/24 15:04:07  set
+* Modified: Removed linuxso/Makefile and linuxso/compat.mak, they are
+created by Perl scripts and UNIX targets should have Perl anyways.
+
 Revision 2.170  2002/06/24 15:02:54  set
 * Fixed: [BC++] details to cleanly compile with BC++ 5.5.
 
