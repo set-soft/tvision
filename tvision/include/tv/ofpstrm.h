@@ -34,7 +34,7 @@ public:
     ofpstream();
     ofpstream( const char *,
                       int = ios::out,
-                      int = filebuf::openprot
+                      int = FILEBUF_OPENPROT
                     );
     ofpstream( int );
     ofpstream( int, char *, int );
@@ -43,7 +43,7 @@ public:
     filebuf * rdbuf();
     void open( const char *,
                       int = ios::out,
-                      int = filebuf::openprot
+                      int = FILEBUF_OPENPROT
                     );
 
 };

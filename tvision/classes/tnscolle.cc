@@ -12,7 +12,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
+#define Uses_string
+#include <stdlib.h>      // abort()
 
 #ifdef _MSC_VER
 #include <process.h> //abort()

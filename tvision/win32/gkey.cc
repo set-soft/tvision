@@ -59,8 +59,8 @@ takes only 400 bytes of memory.
 #define Uses_TGKey
 #define Uses_TKeys
 #define Uses_TKeys_Extended
+#define Uses_ctype
 #include <tv.h>
-#include <ctype.h>
 #include <string.h>
 
 int TGKey::useBIOS=0;

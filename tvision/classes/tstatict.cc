@@ -13,12 +13,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <ctype.h>
-#include <string.h>
-
-#ifdef _MSC_VER
-#include <malloc.h> //alloca()
-#endif
-
+#define Uses_string
+#define Uses_alloca
 #define Uses_TStaticText
 #define Uses_TDrawBuffer
 #define Uses_opstream
@@ -36,7 +32,7 @@ TStaticText::TStaticText( const TRect& bounds, const char *aText ) :
 
 TStaticText::~TStaticText()
 {
-    DeleteArray(text);
+    DeleteArray((char *)text);
 }
 
 void TStaticText::draw()

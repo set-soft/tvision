@@ -13,15 +13,14 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <assert.h>
-#include <string.h>
-
-
+#define Uses_string
 #define Uses_TStreamable
 #define Uses_TStreamableClass
 #define Uses_TStreamableTypes
 #define Uses_pstream
 #define Uses_ipstream
 #define Uses_TPReadObjects
+#define Uses_PubStreamBuf
 #include <tv.h>
 
 ipstream::ipstream( streambuf *sb )
@@ -38,13 +37,13 @@ ipstream::~ipstream()
 
 streampos ipstream::tellg()
 {
-    return bp->seekoff( 0, ios::cur, ios::in );
+    return bp->PubSeekOff( 0, ios::cur, ios::in );
 }
 
 ipstream& ipstream::seekg( streampos pos )
 {
     objs->removeAll();
-    bp->seekoff( pos, ios::beg );
+    bp->PubSeekOff( pos, ios::beg );
     clear(); //is added by V.Bugrov for clear eof bit
     return *this;
 }
@@ -52,7 +51,7 @@ ipstream& ipstream::seekg( streampos pos )
 ipstream& ipstream::seekg( streamoff off, ios::seek_dir dir )
 {
     objs->removeAll();
-    bp->seekoff( off, dir );
+    bp->PubSeekOff( off, dir );
     clear(); //is added by V.Bugrov for clear eof bit
     return *this;
 }

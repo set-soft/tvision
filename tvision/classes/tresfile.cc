@@ -14,6 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TResourceFile
 #define Uses_TResourceItem
 #define Uses_fpstream
+#define Uses_filelength
 #define Uses_TCollection
 #define Uses_TStringCollection
 #define Uses_TResourceCollection
@@ -133,7 +134,7 @@ void TResourceFile::flush()
     {
         stream->seekg(basePos + indexPos, ios::beg);
         *stream << index;
-        lenRez =  stream->tellp() - basePos -  sizeof(long) * 2;
+        lenRez =  stream->tellp() - basePos -  long(sizeof(long) * 2);
         stream->seekg(basePos, ios::beg);
         *stream << rStreamMagic;
         *stream << lenRez;

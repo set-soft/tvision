@@ -12,9 +12,8 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <ctype.h>
-#include <string.h>
-
+#define Uses_ctype
+#define Uses_string
 #define Uses_TKeys
 #define Uses_TInputLine
 #define Uses_TDrawBuffer
@@ -30,7 +29,7 @@ const int CONTROL_Y = 25;
 
 char hotKey( const char *s )
 {
-    char *p;
+    const char *p;
 
     if( (p = strchr( s, '~' )) != 0 )
         return uctoupper(p[1]);

@@ -21,7 +21,7 @@ a TView object (TInterior) to be inserted in the window. The TInterior::draw
 member is the one that draws the message you see inside the window.
 */
 
-#include <stdlib.h>               // for random()
+#include <stdlib.h>               // for rand()
 
 #define Uses_TEventQueue
 #define Uses_TEvent
@@ -154,8 +154,7 @@ void TMyApp::myNewWindow()
 
     /* SS: micro change here */
 
-//    r.move( random(53), random(16) );   // randomly move around screen
-    r.move( random() % 53, random() % 16 );   // randomly move around screen
+    r.move( rand() % 53, rand() % 16 );   // randomly move around screen
     TDemoWindow *window = new TDemoWindow ( r, "Demo Window", ++winNumber);
     deskTop->insert(window);    // put window into desktop and draw it
 }

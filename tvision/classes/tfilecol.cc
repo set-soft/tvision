@@ -10,10 +10,11 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <tv/configtv.h>
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
-#ifdef __DJGPP__
+#define Uses_string
+#if defined(TVOSf_djgpp) || defined(__TURBOC__)
 #include <dos.h>
 #include <dir.h>
 #endif

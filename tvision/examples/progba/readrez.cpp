@@ -21,7 +21,7 @@
 #define Uses_TStreamableClass
 #define Uses_TResourceCollection
 #define Uses_TResourceFile
-
+#define Uses_string
 #define Uses_fpstream
 
 #include <tv.h>
@@ -35,7 +35,6 @@ __link(RButton);
 __link(RCluster);
 __link(RProgressBar);
 
-#include <string.h>
 #include <stdlib.h>
 
 const char rezFileName[] = "MY.REZ";

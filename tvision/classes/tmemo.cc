@@ -12,7 +12,7 @@ the size of the memo structure because the old code uses 4Gb ;-)
 
 *****************************************************************************/
 
-#include <string.h>
+#define Uses_string
 
 #define Uses_TKeys
 #define Uses_TEditor
@@ -87,7 +87,7 @@ void *TMemo::read( ipstream& is )
         setBufLen( length );
         }
     else
-        is.seekg( is.tellg() + length );
+        is.seekg( is.tellg() + long(length) );
     return this;
 }
 

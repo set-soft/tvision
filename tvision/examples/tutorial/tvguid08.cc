@@ -22,11 +22,11 @@ UNIX.
 // same as tvguid07 except for scrolling interior
 // add TDemoWindow::makeInterior
 
-#include <stdlib.h>             // for exit(), random()
+#include <stdlib.h>             // for exit(), rand()
 #include <iostream.h>
 #include <fstream.h>            // for ifstream
 #include <stdio.h>              // for puts() etc
-#include <string.h>             // for strlen etc
+#define Uses_string             // for strlen etc
 #include <ctype.h>
 
 #define Uses_TEventQueue
@@ -227,8 +227,7 @@ void TMyApp::myNewWindow()
 
     /* SS: micro change here */
 
-    //r.move( random(53), random(16) ); // randomly move around screen
-    r.move( random() % 53, random() % 16 ); // randomly move around screen
+    r.move( rand() % 53, rand() % 16 ); // randomly move around screen
     TDemoWindow *window = new TDemoWindow ( r, "Demo Window", ++winNumber);
     deskTop->insert(window);    // put window into desktop and draw it
 }

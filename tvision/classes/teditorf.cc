@@ -33,7 +33,7 @@ do {\
   offset++;\
 } while (0)
 
-Boolean call10(const TEditor *edit,ushort far * drawBuf,ushort color,int cx,
+Boolean call10(const TEditor *edit,ushort *drawBuf,ushort color,int cx,
   int &offset, unsigned &lineptr,int &bufptr,int Width)
 {
   uchar c;
@@ -99,6 +99,6 @@ void TEditor::formatLine( void *DrawBuf,
   CALL;
   count = Width-offset;
   if (count<=offset) return;
-  while (count--) ((ushort far *)(DrawBuf))[bufptr++] = (color << 8) | ' ';
+  while (count--) ((ushort *)(DrawBuf))[bufptr++] = (color << 8) | ' ';
 }
 

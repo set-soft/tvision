@@ -13,9 +13,15 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #define Uses_pstream
 #define Uses_fpbase
+#define Uses_PubStreamBuf
 #include <tv.h>
 
 fpbase::fpbase()
+{
+    pstream::init( &buf );
+}
+
+fpbase::fpbase( int f ) : buf( f )
 {
     pstream::init( &buf );
 }
@@ -26,15 +32,44 @@ fpbase::fpbase( const char *name, int omode, int prot )
     open( name, omode, prot );
 }
 
-fpbase::fpbase( int f ) : buf( f )
+#ifdef __TURBOC__
+fpbase::fpbase( int f, char *b, int len ) : buf( f )
 {
+    buf.PubSetBuf(b, len);
     pstream::init( &buf );
 }
 
+void fpbase::setbuf(char* b, int len)
+{
+    if( buf.PubSetBuf(b, len) )
+        clear(ios::goodbit);
+    else
+        setstate(ios::failbit);
+}
+#else
 fpbase::fpbase( int f, char *b, int len ) : buf( f, b, len )
 {
     pstream::init( &buf );
 }
+
+void fpbase::setbuf(char* b, int len)
+{
+    if( buf.setbuf(b, len) )
+        clear(ios::goodbit);
+    else
+        setstate(ios::failbit);
+}
+
+void fpbase::attach( int f )
+{
+    if( buf.is_open() )
+        setstate(ios::failbit);
+    else if( buf.attach(f) )
+        clear(ios::goodbit);
+    else
+        clear(ios::badbit);
+}
+#endif
 
 fpbase::~fpbase()
 {
@@ -50,27 +85,9 @@ void fpbase::open( const char *b, int m, int prot )
         clear(ios::badbit);     // open failed
 }
 
-void fpbase::attach( int f )
-{
-    if( buf.is_open() )
-        setstate(ios::failbit);
-    else if( buf.attach(f) )
-        clear(ios::goodbit);
-    else
-        clear(ios::badbit);
-}
-
 void fpbase::close()
 {
     if( buf.close() )
-        clear(ios::goodbit);
-    else
-        setstate(ios::failbit);
-}
-
-void fpbase::setbuf(char* b, int len)
-{
-    if( buf.setbuf(b, len) )
         clear(ios::goodbit);
     else
         setstate(ios::failbit);

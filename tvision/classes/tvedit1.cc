@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 #include <stdarg.h>
-#include <string.h> //strcpy()
+#define Uses_string //strcpy()
 //#include <strstrea.h>
 #include <iomanip.h>
 

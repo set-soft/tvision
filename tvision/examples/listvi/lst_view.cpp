@@ -5,9 +5,9 @@
 //  revised November 27,1993
 //  C.Porter
 // ***********************************************************************
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#define Uses_string
 #define Uses_TListViewer
 #define Uses_TListBox
 #define Uses_TEvent

@@ -1,8 +1,10 @@
 # Makefile for gcc-2.95.2 (mingw32)
 CFLAGS=-O2 -Wall -Werror -gstabs+3
 CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -fno-exceptions -fno-rtti
+CC=gcc
 
-vpath %.cc ../names ../stream ./ ../ ../classes/win32 ../classes ../examples/tutorial ../examples/demo
+vpath %.cc ../names ../stream ./ ../ ../classes/win32 ../classes ../examples/tutorial ../examples/demo ../compat
+vpath %.c ../compat
 vpath %.o ./obj ./obj_demo
 
 OBJS=obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
@@ -45,7 +47,7 @@ OBJS=obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/tfilecol.o obj/tfiledia.o obj/tfileedi.o obj/tfileinf.o\
 	obj/tfileinp.o obj/tfilterv.o obj/tfont.o\
 	obj/tframe.o obj/tgroup.o obj/thistory.o obj/thistvie.o\
-	obj/thistwin.o obj/thwmouse.o obj/ticks.o obj/tindicat.o\
+	obj/thistwin.o obj/thwmouse.o obj/tindicat.o\
 	obj/tinputli.o obj/tlabel.o obj/tlistbox.o obj/tlistvie.o\
 	obj/tmemo.o obj/tmenubar.o obj/tmenubox.o obj/tmenuvie.o\
 	obj/tmonosel.o obj/tmouse.o obj/tnscolle.o obj/tnssorte.o\
@@ -58,8 +60,16 @@ OBJS=obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/tstrlist.o obj/tstrmcla.o obj/tstrmtyp.o obj/tsubmenu.o\
 	obj/ttermina.o obj/ttextdev.o obj/tvalidat.o obj/tvedit1.o\
 	obj/tvedit2.o obj/tvedit3.o obj/tview.o obj/tvtext1.o\
-	obj/tvtext2.o obj/twindow.o obj/bc.o obj/gkey.o\
-	obj/tfilelis.o obj/console.o obj/trans.o
+	obj/tvtext2.o obj/twindow.o obj/gkey.o\
+	obj/tfilelis.o obj/console.o obj/trans.o\
+	obj/drivevalid.o obj/expandpath.o obj/fexpand.o obj/fileexists.o\
+	obj/filelength.o obj/fixpath.o obj/fnmatch.o obj/getcurdir.o\
+	obj/getopt.o obj/getopt1.o obj/glob.o obj/globfree.o obj/isdir.o\
+	obj/isrelpath.o obj/iswild.o obj/ntdirent.o obj/pathvalid.o\
+	obj/regex.o obj/releasec.o obj/strlwr.o obj/strupr.o obj/ticks.o\
+	obj/unc.o obj/validfilename.o obj/yieldpro.o obj/beep.o obj/fileattrs.o\
+	obj/mkstemp.o
+   
 
 DEMO_OBJS=./obj_demo/ascii.o ./obj_demo/calendar.o ./obj_demo/fileview.o\
 	./obj_demo/gadgets.o ./obj_demo/help.o ./obj_demo/helpbase.o\
@@ -71,6 +81,9 @@ LDFLAGS=-L./
 
 obj/%.o: %.cc
 	$(COMPILE.cc) -I../include $< $(OUTPUT_OPTION)
+
+obj/%.o: %.c
+	$(COMPILE.c) -I../include $< $(OUTPUT_OPTION)
 
 obj_demo/%.o: %.cc
 	$(COMPILE.cc) -I../include -I../examples/demo $< $(OUTPUT_OPTION)

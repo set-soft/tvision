@@ -20,7 +20,7 @@ UNIX.
 command sent by the menu.
 */
 
-#include <stdlib.h>               // for random()
+#include <stdlib.h>
 
 #define Uses_TEvent
 #define Uses_TApplication
@@ -133,8 +133,7 @@ void TMyApp::myNewWindow()
 
     /* SS: micro change here */
 
-    //r.move( random(53), random(16) ); // randomly move around screen
-    r.move( random() % 53, random() % 16 ); // randomly move around screen
+    r.move( rand() % 53, rand() % 16 ); // randomly move around screen
     TDemoWindow *window = new TDemoWindow ( r, "Demo Window", ++winNumber);
     deskTop->insert(window); // put window into desktop and draw it
 }

@@ -83,16 +83,16 @@ static void save_mouse_state()
 #endif
 }
 
-#ifdef __DJGPP__
+
+/************** Disabled ************/
+#if 0
 static int my_mouse_buffer_segment;
 static int my_mouse_buffer_selector;
 static int my_mouse_buffer_size;
 static int my_mouse_buffer_allocated = 0;
-#endif
 
 static void restore_my_mouse_state()
 {
-#ifdef __DJGPP__
   REGS r;
   if (my_mouse_buffer_allocated)
   {
@@ -102,12 +102,10 @@ static void restore_my_mouse_state()
     DX = 0;
     INTR(0x33,r);
   }
-#endif
 }
 
 static void save_my_mouse_state()
 {
-#ifdef __DJGPP__
   REGS r;
   if (!my_mouse_buffer_allocated)
   {
@@ -128,24 +126,28 @@ static void save_my_mouse_state()
     DX = 0;
     INTR(0x33,r);
   }
-#endif
 }
+#endif /************** Disabled ************/
 
 void TApplication::resume()
 {
-  if (1) save_mouse_state();
+  save_mouse_state();
   TScreen::resume();
   TEventQueue::resume();
-  if (0) restore_my_mouse_state();
+  #if 0
+  restore_my_mouse_state();
+  #endif
   resetIdleTime(); // Don't count this time
 }
 
 void TApplication::suspend()
 {
-  if (0) save_my_mouse_state();
+  #if 0
+  save_my_mouse_state();
+  #endif
   TEventQueue::suspend();
   TScreen::suspend();
-  if (1) restore_mouse_state();
+  restore_mouse_state();
 }
 
 void initHistory();

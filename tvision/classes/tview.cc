@@ -12,12 +12,9 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <string.h>
+#define Uses_string
 #include <stdio.h>
-#ifdef _MSC_VER
-#include <malloc.h> //alloca()
-#endif
-
+#define Uses_alloca
 #define Uses_TKeys
 #define Uses_TKeys_Extended
 #define Uses_TView
@@ -859,8 +856,12 @@ lab5:
   TScreen::SetCursor(dx,ax);
   cx = TScreen::cursorLines;
   if (!(state & sfCursorIns)) goto lab6;
+#if defined(TVOSf_NT)
+  cx = 100;
+#else
   cx &= 0x00ff;
   if (!cx) cx = 7;
+#endif
 lab6:
   TScreen::setCursorType(cx);
 }
@@ -1046,6 +1047,16 @@ void call50()
   }
 }
 
+#if defined(TVOS_Win32) && !defined(TVOSf_NT)
+// SET: Not sure why Vadim wanted it
+#define HideMouse()
+#define ShowMouse()
+#else
+// DOS, Linux and NT (SAA port)
+#define HideMouse()  TMouse::hide()
+#define ShowMouse()  TMouse::show()
+#endif
+
 void _call(int LAB)
 {
   int x;
@@ -1153,13 +1164,9 @@ lab20:
   }
   // the mouse is in the draw area or an event has occoured during
   // the above drawing
-  #ifndef _WIN32
-  TMouse::hide();
-  #endif
+  HideMouse();
   call50();
-  #ifndef _WIN32
-  TMouse::show();
-  #endif
+  ShowMouse();
   if (((TGroup *)(_view))->lockFlag) return;
   goto lab10;
 }

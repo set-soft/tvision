@@ -28,7 +28,7 @@
 #define Uses_TStatusLine
 #define Uses_TPalette
 
-#include <string.h>
+#define Uses_string
 #include <tv.h>
 
 #define   PATTERN 177

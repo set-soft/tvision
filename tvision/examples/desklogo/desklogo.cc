@@ -11,7 +11,7 @@
 //========================================================================
 
 
-#include <string.h>
+#define Uses_string
 
 #define Uses_TApplication
 #define Uses_TBackground

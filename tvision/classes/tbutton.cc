@@ -13,9 +13,8 @@ Added callback, code page stuff and various details by Salvador Eduardo Tropea.
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
-#include <ctype.h>
-#include <string.h>
-
+#define Uses_ctype
+#define Uses_string
 #define Uses_TButton
 #define Uses_TDrawBuffer
 #define Uses_TEvent
@@ -56,7 +55,7 @@ TButton::TButton( const TRect& bounds,
 
 TButton::~TButton()
 {
-    DeleteArray(title); // SET
+    DeleteArray((char *)title); // SET
 }
 
 

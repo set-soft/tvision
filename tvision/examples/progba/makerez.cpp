@@ -25,6 +25,7 @@
 #define Uses_TResourceCollection
 #define Uses_MsgBox
 #define Uses_fpstream
+#define Uses_string
 
 #include <tv.h>
 #include "tprogbar.h"
@@ -38,7 +39,6 @@ __link(RCluster);
 __link(RButton);
 __link(RProgressBar);
 
-#include <string.h>
 #include <stdlib.h>
 
 const char rezFileName[] = "MY.REZ";

@@ -9,8 +9,8 @@
 */
 
 #include <stdio.h>
-#include <string.h>
 
+#define Uses_string
 #define Uses_TProgram
 #define Uses_TApplication
 #define Uses_TRect

@@ -16,8 +16,7 @@ code and adapted it to compile with the new port (01/1999).
 
 *****************************************************************************/
 
-#include <ctype.h>
-
+#define Uses_ctype
 #define Uses_TKeys
 // SET: Needed for the new keyboard symbols
 #define Uses_TKeys_Extended
@@ -118,7 +117,7 @@ const ushort *keyMap[] = { firstKeys, quickKeys, blockKeys };
 
 ushort defEditorDialog( int, ... );
 
-#define KeyMap ((const ushort far *)(keyMap))
+#define KeyMap ((const ushort*)(keyMap))
 
 const ushort kbModMask=~kbKeyMask;
 

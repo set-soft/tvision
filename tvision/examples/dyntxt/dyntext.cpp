@@ -5,8 +5,7 @@
 //    Member functions for DynamicText class
 //
 
-#include <string.h>
-
+#define Uses_string
 #define Uses_TView
 #define Uses_TStreamableClass
 #define Uses_TPalette

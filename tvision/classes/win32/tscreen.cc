@@ -13,7 +13,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 
 #ifdef _WIN32
 
-#include <string.h>
+#define Uses_string
 
 #define Uses_TScreen
 #define Uses_TEvent

@@ -13,8 +13,8 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <assert.h>
-#include <ctype.h>
-#include <string.h>
+#define Uses_ctype
+#define Uses_string
 
 #define Uses_TMenuItem
 #define Uses_TMenu
@@ -70,11 +70,11 @@ TMenuItem::TMenuItem( const char *aName,
 
 TMenuItem::~TMenuItem()
 {
-    DeleteArray(name);
+    DeleteArray((char *)name);
     if( command == 0 )
         delete(subMenu);
     else
-        DeleteArray(param);
+        DeleteArray((char *)param);
 }
 
 TMenu::~TMenu()
@@ -350,7 +350,7 @@ TMenuItem *TMenuView::findItem( char ch )
         {
         if( p->name != 0 && !p->disabled )
             {
-            char *loc = strchr( p->name, '~' );
+            const char *loc = strchr( p->name, '~' );
             if( loc != 0 && TGKey::CompareASCII(ch,uctoupper(loc[1])) )
                 return p;
             }

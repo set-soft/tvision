@@ -11,7 +11,7 @@ CIS: 70662,1523
 -------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#define Uses_string
 
 #define Uses_TProgressBar
 #define Uses_TView

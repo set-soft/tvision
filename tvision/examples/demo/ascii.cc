@@ -18,7 +18,7 @@
  */
 
 // SET: moved the standard headers before tv.h
-#include <string.h>
+#define Uses_string
 #include <stdlib.h>
 #include <ctype.h>
 //#include <strstream.h> SET: These two are only to bloat the code.

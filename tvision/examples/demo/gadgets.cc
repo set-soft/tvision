@@ -20,7 +20,7 @@
  */
 
 // SET: moved the standard headers before tv.h
-#include <string.h>
+#define Uses_string
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
@@ -79,47 +79,6 @@ void THeapView::update()
 long THeapView::heapSize()
 {
 	/* SS: changed */
-#if 0
-//#if !defined( __DPMI32__ )
-//    long total = farcoreleft();
-//#else
-    long total = 0;
-//#endif
-
-#if !defined( __DPMI16__ ) && !defined( __DPMI32__ )
-    struct farheapinfo heap;
-#endif
-
-    ostrstream totalStr( heapStr, sizeof heapStr);
-
-//#if defined( __DPMI32__ )
-//    switch( _HEAPEMPTY )
-//#else
-    switch( heapcheck() )
-//#endif
-        {
-        case _HEAPEMPTY:
-            strcpy(heapStr, "     No heap");
-            total = -1;
-            break;
-
-        case _HEAPCORRUPT:
-            strcpy(heapStr, "Heap corrupt");
-            total = -2;
-            break;
-
-        case _HEAPOK:
-#if !defined( __DPMI16__ ) && !defined( __DPMI32__ )
-            heap.ptr = NULL;
-            while(farheapwalk(&heap) != _HEAPEND)
-                if(!heap.in_use)
-                    total += heap.size;
-#endif
-            totalStr << setw(12) << total << ends;
-            break;
-        }
-    return(total);
-#endif
 	strcpy(heapStr, "Hello world!");
 	return -1;
 }
