@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.470  2003/06/02 15:09:05  set
+* Added: Makefiles for BC++, they doesn't have a main makefile yet, but
+you can compile the library with it. (cd makes; make -f librhtv.bmk).
+* Added: Makefiles for BC++ to most examples. It doesn't mean they work,
+just that they compile. A lot behave strangely or crash at exit. Looking
+for volunteers to fix the problems.
+* Fixed: a lot of portability details in the examples so they can compile
+with BC++.
+
 Revision 2.469  2003/06/02 14:52:38  set
 * Added: Even more checks to imk processor.
 

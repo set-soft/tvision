@@ -132,20 +132,16 @@ if ($OS eq 'UNIX')
    $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
    # Link with installed libraries
    $MakeDefsRHIDE[3].=$realPrefix.'/lib ';
-   # Give more priority to dynamic libs
-   $MakeDefsRHIDE[3].='../../linuxso ';
-   $MakeDefsRHIDE[3].=$here.'/linuxso ' unless $conf{'libs-here'} eq 'no';
-   # Then the static ones
-   $MakeDefsRHIDE[3].='../../linux ';
-   $MakeDefsRHIDE[3].=$here.'/linux ' unless $conf{'libs-here'} eq 'no';
+   $MakeDefsRHIDE[3].='../../makes ';
+   $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
   }
 elsif ($OS eq 'DOS')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
-   $MakeDefsRHIDE[3]='TVOBJ=../../djgpp ';
-   $MakeDefsRHIDE[3].=$here.'/djgpp ' unless $conf{'libs-here'} eq 'no';
+   $MakeDefsRHIDE[3]='TVOBJ=../../makes ';
+   $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
   }
@@ -153,8 +149,8 @@ elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=';
    $MakeDefsRHIDE[2].=' gdi32'; # Needed for WinGr driver
-   $MakeDefsRHIDE[3]='TVOBJ=../../win32 ';
-   $MakeDefsRHIDE[3].=$here.'/win32 ' unless $conf{'libs-here'} eq 'no';
+   $MakeDefsRHIDE[3]='TVOBJ=../../makes ';
+   $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
