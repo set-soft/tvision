@@ -383,6 +383,8 @@ TScreenLinux::TScreenLinux()
  #ifdef HAVE_GPM
  THWMouseGPM::Init();
  #endif
+ // Now we can do it
+ getCursorPos(oldCurX,oldCurY);
 
  if (mode==lnxInitVCSrw || mode==lnxInitVCSwo)
    {// VCS access is assumed to be color
@@ -441,7 +443,10 @@ void TScreenLinux::Suspend()
  else
     // Just reset to default palette (should be equivalent)
     fputs("\E]R",stdout);
+ // Is that a Linux bug? Sometime \E8 works, others not.
  fputs("\E8",stdout);
+ // Restore cursor position
+ SetCursorPos(oldCurX,oldCurY);
  // Ensure the last command is executed
  fflush(stdout);
  // Restore console mode
@@ -488,6 +493,7 @@ void TScreenLinux::Resume()
  tcsetattr(hOut,TCSAFLUSH,&outTermiosNew);
  // Save cursor position, attributes and charset
  fputs("\E7",stdout);
+ GetCursorPos(oldCurX,oldCurY);
  if (tioclinuxOK)
     // We know the default colors, we can just hope they are the currently used
     GetDisPaletteColors(0,16,OriginalPalette);

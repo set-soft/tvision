@@ -60,6 +60,8 @@ protected:
  static void   setUpEnviron();
  // Current cursor position
  static int curX, curY;
+ // Position to restore
+ static unsigned oldCurX, oldCurY;
  // Current cursor shape
  static int cursorStart,cursorEnd;
  // 1 when the size of the window where the program is running changed
