@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea.
 
  *
  *
@@ -61,7 +62,7 @@ TMenuBox::TMenuBox( const TRect& bounds,
                     TMenuView *aParentMenu) :
     TMenuView( getRect( bounds, aMenu ), aMenu, aParentMenu )
 {
-    state |= sfShadow;
+    state |= sfShadow /*| sfCursorVis*/;
     options |= ofPreProcess;
 }
 
@@ -82,7 +83,7 @@ void TMenuBox::draw()
     ushort cSelect = getColor(0x0604);
     ushort cNormDisabled = getColor(0x0202);
     ushort cSelDisabled = getColor(0x0505);
-    short y = 0;
+    int y=0, yCur=-1;
     color =  cNormal;
     frameLine( b, 0 );
     writeBuf( 0, y++, size.x, 1, b );
@@ -92,20 +93,26 @@ void TMenuBox::draw()
             {
             color = cNormal;
             if( p->name == 0 )
-		frameLine( b, 15 );
+                frameLine( b, 15 );
             else
                 {
                 if( p->disabled )
                     if( p ==  current )
+                        {
                         color = cSelDisabled;
+                        yCur = y;
+                        }
                     else
                         color = cNormDisabled;
                 else if( p == current )
+                    {
                     color = cSelect;
+                    yCur = y;
+                    }
                 frameLine( b, 10 );
                 b.moveCStr( 3, p->name, color );
                 if( p->command == 0 )
-		    b.putChar( size.x-4, rightArrow );
+                    b.putChar( size.x-4, rightArrow );
                 else if( p->param != 0 )
                     b.moveStr( size.x-3-strlen(p->param),
                                p->param,
@@ -117,6 +124,13 @@ void TMenuBox::draw()
     color = cNormal;
     frameLine( b, 5 );
     writeBuf( 0, y++, size.x, 1, b );
+    // SET: Force a cursor movement to indicate which one is selected.
+    // Even when the cursor is invisible it could help Braille Terminals.
+    if( yCur != -1 )
+        {
+        setCursor( 4 , yCur );
+        resetCursor();
+        }
 }
 
 TRect TMenuBox::getItemRect( TMenuItem *item )
