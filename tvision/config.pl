@@ -96,7 +96,7 @@ $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
 # be added for things like FreeBSD or SunOS. But not for QNX.
-$MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSf eq 'Linux') || ($OSf eq 'QNXRtP'));
+$MakeDefsRHIDE[2].=substr($stdcxx,2); # unless (($OS eq 'DOS') || ($OSf eq 'Linux') || ($OSf eq 'QNXRtP'));
 $OSUSesIntl=($OS eq 'DOS') || ($OS eq 'Win32') || ($OSf eq 'Darwin');
 if ($OSUSesIntl)
   {
@@ -802,6 +802,7 @@ sub GenerateMakefile
    }
  $internac=@conf{'xgettext'} ne 'no';
  $rep='static-lib';
+ $rep.=' rhtv-config.exe';
  $rep.=' dynamic-lib' if ($OS eq 'UNIX');
  $rep.=' internac' if ($internac);
  $text=~s/\@targets\@/$rep/g;
@@ -833,6 +834,8 @@ sub GenerateMakefile
  $rep.="\tranlib $makeDir/libtvfintl.a\n" if $conf{'UseRanLib'};
  $rep.="\trm -f linuxso/libtvfintl.a\n\tln -s ../intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
  $text=~s/\@intl_dummy_rule\@/$rep/g;
+
+ $text=~s/\@GCC\@/$GCC/g;
 
  # Write install stuff
  # What versions of the library we will install
@@ -950,6 +953,15 @@ sub CreateConfigH
  $text.="#define TVComp_$Comp\n";
  $text.="#define TVCompf_$Compf\n";
  $text.="\n#define MSS\n#include <mss.h>\n" if @conf{'mss'} eq 'yes';
+ $text.="\n";
+ foreach $line (@MakeDefsRHIDE)
+   {
+    if ($line=~/([\w_]*)(\s*)=(\s*)(.*)/)
+      {
+       $text.="#define TVCONFIG_$1 \"$4\"\n";
+      }
+   }
+ $text.="#define TVCONFIG_REF_DIR \"$here\"\n\n";
 
  $old=cat('include/tv/configtv.h');
  if ($text eq $old)

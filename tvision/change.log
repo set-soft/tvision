@@ -1,4 +1,12 @@
-$Log$.
+$Log$
+Revision 2.445  2003/05/15 18:37:08  set
+* Fixed(?): msgfmt (gettext) problems:
+1) It didn't reuse ~Alt-X~ Exit and let it commented. A bug.
+2) The new version included in Red Hat 8.0 says the commented version is
+a duplicate. From my point of view another bug, it can be marked as
+information but never as an error.
+Gettext is climbing to the top of most buggy tools I use.
+
 Revision 2.444  2003/05/15 18:14:03  set
 * Modified: configset to wait for ENTER instead of sleeping 2 seconds. As
 suggested by Ivan.

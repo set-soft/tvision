@@ -723,6 +723,7 @@ newstr.cc
 qnxrtp/tvision.qpg
 readme.in
 readme.txt
+rhtv-config.c
 searchstrs.sh
 stream/sbackgro.cc
 stream/sbutton.cc

@@ -3,7 +3,8 @@ libdir=$(prefix)/lib
 OS=@OS@
 export
 
-.PHONY: @targets@ @installers@ install-headers clean intl-dummy examples
+.PHONY: @targets@ @installers@ install-headers install-config clean \
+	intl-dummy examples
 
 all: @targets@ intl-dummy
 
@@ -14,6 +15,9 @@ all: @targets@ intl-dummy
 examples:
 	make -C examples
 
+rhtv-config.exe: rhtv-config.c include/tv/configtv.h
+	@GCC@ -o rhtv-config.exe -Iinclude rhtv-config.c
+
 install-headers:
 	@install_headers@
 
@@ -21,6 +25,10 @@ install-headers:
 
 @intl_dummy_install_rule@
 
-install: @installers@ install-headers install-intl-dummy
+install-config:
+	install -d -m 0755 $(prefix)/bin
+	install -m 0755 rhtv-config.exe $(prefix)/bin
+
+install: @installers@ install-headers install-intl-dummy install-config
 
 @clean@
