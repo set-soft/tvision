@@ -62,6 +62,14 @@ clean:
 	dh_clean
 
 
+clean-debian:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp install-stamp
+	#I should investigate why here dh_clean isn't called with the -k switch...
+	dh_clean
+
+
 install: install-stamp
 install-stamp: build-stamp
 	dh_testdir
