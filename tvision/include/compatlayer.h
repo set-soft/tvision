@@ -406,8 +406,6 @@ and regex.
   #define Include_cl_dirent
  #endif
  #ifdef Uses_ftell
-  // Why BC++ lacks a function that is ANSI?
-  #define ftell(f) tell(fileno(f))
   #define Include_io
   #define Include_stdio
  #endif
