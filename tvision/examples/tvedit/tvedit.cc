@@ -12,10 +12,12 @@ because you can do an application based on TEditorApp in a few minutes.
 
 #define Uses_TApplication
 #define Uses_TEditorApp
+#define Uses_TScreen
 #include <tv.h>
 
 int main()
 {
+ //TScreen::setShowCursorEver(True);
  TEditorApp *myApp=new TEditorApp();
  if (myApp)
    {

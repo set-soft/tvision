@@ -5,11 +5,15 @@
 #ifndef WIN32MOUSE_HEADER_INCLUDED
 #define WIN32MOUSE_HEADER_INCLUDED
 
+const int eventMouseQSize=300;
+
 class THWMouseWin32 : public THWMouse
 {
 public:
  static void Init();
  static void DeInit();
+
+ friend class TScreenWin32;
 
 protected:
  THWMouseWin32() {};
@@ -30,8 +34,6 @@ protected:
  static unsigned evMouseLength;
  static CRITICAL_SECTION lockMouse;
 };
-
-#define eventMouseQSize 300
 
 #endif // WIN32MOUSE_HEADER_INCLUDED
 

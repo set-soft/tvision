@@ -44,9 +44,14 @@
 #ifdef TVComp_BCPP
 #include <malloc.h>
 #else
+#ifdef TVComp_MSC
+#include <malloc.h>
+#define alloca _alloca
+#else
 #ifndef _AIX
 char *alloca ();
 #endif
+#endif /* MSVC */
 #endif /* TURBOC */
 #endif /* alloca.h */
 #endif /* not TVComp_GCC */
@@ -329,13 +334,8 @@ exchange (char **argv)
    long-named options.  */
 
 int
-_getopt_internal (argc, argv, optstring, longopts, longind, long_only)
-     int argc;
-     char *const *argv;
-     const char *optstring;
-     const struct option *longopts;
-     int *longind;
-     int long_only;
+_getopt_internal (int argc, char *const *argv, const char *optstring,
+                  const struct option *longopts, int *longind, int long_only)
 {
   int option_index;
 

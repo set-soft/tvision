@@ -86,9 +86,8 @@ protected:
  static int ExitEventThread;
  // Handler for the events thread
  static HANDLE EventThreadHandle;
-
- friend class THWMouseWin32;
- friend class TGKeyWin32;
+ static DWORD oldConsoleMode, newConsoleMode;
+ static unsigned xCurStart, yCurStart;
 };
 
 #endif // WIN32SCR_HEADER_INCLUDED

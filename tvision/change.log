@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.179  2002/06/26 16:52:15  set
+* Fixed: [MSVC] which header is needed for access function.
+* Fixed: [MSVC] rules to compile .c files and use of rm. Reported by WintiX
+
 Revision 2.178  2002/06/26 15:17:11  set
 * Fixed: [Linux] When the VCS access wasn't available the routine that
 restores the screen content put 0x0 attributes in spaces after the text.
