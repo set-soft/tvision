@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 1.242.2.16  2002/01/02 00:49:07  set
+* Added: GNU getline replacement to compatlayer.
+
 Revision 1.242.2.15  2002/01/01 01:27:12  set
 * Added: Code to avoid collisions between the last changes in tv/intl.h and
 djgpp's conio. Note that gettext instructs users on how to change libc to
