@@ -171,11 +171,15 @@ protected:
  static void     defaultResume();
  static int      defaultSetCodePage(int id);
 
- // KOI-8r tables:
- static uchar    KOI8_NonASCII2ASCII(uchar val);
- static int      KOI8_CompareASCII(uchar val, uchar code);
- // Table to know which key holds each cyrillic symbol for KOI8
- static char KOI8Layout[64];
+ // Greek table
+ static stIntCodePairs GreekKeyboard[];
+ // Russian table
+ static stIntCodePairs RussianKeyboard[];
+ // Generic tables
+ static uchar KeyMap[128];
+ static void  FillKeyMapForCP(int id, stIntCodePairs *keyboard, size_t szKb);
+ static uchar Generic_NonASCII2ASCII(uchar ascii);
+ static int   Generic_CompareASCII(uchar val, uchar code);
 
  // Needed for configuration.
  static char    *KeyNames[];
