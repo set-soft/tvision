@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.168  2004/06/23 19:38:39  set
+* Modified: [MSVC] Use of /Tp<file> instead of /TP in makefiles. It looks
+like MSVC 4.0 only supports it. Reported by by Arnold Wiegert.
+
 Revision 2.399.2.167  2004/06/14 16:36:41  set
 * Fixed: Memory leak in TCluster (i18n stuff), reported by valgrind.
 
