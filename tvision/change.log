@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.574  2004/09/29 02:32:39  terrible
+* [Debian] Packaging up to speed with new version 2.0.3-1!!! I have
+succesfuly built packages for an old Sid and of course Woody, though I am not
+uploading them to the repository since I want to test 'em with SETEdit. I
+will try to do them tomorrow if I can escape from paid work ;-).
+
 Revision 2.573  2004/09/22 21:26:40  set
 * Fixed: [RPM] problems when the compress script didn't have execute
 attributes.
