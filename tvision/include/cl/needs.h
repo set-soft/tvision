@@ -32,6 +32,8 @@ compiler.@p
   #define NEEDS_FIXPATH
   #define NEEDS_FILELENGTH
   #define NEEDS_NL_LANGINFO
+  #define NEEDS_FNMATCH
+  #define NEEDS_ITOA
  #endif
  
  // DOS djgpp
