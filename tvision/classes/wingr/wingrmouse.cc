@@ -41,7 +41,7 @@
   static HCURSOR lastCursor= NULL;
 
   storedEvent.what= ev;
-  storedEvent.mouse.doubleClick= false;
+  storedEvent.mouse.doubleClick= False;
   
   storedEvent.mouse.where.x = (short)LOWORD( lParam );
   storedEvent.mouse.where.x/= tm.tmMaxCharWidth;
@@ -166,7 +166,6 @@
 /* ------------------------------------------------------------------------- */
  { THWMouse::GetEvent= THWMouseWinGr::GetEvent;
    buttonCount= 3; }
-
 
 #else
 

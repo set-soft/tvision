@@ -84,10 +84,10 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
   if ( zPos  )                   // Cursor not visible now
   { dir= false; }
   
-  if ((unsigned) x >= getCols() ) // JASC, this tests both bounds 
+  if ((unsigned) x >= (unsigned)getCols() ) // JASC, this tests both bounds
   { return; }
   
-  if ((unsigned) y >= getRows() ) // JASC, this tests both bounds 
+  if ((unsigned) y >= (unsigned)getRows() ) // JASC, this tests both bounds 
   { return; }
 
   dst = TScreen::screenBuffer    // Calc new cursor position
@@ -152,8 +152,8 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
 /* ------------------------------------------------------------------------- */
    int CALLBACK EnumFonts( const LOGFONT    * lplf     // address of logical-font data structure
                          , const TEXTMETRIC * lpntm    // address of physical-font data structure
-                         , long unsigned int  FontType // type of font
-                         , LPARAM          lpData )    // address of application-defined data
+                         , long unsigned int  /*FontType*/ // type of font
+                         , LPARAM          /*lpData*/ )    // address of application-defined data
 /* ------------------------------------------------------------------------- */
 { int arraySize= 1;                                 // Terminator space
 
@@ -196,8 +196,8 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
 
 /* ------------------------------------------------------------------------- */
    int CALLBACK EnumFamilies( const LOGFONTA    * lplf     // address of logical-font data structure
-                            , const TEXTMETRICA * lpntm    // address of physical-font data structure	
-                            , long unsigned int   FontType // type of font
+                            , const TEXTMETRICA * /*lpntm*/    // address of physical-font data structure
+                            , long unsigned int   /*FontType*/ // type of font
                             , LPARAM              lpData ) // address of application-defined data
 /* ------------------------------------------------------------------------- */
 { EnumFontFamilies( TDisplayWinGr::hdc
