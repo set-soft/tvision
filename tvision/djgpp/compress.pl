@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-$oldv='1.0.2';
-$newv='1.0.3';
+$oldv='1.0.3';
+$newv='1.0.4';
 @files=('../readme.txt');
 
 # Update the makefile if needed
