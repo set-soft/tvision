@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-Modified by Salvador E. Tropea to support mouse wheels.
+Modified by Salvador E. Tropea to support mouse wheels and other things.
 
  *
  *
@@ -197,6 +197,7 @@ void *TScroller::read( ipstream& is )
     is >> hScrollBar >> vScrollBar >> delta >> limit;
     drawLock = 0;
     drawFlag = False;
+    wheelStep= defaultWheelStep;
     return this;
 }
 

@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.290  2002/09/06 18:26:15  set
+* Added: Mouse wheel support to TScroller.
+
 Revision 2.289  2002/09/06 17:56:16  set
 * Fixed: TFileList used an ole methode to determine if the shift key was
 pressed. Reported by Ivan.
