@@ -138,6 +138,19 @@ void TDrawBuffer::moveCStr( unsigned indent, const char *str, unsigned attrs )
    // EDX = str                                   \n\
    // EAX = attrs                                 \n\
                                                   \n\
+// SET: It isn't supposed to be needed if I put   \n\
+// the register in the clobered list, but ...     \n\
+// gcc 2.7.x have a bug when handling it and      \n\
+// fails to save/restore bug when handling it and \n\
+// fails to save/restore it.                      \n\
+//   It didn't show until I compiled with -fPIC   \n\
+// to create a dynamic ELF library. In this case  \n\
+// EBX is used as a base for the dynamic jmp      \n\
+// table and the code misserably crash.           \n\
+// I found it thanks to the disassemble window.   \n\
+     pushl %%ebx
+     
+     // showed                                    \n\
      // save the attributes in EBX                \n\
         movl %%eax,%%ebx                          \n\
      // take the initial attribute in AH          \n\
@@ -174,8 +187,9 @@ void TDrawBuffer::moveCStr( unsigned indent, const char *str, unsigned attrs )
         cmpb $0,%%al                              \n\
         jne 3b                                    \n\
 2:                                                \n\
+        popl %%ebx                                \n\
    " : : "D"(&data[indent]), "S"(&data[maxViewWidth]), "d"(str), "a"(attrs)
-     : "%ebx"
+     //: "%ebx" I save EBX because 2.7.x forgets it
   );
 #endif
 }
