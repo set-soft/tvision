@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.204  2002/07/02 20:51:50  set
+* Fixed: [X11] Button 4 and 5 support. Now SETEdit supports mouse wheel ;-)
+
 Revision 2.203  2002/07/02 19:16:38  set
 * Added: [MSVC] A rule to create a demo application to the makefile. WintiX
 generated a demo application successfuly!

@@ -11,6 +11,8 @@ H”hne.
   1) The registerHandler member can only register TEventQueue::mouseInt.
   2) The code lock for TEventQueue::mouseInt and CLY_Ticks is fuzzy, I
      incressed the locked area to 1 Kb but it should adjusted.
+
+  The DOS/PollMouse configuration option forces mouse polling.
   
 ***************************************************************************/
 
@@ -23,6 +25,7 @@ H”hne.
 #define Uses_stdio
 #define Uses_TEvent
 #define Uses_TEventQueue
+#define Uses_TScreen
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -422,6 +425,12 @@ void THWMouseDOS::Init()
  // SET: NT reacts crashing when we use the mouse handler, don't know why
  // and personally don't care, so just disable the handler.
  if (OS && strcmp(OS,"Windows_NT")==0)
+    useMouseHandler=0;
+
+ // Look in the user options
+ long pollMouse=0;
+ TScreen::optSearch("PollMouse",pollMouse);
+ if (pollMouse)
     useMouseHandler=0;
 
  REGS r;
