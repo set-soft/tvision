@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.388  2002/12/17 14:23:26  set
+* Fixed: [X11] I used Xutf8LookupString without realizing that's an
+XFree86 4.0.2+ extension. Added conditionals for it (untested).
+
 --------------------------- 2.0.1 Release Candidate 1 ----------------------
 Revision 2.387  2002/12/16 13:30:05  set
 * Fixed: Extra .mak file in files list.
