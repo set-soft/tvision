@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.541  2004/05/28 20:53:38  set
+* Updated: Library version in the readme.txt and Debian control file.
+.
 Revision 2.540  2004/05/26 20:42:43  set
 * Fixed: [Win32] The size of clipboard returned by Win32 API isn't the size
 of the text it contains (>=real size). For this reason we must meassure the

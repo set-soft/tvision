@@ -19,6 +19,7 @@ exlude some particular files by configuration.
 #define Uses_stdio
 #ifdef TVComp_MSC
  #include <io.h>
+ #define Uses_glob
 #else
  #define Uses_unistd
 #endif
