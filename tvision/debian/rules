@@ -23,7 +23,7 @@ build-stamp:
 	dh_testversion 2.0.40
 	dh_testdir
 
-	#Rename debian/rhtvision.postinst file if it exists:
+# Rename debian/rhtvision.postinst file if it exists:
 ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
 endif
@@ -33,7 +33,7 @@ endif
 
 
 clean: clean-debian
-	#Upstream doesn't have a clean target yet.
+# Upstream doesn't have a clean target yet.
 	rm -f linux/obj/*.o
 	rm -f linux/librhtv.a
 	rm -f linuxso/librhtv.so*
@@ -48,17 +48,15 @@ clean: clean-debian
 clean-debian:
 	dh_testdir
 	dh_testroot
-	rm -f install-stamp
 
-	#Rename rhtvision$(version).postinst file if it exists:
+# Rename rhtvision$(version).postinst file if it exists:
 ifneq ($(wildcard debian/rhtvision$(version).postinst),)
 	mv debian/rhtvision$(version).postinst debian/rhtvision.postinst
 endif
 	dh_clean
 
 
-install: install-stamp
-install-stamp: build-stamp
+install: build
 	dh_testdir
 	dh_testroot
 	dh_clean
@@ -67,10 +65,8 @@ install-stamp: build-stamp
 
 	$(MAKE) install
 
-	#We need to move files for other packages than the first one in the control file:
+# We need to move files for other packages than the first one in the control file:
 	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version)
-
-	touch install-stamp
 
 
 binary-arch: build install
@@ -78,13 +74,14 @@ binary-arch: build install
 	dh_testroot
 	dh_installdocs -p $(package)$(version) extra/eterm/ borland.txt copying copying.rh readme.txt
 	dh_installdocs -p $(package)$(version)-dev examples/ borland.txt copying copying.rh readme.txt
+	rm $(destdir)/share/doc/$(package)$(version)-dev/examples/.cvsignore
 #	dh_installexamples
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installinit
 #	dh_installcron
 #	dh_installmanpages
-	dh_undocumented -p $(package)$(version) rhtvision.3
+#	dh_undocumented -p $(package)$(version) rhtvision.3
 	dh_installchangelogs change.log
 	dh_strip
 	dh_compress
@@ -108,3 +105,4 @@ source diff:
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary
+

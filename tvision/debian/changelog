@@ -1,3 +1,14 @@
+rhtvision (1.0.9-2) unstable; urgency=low
+
+  * Don't install manpage (symlink to undocumented(7) manpage).
+  * Remove .cvsignore file in usr/share/doc/rhtvision-dev/examples
+    directory.
+  * Don't use install-stamp (in rules file) anymore, to avoid possible
+    duplicate strings in maintainer script fragment files (see
+    debhelper changelog of version 2.0.56).
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Mon,  1 Nov 1999 13:01:46 -0300
+
 rhtvision (1.0.9-1) unstable; urgency=low
 
   * New upstream version:
