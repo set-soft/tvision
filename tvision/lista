@@ -691,6 +691,7 @@ qnxrtp/tvision-dev.qpg
 qnxrtp/genpackage.sh
 readme.in
 readme.txt
+searchstrs.sh
 stream/sbackgro.cc
 stream/sbutton.cc
 stream/scalcdis.cc

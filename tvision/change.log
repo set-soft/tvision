@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.342  2002/09/30 20:06:48  set
+* Fixed: SDG modules must use "Comments" and not "Description".
+* Added: More documentation. That's far from complete, even when the
+objetive is to document only new stuff. But is an start.
+
 Revision 2.341  2002/09/27 13:46:39  set
 * Modified: [X11] The methode used to make the cursor blink. Using sigalarm
 the sleep funtion stops working, according to GNU library docs it shouldn't
