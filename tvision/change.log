@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.167  2004/06/14 16:36:41  set
+* Fixed: Memory leak in TCluster (i18n stuff), reported by valgrind.
+
 Revision 2.399.2.166  2004/06/14 14:41:48  set
 - From valgrind:
 * Fixed: TVIntl::emptySt() new/delete[] missmatch

@@ -34,54 +34,54 @@ SRCE = ../classes/qnx4
 #SRC3 = ./
 
 CC=cl /nologo
-CXX=cl /nologo /TP
+CXX=cl /nologo
 
 OBJS=@TV_OBJS_MSVC@
 
 tvex: libtv.lib
-	$(CXX) $(CXXFLAGS) tvex.cc -link libtv.lib user32.lib gdi32.lib
+	$(CXX) $(CXXFLAGS) /Tptvex.cc -link libtv.lib user32.lib gdi32.lib
 
 {$(SRC1)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC2)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC3)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC4)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC5)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC6)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC7)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
    
 {$(SRC8)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC9)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRCA)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRCB)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRCC)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRCD)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRCE)}.cc{$(OBJDIR)}.o:
-	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 {$(SRC2)}.c{$(OBJDIR)}.o:
 	$(CC) $(CFLAGS) -c $? -Fo$*.o
