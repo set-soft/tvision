@@ -100,6 +100,8 @@ djgpp/makefile
 +djgpp/sacadeb.bat
 +djgpp/compress.bat
 +djgpp/distlist
+djgpp/obj/delete.me
+djgpp/tmp/delete.me
 drivers2.cc
 dual.cc
 +examples/clean.bat
@@ -361,8 +363,12 @@ linux/inclubin.txt
 linux/includbi.txt
 -linux/libtv.gpr
 linux/Makefile
+linux/obj/delete.me
 +linux/sacadeb
+linux/tmp/delete.me
 +linuxso/makemak.pl
+linuxso/obj/delete.me
+linuxso/tmp/delete.me
 misc.cc
 mouse.cc
 msgbox.cc
