@@ -46,6 +46,7 @@
 #include <tv/linux/log.h>
 
 int            TGKeyLinux::hIn=-1;
+FILE          *TGKeyLinux::fIn=NULL;
 int            TGKeyLinux::oldInFlags;
 int            TGKeyLinux::newInFlags;
 struct termios TGKeyLinux::inTermiosOrig;
@@ -85,12 +86,41 @@ int TGKeyLinux::InitOnce()
 {
  LOG("TGKeyLinux::InitOnce");
  hIn=fileno(stdin);
-
+ 
  if (!isatty(hIn))
    {
     error=_("that's an interactive application, don't redirect stdin");
     return 1;
    }
+ //  We can't use stdin for all the operations, instead we must open it again
+ // using another file descriptor.
+ //  Here is why: In order to get some keys, I saw it for ESC pressed alone,
+ // we must set the O_NONBLOCK attribute.
+ //  We can do it, but the stdout file handle seems to be just a copy of the
+ // stdin file handle (dupped?). When you use duplicated file handles they
+ // share the "File Status Flags". It means that setting O_NONBLOCK will
+ // set O_NONBLOCK for output too. So what? well when we do that the one that
+ // doesn't block is Linux kernel, so if we send too much information to
+ // stdout, no matters if we use fflush, sometimes Linux could lose data.
+ //  This effect seems to happend at exit, may be because owr process dies
+ // before Linux have a chance to process the remaining data and it closes
+ // the file handle. The fact is that using O_NONBLOCK sometimes we fail to
+ // restore the cursor position.
+ //  Now a question remains: do I have to restore the mode?
+ char *ttyName=ttyname(hIn);
+ if (!ttyName)
+   {
+    error=_("failed to get the name of the current terminal used for input");
+    return 3;
+   }
+ fIn=fopen(ttyName,"r+b");
+ if (!fIn)
+   {
+    error=_("failed to open the input terminal");
+    return 4;
+   }
+ hIn=fileno(fIn);
+
  if (tcgetattr(hIn,&inTermiosOrig))
    {
     error=_("can't get input terminal attributes");
@@ -109,13 +139,15 @@ int TGKeyLinux::InitOnce()
     error=_("can't set input terminal attributes");
     return 3;
    }
- // Don't block
+ // Don't block, needed to get some keys, even when the input is in character
+ // oriented mode. I saw it for ESC alone.
  oldInFlags=fcntl(hIn,F_GETFL,0);
  newInFlags=oldInFlags | O_NONBLOCK;
  fcntl(hIn,F_SETFL,newInFlags);
 
  // Find if we are running in a VT and if that's the case the number
- char *ttyName=ttyname(STDOUT_FILENO);
+ // This name should be the same but ...
+ ttyName=ttyname(STDOUT_FILENO);
  if (ttyName)
    {
     if (sscanf(ttyName,"/dev/tty%2d",&ourVT)!=1)
@@ -193,7 +225,7 @@ int TGKeyLinux::KbHit()
 {
  if (keysInBuffer || nextKey!=-1)
     return 1;     // We have a key waiting for processing
- nextKey=fgetc(stdin);
+ nextKey=fgetc(fIn);
  return nextKey!=-1;
 }
 
@@ -204,7 +236,7 @@ void TGKeyLinux::Clear()
  // Discard a key waiting
  nextKey=-1;
  // Flush the input
- fflush(stdin);
+ fflush(fIn);
 }
 
 /*****************************************************************************
@@ -348,7 +380,7 @@ int TGKeyLinux::ProcessEscape()
 {
  int nextVal;
 
- nextVal=fgetc(stdin);
+ nextVal=fgetc(fIn);
  if (nextVal==EOF)     // Just ESC
     return 0;
 
@@ -367,7 +399,7 @@ int TGKeyLinux::ProcessEscape()
            if (p[i].next)
              {
               p=p[i].next;
-              nextVal=fgetc(stdin);
+              nextVal=fgetc(fIn);
               goto NextNode;
              }
            lastKeyCode=p[i].code;
@@ -410,7 +442,7 @@ int TGKeyLinux::GetKeyParsed()
  int nextVal=nextKey;
  nextKey=-1;
  if (nextVal==-1)
-    nextVal=fgetc(stdin);
+    nextVal=fgetc(fIn);
  if (nextVal==-1)
     return -1;
 
