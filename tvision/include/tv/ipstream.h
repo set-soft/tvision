@@ -12,6 +12,9 @@
  * Added functions to rework the endian stuff by SET: readShort, readInt,
  * readLong, read8, read16, read32 and read64.
  *
+ * Modified to compile with gcc v3.x by Salvador E. Tropea (SET), with
+ * the help of Andris Pavenis and Christoph Bauer.
+ *
  * ------------------------------------------------------------------------*
  *                                                                         *
  *   class ipstream                                                        *
@@ -38,9 +41,9 @@ public:
     ipstream( streambuf * );
     ~ipstream();
 
-    streampos tellg();
-    ipstream& seekg( streampos );
-    ipstream& seekg( streamoff, ios::seek_dir );
+    CLY_StreamPosT tellg();
+    ipstream& seekg( CLY_StreamPosT );
+    ipstream& seekg( CLY_StreamOffT, CLY_IOSSeekDir );
 
     uchar readByte();
     ushort readWord() { return readShort(); };
