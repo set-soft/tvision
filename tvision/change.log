@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.216  2002/07/11 19:11:35  set
+* Fixed: [MSVC] more compatlayer issues, added pclose and pipe, commented
+utime macro, etc. From SETEdit compilation errors sent by WintiX.
+
 Revision 2.215  2002/07/10 19:23:11  set
 * Added: [FreeBSD] Code to solve the "last line problem". It was suggested
 by Mike and should be tested by miniEleph.
