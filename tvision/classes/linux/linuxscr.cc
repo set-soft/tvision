@@ -673,7 +673,7 @@ void TScreenLinux::Resume()
  tcsetattr(hOut,TCSAFLUSH,&outTermiosNew);
  // Save cursor position, attributes and charset
  fputs("\E7",stdout);
- GetCursorPos(oldCurX,oldCurY);
+ getCursorPos(oldCurX,oldCurY);
  if (tioclinuxOK)
     // We know the default colors, we can just hope they are the currently used
     GetDisPaletteColors(0,16,OriginalPalette);
