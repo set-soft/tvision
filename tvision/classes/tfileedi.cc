@@ -54,7 +54,7 @@ TFileEditor::TFileEditor( const TRect& bounds,
 
 void TFileEditor::doneBuffer()
 {
-    delete buffer;
+    DeleteArray(buffer);
 }
 
 void TFileEditor::handleEvent( TEvent& event )
