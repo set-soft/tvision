@@ -8,7 +8,7 @@
 class THWMouseQNX4: public THWMouse
 {
    public:
-      static void Init();
+      static void Init(ushort mousemode);
 
    protected:
       THWMouseQNX4() {};
@@ -24,9 +24,10 @@ class THWMouseQNX4: public THWMouse
       static int MouseHandler(unsigned int* key, struct mouse_event* event);
 
    protected:
-      static int MousePositionX;
-      static int MousePositionY;
-      static int MouseButtons;
+      static int    MousePositionX;
+      static int    MousePositionY;
+      static int    MouseButtons;
+      static ushort ConsoleMode;
 };
 
 #endif // QNX4MOUSE_HEADER_INCLUDED

@@ -77,10 +77,6 @@
  #include <pthread.h>
 #endif
 
-#if defined(TVOSf_QNX4)
- #include <process.h>
-#endif // TVOSf_QNX4
-
 #ifdef TVOSf_Solaris
  // At least in the Solaris 7 box I tested looks like ITIMER_REAL is broken
  // and behaves like ITIMER_VIRTUAL

@@ -156,10 +156,13 @@ void TDisplayQNX4::SetCrtMode(ushort mode)
    win.ws_xpixel=0;
    win.ws_ypixel=0;
 
-   IgnoreConsoleResizing=1;
-   if (ioctl(fileno(stdin), TIOCSWINSZ, &win)!=-1)
+   if (mode!=0xFFFF)
    {
-      term_relearn_size();
+      IgnoreConsoleResizing=1;
+      if (ioctl(fileno(stdin), TIOCSWINSZ, &win)!=-1)
+      {
+         term_relearn_size();
+      }
    }
 }
 
@@ -186,6 +189,7 @@ void TDisplayQNX4::SetCrtModeExt(char* mode)
 {
    IgnoreConsoleResizing=1;
    system(mode);
+   term_relearn_size();
 }
 
 int TDisplayQNX4::CheckForWindowSize(void)
@@ -194,7 +198,7 @@ int TDisplayQNX4::CheckForWindowSize(void)
 
    if (ConsoleResizing)
    {
-      if ((IgnoreConsoleResizing) && (ConsoleResizing!=0))
+      if (IgnoreConsoleResizing)
       {
          ret=0;
          ConsoleResizing=0;

@@ -48,17 +48,12 @@ exlude some particular files by configuration.
  #define Uses_glob
 #endif
 
-
 #include <tv.h>
 
 #include <errno.h>
 #if defined(TVComp_BCPP)
 #include <dos.h>
 #endif
-
-#if defined(TVOSf_QNX4)
- #include <unix.h>
-#endif // TVOSf_QNX4
 
 TFileList::TFileList( const TRect& bounds,
           TScrollBar *aScrollBar) :

@@ -33,7 +33,6 @@ extern "C"
    #include <sys/dev.h>
    #include <sys/term.h>
    #include <sys/qnxterm.h>
-   #include <process.h>
 }
 
 TScreen* TV_QNX4DriverCheck()
@@ -108,15 +107,15 @@ TScreenQNX4::TScreenQNX4()
    TScreen::screenWidth =getCols();
    TScreen::screenHeight=getRows();
 
-   UserScreenData=(ushort *)malloc(TScreen::screenWidth*TScreen::screenHeight*sizeof(ushort));
+   UserScreenData=new ushort[TScreen::screenWidth*TScreen::screenHeight];
    for (int i=0; i<TScreen::screenHeight; i++)
    {
-      term_save_image(i, 0, (char*)UserScreenData+i*TScreen::screenWidth*2, TScreen::screenWidth);
+      term_save_image(i, 0, (char*)(UserScreenData+i*TScreen::screenWidth), TScreen::screenWidth);
    }
 
    flags0 = CanSetVideoSize | CursorShapes;
 
-   setVideoMode(screenMode);
+   SetVideoMode(screenMode);
 
    TScreen::screenWidth=GetRows();
    TScreen::screenWidth=GetCols();
@@ -130,18 +129,19 @@ TScreenQNX4::TScreenQNX4()
 
    TScreen::Resume=Resume;
    TScreen::Suspend=Suspend;
-   TScreen::setCrtData=setCrtData;
-   TScreen::setVideoMode=setVideoMode;
-   TScreen::setVideoModeRes=setVideoModeRes;
-   TScreen::setVideoModeExt=setVideoModeExt;
+   TScreen::setCrtData=SetCrtData;
+   TScreen::setVideoMode=SetVideoMode;
+   TScreen::setVideoModeRes=SetVideoModeRes;
+   TScreen::setVideoModeExt=SetVideoModeExt;
    TScreen::getCharacters=getCharacters;
    TScreen::getCharacter=getCharacter;
    TScreen::setCharacter=setCharacter;
    TScreen::setCharacters=setCharacters;
    TScreen::System=System;
+   TScreen::fixCrtMode=FixCrtMode;
 
    TGKeyQNX4::Init();   
-   THWMouseQNX4::Init();
+   THWMouseQNX4::Init(ConsoleMode);
 
    term_flush();   
    initialized=1;
@@ -156,7 +156,10 @@ TScreenQNX4::~TScreenQNX4()
       term_flush();
    }
 
-   setCursorType(startupCursor);
+   if (initialized)
+   {
+      setCursorType(startupCursor);
+   }
 
    if (screenBuffer)
    {
@@ -166,18 +169,25 @@ TScreenQNX4::~TScreenQNX4()
    
    SpecialKeysRestore(fileno(stdin));
 
-   setCrtMode(startupMode);
+   setVideoMode(startupMode);
 
-   /* save the user screen contents */
-   TScreen::screenWidth =getCols();
-   TScreen::screenHeight=getRows();
-
-   for (int i=0; i<TScreen::screenHeight; i++)
+   if (initialized)
    {
-      term_restore_image(i, 0, (char*)UserScreenData+i*TScreen::screenWidth*2, TScreen::screenWidth);
+      /* restore the user screen contents */
+      TScreen::screenWidth =getCols();
+      TScreen::screenHeight=getRows();
+
+      if (UserScreenData!=NULL)
+      {
+         for (int i=0; i<TScreen::screenHeight; i++)
+         {
+            term_cur(i, 0);
+            term_restore_image(i, 0, (char*)(UserScreenData+i*TScreen::screenWidth), TScreen::screenWidth);
+         }
+         DeleteArray(UserScreenData);
+         UserScreenData=NULL;
+      }
    }
-   
-   free(UserScreenData);
 }
 
 int TScreenQNX4::InitTermLib()
@@ -192,17 +202,25 @@ int TScreenQNX4::InitTermLib()
    term_video_on();
    term_resize_on();
    term_box_off();
-   
+
    dev_info(fileno(stdin), &DeviceInfo);
    if (strcmp(DeviceInfo.driver_type, "console")==0)
    {
-      ConsoleMode=True;
+      ConsoleMode=QNX_CONSOLE_RAW;
       DefaultRadioButton=0x07;
    }
    else
    {
-      ConsoleMode=False;
-      DefaultRadioButton=0xFE;
+      if (getenv("WINDOWID")==NULL)
+      {
+         ConsoleMode=QNX_CONSOLE_PTERM;
+         DefaultRadioButton=0xFE;
+      }
+      else
+      {
+         ConsoleMode=QNX_CONSOLE_XQSH;
+         DefaultRadioButton=0xFE;
+      }
    }
 
    dev_mode(fileno(stdin), _DEV_OPOST, _DEV_OPOST);
@@ -210,7 +228,7 @@ int TScreenQNX4::InitTermLib()
 
 void TScreenQNX4::Resume()
 {
-   setCrtData();
+   SetCrtData();
    
    if ((oldScreenSizeX!=TScreen::screenWidth) || (oldScreenSizeY!=TScreen::screenHeight))
    {
@@ -220,7 +238,8 @@ void TScreenQNX4::Resume()
    
    for (int i=0; i<oldScreenSizeY; i++)
    {
-      term_restore_image(i, 0, (char*)screenBuffer+i*oldScreenSizeX*2, oldScreenSizeX);
+      term_cur(i, 0);
+      term_restore_image(i, 0, (char*)(screenBuffer+i*oldScreenSizeX), oldScreenSizeX);
    }
 }
 
@@ -236,140 +255,63 @@ void TScreenQNX4::Suspend()
    term_flush();
 }
 
-void TScreenQNX4::setCrtData()
+void TScreenQNX4::SetCrtData()
 {
-   TScreen::screenMode  =getCrtMode();
-   TScreen::screenWidth =getCols();
-   TScreen::screenHeight=getRows();
-   TScreen::hiResScreen =Boolean(screenHeight > 25);
-   TScreen::cursorLines =getCursorType();
+   TScreen::screenMode  = getCrtMode();
+   TScreen::screenWidth = getCols();
+   TScreen::screenHeight= getRows();
+   TScreen::hiResScreen = Boolean(screenHeight > 25);
+   TScreen::cursorLines = getCursorType();
    setCursorType(0);
 }
 
-void TScreenQNX4::setVideoMode(ushort mode)
+void TScreenQNX4::SetVideoMode(ushort mode)
 {
    int oldWidth=TScreen::screenWidth;
    int oldHeight=TScreen::screenHeight;
-   ushort internalmode=0;
    ushort _rows=25;
    ushort _cols=80;
 
-   switch(mode)
-   {
-      case smBW80:
-      case smCO80:
-      case smMono:
-                      break;
-      case smFont8x8:
-                      _rows=50;
-                      break;
-      case smCO80x28:
-                      _rows=28;
-                      break;
-      case smCO80x35:
-                      _rows=35;
-                      break;
-      case smCO80x40:
-                      _rows=40;
-                      break;
-      case smCO80x43:
-                      _rows=43;
-                      break;
-      case smCO80x50:
-                      _rows=50;
-                      break;
-      case smCO80x30:
-                      _rows=30;
-                      break;
-      case smCO80x34:
-                      _rows=34;
-                      break;
-      case smCO90x30:
-                      _cols=90;
-                      _rows=30;
-                      break;
-      case smCO90x34:
-                      _cols=90;
-                      _rows=34;
-                      break;
-      case smCO94x30:
-                      _cols=94;
-                      _rows=30;
-                      break;
-      case smCO94x34:
-                      _cols=94;
-                      _rows=34;
-                      break;
-      case smCO82x25:
-                      _cols=82;
-                      break;
-      case smCO80x60:
-                      _rows=60;
-                      break;
-      case smCO132x25:
-                      _cols=132;
-                      break;
-      case smCO132x43:
-                      _cols=132;
-                      _rows=43;
-                      break;
-      case smCO132x50:
-                      _cols=132;
-                      _rows=50;
-                      break;
-      case smCO132x60:
-                      _cols=132;
-                      _rows=60;
-                      break;
-      default:
-                      _cols=(mode & 0x0000FF00UL) >> 8;
-                      _rows=(mode & 0x000000FFUL);
-   }
-
-   internalmode=_rows | (_cols << 8);
-   setCrtMode(internalmode);
-   
-   setCrtData();
+   SetCrtMode(FixCrtMode(mode));
+   SetCrtData();
 
    if ((oldWidth!=TScreen::screenWidth) || (oldHeight!=TScreen::screenHeight) || (ForceModeChange))
    {
-      term_color(TERM_WHITE | TERM_BLACK_BG);
-      term_clear(TERM_CLS_SCR);
-      term_flush();
-
       if (screenBuffer)
       {
          DeleteArray(screenBuffer);
          screenBuffer=NULL;
       }
       screenBuffer = new ushort[screenWidth*screenHeight];
+
       memset(screenBuffer, 0, screenWidth*screenHeight*sizeof(ushort));
+
       ForceModeChange=0;
    }
    else
    {
       // restore screen contents if mode not setted up.
-      for (int i=0; i<oldScreenSizeY; i++)
+      if (screenBuffer!=NULL)
       {
-         term_restore_image(i, 0, (char*)screenBuffer+i*TScreen::screenWidth*2, TScreen::screenWidth);
+         for (int i=0; i<oldScreenSizeY; i++)
+         {
+            term_cur(i, 0);
+            term_restore_image(i, 0, (char*)(screenBuffer+i*TScreen::screenWidth), TScreen::screenWidth);
+         }
       }
    }
 }
 
-int TScreenQNX4::setVideoModeRes(unsigned w, unsigned h, int fW, int fH)
+int TScreenQNX4::SetVideoModeRes(unsigned w, unsigned h, int fW, int fH)
 {
    int oldWidth=TScreen::screenWidth;
    int oldHeight=TScreen::screenHeight;
 
    setCrtModeRes(w, h, fW, fH);
-   setCrtData();
+   SetCrtData();
 
    if ((oldWidth!=TScreen::screenWidth) || (oldHeight!=TScreen::screenHeight) || (ForceModeChange))
    {
-      term_color(TERM_WHITE | TERM_BLACK_BG);
-      term_clear(TERM_CLS_SCR);
-      term_flush();
-
       if (screenBuffer)
       {
          DeleteArray(screenBuffer);
@@ -384,25 +326,22 @@ int TScreenQNX4::setVideoModeRes(unsigned w, unsigned h, int fW, int fH)
       // restore screen contents if mode not setted up.
       for (int i=0; i<oldScreenSizeY; i++)
       {
+         term_cur(i, 0);
          term_restore_image(i, 0, (char*)screenBuffer+i*TScreen::screenWidth*2, TScreen::screenWidth);
       }
    }
 }
 
-void TScreenQNX4::setVideoModeExt(char* mode)
+void TScreenQNX4::SetVideoModeExt(char* mode)
 {
    int oldWidth=TScreen::screenWidth;
    int oldHeight=TScreen::screenHeight;
 
    setCrtModeExt(mode);
-   setCrtData();
+   SetCrtData();
 
    if ((oldWidth!=TScreen::screenWidth) || (oldHeight!=TScreen::screenHeight) || (ForceModeChange))
    {
-      term_color(TERM_WHITE | TERM_BLACK_BG);
-      term_clear(TERM_CLS_SCR);
-      term_flush();
-
       if (screenBuffer)
       {
          DeleteArray(screenBuffer);
@@ -417,6 +356,7 @@ void TScreenQNX4::setVideoModeExt(char* mode)
       // restore screen contents if mode not setted up.
       for (int i=0; i<oldScreenSizeY; i++)
       {
+         term_cur(i, 0);
          term_restore_image(i, 0, (char*)screenBuffer+i*TScreen::screenWidth*2, TScreen::screenWidth);
       }
    }
@@ -460,41 +400,117 @@ void TScreenQNX4::setCharacters(unsigned dst, ushort* src, unsigned len)
    {
       int x = dst % TScreen::screenWidth;
       int y = dst / TScreen::screenWidth;
+      unsigned char* oldchar = (unsigned char*) old;
+      unsigned char* srcchar = (unsigned char*) src;
 
-      if (ConsoleMode==False)
+      if (ConsoleMode!=QNX_CONSOLE_RAW)
       {
-         for (int EachSymbol=0; EachSymbol<len; EachSymbol++)
+         if (ConsoleMode==QNX_CONSOLE_PTERM)
          {
-            *(old+EachSymbol*2)=*(src+EachSymbol*2);           // symbol
-            *(old+EachSymbol*2+1)=*(src+EachSymbol*2+1);       // attribute
-            switch (*(old+EachSymbol*2))
+            unsigned char* oldchar = (unsigned char*) old;
+            unsigned char* srcchar = (unsigned char*) src;
+
+            for (int EachSymbol=0; EachSymbol<len; EachSymbol++)
             {
-               case 0x00:
-               case 0x01:
-               case 0x02:
-               case 0x03:
-               case 0x04:
-               case 0x05:
-               case 0x06:
-               case 0x07:
-               case 0x08:
-               case 0x09:
-               case 0x0A:
-               case 0x0B:
-               case 0x0C:
-               case 0x0D:
-               case 0x1B:
-                          *(screenBuffer+EachSymbol*2)=0x20;
-                          break;
-	    }
+               *(oldchar+EachSymbol*2)=*(srcchar+EachSymbol*2);           // symbol
+               *(oldchar+EachSymbol*2+1)=*(srcchar+EachSymbol*2+1);       // attribute
+               if (*(oldchar+EachSymbol*2)<0x20)
+               {
+                  switch (*(oldchar+EachSymbol*2))
+                  {
+                     case 0x00:
+                     case 0x01:
+                     case 0x02:
+                     case 0x03:
+                     case 0x04:
+                     case 0x05:
+                     case 0x06:
+                     case 0x08:
+                     case 0x09:
+                     case 0x0A:
+                     case 0x0B:
+                     case 0x0C:
+                     case 0x0D:
+                                *(oldchar+EachSymbol*2)=0x20;
+                                break;
+                     case 0x1B: *(oldchar+EachSymbol*2)='-';
+                                break;
+                     case 0x07: *(oldchar+EachSymbol*2)=TScreenQNX4::DefaultRadioButton;
+                                break;
+                  }
+               }
+            }
+         }
+         else
+         {
+            unsigned char* oldchar = (unsigned char*) old;
+            unsigned char* srcchar = (unsigned char*) src;
+
+            for (int EachSymbol=0; EachSymbol<len; EachSymbol++)
+            {
+               *(oldchar+EachSymbol*2)=*(srcchar+EachSymbol*2);           // symbol
+               *(oldchar+EachSymbol*2+1)=*(srcchar+EachSymbol*2+1);       // attribute
+               if (*(oldchar+EachSymbol*2)<0x20)
+               {
+                  switch(*(oldchar+EachSymbol*2))
+                  {
+                     case 0x00:
+                     case 0x01:
+                     case 0x02:
+                     case 0x03:
+                     case 0x04:
+                     case 0x05:
+                     case 0x06: *(oldchar+EachSymbol*2)=0x20;
+                                break;
+                     case 0x07: *(oldchar+EachSymbol*2)=TScreenQNX4::DefaultRadioButton;
+                                break;
+                     case 0x08:
+                     case 0x09:
+                     case 0x0A:
+                     case 0x0B:
+                     case 0x0C:
+                     case 0x0D:
+                     case 0x0E:
+                     case 0x0F: *(oldchar+EachSymbol*2)=0x20;
+                                break;
+                     case 0x10: *(oldchar+EachSymbol*2)='>';
+                                break;
+                     case 0x11: *(oldchar+EachSymbol*2)='<';
+                                break;
+                     case 0x12: *(oldchar+EachSymbol*2)='|';
+                                break;
+                     case 0x13:
+                     case 0x14:
+                     case 0x15:
+                     case 0x16:
+                     case 0x17:
+                     case 0x18: *(oldchar+EachSymbol*2)='^';
+                                break;
+                     case 0x19: *(oldchar+EachSymbol*2)='v';
+                                break;
+                     case 0x1A: *(oldchar+EachSymbol*2)='<';
+                                break;
+                     case 0x1B: *(oldchar+EachSymbol*2)='>';
+                                break;
+                     case 0x1C: *(oldchar+EachSymbol*2)='_';
+                                break;
+                     case 0x1D: *(oldchar+EachSymbol*2)='-';
+                                break;
+                     case 0x1E: *(oldchar+EachSymbol*2)='^';
+                                break;
+                     case 0x1F: *(oldchar+EachSymbol*2)='v';
+                                break;
+                  }
+               }
+            }
          }
       }
       else
       {
-         memcpy(old, src, len*2);
+         memcpy(oldchar, srcchar, len*2);
       }
 
-      if (ConsoleMode==False)			// pterm bug elimination
+      if (ConsoleMode!=QNX_CONSOLE_RAW)		// pterm and qnxterm bug elimination
       {
          if (y>TScreen::screenWidth/2)
 	 {
@@ -509,13 +525,13 @@ void TScreenQNX4::setCharacters(unsigned dst, ushort* src, unsigned len)
          term_cur(y, x);
          term_flush();
       }
-	  
+      
       term_restore_image(y, x, (char*)old, len);
       term_flush();
 
-      if (ConsoleMode==False)
+      if (ConsoleMode!=QNX_CONSOLE_RAW)
       {
-         SetCursorPos(CursorLastY, CursorLastX);
+         TDisplayQNX4::SetCursorPos(CursorLastX, CursorLastY);
       }
    }
 }
@@ -611,6 +627,90 @@ void TScreenQNX4::SpecialKeysRestore(int fd)
    terminal.c_cc[VQUIT] =oldKeys[3];
    terminal.c_cc[VINTR] =oldKeys[4];
    tcsetattr(fd, TCSANOW, &terminal);
+}
+
+
+ushort TScreenQNX4::FixCrtMode(ushort mode)
+{
+   ushort internalmode=0;
+   ushort _rows=25;
+   ushort _cols=80;
+
+   switch(mode)
+   {
+      case smBW80:
+      case smCO80:
+      case smMono:
+                      break;
+      case smFont8x8:
+                      _rows=50;
+                      break;
+      case smCO80x28:
+                      _rows=28;
+                      break;
+      case smCO80x35:
+                      _rows=35;
+                      break;
+      case smCO80x40:
+                      _rows=40;
+                      break;
+      case smCO80x43:
+                      _rows=43;
+                      break;
+      case smCO80x50:
+                      _rows=50;
+                      break;
+      case smCO80x30:
+                      _rows=30;
+                      break;
+      case smCO80x34:
+                      _rows=34;
+                      break;
+      case smCO90x30:
+                      _cols=90;
+                      _rows=30;
+                      break;
+      case smCO90x34:
+                      _cols=90;
+                      _rows=34;
+                      break;
+      case smCO94x30:
+                      _cols=94;
+                      _rows=30;
+                      break;
+      case smCO94x34:
+                      _cols=94;
+                      _rows=34;
+                      break;
+      case smCO82x25:
+                      _cols=82;
+                      break;
+      case smCO80x60:
+                      _rows=60;
+                      break;
+      case smCO132x25:
+                      _cols=132;
+                      break;
+      case smCO132x43:
+                      _cols=132;
+                      _rows=43;
+                      break;
+      case smCO132x50:
+                      _cols=132;
+                      _rows=50;
+                      break;
+      case smCO132x60:
+                      _cols=132;
+                      _rows=60;
+                      break;
+      default:
+                      _cols=(mode & 0x0000FF00UL) >> 8;
+                      _rows=(mode & 0x000000FFUL);
+   }
+
+   internalmode=_rows | (_cols << 8);
+
+   return internalmode;
 }
 
 #else

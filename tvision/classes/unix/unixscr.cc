@@ -23,22 +23,18 @@ Mouse reporting not disabled at exit!!!
 #define Uses_TVCodePage
 #define Uses_signal
 #define Uses_ioctl
+#define Uses_stdio
+#define Uses_stdlib
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
 #if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <stdarg.h>
 #include <termios.h>
 #include <sys/mman.h>
-
-#if defined(TVOSf_QNX4)
- #include <process.h>
-#endif // TVOSf_QNX4
 
 // I don't know why it's needed, but it seems to be only known to me way
 // to get rhgdb built so it doesn't mess up terminal settings.

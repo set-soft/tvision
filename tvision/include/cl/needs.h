@@ -69,6 +69,10 @@ compiler.@p
   #define NEEDS_GETLINE
  #endif
 
+ #ifdef TVOSf_QNX4
+  #define NEEDS_SNPRINTF
+ #endif // TVOSf_QNX4
+
  // Generic UNIX system
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)
   // Strings
