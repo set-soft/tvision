@@ -29,14 +29,6 @@ TScreenAlcon::TScreenAlcon()
     // Create screen.
     AlCon_Init(screenWidth, screenHeight);
     
-    // Set background to black and foreground to light gray.
-    textattr(LIGHTGRAY | (BLACK<<4));
-    
-    // Jump to top left (1, 1).
-    gotoxy(1, 1);
-
-    cputs("TScreenAlcon was just initialised\n a");
-
     TDisplayAlcon::Init();
 
     TScreen::clearScreen=clearScreen;
