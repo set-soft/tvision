@@ -102,7 +102,8 @@ Modified by Salvador E. Tropea
 // SET: End of the THelp* classes
 
 #if defined( Uses_TVFontCollection )
- #define Uses_TNSCollection
+ #define Uses_TStringCollection
+ #define Uses_TSortedListBox
  #define Uses_stdio
  #define INCLUDE_FONTCOLL_H
 #endif

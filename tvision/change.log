@@ -1,4 +1,21 @@
-$Log$.
+$Log$
+Revision 2.226  2002/07/22 19:32:26  set
+* Modified: [Linux] code 30 to be the "enter" symbol and not V/T.
+* Fixed: [Linux] ISO-1 code page to differentiate 160 from 32. This isn't
+important nor used but I think that's better.
+* Modified: Clarified the error that Linux code pages contain about the
+double frames. I confirmed that's an error.
+* Added: Support for font width to .SFT format.
+* Added: Support fot width>8 in TVFontCollection.
+* Modified: [X11] Removed the 12x24 font and put a nice 10x20 font I
+created using the 10x20.pcf included in XFree86 plus some modifications.
+This font is simple but quite nice.
+* Added: [X11] A Font10x20 configuration option to select the new font.
+* Added: [X11] Support for setfont with widths greater than 8. Is
+incomplete and untested.
+* Added: Support for width>8 to the genraw.cc example. Also added optional
+code to generate headers intead of raw fonts (used for the X11 driver ;-)
+
 Revision 2.225  2002/07/22 19:18:40  set
 * Modified: The Uses_getopt now defines CLY_* names, so you must use
 CLY_getopt, etc. It avoids all kind of coliisions. QNX is an example. Looks
