@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.370  2002/12/06 16:12:12  set
+* Fixed: [Win32] typo in WinGr driver.
+
 Revision 2.369  2002/12/04 21:18:22  terrible
 * Updated: Debian packaging to 2.0.1-0.1.
 

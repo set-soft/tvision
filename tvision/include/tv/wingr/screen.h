@@ -150,7 +150,11 @@ protected:
 			    , ushort  *src
 			    , unsigned len );
 
- static int    System(const char *command, pid_t *pidChild);
+ static int    System(const char *command
+                            , pid_t *pidChild
+                            , int in
+                            , int out
+                            , int err);
 
  // Support functions
  

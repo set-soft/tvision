@@ -32,7 +32,7 @@ I also added the resize window stuff.
 #define Uses_string
 #define Uses_stdlib
 
-#ifdef TVCompf_Cygwin
+#if defined(TVCompf_Cygwin) || defined(TVCompf_MinGW)
  #define Uses_unistd
 #endif
 

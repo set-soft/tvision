@@ -43,6 +43,7 @@ I think they aren't useful but I left it here in case I need this example.
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_TVCodePage
+#define Uses_unistd
 #include <tv.h>
 #include <tv/win32/win32clip.h>
 
