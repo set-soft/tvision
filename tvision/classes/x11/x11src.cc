@@ -14,6 +14,9 @@
 #include <tv/configtv.h>
 
 #if defined(TVOS_UNIX) && defined(HAVE_X11)
+
+#include <X11/Xmu/Atoms.h>
+
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_string
@@ -23,15 +26,19 @@
 #define Uses_TGKey    // For TGKeyX11
 #define Uses_TEvent   // For THWMouseX11
 #define Uses_TVCodePage
+#define Uses_TVOSClipboard
 #include <tv.h>
 
 // X11 defines their own values
 #undef True
 #undef False
+#define True  1
+#define False 0
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
+#include <X11/Xatom.h>
 
 #include <tv/x11/screen.h>
 #include <tv/x11/key.h>
@@ -490,6 +497,13 @@ TScreenX11::TScreenX11()
  TScreen::getWindowTitle=getWindowTitle;
  TScreen::setDisPaletteColors=SetDisPaletteColors;
 
+ // Initialize the clipboard
+ TVOSClipboard::copy=TVX11Clipboard::copy;
+ TVOSClipboard::paste=TVX11Clipboard::paste;
+ TVOSClipboard::destroy=TVX11Clipboard::destroy;
+ TVOSClipboard::available=2; // We have 2 clipboards
+ TVOSClipboard::name="X11";
+
  TGKeyX11::Init();
  THWMouseX11::Init();
 
@@ -771,7 +785,7 @@ void TScreenX11::ProcessGenericEvents()
        cursorChange=0;
        DrawCursor();
       }
-    /* Check if we have generic events in the queuue */
+    /* Check if we have generic events in the queue */
     if (XCheckMaskEvent(disp,~(aMouseEvent|aKeyEvent),&event)!=True)
       {
        /* Process message that doesn't have mask */
@@ -787,6 +801,34 @@ void TScreenX11::ProcessGenericEvents()
              exit(0);*/
              TGKeyX11::sendQuit=1;
             }
+         }
+       else if (XCheckTypedEvent(disp,SelectionRequest,&event)==True)
+         {// Another application wants the content of our clipboard
+          XEvent respond;
+          XSelectionRequestEvent *req=&(event.xselectionrequest);
+          if (req->target==XA_STRING && TVX11Clipboard::buffer)
+            {
+             XChangeProperty(disp,req->requestor,req->property,XA_STRING,
+                             8/*bits*/,PropModeReplace,
+                             (const uchar *)TVX11Clipboard::buffer,
+                             TVX11Clipboard::length);
+             respond.xselection.property=req->property;
+            }
+          else // Strings only please
+             respond.xselection.property= None;
+          respond.xselection.type=SelectionNotify;
+          respond.xselection.display=req->display;
+          respond.xselection.requestor=req->requestor;
+          respond.xselection.selection=req->selection;
+          respond.xselection.target=req->target;
+          respond.xselection.time=req->time;
+          XSendEvent(disp,req->requestor,0,0,&respond);
+          XFlush(disp);
+         }
+       else if (XCheckTypedEvent(disp,SelectionNotify,&event)==True)
+         {
+          TVX11Clipboard::waiting=0;
+          TVX11Clipboard::property=event.xselection.property;
          }
        return;
       }
@@ -941,5 +983,123 @@ TScreen *TV_XDriverCheck()
    }
  return drv;
 }
+
+// This clipboard implementation is heavily based on the
+// X Windows Copy-Paste mini HOWTO by Stelios Xathakis, <axanth@tee.gr>
+
+char *TVX11Clipboard::buffer=NULL;
+unsigned TVX11Clipboard::length=0;
+int      TVX11Clipboard::waiting=0;
+Atom     TVX11Clipboard::property=0;
+
+/**[txh]********************************************************************
+
+  Description:
+  Copies the content of the buffer to the X11 clipboard. The id value
+selects which clipboard we will use. As current recommendations says
+applications should use XA_CLIPBOARD that's id==0. For id==1 we use the
+XA_PRIMARY mechanism, this is the one used for "selections".@*
+  The string doesn't have to be null terminated, we ever copy len+1 bytes
+adding a 0 at the end.
+
+  Return: !=0 if ok.
+  
+***************************************************************************/
+
+int TVX11Clipboard::copy(int id, const char *b, unsigned len)
+{
+ if (id>1) return 0;
+ Atom clip=id==0 ? XA_CLIPBOARD(TScreenX11::disp) : XA_PRIMARY;
+
+ // First create a copy, in X11 the clipboard is held by the application
+ if (buffer)
+    delete[] buffer;
+ length=len+1;
+ buffer=new char[length];
+ memcpy(buffer,b,len);
+ buffer[len]=0;
+ XSetSelectionOwner(TScreenX11::disp,clip,TScreenX11::mainWin,CurrentTime);
+ XFlush(TScreenX11::disp);
+ // The rest is done by TScreenX11
+ return XGetSelectionOwner(TScreenX11::disp,clip)==TScreenX11::mainWin;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Returns a newly allocated buffer containing the contents of the indicated
+clipboard. @x{copy}.@*
+  The buffer should be deallocated with delete[]. The string is NULL
+terminated because we ensure it.
+  
+  Return: NULL if error, a new buffer if ok.
+  
+***************************************************************************/
+
+char *TVX11Clipboard::paste(int id)
+{
+ if (id>1) return NULL;
+ Atom clip=id==0 ? XA_CLIPBOARD(TScreenX11::disp) : XA_PRIMARY;
+
+ Window owner;
+ int format, result;
+ unsigned long len, bytes, dummy;
+ unsigned char *data;
+
+ owner=XGetSelectionOwner(TScreenX11::disp,clip);
+ if (owner==None)
+   {
+    //printf("No selection\n");
+    return NULL;
+   }
+ // What a hell should I use as property here? I use XA_STRING because it was
+ // used by the example. BTW the example failed with Eterm.
+ XConvertSelection(TScreenX11::disp,clip,XA_STRING,XA_STRING,TScreenX11::mainWin,
+                   CurrentTime);
+ XFlush(TScreenX11::disp);
+ waiting=1;
+ while (waiting)
+   TScreenX11::ProcessGenericEvents();
+
+ if (property!=XA_STRING)
+   {
+    //printf("Wrong type %d\n",property);
+    return NULL;
+   }
+ // Check the size
+ Atom type;
+ XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,0,0,0,
+                    AnyPropertyType,&type,&format,&len,&bytes,&data);
+ if (bytes<=0)
+   {
+    //printf("No data\n");
+    return NULL;
+   }
+ result=XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,
+                           0,bytes,0,AnyPropertyType,&type,&format,&len,
+                           &dummy,&data);
+ if (result!=Success)
+   {
+    XFree(data);
+    //printf("No success\n");
+    return NULL;
+   }
+ char *ret=new char[bytes+1];
+ memcpy(ret,data,bytes);
+ ret[bytes]=0;
+ XFree(data);
+
+ return ret;
+}
+
+void TVX11Clipboard::destroy()
+{
+ if (buffer)
+   {
+    delete[] buffer;
+    buffer=0;
+   }
+}
+
 #endif // defined(TVOS_UNIX) && defined(HAVE_X11)
 

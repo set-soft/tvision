@@ -27,6 +27,7 @@ classes/iopstrea.cc
 classes/ipstream.cc
 classes/ofpstrea.cc
 classes/opstream.cc
+classes/osclipboard.cc
 classes/pstream.cc
 classes/tvtext1.cc
 classes/tvtext2.cc
@@ -224,6 +225,10 @@ dual.cc
 examples/Makefile
 examples/patchenv.pl
 examples/rhide.env
+examples/clipboard/test.cc
+examples/clipboard/test.gpr
+examples/clipboard/test.mak
+examples/clipboard/rhide.env
 examples/demo/ascii.cc
 examples/demo/ascii.h
 examples/demo/calendar.cc
@@ -433,6 +438,7 @@ include/tv/menus.h
 include/tv/msgbox.h
 include/tv/no_mss.h
 include/tv/objects.h
+include/tv/osclipboard.h
 include/tv/resource.h
 include/tv/stddlg.h
 include/tv/system.h
