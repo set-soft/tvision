@@ -10,6 +10,8 @@
 # The file should be executed from the ../
 #
 ./configure --just-spec
+chmod +x redhat/create-dirs.sh
+chmod +x redhat/config-rpm.sh
 redhat/create-dirs.sh
 mv ~/.rpmmacros redhat/.rpmmacros-backup~
 redhat/config-rpm.sh

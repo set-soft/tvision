@@ -205,6 +205,7 @@ conflib.pl
 copying
 copying.rh
 debian/.cvsignore
+debian/README
 debian/README.debian
 +debian/buildpackage
 debian/changelog
@@ -231,6 +232,14 @@ doc/DOS.txt
 doc/Eterm.txt
 doc/html.frt
 doc/I18n.txt
+doc/install/bcc.txt
+doc/install/cygwin.txt
+doc/install/djgpp.txt
+doc/install/linux.txt
+doc/install/mingwin.txt
+doc/install/msvc.txt
+doc/install/tools.txt
+doc/install/unix.txt
 -doc/libdocs.epr
 doc/Linux.txt
 doc/QNX.txt
@@ -652,6 +661,7 @@ include/tv/x11/mouse.h
 include/tv/x11/screen.h
 include/tv/yes_mss.h
 include/tv/window.h
+INSTALL.txt
 intl/utod.pl
 intl/dummy/intldummy.c
 intl/dummy/Makefile

@@ -3,7 +3,9 @@
 # Copyright (c) 2003 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
-prefix=@prefix@
+ifeq ($(prefix),)
+  prefix=@prefix@
+endif
 EXE_EXT=@exe_ext@
 libdir=$(prefix)/lib
 OS=@OS@

@@ -12,6 +12,7 @@ identified as "console" or "linux*".
 3. ENCODINGS AND FONTS
 4. SECONDARY FONT AND SYSTEMS WITH 512 CHARACTERS
 5. CONFIGURATION VARIABLES
+6. MOUSE
 
 1. INTRODUCTION
 
@@ -271,4 +272,15 @@ happends with some frame buffer consoles that fails to implement it.
 
   An example of configuration file is shown in 3.4.
   Read the ConfigFile.txt for more information about configuration files.
+
+
+6. MOUSE
+
+  The driver have full support for gpm 1.x, pressing Alt+mouse releases the
+mouse to gpm. It alows copying from a Turbo Vision application to other
+application, but not the reverse, why? because gpm will simply type the keys
+and as you are holding Alt all will be received as Alt+key. But there are a
+solution ;-) if you configure the library to use the left alt key for the
+menues (see TGKey::SetAltSettings(value)) you can use the right alt for the
+mouse paste.
 
