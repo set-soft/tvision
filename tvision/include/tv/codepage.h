@@ -12,6 +12,7 @@
 
 class TVCodePageCol;
 class TStringCollection;
+struct stIntCodePairs;
 
 // This is the internal structure used to describe a code page
 typedef struct
@@ -53,6 +54,7 @@ public:
   { return (char)toLowerTable[(uchar)val]; }
  static int     isAlpha(char val)
   { return AlphaTable[(uchar)val]; }
+ static int     InternalCodeForUnicode(ushort unicode);
  static TVCodePageCallBack SetCallBack(TVCodePageCallBack map);
 
  // Arbitrary names for the supported code pages
@@ -85,6 +87,8 @@ protected:
  static uchar  Similar[];
  static ushort Similar2[];
  static TVCodePageCallBack  UserHook;
+ static stIntCodePairs      InternalMap[];
+ static const int           providedUnicodes;
  // CodePage structures
  static CodePage stPC437;
  static CodePage stPC775;

@@ -234,6 +234,7 @@ void TScreenLinux::Init(int mode)
 
 
 // This is the code to debug the code page detection
+//#define DEBUG_CODEPAGE
 #ifdef DEBUG_CODEPAGE
 static int compareUni(const void *v1, const void *v2)
 {
@@ -295,6 +296,27 @@ int TScreenLinux::AnalyzeCodePage()
  // Compute a good check sum
  uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
  fprintf(stderr,"Adler-32 checksum: 0x%08X\n",cks);
+ // Map it to internal codes
+ fputs("-------------\nInternal codes equivalent:\n",stderr);
+ for (i=0; i<256; i++)
+    {
+     int v=UnicodeMap[i];
+     if (v==0xFFFF)
+        fputs("  0,",stderr);
+     else
+        fprintf(stderr,"%3d,",TVCodePage::InternalCodeForUnicode(v));
+     if (!((i+1) & 0xF))
+        fputc('\n',stderr);
+    }
+ fputs("-------------\nWhat's missing:\n",stderr);
+ for (i=0; i<256; i++)
+    {
+     int v=UnicodeMap[i];
+     if (v==0xFFFF)
+        continue;
+     if (TVCodePage::InternalCodeForUnicode(v)==-1)
+        fprintf(stderr,"%03d U+%04x\n",i,v);
+    }
 
  delete[] map.entries;
  return 1;
