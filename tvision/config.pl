@@ -158,6 +158,9 @@ if ($OS eq 'UNIX')
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
    $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
    $ReplaceTags{'make'}=$conf{'GNU_Make'};
+   $a='-fPIC';
+   $a.=' -shared' if ($OSf eq 'QNXRtP');
+   $ReplaceTags{'SHARED_CODE_OPTION'}=$a;
    ReplaceText('linuxso/makemak.in','linuxso/makemak.pl');
    chmod(0755,'linuxso/makemak.pl');
   }
