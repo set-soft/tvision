@@ -45,6 +45,8 @@ dlgdsn   - That's a dialog design/code generator by Warlei Alves. I included
 dyntxt   - Implements a StaticText with getData/setData member to make it
            "non-static".
 fonts    - Here you can see how to set and restore the fonts.
+           I also included an example that shows how to handle sft font files
+           to generate raw font files.
 helpdemo - Shows how to use help context values and how to display context
            sensitive help in the status line.
 inplis   - That's interesting. It implements a class with pairs label/data
