@@ -1,4 +1,8 @@
 $Log$
+Revision 1.225  2001/10/13 23:53:49  set
+* Fixed: The clean target didn't ignore errors from the examples/clean
+script.
+
 Revision 1.224  2001/10/13 23:30:24  set
 * Added: International dummy library to the Makefile. Suggested by
 Laurynas.

@@ -147,7 +147,7 @@ void TCalendarView::draw()
 
     buf.moveChar(0, ' ', color, size.x);
 
-    sprintf(str, "\036%15s %4d\037", monthNames[month], year);
+    sprintf(str, "\036%12s %4d \037", monthNames[month], year); //wsz: to see full year and down arrow
     /*ostrstream( str, sizeof str)
       << setw(9) << monthNames[month] << " " << setw(4) << year
       << " " << (char) 30 << "  " << (char) 31 << " " << ends;*/
