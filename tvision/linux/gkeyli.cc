@@ -26,6 +26,7 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #define Uses_FullSingleKeySymbols
 #include <tv.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <sys/time.h>
 
@@ -42,6 +43,9 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #include <sys/kd.h>
 #include <sys/vt.h>
 #include <signal.h>
+
+// X11R6 keysyms list
+#include <X11/keysym.h>
 
 //#define GKEY
 #define TOSTDERR
@@ -137,7 +141,7 @@ unsigned char kbToName2[128] =
  0,0,0,0,0,0,0,0,                                   // 28-2F
  0,0,0,0,0,0,0,0,                                   // 30-37
  0,0,0,0,0,0,0,0,                                   // 38-3F
- 0,0,kbHome,kbEnd,kbUp,kbDown,kbRight,kbLeft,       // 40-47
+ 0,kbEterm,kbHome,kbEnd,kbUp,kbDown,kbRight,kbLeft, // 40-47
  0,0,kbDelete,kbInsert,0,0,0,0,                     // 48-4F
  0,0,kbPgDn,kbPgUp,0,0,0,0,                         // 50-57
  0,0,0,0,0,0,kb5,0,                                 // 58-5F
@@ -193,6 +197,45 @@ unsigned char kbExtraFlags2[128] =
  0,0,0,0,0,0,0,kbAlt                            // 78-7F
 };
 
+// This table should be filled at compile time, or I can trust the values
+// are standard?!
+static
+unsigned char kbX11Keys[256];
+
+typedef struct
+{
+ unsigned symbol;
+ unsigned key;
+} keyEquiv;
+
+keyEquiv XEquiv[] =
+{
+ /* Cursor control & motion */
+ {XK_Home,kbHome}, {XK_Left,kbLeft}, {XK_Up,kbUp}, {XK_Right,kbRight},
+ {XK_Down,kbDown}, {XK_Page_Up,kbPgUp}, {XK_Page_Down, kbPgDn},
+ {XK_End,kbEnd}, {XK_Begin,kbHome},
+ /* Misc Functions */
+ {XK_Insert, kbInsert}, {XK_Delete, kbDelete},
+ /* TTY Functions */
+ {XK_Return, kbEnter}, {XK_BackSpace, kbBackSpace}, {XK_Tab, kbTab},
+ {XK_Escape, kbEsc},
+ /* Auxilliary Functions */
+ {XK_F1, kbF1}, {XK_F2, kbF2}, {XK_F3, kbF3}, {XK_F4, kbF4}, {XK_F5, kbF5},
+ {XK_F6, kbF6}, {XK_F7, kbF7}, {XK_F8, kbF8}, {XK_F9, kbF9}, {XK_F10, kbF10},
+ {XK_F11, kbF11}, {XK_F12, kbF12},
+ /* Keypad Functions */
+ {XK_KP_0,kb0}, {XK_KP_1,kb1}, {XK_KP_2,kb2}, {XK_KP_3,kb3}, {XK_KP_4,kb4},
+ {XK_KP_5,kb5}, {XK_KP_6,kb6}, {XK_KP_7,kb7}, {XK_KP_8,kb8}, {XK_KP_9,kb9},
+ {XK_KP_Enter, kbEnter}, {XK_KP_Home,kbHome}, {XK_KP_Left,kbLeft},
+ {XK_KP_Up, kbUp}, {XK_KP_Right,kbRight}, {XK_KP_Down, kbDown},
+ {XK_KP_Page_Up, kbPgUp}, {XK_KP_Page_Down,kbPgDn}, {XK_KP_End,kbEnd},
+ {XK_KP_Begin, kbHome}, {XK_KP_Insert, kbInsert}, {XK_KP_Delete, kbDelete},
+ {XK_KP_Equal, kbEqual}, {XK_KP_Multiply, kbAsterisk}, {XK_KP_Add, kbPlus},
+ {XK_KP_Subtract, kbMinus}, {XK_KP_Decimal, kbStop}, {XK_KP_Divide, kbSlash},
+ /* End */
+ {0,0}
+};
+
 // xterm is a crappy terminal and does all in a way too different to the
 // standard.
 static int XtermMode=0;
@@ -241,6 +284,7 @@ void PatchTablesForNewKbdLayout(void)
 
 void TGKey::SetKbdMapping(int version)
 {
+ int i;
  switch (version)
    {
     case KBD_REDHAT52_STYLE:
@@ -263,6 +307,20 @@ void TGKey::SetKbdMapping(int version)
          kbExtraFlags2[KEY_MOUSE & 0x7F]=kbShift;
          XtermMode=0;
          break;
+    case KBD_ETERM_STYLE:
+         #ifdef HAVE_DEFINE_KEY
+         // SET: I submited a patch to Eterm maintainers for it:
+         define_key("\x1B[k",KEY_F(57)); // End
+         memset(kbX11Keys,0,sizeof(kbX11Keys));
+         for (i=0; XEquiv[i].symbol; i++)
+             kbX11Keys[XEquiv[i].symbol & 0xFF]=XEquiv[i].key;
+         #endif
+         // 0631 == KEY_MOUSE
+         kbToName2[KEY_MOUSE & 0x7F]=kbMouse;
+         kbExtraFlags2[KEY_MOUSE & 0x7F]=0;
+         XtermMode=1;
+         break;
+         break;
     default: // KBD_OLD_STYLE
          PatchTablesForOldKbdLayout();
    }
@@ -281,6 +339,12 @@ unsigned short TGKey::gkey(void)
       {
        dbprintf("TGKey::gkey: Mouse event detected\r\n");
        Abstract=kbMouse;
+       return rawCode.full;;
+      }
+    if (rawCode.full==KEY_F(57))
+      {
+       dbprintf("TGKey::gkey: Special Eterm keysym detected\r\n");
+       Abstract=kbEterm;
        return rawCode.full;;
       }
    if (rawCode.full & 0x80)
@@ -406,17 +470,7 @@ const int MouseB1Down=0x20,MouseB2Down=0x21,MouseB3Down=0x22,MouseUp=0x23;
 void TGKey::fillTEvent(TEvent &e)
 {
  TGKey::gkey();
- if (Abstract!=kbMouse)
-   {
-    e.keyDown.charScan.charCode=sFlags & kblAltL ? 0 : ascii;
-    e.keyDown.charScan.scanCode=TGKey::rawCode.b.scan;
-    e.keyDown.raw_scanCode=TGKey::rawCode.b.scan;
-    e.keyDown.keyCode=Abstract;
-    e.keyDown.shiftState=sFlags;
-    e.what=evKeyDown;
-    dbprintf("TGKey::fillTEvent: Reporting key (%X/%X)\r\n",Abstract,sFlags);
-   }
- else
+ if (Abstract==kbMouse)
    { // Mouse events are traslated to keyboard sequences:
     int event=_getch_();
     int x=_getch_()-0x21; // They are 0x20+ and the corner is 1,1
@@ -439,6 +493,68 @@ void TGKey::fillTEvent(TEvent &e)
     THWMouse::forceEvent(x,y,MouseButtons);
     e.what=evMouseUp; // Acts like a "key"
     dbprintf("TGKey::fillTEvent: Reporting mouse instead of key (%d,%d:%d)\r\n",x,y,event);
+   }
+ else
+ if (Abstract==kbEterm)
+   { // X keysym reported as key sequence yuupi!
+    int key,c;
+    unsigned state=0,keysym=0;
+    c=0; // To avoid hanging
+    do
+      {
+       key=_getch_();
+       if (key!=';')
+         {
+          state<<=4;
+          state+=key>='A' ? key+10-'A' : key-'0';
+         }
+       c++;
+      }
+    while (key!=';' && c<3);
+    c=0;
+    do
+      {
+       key=_getch_();
+       if (key!='~')
+         {
+          keysym<<=4;
+          keysym+=key>='A' ? key+10-'A' : key-'0';
+         }
+       c++;
+      }
+    while (key!='~' && c<3);
+    ushort code=kbX11Keys[keysym & 0xFF];
+    dbprintf("TGKey::fillTEvent: Reporting Eterm key (%X,%X code: %X)\r\n",state,keysym,code);
+    if (code)
+      {
+       sFlags=0;
+       // How can I do it better?
+       if (state & 1)
+          sFlags|=kbShiftCode;
+       if (state & 4)
+          sFlags|=kbCtrlCode;
+       if (state & 8)
+          sFlags|=kbAltLCode;
+       Abstract=code | sFlags;
+       e.keyDown.charScan.charCode=0;
+       e.keyDown.charScan.scanCode=0;
+       e.keyDown.raw_scanCode=0;
+       e.keyDown.keyCode=Abstract;
+       e.keyDown.shiftState=sFlags;
+       e.what=evKeyDown;
+      }
+    else
+       e.what=evNothing;
+   }
+ else
+   {
+    e.keyDown.charScan.charCode=sFlags & kblAltL ? 0 : ascii;
+    e.keyDown.charScan.scanCode=TGKey::rawCode.b.scan;
+    e.keyDown.raw_scanCode=TGKey::rawCode.b.scan;
+    e.keyDown.keyCode=Abstract;
+    e.keyDown.shiftState=sFlags;
+    e.what=evKeyDown;
+    dbprintf("TGKey::fillTEvent: Reporting key (%X/%X)\r\n",Abstract,sFlags);
    }
 }
 
