@@ -7,7 +7,7 @@
  *  Covered by the GPL license. 
  */
  
-#ifndef WINDOWSKEY_HEADER_INCLUDED
+#if defined(TVOS_Win32) && !defined(WINDOWSKEY_HEADER_INCLUDED)
 #define WINDOWSKEY_HEADER_INCLUDED
 
 struct TEvent;

@@ -7,23 +7,21 @@
   Windows Screen routines.
 
 ***************************************************************************/
-
 #include <tv/configtv.h>
-
-#ifdef TVOS_Win32
 
 #define Uses_string
 #define Uses_stdlib
-
+// SET: Why? I think you can just let #define Uses_unistd, it shouldn't conflict
 #ifdef TVCompf_Cygwin
  #define Uses_unistd
 #endif
-
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_TVCodePage
 #include <tv.h>
+
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -410,7 +408,11 @@ TScreenWinGr::~TScreenWinGr()
 
  return(drv); }
 
+#else
 
+#include <tv/wingr/screen.h>
+#include <tv/wingr/mouse.h>
+#include <tv/wingr/key.h>
 
 #endif // TVOS_Win32
 
