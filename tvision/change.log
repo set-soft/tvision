@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.596  2004/10/28 20:44:25  set
+* Added: [DOCs][MSVC] MSVC 7.1 as supported compiler. Mike verified it and
+this version is different than 7.0, enough to mention it.
+
 Revision 2.595  2004/10/20 13:42:56  set
 * Modified: [Compilation][MSVC] HistRec to overload delete making explicit
 this operation is invalid. I hope it avoids warnings. Reported by Grzegorz.
