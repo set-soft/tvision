@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.106  2002/06/03 13:14:36  set
+* Added: Palette support to the DOS driver.
+* Modified: The low level setDisPaletteColors to return the number of
+succesfuly set colors.
+
 Revision 2.105  2002/06/03 12:55:41  set
 * Modified: The X11 palette routines to include the redraw. Tested with
 SETEdit.
