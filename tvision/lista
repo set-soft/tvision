@@ -134,6 +134,7 @@ classes/unix/xtermdis.cc
 classes/unix/xtermkey.cc
 classes/unix/xtermmouse.cc
 classes/unix/xtermscr.cc
+classes/win32/win32clip.cc
 classes/win32/win32dis.cc
 classes/win32/win32key.cc
 classes/win32/win32mouse.cc
@@ -559,6 +560,7 @@ include/tv/view.h
 include/tv/win32/key.h
 include/tv/win32/mouse.h
 include/tv/win32/screen.h
+include/tv/win32/win32clip.h
 include/tv/winnt/key.h
 include/tv/winnt/mouse.h
 include/tv/winnt/screen.h

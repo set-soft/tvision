@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.189  2002/07/01 12:38:11  set
+* Added: [DOS] Windows clipboard routines.
+* Modified: The TVOSClipboard class to report the name of the error in case
+of fails and the size of the paste buffer.
+* Modified: All the drivers to generate dependencies when compiled for
+another platforms and protected the headers against use in other platforms.
+* Modified: [DJGPP] The project to also include UNIX drivers. That's an
+important step towards a project unification.
+
 Revision 2.188  2002/06/28 20:21:46  set
 * Fixed: [MSVC] More details, only 2 or 3 files needs adjustments to get
 the code compiled. Errors from WintiX.

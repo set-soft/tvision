@@ -27,6 +27,7 @@ needed.
 #define Uses_TEvent
 #define Uses_TGKey
 #include <tv.h>
+#include <tv/win32/win32clip.h>
 
 // I delay the check to generate as much dependencies as possible
 #ifdef TVOS_Win32
@@ -89,6 +90,7 @@ void TScreenWin32::InitConsole()
  TScreen::Resume=Resume;
  TScreen::Suspend=Suspend;
 
+ TVWin32Clipboard::Init();
  TGKeyWin32::Init();
  THWMouseWin32::Init();
 

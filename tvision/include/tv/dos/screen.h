@@ -123,7 +123,6 @@ protected:
         char *dosNameError[];
  static int   isValid;
  static int   Version;
- static int   Error;
 
  friend class TScreenDOS;
 };
