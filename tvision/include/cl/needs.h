@@ -24,17 +24,20 @@ compiler.@p
   #define NEEDS_REGEX
   #define NEEDS_GETOPT
   #define NEEDS_MKSTEMP
+  #define NEEDS_NL_LANGINFO
  #endif
  
  // Win32 Cygwin
  #ifdef TVCompf_Cygwin
   #define NEEDS_FIXPATH
   #define NEEDS_FILELENGTH
+  #define NEEDS_NL_LANGINFO
  #endif
  
  // DOS djgpp
  #ifdef TVCompf_djgpp
   #define NEEDS_GETOPT
+  #define NEEDS_NL_LANGINFO
  #endif
  
  // Linux
@@ -55,6 +58,7 @@ compiler.@p
   #define NEEDS_FIXPATH
   #define NEEDS_FILELENGTH
   #define NEEDS_ITOA
+  #define NEEDS_NL_LANGINFO
  #endif
 #endif
 
@@ -69,6 +73,7 @@ compiler.@p
  #define NEEDS_GETOPT
  #define NEEDS_OPENDIR
  #define NEEDS_MKSTEMP
+ #define NEEDS_NL_LANGINFO
 #endif
 
 
@@ -86,4 +91,5 @@ compiler.@p
  #define NEEDS_REGEX
  #define NEEDS_GETOPT
  #define NEEDS_MKSTEMP
+ #define NEEDS_NL_LANGINFO
 #endif

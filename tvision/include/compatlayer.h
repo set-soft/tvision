@@ -246,6 +246,9 @@ typedef unsigned long  ulong;
   #ifdef Uses_dir
    #define Include_dir
   #endif
+  #ifdef Uses_nl_langinfo
+   #define Uses_CLY_nl_langinfo
+  #endif
  #endif
 
  // Win32/Cygwin -- OH!
@@ -296,6 +299,9 @@ typedef unsigned long  ulong;
   #ifdef Uses_dir
    #define Include_dir
    #define Include_direct
+  #endif
+  #ifdef Uses_nl_langinfo
+   #define Uses_CLY_nl_langinfo
   #endif
  #endif
  
@@ -351,6 +357,9 @@ typedef unsigned long  ulong;
   #endif
   #ifdef Uses_dir
    #define Include_dir
+  #endif
+  #ifdef Uses_nl_langinfo
+   #define Uses_CLY_nl_langinfo
   #endif
  #endif
  
@@ -413,6 +422,9 @@ typedef unsigned long  ulong;
   #ifdef Uses_dir
    #define Include_dir
   #endif
+  #ifdef Uses_nl_langinfo
+   #define Include_langinfo
+  #endif
  #endif
  
  // Generic UNIX system
@@ -469,6 +481,9 @@ typedef unsigned long  ulong;
   #endif
   #ifdef Uses_dir
    #define Include_dir
+  #endif
+  #ifdef Uses_nl_langinfo
+   #define Uses_CLY_nl_langinfo
   #endif
  #endif
 #endif // TVComp_GCC
@@ -591,6 +606,9 @@ typedef unsigned long  ulong;
  #endif
  #ifdef Uses_strstream
   #define Include_strstream
+ #endif
+ #ifdef Uses_nl_langinfo
+  #define Uses_CLY_nl_langinfo
  #endif
 
  #define CLY_OpenModeT      int
@@ -736,6 +754,9 @@ typedef unsigned long  ulong;
  #ifdef Uses_strstream
   #define Include_strstrea
  #endif
+ #ifdef Uses_nl_langinfo
+  #define Uses_CLY_nl_langinfo
+ #endif
 
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
@@ -876,6 +897,11 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 #ifdef Include_dir
  #include <dir.h>
 #endif
+
+#ifdef Include_langinfo
+ #include <langinfo.h>
+#endif
+
 
 #ifdef Include_ctype
  #include <ctype.h>
@@ -1030,6 +1056,35 @@ CFunc char *CLY_GetShellName(void);
 
 #ifdef Uses_ifsFileLength
 extern long CLY_ifsFileLength(ifstream &f);
+#endif
+
+/* Internal definition of nl_langinfo */
+#ifdef Uses_CLY_nl_langinfo
+typedef int nl_item;
+#define CURRENCY_SYMBOL   0 /*currency_symbol*/
+#define CRNCYSTR          0 /*currency_symbol*/    /*deprecated*/
+#define DECIMAL_POINT     1 /*decimal_point*/
+#define RADIXCHAR         1 /*decimal_point*/      /*deprecated*/
+#define GROUPING          2 /*grouping*/
+#define INT_CURR_SYMBOL   3 /*int_curr_symbol*/
+#define MON_DECIMAL_POINT 4 /*mon_decimal_point*/
+#define MON_GROUPING      5 /*mon_grouping*/
+#define NEGATIVE_SIGN     6 /*negative_sign*/
+#define POSITIVE_SIGN     7 /*positive_sign*/
+#define THOUSANDS_SEP     8 /*thousands_sep*/
+#define THOUSEP           8 /*thousands_sep*/      /*deprecated*/
+/*char*/
+#define FRAC_DIGITS       9 /*frac_digits*/
+#define INT_FRAC_DIGITS  10 /*int_frac_digits*/
+#define N_CS_PRECEDES    11 /*n_cs_precedes*/
+#define N_SEP_BY_SPACE   12 /*n_sep_by_space*/
+#define P_SIGN_POSN      13 /*p_sign_posn*/
+#define N_SIGN_POSN      14 /*n_sign_posn*/
+#define P_CS_PRECEDES    15 /*p_cs_precedes*/
+#define P_SEP_BY_SPACE   16 /*p_sep_by_space*/
+
+#define nl_langinfo CLY_nl_langinfo
+CFunc char *CLY_nl_langinfo(nl_item item);
 #endif
 
 #ifdef TV_BIG_ENDIAN
