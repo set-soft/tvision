@@ -1,5 +1,5 @@
 /* X11 keyboard routines.
-   Copyright (c) 2001 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2002 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
@@ -20,8 +20,22 @@
 #include <tv/x11/screen.h>
 #include <tv/x11/key.h>
 
-#include <stdio.h>
-#include <X11/XKBlib.h>
+#define x11AltMask     Mod1Mask // Alt for XFree86 and Solaris
+#ifdef TVOSf_Solaris
+ #define x11NumLockMask Mod3Mask // NumLock for Solaris
+#else
+ #define x11NumLockMask Mod2Mask // NumLock for XFree86
+#endif
+// What's that for Solaris? I couldn't get Scroll Lock to work on Solaris.
+#define x11ScrollLockMask Mod5Mask // ScrollLock for XFree86
+/*
+  In Solaris:
+  Mod2Mask is for Alt Graphic.
+  Mod4Mask is for the key with a diamond.
+
+  In XFree86:
+  Mod4Mask is for the Windows key.
+*/
 
 /*****************************************************************************
 
@@ -63,7 +77,7 @@ int TGKeyX11::getKeyEvent(int block)
        continue;
     if (event.type==KeyPress)
       {
-       printf("Key event 0x%04X\n",event.xkey.state);
+       //printf("Key event 0x%04X\n",event.xkey.state);
        lenKb=XmbLookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
        bufferKb[lenKb]=0;
        /*printf("Key event %d %s 0x%04X\n",lenKb,bufferKb,Key);*/
@@ -111,6 +125,8 @@ int TGKeyX11::getKeyEvent(int block)
                kbWaiting=1;
                return 1; /* Report the key */
           default:
+               /* If a modifier key is released when we don't have the focus
+                  we get unsynchronized, this code helps to keep in sync. */
                /* Extract the modifiers info: */
                if (event.xkey.state & ShiftMask)
                  {
@@ -136,7 +152,7 @@ int TGKeyX11::getKeyEvent(int block)
                   if (kbFlags & kbCtrlDown)
                      kbFlags&=~(kbLeftCtrlDown | kbRightCtrlDown | kbCtrlDown);
                  }
-               if (event.xkey.state & Mod1Mask) // Alt for XFree86
+               if (event.xkey.state & x11AltMask)
                  {
                   if (!(kbFlags & kbAltDown))
                      kbFlags|=kbAltDown | kbLeftAltDown;
@@ -144,16 +160,13 @@ int TGKeyX11::getKeyEvent(int block)
                else
                  {
                   if (kbFlags & kbAltDown)
-                    {
-                     printf("Quitando ALT que no es válido\n");
                      kbFlags&=~(kbLeftAltDown | kbRightAltDown | kbAltDown);
-                    }
                  }
-               if (event.xkey.state & Mod2Mask) // NumLock for XFree86
+               if (event.xkey.state & x11NumLockMask)
                   kbFlags|=kbNumLockDown;
                else
                   kbFlags&=~kbNumLockDown;
-               if (event.xkey.state & Mod5Mask) // ScrollLock for XFree86
+               if (event.xkey.state & x11ScrollLockMask)
                   kbFlags|=kbScrollLockDown;
                else
                   kbFlags&=~kbScrollLockDown;
