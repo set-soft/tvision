@@ -11,6 +11,10 @@ RHIDE. But currently it was rethinked from the start by Salvador E. Tropea.
 #if !defined( CONFIG_H_INCLUDED )
 #define CONFIG_H_INCLUDED
 
+// The result of sizeof is a size_t which is defined here.
+// So I think is better to include it.
+#include <stddef.h>
+#include <sys/types.h>
 #include <limits.h>
 
 const int eventQSize = 16;
@@ -27,7 +31,6 @@ const int maxFindStrLen    = 80;
 const int maxReplaceStrLen = 80;
 
 #include <tv/intl.h>
-#include <sys/types.h>
 
 #ifndef pid_t
 # define pid_t int

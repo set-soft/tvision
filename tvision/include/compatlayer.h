@@ -1113,6 +1113,7 @@ typedef unsigned long  ulong;
    // Only new.h exists
    #undef  NEW_HEADER
    #define NEW_HEADER      <new.h>
+   #undef Include_ioctl
  #endif
  #ifndef CLY_BooleanDefined
   #define CLY_BooleanDefined 1
