@@ -1,11 +1,8 @@
 /*
   Copyright (c) 2001 by Salvador E. Tropea and Laurynas Biveinis
   Covered by the GPL license.
-  This include disables MSS until yes_mss.h is included.
-  Needed to wrap uses of operators/functions defined as macros in MSS.
+  This include re-enable MSS after no_mss.h.
 */
-#ifdef REINCLUDE_MSS
-#define MSS
-#undef REINCLUDE_MSS
+#ifdef __MSS_H_REINCLUDE
 #include <mss.h>
 #endif
