@@ -135,6 +135,9 @@ public:
  static
  const  char  *(*getWindowTitle)(void);
  static int    (*setWindowTitle)(const char *name);
+ // SET: Roman Valyushenko propposed some mechanism no indicate the
+ // application is busy
+ static Boolean (*showBusyState)(Boolean state);
  // This should be called before initialization.
  // Isn't mandatory but helps some drivers.
  static void     setArgv(int aArgc, char **aArgv, char **aEnvir);
@@ -199,6 +202,8 @@ protected:
  static TVCodePage *codePage;
  // Initialization call back
  static TVScreenDriverDetectCallBack dCB;
+ // Are we showing signs of busy state?
+ static Boolean busyState;
  
  // Default behaviors
  static void        defaultClearScreen(uchar, uchar);
@@ -218,6 +223,7 @@ protected:
  static void        defaultGetDisPaletteColors(int from, int number, TScreenColor *colors);
  static int         defaultSetDisPaletteColors(int from, int number, TScreenColor *colors);
  static int         defaultSetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
+ static Boolean     defaultShowBusyState(Boolean state);
 
 private:
  // From original TV 2.0.

@@ -62,6 +62,8 @@ listvi   - That's a buggy example, if you like the idea you could fix it. I
 msgcls   - It shows the implementation of a message window.
 progba   - Implements a progress bar widget. Look how the author polls the
            buttons.
+           I also added to it TVCodePage, window title and busy state
+           examples.
 sdlg     - That's a very good (and usefull) example. It implements a
            scrollable/resizeble dialog box.
 sdlg2    - Same as sdlg but more advanced.

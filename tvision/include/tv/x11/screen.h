@@ -84,6 +84,7 @@ protected:
                        int fontCP=-1, int appCP=-1);
  static void   RestoreFonts();
  static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
+ static Boolean ShowBusyState(Boolean state);
  
 protected:
  // Blinking cursor emulation
@@ -112,6 +113,8 @@ protected:
  static void   DoResize(unsigned w, unsigned h);
  inline
  static void   drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr);
+ // Creates the mouse cursors
+ static Boolean createCursors();
 
  // Variables for this driver
  // Foreground and background colors
@@ -167,6 +170,10 @@ protected:
  static char  hideCursorWhenNoFocus;
  // Avoid resizing to a cells multiple if the WM doesn't follow our hints
  static char  dontResizeToCells;
+ // Busy cursor stuff
+ static Cursor busyCursor, leftPtr;
+ static char busyCursorMap[];
+ static char busyCursorMask[];
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen
