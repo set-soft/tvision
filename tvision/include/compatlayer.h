@@ -133,6 +133,11 @@ typedef unsigned long  ulong;
  #define Include_time 1
 #endif
 
+#ifdef Uses_signal
+ #undef  Include_signal
+ #define Include_signal 1
+#endif
+
 /* The following are unconditionally defined for all platforms so here I avoid
    redefinitions. */
 #undef CLY_Packed
@@ -1802,6 +1807,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_stdarg) && !defined(Included_stdarg)
  #define Included_stdarg 1
  #include <stdarg.h>
+#endif
+
+#if defined(Include_signal) && !defined(Included_signal)
+ #define Include_signal 1
+ #include <signal.h>
 #endif
 
 #if defined(Include_sys_utime) && !defined(Included_sys_utime)

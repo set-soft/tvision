@@ -22,13 +22,13 @@ Mouse reporting not disabled at exit!!!
 #define Uses_ctype
 #define Uses_ioctl
 #define Uses_TVCodePage
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
 #if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <fcntl.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

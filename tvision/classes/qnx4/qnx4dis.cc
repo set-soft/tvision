@@ -11,6 +11,7 @@
 #define Uses_TScreen
 #define Uses_string
 #define Uses_ioctl
+#define Uses_signal
 
 #include <tv.h>
 
@@ -26,7 +27,6 @@ extern "C"
 }
 
 #include <sys/dev.h>
-#include <signal.h>
 
 ushort TDisplayQNX4::ScreenSizeX=0;
 ushort TDisplayQNX4::ScreenSizeY=0;
