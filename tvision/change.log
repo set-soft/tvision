@@ -1,4 +1,10 @@
 $Log$
+-----------------------------------------------------------------------------
+v1.0.8 pre-release.
+
+Revision 1.97  1999/08/29 20:20:13  set
+* Changes for release.
+
 Revision 1.96  1999/08/26 00:32:19  set
 * Applied 7 more patches from Laurynas Biveinis <lauras@softhome.net>:
 * Fixed: validation bypassed when switching windows
