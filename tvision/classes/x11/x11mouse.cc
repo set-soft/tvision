@@ -3,7 +3,7 @@
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
-//#define Uses_stdio
+#define Uses_stdio
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TEvent
@@ -69,9 +69,15 @@ int THWMouseX11::getMouseEvent()
        else
        if (event.type==ButtonRelease)
           mouseButtons&=~buttonTranslate[event.xbutton.button & 0x7];
-       //printf("Button Press %d mouseButtons=%d\n",event.xbutton.button,mouseButtons);
-       //printf("Button Release %d (%d,%d) vs (%d,%d)\n",event.xbutton.button,event.xbutton.x/TScreenX11::fontW,event.xbutton.y/TScreenX11::fontH,mouseX,mouseY);
-       //printf("Motion Notify %d,%d\n",mouseX,mouseY);
+       if (0)
+         {
+          if (event.type==ButtonPress)
+             printf("Button Press %d mouseButtons=%d\n",event.xbutton.button,mouseButtons);
+          else if (event.type==ButtonRelease)
+             printf("Button Release %d (%d,%d) vs (%d,%d)\n",event.xbutton.button,event.xbutton.x/TScreenX11::fontW,event.xbutton.y/TScreenX11::fontH,mouseX,mouseY);
+          else
+             printf("Motion Notify %d,%d\n",mouseX,mouseY);
+         }
        SEMAPHORE_OFF;
        return 1;
       }
