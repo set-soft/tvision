@@ -1,7 +1,7 @@
 tvision/readme.txt
 tvision/copying*
 tvision/borland.txt
-tvision/djgpp/libtv.a
+tvision/djgpp/librhtv.a
 tvision/include/*.h
 tvision/djgpp/sacadeb.bat
 tvision/djgpp/tmp/delete.me
