@@ -20,6 +20,7 @@ const ushort
     fdReplaceButton = 0x0004,      // Put a Replace button in the dialog
     fdClearButton   = 0x0008,      // Put a Clear button in the dialog
     fdHelpButton    = 0x0010,      // Put a Help button in the dialog
+    fdSelectButton  = 0x0020,      // Put a Select button in the dialog
     fdNoLoadDir     = 0x0100;      // Do not load the current directory
 				   // contents into the dialog at Init.
 				   // This means you intend to change the

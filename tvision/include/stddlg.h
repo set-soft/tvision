@@ -24,6 +24,7 @@ const ushort
     cmFileInit    = 1004,   // Used by TFileDialog internally
     cmChangeDir   = 1005,   // Used by TChDirDialog internally
     cmRevert      = 1006,   // Used by TChDirDialog internally
+    cmFileSelect  = 1007,   // Returned from TFileDialog when Select pressed
 
 //  Messages
 
