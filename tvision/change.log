@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.285  2002/09/04 15:30:22  set
+* Fixed: TInputLine must let pass kbEnter and kbTab no matters what ASCII
+they contain. Currently when the input code page doesn't match the
+application code page Enter and Tab can contain ASCII values over 32.
+* Fixed: [Linux] OS code pages are detected not only when App and Scr
+aren't forced, this is computed when any of them is missing.
+
 Revision 2.284  2002/09/04 13:11:34  set
 * Added: Insert with middle button to the TinputLine class. It works for
 any OS supporting an auxiliar clipboard. Currently that's only for X11. To

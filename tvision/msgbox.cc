@@ -28,6 +28,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TLabel
 #define Uses_TCheckBoxes
 #define Uses_TSItem
+#define Uses_TScreen
 #include <tv.h>
 
 static const char *buttonName[] =
@@ -104,7 +105,9 @@ ushort messageBoxRect( const TRect &r, const char *msg, ushort aOptions )
 
     dialog->selectNext(False);
 
+    Boolean oldBusy=TScreen::showBusyState(False);
     ccode = TProgram::deskTop->execView(dialog);
+    TScreen::showBusyState(oldBusy);
     if (aOptions & mfDontShowAgain)
       {
        ushort val;

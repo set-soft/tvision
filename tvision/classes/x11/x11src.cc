@@ -1012,6 +1012,7 @@ TScreenX11::TScreenX11()
 
  if (createCursors())
     TScreen::showBusyState=ShowBusyState;
+
 }
 
 void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h)
@@ -1917,6 +1918,7 @@ Boolean TScreenX11::ShowBusyState(Boolean busyState)
     XDefineCursor(disp,mainWin,busyCursor);
  else
     XDefineCursor(disp,mainWin,leftPtr);
+ XFlush(disp); /* Show it right now */
  return defaultShowBusyState(busyState);
 }
 
