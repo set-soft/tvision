@@ -192,7 +192,7 @@ uchar *TVFontCollection::GetFont(int width, int height)
       }
    }
 
- if (!p)
+ if (!p || !p->font)
     return NULL;
 
  unsigned size=256*height*p->wBytes;
@@ -334,7 +334,9 @@ void TVFontCollection::CreateFont(void *item, void *arg)
 
 void TVFontCollection::SetCodePage(int id)
 {
- forEach(CreateFont,TVCodePage::GetTranslate(id));
+ ushort *map=TVCodePage::GetTranslate(id);
+ if (map)
+    forEach(CreateFont,map);
 }
 
 TVFontCollection::~TVFontCollection()
