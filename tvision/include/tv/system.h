@@ -42,9 +42,14 @@ const ushort evKeyboard  = 0x0010;
 const ushort evMessage   = 0xFF00;
 
 /* Mouse button state masks */
-
+/* SET: Note that I redefined them to make it coherent with most UNIX systems
+   where the left button is the first, the middle one the second, etc. But safe
+   code shouldn't rely on it. */
 const ushort mbLeftButton  = 0x01;
-const ushort mbRightButton = 0x02;
+const ushort mbMiddleButton= 0x02;
+const ushort mbRightButton = 0x04;
+const ushort mbButton4     = 0x08;
+const ushort mbButton5     = 0x10;
 
 #endif  // __EVENT_CODES
 
