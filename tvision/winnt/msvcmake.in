@@ -2,6 +2,8 @@
 # Modified for use with MS NMAKE 
 # Run: nmake -f Makefile.nmk all
 
+# Add here -IPATH_TO_MSVC_HEADERS (to both variables)
+# example: -ID:\MVS\VC98\Include
 CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
 CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
 
@@ -34,7 +36,7 @@ CXX=cl /nologo /TP
 OBJS=@TV_OBJS_MSVC@
 
 tvex: libtv.lib
-	$(CXX) $(CXXFLAGS) tvex.cc -link libtv.lib user32.lib
+	$(CXX) $(CXXFLAGS) tvex.cc -link libtv.lib user32.lib gdi32.lib
 
 {$(SRC1)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
