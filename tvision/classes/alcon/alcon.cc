@@ -454,6 +454,7 @@ void AlCon_PutChar(unsigned offset, uint16 value)
 void AlCon_UnDrawCursor(int *aFgCol)
 {
  ASSERT(_current_font);
+ ASSERT(aFgCol);
  unsigned offset = (cursorX - 1) + (cursorY - 1) * _screen_width;
  int bg=attrs[offset]>>4;
  int fg=attrs[offset] & 0xF;
@@ -467,12 +468,13 @@ void AlCon_IntCursor()
 {
  if (cursorEnabled)
    {
-    int aFg,prevMode;
+    int aFg;
     scare_mouse();
     cursorInScreen=!cursorInScreen;
+    AlCon_UnDrawCursor(&aFg);
     if (cursorInScreen)
       {
-       textout_ex(screen,&_cursorFont,"\x1",cursorPX,cursorPY,aFg,-1);
+       textout_ex(screen, &_cursorFont, "\x1", cursorPX,cursorPY, aFg, -1);
       }
     unscare_mouse();
    }
