@@ -63,9 +63,9 @@ protected:
     virtual void resizeData() {}
     TValidator * validator;
     void deleteSelect();
-private:
-
     Boolean canScroll( int delta );
+
+private:
     int mouseDelta( TEvent& event );
     int mousePos( TEvent& event );
 
