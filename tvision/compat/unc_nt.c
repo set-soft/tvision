@@ -19,17 +19,26 @@
 #endif
 
 static HMODULE hLib;
-static NET_API_STATUS NET_API_FUNCTION
-(*pNetShareGetInfo) (
+static NET_API_STATUS
+(NET_API_FUNCTION *pNetShareGetInfo) (
     IN  LPTSTR  servername,
     IN  LPTSTR  netname,
     IN  DWORD   level,
     OUT LPBYTE  *bufptr
     );
-static NET_API_STATUS NET_API_FUNCTION
-(*pNetApiBufferFree) (
+static NET_API_STATUS
+(NET_API_FUNCTION *pNetApiBufferFree) (
     IN LPVOID Buffer
     );
+
+/**[txh]********************************************************************
+
+  Description:
+  Internal helper to validate an UNC for Win NT (2k, XP, etc.).
+  
+  Return: 1 if that's an existing share.
+  
+***************************************************************************/
 
 int CLY_isUNC_helper_NT(const char* server, const char* share)
 {
@@ -41,30 +50,30 @@ int CLY_isUNC_helper_NT(const char* server, const char* share)
     
     if (!hLib)
     {
-    	hLib = LoadLibraryA("NETAPI32.DLL");
-    	if (!hLib)
-    	{
-    		ret = -1;
-    		goto clean;
-    	}
+        hLib = LoadLibraryA("NETAPI32.DLL");
+        if (!hLib)
+        {
+            ret = -1;
+            goto clean;
+        }
     }
     if (!pNetShareGetInfo)
     {
-    	pNetShareGetInfo = (void*)GetProcAddress(hLib, "NetShareGetInfo");
-    	if (!pNetShareGetInfo)
-    	{
-    		ret = -1;
-    		goto clean;
-    	}
+        pNetShareGetInfo = (void*)GetProcAddress(hLib, "NetShareGetInfo");
+        if (!pNetShareGetInfo)
+        {
+            ret = -1;
+            goto clean;
+        }
     }
     if (!pNetApiBufferFree)
     {
-    	pNetApiBufferFree = (void*)GetProcAddress(hLib, "NetApiBufferFree");
-    	if (!pNetApiBufferFree)
-    	{
-    		ret = -1;
-    		goto clean;
-    	}
+        pNetApiBufferFree = (void*)GetProcAddress(hLib, "NetApiBufferFree");
+        if (!pNetApiBufferFree)
+        {
+            ret = -1;
+            goto clean;
+        }
     }
 
     serverlen = strlen(server);
@@ -80,21 +89,21 @@ int CLY_isUNC_helper_NT(const char* server, const char* share)
     status = (*pNetShareGetInfo)(wserver, wshare, 1, (LPBYTE*)&pshi);
     if (status == ERROR_CALL_NOT_IMPLEMENTED)
     {
-    	ret = -1;
-    	goto clean;
+        ret = -1;
+        goto clean;
     }
     ret = (status == 0) && (pshi->shi1_type == STYPE_DISKTREE);
     (*pNetApiBufferFree)(pshi);
     return ret;
     
 clean:
-	if (hLib)
-	{
-		FreeLibrary(hLib);
-		hLib = NULL;
-		pNetShareGetInfo  = NULL;
-		pNetApiBufferFree = NULL;
-	}
-	return ret;
+    if (hLib)
+    {
+        FreeLibrary(hLib);
+        hLib = NULL;
+        pNetShareGetInfo  = NULL;
+        pNetApiBufferFree = NULL;
+    }
+    return ret;
 }
 #endif

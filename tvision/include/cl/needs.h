@@ -125,5 +125,6 @@ compiler.@p
  #define NEEDS_OPENDIR
  // Internal implementation is broken.
  #define NEEDS_SNPRINTF
+ #define NEEDS_UNC
 #endif
 

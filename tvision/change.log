@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.571  2004/09/21 20:55:12  set
+* Fixed: [Compilation] Problems with the examples when using
+MAINTAINER_MODE.
+.
 Revision 2.570  2004/09/20 14:47:45  set
 * Fixed: [gcc 3.x] Warning in compat/snprintf.c. Reported by Nicola Asuni.
 .
