@@ -17,6 +17,7 @@ extern "C" void blinkvideo(void);
 #include <pc.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <tv/dos/screen.h>
 
 //#define DEBUG
 #define TOSTDERR
@@ -33,8 +34,8 @@ extern "C" void blinkvideo(void);
 extern ushort user_mode;
 int blink_use_bios = 0;
 
-static int user_cursor_x;
-static int user_cursor_y;
+static unsigned int user_cursor_x;
+static unsigned int user_cursor_y;
 static void *user_screen = NULL;
 static int user_screen_size = 0;
 static int user_screen_len;
@@ -179,7 +180,7 @@ void rh_SaveVideo(int cols,int rows)
   {
     dbprintf("Saving text mode\n");
     screensize = cols*rows*2;
-    TDisplay::GetCursor(user_cursor_x,user_cursor_y);
+    TDisplay::getCursorPos(user_cursor_x,user_cursor_y);
     user_cursor = TScreen::getCursorType();
     user_mode = TScreen::getCrtMode();
     user_blink = getBlinkState();
@@ -235,7 +236,7 @@ void rh_RestoreVideo()
       setIntenseState();
     ScreenUpdate();
     TDisplay::setCursorType(user_cursor);
-    TDisplay::SetCursor(user_cursor_x,user_cursor_y);
+    TDisplay::setCursorPos(user_cursor_x,user_cursor_y);
     if (user_mode != 7 && save_text_palette)
       restore_palette();
     if (user_mode != 7)

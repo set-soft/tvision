@@ -59,6 +59,7 @@ private:
     static ushort autoDelay;
 
     friend class THWMouse;
+    friend class THWMouseDOS;
 };
 
 inline void TEvent::getMouseEvent()

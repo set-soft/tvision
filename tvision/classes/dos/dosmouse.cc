@@ -1,37 +1,27 @@
-Recien empiezo.
-1) Hay que ver como hacer para que void TEventQueue::mouseInt() (mouse.cc)
-llame a "draw_mouse" solo cuando es necesario:
- A) Que exista emulateMouse.
- B) Que la llame usando un puntero.
-2) Por todo TView usa TEventQueue::mouseIntFlag, es una chanchada.
-3) registerHandler asume que lo unico en la tierra que se puede registrar es
-lo que indica mouseIntInfo, es una garcha.
-4) La idea de lockeo de Robert es otra garcha:
-    _go32_dpmi_lock_code((void *)TEventQueue::mouseInt,500);
-    _go32_dpmi_lock_code((void *)CLY_Ticks,100);
-Deberia saber el largo. Y lo de Ticks si es tan sensitivo hay que moverlo
-aca.
+/**[txh]********************************************************************
 
-/*
- *      Turbo Vision - Version 2.0
- *
- *      Copyright (c) 1994 by Borland International
- *      All Rights Reserved.
- *
+  Copyright (c) 2001-2002 by Salvador E. Tropea
+  Based on code Copyright 1996-1998 by Robert H”hne.
 
-Modified by Robert H”hne to be used for RHIDE.
+  Description:
+  DOS mouse drivers. Completly reworked by Salvador E. Tropea.
+  Based on concepts by Jose Angel Sanchez Caso (JASC) and code by Robert
+H”hne.
+  Important:
+  1) The registerHandler member can only register TEventQueue::mouseInt.
+  2) The code lock for TEventQueue::mouseInt and CLY_Ticks is fuzzy, I
+     incressed the locked area to 1 Kb but it should adjusted.
+  
+***************************************************************************/
 
- *
- *
- */
 #include <tv/configtv.h>
 
 #ifdef TVCompf_djgpp
 
-#include <stdlib.h>
+#define Uses_stdlib
+#define Uses_stdio
 #include <conio.h>
 #include <dos.h>
-#include <stdio.h>
 
 #define Uses_TEvent
 #define Uses_TEventQueue
@@ -41,7 +31,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <sys/farptr.h>
 #include <go32.h>
 
-#include <dosmouse.h>
+#include <tv/dos/mouse.h>
 
 #define REGS       __dpmi_regs
 #define INTR(nr,r) __dpmi_int(nr,&r)
@@ -50,61 +40,153 @@ Modified by Robert H”hne to be used for RHIDE.
 #define CX r.x.cx
 #define DX r.x.dx
 #define ES r.x.es
+#define LD(x) _go32_dpmi_lock_data((void *)&x,sizeof(x))
+//#define SHOW_COUNT() ((short)(_farpeekw(mouse_buffer_selector,118)))
 
-static char  THWMouseDOS::useMouseHandler=1;
-static ulong THWMouseDOS::screenBase=0xB8000;
+// MS-Mouse services: [Thanks to Ralf Brown]
+#define RESET_DRIVER_AND_READ_STATUS       0x0000
+// MS-Mouse v1.0+ services
+#define SHOW_MOUSE_CURSOR                  0x0001
+#define HIDE_MOUSE_CURSOR                  0x0002
+#define RETURN_POSITION_AND_BUTTON_STATUS  0x0003
+#define POSITION_MOUSE_CURSOR              0x0004
+#define DEFINE_HORIZONTAL_CURSOR_RANGE     0x0007
+#define DEFINE_VERTICAL_CURSOR_RANGE       0x0008
+// MS-Mouse v3.0+ services
+#define EXCHANGE_INTERRUPT_SUBROUTINES     0x0014
+// MS-Mouse v6.0+ services
+#define RETURN_DRIVER_STORAGE_REQUIREMENTS 0x0015
+#define SAVE_DRIVER_STATE                  0x0016
+#define RESTORE_DRIVER_STATE               0x0017
+#define SET_ALTERNATE_MOUSE_USER_HANDLER   0x0018
 
-static unsigned short mouse_char;
-static int last_x = 0,last_y = 0;
-static int cols;
-static int visible = 0;
+char   THWMouseDOS::useMouseHandler=1;
+char   THWMouseDOS::emulateMouse=0;
+uchar  THWMouseDOS::myButtonCount;
+ulong  THWMouseDOS::screenBase=0xB8000;
+ushort THWMouseDOS::mouseChar;
+int    THWMouseDOS::lastX=0,
+       THWMouseDOS::lastY=0;
+int    THWMouseDOS::cols;
+MouseEventType
+       THWMouseDOS::intEvent;
+int    THWMouseDOS::bufferSegment;
+int    THWMouseDOS::bufferSelector;
+int    THWMouseDOS::bufferSize;
+int    THWMouseDOS::bufferAllocated=0;
+int    THWMouseDOS::myBufferSegment;
+int    THWMouseDOS::myBufferSelector;
+int    THWMouseDOS::myBufferSize;
+int    THWMouseDOS::myBufferAllocated=0;
 
-#define SC_BASE (dual_display ? 0xb0000 : ScreenPrimary)
+// Information for the Real Mode CallBack (RMCB)
+static _go32_dpmi_seginfo mouseIntInfo;
+// x86 registers values stored by the RMCB
+static _go32_dpmi_registers mouseIntRegs;
+
+/*****************************************************************************
+  Functions in this area are called asynchronically on interrupts using an
+  RMCB. For this reason they must be locked avoiding swap outs of their pages.
+  The functions are delimited by two empty functions that just mark the range.
+*****************************************************************************/
 
 static volatile
-void get_mouse_char()
+void StartOfLockedFunctions()
 {
-  mouse_char = _farpeekw(_dos_ds,screenBase+(last_y*cols+last_x)*2);
 }
 
-static volatile
-void set_mouse_char()
-{
-  unsigned short c = mouse_char ^ 0x7F00;
-  _farpokew(_dos_ds,screenBase+(last_y*cols+last_x)*2,c);
-}
-
-static volatile
-void reset_mouse_char()
-{
-  _farpokew(_dos_ds,screenBase+(last_y*cols+last_x)*2,mouse_char);
-}
-
-static volatile
-void show_mouse_char()
-{
-  if (!visible) return;
-  get_mouse_char();
-  set_mouse_char();
-}
-
-// Aca hay que tener 2 rutinas que dependan de emulateMouse
 volatile
-int draw_mouse(int x,int y)
+void THWMouseDOS::getMouseChar()
 {
-  if (x != last_x || y != last_y)
-  {
-    if (!emulateMouse) return 1;
-    if (visible) reset_mouse_char();
-    last_x = x;
-    last_y = y;
-    show_mouse_char();
-    return 1;
-  }
-  return 0;
-}   
+ mouseChar=_farpeekw(_dos_ds,screenBase+(lastY*cols+lastX)*2);
+}
 
-_go32_dpmi_seginfo mouseIntInfo;
+volatile
+void THWMouseDOS::setMouseChar()
+{
+ unsigned short c=mouseChar^0x7F00;
+ _farpokew(_dos_ds,screenBase+(lastY*cols+lastX)*2,c);
+}
+
+volatile
+void THWMouseDOS::resetMouseChar()
+{
+ _farpokew(_dos_ds,screenBase+(lastY*cols+lastX)*2,mouseChar);
+}
+
+volatile
+void THWMouseDOS::showMouseChar()
+{
+ if (!visible) return;
+ getMouseChar();
+ setMouseChar();
+}
+
+int THWMouseDOS::DrawMouseEmulate(int x, int y)
+{
+ if (x!=lastX || y!=lastY)
+   {
+    if (visible)
+      {
+       drawCounter++;
+       resetMouseChar();
+      }
+    lastX=x;
+    lastY=y;
+    showMouseChar();
+    return 1;
+   }
+ return 0;
+}
+
+int THWMouseDOS::getRMCB_InfoDraw(int &buttonPress)
+{
+ int x,y;
+
+ intEvent.doubleClick=False;
+ intEvent.buttons    =mouseIntRegs.h.bl;
+ x=intEvent.where.x  =(mouseIntRegs.x.cx>>3) & 0xFF;
+ y=intEvent.where.y  =(mouseIntRegs.x.dx>>3) & 0xFF;
+ buttonPress          =mouseIntRegs.x.ax & 0x1e;
+ return drawMouse(x,y);
+}
+
+static volatile
+void EndOfLockedFunctions()
+{
+}
+
+/*****************************************************************************
+ End of locked functions
+*****************************************************************************/
+
+int THWMouseDOS::DrawMouseDummy(int x, int y)
+{
+ if (x!=lastX || y!=lastY)
+   {
+    lastX=x;
+    lastY=y;
+    return 1;
+   }
+ return 0;
+}
+
+void THWMouseDOS::setEmulation(int emulate)
+{
+ emulateMouse=emulate;
+ if (emulate)
+   {
+    THWMouse::Show=ShowEmulate;
+    THWMouse::Hide=HideEmulate;
+    THWMouse::drawMouse=DrawMouseEmulate;
+   }
+ else
+   {
+    THWMouse::Show=ShowDrv;
+    THWMouse::Hide=HideDrv;
+    THWMouse::drawMouse=DrawMouseDummy;
+   }
+}
 
 #if 1
 // SET: I think we should really test it, Robert is using a call of the v3.0+
@@ -112,31 +194,31 @@ _go32_dpmi_seginfo mouseIntInfo;
 // same for both? My doubt is that the v6.0+ is for *alternate* handler and
 // supports upto 3 different.
 // Todo: it never checks the return value!!!
-void THWMouse::registerHandler( unsigned mask, void (*func)() )
+void THWMouseDOS::RegisterHandler(unsigned mask, void (*func)())
 {
-  REGS r;
-  static int oldes = 0;
-  static int olddx = 0;
-  
-  if (func == NULL)
-  { // INT 33 - MS MOUSE v6.0+ - SET ALTERNATE MOUSE USER HANDLER
-    DX = olddx;
-    ES = oldes;
-    AX = 0x0018;
-    CX = mask;
+ REGS r;
+ static int oldes=0;
+ static int olddx=0;
+ 
+ if (func==NULL)
+   { // INT 33 - MS MOUSE v6.0+ - SET ALTERNATE MOUSE USER HANDLER
+    DX=olddx;
+    ES=oldes;
+    AX=SET_ALTERNATE_MOUSE_USER_HANDLER;
+    CX=mask;
     INTR(0x33,r);
     return;
-  }
-  else
-  { // INT 33 - MS MOUSE v3.0+ - EXCHANGE INTERRUPT SUBROUTINES
-    DX = mouseIntInfo.rm_offset;
-    ES = mouseIntInfo.rm_segment;
-    AX = 0x0014;
-    CX = mask;
+   }
+ else
+   { // INT 33 - MS MOUSE v3.0+ - EXCHANGE INTERRUPT SUBROUTINES
+    DX=mouseIntInfo.rm_offset;
+    ES=mouseIntInfo.rm_segment;
+    AX=EXCHANGE_INTERRUPT_SUBROUTINES;
+    CX=mask;
     INTR(0x33,r);
-    oldes = ES;
-    olddx = DX;
-  }
+    oldes=ES;
+    olddx=DX;
+   }
 }
 #else
 // SET: I moved it here to keep the old routine and clean the currently used.
@@ -144,163 +226,224 @@ void THWMouse::registerHandler( unsigned mask, void (*func)() )
 // any old mouse handler. Looks like v1.0 didn't implement a way to get the
 // current handler, not strange since that's a Microsoft spec. So it kills
 // the mouse of the debuggy. I think it was the reason.
-void THWMouse::registerHandler( unsigned mask, void (*func)() )
+void THWMouseDOS::RegisterHandler( unsigned mask, void (*func)() )
 {
-  REGS r;
-  if (func == NULL)
-  { // MS MOUSE v1.0+ - DEFINE INTERRUPT SUBROUTINE PARAMETERS
-    DX = ES = 0;
-    AX = 0x000C;
-    CX = mask;
+ REGS r;
+ if (func == NULL)
+   { // MS MOUSE v1.0+ - DEFINE INTERRUPT SUBROUTINE PARAMETERS
+    DX=ES=0;
+    AX=0x000C;
+    CX=mask;
     INTR(0x33,r);
     return;
-  }
-  else
-  { // MS MOUSE v1.0+ - DEFINE INTERRUPT SUBROUTINE PARAMETERS
-    DX = mouseIntInfo.rm_offset;
-    ES = mouseIntInfo.rm_segment;
-    AX = 0x000C;
-    CX = mask;
+   }
+ else
+   { // MS MOUSE v1.0+ - DEFINE INTERRUPT SUBROUTINE PARAMETERS
+    DX=mouseIntInfo.rm_offset;
+    ES=mouseIntInfo.rm_segment;
+    AX=0x000C;
+    CX=mask;
     INTR(0x33,r);
-  }
+   }
 }
 #endif
 
-extern _go32_dpmi_registers mouseIntRegs;
-extern MouseEventType tempMouse;
-
-static ushort mx = 0;
-static ushort my = 0;
-
-#define LD(x) _go32_dpmi_lock_data(&x,sizeof(x))
-
-static int mouse_buffer_segment;
-static int mouse_buffer_selector;
-static int mouse_buffer_size;
-static int mouse_buffer_allocated = 0;
-
-#define SHOW_COUNT() ((short)(_farpeekw(mouse_buffer_selector,118)))
-
-static void restore_mouse_state()
+void THWMouseDOS::biosRestoreState()
 {
-  REGS r;
-  if (mouse_buffer_allocated)
-  {
-    AX = 0x0017;
-    BX = mouse_buffer_size;
-    ES = mouse_buffer_segment;
-    DX = 0;
+ REGS r;
+ if (bufferAllocated)
+   {
+    AX=RESTORE_DRIVER_STATE;
+    BX=bufferSize;
+    ES=bufferSegment;
+    DX=0;
     INTR(0x33,r);
-  }
+   }
 }
 
-static void save_mouse_state()
+int THWMouseDOS::biosRestoreMyState()
 {
-  REGS r;
-  if (!mouse_buffer_allocated)
-  {
-    AX = 0x0015;
-    INTR(0x33,r);
-    mouse_buffer_size = BX;
-    mouse_buffer_segment = __dpmi_allocate_dos_memory(
-                             (mouse_buffer_size+15)>>4,
-                             &mouse_buffer_selector);
-    if (mouse_buffer_segment != -1)
-      mouse_buffer_allocated = 1;
-  }
-  if (mouse_buffer_allocated)
-  {
-    AX = 0x0016;
-    BX = mouse_buffer_size;
-    ES = mouse_buffer_segment;
-    DX = 0;
-    INTR(0x33,r);
-  }
-}
-
-static int my_mouse_buffer_segment;
-static int my_mouse_buffer_selector;
-static int my_mouse_buffer_size;
-static int my_mouse_buffer_allocated = 0;
-static int my_buttonCount;
-static int mouse_is_shown = 0;
-
-static int restore_my_mouse_state()
-{
-  REGS r;
-  if (my_mouse_buffer_allocated)
-  {
-    AX = 0x0017;
-    BX = my_mouse_buffer_size;
-    ES = my_mouse_buffer_segment;
-    DX = 0;
+ REGS r;
+ if (myBufferAllocated)
+   {
+    AX=RESTORE_DRIVER_STATE;
+    BX=myBufferSize;
+    ES=myBufferSegment;
+    DX=0;
     INTR(0x33,r);
     return 1;
-  }
-  return 0;
+   }
+ return 0;
 }
 
-static void save_my_mouse_state()
+void THWMouseDOS::biosSaveState()
 {
-  REGS r;
-  if (!my_mouse_buffer_allocated)
-  {
-    AX = 0x0015;
+ REGS r;
+ if (!bufferAllocated)
+   {
+    AX=RETURN_DRIVER_STORAGE_REQUIREMENTS;
     INTR(0x33,r);
-    my_mouse_buffer_size = BX;
-    my_mouse_buffer_segment = __dpmi_allocate_dos_memory(
-                             (my_mouse_buffer_size+15)>>4,
-                             &my_mouse_buffer_selector);
-    if (my_mouse_buffer_segment != -1)
-      my_mouse_buffer_allocated = 1;
-  }
-  if (my_mouse_buffer_allocated)
-  {
-    AX = 0x0016;
-    BX = my_mouse_buffer_size;
-    ES = my_mouse_buffer_segment;
-    DX = 0;
+    bufferSize=BX;
+    bufferSegment=__dpmi_allocate_dos_memory((bufferSize+15)>>4,
+                  &bufferSelector);
+    if (bufferSegment!=-1)
+       bufferAllocated = 1;
+   }
+ if (bufferAllocated)
+   {
+    AX=SAVE_DRIVER_STATE;
+    BX=bufferSize;
+    ES=bufferSegment;
+    DX=0;
     INTR(0x33,r);
-  }
+   }
 }
 
-void THWMouse::resume()
+void THWMouseDOS::biosSaveMyState()
 {
-  REGS r;
-  save_mouse_state();
-  buttonCount = my_buttonCount;
-  if (!restore_my_mouse_state())
-  {
-    AX = 4;
-    CX = mx;
-    DX = my;
+ REGS r;
+ if (!myBufferAllocated)
+   {
+    AX=RETURN_DRIVER_STORAGE_REQUIREMENTS;
     INTR(0x33,r);
-  }
-  show();
+    myBufferSize=BX;
+    myBufferSegment=__dpmi_allocate_dos_memory((myBufferSize+15)>>4,
+                    &myBufferSelector);
+    if (myBufferSegment!=-1)
+       myBufferAllocated = 1;
+   }
+ if (myBufferAllocated)
+   {
+    AX=SAVE_DRIVER_STATE;
+    BX=myBufferSize;
+    ES=myBufferSegment;
+    DX=0;
+    INTR(0x33,r);
+   }
 }
 
-THWMouse::THWMouse()
+void THWMouseDOS::Resume()
 {
-  char *OS=getenv("OS");
-  // SET: NT reacts crashing when we use the mouse handler, don't know why
-  // and personally don't care, so just disable the handler.
-  if (OS && strcmp(OS,"Windows_NT")==0)
-     useMouseHandler=0;
-  REGS r;
-  AX = 0;
-  INTR(0x33,r);
-  if (!AX)
-      return;
-  my_buttonCount = buttonCount = BX & 0x00ff;
-  if (handlerInstalled == False && useMouseHandler)
-  {
+ REGS r;
+ biosSaveState();
+ buttonCount=myButtonCount;
+ if (!biosRestoreMyState())
+   {// Default to x=y=0
+    AX=POSITION_MOUSE_CURSOR;
+    CX=0;
+    DX=0;
+    INTR(0x33,r);
+   }
+}
+
+void THWMouseDOS::Suspend()
+{
+ biosSaveMyState();
+ biosRestoreState();
+}
+
+THWMouseDOS::~THWMouseDOS()
+{
+ if (handlerInstalled==True)
+   {
+    registerHandler(0xFFFF,0);
+    _go32_dpmi_free_real_mode_callback(&mouseIntInfo);
+   }
+}
+
+void THWMouseDOS::ShowDrv()
+{
+ REGS r;
+ visible=1;
+ AX=SHOW_MOUSE_CURSOR;
+ INTR(0x33,r);
+}
+
+void THWMouseDOS::HideDrv()
+{
+ REGS r;
+ visible=0;
+ AX=HIDE_MOUSE_CURSOR;
+ INTR(0x33,r);
+}
+
+void THWMouseDOS::ShowEmulate()
+{
+ visible=1;
+ showMouseChar();
+}
+
+void THWMouseDOS::HideEmulate()
+{
+ visible=0;
+ resetMouseChar();
+}
+
+void THWMouseDOS::SetRange(ushort rx, ushort ry)
+{
+ REGS r;
+ // Used internally to draw the mouse
+ cols=(int)rx+1;
+ // Communicate it to the driver. Needed for video modes where the driver
+ // fails to know the screen size.
+ DX=rx<<3;
+ CX=0;
+ AX=DEFINE_HORIZONTAL_CURSOR_RANGE;
+ INTR(0x33,r);
+ DX=ry<<3;
+ CX=0;
+ AX=DEFINE_VERTICAL_CURSOR_RANGE;
+ INTR(0x33,r);
+}
+
+void THWMouseDOS::GetEvent(MouseEventType &me)
+{
+ REGS r;
+ int x,y;
+
+ AX=RETURN_POSITION_AND_BUTTON_STATUS;
+ INTR(0x33,r);
+ me.buttons=BX & 0x00ff;
+ x=me.where.x=(CX >> 3) & 0xFF;
+ y=me.where.y=(DX >> 3) & 0xFF;
+ me.doubleClick=False;
+ drawMouse(x,y);
+}
+
+void THWMouseDOS::Init()
+{
+ char *OS=getenv("OS");
+ // SET: NT reacts crashing when we use the mouse handler, don't know why
+ // and personally don't care, so just disable the handler.
+ if (OS && strcmp(OS,"Windows_NT")==0)
+    useMouseHandler=0;
+
+ REGS r;
+ AX=RESET_DRIVER_AND_READ_STATUS;
+ INTR(0x33,r);
+ if (!AX)
+    return;
+ myButtonCount=buttonCount=BX & 0x00ff;
+
+ // Ok mouse is present, set the driver functions
+ setEmulation(emulateMouse);
+ THWMouse::setRange=SetRange;
+ THWMouse::GetEvent=GetEvent;
+ THWMouse::registerHandler=RegisterHandler;
+ THWMouse::Suspend=Suspend;
+ THWMouse::Resume=Resume;
+ 
+ screenBase=ScreenPrimary;
+ if (handlerInstalled==False && useMouseHandler)
+   {// Lock variables
     LD(mouseIntRegs);
-    LD(tempMouse);
-    LD(mouse_char);
-    LD(last_x);
-    LD(last_y);
+    LD(intEvent);
+    LD(mouseChar);
+    LD(lastX);
+    LD(lastY);
     LD(visible);
-    LD(emulateMouse);
+    //LD(emulateMouse);
+    LD(drawCounter);
     LD(cols);
     LD(screenBase);
     LD(TEventQueue::eventCount);
@@ -309,153 +452,19 @@ THWMouse::THWMouse()
     LD(TEventQueue::mouseIntFlag);
     LD(TEventQueue::eventQTail);
     _go32_dpmi_lock_data(TEventQueue::eventQueue,eventQSize*sizeof(TEvent));
-    _go32_dpmi_lock_code((void*)get_mouse_char,(int)THWMouse::registerHandler -
-                         (int)get_mouse_char);
-    _go32_dpmi_lock_code((void *)TEventQueue::mouseInt,500);
-    _go32_dpmi_lock_code((void *)CLY_Ticks,100);
-    mouseIntInfo.pm_offset = (int)TEventQueue::mouseInt;
+    // Lock functions
+    _go32_dpmi_lock_code((void*)StartOfLockedFunctions,
+                         (int)EndOfLockedFunctions-(int)StartOfLockedFunctions);
+    _go32_dpmi_lock_code((void *)TEventQueue::mouseInt,1024);
+    _go32_dpmi_lock_code((void *)CLY_Ticks,1024);
+    // Setup the RMCB
+    mouseIntInfo.pm_offset=(int)TEventQueue::mouseInt;
     _go32_dpmi_allocate_real_mode_callback_retf(&mouseIntInfo,&mouseIntRegs);
-    handlerInstalled = True;
-  }
-  resume();
-  hide();
-  if (handlerInstalled == True)
-    registerHandler( 0xFFFF, TEventQueue::mouseInt );
+    handlerInstalled=True;
+   }
+ if (handlerInstalled==True)
+    registerHandler(0xFFFF,TEventQueue::mouseInt);
 }
-
-THWMouse::~THWMouse()
-{
-  suspend();
-  if (handlerInstalled == True)
-  {
-    registerHandler( 0xFFFF, 0 );
-    // SET: to avoid a leak reported.
-    _go32_dpmi_free_real_mode_callback(&mouseIntInfo);
-  }
-}
-
-void THWMouse::suspend()
-{
-  if (!present()) return;
-  hide();
-  save_my_mouse_state();
-  my_buttonCount = buttonCount;
-  buttonCount = 0;
-  restore_mouse_state();
-}
-
-void THWMouse::show()
-{
-  if (!present()) return;
-  if (mouse_is_shown) return;
-  mouse_is_shown = 1;
-  if (!emulateMouse)
-  {
-    REGS r;
-    if ( present() )
-    {
-      AX = 1;
-      INTR(0x33,r);
-    }
-  }
-  else
-  {
-    if (!present() || visible) return;
-    visible = 1;
-    show_mouse_char();
-  }
-}
-
-void THWMouse::hide()
-{
-  if (!present()) return;
-  if (!mouse_is_shown) return;
-  mouse_is_shown = 0;
-  if (!emulateMouse)
-  {
-    REGS r;
-    if ( buttonCount != 0 )
-    {
-      AX = 2;
-      INTR(0x33,r);
-    }
-  }
-  else
-  {
-    if (!present() || !visible) return;
-    visible = 0;
-    reset_mouse_char();
-  }
-}
-
-void THWMouse::setRange( ushort rx, ushort ry )
-{
-    cols = (int)rx+1;
-    REGS r;
-    DX = rx << 3;
-    CX = 0;
-    AX = 7;
-    INTR(0x33,r);
-    DX = ry << 3;
-    CX = 0;
-    AX = 8;
-    INTR(0x33,r);
-}
-
-static int m_x=0,m_y=0,m_b=0;
-static int forced=0;
-
-/**[txh]********************************************************************
-
-  Description:
-  It forces the state of the mouse externally, the next call to getEvent
-will return this values instead of values from the mouse driver. That's
-used to simuate the mouse with other events like keyboard. (SET)
-
-***************************************************************************/
-
-void THWMouse::forceEvent(int x, int y, int buttons)
-{
- m_x=x; m_y=y; m_b=buttons;
- forced=1;
-}
-
-void THWMouse::getEvent( MouseEventType& me )
-{
-  if (forced)
-  {
-    forced=0;
-    me.where.x = m_x;
-    me.where.y = m_y;
-    me.doubleClick = False;
-    me.buttons = m_b;
-    TEventQueue::curMouse = me;
-    draw_mouse(m_x,m_y);
-  }
-  else
-  if (handlerInstalled == True)
-  {
-    me = TEventQueue::curMouse;
-  }
-  else
-  {
-    REGS r;
-    int x,y;
-    AX = 3;
-    INTR(0x33,r);
-    me.buttons = BX & 0x00ff;
-    x = me.where.x = (CX >> 3) & 0xFF;
-    y = me.where.y = (DX >> 3) & 0xFF;
-    me.doubleClick = False;
-    // curMouse must be set, because it used by other functions
-    TEventQueue::curMouse = me;
-    draw_mouse(x,y);
-  }
-}
-
-::Init
-screenBase=ScreenPrimary;
-
 
 #endif // DJGPP
 

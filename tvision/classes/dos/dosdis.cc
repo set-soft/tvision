@@ -1,8 +1,16 @@
-/*
+/**[txh]********************************************************************
+
+  DOS Display (TDisplayDOS) functions.
+
   Copyright (c) 1996-1998 by Robert H”hne.
-  Copyright (c) 1998-2001 by Salvador E. Tropea (SET)
+  Copyright (c) 1998-2002 by Salvador E. Tropea (SET)
   Tweaked video modes by Christian Domp <chrisd@europeonline.com>
-*/
+
+  Description:
+  This module implements the low level DOS screen access.
+  
+***************************************************************************/
+
 #include <tv/configtv.h>
 
 #ifdef TVCompf_djgpp
@@ -23,52 +31,91 @@
 #include <errno.h>
 #include <sys/movedata.h>
 
-#include <tv/dosscr.h>
+#define TSCREEN_DEFINE_REGISTERS
+#include <tv/dos/screen.h>
+#include <tv/dos/mouse.h>
 
-#define r (rDisplay)
-#define AL (r.h.al)
-#define BL (r.h.bl)
-#define DL (r.h.dl)
-#define AH (r.h.ah)
-#define BH (r.h.bh)
-#define DH (r.h.dh)
-#define AX (r.x.ax)
-#define BX (r.x.bx)
-#define CX (r.x.cx)
-#define DX (r.x.dx)
 // In early versions Robert experimented with pages now it isn't used but
 // some simple future driver could do it.
 #define GetPage() 0
 
 // x86 registers used for BIOS calls
-static __dpmi_regs TDisplayDOS::rDisplay;
+__dpmi_regs TDisplayDOS::rDisplay;
 // Numbers of lines of each character (height in pixels)
-static unsigned    TDisplayDOS::charLines=16;
+unsigned    TDisplayDOS::charLines=16;
 // Flag to indicate if the video mode should ask the mouse class to draw
 // the cursor instead of letting the OS mouse driver do it.
-static char        TDisplayDOS::emulateMouse=0;
+char        TDisplayDOS::emulateMouse=0;
+
+// Video BIOS services
+#define SET_TEXT_MODE_CURSOR_SHAPE   0x01
+#define SET_CURSOR_POSITION          0x02
+#define GET_CURSOR_POSITION_AND_SIZE 0x03
+
+const int crtIndex=0x3B4,crtData=0x3B5;
+const int mdaCursorLocationHigh=0x0E,mdaCursorLocationLow=0x0F;
+const int mdaCursorStart=0x0A,mdaCursorEnd=0x0B;
+
+static inline
+unsigned char InMDA(unsigned char i)
+{
+ outportb(crtIndex,i);
+ return inportb(crtData);
+}
+
+static inline
+void OutMDA(unsigned char i,unsigned char b)
+{
+ outportb(crtIndex,i);
+ outportb(crtData,b);
+}
 
 void TDisplayDOS::SetCursorPos(unsigned x, unsigned y)
 {
- DH=y;
- DL=x;
- BH=GetPage();
- AH=2;
- videoInt();
+ if (dual_display || TScreenDOS::screenMode==7)
+   {
+    unsigned loc=y*80+x;
+    OutMDA(mdaCursorLocationHigh,loc>>8);
+    OutMDA(mdaCursorLocationLow ,loc & 0xFF);
+   }
+ else
+   {
+    DH=y;
+    DL=x;
+    BH=GetPage();
+    AH=SET_CURSOR_POSITION;
+    videoInt();
+   }
 }
 
 void TDisplayDOS::GetCursorPos(unsigned &x, unsigned &y)
 {
- AH=3;
- BH=GetPage();
- videoInt();
- y=DH;
- x=DL;
+ if (dual_display)
+   {
+    unsigned pos=(InMDA(mdaCursorLocationHigh)<<8) |
+                 InMDA(mdaCursorLocationLow);
+    y=pos/80;
+    x=pos%80;
+   }
+ else
+   {
+    AH=GET_CURSOR_POSITION_AND_SIZE;
+    BH=GetPage();
+    videoInt();
+    y=DH;
+    x=DL;
+   }
 }
 
 void TDisplayDOS::GetCursorShape(unsigned &start, unsigned &end)
 {
- AH=3;
+ if (dual_display || TScreenDOS::screenMode==7)
+   {
+    start=InMDA(mdaCursorStart)*100/charLines;
+    end  =InMDA(mdaCursorEnd)*100/charLines;
+    return;
+   }
+ AH=GET_CURSOR_POSITION_AND_SIZE;
  BH=GetPage();
  videoInt();
 
@@ -84,14 +131,31 @@ void TDisplayDOS::GetCursorShape(unsigned &start, unsigned &end)
 
 void TDisplayDOS::SetCursorShape(unsigned start, unsigned end)
 {
- AH=1;
+ unsigned lStart=(start*charLines+50)/100;
+ unsigned lEnd=(end*charLines+50)/100;
+
+ if (dual_display || TScreenDOS::screenMode==7)
+   {
+    if (start<=end) // cursor off
+      {// Is that really needed?
+       OutMDA(mdaCursorStart,0x01);
+       OutMDA(mdaCursorEnd,0x00);
+      }
+    else
+     {
+      OutMDA(mdaCursorStart,lStart);
+      OutMDA(mdaCursorEnd,lEnd);
+     }
+    return;
+   }
+ AH=SET_TEXT_MODE_CURSOR_SHAPE;
  BH=GetPage();
- if (start<=end)
+ if (start>=end)
     CX=0x2000;
  else
    {
-    CH=(start*charLines+50)/100;
-    CL=(end*charLines+50)/100;
+    CH=lStart;
+    CL=lEnd;
    }
  videoInt();
 }
@@ -104,12 +168,12 @@ void TDisplayDOS::ClearScreen(uchar , uchar)
 
 ushort TDisplayDOS::GetRows()
 {
- return ScreenRows();
+ return dual_display ? 25 : ScreenRows();
 }
 
 ushort TDisplayDOS::GetCols()
 {
- return ScreenCols();
+ return dual_display ? 80 : ScreenCols();
 }
 
 ushort TDisplayDOS::GetCrtMode()
@@ -388,14 +452,14 @@ void TDisplayDOS::setExtendedMode(int mode)
          charLines=14;
          break;
     case 2: // 35 lines EGA or VGA
-         scan_lines=scl350
+         scan_lines=scl350;
          charLines=10;
          break;
     case 3: // 40 lines VGA only
          charLines=10;
          break;
     case 4: // 43 lines EGA or VGA
-         scan_lines=scl350
+         scan_lines=scl350;
          charLines=8;
          break;
     case 5: // 50 lines VGA only
@@ -508,7 +572,7 @@ void TDisplayDOS::SetCrtMode(ushort mode)
 }
 
 
-void TDisplayDOS::SetCrtMode(char *command)
+void TDisplayDOS::SetCrtModeExt(char *command)
 {
  // Should we hide the mouse here? [Added TV 2.0.0]
  if (TMouse::present())
@@ -539,7 +603,7 @@ void TDisplayDOS::SetCrtMode(char *command)
 
 ***************************************************************************/
 
-char *TDisplayDOS::GetWindowTitle(void)
+const char *TDisplayDOS::GetWindowTitle(void)
 {
  // Winoldap Get Title.
  AX=0x168E;
@@ -598,6 +662,24 @@ int TDisplayDOS::SetWindowTitle(const char *name)
 
  return AX;
 }
+
+void TDisplayDOS::Init()
+{
+ TDisplay::setCursorPos=SetCursorPos;
+ TDisplay::getCursorPos=GetCursorPos;
+ TDisplay::getCursorShape=GetCursorShape;
+ TDisplay::setCursorShape=SetCursorShape;
+ TDisplay::clearScreen=ClearScreen;
+ TDisplay::getRows=GetRows;
+ TDisplay::getCols=GetCols;
+ TDisplay::setCrtMode=SetCrtMode;
+ TDisplay::getCrtMode=GetCrtMode;
+ TDisplay::setCrtModeExt=SetCrtModeExt;
+ TDisplay::getWindowTitle=GetWindowTitle;
+ TDisplay::setWindowTitle=SetWindowTitle;
+}
+
+TDisplayDOS::~TDisplayDOS() {}
 
 #if 0
 // Old code I don't yet discard

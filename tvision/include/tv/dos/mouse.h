@@ -28,9 +28,8 @@ protected:
  static int  DrawMouseDummy(int x, int y);
  static int  DrawMouseEmulate(int x, int y);
 
- // Needed to initialize it.
- static void Init();
  friend class TDisplayDOS;
+ friend class TScreenDOS;
 
  // Specific for this driver:
  // Choose if the mouse will be emulated or the OS driver will draw it.
@@ -44,12 +43,12 @@ protected:
  static volatile void resetMouseChar();
  static volatile void showMouseChar();
  // Used to force a mouse draw by the driver when emulateMouse!=0
- static volatile int  drawMouse(int x, int y);
+ //static volatile int  drawMouse(int x, int y);
  // Low level functions to save/restore mouse state of the OS
  static void biosRestoreState();
  static void biosSaveState();
  // Low level functions to save/restore "my" mouse state
- static void biosRestoreMyState();
+ static int  biosRestoreMyState();
  static void biosSaveMyState();
 
  // Address of the start of video memory, use setScreenBase()
@@ -72,7 +71,9 @@ protected:
  // Number of buttons, needed to restore it in resume
  static uchar  myButtonCount;
 
-public
+public:
+ // Needed to initialize it.
+ static void Init();
  // Indicates if the initialization will install a Real Mode Callback to
  // hook the mouse. That's enabled by default when the OS isn't Win NT.
  // Set it to 0 before initialization to avoid hooking the mouse.
@@ -81,6 +82,6 @@ public
  static MouseEventType intEvent;
  // Nasty hack used by TEventQueue to read the interrupt information and
  // draw the mouse pointer
- int getRMCB_InfoDraw(int &buttonPress);
+ static int getRMCB_InfoDraw(int &buttonPress);
 };
 
