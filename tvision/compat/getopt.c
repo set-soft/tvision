@@ -4,7 +4,9 @@
    before changing it!
 
    Copyright (C) 1987, 88, 89, 90, 91, 92, 1993
-   	Free Software Foundation, Inc.
+    Free Software Foundation, Inc.
+   Copyright (C) 2000, 01, 2002
+    Salvador E. Tropea.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -125,7 +127,7 @@ char *alloca ();
    Also, when `ordering' is RETURN_IN_ORDER,
    each non-option ARGV-element is returned here.  */
 
-char *optarg = 0;
+char *CLY_optarg = 0;
 
 /* Index in ARGV of the next element to be scanned.
    This is used for communication to and from the caller
@@ -140,7 +142,7 @@ char *optarg = 0;
    how much of ARGV has been scanned so far.  */
 
 /* XXX 1003.2 says this must be 1 before any call.  */
-int optind = 0;
+int CLY_optind = 0;
 
 /* The next char to be scanned in the option-element
    in which the last option character we returned was found.
@@ -154,13 +156,13 @@ static char *nextchar;
 /* Callers store zero here to inhibit the error message
    for unrecognized options.  */
 
-int opterr = 1;
+int CLY_opterr = 1;
 
 /* Set to an option character which was unrecognized.
    This must be initialized on some systems to avoid linking in the
    system's own getopt implementation.  */
 
-int optopt = '?';
+int CLY_optopt = '?';
 
 /* Describe how to deal with options that follow non-option ARGV-elements.
 
@@ -266,15 +268,15 @@ exchange (char **argv)
 
   my_bcopy ((char *) &argv[first_nonopt], (char *) temp, nonopts_size);
   my_bcopy ((char *) &argv[last_nonopt], (char *) &argv[first_nonopt],
-	    (optind - last_nonopt) * sizeof (char *));
+	    (CLY_optind - last_nonopt) * sizeof (char *));
   my_bcopy ((char *) temp,
-	    (char *) &argv[first_nonopt + optind - last_nonopt],
+	    (char *) &argv[first_nonopt + CLY_optind - last_nonopt],
 	    nonopts_size);
 
   /* Update records for the slots the non-options now occupy.  */
 
-  first_nonopt += (optind - last_nonopt);
-  last_nonopt = optind;
+  first_nonopt += (CLY_optind - last_nonopt);
+  last_nonopt = CLY_optind;
 }
 
 /* Scan elements of ARGV (whose length is ARGC) for option characters
@@ -334,21 +336,21 @@ exchange (char **argv)
    long-named options.  */
 
 int
-_getopt_internal (int argc, char *const *argv, const char *optstring,
-                  const struct option *longopts, int *longind, int long_only)
+CLY_getopt_internal(int argc, char *const *argv, const char *optstring,
+                    const struct CLY_option *longopts, int *longind, int long_only)
 {
   int option_index;
 
-  optarg = 0;
+  CLY_optarg = 0;
 
   /* Initialize the internal data when the first call is made.
      Start processing options with ARGV-element 1 (since ARGV-element 0
      is the program name); the sequence of previously skipped
      non-option ARGV-elements is empty.  */
 
-  if (optind == 0)
+  if (CLY_optind == 0)
     {
-      first_nonopt = last_nonopt = optind = 1;
+      first_nonopt = last_nonopt = CLY_optind = 1;
 
       nextchar = NULL;
 
@@ -377,23 +379,23 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	  /* If we have just processed some options following some non-options,
 	     exchange them so that the options come first.  */
 
-	  if (first_nonopt != last_nonopt && last_nonopt != optind)
+	  if (first_nonopt != last_nonopt && last_nonopt != CLY_optind)
 	    exchange ((char **) argv);
-	  else if (last_nonopt != optind)
-	    first_nonopt = optind;
+	  else if (last_nonopt != CLY_optind)
+	    first_nonopt = CLY_optind;
 
 	  /* Now skip any additional non-options
 	     and extend the range of non-options previously skipped.  */
 
-	  while (optind < argc
-		 && (argv[optind][0] != '-' || argv[optind][1] == '\0')
+	  while (CLY_optind < argc
+		 && (argv[CLY_optind][0] != '-' || argv[CLY_optind][1] == '\0')
 #ifdef GETOPT_COMPAT
 		 && (longopts == NULL
-		     || argv[optind][0] != '+' || argv[optind][1] == '\0')
+		     || argv[CLY_optind][0] != '+' || argv[CLY_optind][1] == '\0')
 #endif				/* GETOPT_COMPAT */
 		 )
-	    optind++;
-	  last_nonopt = optind;
+	    CLY_optind++;
+	  last_nonopt = CLY_optind;
 	}
 
       /* Special ARGV-element `--' means premature end of options.
@@ -401,67 +403,67 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	 then exchange with previous non-options as if it were an option,
 	 then skip everything else like a non-option.  */
 
-      if (optind != argc && !strcmp (argv[optind], "--"))
+      if (CLY_optind != argc && !strcmp (argv[CLY_optind], "--"))
 	{
-	  optind++;
+	  CLY_optind++;
 
-	  if (first_nonopt != last_nonopt && last_nonopt != optind)
+	  if (first_nonopt != last_nonopt && last_nonopt != CLY_optind)
 	    exchange ((char **) argv);
 	  else if (first_nonopt == last_nonopt)
-	    first_nonopt = optind;
+	    first_nonopt = CLY_optind;
 	  last_nonopt = argc;
 
-	  optind = argc;
+	  CLY_optind = argc;
 	}
 
       /* If we have done all the ARGV-elements, stop the scan
 	 and back over any non-options that we skipped and permuted.  */
 
-      if (optind == argc)
+      if (CLY_optind == argc)
 	{
 	  /* Set the next-arg-index to point at the non-options
 	     that we previously skipped, so the caller will digest them.  */
 	  if (first_nonopt != last_nonopt)
-	    optind = first_nonopt;
+	    CLY_optind = first_nonopt;
 	  return EOF;
 	}
 
       /* If we have come to a non-option and did not permute it,
 	 either stop the scan or describe it to the caller and pass it by.  */
 
-      if ((argv[optind][0] != '-' || argv[optind][1] == '\0')
+      if ((argv[CLY_optind][0] != '-' || argv[CLY_optind][1] == '\0')
 #ifdef GETOPT_COMPAT
 	  && (longopts == NULL
-	      || argv[optind][0] != '+' || argv[optind][1] == '\0')
+	      || argv[CLY_optind][0] != '+' || argv[CLY_optind][1] == '\0')
 #endif				/* GETOPT_COMPAT */
 	  )
 	{
 	  if (ordering == REQUIRE_ORDER)
 	    return EOF;
-	  optarg = argv[optind++];
+	  CLY_optarg = argv[CLY_optind++];
 	  return 1;
 	}
 
       /* We have found another option-ARGV-element.
 	 Start decoding its characters.  */
 
-      nextchar = (argv[optind] + 1
-		  + (longopts != NULL && argv[optind][1] == '-'));
+      nextchar = (argv[CLY_optind] + 1
+		  + (longopts != NULL && argv[CLY_optind][1] == '-'));
     }
 
   if (longopts != NULL
-      && ((argv[optind][0] == '-'
-	   && (argv[optind][1] == '-' || long_only))
+      && ((argv[CLY_optind][0] == '-'
+	   && (argv[CLY_optind][1] == '-' || long_only))
 #ifdef GETOPT_COMPAT
-	  || argv[optind][0] == '+'
+	  || argv[CLY_optind][0] == '+'
 #endif				/* GETOPT_COMPAT */
 	  ))
     {
-      const struct option *p;
+      const struct CLY_option *p;
       char *s = nextchar;
       int exact = 0;
       int ambig = 0;
-      const struct option *pfound = NULL;
+      const struct CLY_option *pfound = NULL;
       /* SET: might be used no initialized? */
       int indfound=0;
 
@@ -494,29 +496,29 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 
       if (ambig && !exact)
 	{
-	  if (opterr)
+	  if (CLY_opterr)
 	    fprintf (stderr, "%s: option `%s' is ambiguous\n",
-		     argv[0], argv[optind]);
+		     argv[0], argv[CLY_optind]);
 	  nextchar += strlen (nextchar);
-	  optind++;
+	  CLY_optind++;
 	  return '?';
 	}
 
       if (pfound != NULL)
 	{
 	  option_index = indfound;
-	  optind++;
+	  CLY_optind++;
 	  if (*s)
 	    {
 	      /* Don't test has_arg with >, because some C compilers don't
 		 allow it to be used on enums.  */
 	      if (pfound->has_arg)
-		optarg = s + 1;
+		CLY_optarg = s + 1;
 	      else
 		{
-		  if (opterr)
+		  if (CLY_opterr)
 		    {
-		      if (argv[optind - 1][1] == '-')
+		      if (argv[CLY_optind - 1][1] == '-')
 			/* --option */
 			fprintf (stderr,
 				 "%s: option `--%s' doesn't allow an argument\n",
@@ -525,7 +527,7 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 			/* +option or -option */
 			fprintf (stderr,
 			     "%s: option `%c%s' doesn't allow an argument\n",
-			     argv[0], argv[optind - 1][0], pfound->name);
+			     argv[0], argv[CLY_optind - 1][0], pfound->name);
 		    }
 		  nextchar += strlen (nextchar);
 		  return '?';
@@ -533,13 +535,13 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	    }
 	  else if (pfound->has_arg == 1)
 	    {
-	      if (optind < argc)
-		optarg = argv[optind++];
+	      if (CLY_optind < argc)
+		CLY_optarg = argv[CLY_optind++];
 	      else
 		{
-		  if (opterr)
+		  if (CLY_opterr)
 		    fprintf (stderr, "%s: option `%s' requires an argument\n",
-			     argv[0], argv[optind - 1]);
+			     argv[0], argv[CLY_optind - 1]);
 		  nextchar += strlen (nextchar);
 		  return optstring[0] == ':' ? ':' : '?';
 		}
@@ -558,25 +560,25 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	 or the option starts with '--' or is not a valid short
 	 option, then it's an error.
 	 Otherwise interpret it as a short option.  */
-      if (!long_only || argv[optind][1] == '-'
+      if (!long_only || argv[CLY_optind][1] == '-'
 #ifdef GETOPT_COMPAT
-	  || argv[optind][0] == '+'
+	  || argv[CLY_optind][0] == '+'
 #endif				/* GETOPT_COMPAT */
 	  || my_index (optstring, *nextchar) == NULL)
 	{
-	  if (opterr)
+	  if (CLY_opterr)
 	    {
-	      if (argv[optind][1] == '-')
+	      if (argv[CLY_optind][1] == '-')
 		/* --option */
 		fprintf (stderr, "%s: unrecognized option `--%s'\n",
 			 argv[0], nextchar);
 	      else
 		/* +option or -option */
 		fprintf (stderr, "%s: unrecognized option `%c%s'\n",
-			 argv[0], argv[optind][0], nextchar);
+			 argv[0], argv[CLY_optind][0], nextchar);
 	    }
 	  nextchar = (char *) "";
-	  optind++;
+	  CLY_optind++;
 	  return '?';
 	}
     }
@@ -589,11 +591,11 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 
     /* Increment `optind' when we start to process its last character.  */
     if (*nextchar == '\0')
-      ++optind;
+      ++CLY_optind;
 
     if (temp == NULL || c == ':')
       {
-	if (opterr)
+	if (CLY_opterr)
 	  {
 #if 0
 	    if (c < 040 || c >= 0177)
@@ -606,7 +608,7 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	    fprintf (stderr, "%s: illegal option -- %c\n", argv[0], c);
 #endif
 	  }
-	optopt = c;
+	CLY_optopt = c;
 	return '?';
       }
     if (temp[1] == ':')
@@ -616,11 +618,11 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	    /* This is an option that accepts an argument optionally.  */
 	    if (*nextchar != '\0')
 	      {
-		optarg = nextchar;
-		optind++;
+		CLY_optarg = nextchar;
+		CLY_optind++;
 	      }
 	    else
-	      optarg = 0;
+	      CLY_optarg = 0;
 	    nextchar = NULL;
 	  }
 	else
@@ -628,14 +630,14 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	    /* This is an option that requires an argument.  */
 	    if (*nextchar != '\0')
 	      {
-		optarg = nextchar;
+		CLY_optarg = nextchar;
 		/* If we end this ARGV-element by taking the rest as an arg,
 		   we must advance to the next element now.  */
-		optind++;
+		CLY_optind++;
 	      }
-	    else if (optind == argc)
+	    else if (CLY_optind == argc)
 	      {
-		if (opterr)
+		if (CLY_opterr)
 		  {
 #if 0
 		    fprintf (stderr, "%s: option `-%c' requires an argument\n",
@@ -646,7 +648,7 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 			     argv[0], c);
 #endif
 		  }
-		optopt = c;
+		CLY_optopt = c;
 		if (optstring[0] == ':')
 		  c = ':';
 		else
@@ -655,7 +657,7 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 	    else
 	      /* We already incremented `optind' once;
 		 increment it again when taking next ARGV-elt as argument.  */
-	      optarg = argv[optind++];
+	      CLY_optarg = argv[CLY_optind++];
 	    nextchar = NULL;
 	  }
       }
@@ -664,13 +666,10 @@ _getopt_internal (int argc, char *const *argv, const char *optstring,
 }
 
 int
-getopt (argc, argv, optstring)
-     int argc;
-     char *const *argv;
-     const char *optstring;
+CLY_getopt(int argc, char *const *argv, const char *optstring)
 {
-  return _getopt_internal (argc, argv, optstring,
-			   (const struct option *) 0,
+  return CLY_getopt_internal (argc, argv, optstring,
+			   (const struct CLY_option *) 0,
 			   (int *) 0,
 			   0);
 }
@@ -683,18 +682,16 @@ getopt (argc, argv, optstring)
    the above definition of `getopt'.  */
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (int argc, char **argv)
 {
   int c;
   int digit_optind = 0;
 
   while (1)
     {
-      int this_option_optind = optind ? optind : 1;
+      int this_option_optind = CLY_optind ? CLY_optind : 1;
 
-      c = getopt (argc, argv, "abc:d:0123456789");
+      c = CLY_getopt (argc, argv, "abc:d:0123456789");
       if (c == EOF)
 	break;
 
@@ -725,7 +722,7 @@ main (argc, argv)
 	  break;
 
 	case 'c':
-	  printf ("option c with value `%s'\n", optarg);
+	  printf ("option c with value `%s'\n", CLY_optarg);
 	  break;
 
 	case '?':
@@ -736,11 +733,11 @@ main (argc, argv)
 	}
     }
 
-  if (optind < argc)
+  if (CLY_optind < argc)
     {
       printf ("non-option ARGV-elements: ");
-      while (optind < argc)
-	printf ("%s ", argv[optind++]);
+      while (CLY_optind < argc)
+	printf ("%s ", argv[CLY_optind++]);
       printf ("\n");
     }
 

@@ -1,6 +1,8 @@
 /* getopt_long and getopt_long_only entry points for GNU getopt.
    Copyright (C) 1987, 88, 89, 90, 91, 92, 1993
-	Free Software Foundation, Inc.
+    Free Software Foundation, Inc.
+   Copyright (C) 2000, 01, 2002
+    Salvador E. Tropea.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -56,8 +58,8 @@ char *getenv ();
 #endif
 
 int
-getopt_long (int argc, char *const *argv, const char *options,
-             const struct option *long_options, int *opt_index)
+CLY_getopt_long(int argc, char *const *argv, const char *options,
+                const struct CLY_option *long_options, int *opt_index)
 {
   return _getopt_internal (argc, argv, options, long_options, opt_index, 0);
 }
@@ -68,12 +70,8 @@ getopt_long (int argc, char *const *argv, const char *options,
    instead.  */
 
 int
-getopt_long_only (argc, argv, options, long_options, opt_index)
-     int argc;
-     char *const *argv;
-     const char *options;
-     const struct option *long_options;
-     int *opt_index;
+CLY_getopt_long_only(int argc, char *const *argv, const char *options,
+                     const struct CLY_option *long_options, int *opt_index)
 {
   return _getopt_internal (argc, argv, options, long_options, opt_index, 1);
 }
@@ -86,18 +84,16 @@ getopt_long_only (argc, argv, options, long_options, opt_index)
 #include <stdio.h>
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (int argc, char **argv)
 {
   int c;
   int digit_optind = 0;
 
   while (1)
     {
-      int this_option_optind = optind ? optind : 1;
+      int this_option_optind = CLY_optind ? CLY_optind : 1;
       int option_index = 0;
-      static struct option long_options[] =
+      static struct CLY_option long_options[] =
       {
 	{"add", 1, 0, 0},
 	{"append", 0, 0, 0},
@@ -117,8 +113,8 @@ main (argc, argv)
 	{
 	case 0:
 	  printf ("option %s", long_options[option_index].name);
-	  if (optarg)
-	    printf (" with arg %s", optarg);
+	  if (CLY_optarg)
+	    printf (" with arg %s", CLY_optarg);
 	  printf ("\n");
 	  break;
 
@@ -147,11 +143,11 @@ main (argc, argv)
 	  break;
 
 	case 'c':
-	  printf ("option c with value `%s'\n", optarg);
+	  printf ("option c with value `%s'\n", CLY_optarg);
 	  break;
 
 	case 'd':
-	  printf ("option d with value `%s'\n", optarg);
+	  printf ("option d with value `%s'\n", CLY_optarg);
 	  break;
 
 	case '?':
@@ -162,11 +158,11 @@ main (argc, argv)
 	}
     }
 
-  if (optind < argc)
+  if (CLY_optind < argc)
     {
       printf ("non-option ARGV-elements: ");
-      while (optind < argc)
-	printf ("%s ", argv[optind++]);
+      while (CLY_optind < argc)
+	printf ("%s ", argv[CLY_optind++]);
       printf ("\n");
     }
 
