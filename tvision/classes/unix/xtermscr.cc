@@ -179,6 +179,8 @@ TScreenXTerm::TScreenXTerm()
     // XTerm from X 4.x supports palette setting
     TDisplay::setDisPaletteColors=SetDisPaletteColorsXT;
     ResetPaletteColors=ResetPaletteColorsXT;
+    // XTerm colors are ugly, change them.
+    SetDisPaletteColorsXT(0,16,ActualPalette);
    }
  TScreenXTerm::screenMode=TScreenXTerm::smCO80;
  LOG((palette==PAL_HIGH ? "Using high palette" : "Using low palette"));
@@ -434,15 +436,21 @@ void TScreenXTerm::writeBlock(int dst, int len, ushort *old, ushort *src)
       }
     // Convert the value to something in the ISO-Latin-1 range.
     // Use the DEC graphics for some values in the control range.
-    val=Code[code];
-    mod=Modifier[code];
-
-    if (mod!=selCharset)
+    if (code==12 || code==14)
       {
-       selCharset=mod;
-       fputc(15-selCharset,stdout);
+       fputs("\E[7m \E[27m",stdout); // Reversed space
       }
-    fputc(val,stdout);
+    else
+      {
+       val=Code[code];
+       mod=Modifier[code];
+       if (mod!=selCharset)
+         {
+          selCharset=mod;
+          fputc(15-selCharset,stdout);
+         }
+       fputc(val,stdout);
+      }
    }
  if (palette==PAL_MONO)
     fputs("\E[0m",stdout); // Normal

@@ -1,21 +1,18 @@
-/*
- *      Turbo Vision - Version 2.0
- *
- *      Copyright (c) 1994 by Borland International
- *      All Rights Reserved.
- *
- * Modified by Robert H”hne to be used for RHIDE.
- * JASC: change class members for wrappers idea.
- * SET:  added new functionality and mixed ideas from JASC.
- *
- */
+/* TDisplay/TScreen header.
+   Copyright (c) 2002 by Salvador E. Tropea (SET)
+   Covered by the GPL license.
+
+   This driver defines a class compatible with original Turbo Vision but
+implemented in a very different way. Most members are function pointer
+that can be changed by the hardware/OS dependent driver.
+   This idea was propposed by JASC.
+   I also included some members that Robert added to original TV.
+   A lot of new members were added, this is just compatible with Borland's
+classes, but doesn't have much in common.
+*/
 
 #if defined( Uses_TScreen ) && !defined( __TScreen )
 #define __TScreen
-
-//#ifdef TVOS_UNIX
-//#include <signal.h>
-//#endif
 
 class TVCodePage;
 

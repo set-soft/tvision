@@ -111,8 +111,6 @@ int TGKeyXTerm::InitOnce()
    }
  // Don't block
  oldInFlags=fcntl(hIn,F_GETFL,0);
- // Currently disabled, it makes xterm lose output data and the
- // stream is already character oriented and hence doesn't block.
  newInFlags=oldInFlags | O_NONBLOCK;
  fcntl(hIn,F_SETFL,newInFlags);
 
