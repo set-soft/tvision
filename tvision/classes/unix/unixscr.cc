@@ -24,7 +24,7 @@ Mouse reporting not disabled at exit!!!
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(TVOSf_QNX4)
 
 #include <fcntl.h>
 #include <signal.h>
@@ -1020,7 +1020,7 @@ int TScreenUNIX::System(const char *command, pid_t *pidChild, int in,
 #include <tv/unix/mouse.h>
 #include <tv/linux/mouse.h>
 
-#endif // TVOS_UNIX && !TVOSf_QNXRtP
+#endif // TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
 /*****************************************************************************
 
      This code was in the constructor and commented, it could help in the

@@ -123,6 +123,10 @@ classes/linux/linuxdis.cc
 classes/linux/linuxkey.cc
 classes/linux/linuxmouse.cc
 classes/linux/linuxscr.cc
+classes/qnx4/qnx4dis.cc
+classes/qnx4/qnx4key.cc
+classes/qnx4/qnx4mouse.cc
+classes/qnx4/qnx4scr.cc
 classes/qnxrtp/qnxdis.cc
 classes/qnxrtp/qnxkey.cc
 classes/qnxrtp/qnxmouse.cc
@@ -593,6 +597,9 @@ include/tv/preadobj.h
 include/tv/program.h
 include/tv/pstream.h
 include/tv/pwritobj.h
+include/tv/qnx4/key.h
+include/tv/qnx4/mouse.h
+include/tv/qnx4/screen.h
 include/tv/qnxrtp/key.h
 include/tv/qnxrtp/mouse.h
 include/tv/qnxrtp/screen.h

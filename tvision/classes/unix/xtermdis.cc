@@ -1,7 +1,7 @@
 /*****************************************************************************
 
   XTerm display routines.
-  Copyright (c) 2002 by Salvador E. Tropea (SET)
+  Copyright (c) 2002,2003 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
   ToDo:
@@ -13,9 +13,10 @@
 #define Uses_stdio
 #define Uses_stdlib
 #define Uses_unistd
+#define Uses_ioctl
+#define Uses_string
 #define Uses_TDisplay
 #define Uses_TScreen
-#define Uses_string
 #define Uses_TGKey
 #include <tv.h>
 
@@ -23,7 +24,6 @@
 #if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
-#include <sys/ioctl.h>
 #include <signal.h>
 
 #include <tv/unix/xtscreen.h>

@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.510  2003/11/03 15:56:31  set
+* Modified: [X11] The default font to have " and ' of the same size.
+Suggested by Oswald.
+
 Revision 2.509  2003/11/03 15:55:17  set
 * Added: A new configuration variable "AvoidMoire". This variable is
 checked by TScrollBar and TBackground to avoid using chars that produce

@@ -182,6 +182,7 @@ $libs=~s/(\S+)/-l$1/g;
 $MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
 $MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
+$MakeDefsRHIDE[6].=' -lunix' if ($OSf eq 'QNX4');
 $MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
 $MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
 $MakeDefsRHIDE[7]="LIB_VER=$Version";
@@ -595,6 +596,8 @@ int main(void)
  $conf{'X11LibPath'}='/usr/X11R6/lib' unless $conf{'X11LibPath'};
  # Looks like Cygwin does all static!
  $libs=($Compf eq 'Cygwin') ? 'Xmu Xt SM ICE X11' : 'X11 Xmu';
+ # QNX4 does all static!
+ $libs='Xmu Xt SM ICE X11 socket' if ($OSf eq 'QNX4');
  $conf{'X11Lib'}=$libs unless $conf{'X11Lib'};
  $libs=$conf{'X11Lib'};
  $libs=~s/(\S+)/-l$1/g;
@@ -727,7 +730,11 @@ sub LookForNCurses
  }
  $test='
 #include <stdio.h>
-#include <ncurses.h>
+#if defined(__QNX__) && !defined(__QNXNTO__)
+ #include <curses.h>
+#else
+ #include <ncurses.h>
+#endif
 void dummy() {initscr();}
 int main(void)
 {
@@ -735,7 +742,8 @@ int main(void)
  return 0;
 }
 ';
- $result=RunGCCTest($GCC,'c',$test,'-lncurses');
+ $result=RunGCCTest($GCC,'c',$test,'-lncurses') if ($OSf ne 'QNX4');
+ $result=RunGCCTest($GCC,'c',$test,'-lncurses -lunix') if ($OSf eq 'QNX4');
  if (!length($result))
    {# Try again with -lcurses, In Solaris ncurses is installed this way
     $result=RunGCCTest($GCC,'c',$test,'-lcurses');
@@ -910,7 +918,7 @@ sub GenerateMakefile
  $rep.=' maintainance' if $maintain;
  $rep.=' static-lib';
  $rep.=' rhtv-config$(EXE_EXT)';
- $rep.=' dynamic-lib' if ($OS eq 'UNIX');
+ $rep.=' dynamic-lib' if (($OS eq 'UNIX') && ($OSf ne 'QNX4'));
  $rep.=' internac' if ($internac);
  $text=~s/\@targets\@/$rep/g;
  $text=~s/\@OS\@/$OS/g;
@@ -930,7 +938,7 @@ sub GenerateMakefile
  $rep ="static-lib:\n\t\$(MAKE) -C $makeDir -f librhtv.mkf";
  $rep.="\n\tranlib $makeDir/librhtv.a" if $conf{'UseRanLib'};
  $rep.="\n";
- if ($OS eq 'UNIX')
+ if (($OS eq 'UNIX') && ($OSf ne 'QNX4'))
    {
     $rep.="\ndynamic-lib:\n\t\$(MAKE) DYNAMIC_LIB=1 -C $makeDir -f librhtv.mkf\n";
     $rep.="\tcd $makeDir; ln -sf librhtv.so.$Version librhtv.so\n";
@@ -952,7 +960,7 @@ sub GenerateMakefile
  # Write install stuff
  # What versions of the library we will install
  $rep= 'install-static ';
- $rep.='install-dynamic ' if ($OS eq 'UNIX');
+ $rep.='install-dynamic ' if (($OS eq 'UNIX') && ($OSf ne 'QNX4'));
  $rep.='install-internac ' if $internac;
  $text=~s/\@installers\@/$rep/g;
 
@@ -1002,7 +1010,7 @@ sub GenerateMakefile
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
  $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
 
- if ($OS eq 'UNIX')
+ if (($OS eq 'UNIX') && ($OSf ne 'QNX4'))
    {# Dynamic library
     $ver=($OSf eq 'FreeBSD') ? $VersionMajor : $Version;
     $rep.="\ninstall-dynamic: dynamic-lib\n";

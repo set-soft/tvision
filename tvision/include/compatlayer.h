@@ -120,6 +120,13 @@ typedef unsigned long  ulong;
 #define IOMANIP_HEADER  <iomanip.h>
 #undef  IOSTREAM_HEADER
 #define IOSTREAM_HEADER <iostream.h>
+#undef  IOCTL_HEADER
+#define IOCTL_HEADER    <sys/ioctl.h>
+
+#ifdef Uses_ioctl
+ #undef  Include_ioctl
+ #define Include_ioctl 1
+#endif
 
 #ifdef Uses_time
  #undef  Include_time
@@ -177,6 +184,7 @@ typedef unsigned long  ulong;
 #undef CLY_Have_snprintf
 #undef CLY_destroy
 #undef CLY_DONT_DEFINE_MIN_MAX
+#undef CLY_Redraw
 
 /* Most targets doesn't define destroy, but BC++ 5.6 defines
    _stl::destroy and looks like it collides with any destroy not defined
@@ -192,6 +200,10 @@ typedef unsigned long  ulong;
 /* Most C++ compilers doesn't need it, only MSVC seems to need *all* the
    virtual members (even when not used) to link */
 #define CLY_DummyTStreamRW(cla)
+
+/* Watcom C++ used for QNX4 doesn't make any difference between Redraw
+   and redraw members. */
+#define CLY_Redraw Redraw
 
 #ifdef TVComp_GCC
 /* GNU C is supported for various OSs: */
@@ -759,6 +771,25 @@ typedef unsigned long  ulong;
    #define Include_stdio 1
   #endif
  #endif
+
+ #if defined(TVOSf_QNX4) 
+  #if defined(Uses_alloca) && !defined(alloca)
+   #define alloca __builtin_alloca
+  #endif // alloca
+
+  #ifdef Uses_string
+   #undef  Include_string
+   #define Include_string 1
+   #undef  strncasecmp
+   #define strncasecmp strcasencmp
+  #endif
+
+  #undef CLY_Redraw
+  #define CLY_Redraw ForcedRedraw
+  
+  #undef  IOCTL_HEADER
+  #define IOCTL_HEADER    <sys/ioctl.h>
+ #endif // TVOSf_QNX4
 
  /* Generic UNIX system */
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)
@@ -1493,7 +1524,10 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #include <string.h>
  #if defined(TVOSf_QNXRtP)
   #include <strings.h> // QNX RtP requires this include for functions strcasecmp, etc.
- #endif // __QNXNTO__
+ #endif // TVOSf_QNXRtP
+ #if defined(TVOSf_QNX4)
+  #include <unix.h> // QNX4 requires this include for functions strcasecmp, etc.
+ #endif // TVOSf_QNX4
 #endif
 
 #if defined(Include_limits) && !defined(Included_limits)
@@ -1561,6 +1595,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
    #define S_IWRITE _S_IWRITE
   #endif
  #endif
+#endif
+
+#if defined(Include_ioctl) && !defined(Included_ioctl)
+ #define Included_ioctl 1
+ #include IOCTL_HEADER
 #endif
 
 #if defined(Include_stdlib) && !defined(Included_stdlib)
