@@ -52,6 +52,7 @@ TFileViewer::TFileViewer( const TRect& bounds,
     isValid = True;
     fileName = 0;
     readFile( aFileName );
+    delta.x=delta.y=0;
 }
 
 TFileViewer::~TFileViewer()
