@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.480  2003/06/17 12:45:00  set
+* Added: A script to generate the RPMs in an easy way.
+* Fixed: A misterious error in the spec file, most probably an accidental
+typo. Produced when applying patch.
+
 Revision 2.479  2003/06/17 12:30:11  set
 * Fixed: Extra lines at the end.
 

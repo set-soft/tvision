@@ -659,6 +659,7 @@ intl/ru.po
 linux/inclubin.txt
 linux/includbi.txt
 +linux/sacadeb
+Makefile.bcc
 Makefile.in
 makes/blink.c
 makes/common.bmk
