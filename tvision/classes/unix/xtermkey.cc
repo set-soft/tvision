@@ -109,12 +109,18 @@ int TGKeyXTerm::InitOnce()
  inTermiosNew.c_iflag&= ~(IXOFF | IXON);
  // Character oriented, no echo, no signals
  inTermiosNew.c_lflag&= ~(ICANON | ECHO | ISIG);
- // The following are needed for Solaris. In 2.7 MIN is around 4 and TIME 0
+
+ // The following are needed for Solaris. In 2.7 MIN is 4 and TIME 0
  // making things really annoying. In the future they could be driver
  // variables to make the use of bandwidth smaller. A value of 4 and 1 looks
- // usable.
- inTermiosNew.c_cc[VMIN]=0;
- inTermiosNew.c_cc[VTIME]=0;
+ // usable. I verified that Solaris 9 (2.9) also uses 4/0.
+ //
+ // *BSD systems seems interpret 0/0 value in a different way and they need
+ // 1/0 in order work properly (otherwise blocks forever). I verified that
+ // 1/0 works for OpenBSD 3.4, FreeBSD 4.8 and NetBSD 1.6.1. All of them uses
+ // 1/0 as default, Linux also does it.
+ inTermiosNew.c_cc[VMIN]=1;
+ inTermiosNew.c_cc[VTIME]=0; // No timeout, just don't block
  if (tcsetattr(hIn,TCSAFLUSH,&inTermiosNew))
    {
     error=_("can't set input terminal attributes");

@@ -858,6 +858,15 @@ sub DetectOS
     $defaultCXX='g++';
     $supportDir='linux';
    }
+ elsif ($os=~/OpenBSD/)
+   {
+    $OS='UNIX';
+    $OSf='OpenBSD';
+    $Compf='';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='linux';
+   }
  else
    {
     die('Unknown OS, you must do things by yourself');

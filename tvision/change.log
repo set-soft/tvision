@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.575  2004/09/30 17:22:48  set
+* Updated: [WWW] adding the RC1
+--------- CVS tag r_2_0_3rc1 and r_2_0_3rc1_nu
+
 Revision 2.574  2004/09/29 02:32:39  terrible
 * [Debian] Packaging up to speed with new version 2.0.3-1!!! I have
 succesfuly built packages for an old Sid and of course Woody, though I am not
