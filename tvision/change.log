@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.459  2003/05/22 19:01:25  set
+* Fixed: When configuring the BC++ and MSVC makefile from DOS makefile it
+failed if it was done under UNIX and the file had \r\n. From a report by
+Mike.
+
 Revision 2.458  2003/05/21 20:57:38  set
 * Fixed: Some pointer casts to use long as data type instead of int. This
 is needed for 64 bits targets. The demo compile and seems to be functional

@@ -1,4 +1,5 @@
 prefix=@prefix@
+EXE_EXT=@exe_ext@
 libdir=$(prefix)/lib
 OS=@OS@
 export
@@ -15,8 +16,8 @@ all: @targets@ intl-dummy
 examples:
 	make -C examples
 
-rhtv-config.exe: rhtv-config.c include/tv/configtv.h
-	@GCC@ -o rhtv-config.exe -Iinclude rhtv-config.c
+rhtv-config$(EXE_EXT): rhtv-config.c include/tv/configtv.h
+	@GCC@ -o rhtv-config$(EXE_EXT) -Iinclude rhtv-config.c
 
 install-headers:
 	@install_headers@
@@ -27,7 +28,7 @@ install-headers:
 
 install-config:
 	install -d -m 0755 $(prefix)/bin
-	install -m 0755 rhtv-config.exe $(prefix)/bin
+	install -m 0755 rhtv-config$(EXE_EXT) $(prefix)/bin
 
 install: @installers@ install-headers install-intl-dummy install-config
 

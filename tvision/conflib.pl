@@ -736,6 +736,7 @@ sub DetectOS
  # other systems should have a special configuration header
  # created by hand.
  $Comp='GCC';
+ $ExeExt='';
  if ($os=~/MS\-DOS/)
    {
     $OS='DOS';
@@ -744,6 +745,7 @@ sub DetectOS
     $stdcxx='-lstdcxx';
     $defaultCXX='gpp:gxx';
     $supportDir='djgpp';
+    $ExeExt='.exe';
    }
  elsif ($os=~/[Ll]inux/)
    {
@@ -771,6 +773,7 @@ sub DetectOS
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='win32';
+    $ExeExt='.exe';
    }
  elsif ($os=~/MINGW/)
    {
@@ -780,6 +783,7 @@ sub DetectOS
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='win32';
+    $ExeExt='.exe';
    }
  elsif ($os=~/SunOS/)
    {
