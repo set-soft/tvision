@@ -1,4 +1,8 @@
 $Log$
+Revision 1.214  2001/10/07 19:44:03  set
+* Merged patches from Ivan for the Debian package, they avoid deleting
+default configuration files.
+
 Revision 1.213  2001/10/06 18:19:12  set
 * Added: Support for localized decimal point in the pocket calculator. The
 user types the '.' key but the calculator displays the right decimal point

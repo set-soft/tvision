@@ -573,6 +573,8 @@ sub GenerateMakefile
  $rep.="\tinstall -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
  $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv\n";
  $rep.="\tinstall -m 0644 include/tv/*.h \$(prefix)/include/rhtvision/tv\n";
+ $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/cl\n";
+ $rep.="\tinstall -m 0644 include/cl/*.h \$(prefix)/include/rhtvision/cl\n";
  $text=~s/\@install_headers\@/$rep/g;
  
  # Static library
@@ -593,7 +595,7 @@ sub GenerateMakefile
     #$rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so.1\n";
     $rep.="\tinstall -m 0644 linuxso/librhtv.so.$Version \$(libdir)\n";
     $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$Version\n";
-    $rep.="\tldconfig\n";
+    $rep.="\t-ldconfig\n";
    }
  $text=~s/\@install2_rule\@/$rep/g;
 

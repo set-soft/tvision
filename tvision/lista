@@ -159,11 +159,13 @@ copying
 copying.rh
 debian/.cvsignore
 debian/README.debian
++debian/buildpackage
 debian/changelog
 debian/control
 debian/control.in
 debian/copyright
 debian/diversions.ex
+debian/files_to_backup
 debian/info.ex
 debian/maintainer.notes
 debian/manpage.1.ex
