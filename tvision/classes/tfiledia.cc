@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador Eduardo Tropea to add more functionality.
 Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
@@ -73,11 +74,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
     his->growMode=gfGrowLoX | gfGrowHiX;
     insert(his);
     
-	#ifndef _WIN32
     int longNames=TV_HaveLFNs(); // SET
-	#else
-	int longNames=1;
-	#endif
     TScrollBar *sb = longNames ?
                      new TScrollBar( TRect( 34, 5, 35, 16 ) ) :
                      new TScrollBar( TRect( 3, 15, 34, 16 ) );
@@ -92,57 +89,21 @@ TFileDialog::TFileDialog( const char *aWildCard,
     TRect r( 35, 2, 46, 4 );
     
     TButton *bt;
-    if( (aOptions & fdOpenButton) != 0 )
-        {
-        bt=new TButton(r,_("~O~pen"),cmFileOpen,opt);
-        bt->growMode=gfGrowLoX | gfGrowHiX;
-        insert(bt);
-        opt = bfNormal;
-        r.a.y += 2;
-        r.b.y += 2;
-        }
+    #define AddButton(flag,name,command)\
+    if (aOptions & flag) {\
+        bt=new TButton(r,_(name),command,opt); \
+        bt->growMode=gfGrowLoX | gfGrowHiX; \
+        insert(bt); opt=bfNormal; r.a.y+=2; r.b.y+=2; }
 
-    if( (aOptions & fdOKButton) != 0 )
-        {
-        bt=new TButton(r,_("~O~K"),cmFileOpen,opt);
-        bt->growMode=gfGrowLoX | gfGrowHiX;
-        insert(bt);
-        opt = bfNormal;
-        r.a.y += 2;
-        r.b.y += 2;
-        }
+    AddButton(fdOpenButton,"~O~pen",cmFileOpen)
+    AddButton(fdOKButton,"~O~K",cmFileOpen)
+    AddButton(fdAddButton,"~A~dd",cmFileOpen)
+    AddButton(fdSelectButton,"~S~elect",cmFileSelect)
+    AddButton(fdReplaceButton,"~R~eplace",cmFileReplace)
+    AddButton(fdClearButton,"~C~lear",cmFileClear)
 
-    if( (aOptions & fdSelectButton) != 0 )
-        {
-        bt=new TButton(r,_("~S~elect"),cmFileSelect,opt);
-        bt->growMode=gfGrowLoX | gfGrowHiX;
-        insert(bt);
-        opt = bfNormal;
-        r.a.y += 2;
-        r.b.y += 2;
-        }
-
-    if( (aOptions & fdReplaceButton) != 0 )
-        {
-        bt=new TButton(r,_("~R~eplace"),cmFileReplace,opt);
-        bt->growMode=gfGrowLoX | gfGrowHiX;
-        insert(bt);
-        opt = bfNormal;
-        r.a.y += 2;
-        r.b.y += 2;
-        }
-
-    if( (aOptions & fdClearButton) != 0 )
-        {
-        bt=new TButton(r,_("~C~lear"),cmFileClear,opt);
-        bt->growMode=gfGrowLoX | gfGrowHiX;
-        insert(bt);
-        opt = bfNormal;
-        r.a.y += 2;
-        r.b.y += 2;
-        }
-
-    bt=new TButton(r,_("Cancel"),cmCancel,bfNormal);
+    bt=new TButton(r,aOptions & fdDoneButton ? _("Done") : _("Cancel"),
+                   cmCancel,bfNormal);
     bt->growMode=gfGrowLoX | gfGrowHiX;
     insert(bt);
     r.a.y += 2;
@@ -153,7 +114,6 @@ TFileDialog::TFileDialog( const char *aWildCard,
         bt=new TButton(r,_("~H~elp"),cmHelp,bfNormal);
         bt->growMode=gfGrowLoX | gfGrowHiX;
         insert(bt);
-        opt = bfNormal;
         r.a.y += 2;
         r.b.y += 2;
         }

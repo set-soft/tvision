@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador Eduardo Tropea to add more functionality.
 
  *
  *
@@ -21,6 +22,8 @@ const ushort
     fdClearButton   = 0x0008,      // Put a Clear button in the dialog
     fdHelpButton    = 0x0010,      // Put a Help button in the dialog
     fdSelectButton  = 0x0020,      // Put a Select button in the dialog
+    fdDoneButton    = 0x0040,      // Say Done isntead of "Cancel"
+    fdAddButton     = 0x0080,      // Put an Add button in the dialog
     fdNoLoadDir     = 0x0100;      // Do not load the current directory
 				   // contents into the dialog at Init.
 				   // This means you intend to change the
