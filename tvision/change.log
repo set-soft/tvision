@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.582  2004/10/05 21:43:21  set
+* Fixed(?!): [gcc 3.4.1] For some, unknown, reason the mechanism to "pull"
+stream dependencies fails for Mandrake 10.0 (gcc 3.4.1 + glibc 2.3.3 +
+binutils 2.14.90.0.7 20031029). So now I'm changing to the mechanism we
+used for BC++ when 3.4.1 is detected.
+.
 Revision 2.581  2004/10/05 00:19:29  set
 * Added/Fixed: [DOS] The default keyboard code assumed the start and end of
 the BIOS circular buffer. Now it reads these values from the BIOS data
