@@ -1,5 +1,8 @@
 $Log$
-Revision 2.496  2003/08/05 19:33:02  set
+Revision 2.497  2003/08/06 15:30:30  set
+* Fixed: The snprintf replacement wrote to NULL pointers.
+
+Revision 2.496  2003/08/05 19:33:01  set
 * Fixed: [X11] the "mouse" event mask I used was incomplete. This generated
 problems when using the update thread because in this case the events are
 retired in random order and the mask must be strict.

@@ -1,3 +1,12 @@
+rhtvision (2.0.2-1) unstable; urgency=low
+
+  * Upstream released a new fixed version! CVS release 2.493 2003/07/30
+    19:43:18 with sticky tag r2_0_2-1.
+  * Upstream fixed the show-stoper bug regarding the not versioned tvision.mo
+    files.
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Sun, 10 Aug 2003 15:10:43 -0300
+
 rhtvision (2.0.2-0.1) unstable; urgency=low
 
   * New upstream version! CVS release 2.487 2003/07/16 14:00:57.
