@@ -1,4 +1,9 @@
 $Log$
+Revision 1.79  1999/07/17 22:03:37  root (set)
+* Fixed: When exiting and the screen is already suspended I avoid cleaning
+it because it is supposed to be already cleaned. Not sure is the best, I
+tested it in ttyN and ttypN and works ok for the command line options.
+
 Revision 1.78  1999/07/13 23:10:05  set
 * Fixed: 18 const name... in the examples. Reported by Matt Mueller
 <donut@azstarnet.com>.
