@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.543  2004/06/03 18:47:07  set
+* Added: [config] HP-UX detection. Contributed by Dmitry V. Zavyalov
+(dzavyalov/artezio/ru).
+
 Revision 2.542  2004/05/31 14:52:59  set
 * Fixed: The F3 shortcut of menu item "File|Open" wasn't explicit in the
 TEditorApp. Patch by David D. (ddoubrava/volny/cz)

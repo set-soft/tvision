@@ -105,9 +105,9 @@ Window    TScreenX11::rootWin;
 Window    TScreenX11::mainWin;
 Colormap  TScreenX11::cMap;
 GC        TScreenX11::gc;
-GC        TScreenX11::cursorGC;
-XIC       TScreenX11::xic;
-XIM       TScreenX11::xim;
+GC        TScreenX11::cursorGC=NULL;
+XIC       TScreenX11::xic=NULL;
+XIM       TScreenX11::xim=NULL;
 Atom      TScreenX11::theProtocols;
 ulong     TScreenX11::colorMap[16];
 XImage   *TScreenX11::ximgFont[256];    /* Our "font" is just a collection of images */
@@ -130,13 +130,32 @@ XClassHint *TScreenX11::classHint=NULL;
 
 TScreenX11::~TScreenX11()
 {
- if(!disp) return; //no X11 resources acquired.
-
  STOP_UPDATE_THREAD;
- XDestroyIC(xic);
- XCloseIM(xim);
- XDestroyWindow(disp,mainWin);
- XCloseDisplay(disp); //This could do all of the above for us, but anyway...
+
+ if (sizeHints)
+    XFree(sizeHints);
+ if (classHint)
+    XFree(classHint);
+
+ if (xic)
+    XDestroyIC(xic);
+ if (xim)
+    XCloseIM(xim);
+
+ DestroyXImageFont(0);
+ DestroyXImageFont(1);
+ if (cursorImage)
+    XDestroyImage(cursorImage);
+
+ if (disp)
+   {
+    if (cursorGC)
+       XFreeGC(disp,cursorGC);
+    XDestroyWindow(disp,mainWin);
+    XCloseDisplay(disp); //This could do all of the above for us, but anyway...
+   }
+
+ delete[] screenBuffer;
 }
 
 void TScreenX11::clearScreen()
@@ -829,6 +848,9 @@ void TScreenX11::AdjustCursorImage()
 
 TScreenX11::TScreenX11()
 {
+ memset(ximgFont,0,sizeof(XImage *)*256);
+ memset(ximgSecFont,0,sizeof(XImage *)*256);
+
  /* Try to connect to the X server */
  disp=XOpenDisplay(NULL);
  /* If we fail just return */
@@ -1109,13 +1131,15 @@ void TScreenX11::DestroyXImageFont(int which)
     if (useSecondaryFont)
       {
        for (i=0; i<256; i++)
-           XDestroyImage(ximgSecFont[i]);
+           if (ximgSecFont[i])
+              XDestroyImage(ximgSecFont[i]);
        useSecondaryFont=0;
       }
    }
  else
    for (i=0; i<256; i++)
-       XDestroyImage(ximgFont[i]);
+       if (ximgFont[i])
+          XDestroyImage(ximgFont[i]);
 }
 
 int TScreenX11::setWindowTitle(const char *aName)

@@ -302,7 +302,8 @@ int TVConfigFile::ReadBranch(TVConfigFileTreeNode *&base)
                 aux->integer=integer;
                 aux->type=tInteger;
                }
-             aux->name=newStrL(start,end-start);
+             if (newOne)
+                aux->name=newStrL(start,end-start);
              aux->next=NULL;
              aux->priority=fromFile;
              /*if (aux->type==tString)
@@ -597,6 +598,7 @@ void TVConfigFile::FreeList(TVConfigFileTreeNode *p)
     aux=p->next;
     if (p->type==tString)
        delete[] p->string;
+    delete[] p->name;
     delete p;
     p=aux;
    }
@@ -630,7 +632,7 @@ void TVConfigFile::PrintBranch(TVConfigFileTreeNode *base, int indent, FILE *f)
             break;
        case tString:
             PrintIndent(indent,f);
-            fprintf(f,"%s=%s\n",base->name,base->string);
+            fprintf(f,"%s=\"%s\"\n",base->name,base->string);
             break;
        case tInteger:
             PrintIndent(indent,f);
