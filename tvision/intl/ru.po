@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Last-Translator: Roman Valyushenko <smhs@mail.ru>\n"
-"PO-Revision-Date: 2002-12-04 22:46+0200\n"
+"PO-Revision-Date: 2003-01-04 18:10+0200\n"
 "Language-Team: Russian (русский)\n"
 "Content-Type: text/plain; charset=KOI8-R\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,7 +28,7 @@ msgstr "Комментарий внутри имени секции"
 #. -2
 #: classes/configfile.cc:47
 msgid "Unterminated section name"
-msgstr "Не терменированное имя секции"
+msgstr "Имя секции не имеет терминирующего символа"
 
 #. -3
 #: classes/configfile.cc:48
@@ -48,7 +48,7 @@ msgstr "Секция не имеет открывающей скобки { "
 #. -6
 #: classes/configfile.cc:51
 msgid "Missing close section }"
-msgstr "Секция не имеет закрывающей скобки { "
+msgstr "Секция не имеет закрывающей скобки } "
 
 #. -7
 #: classes/configfile.cc:52
@@ -63,12 +63,12 @@ msgstr "Нет значения после знака \"равно\""
 #. -9
 #: classes/configfile.cc:54
 msgid "Unterminated string"
-msgstr "Не терминированная строка"
+msgstr "Строка не имеет терминирующего символа (ориг. Unterminated string)"
 
 #. -10
 #: classes/configfile.cc:55
 msgid "Non branch in base"
-msgstr "Нет ветки в основе"
+msgstr "Нет ветки в основе (ориг. Non branch in base)."
 
 #. -11
 #: classes/configfile.cc:56
@@ -111,11 +111,11 @@ msgstr "Сменить директорию"
 
 #: classes/tchdirdi.cc:48
 msgid "Directory ~n~ame"
-msgstr "Имя директории"
+msgstr "~И~мя директории"
 
 #: classes/tchdirdi.cc:56
 msgid "Directory ~t~ree"
-msgstr "Дерево директорий"
+msgstr "~Д~ерево директорий"
 
 #: classes/tchdirdi.cc:59 classes/tcolordi.cc:101 msgbox.cc:38 msgbox.cc:197
 msgid "~O~K"
@@ -123,11 +123,11 @@ msgstr "~O~K"
 
 #: classes/tchdirdi.cc:61
 msgid "~C~hdir"
-msgstr "Сменить"
+msgstr "~С~менить"
 
 #: classes/tchdirdi.cc:63
 msgid "~R~evert"
-msgstr "Восстановить"
+msgstr "~В~осстановить"
 
 #: classes/tchdirdi.cc:65
 msgid "Help"
@@ -151,15 +151,15 @@ msgstr "~Г~руппа"
 
 #: classes/tcolordi.cc:63
 msgid "~I~tem"
-msgstr "Пункт"
+msgstr "~П~ункт"
 
 #: classes/tcolordi.cc:69
 msgid "~F~oreground"
-msgstr "Цвет текста"
+msgstr "Цвет т~е~кста"
 
 #: classes/tcolordi.cc:78
 msgid "~B~ackground"
-msgstr "Цвет фона"
+msgstr "Цвет ~ф~она"
 
 #: classes/tcolordi.cc:83
 msgid "Text "
@@ -188,7 +188,7 @@ msgstr "Без имени"
 
 #: classes/tfiledia.cc:85
 msgid "~F~iles"
-msgstr "Файлы"
+msgstr "~Ф~айлы"
 
 #: classes/tfiledia.cc:105
 msgid "Done"
@@ -196,7 +196,7 @@ msgstr "Сделано"
 
 #: classes/tfiledia.cc:114
 msgid "~H~elp"
-msgstr "Помощь"
+msgstr "Помо~щ~ь"
 
 #: classes/tfiledia.cc:250
 msgid "Invalid drive or directory"
@@ -280,7 +280,7 @@ msgstr "Инверсия"
 
 #: classes/tprogram.cc:308
 msgid "~Alt-X~ Exit"
-msgstr "~Alt-X~ Выход"
+msgstr "~Alt-Ы~ Выход"
 
 #: classes/trangeva.cc:51
 #, c-format
@@ -298,15 +298,15 @@ msgstr "Найти"
 
 #: classes/tvedit2.cc:61 classes/tvedit2.cc:87
 msgid "~T~ext to find"
-msgstr "Что искать"
+msgstr "~Ч~то искать"
 
 #: classes/tvedit2.cc:66 classes/tvedit2.cc:96
 msgid "~C~ase sensitive"
-msgstr "Учитывать регистр"
+msgstr "Учитывать ~р~егистр"
 
 #: classes/tvedit2.cc:67 classes/tvedit2.cc:97
 msgid "~W~hole words only"
-msgstr "Целые слова только"
+msgstr "~Ц~елые слова только"
 
 #: classes/tvedit2.cc:70 classes/tvedit2.cc:102
 msgid "O~K~"
@@ -318,39 +318,39 @@ msgstr "Заменить"
 
 #: classes/tvedit2.cc:92
 msgid "~N~ew text"
-msgstr "Новый текст"
+msgstr "~З~аменить на"
 
 #: classes/tvedit2.cc:98
 msgid "~P~rompt on replace"
-msgstr "Спрашивать при замене"
+msgstr "По~д~тверждать замену"
 
 #: classes/tvedit2.cc:99
 msgid "~R~eplace all"
-msgstr "Заменить все"
+msgstr "З~а~менить все"
 
 #: classes/tvedit3.cc:40
 msgid "~F~ile"
-msgstr "Файл"
+msgstr "~Ф~айл"
 
 #: classes/tvedit3.cc:41
 msgid "~O~pen"
-msgstr "Открыть"
+msgstr "~О~ткрыть"
 
 #: classes/tvedit3.cc:42
 msgid "~N~ew"
-msgstr "Новый"
+msgstr "~Н~овый"
 
 #: classes/tvedit3.cc:43
 msgid "~S~ave"
-msgstr "Сохранить"
+msgstr "~С~охранить"
 
 #: classes/tvedit3.cc:44
 msgid "S~a~ve as..."
-msgstr "Сохранить как..."
+msgstr "Сохранить ~к~ак..."
 
 #: classes/tvedit3.cc:46
 msgid "~C~hange dir..."
-msgstr "Сменить директорию..."
+msgstr "С~м~енить директорию..."
 
 #: classes/tvedit3.cc:47
 msgid "S~h~ell"
@@ -358,83 +358,83 @@ msgstr "S~h~ell"
 
 #: classes/tvedit3.cc:48
 msgid "E~x~it"
-msgstr "Выход"
+msgstr "В~ы~ход"
 
 #: classes/tvedit3.cc:50
 msgid "~E~dit"
-msgstr "Правка"
+msgstr "~П~равка"
 
 #: classes/tvedit3.cc:51
 msgid "~U~ndo"
-msgstr "Отменить действие"
+msgstr "О~т~менить действие"
 
 #: classes/tvedit3.cc:53
 msgid "Cu~t~"
-msgstr "Вырезать"
+msgstr "Вы~р~езать"
 
 #: classes/tvedit3.cc:54
 msgid "~C~opy"
-msgstr "Копировать"
+msgstr "~К~опировать"
 
 #: classes/tvedit3.cc:55
 msgid "~P~aste"
-msgstr "Вставить"
+msgstr "~В~ставить"
 
 #: classes/tvedit3.cc:56
 msgid "~S~how clipboard"
-msgstr "Показать содержимое буфера"
+msgstr "Показать ~б~уфер"
 
 #: classes/tvedit3.cc:58
 msgid "~C~lear"
-msgstr "Очистить"
+msgstr "~О~чистить"
 
 #: classes/tvedit3.cc:60
 msgid "~S~earch"
-msgstr "Поиск"
+msgstr "~П~оиск"
 
 #: classes/tvedit3.cc:61
 msgid "~F~ind..."
-msgstr "Найти"
+msgstr "~Н~айти"
 
 #: classes/tvedit3.cc:62
 msgid "~R~eplace..."
-msgstr "Заменить"
+msgstr "~З~аменить"
 
 #: classes/tvedit3.cc:63
 msgid "~S~earch again"
-msgstr "Найти сново"
+msgstr "Най~т~и сново"
 
 #: classes/tvedit3.cc:65
 msgid "~W~indows"
-msgstr "Окна"
+msgstr "~О~кна"
 
 #: classes/tvedit3.cc:66
 msgid "~S~ize/move"
-msgstr "Изменить размер/положение"
+msgstr "~И~зменить размер/положение"
 
 #: classes/tvedit3.cc:67
 msgid "~Z~oom"
-msgstr "Распахнуть"
+msgstr "~Р~аспахнуть"
 
 #: classes/tvedit3.cc:68
 msgid "~T~ile"
-msgstr "Разместить окна плиткой"
+msgstr "Разместить ~п~литкой"
 
 #: classes/tvedit3.cc:69
 msgid "C~a~scade"
-msgstr "Каскад"
+msgstr "Разместить ~к~аскадом"
 
 #: classes/tvedit3.cc:70
 msgid "~N~ext"
-msgstr "Следующее"
+msgstr "~С~ледующее"
 
 #: classes/tvedit3.cc:71
 msgid "~P~revious"
-msgstr "Предыдущее"
+msgstr "~П~редыдущее"
 
 #: classes/tvedit3.cc:72
 msgid "~C~lose"
-msgstr "Закрыть"
+msgstr "~З~акрыть"
 
 #. SET: F10 before the others so when the library maintains the
 #. cursor visible this option is pointed and the user have a
@@ -497,7 +497,7 @@ msgstr "Сохранить файл как"
 
 #: classes/tvedit3.cc:162 fileview.cc:217
 msgid "~N~ame"
-msgstr "Имя"
+msgstr "Им~я~"
 
 #: classes/tvedit3.cc:173
 msgid "Search string not found."
@@ -575,7 +575,7 @@ msgstr ""
 
 #: classes/x11/x11src.cc:1420
 msgid "No available selection"
-msgstr "No available selection"
+msgstr "Ничего не выделено (No available selection)"
 
 #: classes/x11/x11src.cc:1421
 msgid "Unsupported data type"
@@ -591,7 +591,7 @@ msgstr "Ошибка X11"
 
 #: classes/x11/x11src.cc:1424
 msgid "Another application holds the clipboard"
-msgstr "Другое приложение блокирует буфер обмена"
+msgstr "Другое приложение блокирует буфер обмена (ориг. Another application holds the clipboard)"
 
 #: fileview.cc:151
 #, c-format
@@ -604,11 +604,11 @@ msgstr "Сохранить в файл"
 
 #: msgbox.cc:36
 msgid "~Y~es"
-msgstr "Да"
+msgstr "~Д~а"
 
 #: msgbox.cc:37
 msgid "~N~o"
-msgstr "Нет"
+msgstr "~Н~ет"
 
 #: msgbox.cc:52
 msgid "Warning"

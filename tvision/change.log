@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+--------------------------- 2.0.1 Release Candidate 2 ----------------------
+Revision 2.390  2002/12/27 12:42:13  set
+* Added: Workaround for problems with SuSE when including libintl.h
+(__THROW interferes with default prototypes). Reported by Grzegorz.
+
 Revision 2.389  2002/12/19 17:29:43  set
 * Updated: Russian translations. Contributed by Roman Valyushenko
 <smhs@mail.ru>

@@ -122,7 +122,7 @@ ushort doEditDialogDefault( int dialog, va_list arg )
     switch( dialog )
         {
         case edOutOfMemory:
-            return messageBox( _("Not enough memory for this operation"),
+            return messageBox( _("Not enough memory for this operation."),
                                mfError | mfOKButton );
         case edReadError:
             {
