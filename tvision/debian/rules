@@ -16,24 +16,26 @@ destdir=debian/tmp/usr
 export DH_COMPAT=1
 
 build: build-stamp
-build-stamp:
+build-stamp: debianbackup.tar
 	dh_testdir
 # Rename debian/rhtvision.postinst file if it exists:
 ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
 endif
-# Backup upstream provided regenerated files (if no previous backups exists):
-	for file in $$(cat debian/files_to_backup) ; do test -e "$$file" && cp "$$file" "$$file.bkpdeb" ; done ; exit 0
 	./configure --prefix=$(destdir) --fhs
-	cat Makefile | grep -v 'ldconfig' > Makefile
+#	cat Makefile | grep -v 'ldconfig' > Makefile
 	$(MAKE)
 	touch build-stamp
 
 
-clean: clean-debian
+clean: clean-debian debianbackup.tar
 	$(MAKE) clean
-# Restore upstream provided regenerated files (if backup exists):
-	for file in $$(cat debian/files_to_backup) ; do test -e "$$file.bkpdeb" && mv "$$file.bkpdeb" "$$file" ; done ; exit 0
+# Restore upstream provided regenerated files:
+	test -e debianbackup.tar && tar -xf debianbackup.tar
+	rm -f debianbackup.tar
+# FIXME: ask upstream about adding the next 3 files to his clean target:
+	rm -f linuxso/gkeyli.cc
+	rm -f linuxso/makemak.pl
 	rm -f configure.cache
 	rm -f build-stamp
 
@@ -47,15 +49,19 @@ endif
 	dh_clean
 
 
+debianbackup.tar:
+	dh_testdir
+# Backup upstream provided regenerated files:
+	tar -cf debianbackup.tar --files-from=debian/files_to_backup
+
+
 install: build
 	dh_testdir
 	dh_testroot
 	dh_clean
 	dh_installdirs -p $(package)$(version)-dev usr/lib usr/include/$(package) usr/share/doc usr/share/doc/$(package)$(version)-dev usr/share/doc/$(package)$(version)-dev/examples
 	dh_installdirs -p $(package)$(version) usr/lib usr/share usr/share/man usr/share/man/man3 usr/share/doc/$(package)$(version) usr/share/doc/$(package)$(version)/eterm
-
 	$(MAKE) install
-
 # We need to move files for other packages than the first one in the control file:
 	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version)
 
@@ -65,7 +71,7 @@ binary-arch: build install
 	dh_testroot
 	dh_installdocs -p $(package)$(version) extra/eterm/ borland.txt copying copying.rh readme.txt
 	dh_installdocs -p $(package)$(version)-dev examples/ borland.txt copying copying.rh readme.txt
-	find $(destdir) \( -iname '.cvsignore' -or -iname '*.bkpdeb' \) -exec rm '{}' \;
+	find $(destdir) -iname '.cvsignore' -exec rm '{}' \;
 #	dh_installexamples
 #	dh_installmenu
 #	dh_installemacsen
@@ -87,7 +93,7 @@ binary-arch: build install
 
 
 ## Build architecture-independent files here.
-#binary-indep: build install
+binary-indep: build install
 #This package doesn't have architecture-independent files for the moment...
 
 
