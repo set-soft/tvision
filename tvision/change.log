@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.318  2002/09/16 14:33:35  set
+* Fixed: [CygWin/MinGW] Both of them needs libgdi32 for the new WinGr
+driver.
+
 Revision 2.317  2002/09/16 14:31:58  set
 * Removed: The .mak files named in "lista" they are added by the
 compression script.
