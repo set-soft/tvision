@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.82  2002/05/24 20:13:29  set
+* Added: The first test classes for the XTerm driver. They aren't tested
+yet but I think they will work much better than the ncurses version.
+
 Revision 2.81  2002/05/20 15:56:55  set
 * Fixed: UNIX and X11 drivers didn't set uid and gid to the effective
 values after initialization. This is used for Linux console driver, but
