@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.248  2002/08/12 16:03:41  set
+* Added: Input code page. It can be used to translate the codes from the
+keyboard to the application code page.
+* Modified: All drivers to set the input code page. Win32 drivers now use
+both values GetConsoleOutputCP() and GetConsoleCP().
+
 Revision 2.247  2002/08/12 16:02:27  set
 * Added: Yet another flag to TScreen: noUserScreen(). It returns True if
 the user screen doesn't exists. You can't invoke a shell in this case.

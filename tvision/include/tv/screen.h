@@ -300,6 +300,8 @@ public:
  static Boolean  isSecondaryFontEnabled() { return useSecondaryFont ? True : False; };
  // It looks for a configuration variable that belongs to the current driver
  static Boolean  optSearch(const char *variable, long &val);
+ static const char
+                *getDriverShortName() { return currentDriverShortName; }
 
  // SET: flags capabilities flags
  enum Capabilities1
