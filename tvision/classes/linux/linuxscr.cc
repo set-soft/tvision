@@ -131,7 +131,8 @@ struct console_font_op
                TScreenLinux::linuxFont,
                TScreenLinux::ourFont;
 int            TScreenLinux::origCPScr,
-               TScreenLinux::origCPApp;
+               TScreenLinux::origCPApp,
+               TScreenLinux::origCPInp;
 
 // Information about known font maps
 struct stCodePageCk
@@ -577,7 +578,7 @@ int TScreenLinux::InitOnce()
  // Try to figure out which code page is loaded
  if (!tioclinuxOK || !AnalyzeCodePage())
     GuessCodePageFromLANG();
- codePage=new TVCodePage(installedACM,installedSFM);
+ codePage=new TVCodePage(installedACM,installedSFM,installedACM);
  if (tioclinuxOK && GetLinuxFontGeometry())
    {
     canSetFonts=1;
@@ -1397,7 +1398,7 @@ int TScreenLinux::SetFont(int changeP, TScreenFont256 *fontP,
        if (appCP==-1)
           TVCodePage::SetScreenCodePage(fontCP);
        else
-          TVCodePage::SetCodePage(appCP,fontCP);
+          TVCodePage::SetCodePage(appCP,fontCP,-1);
       }
     return ret;
    }
@@ -1441,7 +1442,7 @@ int TScreenLinux::SetFont(int changeP, TScreenFont256 *fontP,
        ourFont.charcount=256;
       }
     if (!primaryFontSet)
-       TVCodePage::GetCodePages(origCPApp,origCPScr);
+       TVCodePage::GetCodePages(origCPApp,origCPScr,origCPInp);
     if (fontP)
       {
        ExpandFont(ourFont.data,fontP);
@@ -1484,7 +1485,7 @@ int TScreenLinux::SetFont(int changeP, TScreenFont256 *fontP,
     if (appCP==-1)
        TVCodePage::SetScreenCodePage(fontCP);
     else
-       TVCodePage::SetCodePage(appCP,fontCP);
+       TVCodePage::SetCodePage(appCP,fontCP,-1);
    }
  return 1;
 }

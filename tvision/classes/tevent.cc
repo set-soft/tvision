@@ -16,6 +16,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TEventQueue
 #define Uses_TEvent
 #define Uses_TScreen
+#define Uses_TVCodePage
 #include <tv.h>
 #include <tv/gkey.h>
 
@@ -208,6 +209,11 @@ void TEvent::getKeyEvent()
     // is mouse up it means the keyboard forced an event in the mouse module.
     if (what==evMouseUp)
        getMouseEvent();
+    else
+      {
+       if (TVCodePage::OnTheFlyRemapInpNeeded())
+          keyDown.charScan.charCode=TVCodePage::OnTheFlyInpRemap(keyDown.charScan.charCode);
+      }
    }
  else
     what=evNothing;

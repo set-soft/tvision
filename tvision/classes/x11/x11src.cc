@@ -835,7 +835,8 @@ TScreenX11::TScreenX11()
  /* Create what we'll use as font */
  CreateXImageFont(0,fontData,fontW,fontH);
  /* Set up the code page used for it */
- codePage=new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
+ codePage=new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
+                         TVCodePage::ISOLatin1Linux);
 
  /* Create the cursor image */
  AdjustCursorImage();
@@ -1594,7 +1595,7 @@ int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
     if (appCP==-1)
        TVCodePage::SetScreenCodePage(fontCP);
     else
-       TVCodePage::SetCodePage(appCP,fontCP);
+       TVCodePage::SetCodePage(appCP,fontCP,-1);
    }
  // Verify if we need to resize
  if (wP!=fontW || hP!=fontH)

@@ -204,7 +204,7 @@ protected:
  static uchar  canSetFonts,primaryFontSet,secondaryFontSet;
  static struct console_font_op linuxFont;
  static struct console_font_op ourFont;
- static int    origCPScr, origCPApp;
+ static int    origCPScr, origCPApp, origCPInp;
 };
 
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't

@@ -1,4 +1,15 @@
-$Log$.
+$Log$
+Revision 2.247  2002/08/12 16:02:27  set
+* Added: Yet another flag to TScreen: noUserScreen(). It returns True if
+the user screen doesn't exists. You can't invoke a shell in this case.
+* Added: A new command cmCallShell. It should be used for the menu option
+that invokes a shell. It is disabled if noUserScreen() is True.
+* Modified: tvedit, videomode, demo and font examples to use the new
+command.
+* Fixed: [XTerm] the resume restore the window size wrongly (width and
+height exchanged).
+* Added: [X11] The new flag. Currently that's the only driver having it.
+
 Revision 2.246  2002/08/12 16:00:19  set
 * Fixed: [Cygwin] The CLY_GetShellName() function to return the content of
 SHELL environment variable as in UNIX. Found using the "videomode" example
