@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.188  2004/09/17 18:57:40  set
+* Fixed: [MSVC] Missing return value in tdirlist.cc:
+ListDirectory( char *path, char *end ). Introduced by last TDirListBox
+patches in the MSVC specific section.
+
 Revision 2.399.2.187  2004/09/17 14:48:22  set
 * Fixed: [DOS][gcc] gcc 3.4.1 warnings in vgastate.c code. Reported by
 Nicola Asuni.
