@@ -15,6 +15,11 @@ be provided in the same package.
 
 typedef unsigned short uint16;
 typedef unsigned char uchar;
+/* Must match TV's TScreenColor */
+struct AlCon_Color
+{
+ uchar R,G,B,Alpha;
+};
 
 /* Functions to hide/unhide the mouse and text cursors. */
 extern void AlCon_ScareCursor();
@@ -60,7 +65,8 @@ extern void AlCon_ShowCursor();
 extern int AlCon_IsVisCursor();
 
 /* Initialization routines */
-extern int AlCon_Init(int w, int h, int fw=-1, int fh=-1, uchar *fdata=NULL);
+extern int AlCon_Init(int w, int h, int fw=-1, int fh=-1, uchar *fdata=NULL,
+                      AlCon_Color *pal=NULL);
 extern void AlCon_Exit();
 
 /* Keyboard input routines */
@@ -78,9 +84,12 @@ extern void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h);
 extern void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h);
 extern void AlCon_EnableSecFont();
 extern void AlCon_DisableSecFont();
-
 /* Our default font */
 extern uchar AlCon_ShapeFont8x16[];
+
+int AlCon_SetDisPaletteColors(int from, int number, AlCon_Color *colors);
+/* Only for readback */
+extern AlCon_Color AlCon_CurPalette[16];
 
 extern void AlCon_Redraw();
 

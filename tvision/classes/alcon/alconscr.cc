@@ -81,7 +81,8 @@ TScreenAlcon::TScreenAlcon()
     fontData=useFont->data;
 
     // Create screen.
-    int res=AlCon_Init(screenWidth,screenHeight,fontW,fontH,fontData);
+    TScreenColor *pal=parseUserPalette() ? UserStartPalette : PC_BIOSPalette;
+    int res=AlCon_Init(screenWidth,screenHeight,fontW,fontH,fontData,(AlCon_Color *)pal);
     if (freeFontData)
       {/* Provided by the call back */
        DeleteArray(useFont->data);
@@ -96,6 +97,8 @@ TScreenAlcon::TScreenAlcon()
     */
     screenWidth = AlCon_ScreenCols();
     screenHeight = AlCon_ScreenRows();
+    memcpy(ActualPalette,AlCon_CurPalette,sizeof(ActualPalette));
+    memcpy(OriginalPalette,AlCon_CurPalette,sizeof(OriginalPalette));
 
     // Find font geometry
     AlCon_GetFontGeometry(&fontW,&fontH);
@@ -110,7 +113,7 @@ TScreenAlcon::TScreenAlcon()
     TScreen::getCharacter=getCharacter;
     TScreen::setCharacter=setCharacter;
     TScreen::setCharacters=setCharacters;
-    //static int    SetDisPaletteColors(int from, int number, TScreenColor *colors);
+    TScreen::setDisPaletteColors=SetDisPaletteColors;
     // Fonts stuff
     TScreen::getFontGeometry=GetFontGeometry;
     //TScreen::getFontGeometryRange=GetFontGeometryRange;
@@ -134,7 +137,7 @@ TScreenAlcon::TScreenAlcon()
     // Wicked. But works.
     screenBuffer = new uint16[screenWidth * screenHeight];
     
-    flags0|=CanSetBFont | CanSetSBFont;
+    flags0|=CanSetPalette | CanReadPalette | CanSetBFont | CanSetSBFont;
 }
 
 
@@ -304,4 +307,10 @@ void TScreenAlcon::RestoreFonts()
  SetFont(1,NULL,1,NULL,TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
 }
 
+int TScreenAlcon::SetDisPaletteColors(int from, int number, TScreenColor *colors)
+{
+ int i=AlCon_SetDisPaletteColors(from,number,(AlCon_Color *)colors);
+ AlCon_Redraw();
+ return i;
+}
 

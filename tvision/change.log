@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.138.2.7  2004/10/22 14:12:21  set
+* Added: [AlCon] RestoreFont implementation.
+* Added: [AlCon] Use of secondary font. Now the font example works.
+
 Revision 2.399.2.138.2.6  2004/10/21 20:22:37  set
 * Added: [AlCon] Font support, it needs more work, but setedit can use it.
 

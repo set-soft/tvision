@@ -52,29 +52,25 @@ static FONT_MONO_DATA Alcon_CursorMonoFont =
  0                           /* next */
 };
 
-typedef struct
-{
- unsigned char r,g,b;
-} PalCol;
-
 static
-PalCol BIOSPalette[16]={
-{ 0x00, 0x00, 0x00 },
-{ 0x00, 0x00, 0xA8 },
-{ 0x00, 0xA8, 0x00 },
-{ 0x00, 0xA8, 0xA8 },
-{ 0xA8, 0x00, 0x00 },
-{ 0xA8, 0x00, 0xA8 },
-{ 0xA8, 0x54, 0x00 },
-{ 0xA8, 0xA8, 0xA8 },
-{ 0x54, 0x54, 0x54 },
-{ 0x54, 0x54, 0xFC },
-{ 0x54, 0xFC, 0x54 },
-{ 0x54, 0xFC, 0xFC },
-{ 0xFC, 0x54, 0x54 },
-{ 0xFC, 0x54, 0xFC },
-{ 0xFC, 0xFC, 0x54 },
-{ 0xFC, 0xFC, 0xFC }};
+AlCon_Color BIOSPalette[16]={
+{ 0x00, 0x00, 0x00, 0 },
+{ 0x00, 0x00, 0xA8, 0 },
+{ 0x00, 0xA8, 0x00, 0 },
+{ 0x00, 0xA8, 0xA8, 0 },
+{ 0xA8, 0x00, 0x00, 0 },
+{ 0xA8, 0x00, 0xA8, 0 },
+{ 0xA8, 0x54, 0x00, 0 },
+{ 0xA8, 0xA8, 0xA8, 0 },
+{ 0x54, 0x54, 0x54, 0 },
+{ 0x54, 0x54, 0xFC, 0 },
+{ 0x54, 0xFC, 0x54, 0 },
+{ 0x54, 0xFC, 0xFC, 0 },
+{ 0xFC, 0x54, 0x54, 0 },
+{ 0xFC, 0x54, 0xFC, 0 },
+{ 0xFC, 0xFC, 0x54, 0 },
+{ 0xFC, 0xFC, 0xFC, 0 }};
+AlCon_Color AlCon_CurPalette[16];
 
 static int cursorX, cursorY;
 static int cursorPX, cursorPY;
@@ -590,7 +586,7 @@ int AlCon_IsVisCursor()
   
 ***************************************************************************/
 
-int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata)
+int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
 {
    if (fw!=-1 && fh!=-1) {
       AlCon_FontWidth=fw;
@@ -642,9 +638,7 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata)
    AlCon_SetCursorShape(87 * AlCon_FontHeight / 100, AlCon_FontHeight - 1);
   
    /* Create the text mode palette */
-   for (int i = 0; i < 16; i++)
-       colors[i] = makecol(BIOSPalette[i].r,
-         BIOSPalette[i].g, BIOSPalette[i].b);
+   AlCon_SetDisPaletteColors(0,16,pal ? pal : BIOSPalette);
   
    /* Allocate "screen" buffers */
    chars = (unsigned char *)malloc(AlCon_ScreenWidth * AlCon_ScreenHeight);
@@ -662,6 +656,19 @@ void AlCon_Exit()
 {
  remove_int(AlCon_IntCursor);
  set_gfx_mode(GFX_TEXT,0,0,0,0);
+}
+
+int AlCon_SetDisPaletteColors(int from, int number, AlCon_Color *c)
+{
+ int i;
+
+ for (i=0; i<number; i++)
+    {
+     colors[from+i]=makecol(c[i].R,c[i].G,c[i].B);
+     AlCon_CurPalette[from+i]=c[i];
+    }
+
+ return i;
 }
 
 /*****************************************************************************
