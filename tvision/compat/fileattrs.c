@@ -21,14 +21,15 @@ for SETEdit and not a full set.
 */
 #include <io.h>
 
-CLY_mode_t CLY_GetFileAttributes(mode_t statVal, const char *fileName)
+void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal,
+                           const char *fileName)
 {
- return _chmod(fileName,0,0);
+ *mode=_chmod(fileName,0,0);
 }
 
-int CLY_SetFileAttributes(CLY_mode_t newmode, const char *fileName)
+int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName)
 {
- return _chmod(fileName,1,newmode)==-1 ? 0 : 1;
+ return _chmod(fileName,1,*newmode)==-1 ? 0 : 1;
 }
 
 void CLY_FileAttrReadOnly(CLY_mode_t *mode)
@@ -41,19 +42,19 @@ void CLY_FileAttrReadWrite(CLY_mode_t *mode)
  *mode&=0xFE;
 }
 
-int  CLY_FileAttrIsRO(CLY_mode_t mode)
+int  CLY_FileAttrIsRO(CLY_mode_t *mode)
 {
- return mode & 1;
+ return (*mode) & 1;
 }
 
-CFunc void CLY_FileAttrModified(CLY_mode_t *mode)
+void CLY_FileAttrModified(CLY_mode_t *mode)
 {
  *mode|=0x20;
 }
 
-CFunc CLY_mode_t CLY_GetDefaulFileAttr(void)
+void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
 {
- return 0x20;
+ *mode=0x20;
 }
 #endif // TVOSf_djgpp
 
@@ -64,40 +65,46 @@ CFunc CLY_mode_t CLY_GetDefaulFileAttr(void)
   In UNIX the best way is just use chmod which is POSIX and should be
 enough.
 */
-//#include <sys/stat.h>
+#include <unistd.h>
 
-CLY_mode_t CLY_GetFileAttributes(mode_t statVal, const char *fileName)
+void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal,
+                           const char *fileName)
 {
- return statVal;
+ mode->mode =statVal->st_mode;
+ mode->user =statVal->st_uid;
+ mode->group=statVal->st_gid;
 }
 
-int CLY_SetFileAttributes(CLY_mode_t newmode, const char *fileName)
+int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName)
 {
- return !chmod(fileName,newmode);
+ return !(chmod(fileName,newmode->mode) ||
+          chown(fileName,newmode->user,newmode->group));
 }
 
 void CLY_FileAttrReadOnly(CLY_mode_t *mode)
 {
- *mode&= ~S_IWUSR;
+ mode->mode&= ~S_IWUSR;
 }
 
 void CLY_FileAttrReadWrite(CLY_mode_t *mode)
 {
- *mode|=S_IWUSR;
+ mode->mode|=S_IWUSR;
 }
 
-int  CLY_FileAttrIsRO(CLY_mode_t mode)
+int  CLY_FileAttrIsRO(CLY_mode_t *mode)
 {
- return (mode & S_IWUSR)==0;
+ return (mode->mode & S_IWUSR)==0;
 }
 
-CFunc void CLY_FileAttrModified(CLY_mode_t *mode)
+void CLY_FileAttrModified(CLY_mode_t *mode)
 {
 }
 
-CFunc CLY_mode_t CLY_GetDefaulFileAttr(void)
+void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
 { // 644, umask will kill the denied ones if that's needed
- return S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR;
+ mode->mode=S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR;
+ mode->user=getuid();
+ mode->group=getgid();
 }
 #endif
 
@@ -110,15 +117,15 @@ CFunc CLY_mode_t CLY_GetDefaulFileAttr(void)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-CLY_mode_t CLY_GetFileAttributes(mode_t statVal, const char *fileName)
+void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal,
+                           const char *fileName)
 {
- statVal=0;
- return GetFileAttributes(fileName) | statVal;
+ *mode=GetFileAttributes(fileName);
 }
 
-int CLY_SetFileAttributes(CLY_mode_t newmode, const char *fileName)
+int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName)
 {
- return SetFileAttributes(fileName,newmode);
+ return SetFileAttributes(fileName,*newmode);
 }
 
 void CLY_FileAttrReadOnly(CLY_mode_t *mode)
@@ -131,18 +138,18 @@ void CLY_FileAttrReadWrite(CLY_mode_t *mode)
  *mode&=~FILE_ATTRIBUTE_READONLY;
 }
 
-int  CLY_FileAttrIsRO(CLY_mode_t mode)
+int  CLY_FileAttrIsRO(CLY_mode_t *mode)
 {
- return (mode & FILE_ATTRIBUTE_READONLY);
+ return (*mode & FILE_ATTRIBUTE_READONLY);
 }
 
-CFunc void CLY_FileAttrModified(CLY_mode_t *mode)
+void CLY_FileAttrModified(CLY_mode_t *mode)
 {
  *mode|=FILE_ATTRIBUTE_ARCHIVE;
 }
 
-CFunc CLY_mode_t CLY_GetDefaulFileAttr(void)
+void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
 {
- return FILE_ATTRIBUTE_ARCHIVE;
+ *mode=FILE_ATTRIBUTE_ARCHIVE;
 }
 #endif
