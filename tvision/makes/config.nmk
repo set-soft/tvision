@@ -5,13 +5,19 @@
 #
 # This file contains the definitions that configures the compilation.
 # They include the C and C++ options and linker options.
-# This file is for MSVC, but isn't tested.
 #
 
+!ifdef DEBUG
+# Options to debug
+CFLAGS   = /nologo -D_WIN32 -DFOR_EDITOR /GX /Zi
+LDFLAGS  = /DEBUG
+!else
+# Options for optimization (production)
 CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GX
 #CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GR- /GX-
-CXXFLAGS = /TP $(CFLAGS)
 LDFLAGS  = /verbose
+!endif
+CXXFLAGS = /TP $(CFLAGS)
 
 RHIDE_GCC=cl
 RHIDE_GXX=cl
