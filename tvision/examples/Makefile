@@ -1,8 +1,8 @@
-# Copyright (C) 2001-2002 by Salvador E. Tropea (SET),
+# Copyright (C) 2001-2003 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # This file is mostly used to clean the examples directories, but can be
-# used to compile any of them or just one from this directory.
+# used to compile all of them or just one from this directory.
 #
 .PHONY: clean
 
@@ -19,7 +19,7 @@ examples=demo/demo desklogo/desklogo desklogo/set-logo \
 	tvedit/tvedit tvhc/tvhc clipboard/test fonts/test \
 	helpdemo/helpdemo fonts/genraw videomode/test \
 	cyrillic/linuxkoi8/test cyrillic/x11koi8/test \
-	bhelp/thelp
+	bhelp/thelp i18n/test
 
 all: $(addsuffix .exe,$(examples))
 
@@ -48,6 +48,8 @@ fonts/test.exe: fonts/test.gpr
 fonts/genraw.exe: fonts/genraw.gpr
 
 helpdemo/helpdemo.exe: helpdemo/helpdemo.gpr
+
+i18n/test.exe: i18n/test.gpr
 
 inplis/implis.exe: inplis/implis.gpr
 

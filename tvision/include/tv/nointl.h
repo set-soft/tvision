@@ -18,6 +18,7 @@ public:
  TVIntl() {};
  static const char *textDomain(const char *) { return NULL; };
  static const char *bindTextDomain(const char *, const char *) { return NULL; };
+ static int         autoInit(const char *package, const char *localeDir=NULL) { return 1; };
  static const char *getText(const char *msgid) { return msgid; };
  static void        setCatalogEncoding(int ) { };
  static void        enableTranslations() { };

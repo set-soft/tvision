@@ -1,0 +1,29 @@
+  Here is an example on how to use the internationalization (i18n) mechanisms
+for messages.
+  This small program uses various strings found in TV so they are already
+available in the tvision.mo catalog (tvision domain). The code have only one
+message to found in TV: "~W~indow" (TV have the plural).
+  This string is marked as "needs translation" using __(...). This macro does
+nothing and is there just to tell xgettext we want to translate it.
+  Then we use the script "extract.sh" to call xgettext and generate
+"test.po". This file contains the strings to translate (just one in this
+example).
+  The next step is to create the "catalog sources" for each language. In this
+example we are using spanish so we create es.po. It contains the spanish
+translations.
+  Finally we compile it using "msgfmt -o test.mo es.po" and put this catalog
+in intl/es/LC_MESSAGES/test.mo. In real life it should be installed at
+system level, for UNIX systems it is usually installed in
+/usr/share/locale/es/LC_MESSAGES or /usr/local/share/locale/es/LC_MESSAGES.
+  So we have two catalogs for spanish, one for the "tvision" domain and
+another for the "test" domain. TV will search in the "test" domain first and
+if the message isn't there will search in "tvision".
+  To enable the translations you just need to call TVIntl::textDomain or
+TVIntl::autoInit. The second is used to force a directory to search for
+catalogs so we use it in this example.
+  Note the code is forcing spanish using putenv("LANG=es"); because that's
+the only translation we have. It shouldn't be like that in real life.
+  That's all, play with the example you'll see text translated to spanish in
+menues and status line.
+
+

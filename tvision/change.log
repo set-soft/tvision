@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.425  2003/04/21 16:37:19  set
+* Fixed(?): Use of \r in i18n messages. This is a really bad limitation.
+
 Revision 2.424  2003/04/21 16:17:16  set
 * Added: Support for the new i18n API to TColorGroup and TColorItem.
 * Added: snprintf and fprintf members to TVIntl. They transparentlty

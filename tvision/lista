@@ -334,6 +334,15 @@ examples/fonts/test.cc
 examples/helpdemo/helpdemo.cc
 -examples/helpdemo/helpdemo.gpr
 examples/helpdemo/rhide.env
+examples/i18n/README
+examples/i18n/es.po
++examples/i18n/extract.sh
+-examples/i18n/intl/es/LC_MESSAGES/tvision.mo
+-examples/i18n/intl/es/LC_MESSAGES/test.mo
+examples/i18n/rhide.env
+examples/i18n/test.cc
+-examples/i18n/test.gpr
+examples/i18n/test.po
 -examples/inplis/implis.gpr
 examples/inplis/inplist.cpp
 examples/inplis/inplist.h
