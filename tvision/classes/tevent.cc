@@ -213,6 +213,7 @@ void TEvent::getKeyEvent()
       {
        if (TVCodePage::OnTheFlyRemapInpNeeded())
           keyDown.charScan.charCode=TVCodePage::OnTheFlyInpRemap(keyDown.charScan.charCode);
+       TGKey::AltInternat2ASCII(*this);
       }
    }
  else
