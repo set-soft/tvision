@@ -104,6 +104,10 @@ classes/linux/tfont.cc
 classes/linux/thwmouse.cc
 classes/linux/tscreen.cc
 classes/linux/tscropts.cc
+classes/win32/tdisplay.cc
+classes/win32/tfont.cc
+classes/win32/thwmouse.cc
+classes/win32/tscreen.cc
 config.pl
 +configure.bat
 +configure
@@ -555,3 +559,12 @@ lista
 lista.dos
 rhide.env
 snapshot.pl
+win32/Makefile
+win32/Makefile.ms
+win32/bc.cc
+win32/console.cc
+win32/demo.mk
+win32/demo.ms
+win32/gkey.cc
+win32/obj/delete.me
+win32/trans.cc
