@@ -85,7 +85,7 @@ protected:
  static ushort fixCrtMode(ushort mode);
  // This sets some internal variables with the current state of the console.
  // Take a look at the default in tscreen.cc
- static void   setCrtData();
+// static void   setCrtData();
  // Clear the contents of the whole screen. Here just to be compatible with
  // original TV.
  static void   clearScreen();

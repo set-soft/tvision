@@ -13,16 +13,18 @@
 #define Uses_AlCon_conio
 #include <tv/alcon/alcon.h>
 
+#define PRINTF(FORMAT, ...)  printf("%s " FORMAT "\n", __PRETTY_FUNCTION__, ## __VA_ARGS__)
+
 
 void TDisplayAlcon::Init()
 {
-    TDisplay::setCursorPos=SetCursorPos;
-    TDisplay::getCursorPos=GetCursorPos;
-    TDisplay::getCursorShape=GetCursorShape;
-    TDisplay::setCursorShape=SetCursorShape;
+    setCursorPos=SetCursorPos;
+    getCursorPos=GetCursorPos;
+    getCursorShape=GetCursorShape;
+    setCursorShape=SetCursorShape;
     // DOS version has this, where? TDisplay::clearScreen=ClearScreen;
-    TDisplay::getRows=GetRows;
-    TDisplay::getCols=GetCols;
+    getRows=GetRows;
+    getCols=GetCols;
 //    TDisplay::setCrtMode=SetCrtMode;
 //    TDisplay::getCrtMode=GetCrtMode;
 //    TDisplay::setCrtModeExt=SetCrtModeExt;
@@ -51,17 +53,45 @@ void TDisplayAlcon::SetCursorPos(unsigned  x, unsigned  y)
     AlCon_GotoXY(x + 1, y + 1);
 }
 
+/**[txh]********************************************************************
+
+  Description: Called with percentage values from 0 to 100 inclusive.
+  If start is bigger or equal end (usually both 0), this means hide the
+  cursor.
+
+***************************************************************************/
+
 void TDisplayAlcon::SetCursorShape(unsigned start, unsigned end)
 {
-    AlCon_SetCursorShape(start, end);
+    if (start >= end && getShowCursorEver())
+        return;
+        
+    if (start >= end) {
+        AlCon_HideCursor();
+    } else {
+        AlCon_ShowCursor();
+        unsigned int h;
+        AlCon_GetFontGeometry(0, &h);
+        AlCon_SetCursorShape(int(start * (h - 0.00001f) / 100),
+            int(end * (h - 0.00001f) / 100));
+    }
 }
+
+/**[txh]********************************************************************
+
+  Description: Fills into start and end the beginning and end of the cursor
+  shape as percentage values from 0 to 1.
+  
+***************************************************************************/
 
 void TDisplayAlcon::GetCursorShape(unsigned &start, unsigned &end)
 {
     int _start, _end;
+    unsigned int h;
     AlCon_GetCursorShape(&_start, &_end);
-    start = _start;
-    end = _end;
+    AlCon_GetFontGeometry(0, &h);
+    start = 100 * _start / h;
+    end = 100 * _end / h;
 }
 
 ushort TDisplayAlcon::GetRows()

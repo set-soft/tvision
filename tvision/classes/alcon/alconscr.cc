@@ -12,6 +12,8 @@
 #define Uses_AlCon_conio
 #include <tv/alcon/alcon.h>
 
+#define PRINTF(FORMAT, ...)  printf("%s " FORMAT "\n", __PRETTY_FUNCTION__, ## __VA_ARGS__)
+
 
 TScreen *TV_AlconDriverCheck()
 {
@@ -51,6 +53,14 @@ TScreenAlcon::TScreenAlcon()
 //    TScreen::restoreFonts=RestoreFonts;
     initialized=1;
 
+    TGKeyAlcon::Init();
+    THWMouseAlcon::Init();
+
+    // Tell TScreen that there is a cursor.
+    setCrtData();
+    startupCursor = cursorLines;
+    startupMode = screenMode;
+
     // Create memory buffer for screen. We want a buffer (even though
     // AlCon is buffered) because otherwise TVision will use simple
     // memcpy calls to "paint" the screen. We don't want this, because
@@ -58,12 +68,6 @@ TScreenAlcon::TScreenAlcon()
     // buffer on top of Allegro's buffer so that Allegro get's called.
     // Wicked. But works.
     screenBuffer = new uint16[screenWidth * screenHeight];
-
-    // Initialise keyboard.
-    TGKeyAlcon::Init();
-    
-    // Initialise mouse.
-    THWMouseAlcon::Init();
 }
 
 

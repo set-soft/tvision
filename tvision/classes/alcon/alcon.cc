@@ -16,6 +16,9 @@
 #include <tv.h>
 #include <tv/gkey.h>
 
+
+#define PRINTF(FORMAT, ...)  printf("%s " FORMAT, __PRETTY_FUNCTION__, ## __VA_ARGS__)
+
 // Forward declarations.
 static void _AlCon_LoadCustomFont(const char *filename);
 
@@ -83,7 +86,7 @@ static int fg,bg;
 static char cursorEnabled=1, cursorInScreen=0;
 static unsigned char *chars, *attrs;
 static unsigned char curAttr;
-static char cShapeFrom,cShapeTo;
+static char _cursor_shape_from, _cursor_shape_to;
 static int al_text_mode;
 static int al_mouse_buttons = 0;
 static int al_mouse_wheel;
@@ -475,34 +478,49 @@ void AlCon_IntCursor()
    }
 }
 
+/**[txh]********************************************************************
+
+  Description: Sets the cursor shape. Pass the start and end lines
+  (inclusive) of the cursor. The lines must be in the range 0 to less than
+  font's height. Since the start and end are inclusive, you cannot set an
+  "invisible" cursor shape. Use AlCon_HideCursor() for that.
+  
+***************************************************************************/
+
 void AlCon_SetCursorShape(int from, int to)
 {
- from&=0xF; to&=0xF;
- memset(_cursorData[1]->dat,0,_font_height);
- memset(_cursorData[1]->dat+from,0xFF,to-from+1);
- cShapeFrom=from;
- cShapeTo=to;
+   ASSERT(from <= to);
+   ASSERT(from >= 0);
+   ASSERT(to < _font_height);
+   
+   memset(_cursorData[1]->dat, 0, _font_height);
+   memset(_cursorData[1]->dat + from, 0xFF, to - from + 1);
+   _cursor_shape_from = from;
+   _cursor_shape_to = to;
 }
 
 void AlCon_GetCursorShape(int *from, int *to)
 {
- *from=cShapeFrom;
- *to=cShapeTo;
+   ASSERT(from || to);
+   if (from)
+      *from = _cursor_shape_from;
+   if (to)
+      *to = _cursor_shape_to;
 }
 
 void AlCon_HideCursor()
 {
- cursorEnabled=0;
+   cursorEnabled=0;
 }
 
 void AlCon_ShowCursor()
 {
- cursorEnabled=1;
+   cursorEnabled=1;
 }
 
 int AlCon_IsVisCursor()
 {
- return cursorEnabled;
+   return cursorEnabled;
 }
 
 /*****************************************************************************
@@ -564,7 +582,7 @@ int AlCon_Init(int w, int h)
    _cursorData[1] =(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH) + _font_height);
    _cursorData[1]->w = _font_width;
    _cursorData[1]->h = _font_height;
-   AlCon_SetCursorShape(14,15);
+   AlCon_SetCursorShape(87 * _font_height / 100, _font_height - 1);
   
    /* Create the text mode palette */
    for (int i = 0; i < 16; i++)
@@ -802,7 +820,9 @@ static void _AlCon_LoadCustomFont(const char *filename)
 
 void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h)
 {
-   ASSERT(w && h);
-   *w = _font_width;
-   *h = _font_height;
+   ASSERT(w || h);
+   if (w)
+      *w = _font_width;
+   if (h)
+      *h = _font_height;
 }
