@@ -1,0 +1,252 @@
+Driver: Linux
+Author: Salvador E. Tropea
+
+  This is the driver for the Linux console. It can't be used for X or
+other UNIX terminals. This driver is used when the terminal can be
+identified as "console" or "linux*".
+
+
+1. INTRODUCTION
+
+  This driver is quite complex and you could need to configure your system
+and/or Turbo Vision to get all the features or to even get it working. This
+is a bad thing, but that's how Linux is implemented.
+  Two important things affects the behavior of this driver:
+
+1) If the user have rights to write to the /dev/vcsa* devices. Usually users
+don't have access to these devices. This is because somebody logged in your
+system could write to your screen to make you do something wrong or expose
+important information. Lamentably these devices doesn't check if the owner is
+who opened the device, a simple rights test is done. When the user can write
+to this device the performance of the library is much better. I recommend
+using it unless your system is used by a lot of untrusted persons.
+2) If you are running the application in a real console or not. Note that
+sometimes you can be using the real console but through a program that starts
+their child processes in a way that they aren't really attached to the
+console. A common case is the "midnight commander" program, it runs the
+commands you type in something like /dev/pts/N. You can find it using the tty
+command. Currently Turbo Vision can bypass applications like midnight
+commander, but some stuff (like the keyboard) lose functionality.
+
+  To solve the first point I recommend creating a group for the /dev/vcsa*
+devices, something like:
+
+  $ addgroup vcs
+
+  Then add the user/s you want to give access to the device:
+
+  $ addgroup user vcs
+
+  Finally change the /dev/vcs* right and owner like this:
+
+  $ chown root.vcs /dev/vcs*
+  $ chmod 0660 /dev/vcs*
+
+  In this way you can control which users can read or write the screen using
+these devices.
+  The second point is simple: run the application without using programs like
+midnight commander.
+  When the application runs in the real console you can:
+
+1) Change the fonts.
+2) Find information about the screen and input encoding.
+3) Get good information about keyboard modifiers (shift, control, alt, etc.).
+
+
+2. THE KEYBOARD
+
+  The library uses the keyboard in "cook mode", this is much more safe than
+using "raw mode" and in this way all the keyboard configuration is honored.
+But this have a drawback: the information from the keyboard is incomplete and
+some keys are used by the kernel.
+  To solve the first issue this driver uses a Linux IOCTL that return the
+current state of keyboard modifiers (like shift). The IOCTLs only work if the
+process owns the real console. It won't work if you run the application using
+a remote connection (i.e. ssh) or something like midnight commander.
+  The second problem is more complex. Some common keys, like Shift+PgUp or
+Alt+Function_key, are used for special purposes. IMHO this is a bad idea, but
+is a fact. In order to solve this problem this driver modifies the kernel
+tables a little bit. When you switch to another console or normally exit the
+application this reverted. If it fails the solution is to reload the keyboard
+map. Use the loadkeys command for it.
+  For this reason you can't switch to another console using Alt+Fx, use
+Ctrl+Alt+Fx, as you do when running X.
+  Note that this driver *doesn't* uses ncurses nor parses the terminal
+description. It means this: if you force Delete to report a strange escape
+sequence and put this information in the terminfo database it won't work. It
+will work for other applications, but not for this driver.
+  Why not ncurses? ncurses is bulky and unpredictable, we had too much
+problems using ncurses. Currently ncurses is only used by the generic UNIX
+driver.
+  Why not reading terminfo/termcap information? this information usually have
+errors and needs a lot of code.
+
+
+3. ENCODINGS AND FONTS
+
+  Linux have a complex and flexible mechanism to support the different text
+encondings (code pages). But this is wrongly used by the console-tools
+(formerly kbd) tools and Linux distributions. This generates a lot of
+problems. Another issue is that Linux kernel is wrongly designed, you have
+services to setup things but you don't have the mechanism to know (and save)
+the current state. It gets even worst when you use escape sequences and you
+don't have access to the IOCTLs.
+  The first thing you must understand is that code pages concept doesn't
+exist for the Linux kernel. This is quite different to DOS, Windows, MacOS,
+etc. where you have fixed encodings with known names. What Linux understands
+are just translation tables. Usually people uses some tables that are quite
+common, but sometimes these tables changes or are just adjusted by a vendor.
+A complete explanation about this topic is outside the scope of this
+document, If you want to know more about this topic read the html
+documentation included with console-tools. What I'll describe here is just a
+simplification.
+
+3.1 TABLES TO TRANSLATE WHAT?
+
+  Most applications, Turbo Vision applications included, uses 8 bits
+characters. It gives 256 possible combinations, but: what exactly means each
+one? it depends on the system. To avoid problems some standars exists. DOS
+uses some IBM/ANSI encodings like code page 437, 850, 866, etc., Windows uses
+another set of code pages created by Microsoft (code pages 1250, 1251, etc.)
+and most UNIX systems uses enconding described in the ISO 8859 standard.
+  In this way a document is:
+
+1) Compact, each character/letter needs one byte.
+2) Exchangeable, you can use documents from other system just knowing which
+encoding is used.
+
+  But this scheme isn't enough to represent all possible characters of
+languages like chinese, japanese, etc. To represent these things you need an
+extended system. Unicode is a really complex mechanism to achieve it. Unicode
+implies a lot of complex things, but the most widely used thing is the
+ability to reprsent the most common languages used in the world using a
+standarized mechanism.
+  The Linux kernel currently uses Unicode (16 bits variant) for internal
+purposes. You can also enter text using the UTF-8 mechanism, that's a special
+way to encode Unicode using variable length characters.
+  What Linux does is: when a character is received by the kernel it is
+converted into Unicode (first table), it is processed and when the kernel
+needs to print it the value is converted to 1 byte (second table, this isn't
+in fact a table).
+  The first conversion is from the application encoding to Unicode and the
+second is from Unicode to the screen encoding.
+  Here you can see the first complexity: the application can be encoded in a
+way and the screen in another. For stupid reasons is quite common to use it
+in Linux systems. The reasons are all stupid and the result is a waste of
+performance and added complexity.
+  You can skip this paragraph if you don't want to know about some of the
+stupid things common to almost all Linux systems. One of the problems people
+faced in the past was that VGA video controller uses 8 pixels width fonts,
+but they are represented as 9 pixels in the screen. What's in the 9th column?
+It depends on the value to represent, usually it is filled with a blank
+column, it helps to keep the characters visually separated. But a particular
+range of values uses the same information found in the 8th column. This range
+corresponds to the graphics used for frames in the code page 437, that's
+because the boards have a 437 encoding by default. This range is used by ISO
+8859 standard and the result is that linux encodings have the frames in the
+range where the 9th column is blanked. This generates ugly frames. The real
+solution for that is to just modifiy the VGA registers to create a video mode
+where characters have 8 pixels. It also have a plus: you gain a couple of
+columns that could be used by the kernel and/or the user. But lamentably
+people uses a wrong approach. Instead of it a tweaked encoding is used. This
+is the difference between lat1 and lat1u fonts. Another lamentably fact is
+that newer packages (Debian Potato and Woody for example) have files called
+lat1* that are in fact the tweacked lat1u* files. Another stupid thing is the
+fact that most Linux distros doesn't load a font, all of them should load ISO
+8859-1 because that's what the applications uses by default. Usually distros
+just let the 437 default BIOS encoding, it only generates confusion and
+avoids the use of a bypass for the translations. The bypass is possible
+because ISO 8859-1 is a subset of Unicode (the first 256 values).
+  Ok, again in the topic: the first table is what is called ACM (Application
+Charset Map) and the second is called SFM (Screen Font Map).
+  The first is a real table, it maps one to one. A value from the application
+(8 bits) is translated into an Unicode value (16 bits in this case). The
+second isn't a real table because more than one Unicode value can be
+represented by the same drawing (similar or identical, remmember Unicode is
+much more than an encoding). Things are even more complex because a table
+with 65536 entries isn't a good idea. For this reason this map is more
+complex and the kernel doesn't use a table.
+
+3.2 WHY IS THAT A PROBLEM IF ALL LINUX APPLICATIONS WORKS OK?
+
+  The main problem appears when you want to access to the screen using the
+/dev/vcs* devices. In this case you are bypassing the kernel translation.
+  Another problem appears if you have to know more about the text you are
+handling. The C locales mechanism is useless because it only covers really
+standard code pages.
+  Most Linux applications:
+1) Uses a slow screen output, after all most of them have a crappy look.
+2) Doesn't really know much about encodings, just know how to draw the
+frames.
+
+3.3 WHAT'S THE PROBLEM?
+
+  At first sight it just looks complex, but not impossible. After all doesn't
+really matters if these tables follows an standard or not if you can analyze
+them.
+  But things are more complex. This information is only available using
+IOCTLs so you can't do it when using a remote console. Currently the library
+just does a guess using the contents of the LANG environment variable. If
+this guess is wrongly done just use the the configuration file (tvrc).
+  Another problem is that some maps wrongly done. The KOI8-R is a good
+example. Here the ACM doesn't translate the input into Unicode, instead the
+text passes without change (or a very small change in some systems, to make
+things even worst). It works because the SFM is also wrong and in fact is a
+KOI-8R->Screen conversion and not Unicode->Screen. You get a table that is
+supposed to be encoded in Unicode but it isn't.
+  The driver anlyze the code page and tries to figure out what encodings are
+used but it can fail. If it doesn't work for your system please contact me
+and we will try to find some solution.
+
+3.4 HOW TO FORCE THE ENCODINGS
+
+  If you know how your system is encoded look for the closest code page
+supported by Turbo Vision, they are defined in codepage.cc, and create a
+configuration file indicating the encoding.
+  The configuration variables used for it are: AppCP and ScrCP. The first is
+the equivalent to the ACM and the second is like the SFM.
+  To force KOI8-R you can use:
+
+[TV]
+{
+ [Linux]
+ {
+  AppCP=100000
+  ScrCP=100000
+ }
+}
+
+
+4. SECONDARY FONT AND SYSTEMS WITH 512 CHARACTERS
+
+  Linux supports loading an extended font with 512 characters instead of 256.
+This isn't currently supported by this driver because things are all 8 bits.
+I don't really know the result. If you use such a system please contact me.
+  Turbo Vision now supports loading fonts and you can use it if you are
+running in the Linux console. TV also supports loading a secondary font. This
+can be used for very special cases. To achieve it the driver uses a 512
+characters font, the first 256 for the primary font and the other 256 for the
+secondary. By default this is disabled because the kernel reduces the colors to
+8 when you load a 512 characters font. This is quite logical when the 512
+symbols belongs to one big encoding but really annoying when they are two
+different fonts. To enable it use the UseSecondaryFont configuration
+variable.
+
+
+5. CONFIGURATION VARIABLES
+
+  This driver supports the following variables:
+
+* AppCP, ScrCP and InpCP. The point 3 explains the first two. The InpCP is to
+force the encoding of the keyboard and isn't usually needed.
+* UseSecondaryFont explained in 4.
+* UseVCS. This is one by default and can be used to disable the use of
+/dev/vcsa* devices.
+* UseMDA. This is one by default and can be used to disable the use of the
+monochrome display.
+* PatchKeys. This is one by default and can be used to disable the keyboard
+patching explained in 2.
+
+  An example of configuration file is shown in 3.4.
+
+
