@@ -791,7 +791,7 @@ int main(void)
 
 sub ModifyMakefiles
 {
- my ($a,$text,$rep,$repv,$line);
+ my ($a,$text,$rep,$repv,$line,$name,$value);
 
  print 'Configuring makefiles: ';
  foreach $a (@_)
@@ -815,8 +815,22 @@ sub ModifyMakefiles
          {
           if ($line=~/([\w_]*)(\s*)=(\s*)(.*)/)
             {
-             $rep=$1;
-             $text=~s/$rep=(.*)/$line/g;
+             $name=$1;
+             $value=$4;
+             print "$name=$value\n";
+             $rep="^$name"."=((.+\\\\\\n)+(.+))";
+             if ($text=~/$rep/m)
+               { # Ok multiline
+                $text=~s/$rep/$name=$value/mg;
+               }
+             else
+               { # Single line
+                $rep="^$name"."=(.*)";
+                if ($text=~/$rep/m)
+                  {
+                   $text=~s/$rep/$name=$value/mg;
+                  }
+               }
             }
          }
        replace($a,$text);
