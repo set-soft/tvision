@@ -52,12 +52,16 @@ public:
     // SET: see tcluster.cc for more information
     unsigned getExtraOptions() { return extraOptions; }
     void setExtraOptions(unsigned ops) { extraOptions=ops; }
+    // SET: for i18n support
+    const char *getItemText( ccIndex item );
 
 protected:
     static unsigned extraOptions;
 
     uint32 value;
     int sel;
+    // SET: i18n cache
+    TStringCollection *intlStrings;
     TStringCollection *strings;
 
 private:
