@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea.
 
  *
  *
@@ -20,6 +21,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TMenuItem
 #define Uses_TRect
 #define Uses_TSubMenu
+#define Uses_TScreen
 #include <tv.h>
 
 TMenuBar::TMenuBar( const TRect& bounds, TMenu *aMenu ) :
@@ -29,6 +31,9 @@ TMenuBar::TMenuBar( const TRect& bounds, TMenu *aMenu ) :
     growMode = gfGrowHiX;
     options |= ofPreProcess;
     computeLength();
+    // This class can be "Braille friendly"
+    if (TScreen::getShowCursorEver())
+       state |= sfCursorVis;
 }
 
 TMenuBar::TMenuBar( const TRect& bounds, TSubMenu& aMenu ) :
@@ -38,6 +43,9 @@ TMenuBar::TMenuBar( const TRect& bounds, TSubMenu& aMenu ) :
     growMode = gfGrowHiX;
     options |= ofPreProcess;
     computeLength();
+    // This class can be "Braille friendly"
+    if (TScreen::getShowCursorEver())
+       state |= sfCursorVis;
 }
 
 
@@ -95,7 +103,7 @@ void TMenuBar::changeBounds(const TRect& bounds)
 void TMenuBar::draw()
 {
     ushort color;
-    int x, l, inc;
+    int x, l, inc, xSel=-1;
     TMenuItem *p;
     TDrawBuffer b;
 
@@ -118,12 +126,18 @@ void TMenuBar::draw()
                     {
                     if( p->disabled )
                         if( p == current )
+                            {
+                            xSel = x;
                             color = cSelDisabled;
+                            }
                         else
                             color = cNormDisabled;
                     else
                         if( p == current )
+                            {
+                            xSel = x;
                             color = cSelect;
+                            }
                         else
                             color = cNormal;
 
@@ -137,6 +151,11 @@ void TMenuBar::draw()
             }
         }
     writeBuf( 0, 0, size.x, 1, b );
+    if( TScreen::getShowCursorEver() && xSel != -1 )
+        {
+        setCursor( xSel , 0 );
+        resetCursor();
+        }
 }
 
 TRect TMenuBar::getItemRect( TMenuItem *item )

@@ -68,12 +68,24 @@ __link(RCalcDisplay);
 int main(int argc, char **argv, char **envir)
 {
     TDisplay::setArgv(argc,argv,envir);
+    // Uncommenting the next line the cursor won't be hided.
+    // This is a test to get an application a little bit friendly for Braille
+    // Terminals.
+    //TDisplay::setShowCursorEver(True);
+    
     TVDemo *demoProgram = new TVDemo(argc,argv);
 
+    const char *title=TScreen::getWindowTitle();
     TScreen::setWindowTitle("Turbo Vision Demo Program");
     demoProgram->run();
 
     TObject::destroy( demoProgram );
+    if( title )
+        {
+        TScreen::setWindowTitle(title);
+        delete[] title;
+        }
+
     return 0;
 }
 

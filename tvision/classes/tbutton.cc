@@ -24,6 +24,7 @@ Added callback, code page stuff and various details by Salvador Eduardo Tropea.
 #define Uses_ipstream
 #define Uses_TPalette
 #define Uses_TGKey
+#define Uses_TScreen
 #include <tv.h>
 
 /* SET: F*#$%! why these values are defined here!!!
@@ -51,6 +52,9 @@ TButton::TButton( const TRect& bounds,
     if( !commandEnabled(aCommand) )
         state |= sfDisabled;
     callBack=0;
+    // This class can be "Braille friendly"
+    if (TScreen::getShowCursorEver())
+       state |= sfCursorVis;
 }
 
 TButton::~TButton()
@@ -92,6 +96,11 @@ void TButton::drawTitle( TDrawBuffer &b,
             scOff = 4;
         b.putChar( 0, specialChars[scOff] );
         b.putChar( s, specialChars[scOff+1] );
+        }
+    if( (state & sfActive) && (state & sfSelected) && TScreen::getShowCursorEver() )
+        {
+        setCursor( i+l-1 , 0 );
+        resetCursor();
         }
 }
 

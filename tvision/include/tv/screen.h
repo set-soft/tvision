@@ -113,7 +113,10 @@ public:
  // This should be called before initialization.
  // Isn't mandatory but helps some drivers.
  static void     setArgv(int aArgc, char **aArgv, char **aEnvir);
-
+ // Driver options
+ static Boolean  setShowCursorEver(Boolean value);
+ static Boolean  getShowCursorEver() { return opts1 & ShowCursorEver ? True : False; };
+ 
  // We must remove it
  static int dual_display;
 
@@ -130,6 +133,12 @@ protected:
  static int    argc;
  static char **argv;
  static char **environ;
+ // Special options
+ enum Options1
+ {
+  ShowCursorEver=1  // The main goal of thi option is to help Braille Terminals
+ };
+ static uint32 opts1;
 
  // Hardware Palette handling routines and variables.
  // This is low level and should be called from TScreen.

@@ -97,7 +97,8 @@ void TDisplayXTerm::SetCursorShape(unsigned start, unsigned end)
  LOG("Setting cursor shape to " << start << "," << end);
  if (start>=end)
    { // Hide cursor DECRST DECTCEM
-    fputs("\E[?25l",stdout);
+    if (!getShowCursorEver())
+       fputs("\E[?25l",stdout);
    }
  else
    { // Show cursor DECSET DECTCEM

@@ -22,6 +22,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TPalette
 #define Uses_TGKey
 #define Uses_ctype
+#define Uses_TScreen
 #include <tv.h>
 
 #define cpLabel "\x07\x08\x09\x09"
@@ -33,6 +34,9 @@ TLabel::TLabel( const TRect& bounds, const char *aText, TView* aLink) :
 {
     options |= ofPreProcess | ofPostProcess;
     eventMask |= evBroadcast;
+    // This class can be "Braille friendly"
+    if (TScreen::getShowCursorEver())
+       state |= sfCursorVis;
 }
 
 void TLabel::shutDown()
@@ -60,7 +64,15 @@ void TLabel::draw()
 
     b.moveChar( 0, ' ', color, size.x );
     if( text != 0 )
+        {
         b.moveCStr( 1, text, color );
+        if( light  && TScreen::getShowCursorEver() )
+            {// Usually this will do nothing because the focus is in the linked
+             // object
+            setCursor( 1 , 0 );
+            resetCursor();
+            }
+        }
     if( showMarkers )
         b.putChar( 0, specialChars[scOff] );
     writeLine( 0, 0, size.x, 1, b );

@@ -19,6 +19,7 @@ Modified by Salvador E. Tropea.
 #define Uses_TMenu
 #define Uses_TMenuItem
 #define Uses_TMenuBox
+#define Uses_TScreen // getShowCursorEver()
 #include <tv.h>
 
 static TRect getRect( const TRect& bounds, TMenu *aMenu )
@@ -28,8 +29,8 @@ static TRect getRect( const TRect& bounds, TMenu *aMenu )
     if( aMenu != 0 )
         {
         for( TMenuItem *p = aMenu->items; p != 0; p = p->next )
-	    {
-	    if( p->name != 0 )
+            {
+            if( p->name != 0 )
                 {
                 short l = cstrlen(p->name) + 6;
                 if( p->command == 0 )
@@ -41,7 +42,7 @@ static TRect getRect( const TRect& bounds, TMenu *aMenu )
                 }
             h++;
             }
-	}
+        }
 
     TRect r( bounds );
 
@@ -62,7 +63,10 @@ TMenuBox::TMenuBox( const TRect& bounds,
                     TMenuView *aParentMenu) :
     TMenuView( getRect( bounds, aMenu ), aMenu, aParentMenu )
 {
-    state |= sfShadow /*| sfCursorVis*/;
+    state |= sfShadow;
+    // This class can be "Braille friendly"
+    if (TScreen::getShowCursorEver())
+       state |= sfCursorVis;
     options |= ofPreProcess;
 }
 
@@ -126,7 +130,7 @@ void TMenuBox::draw()
     writeBuf( 0, y++, size.x, 1, b );
     // SET: Force a cursor movement to indicate which one is selected.
     // This helps Braille Terminals, but the cursor must be visible!
-    if( yCur != -1 )
+    if( TScreen::getShowCursorEver() && yCur != -1 )
         {
         setCursor( 2 , yCur );
         resetCursor();
@@ -139,10 +143,10 @@ TRect TMenuBox::getItemRect( TMenuItem *item )
     TMenuItem *p = menu->items;
 
     while( p != item )
-	{
-	y++;
-	p =  p->next;
-	}
+        {
+        y++;
+        p =  p->next;
+        }
     return TRect( 2, y, size.x-2, y+1 );
 }
 
