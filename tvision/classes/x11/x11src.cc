@@ -143,6 +143,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
       }
     x+=fontW; b+=2; sb+=2;
    }
+ DrawCursor();
  XFlush(disp);
 }
 

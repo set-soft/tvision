@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.136  2002/06/07 15:46:21  set
+* Added: A first attempt to create a MSVC compatible makefile. WintiX
+<wintix@bk.ru> sent me the file and I added it to the configuration
+mechanism. In this way the list of object files is extracted from the
+RHIDE's .mak.
+
 Revision 2.135  2002/06/07 15:37:15  set
 * Fixed: [MSVC] Compatlayer getcwd request, from info by WintiX.
 
