@@ -1,0 +1,73 @@
+Driver: X11
+Author: Salvador E. Tropea
+
+This file documents details specific to the X11 driver.
+Currently this file isn't organized and just contains things I think somebody
+could need to know.
+
+* The X11 driver was tested using Debian GNU/Linux Potato and Woody and
+Solaris 2.7 (Sun Ultra 60 machine).
+
+* The driver was tested in True Color modes, I didn't have the time to check
+it in palette modes (256 colors usually) and I'm almost sure nothing works
+for monochrome mode. If you need it working for 8 bpp depths please contact
+me and we will try to see a way to solve any issue. I don't have any
+motivation to expend my time working on 8 bpp modes if nobody needs it.
+
+* The approach used is slow in favor of portability and features. A lot of
+enhancements can be done. If you know about X11 programming and have some
+time please consider helping with it.
+
+* The driver uses 8x16 fixed fonts, no X fonts. In the future I plan to code a
+driver supporting X11 fonts. Why? simple: because in this way I can change
+the screen encoding on the fly and I know all the needed symbols will be
+available. The library supports over than 40 encodings which needs over than
+580 symbols in the fonts. They cover the latin variants, cyrillics and greek
+alphabets. I don't think such a thing is common for X fonts, in fact True
+Types usually have only ASCII characters.
+
+* I use monochromatic XImage objects for the fonts and I let X to expand the
+colors. XFree86 seems to quite ineficient doing it, while Solaris' X is much
+faster. I think we can get much more speed by expanding the colors to an
+internal bitmap and then doing the blit in one operation. But this needs
+special care about different color depths and colors organizations. I guess
+the color values returned by X can make it easy, but never tried.
+
+* Currently the X11 clipboard mechanisms aren't implemented. Don't know if
+I'll implement them at library level.
+
+* I don't have a default icon, if you can create one please send it to me.
+
+* Debian GNU/Linux Potato specific (maybe others too):
+The Shift+Tab combination doesn't work. The problem seems to be related to
+the following key binding found in /usr/X11R6/lib/X11/xkb/symbols/us
+
+    key  <TAB> {  [  Tab,  ISO_Left_Tab   ]  };
+
+For some reason, didn't investigate it, the ISO_Left_Tab doesn't emit a
+keycode and hence Shift+Tab never reachs the code. May be I'm wrong but my
+way to fix that is by defining it like this:
+
+    key  <TAB> {  [  Tab  ]  };
+
+If you know about a better solution just let me know.
+
+* To quickly disable this driver when starting an application from a terminal
+emulator just define DISPLAY variable to nothing. Bash example:
+
+export DISPLAY=
+
+You can achive the same using a .tvrc file and giving a low priority to the
+X11 driver. Example:
+
+[TV]
+{
+ [X11]
+ {
+  Priority=1
+ }
+}
+
+The bigger the number the more important the driver. The default value is
+100, bigger than Linux, XTerm and UNIX drivers.
+
