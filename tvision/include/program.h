@@ -121,6 +121,10 @@ public:
     // I think that sometimes we can have a long elapsed time without events
     // so I provide a way to reset it
     static void resetIdleTime() { inIdle=False; };
+    // SET: By default that's 0 and the idle member releases the CPU to the
+    // OS. If for some reason you really need to avoid it and want to use
+    // 100% of the CPU just assign 1 to this variable.
+    static char doNotReleaseCPU;
 
 protected:
 
