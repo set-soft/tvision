@@ -4,6 +4,7 @@ change1.log
 classes/calcdisp.cc
 classes/calculat.cc
 classes/codepage.cc
+classes/configfile.cc
 classes/dos/dosdis.cc
 classes/dos/doskey.cc
 classes/dos/dosmouse.cc
@@ -460,6 +461,7 @@ include/tv/clrselct.h
 include/tv/cluster.h
 include/tv/cmdset.h
 include/tv/collectn.h
+include/tv/configfile.h
 include/tv/desktop.h
 include/tv/dialog.h
 include/tv/dircoll.h

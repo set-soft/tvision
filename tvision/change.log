@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.165  2002/06/20 20:13:59  set
+* Fixed: CLY_GetDefaultFileAttr(CLY_mode_t *mode) for UNIX, it didn't set
+writemask making new files to look like R.O.
+
 Revision 2.164  2002/06/20 20:12:38  set
 * Added: A new flag to TScreen to indicate is the driver really supports
 setCursorShape or just can hide/show the cursor.

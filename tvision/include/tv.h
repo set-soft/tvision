@@ -49,6 +49,11 @@ Modified by Salvador E. Tropea
 #define INCL_EDITORS_H
 #endif
 
+#ifdef Uses_TVConfigFile
+#define INCL_CONFIGFILE_H
+#define Uses_stdio
+#endif
+
 #ifdef Uses_TCalculator
 #define Uses_TCalcDisplay
 #define Uses_TDialog
@@ -751,3 +756,6 @@ Modified by Salvador E. Tropea
 #include <tv/calc.h>
 #endif
 
+#ifdef INCL_CONFIGFILE_H
+#include <tv/configfile.h>
+#endif

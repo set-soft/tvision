@@ -16,9 +16,11 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TDeskTop
 #define Uses_TMenuBar
 #define Uses_TScreen
+#define Uses_TVConfigFile
 #include <tv.h>
 
-static TScreen *tsc;
+TScreen          *TProgInit::tsc=NULL;
+TVMainConfigFile *TProgInit::config=NULL;
 
 TProgInit::TProgInit( TStatusLine *(*cStatusLine)( TRect ),
                             TMenuBar *(*cMenuBar)( TRect ),
@@ -28,11 +30,20 @@ TProgInit::TProgInit( TStatusLine *(*cStatusLine)( TRect ),
     createMenuBar( cMenuBar ),
     createDeskTop( cDeskTop )
 {
+ // Load the configuration file
+ config=new TVMainConfigFile();
+ // Read common settings
+ long aux;
+ if (config->Search("ShowCursorEver",aux))
+    TScreen::setShowCursorEver(aux ? True : False);
+
  tsc=new TScreen();
 }
 
 TProgInit::~TProgInit()
 {
  delete tsc;
- tsc=0;
+ delete config;
+ tsc=NULL;
+ config=NULL;
 }
