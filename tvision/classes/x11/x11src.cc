@@ -24,6 +24,7 @@
    DontResizeToCells     Doesn't resize the window to a cells multiple size if the WM
                          fails to follow the hints. This helps to avoid problems found
                          in KDE 3.1 alpha.
+   InternalBusyCursor    When enabled we use our own mouse cursor for it
 
 */
 
@@ -1862,51 +1863,59 @@ char TScreenX11::busyCursorMask[]=
    true, otherwise false */
 Boolean TScreenX11::createCursors()
 {
- Pixmap busyCursorPixmap, busyCursorPixmapMask;
+ long useInternal=0;
+ optSearch("InternalBusyCursor",useInternal);
 
- busyCursorPixmap=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMap,
-                                              busyCursorWidth,busyCursorHeight,
-                                              BlackPixel(disp,screen),
-                                              WhitePixel(disp,screen),1);
- if (busyCursorPixmap==None)
-    return False;
- 
- busyCursorPixmapMask=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMask,
-                                                  busyCursorWidth,busyCursorHeight,
-                                                  BlackPixel(disp,screen),
-                                                  WhitePixel(disp,screen),1);
- if (busyCursorPixmapMask==None)
+ if (useInternal)
    {
-    XFreePixmap(disp,busyCursorPixmap);
-    return False;
-   }
-
- XColor busyCursorFg, busyCursorBg;
- Status status;
- 
- status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
-                         "black",&busyCursorFg,&busyCursorFg);
- if (!status)
-   {
+    Pixmap busyCursorPixmap, busyCursorPixmapMask;
+   
+    busyCursorPixmap=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMap,
+                                                 busyCursorWidth,busyCursorHeight,
+                                                 BlackPixel(disp,screen),
+                                                 WhitePixel(disp,screen),1);
+    if (busyCursorPixmap==None)
+       return False;
+    
+    busyCursorPixmapMask=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMask,
+                                                     busyCursorWidth,busyCursorHeight,
+                                                     BlackPixel(disp,screen),
+                                                     WhitePixel(disp,screen),1);
+    if (busyCursorPixmapMask==None)
+      {
+       XFreePixmap(disp,busyCursorPixmap);
+       return False;
+      }
+   
+    XColor busyCursorFg, busyCursorBg;
+    Status status;
+    
+    status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
+                            "black",&busyCursorFg,&busyCursorFg);
+    if (!status)
+      {
+       XFreePixmap(disp,busyCursorPixmap);
+       XFreePixmap(disp,busyCursorPixmapMask);
+       return False;
+      }
+   
+    status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
+                            "white",&busyCursorBg,&busyCursorBg);
+    if (!status)
+      {
+       XFreePixmap(disp,busyCursorPixmap);
+       XFreePixmap(disp,busyCursorPixmapMask);
+       return False;
+      }
+   
+    busyCursor=XCreatePixmapCursor(disp,busyCursorPixmap,busyCursorPixmapMask,
+                                   &busyCursorFg,&busyCursorBg,1,1);
+   
     XFreePixmap(disp,busyCursorPixmap);
     XFreePixmap(disp,busyCursorPixmapMask);
-    return False;
    }
-
- status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
-                         "white",&busyCursorBg,&busyCursorBg);
- if (!status)
-   {
-    XFreePixmap(disp,busyCursorPixmap);
-    XFreePixmap(disp,busyCursorPixmapMask);
-    return False;
-   }
-
- busyCursor=XCreatePixmapCursor(disp,busyCursorPixmap,busyCursorPixmapMask,
-                                &busyCursorFg,&busyCursorBg,1,1);
-
- XFreePixmap(disp,busyCursorPixmap);
- XFreePixmap(disp,busyCursorPixmapMask);
+ else
+    busyCursor=XCreateFontCursor(disp,XC_watch);
               
  leftPtr=XCreateFontCursor(disp,XC_left_ptr);
  return True; /* Success */
