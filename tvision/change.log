@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.60  2002/05/10 18:52:23  set
+* Fixed: [UNIX] makemak.pl assumed perl is installed in /usr/bin/perl, it
+doesn't have to be true. Now the makefile uses: "perl makemak.pl".
+
 Revision 2.59  2002/05/10 18:46:33  set
 * Fixed: [Solaris] getopt.c didn't include some needed headers.
 

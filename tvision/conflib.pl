@@ -276,7 +276,8 @@ sub LookIfFHS
        print "$conf{'fhs'} (cached/specified)\n";
        return;
       }
-    if (-d '/usr/share/doc')
+    # FreeBSD uses share/doc but not shared/info and shared/man
+    if ((-d $prefix.'/share/doc') && (-d $prefix.'/share/info') && (-d $prefix.'/share/man'))
       {
        $conf{'fhs'}='yes';
       }
