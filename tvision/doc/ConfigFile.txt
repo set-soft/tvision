@@ -112,6 +112,16 @@ ShowCursorEver        Integer If the value isn't 0 the text cursor is always
                               terminal will show you can enable it and
                               look for changes that can help Braille
                               terminals.
+AltKeysSetting        Integer Controls how Alt keys are interpreted. The
+                              default value is 0 and means that left and
+                              right keys are different. Using 1 the keys are
+                              interpreted in the reverse way: left as right
+                              and viceversa. Using 2 both Alt keys are
+                              reported as "Left Alt Key". This is important
+                              for the menues because the shortcuts uses the
+                              left Alt Key. When using 2 any of the Alt keys
+                              can be used to access de menues.
+
 
 2.4 VARIABLES COMMON TO ALL DRIVERS
 
