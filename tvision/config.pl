@@ -176,6 +176,10 @@ sub SeeCommandLine
       {
        $conf{'fhs'}='yes';
       }
+    elsif ($i eq '--no-fhs')
+      {
+       $conf{'fhs'}='no';
+      }
     else
       {
        ShowHelp();
@@ -191,6 +195,7 @@ sub ShowHelp
  print "--prefix=path  : defines the base directory for installation.\n";
  print "--no-intl      : don't use international support.\n";
  print "--fhs          : force the FHS layout under UNIX.\n";
+ print "--no-fhs       : force to not use the FHS layout under UNIX.\n";
  print "--cflags=val   : normal C flags [default is env. CFLAGS].\n";
  print "--cxxflags=val : normal C++ flags [default is env. CXXFLAGS].\n";
 }
