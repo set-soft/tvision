@@ -275,6 +275,10 @@ examples/tutorial/tvguid16.gpr
 extra/doskeys/kextend.asm
 -extra/doskeys/kextend.com
 extra/doskeys/kextend.txt
+extra/eterm/Setedit/MAIN
+extra/eterm/Setedit/Setedit.menu
+extra/eterm/readme.txt
+extra/eterm/xterm-eterm-tv
 -extra/pifexamp/setedit.pif
 fileview.cc
 gkey.cc
