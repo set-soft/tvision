@@ -1,4 +1,8 @@
 $Log$
+Revision 2.8  2001/11/25 00:26:56  set
+* Modified: TColorDialog to avoid using the old getBlinkState function, now
+part of the TScreen class.
+
 Revision 2.7  2001/11/25 00:12:12  set
 * Added the headers for the Linux and X11 drivers.
 * Changed the screen.h, event.h and gkey.h headers to declare the new class
