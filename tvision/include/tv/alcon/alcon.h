@@ -76,6 +76,8 @@ extern void AlCon_GetMousePos(int *x, int *y, int *buttons);
 /* Fonts */
 extern void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h);
 extern void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h);
+extern void AlCon_EnableSecFont();
+extern void AlCon_DisableSecFont();
 
 /* Our default font */
 extern uchar AlCon_ShapeFont8x16[];

@@ -115,7 +115,7 @@ TScreenAlcon::TScreenAlcon()
     TScreen::getFontGeometry=GetFontGeometry;
     //TScreen::getFontGeometryRange=GetFontGeometryRange;
     TScreen::setFont_p=SetFont;
-    //TScreen::restoreFonts=RestoreFonts;
+    TScreen::restoreFonts=RestoreFonts;
     initialized=1;
 
     TGKeyAlcon::Init();
@@ -276,7 +276,16 @@ int TScreenAlcon::SetFont(int changeP, TScreenFont256 *fontP,
  if (changeS)
    {
     if (fontS)
+      {
        AlCon_SetFont(1,fontS->data,wP,hP);
+       useSecondaryFont=1;
+       AlCon_EnableSecFont();
+      }
+    else
+      {
+       useSecondaryFont=0;
+       AlCon_DisableSecFont();
+      }
    }
  // Change the code page
  if (changeP && fontCP!=-1)
@@ -288,6 +297,11 @@ int TScreenAlcon::SetFont(int changeP, TScreenFont256 *fontP,
    }
  AlCon_Redraw();
  return 1;
+}
+
+void TScreenAlcon::RestoreFonts()
+{
+ SetFont(1,NULL,1,NULL,TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
 }
 
 

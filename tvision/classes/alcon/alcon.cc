@@ -2,7 +2,7 @@
 // -*- mode:C++; tab-width: 3 -*-
 
 /*
-  Copyright (c) 2001 by Salvador E. Tropea (SET) <set@ieee.org>
+  Copyright (c) 2001-2004 by Salvador E. Tropea (SET) <set@ieee.org>
   This code is covered by the GPL license. A copy of the license should
   be provided in the same package.
 */
@@ -94,6 +94,7 @@ static int AlCon_FontWidth = 8, AlCon_FontHeight = 16;
 static int colors[16];
 static int fg,bg;
 static char cursorEnabled=1, cursorInScreen=0;
+static char AlCon_UseSecFont=0;
 static unsigned char *chars, *attrs;
 static unsigned char curAttr;
 static char AlCon_CursorShapeFrom, AlCon_CursorShapeTo;
@@ -102,6 +103,15 @@ static int al_mouse_buttons = 0;
 static int al_mouse_wheel;
 
 
+void AlCon_EnableSecFont()
+{
+ AlCon_UseSecFont=1;
+}
+
+void AlCon_DisableSecFont()
+{
+ AlCon_UseSecFont=0;
+}
 
 /*****************************************************************************
 
@@ -293,6 +303,15 @@ void AlCon_NewLine()
     AlCon_GotoXY(1,cursorY+1);
 }
 
+inline
+void AlCon_TextOut(const char *str, unsigned x, unsigned y, int fg, int bg)
+{
+ if (AlCon_UseSecFont && (fg & 8))
+    textout_ex(screen,&Alcon_SecondaryFont,str,x,y,colors[fg],colors[bg]);
+ else
+    textout_ex(screen,Alcon_CurrentFont,str,x,y,colors[fg],colors[bg]);
+}
+
 void AlCon_PutStr(const char *s)
 {
  ASSERT(s);
@@ -307,7 +326,7 @@ void AlCon_PutStr(const char *s)
     unsigned offset;
     strncpy(b,s,count);
     b[count]=0;
-    textout_ex(screen,Alcon_CurrentFont,b,cursorPX,cursorPY,colors[fg], colors[bg]);
+    AlCon_TextOut(b,cursorPX,cursorPY,fg,bg);
 
     offset = (cursorX - 1) + (cursorY - 1) * AlCon_ScreenWidth;
     memcpy(chars+offset,b,count);
@@ -320,7 +339,7 @@ void AlCon_PutStr(const char *s)
  if (*s)
    {
     unsigned offset;
-    textout_ex(screen,Alcon_CurrentFont,s,cursorPX,cursorPY,colors[fg], colors[bg]);
+    AlCon_TextOut(s,cursorPX,cursorPY,fg,bg);
 
     offset = (cursorX - 1) + (cursorY - 1) * AlCon_ScreenWidth;
     memcpy(chars+offset,s,l);
@@ -404,7 +423,7 @@ void AlCon_PutBuf(unsigned offset, uint16 *values, int count)
        int nBg,nFg;
        nBg=b[attrPos]>>4;
        nFg=b[attrPos] & 0xF;
-       textout_ex(screen,Alcon_CurrentFont,(char *)aux,x,y,colors[nFg], colors[nBg]);
+       AlCon_TextOut((char *)aux,x,y,nFg,nBg);
       }
     x+=AlCon_FontWidth; b+=2; offset++;
    }
@@ -431,7 +450,7 @@ void AlCon_Redraw()
          aux[0]=chars[offset];
          nBg=attrs[offset]>>4;
          nFg=attrs[offset] & 0xF;
-         textout_ex(screen,Alcon_CurrentFont,(char *)aux,x,y,colors[nFg],colors[nBg]);
+         AlCon_TextOut((char *)aux,x,y,nFg,nBg);
         }
     }
  AlCon_EnableAsync();
@@ -471,7 +490,7 @@ void AlCon_PutChar(unsigned offset, uint16 value)
  attrs[offset]=b[attrPos];
  nBg=b[attrPos]>>4;
  nFg=b[attrPos] & 0xF;
- textout_ex(screen,Alcon_CurrentFont,(char *)aux,x,y,colors[nFg], colors[nBg]);
+ AlCon_TextOut((char *)aux,x,y,nFg,nBg);
 
  AlCon_EnableAsync();
 }
@@ -491,7 +510,7 @@ void AlCon_UnDrawCursor(int *aFgCol)
  int fg=attrs[offset] & 0xF;
  char b[2];
  b[0]=chars[offset]; b[1]=0;
- textout_ex(screen,Alcon_CurrentFont,b,cursorPX,cursorPY,colors[fg], colors[bg]);
+ AlCon_TextOut(b,cursorPX,cursorPY,fg,bg);
  *aFgCol=colors[fg];
 }
 
