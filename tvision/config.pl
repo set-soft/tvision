@@ -73,7 +73,7 @@ if (!$here && ($OS ne 'UNIX'))
    chop($here);
   }
 # Path for the includes
-$MakeDefsRHIDE[1]='TVSRC='.$here.'/include '.@conf{'prefix'}.'/include/rhtvision ../../include';
+$MakeDefsRHIDE[1]='TVSRC=../../include '.$here.'/include '.@conf{'prefix'}.'/include/rhtvision';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
  # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
