@@ -1,4 +1,18 @@
 $Log$
+Revision 1.33  1999/04/10 23:44:10  set
+* I was debugging my editor with YAMD to find malloc/free errors, out of
+bounds read/writes and leaks. As a result I added propper memory deallocation
+to various classes:
+* Added: delete mouse to ~TEventQueue.
+* Added: delete font to ~TDisplay.
+* Modified: TPWriteObjects to destroy your items.
+* Added: free to the screen stuff.
+* Added: destroy0 to the object.h, that's a macro to call destroy and assign
+0 to the freed pointer.
+* Added: a member function to collections called setOwnerShip. Passing false
+to it the items of the collection aren't removed by shutDown (usefull for
+collections of static strings).
+.
 Revision 1.32  1999/04/04 01:42:36  set
 * Fixed: Problems in intl.h with glibc>=2.1. Patch provided by Andris.
 * Fixed: TChDirDialog used a fixed maxlength for the directory name instead
