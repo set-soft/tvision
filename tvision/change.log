@@ -1,4 +1,20 @@
 $Log$.
+Revision 2.455  2003/05/21 12:41:03  set
+* Fixed: TVCodePage::CreateCPFromUnicode(...) corrupted the data when
+creating the LowRemap part. It was the reason for some random fails while
+creating a custom code page for Linux console.
+* Fixed: [Linux] I failed to detect when Linux kernel informed that the
+Unicode table was bigger than 512, and the code took it as a fail. It made
+the code fail for most fonts with 512 glyphs. So it failed for most UTF-8
+consoles.
+* Added: [Linux] Now if we detect a font with 512 glyphs and we are using
+VCS* mechanism the colors are reduced to 8 and a simple algorithm avoid
+that things like "white over grey" become "grey over grey".
+* Note: After fixing those two and adding this one I successfully run the
+applications using an UTF-8 console and latarcyrheb-sun16.psfu.gz font. The
+problems when no VCS* is available remains, but the user have an option to
+get things working.
+.
 Revision 2.454  2003/05/20 14:06:29  set
 * Fixed(?): When trying to enable DEBUG logs in Linux driver and using
 gcc 3.x it wasn't compilable. Not tested.

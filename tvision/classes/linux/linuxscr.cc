@@ -959,8 +959,6 @@ TScreenLinux::TScreenLinux()
  // Now we can do it
  getCursorPos(oldCurX,oldCurY);
 
- AvoidUTF8Mode();
-
  if (mode==lnxInitVCSrw || mode==lnxInitVCSwo)
    {// VCS access is assumed to be color
     palette=PAL_HIGH;
@@ -990,6 +988,8 @@ TScreenLinux::TScreenLinux()
  LOG("Screen size: " << (int)screenWidth << "," << (int)screenHeight);
  screenBuffer=new ushort[screenWidth * screenHeight];
  SaveScreen();
+
+ AvoidUTF8Mode();
 
  // Use G1 charset, set G1 to the loaded video fonts, print control chars.
  // It means the kernel will send what we write directly to screen, just
@@ -1433,6 +1433,15 @@ void TScreenLinux::mapColor(int col)
  oldCol=col;
  back=(col >> 4) & 7;
  fore=col & 15;
+
+ if (reduceTo8Colors)
+   {
+    int newfore;
+    newfore=fore & 7;
+    if (back!=fore && back==newfore)
+       newfore=(newfore+1) & 7;
+    fore=newfore;
+   }
 
  #define SB set_a_background ? set_a_background : set_background
  #define SF set_a_foreground ? set_a_foreground : set_foreground
