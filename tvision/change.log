@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.184  2002/06/27 20:36:58  set
+* Added: A doc directory and a file explaining implementation details of
+the X11 driver.
+
 Revision 2.183  2002/06/27 20:09:50  set
 * Modified: [X11] At least in my XFree86 (Debian GNU/Linux Potato) the Ctrl
 +Space combination maps to a keycode 0x20 but none translated symbol. As a

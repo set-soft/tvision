@@ -71,3 +71,22 @@ X11 driver. Example:
 The bigger the number the more important the driver. The default value is
 100, bigger than Linux, XTerm and UNIX drivers.
 
+* Window Manager/Desktop keys: In my opinion no WM/Dekstop should use simple
+key combinations for their own purposes interfering with applications.
+I don't know how to tell X11 to send the keystrokes to my application instead
+of the WM. I know an application can drag the keyboard focus but I also know
+it makes quite dificult to debug such an application. If you know about a way
+to tell X11 something like: Alt+F1 is mine, send it to me when I have the
+focus, please contact me.
+My suggestion is to configure your WM/Desktop to use more convenient
+keystrokes.
+I use Enlightenment as WM and Desktop here is what I do to avoid interference
+with TV applications:
+a) Debian GNU/Linux Potato: That's version 0.16.3 and I don't know about any
+Debian tool to configure the keyboard. So I edited
+/usr/share/enlightenment/config/keybindings.cfg changing all the Alt+Fx to
+Shift+Alt+Fx (__ALT to __ALT_SHIFT in Function keys).
+b) Debian GNU/Linux Woody: That's version 0.16.4. A very nice package called
+e16keyedit is available (I think it can be backported to Potato). It makes
+easier to redefine the keys used by E.
+
