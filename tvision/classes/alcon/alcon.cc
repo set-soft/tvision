@@ -348,7 +348,6 @@ void AlCon_PutBuf(unsigned offset, uint16 *buffer, int len)
  int prevMode;
  aux[1]=0;
 
- offset/=2;
  x=(offset%maxX)*8;
  y=(offset/maxX)*16;
  mx=maxX*8; my=maxY*16;
