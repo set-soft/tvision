@@ -22,13 +22,14 @@ SRC3 = ../names
 SRC4 = ../stream
 SRC5 = ../classes
 SRC6 = ../classes/dos
+SRC7 = ../classes/win32
+SRC8 = ../classes/winnt
 SRC9 = ../classes/linux
 SRCA = ../classes/qnxrtp
 SRCB = ../classes/unix
-SRC7 = ../classes/win32
-SRCD = ../classes/wingr
-SRC8 = ../classes/winnt
 SRCC = ../classes/x11
+SRCD = ../classes/wingr
+SRCE = ../classes/qnx4
 #SRC7 = ./examples/tutorial
 #SRC3 = ./
 
@@ -109,7 +110,7 @@ tvex: libtv.lib
 
 {$(SRC7)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
-   
+
 {$(SRC8)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 
@@ -126,6 +127,9 @@ tvex: libtv.lib
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 
 {$(SRCD)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRCE)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 
 {$(SRC2)}.c{$(OBJDIR)}.o:
