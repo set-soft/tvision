@@ -26,6 +26,9 @@ Michel Catudal: RPM packages (v1.1.3) and newer SuSE 8.0 packages.
 
 Mike Gorchak: QNX port.
 
+Roman Valyushenko: X11 bug reports and fixes, X11 busy cursor and russian
+translation of the messages.
+
 Ronald Landheer: Help with the Cygwin port.
 
 Sergio Sigala: He maintains a BSD port of TV from where I took some of the
