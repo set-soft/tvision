@@ -489,6 +489,8 @@ include/tv/terminal.h
 include/tv/textdev.h
 include/tv/view.h
 include/tv/window.h
+intl/dummy/intldummy.c
+intl/dummy/Makefile
 +linux/compress
 linux/exclude.txt
 linux/gkeyli.cc
