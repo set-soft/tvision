@@ -140,6 +140,8 @@ public:
  // Helper to look for the closest resolution from a list
  static Boolean  searchClosestRes(TScreenResolution *res, unsigned x, unsigned y,
                                   unsigned cant, unsigned &pos);
+ // Returns the default palette
+ static const TScreenColor *getDefaultPalette() { return PC_BIOSPalette; }
  
  // Tables for the DOS video modes, used to look for similar modes by other drivers
  static TScreenResolution dosModesRes[];
