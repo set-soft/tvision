@@ -401,15 +401,18 @@ unsigned short TGKey::gkey(void)
  //--- Translate the rest
  unsigned char *name,*flags;
  // This values could be 0 or 1 because curses reports upto 512 keys
+ unsigned isASCIIif;
  if (rawCode.b.scan)
    {
     name=kbToName2;
     flags=kbExtraFlags2;
+	 isASCIIif=128;
    }
  else
    {
     name=kbToName1;
     flags=kbExtraFlags1;
+	 isASCIIif=32;
    }
  unsigned key=rawCode.full;
  if (key & 0x80)
@@ -421,7 +424,7 @@ unsigned short TGKey::gkey(void)
  else
    { // The rest are passed by the tables
     key&=0x7F;
-    ascii=key;
+    ascii=key>=isASCIIif ? key : 0;
     rawCode.b.scan=ascii;
     Abstract|=name[key] | (flags[key]<<4);
     sFlags|=(flags[key]<<4);

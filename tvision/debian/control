@@ -5,10 +5,10 @@ Maintainer: Ivan Baldo <lubaldo@adinet.com.uy>
 Build-Depends: perl5, make, libncurses4-dev, libgpmg1-dev, gzip, debhelper
 Standards-Version: 3.1.0
 
-Package: rhtvision1.0.9-dev
+Package: rhtvision1.0.10-dev
 Architecture: any
 Section: devel
-Depends: rhtvision1.0.9, libc6-dev, libstdc++-dev, libgpmg1-dev, libncurses4-dev
+Depends: rhtvision1.0.10, libc6-dev, libstdc++-dev, libgpmg1-dev, libncurses4-dev
 Provides: rhtvision-dev
 Conflicts: rhtvision-dev
 Description: Development files for the RHTVision library - a TUI interface.
@@ -16,7 +16,7 @@ Description: Development files for the RHTVision library - a TUI interface.
  of applications using the RHTVision library. You need to install this package
  only if you want to develop or compile programs using the RHTVision library.
 
-Package: rhtvision1.0.9
+Package: rhtvision1.0.10
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
