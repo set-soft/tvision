@@ -620,6 +620,7 @@ void TVConfigFile::Print(FILE *f)
 *****************************************************************************/
 
 TVConfigFile *TVMainConfigFile::config=NULL;
+const char *TVMainConfigFile::userConfigFile=NULL;
 const char *configFileName="tvrc";
 #if CLY_HiddenDifferent
 const char *configFileNameH=".tvrc";
@@ -634,23 +635,32 @@ int TVMainConfigFile::Load()
 {
  // Load the configuration file
  char *name=NULL;
- name=TestForFileIn(".");
+ if (userConfigFile)
+   {
+    struct stat st;
+    if (stat(userConfigFile,&st)==0 && S_ISREG(st.st_mode))
+       name=newStr(userConfigFile);
+   }
  if (!name)
    {
-    char *home=getenv("HOME");
-    if (home)
-       name=TestForFileIn(home);
+    name=TestForFileIn(".");
     if (!name)
       {
-       home=getenv("HOMEDIR");
+       char *home=getenv("HOME");
        if (home)
           name=TestForFileIn(home);
        if (!name)
          {
-          name=TestForFileIn("/etc");
+          home=getenv("HOMEDIR");
+          if (home)
+             name=TestForFileIn(home);
           if (!name)
-            {// DJGPP trick
-             name=TestForFileIn("/dev/env/DJDIR/etc");
+            {
+             name=TestForFileIn("/etc");
+             if (!name)
+               {// DJGPP trick
+                name=TestForFileIn("/dev/env/DJDIR/etc");
+               }
             }
          }
       }

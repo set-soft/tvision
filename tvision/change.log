@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.330  2002/09/23 12:31:09  set
+* Added: [Linux] more details about why the 512 chars system used by Linux
+isn't the same that TV needs. From a talk with Tapio.
+
 Revision 2.329  2002/09/19 18:06:38  set
 * Fixed: static const class members looks like a logic construction and g++
 understands it, but it seems to be a non-standard thing and MSVC doesn't

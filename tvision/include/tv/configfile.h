@@ -88,10 +88,12 @@ public:
  static int     Add(const char *key, const char *name, long value);
  static int     Add(const char *key, const char *name, const char *value);
  static void    Print(FILE *f) { config->Print(f); };
+ static void    SetUserConfigFile(const char *name) { userConfigFile=name; };
 
 protected:
  static TVConfigFile *config;
  static char *TestForFileIn(const char *where);
+ static const char *userConfigFile;
 };
 #endif
 
