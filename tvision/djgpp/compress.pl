@@ -51,6 +51,10 @@ close(FIL);
 $r='';
 foreach $i (@files)
   {
+   if ($i =~ /debian\//)
+     {
+      next;
+     }
    if ((substr($i,0,1) eq '-') or (substr($i,0,1) eq '+'))
      {
       $i=substr($i,1);
