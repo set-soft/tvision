@@ -13,6 +13,7 @@ Modified by Robert H”hne to be used for RHIDE.
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <ctype.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -41,7 +42,7 @@ TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     char *tmp;
     options |= ofCentered;
 
-    dirInput = new TInputLine( TRect( 3, 3, 30, 4 ), 68 );
+    dirInput = new TInputLine( TRect( 3, 3, 30, 4 ), FILENAME_MAX );
     insert( dirInput );
     tmp = _("Directory ~n~ame");
     insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, dirInput ));
