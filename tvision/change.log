@@ -1,4 +1,11 @@
 $Log$
+Revision 1.42  1999/05/08 01:49:00  set
+* Changed: The initialization for TEventQueue::eventQueue. Looks like egcs
+2.91.66 doesn't like partially initialized structures and what is worst likes
+to crash if the non-initialized part is an anonymous union (like in TEvent).
+In Linux egcs dies, in W95 survives and you get the warning. Ivan reported it
+when he tried to make a .deb for Potato using egcs 1.1.2.
+.
 Revision 1.41  1999/05/06 03:36:24  set
 * Added: Now TMenuBar and TStatusLine uses one character around the name of
 the item in *both* sides and don't overlap with the next. That's the original
