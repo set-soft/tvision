@@ -1,4 +1,14 @@
 $Log$
+Revision 1.28  1999/03/23 00:50:35  set
+* Changed the name of the library because Sigala's port is older in the Linux
+arena and I think the right thing is to differentiate this port calling it
+librhtv.a instead of libtv.a. For this reason I changed all the references to
+the old name.
+* Changed to version 1.0.5 in the scripts.
+* Added the Debian stuff to the sources distribution. It will generate some
+warnings when using 8+3 filenames in the uncompressor but these files aren't
+needed for DOS.
+.
 Revision 1.27  1999/02/23 22:45:26  root
 * Tested the Debian distribution stuff. Works after a couple of small patches
 to the rules make script.

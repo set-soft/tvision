@@ -98,6 +98,11 @@ basically the same for DOS and Linux. If you have the Linux distribution and
 you want to use it under DOS just unpack the files and run the fromunix.pl
 Perl script. The reverse is valid: the DOS package can be used under Linux
 running the fromdos.pl Perl script.
+  Starting with 1.0.5 I include the Debian package files, if you uncompress
+the files in plain DOS you'll get some warnings about files with the same
+name, don't worry they are Linux files and they aren't needed under DOS. Of
+course you won't be able to use these files under Linux, you'll need to
+uncompress the .zip again in Linux.
   The compress and compress.bat files are used to create the distribution
 packages and are included.
 
@@ -166,7 +171,7 @@ From binary distribution:
 
   That's very experimental so be careful I don't know if the version numbers
 are OK and what will happend if you try to execute something created with
-the 1.0.5 library using the 1.0.5 library. If you have hints about this
+the 1.0.1 library using the 1.0.2 library. If you have hints about this
 topic please contact me.
   My tests shows that a small TVision example (examples/dyntxt) is only 14Kb
 long when linked dynamically and without debug information. But you should
