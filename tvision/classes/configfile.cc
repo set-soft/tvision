@@ -534,7 +534,7 @@ int TVConfigFile::AddString(const char *key, const char *name,
                             const char *value, int priority)
 {
  TVConfigFileTreeNode *node=new TVConfigFileTreeNode;
- node->type=tInteger;
+ node->type=tString;
  node->priority=priority;
  node->string=newStr(value);
  node->name=newStr(name);
@@ -752,7 +752,7 @@ int TVMainConfigFile::Add(const char *section, const char *name, long value)
 }
 
 int TVMainConfigFile::Add(const char *section, const char *name,
-                                const char *value)
+                          const char *value)
 {
  int lSection=section ? strlen(section)+1 : 0;
  AllocLocalStr(b,lSection+4);
