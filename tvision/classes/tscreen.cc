@@ -226,8 +226,12 @@ void TScreen::getPaletteColors(int from, int number, TScreenColor *colors)
 
 void TScreen::setPaletteColors(int from, int number, TScreenColor *colors)
 {
- memcpy(ActualPalette+from,colors+from,number*sizeof(TScreenColor));
  setDisPaletteColors(from,number,colors);
  paletteModified=1;
 }
 
+void TScreen::resetPalette()
+{
+ setDisPaletteColors(0,16,OriginalPalette);
+ paletteModified=0;
+}

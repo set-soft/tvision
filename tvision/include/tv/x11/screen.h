@@ -74,6 +74,7 @@ protected:
  static int    System(const char *command, pid_t *pidChild);
  static int    setWindowTitle(const char *aName);
  static const char *getWindowTitle(void);
+ static void   SetDisPaletteColors(int from, int number, TScreenColor *colors);
  
 protected:
  // Blinking cursor emulation

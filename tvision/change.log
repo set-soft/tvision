@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.96  2002/05/29 20:29:32  set
+* Added: [UNIX] XTerm and Eterm palette support, is untested!
+
 Revision 2.95  2002/05/29 17:56:02  set
 * Fixed: [UNIX] TFileEditor was trying to convert UNIX files into DOS
 format ;-) and what is worst using a temporal file with random rights. Now

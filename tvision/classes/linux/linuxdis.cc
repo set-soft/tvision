@@ -257,6 +257,8 @@ int TDisplayLinux::SetWindowTitle(const char *name)
 
 void TDisplayLinux::SetDisPaletteColors(int from, int number, TScreenColor *colors)
 {
+ // Assume all will be ok
+ memcpy(ActualPalette+from,colors,number*sizeof(TScreenColor));
  while (number-- && from<16)
    {
     fprintf(stdout,"\E]P%1.1X%2.2X%2.2X%2.2X",cMap[from++],colors->R,colors->G,colors->B);
