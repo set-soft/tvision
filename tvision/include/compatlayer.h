@@ -47,7 +47,7 @@ and regex.
  #define Uses_sys_stat
 #endif
 
-#ifdef __GNUC__
+#ifdef TVComp_GCC
 // GNU C is supported for various OSs:
 
  #ifdef Uses_string
@@ -83,6 +83,9 @@ and regex.
  #ifdef Uses_dirent
   #define Include_dirent
  #endif
+ #ifdef Uses_abort
+  #define Include_stdlib
+ #endif
  #ifdef Uses_IOS_BIN
   #define IOS_BIN ios::bin
  #endif
@@ -115,9 +118,12 @@ and regex.
  #ifdef Uses_ftell
   #define Include_stdio
  #endif
+ #ifdef Uses_strstream
+  #define Include_strstream
+ #endif
  
- // Under Win32 MingW defines it in specs
- #ifdef __MINGW32__
+ #ifdef TVCompf_MinGW
+  #define CLY_HaveDriveLetters 1
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
   #define FA_RDONLY 0x04
@@ -168,10 +174,68 @@ and regex.
   #ifdef Uses_itoa
    #define Include_stdlib
   #endif
+  #ifdef Uses_direct
+   #define Include_direct
+  #endif
+  #ifdef Uses_dir
+   #define Include_dir
+  #endif
+ #endif
+
+ // Win32/Cygwin -- OH!
+ #ifdef TVCompf_Cygwin
+  #define CLY_Have_UGID 1
+  #define FA_ARCH   0x01
+  #define FA_DIREC  0x02
+  #define FA_RDONLY 0x04
+  #ifdef Uses_filelength
+   #define filelength CLY_filelength
+  #endif
+  #define PATHSEPARATOR ':'
+  #define PATHSEPARATOR_ ":"
+  #define DIRSEPARATOR '/'
+  #define DIRSEPARATOR_ "/"
+  #define CLY_IsValidDirSep(a) (a=='/')
+  #ifdef Uses_fixpath
+   CFunc void _fixpath(const char *in, char *out);
+  #endif
+  #ifdef Uses_HaveLFNs
+   #define OS_HaveLFNs
+  #endif
+  #ifdef Uses_glob
+   #define Include_glob
+  #endif
+  #ifdef Uses_fnmatch
+   #define Include_cl_fnmatch
+  #endif
+  #ifdef Uses_regex
+   #define Include_sys_types
+   #define Include_regex
+  #endif
+  #ifdef Uses_getopt
+   #define Include_getopt
+  #endif
+  #ifdef Uses_utime
+   #define Include_utime
+  #endif
+  #ifdef Uses_mkstemp
+   #define Include_stdio
+  #endif
+  #ifdef Uses_getcwd
+   #define Include_unistd
+  #endif
+  #ifdef Uses_itoa
+   CFunc char *itoa(int value, char *string, int radix);
+  #endif
+  #ifdef Uses_dir
+   #define Include_dir
+   #define Include_direct
+  #endif
  #endif
  
  // Under DOS djgpp defines it
- #ifdef __DJGPP__
+ #ifdef TVCompf_djgpp
+  #define CLY_HaveDriveLetters 1
   #ifdef Uses_filelength
    #define Include_io
   #endif
@@ -215,10 +279,16 @@ and regex.
   #ifdef Uses_itoa
    #define Include_stdlib
   #endif
+  #ifdef Uses_direct
+   #define Include_direct
+  #endif
+  #ifdef Uses_dir
+   #define Include_dir
+  #endif
  #endif
  
  // Under Linux defines it
- #ifdef __linux__
+ #ifdef TVOSf_Linux
   #define CLY_Have_UGID 1
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
@@ -269,6 +339,12 @@ and regex.
   #endif
   #ifdef Uses_itoa
    CFunc char *itoa(int value, char *string, int radix);
+  #endif
+  #ifdef Uses_direct
+   #define Include_direct
+  #endif
+  #ifdef Uses_dir
+   #define Include_dir
   #endif
  #endif
  
@@ -321,17 +397,27 @@ and regex.
   #ifdef Uses_itoa
    CFunc char *itoa(int value, char *string, int radix);
   #endif
+  #ifdef Uses_direct
+   #define Include_direct
+  #endif
+  #ifdef Uses_dir
+   #define Include_dir
+  #endif
  #endif
-#endif // __GNUC__
+#endif // TVComp_GCC
 
 
 
 // BC++ 5.5 for Win32 is supported
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
+ #define CLY_HaveDriveLetters 1
  #ifdef Uses_string
   #define Include_string
   #define strncasecmp strnicmp
   #define strcasecmp  stricmp
+ #endif
+ #ifdef Uses_abort
+  #define Include_stdlib
  #endif
  #ifdef Uses_limits
   #define Include_limits
@@ -437,6 +523,15 @@ and regex.
  #ifdef Uses_itoa
   #define Include_stdlib
  #endif
+ #ifdef Uses_direct
+  #define Include_direct
+ #endif
+ #ifdef Uses_dir
+  #define Include_dir
+ #endif
+ #ifdef Uses_strstream
+  #define Include_strstream
+ #endif
 #endif
 
 
@@ -447,11 +542,15 @@ and regex.
 #define _MSC_VER
 #endif
 
-#ifdef _MSC_VER
+#ifdef TVComp_MSC
+ #define CLY_HaveDriveLetters 1
  #ifdef Uses_string
   #define Include_string
   #define strncasecmp strnicmp
   #define strcasecmp  stricmp
+ #endif
+ #ifdef Uses_abort
+  #define Include_process
  #endif
  #ifdef Uses_limits
   #define Include_limits
@@ -562,6 +661,15 @@ and regex.
  #ifdef Uses_itoa
   #define Include_stdlib
  #endif
+ #ifdef Uses_direct
+  #define Include_direct
+ #endif
+ #ifdef Uses_dir
+  #define Include_dir
+ #endif
+ #ifdef Uses_strstream
+  #define Include_strstrea
+ #endif
 #endif
 
 
@@ -610,7 +718,7 @@ CFunc int CLY_IsWild(const char *f);
 #endif
 /* Utility function to know if a file exist and we can read from it */
 CFunc int CLY_FileExists(const char *fname);
-#ifndef TVOSf_djgpp
+#ifndef TVCompf_djgpp
 #define __file_exists(a) CLY_FileExists(a)
 #endif
 /* Utility function to know if a path is relative */
@@ -624,6 +732,11 @@ CFunc void CLY_Beep(void);
 CFunc long CLY_filelength(int);
 /* Used internally, just call getcurdir prior request */
 CFunc int  CLY_getcurdir(int drive, char *buffer);
+
+/* cl/unistd.h includes dir.h */
+#ifdef Include_cl_unistd
+ #define Include_dir
+#endif
 
 #ifdef Include_sys_types
  #include <sys/types.h>
@@ -674,6 +787,10 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
  #include <io.h>
 #endif
 
+#ifdef Include_direct
+ #include <direct.h>
+#endif
+
 #ifdef Include_dir
  #include <dir.h>
 #endif
@@ -705,6 +822,10 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
  #ifndef R_OK
   #define R_OK 4
  #endif
+#endif
+
+#ifdef Include_process
+ #include <process.h>
 #endif
 
 #ifdef Include_cl_unistd
@@ -780,6 +901,15 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 #ifdef Include_cl_utime
 #include <cl/utime.h>
 #endif
+
+#ifdef Include_strstream
+#include <strstream.h>
+#endif
+
+#ifdef Include_strstrea
+#include <strstrea.h>
+#endif
+
 
 #if defined(Uses_CLYFileAttrs) && !defined(Uses_CLYFileAttrsDef)
 #define Uses_CLYFileAttrsDef
