@@ -21,7 +21,11 @@ int mkstemp (char *_template)
     strcpy(tmp_name, _template);
     errno = 0;
   } while (mktemp (tmp_name) != NULL
-	   && (fd = open(tmp_name, O_RDWR | O_CREAT | O_EXCL | O_BINARY, 0)) == -1
+       /* SAA: changed file mode from 0 to 0666 because on WinNT it creted files
+        * with read-only attribute set. Fix me if it causes problems on other
+        * platforms.
+        */
+	   && (fd = open(tmp_name, O_RDWR | O_CREAT | O_EXCL | O_BINARY, 0666)) == -1
 	   && errno == EEXIST);
 
   if (fd == -1)
