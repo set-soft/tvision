@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2003-11-03 16:37
 #
 
 librhtv$(ExLIB):: \
@@ -126,6 +126,9 @@ librhtv$(ExLIB):: \
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
+	obj/qnx4dis$(ExOBJ) \
+	obj/qnx4key$(ExOBJ) \
+	obj/qnx4mouse$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \
@@ -559,6 +562,15 @@ obj/osclipboard$(ExOBJ):: osclipboard.cc
 	$(RHIDE_COMPILE_CC)
 
 obj/pstream$(ExOBJ):: pstream.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4dis$(ExOBJ):: qnx4dis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4key$(ExOBJ):: qnx4key.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4mouse$(ExOBJ):: qnx4mouse.cc  
 	$(RHIDE_COMPILE_CC)
 
 obj/qnxdis$(ExOBJ):: qnxdis.cc  
@@ -1209,6 +1221,9 @@ OBJFILES=\
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
+	obj/qnx4dis$(ExOBJ) \
+	obj/qnx4key$(ExOBJ) \
+	obj/qnx4mouse$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \

@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2003-11-03 16:37
 #
 
 ../makes/obj/beep$(ExOBJ):: beep.c \
@@ -202,6 +202,8 @@
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/ssc_streams$(ExOBJ):: ssc_streams.cc \
+	ssc_streams.cc \
+	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 

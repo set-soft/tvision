@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2003-11-03 16:37
 #
 
 librhtv$(ExLIB):: \
@@ -126,6 +126,9 @@ librhtv$(ExLIB):: \
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
+	obj/qnx4dis$(ExOBJ) \
+	obj/qnx4key$(ExOBJ) \
+	obj/qnx4mouse$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \
@@ -1652,6 +1655,65 @@ obj/pstream$(ExOBJ):: pstream.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4dis$(ExOBJ):: qnx4dis.cc \
+	$(CLASSES_DIR)/qnx4/qnx4dis.cc \
+	$(INCLUDE_DIR)/cl/unistd.h \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/qnx4/screen.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4key$(ExOBJ):: qnx4key.cc \
+	$(CLASSES_DIR)/qnx4/qnx4key.cc \
+	$(INCLUDE_DIR)/cl/unistd.h \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/point.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/qnx4/key.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tkeyext.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/qnx4mouse$(ExOBJ):: qnx4mouse.cc \
+	$(CLASSES_DIR)/qnx4/qnx4mouse.cc \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/qnx4/mouse.h \
+	$(INCLUDE_DIR)/tv/qnx4/screen.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
@@ -3340,7 +3402,9 @@ obj/tbackgro$(ExOBJ):: tbackgro.cc \
 	$(INCLUDE_DIR)/tv/app.h \
 	$(INCLUDE_DIR)/tv/backgrnd.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/desktop.h \
 	$(INCLUDE_DIR)/tv/drawbuf.h \
+	$(INCLUDE_DIR)/tv/group.h \
 	$(INCLUDE_DIR)/tv/intl.h \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/object.h \
@@ -3349,6 +3413,8 @@ obj/tbackgro$(ExOBJ):: tbackgro.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -6024,10 +6090,20 @@ obj/tview$(ExOBJ):: tview.cc \
 obj/tvintl$(ExOBJ):: tvintl.cc \
 	$(CLASSES_DIR)/tvintl.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
 	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
@@ -6996,6 +7072,9 @@ OBJFILES=\
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
+	obj/qnx4dis$(ExOBJ) \
+	obj/qnx4key$(ExOBJ) \
+	obj/qnx4mouse$(ExOBJ) \
 	obj/qnxdis$(ExOBJ) \
 	obj/qnxkey$(ExOBJ) \
 	obj/qnxmouse$(ExOBJ) \
