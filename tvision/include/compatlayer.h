@@ -881,6 +881,10 @@ typedef unsigned long  ulong;
   #undef  strcasecmp
   #define strcasecmp  stricmp
  #endif
+ #ifdef Uses_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
+ #endif
  #ifdef Uses_abort
   #undef  Include_process
   #define Include_process 1
@@ -901,7 +905,8 @@ typedef unsigned long  ulong;
  #endif
  #ifdef Uses_unistd
   #undef  Include_unistd
-  #define Include_unistd 1
+  /* Doesn't exist
+     #define Include_unistd 1 */
  #endif
  #ifdef Uses_access
   #error Where is access defined?
@@ -993,7 +998,8 @@ typedef unsigned long  ulong;
  #endif
  #ifdef Uses_dirent
   #undef  Include_dirent
-  #define Include_dirent 1
+  /* Doesn't exist
+     #define Include_dirent 1 */
  #endif
  #ifdef Uses_ftell
   #undef  Include_stdio
