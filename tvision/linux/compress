@@ -9,6 +9,15 @@ if ($r!~/$Version/)
    die "Error! inconsistent version in tv.h\n";
   }
 
+# Adjust Debian version
+$r=cat('../debian/changelog');
+if ($i=!/$version/)
+  {
+   chdir('../../debian');
+   system("dch -v$version"."-0.1 \"Personal use unofficial version\"");
+   chdir('../makes/linux');
+  }
+
 $doBinary=0;
 foreach $i (@ARGV)
   {
