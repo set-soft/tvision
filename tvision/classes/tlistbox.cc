@@ -70,9 +70,11 @@ void TListBox::getText( char *dest, ccIndex item, short maxChars )
         *dest = EOS;
 }
 
-void TListBox::newList( TCollection *aList )
+// SET: You not always want to destroy the items
+void TListBox::newList( TCollection *aList, Boolean destroyItems )
 {
-    destroy( items );
+    if( destroyItems )
+       destroy( items );
     items = aList;
     if( aList != 0 )
         setRange( aList->getCount() );
@@ -83,12 +85,25 @@ void TListBox::newList( TCollection *aList )
     drawView();
 }
 
-void TListBox::setData( void *rec )
+// SET: This is for compatibility
+void TListBox::newList( TCollection *aList )
+{
+    newList( aList, True );
+}
+
+// SET: You not always want to destroy the items
+void TListBox::setData( void *rec, Boolean destroyItems )
 {
     TListBoxRec *p = (TListBoxRec *)rec;
-    newList(p->items);
-    focusItem(p->selection);
+    newList( p->items, destroyItems );
+    focusItem( p->selection );
     drawView();
+}
+
+// SET: This is for compatibility
+void TListBox::setData( void *rec )
+{
+    setData( rec, True );
 }
 
 #if !defined( NO_STREAM )

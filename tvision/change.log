@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.227  2002/07/22 19:33:25  set
+* Added: Mechanisms to list the available fonts from a directory and create
+dialogs with it (collection and list box for the structure).
+* Modified: TSortedListBox::getKey to be protected and not private. No
+special reason but I think that's better.
+
 Revision 2.226  2002/07/22 19:32:26  set
 * Modified: [Linux] code 30 to be the "enter" symbol and not V/T.
 * Fixed: [Linux] ISO-1 code page to differentiate 160 from 32. This isn't
