@@ -26,6 +26,8 @@ compiler.@p
   #define NEEDS_MKSTEMP
   #define NEEDS_NL_LANGINFO
   #define NEEDS_GETLINE
+  // Internal implementation is broken. Is the same provided by MSVC.
+  #define NEEDS_SNPRINTF
  #endif
  
  // Win32 Cygwin
