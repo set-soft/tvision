@@ -4,6 +4,7 @@
 //  TListViewer Example - Scrolling Lists
 //  revised November 27,1993
 //  C.Porter 70262,1047
+// Fixed: Use of constant strings for edition by Salvador E. Tropea.
 // ***********************************************************************
 #include <stdlib.h>
 
@@ -28,20 +29,27 @@
 #include <tv.h>
 #include "lst_view.h"
 
-char *cityList[] = { "Boston MA.   ",
-				"Washington DC  ",
-				"Orlando FL.    ",
-				"New York City N.Y",
-				"Chicago IL ",
-				"Dallas TX.",
-				"Birmingham AL.",
-				"Memphis TN ",
-				"Denver CO",
-				"San Francisco CA.",
-				"Los Angeles CA.",
-				"Fort Worth TX",
-				"Seattle WA", NULL };
-char *numList[] = {"1","2","3","4","5","6","7","8","9","10","11","12","13",NULL};
+const int wCity=18, cCities=13;
+
+char *aCityList[cCities]=
+{
+ "Boston MA.   ",
+ "Washington DC  ",
+ "Orlando FL.    ",
+ "New York City N.Y",
+ "Chicago IL ",
+ "Dallas TX.",
+ "Birmingham AL.",
+ "Memphis TN ",
+ "Denver CO",
+ "San Francisco CA.",
+ "Los Angeles CA.",
+ "Fort Worth TX",
+ "Seattle WA"
+};
+char *aNumList[cCities]={"1","2","3","4","5","6","7","8","9","10","11","12","13"};
+char **cityList;
+char **numList;
 
 //  global data
 const int cmAbout   = 100;  // User selected menu item 'About'
@@ -121,7 +129,8 @@ void TApp::AboutDialog() {
 
 void TApp::ListDialog() {
 
-  TDialog *pd = new TListViewDialog(TRect(0, 0, 30, 15), "Scroll List",cityList,numList,13);
+  TDialog *pd = new TListViewDialog(TRect(0, 0, 40, 15), "Scroll List",
+                cityList,numList,cCities,wCity);
 
   if(validView(pd)) deskTop->execView(pd);
 
@@ -137,6 +146,16 @@ void TApp::idle() {
 
 //************************************************************************
 int main(void) {
+  int i;
+  cityList=new char*[cCities];
+  numList=new char*[cCities];
+  for (i=0; i<cCities; i++)
+     {
+      cityList[i]=new char[wCity];
+      strcpy(cityList[i],aCityList[i]);
+      numList[i]=new char[wCity];
+      strcpy(numList[i],aNumList[i]);
+     }
   TApp myApp;
   myApp.run();
   return 0;
