@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.540  2004/05/26 20:42:43  set
+* Fixed: [Win32] The size of clipboard returned by Win32 API isn't the size
+of the text it contains (>=real size). For this reason we must meassure the
+real size before passing it to the application. Reported and solved by
+Warren H. Holt.
+
 Revision 2.539  2004/05/24 15:45:15  set
 * Fixed: [Win32] The keypad / key for the WinNT driver. From information
 provided by: Warren H. Holt (wHolt/drs-ewns/com)

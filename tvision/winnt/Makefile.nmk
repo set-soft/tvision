@@ -110,7 +110,7 @@ tvex: libtv.lib
 
 {$(SRC7)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
-
+   
 {$(SRC8)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 
