@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.513  2003/11/06 19:46:21  set
+* Fixed: The Uses_signal stuff in set-logo.cc example needed the inclusion
+of the configuration file. Reported by Frank Liu.
+
 Revision 2.512  2003/11/05 16:41:49  set
 * Added: Another batch of patches from Mike to support QNX4.
 * Added: Uses_signal to compatlayer.

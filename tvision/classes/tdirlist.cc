@@ -150,7 +150,28 @@ void TDirListBox::showDirs( TDirCollection *dirs )
     strcpy( org, pathDir );
 
     char *curDir = dir;
+#if !defined(TVOSf_QNX4)
     char *end = dir + 1;
+#else
+    char *end;
+
+    if ((*dir=='/') && (*(dir+1)=='/'))
+    {
+       end=strchr(dir+2, DIRSEPARATOR);
+       if (end==NULL)
+       {
+          end=dir+1; // fallback to usual UNIX path.
+       }
+       else
+       {
+          end+=1; // split the //nodenumber/ string.
+       }
+    }
+    else
+    {
+       end=dir+1; // usual UNIX path.
+    }
+#endif // TVOSf_QNX4
     char hold = *end;
     *end = EOS;         // mark end of drive name
     strcpy( name, curDir );

@@ -17,7 +17,6 @@
 
 #include <termios.h>
 #include <term.h>
-#include <sys/ioctl.h>
 
 #include <tv/unix/screen.h>
 

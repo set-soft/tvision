@@ -3,11 +3,20 @@ Author: Mike Gorchak
 Status: Just a few words and patches.
 Revision: $Revision$
 
+Some notes before you starting using TurboVision under QNX4:
+
+1. Before compiling TurboVision you must have the latest updates for the
+   Watcom C/C++ 10.6, including patch A and patch B.
+2. After that (important!) you must install or reinstall the latest EGCS 1.1.2
+   for the QNX4 from the http://www.jcmichot.usenet-fr.net/gcc/ .
+3. You must obtain the latest perl version 5.x from the QUICS at the
+   ftp://ftp.qnx.com/usr/free/ .
+
 Attention! EGCS 1.1.2/QNX4 distributive have some errors in headers, so before
            compiling TurboVision you must apply the following patch:
 
---- //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.60/include/term.h	Mon Nov  3 01:24:29 2003
-+++ //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66/include/term.h	Wed Nov  5 01:09:40 2003
+--- //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66-orig/include/term.h	Mon Nov  3 01:24:29 2003
++++ //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66/include/term.h		Wed Nov  5 01:09:40 2003
 @@ -624,6 +624,7 @@
  #define NUMCOUNT  39
  #define STRCOUNT  412
@@ -53,3 +62,44 @@ Attention! EGCS 1.1.2/QNX4 distributive have some errors in headers, so before
              _shift_held:1,          /* 1=Shift down valid only for mouse    */
              _ctrl_held:1,           /* 1=Ctrl down valid only for mouse     */
              _alt_held:1,            /* 1=Alt down valid only for mouse      */
+
+
+--- //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66-orig/include/curses.h	Mon Nov  3 01:24:29 2003
++++ //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66/include/curses.h	Wed Nov  5 01:09:40 2003
+@@ -26,7 +26,7 @@
+ #if	__WATCOMC__ > 1000
+ #pragma	pack(__push,1);
+ #else
+-#pragma	pack(1);
++#pragma	pack(1)
+ #endif
+ 
+ #define CURSES 1
+@@ -82,7 +82,7 @@
+ 
+ #undef TRUE
+ #undef FALSE
+-#if	__WATCOMC__ < 1100
++#if	defined(__WATCOMC__) && (__WATCOMC__ < 1100)
+ #define	CXX_BUILTIN_BOOL 0
+ #define	CXX_TYPE_OF_BOOL unsigned
+ #else
+
+--- //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66-orig/include/sys/qnxterm.h	Mon Nov  3 01:24:35 2003
++++ //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66/include/sys/qnxterm.h		Thu Nov  6 23:07:15 2003
+@@ -54,6 +54,7 @@
+                    scan_resize:1,
+                    mouse_cursor:1,       /* non-zero if cursor displayed */
+                    save_am_mode:1;
++    char           weirdgccbug[3];
+ 
+     unsigned       color,
+                    fill,
+@@ -125,7 +126,6 @@
+                    box_lantern,
+                    box_spare[33];
+     } ;
+-
+ 
+ #ifdef __cplusplus
+ extern "C" {

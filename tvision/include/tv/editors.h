@@ -101,9 +101,6 @@ const unsigned
 
 #endif  // __EDIT_COMMAND_CODES
 
-typedef ushort (*TEditorDialog)( int, ... );
-ushort defEditorDialog( int dialog, ... );
-
 #if defined( Uses_TIndicator ) && !defined( __TIndicator )
 #define __TIndicator
 
@@ -167,6 +164,9 @@ inline opstream& operator << ( opstream& os, TIndicator* cl )
 
 #if defined( Uses_TEditor ) && !defined( __TEditor )
 #define __TEditor
+
+typedef ushort (*TEditorDialog)( int, ... );
+ushort defEditorDialog( int dialog, ... );
 
 class TRect;
 class TScrollBar;
