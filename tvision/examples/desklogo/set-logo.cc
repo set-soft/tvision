@@ -8,6 +8,10 @@
 //
 // Ported and contributed by Joel <jso@europay.com>
 //
+// SET: 1999/12/05, Added an example to show how to stop and resume the
+// application under Linux. Based in a test from Matt Mueller
+// <donut@azstarnet.com>
+//
 //========================================================================
 
 #include <string.h>
@@ -26,6 +30,11 @@
 #define Uses_TStatusDef
 #define Uses_TStatusItem
 #define Uses_TStatusLine
+
+#ifdef __linux__
+
+#define Uses_TScreen
+#endif
 
 #include <tv.h>
 
@@ -149,7 +158,16 @@ TDeskTop *TApp::initDeskTop( TRect r )
 
 }
 
-
+#ifdef __linux__
+void ResumeApp(int signum)
+{
+ TScreen::resume();
+ TProgram::application->resume();
+ TProgram::deskTop->setState(sfVisible,True);
+ TProgram::deskTop->redraw();
+ TProgram::application->redraw();
+}
+#endif
 
 void TApp::handleEvent (TEvent &event)
 {
@@ -167,6 +185,16 @@ void TApp::handleEvent (TEvent &event)
 				 }
 		}
 	 }
+  #ifdef __linux__
+  else
+  if( event.what == evKeyDown && event.keyDown.keyCode == kbCtrlZ )
+	 {
+     suspend();
+     TScreen::suspend();
+     signal(SIGCONT,ResumeApp);
+     kill(0,SIGSTOP);
+    }
+  #endif
 }
 
 //------------------------------------------------------------------------
