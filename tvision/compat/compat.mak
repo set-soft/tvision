@@ -3,6 +3,8 @@
 # gpr2mak compat.gpr
 vpath_src=../classes/win32 ../stream ../names ../classes .. ../djgpp
 vpath %.h ../djgpp
+vpath %.h ../djgpp
+vpath %.h ../djgpp
 vpath %.c $(vpath_src)
 vpath %.cc $(vpath_src)
 vpath %.cpp $(vpath_src)
@@ -301,8 +303,8 @@ RHIDE_LD=gcc
 RHIDE_AR=ar
 RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
 RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
-TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision
+RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
+TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision /usr/X11R6/include
 RHIDE_OS_LIBS=stdc++
 TVOBJ=../../win32 /usr/src/tvision-head/win32 /usr/lib
 RHIDE_GCC=gcc
@@ -311,8 +313,8 @@ RHIDE_LD=gcc
 RHIDE_AR=ar
 RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
 RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib
-TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision
+RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
+TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision /usr/X11R6/include
 RHIDE_OS_LIBS=stdc++
 TVOBJ=../../win32 /usr/src/tvision-head/win32 /usr/lib
 %.o: %.c
