@@ -23,8 +23,9 @@ validFileName, getCurDir, isWild, __file_exists, relativePath and driveValid
 should be replaced by a CLY_* function.
   When possible POSIX compliant replacements are supplied for: glob, fnmatch
 and regex.
+  Added itoa for faster and safe integer to string conversion.
 
-  Copyright (c) 2000 by Salvador E. Tropea
+  Copyright (c) 2000-2001 by Salvador E. Tropea
   Covered by the GPL license.
 
 ***************************************************************************/
@@ -164,6 +165,9 @@ and regex.
   #ifdef Uses_getcwd
    #define Include_io
   #endif
+  #ifdef Uses_itoa
+   #define Include_stdlib
+  #endif
  #endif
  
  // Under DOS djgpp defines it
@@ -207,6 +211,9 @@ and regex.
   #endif
   #ifdef Uses_getcwd
    #define Include_unistd
+  #endif
+  #ifdef Uses_itoa
+   #define Include_stdlib
   #endif
  #endif
  
@@ -260,6 +267,9 @@ and regex.
   #ifdef Uses_getcwd
    #define Include_unistd
   #endif
+  #ifdef Uses_itoa
+   CFunc char *itoa(int value, char *string, int radix);
+  #endif
  #endif
  
  // Generic UNIX system
@@ -307,6 +317,9 @@ and regex.
   #endif
   #ifdef Uses_getcwd
    #define Include_unistd
+  #endif
+  #ifdef Uses_itoa
+   CFunc char *itoa(int value, char *string, int radix);
   #endif
  #endif
 #endif // __GNUC__
@@ -420,6 +433,9 @@ and regex.
  #endif
  #ifdef Uses_getcwd
   #define Include_dir
+ #endif
+ #ifdef Uses_itoa
+  #define Include_stdlib
  #endif
 #endif
 
@@ -542,6 +558,9 @@ and regex.
  #endif
  #ifdef Uses_getcwd
   #define Include_io
+ #endif
+ #ifdef Uses_itoa
+  #define Include_stdlib
  #endif
 #endif
 
