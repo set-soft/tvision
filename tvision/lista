@@ -103,6 +103,7 @@ classes/linux/tdisplay.cc
 classes/linux/tfont.cc
 classes/linux/thwmouse.cc
 classes/linux/tscreen.cc
+classes/linux/tscropts.cc
 config.pl
 +configure.bat
 +configure
@@ -130,6 +131,7 @@ djgpp/makefile
 djgpp/rhide.env
 +djgpp/sacadeb.bat
 +djgpp/compress.bat
+djgpp/compress.pl
 +djgpp/distlist
 djgpp/obj/delete.me
 djgpp/tmp/delete.me
@@ -279,6 +281,9 @@ examples/tutorial/tvguid15.cc
 examples/tutorial/tvguid15.gpr
 examples/tutorial/tvguid16.cc
 examples/tutorial/tvguid16.gpr
+examples/tvedit/tvedit.cc
+examples/tvedit/tvedit.gpr
+examples/tvedit/rhide.env
 extra/doskeys/kextend.asm
 -extra/doskeys/kextend.com
 extra/doskeys/kextend.txt
@@ -543,3 +548,9 @@ ticks.cc
 tweaked.c
 version.txt
 vesa.cc
+fromdos.pl
+fromunix.pl
+lista
+lista.dos
+rhide.env
+snapshot.pl

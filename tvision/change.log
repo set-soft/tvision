@@ -1,4 +1,7 @@
 $Log$
+Revision 1.111  1999/09/28 02:25:00  set
+* Fixed: Applied patch for Debian files from Ivan.
+.
 Revision 1.110  1999/09/24 02:57:52  set
 * Fixed: I forgot to uncomment a test in the TListView class. It produced the
 wrong broadcast when the focus changed.
