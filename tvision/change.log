@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.203  2002/07/02 19:16:38  set
+* Added: [MSVC] A rule to create a demo application to the makefile. WintiX
+generated a demo application successfuly!
+
 Revision 2.202  2002/07/02 19:06:16  set
 * Fixed: [Linux] Disabled code in dual.cc, this file must be removed.
 

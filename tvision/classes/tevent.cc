@@ -11,6 +11,7 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  */
 
+//#define Uses_stdio
 #define Uses_string
 #define Uses_TEventQueue
 #define Uses_TEvent
