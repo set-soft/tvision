@@ -282,6 +282,12 @@ void startcurses()
     }
 
   // SET: If we are under xterm* initialize some special stuff:
+  if (strncmp(terminal,"xterm-eterm-tv",14)==0)
+    { // Special keyboard treatment
+     TGKey::SetKbdMapping(KBD_ETERM_STYLE);
+     xterm=1;
+    }
+  else
   if (strncmp(terminal,"xterm",5)==0)
     { // Special keyboard treatment
      TGKey::SetKbdMapping(KBD_XTERM_STYLE);
