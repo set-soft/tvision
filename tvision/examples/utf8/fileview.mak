@@ -64,7 +64,7 @@ PROG_ARGS=
 SRC_DIRS=/usr/src/tvision/classes
 WUC=
 EDITORS=
-MAIN_TARGET=tvedit.exe
+MAIN_TARGET=fileview.exe
 PROJECT_ITEMS=fileview.cc
 DEFAULT_MASK=*
 RHIDE_BIN_DIR=/usr/bin
@@ -374,9 +374,9 @@ clean::
 DEPS_0= fileview.o 
 NO_LINK=
 LINK_FILES=$(filter-out $(NO_LINK),$(DEPS_0))
-tvedit.exe:: $(DEPS_0)
+fileview.exe:: $(DEPS_0)
 	$(RHIDE_COMPILE_LINK)
 DEPS_1=fileview.cc
 fileview.o:: $(DEPS_1)
 	$(RHIDE_COMPILE.cc.o)
-all:: tvedit.exe
+all:: fileview.exe
