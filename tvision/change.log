@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.79  2002/05/20 15:23:57  set
+* Added: QNX skeleton files from Mike. I changed the code a little bit to
+generate the most important dependencies even when using Linux's RHIDE.
+
 Revision 2.78  2002/05/20 15:08:43  set
 * Modified: Now the Linux code is in a separated driver. The old code is
 now the UNIX driver.
