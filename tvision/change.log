@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.353  2002/11/05 14:49:33  set
+* Added: [WWW] a link to Sigala's documentation and a comment about the
+documentation for the new classes.
+
 Revision 2.352  2002/11/05 13:27:36  set
 * Modified: [Win32] [WinGr driver] Console release in constructor. Patch by
 Pawel Piecuch <pawelp@piecyk.allegro.pl>.
