@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.609  2005/01/17 15:05:49  set
+* Fixed: Compilation problems when using MSS and gcc 3.4.1. Patch by
+Michael Vzoroff.
+.
 Revision 2.608  2005/01/11 18:49:54  set
 * Fixed: [MinGW] The snprintf implementation is broken. That's obvious
 because MinGW uses M$ runtime. Now MinGW target uses the replacement.

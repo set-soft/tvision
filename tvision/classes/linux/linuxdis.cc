@@ -31,7 +31,7 @@ colors and restore them.
 #ifdef TVOSf_Linux
 
 #include <termios.h>
-#include <term.h>
+//#include <term.h> Not needed anymore
 #include <sys/ioctl.h>
 // GIO_CMAP ioctl
 #include <linux/kd.h>
