@@ -1,5 +1,9 @@
 $Log$
-Revision 1.100  1999/09/08 02:09:39  root
+Revision 1.101  1999/09/09 02:25:16  root
+* Added: More details to the configure mechanism, including CFLAGS setting,
+a script to set my default values, corrections in the readme.txt, etc.
+
+Revision 1.100  1999/09/08 02:09:39  root (set)
 * Added: A config header (configtv.h), configuration for the makefiles and
 RHIDE projects, unified the intl.h headers and made conditional using a
 configuration variable and other configuration enhancements.
