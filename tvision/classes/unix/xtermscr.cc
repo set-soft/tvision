@@ -7,6 +7,7 @@
   Configuration variables:
   ScreenWidth
   ScreenHeight
+  ScreenPalette
   FontWidth
   FontHeight
   AppCP
@@ -50,6 +51,7 @@ int            TScreenXTerm::palette;
 int            TScreenXTerm::oldCol=-1,
                TScreenXTerm::oldBack=-1,
                TScreenXTerm::oldFore=-1;
+TScreenColor TDisplay::UserStartPalette[16];
 
 #define force_redraw 0
 
@@ -186,6 +188,8 @@ TScreenXTerm::TScreenXTerm()
     TDisplay::setDisPaletteColors=SetDisPaletteColorsEt;
     ResetPaletteColors=ResetPaletteColorsEt;
     setCrtModeRes=SetCrtModeEt;
+    if (parseUserPalette())
+       setPaletteColors(0,16,UserStartPalette);
    }
  else
    {// 16+16 colors
@@ -195,7 +199,10 @@ TScreenXTerm::TScreenXTerm()
     TDisplay::setDisPaletteColors=SetDisPaletteColorsXT;
     ResetPaletteColors=ResetPaletteColorsXT;
     // XTerm colors are ugly, change them.
-    SetDisPaletteColorsXT(0,16,ActualPalette);
+    if (parseUserPalette())
+       setPaletteColors(0,16,UserStartPalette);
+    else
+       SetDisPaletteColorsXT(0,16,ActualPalette);
     setCrtModeRes=SetCrtModeXT;
    }
  // This is what GNU/Debian Woody uses by default

@@ -149,7 +149,7 @@ char *TVConfigFile::GetString()
  if (*s!='"')
     return 0;
  s++;
- char *ret=new char[len], *ori, *dest;
+ char *ret=new char[len+1], *ori, *dest;
  for (ori=start, dest=ret; *ori; ori++, dest++)
      if (*ori=='\\')
        {
@@ -720,6 +720,19 @@ char *TVMainConfigFile::Search(const char *key)
  AllocLocalStr(b,strlen(key)+4);
  strcpy(b,"TV/");
  strcat(b,key);
+ long n; char *v;
+ config->Search(b,v,n);
+ return v;
+}
+
+char *TVMainConfigFile::Search(const char *section, const char *variable)
+{
+ if (!config || !section || !variable) return False;
+ AllocLocalStr(b,strlen(section)+strlen(variable)+5);
+ strcpy(b,"TV/");
+ strcat(b,section);
+ strcat(b,"/");
+ strcat(b,variable);
  long n; char *v;
  config->Search(b,v,n);
  return v;
