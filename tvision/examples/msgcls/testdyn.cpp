@@ -5,6 +5,7 @@
 //    Test program for dynamic text
 //
 
+#define Uses_unistd
 #define Uses_MsgBox
 #define Uses_TEvent
 #define Uses_TApplication
@@ -23,8 +24,6 @@
 #include <tv.h>
 #ifdef TVCompf_djgpp
 #include <dos.h>
-#else
-#include <unistd.h>
 #endif
 const int cmAbout = 100;
 const int cmTest  = 101;

@@ -8,11 +8,11 @@
 // Added: Code page remap, busy state feedback and window title.
 // By Salvador E. Tropea (SET)
 //
-#include <stdio.h>
+#define Uses_stdio
 #define Uses_string
-#include <stdlib.h>
-#include <ctype.h>
-#include <unistd.h>
+#define Uses_stdlib
+#define Uses_ctype
+#define Uses_unistd
 
 #define Uses_TBackground
 #define Uses_TListBox

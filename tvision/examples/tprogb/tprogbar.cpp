@@ -1,6 +1,6 @@
-#include <stdlib.h>
-#include <ctype.h>
-#include <unistd.h>
+#define Uses_stdlib
+#define Uses_ctype
+#define Uses_unistd
 
 #define Uses_string
 #define Uses_TStaticText
@@ -19,6 +19,7 @@
 #define Uses_TEvent
 #define Uses_TKeys
 #define Uses_TDrawBuffer
+#define Uses_TStreamableClass
 
 #include <tv.h>
 __link( RView )

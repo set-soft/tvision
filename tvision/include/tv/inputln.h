@@ -50,6 +50,8 @@ public:
     virtual Boolean insertChar(char value); // Added by SET
     // This is for compatibility with the Unicode branch
     const void *getData() { return data; }; // Added by SET
+    void setDataFromStr(void *value) // Added by SET
+      { setData(value); };
 
     char* data;
     int maxLen;

@@ -1,0 +1,10 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea.
+# Covered by the GPL license.
+#
+!include ../common.bmk
+all: demo.exe
+!include ../../makes/common.bmk
+!include demo.umk
+

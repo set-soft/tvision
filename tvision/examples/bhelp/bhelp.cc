@@ -52,7 +52,7 @@ TBorlandHelpTopic::TBorlandHelpTopic(fpstream & s, char *comp)
 
   s >> type;
   s >> datalength;
-  unsigned char *data = new(unsigned char)[datalength];
+  unsigned char *data = new unsigned char[datalength];
   char *text = new char[datalength * 9];
   char *curtext = text;
 
@@ -168,7 +168,7 @@ TBorlandHelpIndex::TBorlandHelpIndex(fpstream & s):THelpIndex()
   unsigned char *buffer;
 
   s >> length;
-  buffer = new(unsigned char)[length];
+  buffer = new unsigned char[length];
 
   s.readBytes(buffer, length);
   size = *((unsigned short *) buffer);
@@ -202,7 +202,7 @@ TBorlandHelpFile::TBorlandHelpFile(fpstream & s):THelpFile(s)
   char *Stamp;
   char FormatVersion;
 
-  modified=false;
+  modified=False;
   stream->seekg(0);
   Stamp = read0String(*stream);
   stream->seekg(14, CLY_IOSCur);
@@ -252,7 +252,7 @@ TBorlandHelpFile::TBorlandHelpFile(fpstream & s):THelpFile(s)
         char temp[41];
         *temp = 0;
         glossaryItems = *((ushort *) buffer);
-        glossary = new (char *) [glossaryItems];
+        glossary = new char *[glossaryItems];
         char *g = (char *) buffer + 2;
         for (int i = 0; i < glossaryItems; i++)
         {

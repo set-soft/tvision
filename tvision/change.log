@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.469  2003/06/02 14:52:38  set
+* Added: Even more checks to imk processor.
+
 Revision 2.468  2003/06/02 14:51:19  set
 * Fixed: The compat.gpr project have relative dependencies that confused
 genimk.cc.

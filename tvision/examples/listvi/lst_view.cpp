@@ -6,9 +6,10 @@
 //  C.Porter
 //  Fixed: widths and positions of elements by Salvador E. Tropea
 // ***********************************************************************
-#include <stdlib.h>
-#include <stdio.h>
+#define Uses_stdlib
+#define Uses_stdio
 #define Uses_string
+#define Uses_AllocLocal
 #define Uses_TListViewer
 #define Uses_TListBox
 #define Uses_TEvent
@@ -109,7 +110,7 @@ TListViewDialog::TListViewDialog(const TRect &trect, char *title,
 // a single mouse click is not cleared by List View Box, Dialog uses it
 // to erase inputline if user clicks off of it .
 void TListViewDialog::handleEvent(TEvent &event) {
-	char b[inputLineLen];
+   AllocLocalStr(b,inputLineLen);
 
 	switch(event.what)
 	{

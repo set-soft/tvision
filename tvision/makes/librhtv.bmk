@@ -1,0 +1,57 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea
+# Covered by the GPL license.
+#
+# This is the Borland C++ makefile for the Turbo Vision library.
+#
+##########################################################################################
+#
+# Beggining of maintained lines
+#
+##########################################################################################
+#
+# Source directories
+#
+SRCD1=..;../classes;../classes/dos;../classes/linux;../classes/qnxrtp
+SRCD2=../classes/unix;../classes/win32;../classes/wingr;../classes/winnt
+SRCD3=../classes/x11;../compat;../stream;../names
+SRCDIRS=$(SRCD1);$(SRCD2);$(SRCD3)
+#
+# Include directories
+#
+INCLUDE_DIR=../include
+CLASSES_DIR=../classes
+EXTRA_SRC_DIR=..
+INCLUDE_DIRS=-I../winnt/include -I$(INCLUDE_DIR)
+
+##########################################################################################
+#
+# Beggining of fixed part
+#
+##########################################################################################
+
+all: blink.exe librhtv.lib
+
+!ifndef MKF_EXT
+MKF_EXT=.bmk
+!endif
+
+#
+# Common rules used by RHIDE.
+# It also includes rhide.env.
+#
+!include common$(MKF_EXT)
+
+#
+# All the RHIDE data should come from here.
+#
+ExIMK=.umk
+!include librhtv$(ExIMK)
+
+#
+# This file pulls all the .imk
+#
+!include includer.bmk
+
+

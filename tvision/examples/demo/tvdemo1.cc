@@ -40,6 +40,7 @@
 #define Uses_THelpWindow
 // Needed to remap the "system" menu character
 #define Uses_TVCodePage
+#define Uses_TStreamableClass
 
 #include <tv.h>
 
@@ -96,7 +97,7 @@ int main(int argc, char **argv, char **envir)
     TScreen::setWindowTitle("Turbo Vision Demo Program");
     demoProgram->run();
 
-    TObject::destroy( demoProgram );
+    TObject::CLY_destroy( demoProgram );
     if( title )
         {
         TScreen::setWindowTitle(title);
