@@ -1,7 +1,5 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* This file is part of RHIDE. */
-#ifdef __linux__
-
+/* Copyright (C) 1998-2000 Salvador Eduardo Tropea */
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TDrawBuffer
@@ -1144,5 +1142,4 @@ void SaveScreenReleaseMemory(void)
 {
  free(user_buffer);
 }
-#endif // __linux__
 

@@ -1,7 +1,5 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* This file is part of RHIDE. */
-#ifdef __linux__
-
+/* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -11,11 +9,8 @@
 #define Uses_TEventQueue
 #define Uses_TScreen
 #include <tv.h>
-#include <linux/keyboard.h>
 
-extern "C" {
-#include <gpm.h>
-}
+//----------------- Common stuff ---------------
 
 //#define DEBUG
 #ifdef DEBUG
@@ -32,6 +27,35 @@ extern char *program_invocation_short_name;
 uchar THWMouse::buttonCount = 0;
 Boolean THWMouse::handlerInstalled = False;
 Boolean THWMouse::noMouse = False;
+
+int use_mouse_handler = 1;
+
+void THWMouse::registerHandler( unsigned , void (*)() )
+{
+}
+
+THWMouse::THWMouse()
+{
+  resume(); // SET: to avoid duplicating code
+}
+
+THWMouse::~THWMouse()
+{
+  suspend();
+}
+
+void THWMouse::setRange( ushort , ushort )
+{
+}
+
+//---------------- GPM version -----------------
+#ifdef HAVE_GPM
+
+#include <linux/keyboard.h>
+
+extern "C" {
+#include <gpm.h>
+}
 
 static int last_x=0,last_y=0,visible=0;
 static unsigned short mouse_char;
@@ -83,10 +107,6 @@ int draw_mouse(int x,int y)
   }
   return 0;
 }   
-
-void THWMouse::registerHandler( unsigned , void (*)() )
-{
-}
 
 static
 int SetUpGPMConnection()
@@ -148,18 +168,6 @@ void THWMouse::resume()
   show();
 }
 
-int use_mouse_handler = 1;
-
-THWMouse::THWMouse()
-{
-  resume(); // SET: to avoid duplicating code
-}
-
-THWMouse::~THWMouse()
-{
-  suspend();
-}
-
 void THWMouse::suspend()
 {
  if (!handlerInstalled)
@@ -200,11 +208,8 @@ void THWMouse::hide()
   visible = 0;
 }
 
-void THWMouse::setRange( ushort , ushort )
-{
-}
-
-inline int range(int test, int min, int max)
+inline
+int range(int test, int min, int max)
 {
 	return test < min ? min : test > max ? max : test;
 }
@@ -281,4 +286,32 @@ void THWMouse::getEvent( MouseEventType &me )
   TEventQueue::curMouse = me;
 }
 
-#endif // __linux__
+#else // HAVE_GPM
+
+// Just some dummies in case we don't have/want mouse
+
+void THWMouse::resume()
+{
+}
+
+void THWMouse::suspend()
+{
+}
+
+void THWMouse::show()
+{
+}
+
+void THWMouse::hide()
+{
+}
+
+void THWMouse::forceEvent(int , int , int )
+{
+}
+
+void THWMouse::getEvent( MouseEventType & )
+{
+}
+
+#endif

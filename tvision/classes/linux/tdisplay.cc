@@ -1,7 +1,5 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* This file is part of RHIDE. */
-#ifdef __linux__
-
+/* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
 #define Uses_TDisplay
 #define Uses_TScreen
 #include <tv.h>
@@ -173,4 +171,4 @@ int TDisplay::SetWindowTitle(const char *)
 {
  return 0;
 }
-#endif // __linux__
+
