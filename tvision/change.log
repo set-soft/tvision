@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.405  2003/04/03 20:08:26  set
+* Modified: The following patch enforces the use of the return value of
+gettext (intl library) as a const char *.
+
 Revision 2.404  2003/04/02 13:35:49  set
 * Fixed: [MinGW] The configuration script shown the error messages created
 when running non-existent programs appear in the screen generating

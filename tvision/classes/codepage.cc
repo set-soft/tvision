@@ -1867,6 +1867,23 @@ void TVCodePage::RemapBufferGeneric(int sourID, int destID, uchar *buffer, unsig
 /**[txh]********************************************************************
 
   Description:
+  Used to create a table to translate from sourID to destID. The provided
+buffer should have at least 256 characters.
+
+***************************************************************************/
+
+void TVCodePage::FillGenericRemap(int sourID, int destID, uchar *buffer,
+                                  unsigned ops)
+{
+ int i;
+ for (i=0; i<256; i++)
+     buffer[i]=i;
+ RemapBufferGeneric(sourID,destID,buffer,256,ops);
+}
+
+/**[txh]********************************************************************
+
+  Description:
   Protected member used internally to remap all the TV stuff that isn't
 ASCII.
 
