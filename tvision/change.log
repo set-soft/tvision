@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.587  2004/10/13 15:53:46  set
+* Added: [MSVC] First attempt to add MSVC to the "unified" compilation
+mechanism.
+
 Revision 2.586  2004/10/12 20:28:31  set
 * Added: [Install] Support for Solaris' native install tool. That's a
 really bad implementation installer.

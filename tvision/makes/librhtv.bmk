@@ -31,10 +31,12 @@ INCLUDE_DIRS=-I../winnt/include -I$(INCLUDE_DIR)
 #
 ##########################################################################################
 
+!ifndef MKF_EXT
 all: blink.exe librhtv.lib
 
-!ifndef MKF_EXT
 MKF_EXT=.bmk
+!else
+all: librhtv.lib
 !endif
 
 #
