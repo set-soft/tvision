@@ -76,15 +76,17 @@ void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal,
 {
  int ngroups,val;
  gid_t *groups;
+ uid_t user;
 
  mode->mode =statVal->st_mode;
  mode->user =statVal->st_uid;
  mode->group=statVal->st_gid;
 
  // Compute the write mask:
+ user=getuid();
 
- // Is our file?
- if (mode->user==getuid())
+ // Is our file? (or we are the superuser)
+ if (user==0 || mode->user==user)
    {
     mode->writemask=S_IWUSR;
     return;
