@@ -3,7 +3,7 @@ Hi!
 Introduction:
 ------------
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.0.
+  That's the Turbo Vision distribution (TVision for short) v1.0.1.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -23,8 +23,8 @@ license and the file copying.rh contains the RHIDE copyright.
 use it. I'm doing the distribution because Robert doesn't have enough time
 to do it.
 
-  Most of the notes aplies only to the source distribution but the are a lot
-of important information for the binary too.
+  Most of the notes aplies only to the source distribution but there are a
+lot of important information for the binary too.
 
 
 
@@ -33,10 +33,9 @@ Notes about the package:
 -----------------------
 
   As you are reading it you already unpacked it but here are some notes:
-  The DOS files are mostly in UNIX format, only some special files are in DOS
-format. The files in DOS format are listed in lista.dos, the rest are binary
-or UNIX files. If you are wondering why the answer is very simple: It saves
-disk space and the djgpp tools handles these files very well.
+  The files that must be in DOS format are listed in lista.dos, the rest are
+binary or can be UNIX files because djgpp tools handles these UNIX files very
+well.
   If you take a look at the tree you'll see I included both, the DOS and
 Linux, makefiles and .gpr files. That's because the source distribution is
 basically the same for DOS and Linux. If you have the Linux distribution and
@@ -70,7 +69,7 @@ $(TVISION)/djgpp is the library path.
 -fno-exceptions, -fno-rtti and -funsigned-char so you should use these
 settings. If you don't like these settings change it before compiling or
 rebuild the library with your favorite settings.
-  In Linux I use gcc 2.7.2.3 and hence -fno-execptions isn't needed and is
+  In Linux I use gcc 2.7.2.3 and hence -fno-exceptions isn't needed and is
 rejected by gcc too. So if you compile the library for Linux using 2.8.x you
 could want to change it.
   The library is compiled with -O2 as optimization, that's good enough for
@@ -80,6 +79,17 @@ it works very well and isn't much greater than -g. If you want to delete
 the debug information you can do it running the sacadeb batch or script. It
 will rename the original library to libtvdb.a and create a new one without
 debug information.
+
+
+
+
+How to submit a patch:
+---------------------
+
+  The simplest way is running a diff between your current directory and a
+copy of the library as you downloaded it. Don't forget to specify the exact
+version of the distribution and the purpose of the patchs. Use the unified
+mode (-u), this mode is the best for humans ;-)
 
 
 
