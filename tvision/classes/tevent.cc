@@ -165,6 +165,36 @@ void TEventQueue::getMouseState(	TEvent &	ev	)
 		  ev.mouse.buttons ^= 3;
 }
 
+#ifdef TVCompf_djgpp
+#include <tv/dos/mouse.h>
+
+void TEventQueue::mouseInt()
+{
+ int buttonPress;
+
+ if (THWMouseDOS::getRMCB_InfoDraw(buttonPress))
+    mouseIntFlag=True;
+ if (buttonPress && eventCount<eventQSize)
+   {
+    eventQTail->what =CLY_Ticks();
+    eventQTail->mouse=curMouse;
+    if (++eventQTail>=eventQueue+eventQSize)
+       eventQTail=eventQueue;
+    eventCount++;
+   }
+
+ curMouse=THWMouseDOS::intEvent;
+}
+
+#else
+
+void TEventQueue::mouseInt()
+{
+}
+
+#endif
+
+
 void TEvent::getKeyEvent()
 {
  if (TGKey::kbhit())
