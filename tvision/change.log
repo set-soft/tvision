@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.212  2002/07/05 13:08:46  set
+* Fixed: GetCodePage, currently it have some complexity that may be is
+better to remove.
+* Modified: TDesktop to remap background character after a code page
+change. Not sure if that's the best.
+* Added: [DOS] partial font support. I copied the code I had in TFont and
+adapted it. More things must be adjusted, TFont removed and add some font
+restore at exit/suspend. The example works.
+
 Revision 2.211  2002/07/04 20:09:59  set
 * Modified: [BC++/MSVC] these compilers doesn't use the configuration
 mechanism instead a custom configtv.h is used. I unified it for both
