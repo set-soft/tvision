@@ -10,6 +10,10 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
 
 #define Uses_TFileInputLine
 #define Uses_TEvent
@@ -19,10 +23,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TFileDialog
 #define Uses_TPalette
 #include <tv.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
 
 #define cpInfoPane "\x1E"
 

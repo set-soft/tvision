@@ -10,6 +10,8 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <string.h>
+#include <stdio.h>
 
 #define Uses_TFileDialog
 #define Uses_MsgBox
@@ -28,9 +30,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv.h>
 
 #include <errno.h>
-#include <stdio.h>
 #include <ctype.h>
-#include <string.h>
 
 // File dialog flags
 const int

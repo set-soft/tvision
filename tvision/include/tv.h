@@ -74,6 +74,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_TFindDialogRec )
 #define __INC_FINDREPL_H
+#define __INC_STRING_H
 #endif
 
 #if defined( Uses_TIndicator )
@@ -204,6 +205,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TView
 #define Uses_TSearchRec
 #define __INC_STDDLG_H
+#define __INC_TIME_H
 #endif
 
 #if defined( Uses_TFileList )
@@ -231,6 +233,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_TSearchRec )
 #define __INC_STDDLG_H
+#define __INC_TIME_H
 #endif
 
 #if defined( Uses_THistory )
@@ -527,6 +530,10 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #include <tvconfig.h>
 #include <ttypes.h>
+
+#if defined( __INC_STRING_H )
+#include <string.h>
+#endif
 
 #if defined( __INC_TIME_H )
 #include <time.h>

@@ -10,6 +10,7 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <string.h>
 
 #define Uses_TFileInputLine
 #define Uses_TEvent
@@ -17,7 +18,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TFileDialog
 #include <tv.h>
 
-#include <string.h>
 #ifdef __DJGPP__
 #include <dir.h>
 #endif

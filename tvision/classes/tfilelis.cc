@@ -10,6 +10,8 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+#include <string.h>
+#include <stdio.h>
 
 #define Uses_MsgBox
 #define Uses_TFileList
@@ -25,8 +27,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #ifdef __DJGPP__
 #include <dir.h>
 #endif
-#include <string.h>
-#include <stdio.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <fnmatch.h>

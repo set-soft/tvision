@@ -10,16 +10,17 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
-
-#define Uses_TFileCollection
-#define Uses_TSearchRec
-#include <tv.h>
-
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
 #include <string.h>
 #ifdef __DJGPP__
 #include <dos.h>
 #endif
 #include <stdio.h>
+
+#define Uses_TFileCollection
+#define Uses_TSearchRec
+#include <tv.h>
 
 inline const char *getName( void *k )
 {

@@ -14,12 +14,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TSearchRec ) && !defined( __TSearchRec )
 #define __TSearchRec
 
-// SET: time.h defines NULL unconditionally in djgpp
-#if defined(__DJGPP__) && defined(NULL)
-#undef NULL
-#endif
-#include <time.h>
-
 struct TSearchRec
 {
     uchar attr;
