@@ -163,6 +163,8 @@ protected:
  static uchar shapeFont10x20[];
  static uchar shapeFont8x16[];
  static uchar primaryFontChanged;
+ // Should we hide the cursor when we lose the focus?
+ static char  hideCursorWhenNoFocus;
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

@@ -58,6 +58,9 @@ int THWMouseX11::getMouseEvent()
       {
        mouseX=event.xbutton.x/TScreenX11::fontW;
        mouseY=event.xbutton.y/TScreenX11::fontH;
+       // Clamp the values, they could be negative
+       if (event.xbutton.x<0) mouseX=0;
+       if (event.xbutton.y<0) mouseY=0;
        if (event.type==ButtonPress)
           mouseButtons|=buttonTranslate[event.xbutton.button & 0x7];
        else

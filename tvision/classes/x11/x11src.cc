@@ -20,6 +20,7 @@
    AppCP
    ScrCP
    InpCP
+   HideCursorWhenNoFocus
 
 */
 
@@ -107,6 +108,7 @@ uchar     TScreenX11::primaryFontChanged=0;
 char     *TScreenX11::cursorData=NULL;
 volatile
 char      TScreenX11::cursorChange=0;
+char      TScreenX11::hideCursorWhenNoFocus=1;
 XSizeHints *TScreenX11::sizeHints=NULL;
 XClassHint *TScreenX11::classHint=NULL;
 
@@ -830,6 +832,10 @@ TScreenX11::TScreenX11()
  fontWb=(defaultFont->w+7)/8;
  uchar *fontData=defaultFont->data;
 
+ aux=1;
+ if (optSearch("HideCursorWhenNoFocus",aux))
+    hideCursorWhenNoFocus=aux;
+
  TDisplayX11::Init();
 
  TScreen::clearScreen=clearScreen;
@@ -896,10 +902,13 @@ TScreenX11::TScreenX11()
  classHint->res_name="tvapp";   /* Take resources for tvapp */
  classHint->res_class="XTVApp"; /* X Turbo Vision Application */
 
- sizeHints->flags=PResizeInc /* These are useless: |PBaseSize|PMinSize */;
+ /* Size hints are just hints, not all WM take care about them */
+ sizeHints->flags=PResizeInc | PMinSize /* PBaseSize */;
  /* Fonts increments */
  sizeHints->width_inc =fontW;
  sizeHints->height_inc=fontH;
+ sizeHints->min_width =fontW*40;
+ sizeHints->min_height=fontH*20;
 
  XSetWMProperties(disp,mainWin,
                   NULL,       /* Visible title, i.e. &name */
@@ -1260,17 +1269,21 @@ void TScreenX11::ProcessGenericEvents()
             //printf("Focus in\n");
             if (xic)
                XSetICFocus(xic);
+            EnableCursor();
             break;
 
        case FocusOut:
             //printf("Focus out\n");
             if (xic)
                XUnsetICFocus(xic);
+            if (hideCursorWhenNoFocus)
+               DisableCursor();
             break;
 
        case ConfigureNotify:
+            /* Currently masked
             if (event.xresizerequest.window!=mainWin)
-               break;
+               break;*/
     
             lastW=maxX;
             lastH=maxY;
