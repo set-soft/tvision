@@ -14,6 +14,9 @@
 //
 //========================================================================
 
+// To avoid pulling TScreen and signal.h for anything but UNIX
+#include <tv/configtv.h>
+
 #define Uses_string
 
 #define Uses_TApplication
@@ -32,8 +35,8 @@
 #define Uses_TStatusLine
 
 #ifdef TVOS_UNIX
-#define Uses_TScreen
-#define Uses_signal
+ #define Uses_TScreen
+ #define Uses_signal
 #endif
 
 #include <tv.h>
