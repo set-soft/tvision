@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.473  2003/06/05 19:44:25  set
+* Fixed: gcc 3.3 compilation problems. Patch from Andris. It solves:
+1) Order of base class constructor calls in initialization.
+2) gcc no longer supports char as index for arrays.
+
 Revision 2.472  2003/06/05 19:33:26  set
 * Modified: [Win32] Graphic driver to support environment where IDC_ARROW,
 IDC_HAND and/or IDC_SIZENWSE aren't defined.
