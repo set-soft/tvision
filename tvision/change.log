@@ -1,4 +1,9 @@
 $Log$
+Revision 2.6  2001/11/25 00:04:03  set
+* Changed classes/tdisplay.cc, classes/tscreen.cc and classes/thwmouse.cc
+by the new class structure. This is a complete rework of the classes but
+maintaining backward compatibility.
+
 Revision 2.5  2001/11/24 23:56:50  set
 * Moved gkey.cc, classes/tdisplay.cc, classes/thwmouse.cc and
 classes/tscreen.cc to the DOS driver because they have the DOS code. They
