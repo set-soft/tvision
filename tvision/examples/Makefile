@@ -18,9 +18,12 @@ examples=demo/demo desklogo/desklogo desklogo/set-logo \
 	tutorial/tvguid14 tutorial/tvguid15 tutorial/tvguid16 \
 	tvedit/tvedit tvhc/tvhc clipboard/test fonts/test \
 	helpdemo/helpdemo fonts/genraw videomode/test \
-	cyrillic/linuxkoi8/test cyrillic/x11koi8/test
+	cyrillic/linuxkoi8/test cyrillic/x11koi8/test \
+	bhelp/thelp
 
 all: $(addsuffix .exe,$(examples))
+
+bhelp/thelp.exe: bhelp/thelp.gpr
 
 clipboard/test.exe: clipboard/test.gpr
 
