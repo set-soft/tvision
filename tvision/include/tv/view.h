@@ -152,6 +152,11 @@ public:
 
     virtual void shutDown();
 
+    // SET: These are shared by various TView members.
+    // I moved it to a class because I think is better to enclose them.
+    static uchar specialChars[];
+    static uchar o_specialChars[];
+
 private:
 
     void moveGrow( TPoint p,

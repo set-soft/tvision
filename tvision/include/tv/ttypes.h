@@ -21,7 +21,4 @@ typedef void (*ccAppFunc)( void *, void * );
 
 const int ccNotFound = -1;
 
-extern uchar specialChars[];
-extern uchar o_specialChars[];
-
 #endif	// __TTYPES_H
