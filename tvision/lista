@@ -231,6 +231,7 @@ doc/CodePages.txt
 doc/DOS.txt
 doc/Eterm.txt
 doc/html.frt
+doc/I18n.txt
 -doc/libdocs.epr
 doc/Linux.txt
 doc/QNX.txt

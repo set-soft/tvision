@@ -1,0 +1,251 @@
+Topic: Internationalization messages
+Author: Salvador E. Tropea
+Status: Not complete
+Revision: $Revision$
+
+  This document covers the use of TV facilities to translate messages. I call
+it "internationalization for messages" and you'll find it as i18n in many
+places of this docs and the library.
+  The library uses the gettext approach and you should reffer to GNU gettext
+implementation for more information. For GNUished systems try:
+
+$ infview gettext
+or
+$ info gettext
+
+to get information about GNU gettext or try searching "GNU gettext
+Introduction utilities" in Google.
+  From here I'll assume you know what gettext is and have some basic notions
+about how to use it. I'll explain some stuff here anyways, but only to
+refresh the concepts.
+
+Note: I used relative paths in all the references to files so you can load the
+named file just pressing Alt+Enter if you are using SETEdit.
+
+1. HOW IT WORKS
+1.1 FOR THE PROGRAMMER
+1.2 FOR THE PROGRAM
+1.3 INTERNALLY
+1.4 MORE TVINTL MEMBERS AVAILABLE
+
+1. HOW IT WORKS
+
+1.1 FOR THE PROGRAMMER
+
+  Here are the steps from the programmers point of view:
+
+1) You mark all the strings that will be translated in your code. We use
+_(...) for strings that will be translated "in-situ" (it will call gettext)
+and __(...) for strings that will be translated elsewhere (expands to
+nothing, just marks the string).
+
+2) You call xgettext (to remmember it: eXtract for GETTEXT) indicating which
+is the delimiter and which files should be scanned. It can be done from a
+makefile or manually. The ../searchstrs.sh is an example, it parses a file
+that contains the list of files distributed in TV package and extracts all
+the C++ files, the list is passed to xgettext and it generates a file called
+dummy.po. For a more automatic mechanism look in setedit package
+(http://setedit.sf.net/). I use a makefile there.
+
+ 3) The translators creates translation files from the extracted messages.
+Examples of these files are: ../intl/es.po and ../intl/ru.po. Note these
+files *must* contain a header indicating the encoding because gettext assumes
+all is UTF-8 unless other thing is indicated.
+4) You create the binary files containing the translations. They end with .mo
+and are created using msgfmt (MeSsaGes ForMaT). This file is a hash
+containing the untranslated messages as keys (msgids) associated with the
+translated messages (msdstrs). They are usually created using a Makefile like
+it: ../intl/Makefile.
+
+5) The user installs them when all binaries are installed.
+
+
+1.2 FOR THE PROGRAM
+
+  Now from the point of view of the code.
+
+1) We already marked the strings to translate. _(...) marks will be expanded
+to calls to TVIntl::getText(...) and you'll get the translated message there.
+The __(...) entries will be expanded to the string and you'll have to ensure
+the TVIntl::getText(), or equivalent member, is called.
+2) If you don't enable the translation at start-up, usually from main and
+before creating the TApplication object, it won't be enabled and the routines
+won't translate anything. So you have to put something like:
+
+  TVIntl::textDomain("mi_program");
+
+at the beggining of main. You should know what is "textdomain" from the
+gettext docs ;-). That's the name of the .mo files, that's usually the name
+of the program. I reffer to the file containing the translations as the
+"catalog" and the name without the extension as "domain". So what you pass
+here is the name of your domain and with it gettext will search in:
+
+BASE_DIR/LANGUAGE/LC_MESSAGES/domain.mo
+
+  The "language" is selected with the LANG environment variable and the
+BASE_DIR is system dependent. You can force BASE_DIR using:
+
+  TVIntl::bindTextDomain("mi_program","base_dir");
+  TVIntl::textDomain("mi_program");
+
+  Or just:
+
+  TVIntl::autoInit("mi_program","base_dir");
+
+  If for some reason you must force the language just use putenv() like in
+../examples/i18n/test.cc
+  So this line of code is the only thing needed to enable translations.
+
+
+1.3 INTERNALLY
+
+  Ok, here I'll explain some internal details.
+
+1) If the configure script doesn't detect gettext it will be enabled and a
+library providing dummies will be created to satisfy the undefined
+references. If that's your case the configure script will put a huge warning
+explaining you must link with the dummies.
+  If you want to completly disable it use the --no-intl configuration option.
+
+2) The _(string) will be expanded to TVIntl::getText(string) unless --no-intl
+was used, in the last case it will be just string.
+   This will be call the lintintl's gettext function, but if gettext can't
+find a translation in the current domain (the one for your application) the
+function will also try a search in the tvision domain. For this reason you
+don't need to include translations for the TV strings in your catalogs. This
+is a little bit slower but makes life easier.
+
+3) Currently most TV classes translates their messages. For this reason
+you'll usually just need to use __() and not _(). Some classes also accepts
+"caches" as arguments, more about them in 4.
+
+4) Even when most programs can live with it a big problem appears for TV
+applications: the code page. TV applications supports over than 40 code pages
+and they can be changed on-the-fly, they can also be changed so the
+application and screen code pages doesn't match (see doc/CodePages.txt ). To
+add more complexity the code pages doesn't really match the ones covered by
+recode and iconv library. Another detail makes things even worst: iconv is
+useless for DOS applications where dynamic libraries aren't used and it adds
+about 800 KB to each executable. For these reasons, and others, TV uses their
+own code page translation system.
+  This small detail complicates things a little bit. The problem is that we
+must recode strings returned by gettext, but they are "const char *" (even
+when the prototype doesn't make it explicit). The GNU gettext library solves
+it internally using a "centralized cache". I don't like this approach because
+it can waste space and is really bad for efficience. So I designed a
+"distributed cache" approach.
+  When you have a string that will be translated often you have to create a
+cache for it. To do it just declare a "stTVIntl *" variable and initialize it
+to NULL indicating the cache is free (failing to do it will SIGSEGV). At the
+point you have to translate it use "TVIntl::getText(msgid,cache)", it will
+return the associated msgstr. When you don't need the cache anymore just use
+TVIntl::freeSt(cache).
+  Here is where to put each thing in a TView class:
+
+class XXXX : public TView
+{
+....
+protected:
+ stTVIntl *cache;
+};
+
+// Constructor
+XXXX::XXXX() : TView(....)
+{
+ cache=NULL;
+}
+
+// Point where you need the string
+void XXXX:draw()
+{
+ const char *msgstr=TVIntl::getText(__("The string"),cache);
+ ....
+}
+
+// Destructor
+XXXX::~XXXX()
+{
+ TVIntl::freeSt(cache);
+}
+
+  Here is more about what it does: When you call getText it checks if the
+cache is already in use or not. If the cache is in use the string will be
+extracted from the cache and gettext won't be called. If the cache isn't in
+use the library will fill it using gettext. If the cache is in use but the
+last search returned that this string doesn't have translation it will return
+the untranslated message. If the i18n system is disabled it will ever return
+the de untranslated message.
+  The cache also holds which code page was used to recode the string, if this
+changes the string is discarded and a fresh one is used memorizing the new
+code page.
+  Note the chache knows nothing about the domain from where the string came
+from, so avoid changing domains on the fly, it won't work well.
+  In this way the cache lives as long as you need it and not for the live of
+all the program. Also note that a program that changes between code pages
+back and forth doesn't have to invalidate all the cached strings.
+  When you need the string for a small time or just doesn't want to cache it
+you should use:
+
+  char *msgstr=TVIntl::getTextNew(__("The string"));
+  // Use it
+  DeleteArray(msgstr); // Release it
+
+  This will return a newly allocated buffer (you can even modify it if you
+like) and this buffer will be in encoded in the "application" code page.
+   Note that if you use:
+
+   const char *msgstr=_("The string");
+
+   or
+
+   const char *msgstr=TVIntl::getText(__("The string"));
+
+  You'll get an string encoded in the catalog code page, no matters what's
+the application and screen code page. So you can't be sure it will look ok.
+
+5) More about code pages: as TV can recode, and in fact recodes if you use
+the above mentioned members, the best thing is to keep the catalogs in a
+fixed encoding for a given language. For this reason TV assumes you encoded
+the catalog using a fixed code page. Currently TV assumes it for german (de),
+russian (ru) and spanish (es):
+
+DE: ISO 8859-1
+ES: ISO 8859-1
+RU: KOI8-R
+
+  This is because I have catalogs only for those languages (german is very
+incomplete). So you have to encode the .po files using those convetions for
+all the OSs used. TV will do the rest of the work.
+  My test bed is SETEdit, in the past I had spanish catalogs encoded in CP850
+for DOS and ISO 8859-1 for Linux avoiding iconv. Now I have the catalog in
+ISO 8859-1 and it works for all systems.
+
+
+1.4 MORE TVINTL MEMBERS AVAILABLE
+
+  Here are the rest of members that TVIntl offers:
+
+void setCatalogEncoding(int cp)
+Use it to force the code page used for a catalog.
+
+void enableTranslations()
+void disableTranslations()
+You can use it to stop/start translating messages.
+
+stTVIntl *emptySt()
+Returns an empty cache, it will be filled as soon as passed to getText.
+
+stTVIntl *dontTranslateSt()
+Creates a special cache that prevents from even trying to translate the
+message when passed to getText. Use it when you have to pass a string that's
+already translated and the class accepts a cache.
+
+int snprintf(char *dest, size_t sz, const char *fmt, ...)
+Like the standard snprintf but it translates the "fmt" string. Please use it
+and also CLY_snprintf to avoid buffer overflows.
+
+int fprintf(FILE *f, const char *fmt, ...);
+Must be requested defining "Uses_intl_fprintf".
+Is just like fprintf but it translates fmt before using it.
+
+
