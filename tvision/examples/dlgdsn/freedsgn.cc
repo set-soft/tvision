@@ -123,7 +123,7 @@ void TFreeDsgnApp::handleEvent(TEvent& event)
 
   if (( event.what == evCommand ) && ( event.message.command == cmQuit ))
   {
-     if ( messageBox( _("Are you sure?"),
+     if ( messageBox( __("Are you sure?"),
          mfConfirmation | mfYesButton | mfCancelButton ) != cmYes )
          clearEvent(event);
   }
@@ -343,7 +343,7 @@ TStatusLine * TFreeDsgnApp::initStatusLine( TRect r )
 
 void TFreeDsgnApp::outOfMemory()
 {
-  messageBox( _("Not enough memory for this operation."), mfError | mfOKButton );
+  messageBox( __("Not enough memory for this operation."), mfError | mfOKButton );
 }
 
 
