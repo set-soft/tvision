@@ -1,4 +1,14 @@
 $Log$
+Revision 1.43  1999/05/10 22:44:32  set
+*** NEW *** Thanks to the effort by Dim Zegebart <zager@post.comstar.ru>
+(who had patient to test my patches in this platform and send me the errors
+reported by gcc and trace backs from the crashes) we managed to get the first
+TV programs running in Alpha/Linux.
+* Changed: Now the TScreen::screenBuffer member is an (ushort *) instead of
+a long. I did it because the code for screen used a lot of casts and have
+some errors casting this value to (int) which works in i386 but generated a
+SIGSEGV under Alpha ;-).
+.
 Revision 1.42  1999/05/08 01:49:00  set
 * Changed: The initialization for TEventQueue::eventQueue. Looks like egcs
 2.91.66 doesn't like partially initialized structures and what is worst likes

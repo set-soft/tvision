@@ -82,10 +82,10 @@ void TSortedListBox::handleEvent(TEvent& event)
                 {
                 if( searchPos == USHRT_MAX )
                     return;
-                searchPos--;
+                // SET: 1) Avoid accessing curString[USHRT_MAX], 2) Do in the right order
+                curString[searchPos--] = EOS;
                 if( searchPos == USHRT_MAX )
                     shiftState = shiftKeys;
-                curString[searchPos] = EOS;
                 }
             else if( (event.keyDown.charScan.charCode == '.') )
                 {
