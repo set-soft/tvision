@@ -175,6 +175,16 @@ typedef unsigned long  ulong;
 #undef CLY_HiddenDifferent
 #undef CLY_DummyTStreamRW
 #undef CLY_Have_snprintf
+#undef CLY_destroy
+#undef CLY_DONT_DEFINE_MIN_MAX
+
+/* Most targets doesn't define destroy, but BC++ 5.6 defines
+   _stl::destroy and looks like it collides with any destroy not defined
+   inside another namespace. For this reason portable code should use
+   CLY_destroy and not destroy. To allow compiling old applications using
+   "clean" targets CLY_destroy is defined as destroy (then undefined for
+   BC++ 5.6) */
+#define CLY_destroy destroy
 
 /* Assume it as default */
 #define CLY_Have_snprintf 1
@@ -282,11 +292,11 @@ typedef unsigned long  ulong;
   #define CLY_filebuf       std::filebuf
   #if __GNUC_MINOR__<1
    #define CLY_int_filebuf   CLY_filebuf
-   #define CLY_NewFBFromFD(f) new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
+   #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
   #else
    #undef  CLY_DefineSpecialFileBuf
    #define CLY_DefineSpecialFileBuf 1
-   #define CLY_NewFBFromFD(f) new CLY_int_filebuf(f,ios::in|ios::out|ios::binary)
+   #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(f,ios::in|ios::out|ios::binary)
   #endif
   #define CLY_streambuf      std::streambuf
   #define CLY_ISOCpp98 1
@@ -334,7 +344,7 @@ typedef unsigned long  ulong;
   #define CLY_StreamOffT     streamoff
   #define CLY_IOSSeekDir     ios::seek_dir
   #define CLY_FBOpenProtDef  filebuf::openprot
-  #define CLY_NewFBFromFD(f) new filebuf(f)
+  #define CLY_NewFBFromFD(buf,f) buf=new filebuf(f)
   #define CLY_PubSetBuf(a,b) setbuf(a,b)
   #define CLY_HaveFBAttach   1
   #define CLY_FBOpen(a,b,c)  open(a,b,c)
@@ -954,15 +964,27 @@ typedef unsigned long  ulong;
   #define Uses_CLY_IfStreamGetLine 1
  #endif
 
- #define CLY_filebuf        filebuf
+ #if __BORLANDC__>0x550
+  // BC++ 5.6 (Builder 6)
+  #define CLY_ISOCpp98 1
+  #define CLY_DONT_DEFINE_MIN_MAX 1
+  // BC++ 5.6 supports the "open(int fd)" UNIX extension.
+  #define CLY_NewFBFromFD(buf,f) buf=new filebuf(); buf->open(f)
+  #undef  CLY_destroy
+  // Note: that 0777 fails to create the file and 0666 creates a hidden file.
+  #define CLY_FBOpenProtDef  0
+ #else
+  #define CLY_NewFBFromFD(buf,f) buf=new filebuf(f)
+  #define CLY_FBOpenProtDef  0666
+ #endif
+
  #define CLY_int_filebuf    filebuf
+ #define CLY_filebuf        filebuf
  #define CLY_streambuf      streambuf
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff
  #define CLY_IOSSeekDir     ios::seek_dir
- #define CLY_FBOpenProtDef  0666
- #define CLY_NewFBFromFD(f) new filebuf(f)
  #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
  #define CLY_IOSBin         ios::binary
@@ -1251,7 +1273,7 @@ typedef unsigned long  ulong;
  #define CLY_StreamOffT     streamoff
  #define CLY_IOSSeekDir     ios::seek_dir
  #define CLY_FBOpenProtDef  filebuf::openprot
- #define CLY_NewFBFromFD(f) new filebuf(f)
+ #define CLY_NewFBFromFD(buf,f) buf=new filebuf(f)
  #define CLY_PubSetBuf(a,b) setbuf(a,b)
  #define CLY_HaveFBAttach   1
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
@@ -1339,7 +1361,7 @@ typedef unsigned long  ulong;
  #define CLY_StreamOffT     SSC_ios::seekoff
  #define CLY_IOSSeekDir     SSC_ios::seekdir
  #define CLY_FBOpenProtDef  0666
- #define CLY_NewFBFromFD(f) new SSC_filebuf(f,SSC_ios::in|SSC_ios::out|SSC_ios::binary)
+ #define CLY_NewFBFromFD(buf,f) buf=new SSC_filebuf(f,SSC_ios::in|SSC_ios::out|SSC_ios::binary)
  #define CLY_PubSetBuf(a,b) setbuf(a,b)
  #define CLY_HaveFBAttach   1
  #define CLY_FBOpen(a,b,c)  open(a,b,c)

@@ -12,12 +12,20 @@ because you can do an application based on TEditorApp in a few minutes.
 
 #define Uses_TApplication
 #define Uses_TEditorApp
+#define Uses_fpstream
+#define Uses_stdio
 #include <tv.h>
 #include <tv/tvedit.h>
 
 int main()
 {
  TEditorApp *myApp=new TEditorApp();
+
+ fprintf(stderr,"This test was compiled using BC++ %d.%d.%d\n",
+         (__BORLANDC__/0x100) & 0xF,
+         (__BORLANDC__/0x10)  & 0xF,
+          __BORLANDC__ & 0xF);
+
  if (myApp)
    {
     // It works if we are windowed and the screen is large enough:
@@ -25,6 +33,14 @@ int main()
     myApp->run();
     delete myApp;
    }
+
+ // This is a small test to check if streams are working
+ #ifdef TEST_STREAM
+ fpstream *f=new fpstream("Test.dat",CLY_IOSOut | CLY_IOSBin);
+ *f << 20;
+ f->close();
+ #endif
+
  return 0;
 }
 

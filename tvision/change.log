@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.81  2003/05/23 16:13:53  set
+* Added: Version to the configuration tool for easy detecttion.
+
 Revision 2.399.2.80  2003/05/23 13:17:32  set
 * Modified: To create the rhtv-config tool without .exe for UNIX systems.
 * Added: Options to know the C and C++ flags used to compile the library
