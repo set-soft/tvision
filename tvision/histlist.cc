@@ -180,5 +180,5 @@ void initHistory()
 
 void doneHistory()
 {
-    delete historyBlock;
+    delete[] historyBlock;
 }
