@@ -1,4 +1,8 @@
 $Log$
+Revision 1.238  2001/10/22 23:35:05  set
+* Added: linuxso/Makefile and linuxso/compat.mak to the distribution list.
+They are needed in some cases.
+
 Revision 1.237  2001/10/20 01:02:51  set
 * Merged Debian packaging patches from Ivan:
   * Now compiles with -D_REENTRANT as Debian Policy mandates.
