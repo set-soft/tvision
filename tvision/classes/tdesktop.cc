@@ -236,6 +236,11 @@ void  TDeskTop::tileError()
 {
 }
 
+Boolean TDeskTop::canShowCursor()
+{
+ return lockFlag ? False : True;
+}
+
 #if !defined( NO_STREAM )
 TStreamable *TDeskTop::build()
 {
