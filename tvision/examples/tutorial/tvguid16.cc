@@ -56,6 +56,8 @@ objects inserted in the dialog.
 #define Uses_TRadioButtons
 #define Uses_TLabel
 #define Uses_TInputLine
+#define Uses_TRangeValidator
+#define Uses_MsgBox
 #include <tv.h>
 
 const int cmMyFileOpen = 200;   // assign new command values
@@ -67,6 +69,7 @@ struct DialogData
     ushort checkBoxData;
     ushort radioButtonData;
     char inputLineData[128];
+    char inputLineRangeData[34];
 };
 
 DialogData *demoDialogData;
@@ -326,7 +329,7 @@ void TMyApp::newWindow()
 // changed from tvguid12: add buttons
 void TMyApp::newDialog()
 {
-    TDialog *pd = new TDialog( TRect( 20, 6, 60, 19), "Demo Dialog" );
+    TDialog *pd = new TDialog( TRect( 20, 4, 60, 20), "Demo Dialog" );
     if( pd )
         {
         TView *b = new TCheckBoxes( TRect( 3, 3, 18, 6),
@@ -353,9 +356,17 @@ void TMyApp::newDialog()
         pd->insert( new TLabel( TRect( 2, 7, 24, 8 ),
                 "Delivery Instructions", b ));
 
-        pd->insert( new TButton( TRect( 15, 10, 25, 12 ), "~O~K", cmOK,
+        // add input line with range validation
+        TInputLine *inp=new TInputLine( TRect( 3,11, 37,12 ), 32 );
+        pd->insert( inp );
+        pd->insert( new TLabel( TRect( 2,10, 26,11 ),
+                "A value from -20 to 590", inp ));
+        TValidator *vld=new TRangeValidator(-20,590);
+        inp->SetValidator( vld );
+
+        pd->insert( new TButton( TRect( 15, 13, 25, 15 ), "~O~K", cmOK,
                     bfDefault ));
-        pd->insert( new TButton( TRect( 28, 10, 38, 12 ), "~C~ancel", cmCancel,
+        pd->insert( new TButton( TRect( 28, 13, 38, 15 ), "~C~ancel", cmCancel,
                     bfNormal ));
 
         // we save the dialog data:
@@ -365,7 +376,14 @@ void TMyApp::newDialog()
 
         // and read it back when the dialog box is successfully closed
         if( control != cmCancel )
+            {
+            char *end;
             pd->getData( demoDialogData );
+            // this is a message box with arguments like printf
+            messageBox( mfInformation|mfOKButton, "Deliver: %s value %ld",
+                        demoDialogData->inputLineData,
+                        strtol(demoDialogData->inputLineRangeData,&end,0) );
+            }
         }
     destroy( pd );
 }
