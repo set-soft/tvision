@@ -23,6 +23,12 @@
 #include <sys/io.h>
 #endif
 
+// I don't know why it's needed, but it seems to be only known to me way
+// to get rhgdb built so it doesn't mess up terminal settings.
+// Strange but rhide and setedit doesn't have this problem.
+// Andris Pavenis <pavenis@lanet.lv>
+#define SAVE_TERMIOS
+
 int dual_display = 0;
 // SET: Starts as suspended to avoid TScreen::suspend() calls and other
 // similar stuff before initializing
