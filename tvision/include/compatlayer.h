@@ -1174,7 +1174,7 @@ typedef unsigned long  ulong;
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
  #if _MSC_VER <= 1000
-   // MSVC 4.0 doesn't have it and reports version 10.0
+   // MSVC 4.0 reports version 10.0
    // Only new.h exists
    #undef  NEW_HEADER
    #define NEW_HEADER      <new.h>
@@ -1525,7 +1525,6 @@ typedef unsigned long  ulong;
  #ifdef CLY_Have_snprintf
   #undef  Include_stdio
   #define Include_stdio 1
-  #define CLY_snprintf  snprintf
   #ifdef TVComp_MSC
    // Note: Currently unused because the implementation is wrong. See notes in
    // the MSVC section.
