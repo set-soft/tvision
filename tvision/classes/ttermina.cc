@@ -128,7 +128,7 @@ uint32 TTerminal::nextLine( uint32 pos )
     return pos;
 }
 
-streamsize TTerminal::do_sputn( const char *s, int count )
+int TTerminal::do_sputn( const char *s, int count )
 {
     ushort screenLines = limit.y;
     int32 i;

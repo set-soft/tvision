@@ -34,7 +34,7 @@ TFileInfoPane::TFileInfoPane( const TRect& bounds ) :
 
 const char * const TFileInfoPane::months[] =
     {
-    __(""),__("Jan"),__("Feb"),__("Mar"),__("Apr"),__("May"),__("Jun"),
+    "",__("Jan"),__("Feb"),__("Mar"),__("Apr"),__("May"),__("Jun"),
     __("Jul"),__("Aug"),__("Sep"),__("Oct"),__("Nov"),__("Dec")
     };
 
