@@ -76,7 +76,10 @@ line to select the no/compact mode.@*
 void TStatusLine::changeBounds(const TRect& bounds)
 {
  TView::changeBounds(bounds);
+ int oldCompact=compactStatus;
  computeLength();
+ if (compactStatus!=oldCompact)
+    draw();
 }
 
 void TStatusLine::disposeItems( TStatusItem *item )
