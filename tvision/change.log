@@ -1,4 +1,17 @@
-$Log$
+$Log$.
+Revision 2.589  2004/10/15 23:38:24  set
+* Fixed: [Win32] The Win32 driver: when the application or configuration
+file requested a screen size bigger than 80x25 the code failed to register
+the new window size and hence allocated too few bytes for the screenBuffer
+generating a SIGSEGV.
+* Fixed: [MinGW] New versions (i.e. 3.1.0) defines ssize_t.
+* Fixed: [MinGW/BC++/MSVC] The regex code had a mess with the prototypes of
+some internal functions. Reported by gcc 3.x.
+* Added: [DOCs] More information about MinGW, now the code compiles with
+version 3.1.0 using MSYS 1.0.10 and SiePerl 5.6.1. Note that the gdb
+included with it is useless for the system I used (Win98SE) but the 6.0
+version is usable (with a lot of limitations :-(
+
 Revision 2.588  2004/10/14 19:31:55  set
 * Modified: [Compilation] The dependencies extractor to put the OBJFILES
 definition before its use. It should help nmake.
