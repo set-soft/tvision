@@ -5,7 +5,7 @@
 #if defined(TVOS_Win32) && !defined(WIN32MOUSE_HEADER_INCLUDED)
 #define WIN32MOUSE_HEADER_INCLUDED
 
-const int eventMouseQSize=300;
+const unsigned eventMouseQSize=300;
 
 class THWMouseWin32 : public THWMouse
 {
