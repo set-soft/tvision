@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.484  2003/06/26 19:15:58  set
+* Added: Some clarifications about install process.
+* Added: Explanation about how to use the rhtv-config tool.
+
 Revision 2.483  2003/06/23 14:12:02  set
 * Added: now is posible to indicate the installation prefix for the
 makefile even after configuring another value.

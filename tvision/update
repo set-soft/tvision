@@ -1,0 +1,16 @@
+#!/bin/sh
+# Copyright (C) 2003 by Salvador E. Tropea (SET),
+# see copyrigh file for details
+# 
+# This file updates the sources from CVS. I redirect the stderr to null
+# because I don't want to fill the screen with the directory names. You
+# must be careful because the errors are discarded.
+# The -d option updates new directories, without it they aren't
+# created.
+# The -P option purges empty directories, they are no longer used
+# directories that CVS keeps to allow recovering old tree structures.
+#
+echo
+echo Updating from CVS. Errors are discarded!
+echo
+cvs update -dP 2> /dev/null
