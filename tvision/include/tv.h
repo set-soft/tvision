@@ -352,6 +352,10 @@ Modified by Salvador E. Tropea
 #define INCLUDE_DIALOGS_H
 #endif
 
+#if defined( Uses_T1Label )
+#define Uses_TLabel
+#endif
+
 #if defined( Uses_TLabel )
 #define Uses_TStaticText
 #define INCLUDE_DIALOGS_H
@@ -360,6 +364,11 @@ Modified by Salvador E. Tropea
 #if defined( Uses_TParamText )
 #define Uses_TStaticText
 #define INCLUDE_DIALOGS_H
+#endif
+
+#ifdef Uses_T1StaticText
+#define Uses_string
+#define Uses_TStaticText
 #endif
 
 #if defined( Uses_TStaticText )
@@ -394,6 +403,10 @@ Modified by Salvador E. Tropea
 #if defined( Uses_TButton )
 #define Uses_TView
 #define INCLUDE_DIALOGS_H
+#endif
+
+#if defined( Uses_TInput1Line )
+#define Uses_TInputLine
 #endif
 
 #if defined( Uses_TInputLine )

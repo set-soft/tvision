@@ -29,7 +29,7 @@ horizontal scroll bar in items, etc.
 #define Uses_TDrawBuffer
 #define Uses_TGroup
 #define Uses_TScrollBar
-#define Uses_TLabel
+#define Uses_T1Label
 #define Uses_TButton
 #define Uses_TRect
 #define Uses_opstream
@@ -45,8 +45,6 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     TDialog( TRect( 0, 0, 77, 18 ), __("Colors") )
     , TWindowInit( &TColorDialog::initFrame )
 {
-    const char *tmp;
-    stTVIntl *intlTmp = NULL;
     options |= ofCentered;
     pal = aPalette;
 
@@ -55,9 +53,7 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
 
     groups = new TColorGroupList( TRect( 3, 3, 31, 14 ), sb, aGroups);
     insert( groups );
-    tmp = TVIntl::getText( __("~G~roup"), intlTmp);
-    insert( new TLabel( TRect( 2, 2, 3+cstrlen(tmp), 3 ), tmp, groups, intlTmp ) );
-    intlTmp = NULL;
+    insert( new T1Label( 2, 2, __("~G~roup"), groups ) );
 
     sb = new TScrollBar( TRect( 57, 3, 58, 13 ) );
     insert( sb );
@@ -67,27 +63,21 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
 
     TView *p = new TColorItemList( TRect( 34, 3, 57, 13 ), sb, aGroups->items, sbH );
     insert( p );
-    tmp = TVIntl::getText( __("~I~tem"), intlTmp);
-    insert( new TLabel( TRect( 33, 2, 34+cstrlen(tmp), 3 ), tmp, p, intlTmp ) );
-    intlTmp = NULL;
+    insert( new T1Label( 33, 2, __("~I~tem"), p ) );
 
     forSel = new TColorSelector( TRect( 61, 3, 73, 7 ),
                                  TColorSelector::csForeground );
     insert( forSel );
-    tmp = TVIntl::getText( __("~F~oreground"), intlTmp);
-    forLabel = new TLabel( TRect( 61, 2, 62+cstrlen(tmp), 3 ), tmp, forSel, intlTmp );
+    forLabel = new T1Label( 61, 2, __("~F~oreground"), forSel );
     insert( forLabel );
-    intlTmp = NULL;
 
     int ib = TScreen::getBlinkState() ? 0 : 2;
 
     bakSel = new TColorSelector( TRect( 61, 9, 73, 11 + ib),
                                  TColorSelector::csBackground );
     insert( bakSel );
-    tmp = TVIntl::getText( __("~B~ackground"), intlTmp);
-    bakLabel = new TLabel( TRect( 61, 8, 62+cstrlen(tmp), 9 ), tmp, bakSel, intlTmp );
+    bakLabel = new T1Label( 61, 8, __("~B~ackground"), bakSel );
     insert( bakLabel );
-    intlTmp = NULL;
 
     display = new TColorDisplay( TRect( 60, 12 + ib, 74, 14 + ib),
                                  _("Text ") );
@@ -96,9 +86,7 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     monoSel = new TMonoSelector( TRect( 60, 3, 75, 7 ) );
     monoSel->hide();
     insert( monoSel );
-    tmp = TVIntl::getText( __("Color"), intlTmp);
-    monoLabel = new TLabel( TRect( 59, 2, 60+cstrlen(tmp), 3 ), tmp,
-                            monoSel, intlTmp );
+    monoLabel = new T1Label( 59, 2, __("Color"), monoSel );
     monoLabel->hide();
     insert( monoLabel );
 
