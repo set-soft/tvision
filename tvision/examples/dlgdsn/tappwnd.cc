@@ -27,8 +27,9 @@
      "\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f" \
      "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f" \
 
-TAppWindow::TAppWindow(): TWindow( TRect(0, 0, 60, 20), "", 0 ),
+TAppWindow::TAppWindow(): 
    TWindowInit(&TAppWindow::initFrame),
+   TWindow( TRect(0, 0, 60, 20), "", 0 ),
    menuBar( 0 ),
    statusLine( 0 )
 {

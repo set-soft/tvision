@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.472  2003/06/05 19:33:26  set
+* Modified: [Win32] Graphic driver to support environment where IDC_ARROW,
+IDC_HAND and/or IDC_SIZENWSE aren't defined.
+
 Revision 2.471  2003/06/02 18:26:44  set
 * Fixed: the configuration script generated .env files with lib paths
 pointing to the old locations for the libraries.

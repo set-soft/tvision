@@ -22,6 +22,10 @@ the terms of the GPL license.
 #define Uses_TDeskTop
 #include <tv.h>
 
+#include <tv/configtv.h>
+// The SSC code doesn't support as much as needed for it.
+#ifndef HAVE_SSC
+
 class TMyApp : public TApplication
 {
 public:
@@ -64,8 +68,8 @@ public:
 };
 
 TestDialog::TestDialog() :
-  TDialog(TRect(0,0,60,18),"Dumb terminal"),
-  TWindowInit(&TestDialog::initFrame)
+  TWindowInit(&TestDialog::initFrame),
+  TDialog(TRect(0,0,60,18),"Dumb terminal")
 {
  options |= ofCentered;
 
@@ -100,3 +104,12 @@ int main()
  myApp.run();
  return 0;
 }
+
+#else
+
+int main()
+{
+ fprintf (stderr, "Sorry: The SSC code doesn't support as much as needed for it.\n");
+}
+
+#endif

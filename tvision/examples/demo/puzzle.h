@@ -68,7 +68,8 @@ public:
 
     TPuzzleWindow();
     TPuzzleWindow( StreamableInit ) :
-        TWindow(streamableInit), TWindowInit(&TPuzzleWindow::initFrame) { };
+        TWindowInit(&TPuzzleWindow::initFrame) 
+        , TWindow(streamableInit) { };
 
 private:
 

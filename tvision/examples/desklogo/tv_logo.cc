@@ -227,7 +227,7 @@ TPalette& TvApp::getPalette() const
 //  implementation of TNewDeskTop
 //------------------------------------------------------------------------
 TNewDeskTop::TNewDeskTop( const TRect& r ) :
-			 TDeskTop( r ), TDeskInit( &initBackground )
+			 TDeskInit( &initBackground ), TDeskTop( r )
 {
 }
 

@@ -224,8 +224,8 @@ void TConstCollection::sort(int mode)
 
 
 TConstEdit::TConstEdit():
-            TDialog( TRect(0, 0, 45, 16) , __("Constants") ),
-            TWindowInit(&TConstEdit::initFrame)
+            TWindowInit(&TConstEdit::initFrame),
+            TDialog( TRect(0, 0, 45, 16) , __("Constants") )
 {
    TScrollBar * sb;
    

@@ -101,8 +101,8 @@ class TSearchDialog : public TDialog
 {
   public:
   TSearchDialog(TCollection *results) :
-    TDialog (TRect (0, 0, maxlength + 4, results->getCount() + 6), "Select Result"),
-    TWindowInit( &TSearchDialog::initFrame )
+    TWindowInit( &TSearchDialog::initFrame ),
+    TDialog (TRect (0, 0, maxlength + 4, results->getCount() + 6), "Select Result")
   {
     TRect r = getExtent();
     r.grow(-2,-2);

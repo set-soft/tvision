@@ -31,8 +31,8 @@
 
 
 TComboWindow::TComboWindow(const TRect& bounds, TCollection *aList) :
-			TWindow(bounds, 0, wnNoNumber),
-			TWindowInit(&TComboWindow::initFrame)
+			TWindowInit(&TComboWindow::initFrame),
+			TWindow(bounds, 0, wnNoNumber)
 {
    TRect r;
    TScrollBar  *sb;
@@ -101,6 +101,6 @@ TStreamable *TComboWindow::build()
 }
 
 
-TComboWindow::TComboWindow(StreamableInit) : TWindow(streamableInit),
-					     TWindowInit(0)
+TComboWindow::TComboWindow(StreamableInit) : TWindowInit(0),
+					     TWindow(streamableInit)
 {}

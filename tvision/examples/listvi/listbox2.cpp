@@ -27,6 +27,7 @@
 #define Uses_TStatusLine
 
 #include <tv.h>
+#include <string.h>
 #include "lst_view.h"
 
 const int wCity=18, cCities=13;

@@ -36,8 +36,8 @@ char *TCalculator::keyChar[20] =
 
 TCalculator::TCalculator() :
     // SET: The display size must be satisfied
-    TDialog( TRect(5, 3, 5+6+DISPLAYLEN, 18), __("Pocket Calculator") ),
-    TWindowInit( &TCalculator::initFrame )
+    TWindowInit( &TCalculator::initFrame ),
+    TDialog( TRect(5, 3, 5+6+DISPLAYLEN, 18), __("Pocket Calculator") )
 {
     TView *tv;
     TRect r;

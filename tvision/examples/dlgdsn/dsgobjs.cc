@@ -829,9 +829,9 @@ void TDsgObj::dsgUpdate()
 
 /* TDDialog =============================================================*/
 
-TDDialog::TDDialog(): TDialog( TRect(0, 6, 55, 23),
-             "TVISION Dialog Editor"),
+TDDialog::TDDialog(): 
              TWindowInit(TDDialog::initFrame),
+	     TDialog( TRect(0, 6, 55, 23), "TVISION Dialog Editor"),
              TDsgObj( vtDialog )
 {
    setViewData(*((TDsgObjData *)attributes));
