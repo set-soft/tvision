@@ -136,6 +136,23 @@ DontResizeToCells      Don't resize the window to a cells multiple size if the W
                        fails to follow the hints. This helps to avoid problems found
                        in KDE 3.1 alpha.
 InternalBusyCursor     When enabled we use our own mouse cursor for it.
+UseUpdateThread        Only available for Linux.
+                       When enabled the driver uses a separated thread to
+                       collect the "expose" events and update the screen.
+                       That's good because even when the application is
+                       blocking (calling system, performing a long
+                       calculation, etc.) the window can be exposed and the
+                       contents of the screen will be updated (you don't get
+                       a black window). But the problem is that Linux
+                       implementation of POSIX threads is quite poor and
+                       mixing threads with fork/exec doesn't work for big
+                       applications. The driver implements it using
+                       fork/system (system function is "thread protected")
+                       but you must avoid killing your child or the update
+                       thread will most probably die. The driver have a watch
+                       dog timer and if the update thread dies will revert to
+                       manual screen update in less than 2 seconds (>=1s &
+                       <2s aprox.).
 
 * I don't know if anybody can be interested on it, but this driver compiles
 and run for Windows. You need to use Cygwin with the XFree86 port installed

@@ -6,6 +6,7 @@
 #define X11SCR_HEADER_INCLUDED
 
 class TVX11Clipboard;
+class TVX11UpdateThread;
 
 // virtual to avoid problems with multiple inheritance
 class TDisplayX11 : virtual public TDisplay
@@ -61,6 +62,7 @@ public:
  friend class THWMouseX11;
  friend class TDisplayX11;
  friend class TVX11Clipboard;
+ friend class TVX11UpdateThread;
 
 protected:
  // Default: void   Resume();
@@ -213,6 +215,41 @@ const int x11clipNoSelection=1,
 
 #define charPos 0
 #define attrPos 1
+
+// Linux implementation of POSIX threads
+#if HAVE_LINUX_PTHREAD
+#define SEMAPHORE_ON        TVX11UpdateThread::SemaphoreOn()
+#define SEMAPHORE_OFF       TVX11UpdateThread::SemaphoreOff()
+#define IS_SECOND_THREAD_ON TVX11UpdateThread::CheckSecondThread()
+#define START_UPDATE_THREAD TVX11UpdateThread::StartUpdateThread()
+#define STOP_UPDATE_THREAD  TVX11UpdateThread::StopUpdateThread()
+
+class TVX11UpdateThread
+{
+public:
+ TVX11UpdateThread() {};
+ 
+ static void SemaphoreOn();
+ static void SemaphoreOff();
+ static int  CheckSecondThread();
+ static void StartUpdateThread();
+ static void StopUpdateThread();
+
+protected:
+ static void *UpdateThread(void *);
+ static int running;
+ static int initialized;
+ static timeval refWatchDog, nowWatchDog;
+ static int watchDogVal;
+};
+#else
+ #define SEMAPHORE_ON
+ #define SEMAPHORE_OFF
+ #define IS_SECOND_THREAD_ON 0
+ #define START_UPDATE_THREAD
+ #define STOP_UPDATE_THREAD
+#endif
+// End of Linux implementation of POSIX threads
 
 #endif // X11SCR_HEADER_INCLUDED
 

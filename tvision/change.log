@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.493  2003/07/30 19:43:18  set
+* Fixed: [BC++] A warning about using unsigned mixed with signed in the
+demo example. Solution by ric <ric@mpcnet.com.br>.
+
 Revision 2.492  2003/07/30 14:37:36  set
 * Fixed: [WinNT driver] Asterisk key not reported. Reported by "Warren H.
 Holt" <wHolt@sierra-idt.com>

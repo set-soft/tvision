@@ -108,14 +108,17 @@ int TGKeyX11::getKeyEvent(int block)
  if (kbWaiting)
     return 1;
 
+ SEMAPHORE_ON;
  while (1)
    {
     /* Get the next keyboard event */
     if (XCheckMaskEvent(TScreenX11::disp,aKeyEvent,&event)!=True)
       {
-       TScreenX11::ProcessGenericEvents();
+       if (!IS_SECOND_THREAD_ON)
+          TScreenX11::ProcessGenericEvents();
        if (block)
           continue;
+       SEMAPHORE_OFF;
        return 0;
       }
     /* Now check if it is a key that will be combined */
@@ -166,10 +169,12 @@ int TGKeyX11::getKeyEvent(int block)
           case XK_Insert:
                ToggleBit(kbInsertToggle);
                kbWaiting=1;
+               SEMAPHORE_OFF;
                return 1; /* Report the key */
           case XK_Sys_Req:
                kbFlags|=kbSysReqPress;
                kbWaiting=1;
+               SEMAPHORE_OFF;
                return 1; /* Report the key */
           default:
                /* If a modifier key is released when we don't have the focus
@@ -218,6 +223,7 @@ int TGKeyX11::getKeyEvent(int block)
                else
                   kbFlags&=~kbScrollLockDown;
                kbWaiting=1;
+               SEMAPHORE_OFF;
                return 1;
          }
        #undef ToggleBit
@@ -265,6 +271,7 @@ int TGKeyX11::getKeyEvent(int block)
          }
       }
    }
+ SEMAPHORE_OFF;
  return 0;
 }
 

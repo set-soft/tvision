@@ -102,6 +102,8 @@ ushort TDisplayX11::GetCols()
 
 int TDisplayX11::CheckForWindowSize(void)
 {
+ int ret=0;
+ SEMAPHORE_ON;
  if (windowSizeChanged)
    {
     // Now we can change the values because the application is aware
@@ -112,9 +114,10 @@ int TDisplayX11::CheckForWindowSize(void)
     TScreen::screenBuffer=new ushort[maxX*maxY];
     memset(TScreen::screenBuffer,0,maxX*maxY*sizeof(ushort));
     windowSizeChanged=0;
-    return 1;
+    ret=1;
    }
- return 0;
+ SEMAPHORE_OFF;
+ return ret;
 }
 
 #else

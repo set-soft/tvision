@@ -68,6 +68,11 @@ if ($OS eq 'UNIX')
    LookForNCurses($NCursesVersionNeeded);
    LookForKeysyms();
    LookForXlib();
+   # Used for X11 driver. Linux implementation of POSIX threads is very bad
+   # and needs a lot of workarounds. Some of them could be just bugs in the
+   # glibc I use but the fact is that the needed tricks make it very Linux
+   # dependent.
+   LookForPThread() if $OSf eq 'Linux';
    #LookForOutB();
   }
 if ($Compf eq 'Cygwin')
@@ -126,6 +131,7 @@ $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[2].=' '.$conf{'X11Lib'} if ($conf{'HAVE_X11'} eq 'yes');
 $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
 $MakeDefsRHIDE[2].=' intl' if ((($OSf eq 'FreeBSD') || ($OSf eq 'QNXRtP')) && ($conf{'intl'} eq 'yes'));
+$MakeDefsRHIDE[2].=' pthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
@@ -175,6 +181,7 @@ $MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'y
 $MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
 $MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
+$MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
 $MakeDefsRHIDE[7]="LIB_VER=$Version";
 $MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
 
@@ -810,6 +817,55 @@ sub LookForRecode
    }
 }
 
+sub LookForPThread
+{
+ my $test;
+
+ print 'Looking for pthread (LinuxThreads) library: ';
+ if (@conf{'HAVE_LINUX_PTHREAD'})
+   {
+    print "@conf{'HAVE_LINUX_PTHREAD'} (cached)\n";
+    return;
+   }
+ $test='
+// We need it for recursive mutex
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <pthread.h>
+
+static pthread_t th;
+static pthread_mutex_t mutex;
+
+void *Test(void *unused)
+{// The OK will be printed only if the thread worked
+ printf("OK\n");
+ return NULL;
+}
+
+int main(int argc, char *argv[])
+{// Test the attribute for recursive mutex.
+ pthread_mutexattr_t mt_attr;
+ pthread_mutexattr_init(&mt_attr);
+ pthread_mutexattr_settype(&mt_attr,PTHREAD_MUTEX_RECURSIVE);
+ pthread_mutex_init(&mutex,&mt_attr);
+ // Create a thread
+ pthread_create(&th,NULL,Test,NULL);
+ // Wait until it finishes
+ pthread_join(th,NULL);
+ return 0;
+}
+';
+ $test=RunGCCTest($GCC,'c',$test,'-lpthread');
+ if (!length($test))
+   {
+    $conf{'HAVE_LINUX_PTHREAD'}='no';
+    print " no, disabling X11 update thread option\n";
+    return;
+   }
+ $conf{'HAVE_LINUX_PTHREAD'}='yes';
+ print "OK\n";
+}
+
 sub GenerateMakefile
 {
  my ($text,$rep,$makeDir,$ver,$internac,$maintain);
@@ -977,6 +1033,7 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_OUTB_IN_SYS','out/in functions defined by glibc');
  $text.=ConfigIncDefYes('HAVE_SSC','Use stream replacements');
  $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
+ $text.=ConfigIncDefYes('HAVE_LINUX_PTHREAD','Linux implementation of POSIX threads');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n";
  $text.="#define TVOSf_$OSf\n";
