@@ -4,7 +4,7 @@
   This header defines which functions must be defined for each supported
 compiler.@p
 
-  Copyright (c) 2000 by Salvador E. Tropea
+  Copyright (c) 2000-2001 by Salvador E. Tropea
   Covered by the GPL license.
 
 ***************************************************************************/
@@ -38,6 +38,7 @@ compiler.@p
   #define NEEDS_STRUPR
   #define NEEDS_FIXPATH
   #define NEEDS_FILELENGTH
+  #define NEEDS_ITOA
  #endif
  
  // Generic UNIX system
@@ -47,6 +48,7 @@ compiler.@p
   #define NEEDS_STRUPR
   #define NEEDS_FIXPATH
   #define NEEDS_FILELENGTH
+  #define NEEDS_ITOA
  #endif
 #endif
 
