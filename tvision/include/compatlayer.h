@@ -966,6 +966,10 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 
 #ifdef Include_langinfo
  #include <langinfo.h>
+ // Workaround a bug in glibc
+ #if !defined(RADIXCHAR) && defined(DECIMAL_POINT)
+  #define RADIXCHAR DECIMAL_POINT
+ #endif
 #endif
 
 
