@@ -357,7 +357,7 @@ inline opstream& operator << ( opstream& os, TMemo* cl )
 #if defined( Uses_TFileEditor ) && !defined( __TFileEditor )
 #define __TFileEditor
 
-#include <dir.h>
+//#include <dir.h>
 
 class far TRect;
 class far TScrollBar;
@@ -369,7 +369,7 @@ class TFileEditor : public TEditor
 
 public:
 
-    char fileName[MAXPATH];
+    char fileName[PATH_MAX];
     TFileEditor( const TRect&,
                  TScrollBar *,
                  TScrollBar *,
