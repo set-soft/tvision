@@ -40,8 +40,9 @@ class TVBitmapFontDescLBox : public TSortedListBox
 {
 public:
  TVBitmapFontDescLBox(const TRect& bounds, ushort aNumCols,
-                      TScrollBar *aHScrollBar, TScrollBar *aVScrollBar) :
-  TSortedListBox(bounds,aNumCols,aHScrollBar,aVScrollBar) {}
+                      TScrollBar *aHScrollBar, TScrollBar *aVScrollBar,
+                      Boolean aCenterOps=False) :
+  TSortedListBox(bounds,aNumCols,aHScrollBar,aVScrollBar,aCenterOps) {}
  virtual void getText(char *dest, ccIndex item, short maxChars);
 };
 
@@ -61,8 +62,9 @@ class TVBitmapFontSizeLBox : public TSortedListBox
 {
 public:
  TVBitmapFontSizeLBox(const TRect& bounds, ushort aNumCols,
-                      TScrollBar *aHScrollBar, TScrollBar *aVScrollBar) :
-  TSortedListBox(bounds,aNumCols,aHScrollBar,aVScrollBar) {}
+                      TScrollBar *aHScrollBar, TScrollBar *aVScrollBar,
+                      Boolean aCenterOps=False) :
+  TSortedListBox(bounds,aNumCols,aHScrollBar,aVScrollBar,aCenterOps) {}
  virtual void getText(char *dest, ccIndex item, short maxChars);
 };
 

@@ -29,7 +29,8 @@ public:
 		    TScrollBar *aScrollBar
 		  );
    TSortedListBox( const TRect& bounds, ushort aNumCols,
-                   TScrollBar *aHScrollBar, TScrollBar *aVScrollBar );
+                   TScrollBar *aHScrollBar, TScrollBar *aVScrollBar,
+                   Boolean aCenterOps = False);
 
     virtual void handleEvent( TEvent& event );
     void newList( TSortedCollection *aList );
