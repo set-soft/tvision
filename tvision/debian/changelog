@@ -1,3 +1,10 @@
+rhtvision (1.0.9-1) unstable; urgency=low
+
+  * New upstream version:
+    - Better support for greek keyboards.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Tue, 26 Oct 1999 11:24:14 -0300
+
 rhtvision (1.0.8-3) unstable; urgency=low
 
   * Previous version had wrong shlibs file.

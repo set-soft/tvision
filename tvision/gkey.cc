@@ -502,6 +502,12 @@ void TGKey::fillTEvent(TEvent &e)
 }
 
 ushort TGKey::AltSet=2;      // Default: Both ALT are the same
+#else
+static inline
+char International_To_ASCII(uchar ascii)
+{
+ return ascii;
+}
 #endif
 
 const int CantDef=0x39;
