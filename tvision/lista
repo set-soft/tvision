@@ -142,6 +142,7 @@ djgpp/vgastate.h
 drivers2.cc
 dual.cc
 +examples/clean.bat
++examples/clean
 examples/common.env
 examples/config.env
 examples/demo/ascii.cc
