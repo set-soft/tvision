@@ -18,6 +18,7 @@
 
 #include <tv/configtv.h>
 
+//#define Uses_stdio
 #define Uses_stdlib
 #define Uses_string
 #define Uses_TScreen
@@ -421,6 +422,9 @@ int TDisplayDOS::setTweakedMode(int tmode)
  _farsetsel(_dos_ds);
  _farnspokew(0x44a,width[tmode]);
  _farnspokeb(0x484,height[tmode]-1);
+ // We must indicate the correct height. Some BIOSes make the cursor
+ // invisible if we forget it.
+ _farnspokew(0x485,charLines);
  _farnspokew(0x44c,width[tmode]*height[tmode]*2);
  enable();
 
