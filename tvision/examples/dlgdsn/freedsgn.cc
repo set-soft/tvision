@@ -263,47 +263,47 @@ void TFreeDsgnApp::handleEvent(TEvent& event)
 
 TMenuBar * TFreeDsgnApp::initMenuBar( TRect r )
 {
-  TMenuItem& menuBuild = *new TSubMenu( _("~B~uild obj code..."), kbNoKey, hcNoContext) +
-    *new TMenuItem( _("As ~f~unction"), cmWriteObjFunc, kbNoKey, hcWriteFunc) +
-    *new TMenuItem( _("As f~i~le"), cmWriteObjUnit, kbNoKey, hcWriteUnit);
+  TMenuItem& menuBuild = *new TSubMenu( __("~B~uild obj code..."), kbNoKey, hcNoContext) +
+    *new TMenuItem( __("As ~f~unction"), cmWriteObjFunc, kbNoKey, hcWriteFunc) +
+    *new TMenuItem( __("As f~i~le"), cmWriteObjUnit, kbNoKey, hcWriteUnit);
 
-  TSubMenu& menuOptions = *new TSubMenu( _("~O~ptions"), kbNoKey, hcNoContext) +
-    *new TMenuItem( _("~G~rid On/Off"), cmShowGrid, kbNoKey, hcNoContext);
+  TSubMenu& menuOptions = *new TSubMenu( __("~O~ptions"), kbNoKey, hcNoContext) +
+    *new TMenuItem( __("~G~rid On/Off"), cmShowGrid, kbNoKey, hcNoContext);
     
-  TSubMenu& menuProject = *new TSubMenu( _("~P~roject"), kbNoKey, hcNoContext) +
-    *new TMenuItem( _("~V~iew..."), cmViewProject, kbNoKey, hcViewProject) +
-    *new TMenuItem( _("~M~enu editor..."), cmMenuEditor, kbNoKey, hcMenuEdit) +
-    *new TMenuItem( _("~S~tatus bar..."), cmStatusEditor, kbNoKey, hcStatusEdit) +
-    *new TMenuItem( _("H~i~nts..."), cmHintsEditor, kbNoKey, hcHindEdit) +
-    *new TMenuItem( _("~C~ommands..."), cmCommandEdit, kbNoKey, hcCommandEdit) +
-    *new TMenuItem( _("~H~elp contexts..."), cmHelpCtxEdit, kbNoKey, hcHelpCtxEdit) +
+  TSubMenu& menuProject = *new TSubMenu( __("~P~roject"), kbNoKey, hcNoContext) +
+    *new TMenuItem( __("~V~iew..."), cmViewProject, kbNoKey, hcViewProject) +
+    *new TMenuItem( __("~M~enu editor..."), cmMenuEditor, kbNoKey, hcMenuEdit) +
+    *new TMenuItem( __("~S~tatus bar..."), cmStatusEditor, kbNoKey, hcStatusEdit) +
+    *new TMenuItem( __("H~i~nts..."), cmHintsEditor, kbNoKey, hcHindEdit) +
+    *new TMenuItem( __("~C~ommands..."), cmCommandEdit, kbNoKey, hcCommandEdit) +
+    *new TMenuItem( __("~H~elp contexts..."), cmHelpCtxEdit, kbNoKey, hcHelpCtxEdit) +
     newLine() +
-    *new TMenuItem( _("~A~pp options..."), cmAppOptions, kbNoKey, hcAppOptions) +
-    *new TMenuItem( _("~G~enerate APP code..."), cmBuildApp, kbNoKey, hcAppBuild) +
+    *new TMenuItem( __("~A~pp options..."), cmAppOptions, kbNoKey, hcAppOptions) +
+    *new TMenuItem( __("~G~enerate APP code..."), cmBuildApp, kbNoKey, hcAppBuild) +
     newLine() +
-    *new TMenuItem( _("App ~W~indow"), cmViewAppWindow, kbNoKey, hcViewAppWindow);
+    *new TMenuItem( __("App ~W~indow"), cmViewAppWindow, kbNoKey, hcViewAppWindow);
 
-  TSubMenu& menuEdit = *new TSubMenu( _("~E~dit"), kbNoKey, hcNoContext ) +
-//  *new TMenuItem( _("~U~ndelete"), cmUndo, kbAltBack, hcUndo, "Alt+BkSpc") +
-    *new TMenuItem( _("~C~opy"), cmCopy, kbShiftIns, hcCopy, "Shift+Ins") +
-    *new TMenuItem( _("C~u~t"), cmCut, kbShiftDel, hcCut, "Shift+Del") +
-    *new TMenuItem( _("~P~aste"), cmPaste, kbCtrlIns, hcPaste, "Ctrl+Ins") +
+  TSubMenu& menuEdit = *new TSubMenu( __("~E~dit"), kbNoKey, hcNoContext ) +
+//  *new TMenuItem( __("~U~ndelete"), cmUndo, kbAltBack, hcUndo, "Alt+BkSpc") +
+    *new TMenuItem( __("~C~opy"), cmCopy, kbShiftIns, hcCopy, "Shift+Ins") +
+    *new TMenuItem( __("C~u~t"), cmCut, kbShiftDel, hcCut, "Shift+Del") +
+    *new TMenuItem( __("~P~aste"), cmPaste, kbCtrlIns, hcPaste, "Ctrl+Ins") +
     newLine() +
     menuBuild;
     
-  TSubMenu& menuFile = *new TSubMenu(_("~F~ile"), kbNoKey, hcNoContext ) +
-    *new TMenuItem( _("~N~ew project..."), cmNewProject, kbNoKey, hcNewProject ) +
-    *new TMenuItem( _("~O~pen project..."), cmOpenProject, kbNoKey, hcOpenProject ) +
-    *new TMenuItem( _("~S~ave project..."), cmSaveProject, kbNoKey, hcSaveProject ) +
-    *new TMenuItem( _("Sa~v~e project as..."), cmSaveProjectAs, kbNoKey, hcSavePrjAs ) +
+  TSubMenu& menuFile = *new TSubMenu(__("~F~ile"), kbNoKey, hcNoContext ) +
+    *new TMenuItem( __("~N~ew project..."), cmNewProject, kbNoKey, hcNewProject ) +
+    *new TMenuItem( __("~O~pen project..."), cmOpenProject, kbNoKey, hcOpenProject ) +
+    *new TMenuItem( __("~S~ave project..."), cmSaveProject, kbNoKey, hcSaveProject ) +
+    *new TMenuItem( __("Sa~v~e project as..."), cmSaveProjectAs, kbNoKey, hcSavePrjAs ) +
     newLine() +
-    *new TMenuItem( _("O~p~en object..."), cmOpenObj, kbNoKey, hcOpenObj ) +
-    *new TMenuItem( _("Save ~o~bject..."), cmSaveObj, kbNoKey, hcSaveObj ) +
-    *new TMenuItem( _("Save object ~a~s..."), cmSaveObjAs, kbNoKey, hcSaveObjAs ) +
-    *new TMenuItem( _("Save ~s~ource..."), cmSave, kbNoKey, hcNoContext ) +
+    *new TMenuItem( __("O~p~en object..."), cmOpenObj, kbNoKey, hcOpenObj ) +
+    *new TMenuItem( __("Save ~o~bject..."), cmSaveObj, kbNoKey, hcSaveObj ) +
+    *new TMenuItem( __("Save object ~a~s..."), cmSaveObjAs, kbNoKey, hcSaveObjAs ) +
+    *new TMenuItem( __("Save ~s~ource..."), cmSave, kbNoKey, hcNoContext ) +
     newLine() +
-    *new TMenuItem( _("~C~hange directory..."), cmChangeDir, kbNoKey, hcChangeDir ) +
-    *new TMenuItem( _("~Q~uit"), cmQuit, kbNoKey, hcQuit );
+    *new TMenuItem( __("~C~hange directory..."), cmChangeDir, kbNoKey, hcChangeDir ) +
+    *new TMenuItem( __("~Q~uit"), cmQuit, kbNoKey, hcQuit );
 
   r.b.y = r.a.y + 1;
   return new TMenuBar( r, menuFile +
@@ -315,7 +315,7 @@ TMenuBar * TFreeDsgnApp::initMenuBar( TRect r )
 
 TStatusLine * TFreeDsgnApp::initStatusLine( TRect r )
 {
-#define CommomHide() *new TStatusItem(_("~F1~ Help"), kbF1, cmHelp) + \
+#define CommomHide() *new TStatusItem(__("~F1~ Help"), kbF1, cmHelp) + \
                      *new TStatusItem(0, kbAltQ, cmQuit) + \
                      *new TStatusItem(0, kbAltF3, cmClose) + \
                      *new TStatusItem(0, kbF5, cmZoom) + \
@@ -327,17 +327,17 @@ TStatusLine * TFreeDsgnApp::initStatusLine( TRect r )
   return new TStatusLine(r,
     *new TStatusDef( 0, 0xffff ) +
     CommomHide() +
-    *new TStatusItem(_("~F7~ Objects"), kbF7, cmObjects ) +
-    *new TStatusItem(_("~F8~ Dialog"), kbF8, cmDialogEditor ) +
-    *new TStatusItem(_("~F9~ Obj Editor"), kbF9, cmObjEditor ) +
-    *new TStatusItem(_("~^F9~ Run dialog"), kbCtrlF9, cmDlgRun ) +
+    *new TStatusItem(__("~F7~ Objects"), kbF7, cmObjects ) +
+    *new TStatusItem(__("~F8~ Dialog"), kbF8, cmDialogEditor ) +
+    *new TStatusItem(__("~F9~ Obj Editor"), kbF9, cmObjEditor ) +
+    *new TStatusItem(__("~^F9~ Run dialog"), kbCtrlF9, cmDlgRun ) +
     *new TStatusDef(hcDragging, hcDragging) +
-    *new TStatusItem(_("~PgUp/PgDn/Home/End~ to limits"), 0, 0) +
-    *new TStatusItem(_("~\x18\x19\x1a\x1b~ Move"), 0, 0 ) +
-    *new TStatusItem(_("~^+[\x18\x19\x1a\x1b]~ tab move"), 0, 0 ) +
-    *new TStatusItem(_("~Shift+[\x18\x19\x1a\x1b]~ Resize"), 0, 0 ) +
-    *new TStatusItem(_("~ENTER~ put"), 0, 0 ) +
-    *new TStatusItem(_("~ESC~ cancel"), 0, 0 )
+    *new TStatusItem(__("~PgUp/PgDn/Home/End~ to limits"), 0, 0) +
+    *new TStatusItem(__("~\x18\x19\x1a\x1b~ Move"), 0, 0 ) +
+    *new TStatusItem(__("~^+[\x18\x19\x1a\x1b]~ tab move"), 0, 0 ) +
+    *new TStatusItem(__("~Shift+[\x18\x19\x1a\x1b]~ Resize"), 0, 0 ) +
+    *new TStatusItem(__("~ENTER~ put"), 0, 0 ) +
+    *new TStatusItem(__("~ESC~ cancel"), 0, 0 )
   );
 }
 
