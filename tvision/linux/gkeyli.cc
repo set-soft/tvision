@@ -403,13 +403,13 @@ unsigned short TGKey::gkey(void)
    {
     name=kbToName2;
     flags=kbExtraFlags2;
-	 isASCIIif=128;
+    isASCIIif=128;
    }
  else
    {
     name=kbToName1;
     flags=kbExtraFlags1;
-	 isASCIIif=32;
+    isASCIIif=32;
    }
  unsigned key=rawCode.full;
  if (key & 0x80)
@@ -422,6 +422,7 @@ unsigned short TGKey::gkey(void)
    { // The rest are passed by the tables
     key&=0x7F;
     ascii=key>=isASCIIif ? key : 0;
+    if (name[key]==kbTab) ascii='\t';
     rawCode.b.scan=ascii;
     Abstract|=name[key] | (flags[key]<<4);
     sFlags|=(flags[key]<<4);

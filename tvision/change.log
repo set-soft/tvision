@@ -1,4 +1,8 @@
 $Log$
+Revision 1.133  2000/02/04 02:03:58  root (set)
+* Modified: The configure process now only configures the target OS.
+* Modified: TStatusItem now uses copies of the strings passed.
+
 Revision 1.132  2000/02/03 00:17:48  set
 * Added: Win32 target to the configure process. I must admit the user needs a
 very UNIXified system to run it joining Mingw32 with some goodies from Cygwin
