@@ -142,7 +142,11 @@ drvChecker Drivers[]=
   #ifdef TVOSf_Linux
    TV_LinuxDriverCheck,
   #endif
-  TV_UNIXDriverCheck,
+  #ifdef TVOSf_QNXRtP
+   TV_QNXRtPDriverCheck,
+  #else
+   TV_UNIXDriverCheck,
+  #endif // TVOSf_QNXRtP
  #endif
  #ifdef TVOS_Win32
  TV_Win32DriverCheck,
