@@ -21,6 +21,7 @@
 #define Uses_TScreen
 #include <tv.h>
 #include <termios.h>
+#include <signal.h>
 #include <tv/linux/screen.h>
 #include <tv/linux/mouse.h>
 #include <tv/linux/log.h>
@@ -28,8 +29,8 @@
 extern "C" {
 #include <gpm.h>
 }
-
 #include <linux/keyboard.h>
+
 static
 int SetUpGPMConnection()
 {

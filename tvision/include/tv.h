@@ -506,6 +506,10 @@ Modified by Salvador E. Tropea
 #define INCLUDE_SYSTEM_H
 #endif
 
+#if defined( Uses_TVCodePage )
+#define INCLUDE_CODEPAGE_H
+#endif
+
 #if defined( Uses_TSortedCollection )
 #define Uses_TNSSortedCollection
 #define Uses_TCollection
@@ -652,6 +656,10 @@ Modified by Salvador E. Tropea
 
 #if defined( INCLUDE_TOBJSTRM_H )
 #include <tv/tobjstrm.h>
+#endif
+
+#if defined( INCLUDE_CODEPAGE_H )
+#include <tv/codepage.h>
 #endif
 
 #if defined( INCLUDE_DRAWBUF_H )

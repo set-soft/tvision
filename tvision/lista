@@ -3,6 +3,7 @@ change.log
 change1.log
 classes/calcdisp.cc
 classes/calculat.cc
+classes/codepage.cc
 classes/dos/dosdis.cc
 classes/dos/doskey.cc
 classes/dos/dosmouse.cc
@@ -406,6 +407,7 @@ include/cl/utime.h
 include/cl/utsname.h
 include/compatlayer.h
 include/tv/calc.h
+include/tv/codepage.h
 include/tv/configtv.h
 include/tv/editors.h
 include/tv/tvedit.h

@@ -39,7 +39,7 @@ uchar TView::specialChars[] =
 {
     175, 174, 26, 27, ' ', ' ', 0
 };
-uchar TView::o_specialChars[] =
+uchar TView::ospecialChars[] =
 {
     175, 174, 26, 27, ' ', ' ', 0
 };
@@ -126,7 +126,8 @@ char TDirListBox::ographics[]  = "ÀÃÄ";
 const char * TFileInfoPane::pmText = "p";
 const char * TFileInfoPane::amText = "a";
 
-const char TDeskTop::defaultBkgrnd = '\xB0';
+char TDeskTop::defaultBkgrnd = '\xB0';
+char TDeskTop::odefaultBkgrnd = '\xB0';
 
 uchar TListViewer::columnSeparator = 179; // ³
 uchar TListViewer::ocolumnSeparator = 179; // ³

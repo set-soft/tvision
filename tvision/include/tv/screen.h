@@ -13,9 +13,11 @@
 #if defined( Uses_TScreen ) && !defined( __TScreen )
 #define __TScreen
 
-#ifdef TVOS_UNIX
-#include <signal.h>
-#endif
+//#ifdef TVOS_UNIX
+//#include <signal.h>
+//#endif
+
+class TVCodePage;
 
 // SET: That's a wrapper to enclose the DOS fonts stuff.
 // Under Linux can't be used and just returns error.
@@ -152,6 +154,8 @@ protected:
  static TScreenColor PC_BIOSPalette[16];
  // To know if the palette changed (set by high level routines)
  static char paletteModified;
+ // Code page initializator
+ static TVCodePage *codePage;
  
  // Default behaviors
  static void        defaultClearScreen(uchar, uchar);

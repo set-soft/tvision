@@ -14,13 +14,16 @@
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_string
+#define Uses_TGKey
 #include <tv.h>
 
 #include <termios.h>
 #include <term.h>
 #include <sys/ioctl.h>
+#include <signal.h>
 
 #include <tv/unix/xtscreen.h>
+#include <tv/unix/xtkey.h>
 #include <tv/linux/log.h>
 
 int                   TDisplayXTerm::curX=0;
@@ -80,11 +83,11 @@ void TDisplayXTerm::SetCursorPos(unsigned x, unsigned y)
 
 void TDisplayXTerm::GetCursorPos(unsigned &x, unsigned &y)
 {
- fflush(stdin);
+ fflush(TGKeyXTerm::fIn);
  fputs("\E[6n",stdout);
  // Is it safe?
  int nR,nC;
- if (fscanf(stdin,"\E[%d;%dR",&nR,&nC)==2)
+ if (fscanf(TGKeyXTerm::fIn,"\E[%d;%dR",&nR,&nC)==2)
    {
     curX=nC-1;
     curY=nR-1;
@@ -127,7 +130,7 @@ ushort TDisplayXTerm::GetRowsSeq()
 {
  fputs("\E[18t",stdout);
  int nR,nC;
- if (fscanf(stdin,"\E[8;%d;%dt",&nR,&nC)==2)
+ if (fscanf(TGKeyXTerm::fIn,"\E[8;%d;%dt",&nR,&nC)==2)
     return nR;
  return 25;
 }
@@ -144,7 +147,7 @@ ushort TDisplayXTerm::GetColsSeq()
 {
  fputs("\E[18t",stdout);
  int nR,nC;
- if (fscanf(stdin,"\E[8;%d;%dt",&nR,&nC)==2)
+ if (fscanf(TGKeyXTerm::fIn,"\E[8;%d;%dt",&nR,&nC)==2)
     return nC;
  return 80;
 }
@@ -173,7 +176,7 @@ const char *TDisplayXTerm::GetWindowTitle(void)
 {
  char buffer[256]; // Put a max.
  fputs("\E[21t",stdout);
- fgets(buffer,255,stdin);
+ fgets(buffer,255,TGKeyXTerm::fIn);
  // OSC l Name ST (\E]lName\0)
  if (buffer[0]!=27 || buffer[1]!=']' || buffer[2]!='l')
     return 0;

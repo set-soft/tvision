@@ -155,7 +155,7 @@ public:
     // SET: These are shared by various TView members.
     // I moved it to a class because I think is better to enclose them.
     static uchar specialChars[];
-    static uchar o_specialChars[];
+    static uchar ospecialChars[];
 
 private:
 
