@@ -1,4 +1,11 @@
 $Log$
+Revision 1.88  1999/08/03 02:04:57  set
+* Added: Now TClusters (TRadioButton and TCheckBox) sends broadcasts to your
+owner each time the movedTo and press member are called. This behavior is the
+default but can be disabled setting the TCluster::extraOptions static
+variable to 0. The new broadcasts sends a pointer to the view that is sending
+the message, the owner must know what exactly is this pointer.
+.
 Revision 1.87  1999/08/02 00:44:24  set
 * Modified: Now TFileCollection sorting is configurable. By default it sorts
 like the Turbo Vision help says (directories at the end of the list, no case

@@ -1,21 +1,5 @@
-RHIDE is copyright (C) 1996-1998 by Robert H”hne.
-
-The sources for the Turbo Vision library, which is used to build
-RHIDE, are copyright by Borland International. But they are agreed
-to make modifications on them and use it freely.
-
-That means, the binaries of RHIDE are not copyright in any part by
-Borland International.
-
-Parts of RHIDE are copyright by other people which is notated in the
-source files. These are especially all the files in the libset subdirectory
-which contain the INFO-Viewer and the editor used by RHIDE. These
-sources are copyright by Salvador Eduardo Tropea and he allowed me
-to distribute them together with the sources for RHIDE.
-
-For more details about the copying conditions for the files in the
-libset subdirectory, read the beginning of the file ceditor.cc in that
-directory.
+RHIDE is copyright (C) 1996-1999 by Robert H”hne. It is distributed under
+the terms of the GPL which is written in the file COPYING.
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -31,22 +15,24 @@ directory.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-Additional conditions:
+Additional permission:
 
-If you make any modifications on RHIDE, you have to leave the original
-copyright notice intact and add an comment about your modifications.
+ As a special additional permission, the library librhuti which is
+ in the source tree of the RHIDE sources in the librhuti/
+ subdirectory can be distributed alone freely without any
+ restrictions.  It is not limited to use under the terms of the GPL
+ or LGPL.  For more information see the file COPYING.RHU in that
+ subdirectory.
 
-If you distribute the binaries for RHIDE from modified sources, then
-you have to add a notification which is printed at startup of RHIDE
-and in the about box to tell the user that you have made modifications
-and that it is not the binary from the original sources distributed by me.
 
-If you distribute the sources for RHIDE, you are not allowed to distribute
-the full modified sources for the Turbo Vision library because of the
-copying conditions by Borland International.
+Non-binding request
+===================
 
-If you want to include RHIDE (binaries and/or sources) in a commercial
-product (on a CD-ROM for a book or something else) contact me first.
+If you distribute RHIDE together with other products it would be nice,
+if you could give me a note about it so I'll be informed. Of course
+you can send me a copy of the distribution medium but this is not
+required.
+
 
 For contacting the author send electronic mail to
 
@@ -54,9 +40,7 @@ robert.hoehne@gmx.net
 
 or paper mail to
 
-Robert H”hne
+Robert Hoehne
 Am Berg 3
 D - 09573 Dittmannsdorf
 Germany
-
-
