@@ -1,29 +1,25 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2004-10-14 16:14
+# 2004-10-18 11:35
 #
 
 ../makes/obj/beep$(ExOBJ):: beep.c \
-	beep.c \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/drivevalid$(ExOBJ):: drivevalid.c \
-	drivevalid.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/expandpath$(ExOBJ):: expandpath.c \
-	expandpath.c \
 	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/fexpand$(ExOBJ):: fexpand.c \
-	fexpand.c \
 	cl/needs.h \
 	compatlayer.h \
 	tv/configtv.h \
@@ -31,14 +27,12 @@
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/fileattrs$(ExOBJ):: fileattrs.c \
-	fileattrs.c \
 	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/fileexists$(ExOBJ):: fileexists.c \
-	fileexists.c \
 	cl/unistd.h \
 	compatlayer.h \
 	tv/configtv.h \
@@ -46,14 +40,12 @@
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/filelength$(ExOBJ):: filelength.c \
-	filelength.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/fixpath$(ExOBJ):: fixpath.c \
-	fixpath.c \
 	cl/needs.h \
 	cl/unistd.h \
 	compatlayer.h \
@@ -62,14 +54,12 @@
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/fnmatch$(ExOBJ):: fnmatch.c \
-	fnmatch.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/getcurdir$(ExOBJ):: getcurdir.c \
-	getcurdir.c \
 	cl/needs.h \
 	cl/unistd.h \
 	compatlayer.h \
@@ -78,49 +68,42 @@
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/getline$(ExOBJ):: getline.c \
-	getline.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/getopt$(ExOBJ):: getopt.c \
-	getopt.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/getopt1$(ExOBJ):: getopt1.c \
-	getopt1.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/getshell$(ExOBJ):: getshell.c \
-	getshell.c \
 	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/glob$(ExOBJ):: glob.c \
-	glob.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/globfree$(ExOBJ):: globfree.c \
-	globfree.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/iffilelen$(ExOBJ):: iffilelen.cc \
-	iffilelen.cc \
 	cl/needs.h \
 	compatlayer.h \
 	tv/configtv.h \
@@ -128,135 +111,115 @@
 	$(RHIDE_COMPILE_CC)
 
 ../makes/obj/isdir$(ExOBJ):: isdir.c \
-	isdir.c \
 	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/isrelpath$(ExOBJ):: isrelpath.c \
-	isrelpath.c \
 	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/iswild$(ExOBJ):: iswild.c \
-	iswild.c \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/itoa$(ExOBJ):: itoa.c \
-	itoa.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/mkstemp$(ExOBJ):: mkstemp.c \
-	mkstemp.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/nl_langinfo$(ExOBJ):: nl_langinfo.c \
-	nl_langinfo.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/ntdirent$(ExOBJ):: ntdirent.c \
-	ntdirent.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/pathvalid$(ExOBJ):: pathvalid.c \
-	pathvalid.c \
 	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/regex$(ExOBJ):: regex.c \
-	regex.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/releasec$(ExOBJ):: releasec.c \
-	releasec.c \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/snprintf$(ExOBJ):: snprintf.c \
-	snprintf.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/ssc_streams$(ExOBJ):: ssc_streams.cc \
-	ssc_streams.cc \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
 ../makes/obj/strlwr$(ExOBJ):: strlwr.c \
-	strlwr.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/strupr$(ExOBJ):: strupr.c \
-	strupr.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/ticks$(ExOBJ):: ticks.c \
-	ticks.c \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/unc$(ExOBJ):: unc.c \
-	unc.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/unc_95$(ExOBJ):: unc_95.c \
-	unc_95.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/unc_nt$(ExOBJ):: unc_nt.c \
-	unc_nt.c \
 	cl/needs.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/validfilename$(ExOBJ):: validfilename.c \
-	validfilename.c \
 	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/yieldpro$(ExOBJ):: yieldpro.c \
-	yieldpro.c \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_C)
