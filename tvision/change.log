@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.145  2002/06/11 16:05:07  set
+* Fixed: [Solaris+XTerm] The termios MIN and TIME values have a default
+that isn't really good for interactive applications. Now I set to 0 both.
+With this I succesfully run the editor remotely with mouse and shift/ctrl/
+alt+key support.
+
 Revision 2.144  2002/06/11 15:09:25  set
 * Fixed: Missing \n after the tvfintl copy in generated makefile. Affected
 UNIX targets.

@@ -713,7 +713,7 @@ sub GenerateMakefile
    }
  $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy\n";
  $rep.="\tcp intl/dummy/libtvfintl.a $makeDir\n";
- $rep.="\tln -s intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
+ $rep.="\trm -f linuxso/libtvfintl.a\n\tln -s intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
  $text=~s/\@intl_dummy_rule\@/$rep/g;
 
  # Write install stuff
