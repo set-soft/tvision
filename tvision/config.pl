@@ -637,11 +637,25 @@ int main(void)
    {# Try again with -lcurses, In Solaris ncurses is installed this way
     $result=RunGCCTest($GCC,'c',$test,'-lcurses');
     if (!length($result))
-      {
-       print "\nError: ncurses library not found, please install ncurses $vNeed or newer\n";
-       print "Look in $ErrorLog for potential compile errors of the test\n";
-       CreateCache();
-       die "Missing library\n";
+      {# Try with curses.h
+       $test='
+#include <stdio.h>
+#include <curses.h>
+void dummy() {initscr();}
+int main(void)
+{
+ printf(NCURSES_VERSION);
+ return 0;
+}
+';
+       $result=RunGCCTest($GCC,'c',$test,'-lcurses');
+       if (!length($result))
+         {
+          print "\nError: ncurses library not found, please install ncurses $vNeed or newer\n";
+          print "Look in $ErrorLog for potential compile errors of the test\n";
+          CreateCache();
+          die "Missing library\n";
+         }
       }
     $conf{'NameCurses'}='curses';
    }
