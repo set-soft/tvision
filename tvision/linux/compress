@@ -94,7 +94,27 @@ $binddist="rhtvision-$Version.bin.i386.elf.dynamic.linux.tar.gz";
 $srcdist="rhtvision-$Version.src.tar.gz";
 chdir('../..');
 unlink($srcdist,$bindist,$binddist);
-system("tar -X tvision/linux/exclude.txt -zcvf $srcdist tvision");
+
+open(FIL,'tvision/lista');
+@files=<FIL>;
+close(FIL);
+$r='';
+foreach $i (@files)
+  {
+   chop $i;
+   if ((substr($i,0,1) eq '-') or (substr($i,0,1) eq '+'))
+     {
+      $i=substr($i,1);
+     }
+   $r.='tvision/'.$i.' ';
+  }
+@files=glob('tvision/examples/*/*.mak');
+$r.=join(' ',@files);
+@files=split(/ /,$r);
+@files=sort(@files);
+$r=join(' ',@files);
+
+system("tar -zcvf $srcdist $r");
 system("tar -zcvf $bindist --exclude=*CVS `cat tvision/linux/inclubin.txt`") if $doBinary;
 system("tar -zcvf $binddist --exclude=*CVS `cat tvision/linux/includbi.txt`") if $doBinary;
 
