@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to support i18n.
 
  *
  *
@@ -43,6 +44,7 @@ TMenuItem::TMenuItem(   const char *aName,
              )
 {
     name = newStr( aName );
+    intlName = NULL;
     command = aCommand;
     disabled = Boolean(!TView::commandEnabled(command));
     keyCode = aKeyCode;
@@ -62,6 +64,7 @@ TMenuItem::TMenuItem( const char *aName,
                     )
 {
     name = newStr( aName );
+    intlName = NULL;
     command = 0;
     disabled = Boolean(!TView::commandEnabled(command));
     keyCode = aKeyCode;
@@ -73,6 +76,7 @@ TMenuItem::TMenuItem( const char *aName,
 TMenuItem::~TMenuItem()
 {
     DeleteArray((char *)name);
+    TVIntl::freeSt( intlName );
     if( command == 0 )
         delete(subMenu);
     else
@@ -353,7 +357,7 @@ TMenuItem *TMenuView::findItem( char ch )
         {
         if( p->name != 0 && !p->disabled )
             {
-            const char *loc = strchr( p->name, '~' );
+            const char *loc = strchr( TVIntl::getText(p->name,p->intlName), '~' );
             if( loc != 0 && TGKey::CompareASCII(ch,TVCodePage::toUpper(loc[1])) )
                 return p;
             }
@@ -514,16 +518,16 @@ void TMenuView::writeMenu( opstream& os, TMenu *menu )
         {
         os << tok;
         os.writeString( item->name );
-	os << item->command << (short)(item->disabled)
-	   << item->keyCode << item->helpCtx;
-	if( item->name != 0 )
-	    {
-	    if( item->command == 0 )
-		writeMenu( os, item->subMenu );
-	    else
-		os.writeString( item->param );
-	    }
-	}
+        os << item->command << (short)(item->disabled)
+           << item->keyCode << item->helpCtx;
+        if( item->name != 0 )
+            {
+            if( item->command == 0 )
+                writeMenu( os, item->subMenu );
+            else
+                os.writeString( item->param );
+            }
+        }
     tok = 0;
     os << tok;
 }
@@ -542,19 +546,20 @@ TMenu *TMenuView::readMenu( ipstream& is )
     uchar tok;
     is >> tok;
     while( tok != 0 )
-	{
-	assert( tok == 0xFF );
-	item = new TMenuItem( (const char *)NULL, 0, (TMenu *)NULL );
-	*last = item;
-	last = &(item->next);
-	item->name = is.readString();
-	short temp;
-	is >> item->command >> temp
-	   >> item->keyCode >> item->helpCtx;
-	item->disabled = Boolean( temp );
-	if( item->name != 0 )
-	    {
-	    if( item->command == 0 )
+        {
+        assert( tok == 0xFF );
+        item = new TMenuItem( (const char *)NULL, 0, (TMenu *)NULL );
+        *last = item;
+        last = &(item->next);
+        item->name = is.readString();
+        item->intlName = NULL;
+        short temp;
+        is >> item->command >> temp
+           >> item->keyCode >> item->helpCtx;
+        item->disabled = Boolean( temp );
+        if( item->name != 0 )
+            {
+            if( item->command == 0 )
                 item->subMenu = readMenu( is );
             else
                 item->param = is.readString();

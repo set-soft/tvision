@@ -37,42 +37,42 @@
 TMenuBar *TEditorApp::initMenuBar( TRect r )
 {
 
-      TSubMenu& sub1 = *new TSubMenu( _("~F~ile"), kbAltF ) +
-        *new TMenuItem( _("~O~pen"), cmOpen, kbF3 ) +
-        *new TMenuItem( _("~N~ew"), cmNew, kbNoKey ) +
-        *new TMenuItem( _("~S~ave"), cmSave, kbF2, hcNoContext, "F2" ) +
-        *new TMenuItem( _("S~a~ve as..."), cmSaveAs, kbNoKey ) +
+      TSubMenu& sub1 = *new TSubMenu( __("~F~ile"), kbAltF ) +
+        *new TMenuItem( __("~O~pen"), cmOpen, kbF3 ) +
+        *new TMenuItem( __("~N~ew"), cmNew, kbNoKey ) +
+        *new TMenuItem( __("~S~ave"), cmSave, kbF2, hcNoContext, "F2" ) +
+        *new TMenuItem( __("S~a~ve as..."), cmSaveAs, kbNoKey ) +
              newLine() +
-        *new TMenuItem( _("~C~hange dir..."), cmChangeDrct, kbNoKey ) +
-        *new TMenuItem( _("S~h~ell"), cmCallShell, kbNoKey ) +
-        *new TMenuItem( _("E~x~it"), cmQuit, kbAltX, hcNoContext, "Alt+X" );
+        *new TMenuItem( __("~C~hange dir..."), cmChangeDrct, kbNoKey ) +
+        *new TMenuItem( __("S~h~ell"), cmCallShell, kbNoKey ) +
+        *new TMenuItem( __("E~x~it"), cmQuit, kbAltX, hcNoContext, "Alt+X" );
 
-      TSubMenu& sub2 = *new TSubMenu( _("~E~dit"), kbAltE ) +
-        *new TMenuItem( _("~U~ndo"), cmUndo, kbNoKey ) +
+      TSubMenu& sub2 = *new TSubMenu( __("~E~dit"), kbAltE ) +
+        *new TMenuItem( __("~U~ndo"), cmUndo, kbNoKey ) +
              newLine() +
-        *new TMenuItem( _("Cu~t~"), cmCut, kbShiftDel, hcNoContext, "Shift+Del" ) +
-        *new TMenuItem( _("~C~opy"), cmCopy, kbCtrlIns, hcNoContext, "Ctrl+Ins" ) +
-        *new TMenuItem( _("~P~aste"), cmPaste, kbShiftIns, hcNoContext, "Shift+Ins" ) +
-        *new TMenuItem( _("~S~how clipboard"), cmShowClip, kbNoKey ) +
+        *new TMenuItem( __("Cu~t~"), cmCut, kbShiftDel, hcNoContext, "Shift+Del" ) +
+        *new TMenuItem( __("~C~opy"), cmCopy, kbCtrlIns, hcNoContext, "Ctrl+Ins" ) +
+        *new TMenuItem( __("~P~aste"), cmPaste, kbShiftIns, hcNoContext, "Shift+Ins" ) +
+        *new TMenuItem( __("~S~how clipboard"), cmShowClip, kbNoKey ) +
              newLine() +
-        *new TMenuItem( _("~C~lear"), cmClear, kbCtrlDel, hcNoContext, "Ctrl+Del" );
+        *new TMenuItem( __("~C~lear"), cmClear, kbCtrlDel, hcNoContext, "Ctrl+Del" );
 
-      TSubMenu& sub3 = *new TSubMenu( _("~S~earch"), kbAltS ) +
-        *new TMenuItem( _("~F~ind..."), cmFind, kbNoKey ) +
-        *new TMenuItem( _("~R~eplace..."), cmReplace, kbNoKey ) +
-        *new TMenuItem( _("~S~earch again"), cmSearchAgain, kbNoKey );
+      TSubMenu& sub3 = *new TSubMenu( __("~S~earch"), kbAltS ) +
+        *new TMenuItem( __("~F~ind..."), cmFind, kbNoKey ) +
+        *new TMenuItem( __("~R~eplace..."), cmReplace, kbNoKey ) +
+        *new TMenuItem( __("~S~earch again"), cmSearchAgain, kbNoKey );
 
-      TSubMenu& sub4 = *new TSubMenu( _("~W~indows"), kbAltW ) +
-        *new TMenuItem( _("~S~ize/move"),cmResize, kbCtrlF5, hcNoContext, "Ctrl+F5" ) +
-        *new TMenuItem( _("~Z~oom"), cmZoom, kbF5, hcNoContext, "F5" ) +
-        *new TMenuItem( _("~T~ile"), cmTile, kbNoKey ) +
-        *new TMenuItem( _("C~a~scade"), cmCascade, kbNoKey ) +
-        *new TMenuItem( _("~N~ext"), cmNext, kbF6, hcNoContext, "F6" ) +
-        *new TMenuItem( _("~P~revious"), cmPrev, kbShiftF6, hcNoContext, "Shift+F6" ) +
-        *new TMenuItem( _("~C~lose"), cmClose, kbAltF3, hcNoContext, "Alt+F3" );
+      TSubMenu& sub4 = *new TSubMenu( __("~W~indows"), kbAltW ) +
+        *new TMenuItem( __("~S~ize/move"),cmResize, kbCtrlF5, hcNoContext, "Ctrl+F5" ) +
+        *new TMenuItem( __("~Z~oom"), cmZoom, kbF5, hcNoContext, "F5" ) +
+        *new TMenuItem( __("~T~ile"), cmTile, kbNoKey ) +
+        *new TMenuItem( __("C~a~scade"), cmCascade, kbNoKey ) +
+        *new TMenuItem( __("~N~ext"), cmNext, kbF6, hcNoContext, "F6" ) +
+        *new TMenuItem( __("~P~revious"), cmPrev, kbShiftF6, hcNoContext, "Shift+F6" ) +
+        *new TMenuItem( __("~C~lose"), cmClose, kbAltF3, hcNoContext, "Alt+F3" );
 
-      /*TSubMenu& sub5 = *new TSubMenu( _("~O~ptions"), kbAltO )
-        + *new TMenuItem( _("~M~acros"), cmMacros, kbNoKey );*/
+      /*TSubMenu& sub5 = *new TSubMenu( __("~O~ptions"), kbAltO )
+        + *new TMenuItem( __("~M~acros"), cmMacros, kbNoKey );*/
 
     r.b.y = r.a.y+1;
     return new TMenuBar( r, sub1 + sub2 + sub3 + sub4
@@ -88,12 +88,12 @@ TStatusLine *TEditorApp::initStatusLine( TRect r )
             // SET: F10 before the others so when the library maintains the
             // cursor visible this option is pointed and the user have a
             // hint about what to do.
-            *new TStatusItem( _("~F10~ Menu"), kbF10, cmMenu ) +
-            *new TStatusItem( _("~F2~ Save"), kbF2, cmSave ) +
-            *new TStatusItem( _("~F3~ Open"), kbF3, cmOpen ) +
-            *new TStatusItem( _("~Alt+F3~ Close"), kbAltF3, cmClose ) +
-            *new TStatusItem( _("~F5~ Zoom"), kbF5, cmZoom ) +
-            *new TStatusItem( _("~F6~ Next"), kbF6, cmNext ) +
+            *new TStatusItem( __("~F10~ Menu"), kbF10, cmMenu ) +
+            *new TStatusItem( __("~F2~ Save"), kbF2, cmSave ) +
+            *new TStatusItem( __("~F3~ Open"), kbF3, cmOpen ) +
+            *new TStatusItem( __("~Alt+F3~ Close"), kbAltF3, cmClose ) +
+            *new TStatusItem( __("~F5~ Zoom"), kbF5, cmZoom ) +
+            *new TStatusItem( __("~F6~ Next"), kbF6, cmNext ) +
             *new TStatusItem( 0, kbCtrlF5, cmResize )
             );
 

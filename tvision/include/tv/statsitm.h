@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to allow dynamic status bars and i18n support.
 
  *
  *
@@ -24,10 +25,11 @@ public:
                  ushort cmd,
                  TStatusItem *aNext = 0
                 );
-    ~TStatusItem() { DeleteArray(text); };
+    ~TStatusItem() { DeleteArray(text); TVIntl::freeSt(intlText); };
 
     TStatusItem *next;
     const char *text;
+    stTVIntl *intlText;
     ushort keyCode;
     ushort command;
 
@@ -44,6 +46,7 @@ inline TStatusItem::TStatusItem( const char *aText,
  // lines loaded from disk files or other similar stuff. Or if we does it
  // we leak.
  text=newStr(aText);
+ intlText=NULL;
 }
 
 #endif  // Uses_TStatusItem

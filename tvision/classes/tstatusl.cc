@@ -57,7 +57,7 @@ void TStatusLine::computeLength()
         while( p != 0 )
             {
             if( p->text != 0 )
-                l += cstrlen(p->text) + 2;
+                l += cstrlen(TVIntl::getText(p->text,p->intlText)) + 2;
             p = p->next;
             }
         }
@@ -126,7 +126,7 @@ void TStatusLine::drawSelect( TStatusItem *selected )
         {
         if( T->text != 0 )
             {
-            int l = cstrlen( T->text );
+            int l = cstrlen( TVIntl::getText(T->text,T->intlText) );
             if( i + l < size.x )
                 {
                 if( commandEnabled( T->command) )
@@ -141,7 +141,7 @@ void TStatusLine::drawSelect( TStatusItem *selected )
                         color = cNormDisabled;
 
                 b.moveChar( i, ' ', color, 1 );
-                b.moveCStr( i+1, T->text, color );
+                b.moveCStr( i+1, TVIntl::getText(T->text,T->intlText), color );
                 b.moveChar( i+l+1, ' ', color, 1 );
                 }
             i += l + inc;
@@ -201,7 +201,7 @@ TStatusItem *TStatusLine::itemMouseIsIn( TPoint mouse )
         {
         if( T->text != 0 )
             {
-            int k = i + cstrlen(T->text) + inc;
+            int k = i + cstrlen(TVIntl::getText(T->text,T->intlText)) + inc;
             if( mouse.x >= i && mouse. x < k )
                 return T;
             i = k;

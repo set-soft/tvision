@@ -305,7 +305,7 @@ TStatusLine *TProgram::initStatusLine( TRect r )
     r.a.y = r.b.y - 1;
     return new TStatusLine( r,
         *new TStatusDef( 0, 0xFFFF ) +
-            *new TStatusItem( _("~Alt-X~ Exit"), kbAltX, cmQuit ) +
+            *new TStatusItem( "~Alt-X~ Exit", kbAltX, cmQuit ) +
             *new TStatusItem( 0, kbF10, cmMenu ) +
             *new TStatusItem( 0, kbAltF3, cmClose ) +
             *new TStatusItem( 0, kbF5, cmZoom ) +

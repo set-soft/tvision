@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.406  2003/04/07 13:32:43  set
+* Added: A new class TVIntl to handle all the gettext mess. The GNU gettext
+library is a mess and a source of problems and limitations. For this reason
+I isolated all of this in a class that will also provide clean recoding
+of catalogs.
+
 Revision 2.405  2003/04/03 20:08:26  set
 * Modified: The following patch enforces the use of the return value of
 gettext (intl library) as a const char *.
