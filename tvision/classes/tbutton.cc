@@ -232,7 +232,7 @@ void TButton::handleEvent( TEvent& event )
             switch( event.message.command )
                 {
                 case cmDefault:
-                    if( amDefault )
+                    if( amDefault && !(state & sfDisabled) )
                         {
                         press();
                         clearEvent(event);
