@@ -136,6 +136,9 @@ public:
     // OS. If for some reason you really need to avoid it and want to use
     // 100% of the CPU just assign 1 to this variable.
     static char doNotReleaseCPU;
+    // SET: Disable Alt+number window selection. Useful if you have to do it
+    // configurable like in SETEdit.
+    static char doNotHandleAltNumber;
 
 protected:
 

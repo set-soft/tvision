@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.505  2003/10/14 15:43:11  set
+* Added: A new member called reSort() to the sorted collections. It is
+useful when the sorting criteria and/or key values are changed on the fly.
+
 Revision 2.504  2003/10/06 17:01:42  set
 * Modified: To avoid remapping ASCII values under 32 for the input code
 page. Reported by Alex Lozano.

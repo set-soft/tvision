@@ -8,6 +8,7 @@
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Salvador E. Tropea (release CPU and other stuff)
 Modified by Salvador E. Tropea to compile for 64 bits architectures.
+Modified by Salvador E. Tropea to disable Alt+N stuff.
 
  *
  *
@@ -44,6 +45,7 @@ clock_t TProgram::lastIdleClock = 0;
 clock_t TProgram::inIdleTime = 0;
 Boolean TProgram::inIdle = False;
 char    TProgram::doNotReleaseCPU = 0;
+char    TProgram::doNotHandleAltNumber = 0;
 
 extern TPoint shadowSize;
 
@@ -215,7 +217,7 @@ TPalette& TProgram::getPalette() const
 
 void TProgram::handleEvent( TEvent& event )
 {
-    if( event.what == evKeyDown )
+    if( !doNotHandleAltNumber && event.what == evKeyDown )
         {
         char c = TGKey::GetAltChar( event.keyDown.keyCode, event.keyDown.charScan.charCode );
         if( c >= '1' && c <= '9' )
