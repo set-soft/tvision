@@ -410,15 +410,9 @@ sub CheckGXX
     print "C++ compiler: @conf{'GXX'} (cached) OK\n";
     return @conf{'GXX'};
    }
- if (CheckGCCcanXX($GCC))
-   {
-    $GXX=$GCC;
-   }
- else
-   {
-    # Test for a working g++
-    $GXX=CheckGXXReal();
-   }
+ # Test for a working g++
+ $GXX=CheckGXXReal();
+
  $conf{'GXX'}=$GXX;
 }
 
@@ -461,6 +455,7 @@ int main(void)
        return $i;
       }
    }
+ return $GCC if (CheckGCCcanXX($GCC));
  CreateCache();
  die('can not find it');
 }
