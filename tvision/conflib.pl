@@ -469,6 +469,9 @@ sub FindCFLAGS
     # usually faster. In Linux that's faster.
     $ret.=' -pipe' if ($OS eq 'UNIX');
     $ret.=' -D_WIN32' if ($OS eq 'Win32');
+    # Looks like that's common and some sysadmins doesn't configure gcc to
+    # look there:
+    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSflavor eq 'FreeBSD');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
@@ -511,6 +514,7 @@ sub FindCXXFLAGS
     $ret='-O2 -gstabs+3';
     $ret.=' -pipe' if ($OS eq 'UNIX');
     $ret.=' -D_WIN32' if ($OS eq 'Win32');
+    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSflavor eq 'FreeBSD');
    }
  print "$ret\n";
  $conf{'CXXFLAGS'}=$ret;
