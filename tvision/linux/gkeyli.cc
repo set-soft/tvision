@@ -1,8 +1,7 @@
-/* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* This file is part of RHIDE. */
 /*****************************************************************************
 
- Keyboard handler for Linux by Salvador E. Tropea (SET) (1998)
+ This code is GPL, see copying file for more details.
+ Keyboard handler for Linux Copyright by Salvador E. Tropea (SET) (1998,1999)
 
  That's the counterpart of the gkey.cc for DOS that I created some months ago
 it uses curses input and tries to detect the shift/control status from the
@@ -44,10 +43,21 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #include <sys/vt.h>
 #include <signal.h>
 
+//#define GKEY
+#define TOSTDERR
 #ifndef GKEY
 #define dbprintf(a...)
 #else
-#define dbprintf(a...) printf(a)
+# ifdef TOSTDERR
+#  define dbprintf(a...) fprintf(stderr,a)
+# else
+#  define dbprintf(a...) printf(a)
+# endif
+#endif
+
+#if (NCURSES_VERSION_MAJOR>4) || \
+    ((NCURSES_VERSION_MAJOR==4) && (NCURSES_VERSION_MINOR>=2))
+#define HAVE_DEFINE_KEY
 #endif
 
 /* Linux IOCTL values found experimentally */
@@ -133,7 +143,7 @@ unsigned char kbToName2[128] =
  0,0,0,0,0,0,0,0,                                   // 28-2F
  0,0,0,0,0,0,0,0,                                   // 30-37
  0,0,0,0,0,0,0,0,                                   // 38-3F
- 0,0,0,0,0,0,0,0,                                   // 40-47
+ 0,0,kbHome,kbEnd,kbUp,kbDown,kbRight,kbLeft,       // 40-47
  0,0,kbDelete,kbInsert,0,0,0,0,                     // 48-4F
  0,0,kbPgDn,kbPgUp,0,0,0,0,                         // 50-57
  0,0,0,0,0,0,kb5,0,                                 // 58-5F
@@ -243,9 +253,20 @@ void TGKey::SetKbdMapping(int version)
          PatchTablesForNewKbdLayout();
          break;
     case KBD_XTERM_STYLE: // It can be combined with others
+         #ifdef HAVE_DEFINE_KEY
+         // SET: Here is a temporal workaround for Eterm when the user uses
+         // the xterm terminfo file (normal in Debian).
+         define_key("\x1B[7~",KEY_F(58)); // Home
+         define_key("\x1B[8~",KEY_F(59)); // End
+         #endif
+         // 0631 == KEY_MOUSE
+         kbToName2[KEY_MOUSE & 0x7F]=kbMouse;
+         kbExtraFlags2[KEY_MOUSE & 0x7F]=0;
          XtermMode=1;
          break;
     case KBD_NO_XTERM_STYLE:
+         kbToName2[KEY_MOUSE & 0x7F]=kbF7;
+         kbExtraFlags2[KEY_MOUSE & 0x7F]=kbShift;
          XtermMode=0;
          break;
     default: // KBD_OLD_STYLE
@@ -259,19 +280,28 @@ unsigned short TGKey::gkey(void)
  Abstract=0;
 
  GetRaw();
+ // Xterm hacks:
+ if (XtermMode)
+   {
+    if (rawCode.full==KEY_MOUSE)
+      {
+       dbprintf("TGKey::gkey: Mouse event detected\r\n");
+       Abstract=kbMouse;
+       return rawCode.full;;
+      }
+   if (rawCode.full & 0x80)
+     {
+      sFlags|=kblAltL;
+      rawCode.full &= ~0x80;
+      dbprintf("Adding left alt because the code contains 0x80 and xterm detected\r\n");
+     }
+   }
  if (rawCode.full & META_MASK)
    {
     sFlags|=kblAltL;
     rawCode.full &= ~META_MASK;
     dbprintf("Adding left alt because the code contains META key\r\n");
    }
- else
-   if (XtermMode && (rawCode.full & 0x80))
-     {
-      sFlags|=kblAltL;
-      rawCode.full &= ~0x80;
-      dbprintf("Adding left alt because the code contains 0x80 and xterm detected\r\n");
-     }
  
  //---- The following code takes advantage of the flags reported by the ioctl
  //---- call. As this mechanism isn't available if we aren't loged in the
@@ -374,6 +404,48 @@ int TGKey::kbhit(void)
 void TGKey::clear(void)
 {
   tcflush(IN_FD,TCIFLUSH);
+}
+
+static MouseButtons=0;
+const int MouseB1Down=0x20,MouseB2Down=0x21,MouseB3Down=0x22,MouseUp=0x23;
+
+void TGKey::fillTEvent(TEvent &e)
+{
+ TGKey::gkey();
+ if (Abstract!=kbMouse)
+   {
+    e.keyDown.charScan.charCode=ascii;
+    e.keyDown.charScan.scanCode=TGKey::rawCode.b.scan;
+    e.keyDown.raw_scanCode=TGKey::rawCode.b.scan;
+    e.keyDown.keyCode=Abstract;
+    e.keyDown.shiftState=sFlags;
+    e.what=evKeyDown;
+    dbprintf("TGKey::fillTEvent: Reporting key (%X/%X)\r\n",Abstract,sFlags);
+   }
+ else
+   { // Mouse events are traslated to keyboard sequences:
+    int event=_getch_();
+    int x=_getch_()-0x21; // They are 0x20+ and the corner is 1,1
+    int y=_getch_()-0x21;
+    switch (event)
+      {
+       case MouseB1Down:
+            MouseButtons|=mbLeftButton;
+            break;
+       case MouseB3Down:
+            MouseButtons|=mbRightButton;
+            break;
+       case MouseUp: // fuzzy, if both are pressed ...
+            if (MouseButtons & mbLeftButton)
+               MouseButtons&= ~mbLeftButton;
+            else
+               MouseButtons&= ~mbRightButton;
+            break;
+      }
+    THWMouse::forceEvent(x,y,MouseButtons);
+    e.what=evMouseUp; // Acts like a "key"
+    dbprintf("TGKey::fillTEvent: Reporting mouse instead of key (%d,%d:%d)\r\n",x,y,event);
+   }
 }
 
 typedef struct
