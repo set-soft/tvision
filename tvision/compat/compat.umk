@@ -1,116 +1,115 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2004-10-18 12:06
 #
 
-../makes/obj/beep$(ExOBJ):: beep.c  
+../makes/obj/beep$(ExOBJ):: ../compat/beep.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/drivevalid$(ExOBJ):: drivevalid.c  
+../makes/obj/drivevalid$(ExOBJ):: ../compat/drivevalid.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/expandpath$(ExOBJ):: expandpath.c  
+../makes/obj/expandpath$(ExOBJ):: ../compat/expandpath.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fexpand$(ExOBJ):: fexpand.c  
+../makes/obj/fexpand$(ExOBJ):: ../compat/fexpand.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fileattrs$(ExOBJ):: fileattrs.c  
+../makes/obj/fileattrs$(ExOBJ):: ../compat/fileattrs.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fileexists$(ExOBJ):: fileexists.c  
+../makes/obj/fileexists$(ExOBJ):: ../compat/fileexists.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/filelength$(ExOBJ):: filelength.c  
+../makes/obj/filelength$(ExOBJ):: ../compat/filelength.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fixpath$(ExOBJ):: fixpath.c  
+../makes/obj/fixpath$(ExOBJ):: ../compat/fixpath.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/fnmatch$(ExOBJ):: fnmatch.c  
+../makes/obj/fnmatch$(ExOBJ):: ../compat/fnmatch.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getcurdir$(ExOBJ):: getcurdir.c  
+../makes/obj/getcurdir$(ExOBJ):: ../compat/getcurdir.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getline$(ExOBJ):: getline.c  
+../makes/obj/getline$(ExOBJ):: ../compat/getline.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getopt$(ExOBJ):: getopt.c  
+../makes/obj/getopt$(ExOBJ):: ../compat/getopt.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getopt1$(ExOBJ):: getopt1.c  
+../makes/obj/getopt1$(ExOBJ):: ../compat/getopt1.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/getshell$(ExOBJ):: getshell.c  
+../makes/obj/getshell$(ExOBJ):: ../compat/getshell.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/glob$(ExOBJ):: glob.c  
+../makes/obj/glob$(ExOBJ):: ../compat/glob.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/globfree$(ExOBJ):: globfree.c  
+../makes/obj/globfree$(ExOBJ):: ../compat/globfree.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/iffilelen$(ExOBJ):: iffilelen.cc  
+../makes/obj/iffilelen$(ExOBJ):: ../compat/iffilelen.cc  
 	$(RHIDE_COMPILE_CC)
 
-../makes/obj/isdir$(ExOBJ):: isdir.c  
+../makes/obj/isdir$(ExOBJ):: ../compat/isdir.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/isrelpath$(ExOBJ):: isrelpath.c  
+../makes/obj/isrelpath$(ExOBJ):: ../compat/isrelpath.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/iswild$(ExOBJ):: iswild.c  
+../makes/obj/iswild$(ExOBJ):: ../compat/iswild.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/itoa$(ExOBJ):: itoa.c  
+../makes/obj/itoa$(ExOBJ):: ../compat/itoa.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/mkstemp$(ExOBJ):: mkstemp.c  
+../makes/obj/mkstemp$(ExOBJ):: ../compat/mkstemp.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/nl_langinfo$(ExOBJ):: nl_langinfo.c  
+../makes/obj/nl_langinfo$(ExOBJ):: ../compat/nl_langinfo.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/ntdirent$(ExOBJ):: ntdirent.c  
+../makes/obj/ntdirent$(ExOBJ):: ../compat/ntdirent.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/pathvalid$(ExOBJ):: pathvalid.c  
+../makes/obj/pathvalid$(ExOBJ):: ../compat/pathvalid.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/regex$(ExOBJ):: regex.c  
+../makes/obj/regex$(ExOBJ):: ../compat/regex.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/releasec$(ExOBJ):: releasec.c  
+../makes/obj/releasec$(ExOBJ):: ../compat/releasec.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/snprintf$(ExOBJ):: snprintf.c  
+../makes/obj/snprintf$(ExOBJ):: ../compat/snprintf.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/ssc_streams$(ExOBJ):: ssc_streams.cc  
+../makes/obj/ssc_streams$(ExOBJ):: ../compat/ssc_streams.cc  
 	$(RHIDE_COMPILE_CC)
 
-../makes/obj/strlwr$(ExOBJ):: strlwr.c  
+../makes/obj/strlwr$(ExOBJ):: ../compat/strlwr.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/strupr$(ExOBJ):: strupr.c  
+../makes/obj/strupr$(ExOBJ):: ../compat/strupr.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/ticks$(ExOBJ):: ticks.c  
+../makes/obj/ticks$(ExOBJ):: ../compat/ticks.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/unc$(ExOBJ):: unc.c  
+../makes/obj/unc$(ExOBJ):: ../compat/unc.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/unc_95$(ExOBJ):: unc_95.c  
+../makes/obj/unc_95$(ExOBJ):: ../compat/unc_95.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/unc_nt$(ExOBJ):: unc_nt.c  
+../makes/obj/unc_nt$(ExOBJ):: ../compat/unc_nt.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/validfilename$(ExOBJ):: validfilename.c  
+../makes/obj/validfilename$(ExOBJ):: ../compat/validfilename.c  
 	$(RHIDE_COMPILE_C)
 
-../makes/obj/yieldpro$(ExOBJ):: yieldpro.c  
+../makes/obj/yieldpro$(ExOBJ):: ../compat/yieldpro.c  
 	$(RHIDE_COMPILE_C)
 
