@@ -94,7 +94,7 @@ void TFileEditor::initBuffer()
 
 Boolean TFileEditor::loadFile()
 {
-    int crfound = 0,i;
+    int crfound = 0;
     char tmp[PATH_MAX];
     ifstream f( fileName, ios::in | CLY_IOSBin );
     if( !f )
@@ -104,6 +104,8 @@ Boolean TFileEditor::loadFile()
         }
     else
         {
+        #ifdef TVOS_DOS
+        int i;
 /* check for a unix text file (is a heuristic, because only 1024 chars checked */
         {
           char tmpbuf[1024];
@@ -112,8 +114,8 @@ Boolean TFileEditor::loadFile()
           f.read( tmpbuf, fsize);
           for (i=0;i<1024;i++)
           {
-            if (tmpbuf[i] == 13) crfound = 1;
-            else if (tmpbuf[i] == 10) break;
+            if (tmpbuf[i] == '\r') crfound = 1;
+            else if (tmpbuf[i] == '\n') break;
           }
           if (crfound)
           {
@@ -125,7 +127,7 @@ Boolean TFileEditor::loadFile()
             f.close();
             readhandle = open(fileName,O_RDONLY|O_BINARY);
             tmpnam(tmp);
-            writehandle = open(tmp,O_WRONLY|O_CREAT|O_TRUNC|O_TEXT);
+            writehandle = open(tmp,O_WRONLY|O_CREAT|O_TRUNC|O_TEXT,0600);
             while ((fsize = ::read(readhandle,tmpbuf,1024)) > 0)
               ::write(writehandle,tmpbuf,fsize);
             close(readhandle);
@@ -133,6 +135,7 @@ Boolean TFileEditor::loadFile()
             f.open(tmp,ios::in | CLY_IOSBin);
           }
         }
+        #endif
         long fSize=CLY_ifsFileLength(f);
         if( setBufSize((uint32)(fSize)) == False )
             {

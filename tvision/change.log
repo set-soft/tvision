@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.94  2002/05/29 16:08:14  set
+* Modified: TMenuBox to move the cursor to the selected menuitem. That's
+an experiment to see if Braille Terminals gets benefited. Tapio Kelloniemi
+<tappi@thack.org> pointed out this.
+
 Revision 2.93  2002/05/29 15:28:20  set
 * Fixed: [FreeBSD] According to miniEleph ldconfig gets mad if we install
 librhtv.so.<full version>, now for this target I install librhtv.so.<major>
