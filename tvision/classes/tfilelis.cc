@@ -27,6 +27,7 @@ exlude some particular files by configuration.
 #define Uses_ctype
 #define Uses_HaveLFNs
 #define Uses_dirent
+#define Uses_getcwd
 
 #define Uses_MsgBox
 #define Uses_TFileList
