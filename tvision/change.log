@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.394  2003/01/10 13:21:14  set
+* Fixed: Cyrillic examples had wrong key assigned to Exit (typo). Roman
+found it.
+
 Revision 2.393  2003/01/08 13:45:40  set
 * Modified: Small optimization in TMenuView::findItem to avoid searching
 for ch==0. Proposed by Roman.
