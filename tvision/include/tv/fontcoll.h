@@ -45,6 +45,27 @@ public:
  virtual void getText(char *dest, ccIndex item, short maxChars);
 };
 
+struct TVBitmapFontSize
+{
+ unsigned w,h;
+};
+
+class TVBitmapFontSizeCol : public TStringCollection
+{
+public:
+ TVBitmapFontSizeCol() : TStringCollection(3,3) {}
+ virtual int compare(void *key1, void *key2);
+};
+
+class TVBitmapFontSizeLBox : public TSortedListBox
+{
+public:
+ TVBitmapFontSizeLBox(const TRect& bounds, ushort aNumCols,
+                      TScrollBar *aHScrollBar, TScrollBar *aVScrollBar) :
+  TSortedListBox(bounds,aNumCols,aHScrollBar,aVScrollBar) {}
+ virtual void getText(char *dest, ccIndex item, short maxChars);
+};
+
 class TVFontCollection : public TNSCollection
 {
 public:
