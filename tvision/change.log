@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.245  2002/08/12 15:58:18  set
+* Fixed: [Win32] Configuration script didn't create compat/rhide.env.
+* Fixed: [Win32] Not all the screen was updated after a window resize.
+Found using the "videomode" example with a binary compiled with MinGW.
+
 Revision 2.244  2002/08/12 15:56:51  set
 * Added: An example showing how to set the screen/window size using video
 modes and resolutions.
