@@ -1,4 +1,9 @@
 $Log$
+Revision 1.45  1999/05/13 03:05:03  root (set)
+* Added: Support for xterm way of reporting ALT+key (key | 0x80). Now the
+startcurses() routine sets the "XtermMode" when the TERM is xterm*. It makes
+the editor work much better under xterm, at least in my system.
+
 Revision 1.44  1999/05/12 00:46:41  set
 * Fixed: A bug in TSortedListBox when pressing delete it was dereferencing
 curString[65536] when the variable is a 256 bytes buffer producing random

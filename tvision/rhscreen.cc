@@ -223,20 +223,6 @@ void rh_RestoreVideo()
 
 #else
 
-int blink_use_bios = 1;
-int save_text_palette = 0;
-
-void setIntenseState()
-{
-}
-
-void setBlinkState()
-{
-}
-
-int getBlinkState()
-{
-  return 0;
-}
-
+// SET: Linux versions moved to TScreen and thinking about integrate it to
+// TDisplay.
 #endif
