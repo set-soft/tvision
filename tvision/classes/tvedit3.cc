@@ -102,10 +102,17 @@ void TEditorApp::outOfMemory()
 typedef char *_charPtr;
 typedef TPoint *PPoint;
 
-ushort doEditDialog( int dialog, ... )
-{
-    va_list arg;
+/**[txh]********************************************************************
 
+  Description:
+  This function provides the default dialog actions.@p
+  SET: I modified it to be easy to overwrite some actions. See the real
+function.
+
+***************************************************************************/
+
+ushort doEditDialogDefault( int dialog, va_list arg )
+{
     char buf[80];
     ostrstream os( buf, sizeof( buf ) );
     switch( dialog )
@@ -115,7 +122,6 @@ ushort doEditDialog( int dialog, ... )
                                mfError | mfOKButton );
         case edReadError:
             {
-            va_start( arg, dialog );
             os << _("Error reading file ") << va_arg( arg, _charPtr )
                << "." << ends;
             va_end( arg );
@@ -123,7 +129,6 @@ ushort doEditDialog( int dialog, ... )
             }
         case edWriteError:
             {
-            va_start( arg, dialog );
             os << _("Error writing file ") << va_arg( arg,_charPtr )
                << "." << ends;
             va_end( arg );
@@ -131,7 +136,6 @@ ushort doEditDialog( int dialog, ... )
             }
         case edCreateError:
             {
-            va_start( arg, dialog );
             os << _("Error creating file ") << va_arg( arg, _charPtr )
                << "." << ends;
             va_end( arg );
@@ -139,7 +143,6 @@ ushort doEditDialog( int dialog, ... )
             }
         case edSaveModify:
             {
-            va_start( arg, dialog );
             os << va_arg( arg, _charPtr )
                << _(" has been modified. Save?") << ends;
             va_end( arg );
@@ -150,7 +153,6 @@ ushort doEditDialog( int dialog, ... )
                                mfInformation | mfYesNoCancel );
         case edSaveAs:
             {
-            va_start( arg, dialog );
             return execDialog( new TFileDialog( "*.*",
                                                 _("Save file as"),
                                                 _("~N~ame"),
@@ -160,7 +162,6 @@ ushort doEditDialog( int dialog, ... )
 
         case edFind:
             {
-            va_start( arg, dialog );
             return execDialog( createFindDialog(), va_arg( arg, _charPtr ) );
             }
 
@@ -169,7 +170,6 @@ ushort doEditDialog( int dialog, ... )
                                mfError | mfOKButton );
         case edReplace:
             {
-            va_start( arg, dialog );
             return execDialog( createReplaceDialog(), va_arg( arg, _charPtr ) );
             }
 
@@ -180,7 +180,6 @@ ushort doEditDialog( int dialog, ... )
             r.move( (TProgram::deskTop->size.x-r.b.x)/2, 0 );
             TPoint t = TProgram::deskTop->makeGlobal( r.b );
             t.y++;
-            va_start( arg, dialog );
             TPoint *pt = va_arg( arg, PPoint );
             if( pt->y <= t.y )
                 r.move( 0, TProgram::deskTop->size.y - r.b.y - 2 );
@@ -191,6 +190,16 @@ ushort doEditDialog( int dialog, ... )
         default:
 	    return cmCancel;
         }
+}
+
+ushort doEditDialog( int dialog, ... )
+{ // Just call the default
+ va_list arg;
+
+ va_start(arg, dialog);
+ ushort ret=doEditDialogDefault(dialog,arg);
+ va_end(arg);
+ return ret;
 }
 
 

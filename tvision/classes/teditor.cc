@@ -44,7 +44,7 @@ inline int isWordChar( int ch )
    it uniform, I could use the original */
 const ushort firstKeys[] =
 {
-    37,
+    39,
     kbCtA, cmWordLeft,
     kbCtC, cmPageDown,
     kbCtD, cmCharRight,
@@ -68,8 +68,14 @@ const ushort firstKeys[] =
     // first the codes with modifiers (like Control+Left) and then the code
     // without the modifiers (like Left).
     kbCtLeft, cmWordLeft,
-    kbLeft, cmCharLeft,
     kbCtRight, cmWordRight,
+    kbCtPgUp, cmTextStart,
+    kbCtPgDn, cmTextEnd,
+    kbCtInsert, cmCopy,
+    kbCtDelete, cmClear,
+    kbShInsert, cmPaste,
+    kbShDelete, cmCut,
+    kbLeft, cmCharLeft,
     kbRight, cmCharRight,
     kbHome, cmLineStart,
     kbEnd, cmLineEnd,
@@ -77,14 +83,10 @@ const ushort firstKeys[] =
     kbDown, cmLineDown,
     kbPgUp, cmPageUp,
     kbPgDn, cmPageDown,
-    kbCtPgUp, cmTextStart,
-    kbCtPgDn, cmTextEnd,
-    kbInsert, cmInsMode,
     kbDelete, cmDelChar,
-    kbShInsert, cmPaste,
-    kbShDelete, cmCut,
-    kbCtInsert, cmCopy,
-    kbCtDelete, cmClear
+    kbInsert, cmInsMode,
+    kbEnter, cmNewLine,
+    kbBackSpace, cmBackSpace
 };
 
 /* SET: Here Borland used a bad trick using the ASCII for the ASCII letters
