@@ -74,7 +74,7 @@ void THistory::handleEvent( TEvent& event )
       )
         {
         link->select();
-        historyAdd( historyId, link->data );
+        historyAdd( historyId, (const char *)link->getData() );
         r = link->getBounds();
         r.a.x--;
         r.b.x++;
@@ -91,8 +91,7 @@ void THistory::handleEvent( TEvent& event )
                 {
                 char rslt[256];
                 historyWindow->getSelection( rslt );
-                strncpy( link->data, rslt, link->maxLen );
-                link->data[link->maxLen] = EOS;
+                link->setDataFromStr( rslt );
                 link->selectAll( True );
                 link->drawView();
                 }
@@ -106,7 +105,7 @@ void THistory::handleEvent( TEvent& event )
                  event.message.infoPtr ==  link) ||
                 event.message.command ==  cmRecordHistory
               )
-                historyAdd( historyId, link->data );
+                historyAdd( historyId, (const char *)link->getData() );
 }
 
 THistoryWindow *THistory::initHistoryWindow( const TRect& bounds )

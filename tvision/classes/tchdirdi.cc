@@ -142,7 +142,7 @@ void TChDirDialog::handleEvent( TEvent& event )
             if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
             #endif
-            strcpy( dirInput->data, curDir );
+            dirInput->setDataFromStr(curDir);
             dirInput->drawView();
             dirList->select();
             clearEvent( event );
@@ -170,7 +170,7 @@ void TChDirDialog::setUpDialog()
             if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
             #endif
-            strcpy( dirInput->data, curDir );
+            dirInput->setDataFromStr(curDir);
             dirInput->drawView();
             }
         }
@@ -180,7 +180,7 @@ Boolean TChDirDialog::valid( ushort command )
 {
   if ( command != cmOK )
     return True;
-  if( changeDir( dirInput->data ) != 0 )
+  if( changeDir( (const char *)dirInput->getData() ) != 0 )
   {
     messageBox( _("Invalid directory"), mfError | mfOKButton );
     return False;

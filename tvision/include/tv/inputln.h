@@ -47,15 +47,13 @@ public:
  virtual void    assignPos(int index, unsigned val)=0;
  virtual Boolean pasteFromOSClipboard()=0;
  virtual void    copyToOSClipboard()=0;
+ virtual void    setDataFromStr(void *str)=0;
+ const void *getData() { return data; };
 
- char *data;
- int maxLen;
  int curPos;
  int firstPos;
  int selStart;
  int selEnd;
- int dataLen;
- int cellSize;
 
  static char rightArrow;
  static char leftArrow;
@@ -73,6 +71,16 @@ protected:
  int insertModeOn();
  int lineIsFull();
  int posIsEnd();
+
+ // IMHO exposing these two is a very bad idea, I added a couple of members to
+ // work with them: setDataFromStr & getData. All TV code uses these new
+ // members. If we don't hide them then we must compute the string length all
+ // the time. SET.
+ char *data;
+ int maxLen;
+
+ int cellSize;
+ int dataLen;
 
 private:
  int mouseDelta( TEvent& event );
@@ -138,6 +146,7 @@ public:
  virtual Boolean pasteFromOSClipboard();
  virtual void    copyToOSClipboard();
  virtual Boolean insertChar(TEvent &event);
+ virtual void    setDataFromStr(void *str);
 
 #if !defined( NO_STREAM )
  virtual const char *streamableName() const
@@ -181,6 +190,7 @@ public:
  virtual Boolean pasteFromOSClipboard();
  virtual void    copyToOSClipboard();
  virtual Boolean insertChar(TEvent &event);
+ virtual void    setDataFromStr(void *str);
 
  uint16 *data16;
  
