@@ -1,3 +1,22 @@
+rhtvision (2.0.0-0.3) unstable; urgency=low
+
+  * New alpha from CVS dated 25 jul 2002 (hey! that's my birthday!!!).
+  * Removed debian/manpage.1.ex since it is likely that this package will
+    never need it.
+  * I changed my email from lubaldo to ibaldo, so updated that everywhere.
+  * Backup the following files: examples/clipboard/test.mak,
+    examples/fonts/genraw.mak, examples/helpdemo/helpdemo.mak,
+    win32/Makefile.
+  * Added more comments to the debian/rules file, it seems that Salvador was
+    confused one time :).
+  * Removed some CVS files and directories that where appearing on the
+    rhtvision2.0.0 package.
+  * Changed dependencies a little on debian/control, to help Potato users and
+    making the package more robust when building (suggested by Salvador), not
+    depend on specific versions of libraries or use | operators.
+    
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Mon, 29 Jul 2002 16:49:04 -0300
+
 rhtvision (2.0.0-0.2) unstable; urgency=low
 
   * New alpha from CVS dated 5 Jun 2002.
@@ -308,5 +327,5 @@ rhtvision (1.0.3-1) unstable; urgency=low
 
 Local variables:
 mode: debian-changelog
-add-log-mailing-address: "lubaldo@adinet.com.uy"
+add-log-mailing-address: "ibaldo@adinet.com.uy"
 End:

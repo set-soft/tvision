@@ -1,10 +1,13 @@
 compat/compat.mak
+examples/clipboard/test.mak
 examples/demo/demo.mak
 examples/desklogo/desklogo.mak
 examples/desklogo/set-logo.mak
 examples/desklogo/tv_logo.mak
 examples/dlgdsn/libtest.mak
 examples/dyntxt/dyntext.mak
+examples/fonts/genraw.mak
+examples/helpdemo/helpdemo.mak
 examples/inplis/implis.mak
 examples/listvi/lst_view.mak
 examples/msgcls/msgcls.mak
@@ -35,3 +38,4 @@ examples/tvedit/tvedit.mak
 linux/Makefile
 linuxso/makemak.pl
 win32/rhide.env
+win32/Makefile
