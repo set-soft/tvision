@@ -940,7 +940,6 @@ void TScreenX11::LoadFontAsUnicode()
    }
  /*else
     printf("Error al cargar la font\n");*/
- printf("Drawing mode: %s\n",drawingMode==unicode16 ? "Unicode 16" : "Code Page");
 }
 
 inline
@@ -1163,11 +1162,11 @@ char *TScreenX11::SearchX11Font(const char *foundry, const char *family)
  return ret;
 }
 
-char *TScreenX11::SearchX11DefaultFont()
+char *TScreenX11::SearchX11Font(const char *pattern)
 {
  char *ret=NULL;
  int cant;
- char **list=XListFonts(disp,"-*-*-*-r-*-*-*-*-*-*-c-*-iso10646-*",1,&cant);
+ char **list=XListFonts(disp,pattern,1,&cant);
  if (cant)
     ret=newStr(list[0]);
  return ret;
@@ -1244,11 +1243,15 @@ TScreenX11::TScreenX11()
     if (optSearch("UseX11Fonts",aux) && aux)
       {// Use X11 fonts for Unicode
        char *x11FontName;
-       // Search a suitable font of fontWxfonH size (+/- 1)
-       x11FontName=SearchX11Font("misc","fixed");
+       // First try with any font indicated by the user
+       char *tryX11Font=optSearch("X11Font");
+       x11FontName=SearchX11Font(tryX11Font);
+       if (!x11FontName)
+          // Search a suitable font of fontWxfonH size (+/- 1)
+          x11FontName=SearchX11Font("misc","fixed");
        if (!x11FontName)
           // If none found try with a more generic pattern
-          x11FontName=SearchX11DefaultFont();
+          x11FontName=SearchX11Font("-*-*-*-r-*-*-*-*-*-*-c-*-iso10646-*");
        if (!x11FontName)
           // None usable ...
           printf("No suitable X11 font found :-(\n");
@@ -1263,10 +1266,18 @@ TScreenX11::TScreenX11()
              useX11Font=1;
              drawingMode=unicode16;
              x11Font=fontInfo->fid;
+             #if 0
              x11FontOffset=fontInfo->max_bounds.ascent;
              fontW=fontInfo->max_bounds.width;
              fontH=x11FontOffset+fontInfo->max_bounds.descent;
+             #else
+             x11FontOffset=fontInfo->ascent;
+             fontW=fontInfo->max_bounds.width;
+             fontH=x11FontOffset+fontInfo->descent;
+             #endif
              printf("Font size: %dx%d\n",fontW,fontH);
+             printf("as: %d de: %d\n",fontInfo->max_bounds.ascent,fontInfo->max_bounds.descent);
+             printf("2: as: %d de: %d\n",fontInfo->ascent,fontInfo->descent);
             }
           DeleteArray(x11FontName);
          }
@@ -1301,6 +1312,9 @@ TScreenX11::TScreenX11()
     if (frCB && optSearch("LoadSecondaryFont",aux) && aux)
        secFont=frCB(1,fontW,fontH);
    }
+ printf("Drawing mode: %s\n",drawingMode==unicode16 ? "Unicode 16" : "Code Page");
+ if (useX11Font)
+    printf("Using X11 fonts\n");
 
  TDisplayX11::Init();
 
@@ -1312,7 +1326,6 @@ TScreenX11::TScreenX11()
        //TScreen::setCharacter=setCharacterU16; Use Default
        TScreen::setCharacters=setCharactersX11U16;
        writeLine=writeLineX11U16;
-       printf("Using X11 fonts\n");
       }
     else
       {

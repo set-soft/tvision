@@ -2528,27 +2528,16 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0x2423,   32 }, // Should be fixed
  { 0x2424,  446 },
  { 0x2500,  196 },
- { 0x2501,  205 }, // (*1)
  { 0x2502,  179 },
- { 0x2503,  186 }, // (*1)
  { 0x250c,  218 },
- { 0x250f,  201 }, // (*1)
  { 0x2510,  191 },
- { 0x2513,  187 }, // (*1)
  { 0x2514,  192 },
- { 0x2517,  200 }, // (*1)
  { 0x2518,  217 },
- { 0x251b,  188 }, // (*1)
  { 0x251c,  195 },
- { 0x2523,  204 }, // (*1)
  { 0x2524,  180 },
- { 0x252b,  185 }, // (*1)
  { 0x252c,  194 },
- { 0x2533,  203 }, // (*1)
  { 0x2534,  193 },
- { 0x253b,  202 }, // (*1)
  { 0x253c,  197 },
- { 0x254b,  206 }, // (*1)
  { 0x2550,  205 },
  { 0x2551,  186 },
  { 0x2552,  213 },
@@ -2623,6 +2612,21 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0xfffd,  439 }
 };
 
+stIntCodePairs TVCodePage::InternalMapBrokenLinux[]=
+{
+ { 0x2501,  205 }, // (*1)
+ { 0x2503,  186 }, // (*1)
+ { 0x250f,  201 }, // (*1)
+ { 0x2513,  187 }, // (*1)
+ { 0x2517,  200 }, // (*1)
+ { 0x251b,  188 }, // (*1)
+ { 0x2523,  204 }, // (*1)
+ { 0x252b,  185 }, // (*1)
+ { 0x2533,  203 }, // (*1)
+ { 0x253b,  202 }, // (*1)
+ { 0x254b,  206 }, // (*1)
+};
+
 // Notes:
 // (*1) Linux lat1 says this. I think this is wrong and in fact XFree86 10x20
 //      font author interprets Unicode tables as me.
@@ -2632,6 +2636,7 @@ stIntCodePairs TVCodePage::InternalMap[]=
 
 
 const int TVCodePage::providedUnicodes=sizeof(TVCodePage::InternalMap)/sizeof(stIntCodePairs);
+const int TVCodePage::providedUnicodesBL=sizeof(TVCodePage::InternalMapBrokenLinux)/sizeof(stIntCodePairs);
 
 /**[txh]********************************************************************
 
@@ -2666,6 +2671,8 @@ int TVCodePage::InternalCodeForUnicode(ushort unicode)
  if (!unicode) return 0;
  stIntCodePairs s={unicode,0};
  void *res=bsearch(&s,InternalMap,providedUnicodes,sizeof(stIntCodePairs),compare);
+ if (!res)
+    res=bsearch(&s,InternalMapBrokenLinux,providedUnicodesBL,sizeof(stIntCodePairs),compare);
  return res ? ((stIntCodePairs *)res)->code : -1;
 }
 
