@@ -10,6 +10,7 @@ added some routines and adapted it to the new architecture.
 
   ToDo: The save/restore mechanism have many flaws, I fixed some, but not
   all.
+  ToDo: Set UseScreenSaver when we are in full screen.
   
 ***************************************************************************/
 #include <tv/configtv.h>

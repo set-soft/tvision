@@ -258,7 +258,8 @@ public:
                     // but the original colors want be restored at exit. We will
                     // try to let them as default for the used display.
   PalNeedsRedraw=8, // Indicates we must redraw after changing the palette.
-  CursorShapes=16   // When the cursor shape is usable.
+  CursorShapes=16,  // When the cursor shape is usable.
+  UseScreenSaver=32 // Does screen saver have any sense for this driver?
  };
 
  // Used internally to avoid nested calls to suspend/resume
@@ -273,6 +274,7 @@ public:
  static Boolean canReadPalette()   { return flags0 & CanReadPalette ? True : False; };
  static Boolean palNeedsRedraw()   { return flags0 & PalNeedsRedraw ? True : False; };
  static Boolean cursorShapes()     { return flags0 & CursorShapes ? True : False; };
+ static Boolean useScreenSaver()   { return flags0 & UseScreenSaver ? True : False; };
 
 protected:
  // SET: Capabilities flags
