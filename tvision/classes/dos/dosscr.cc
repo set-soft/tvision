@@ -257,7 +257,6 @@ const char *TVDOSClipboard::dosNameError[]=
 
 int TVDOSClipboard::isValid=0;
 int TVDOSClipboard::Version;
-int TVDOSClipboard::Error=0;
 
 int TVDOSClipboard::Init(void)
 {
@@ -268,7 +267,7 @@ int TVDOSClipboard::Init(void)
  Version=r.x.ax;
  isValid=r.x.ax!=0x1700;
  if (!isValid)
-    Error=WINOLDAP_NoPresent;
+    error=WINOLDAP_NoPresent;
  else
    {
     TVOSClipboard::copy=copy;
@@ -295,7 +294,7 @@ int TVDOSClipboard::AllocateDOSMem(unsigned long size,unsigned long *BaseAddress
  #endif
  if (size>0x100000)
    {
-    Error=WINOLDAP_TooBig;
+    error=WINOLDAP_TooBig;
     return 0;
    }
  r.h.ah=0x48;
@@ -303,7 +302,7 @@ int TVDOSClipboard::AllocateDOSMem(unsigned long size,unsigned long *BaseAddress
  __dpmi_int(0x21,&r);
  if (r.x.flags & 1)
    {
-    Error=WINOLDAP_TooBig;
+    error=WINOLDAP_TooBig;
     return 0;
    }
  *BaseAddress=r.x.ax<<4;
@@ -335,7 +334,7 @@ int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
  __dpmi_int(0x2F,&r);
  if (r.x.ax==0)
    {
-    Error=WINOLDAP_ClpInUse;
+    error=WINOLDAP_ClpInUse;
     return 0;
    }
  // Erase the current contents of the clipboard
@@ -357,7 +356,7 @@ int TVDOSClipboard::copy(int id, const char *buffer, unsigned len)
     FreeDOSMem(dataoff);
     if (r.x.ax==0)
       {
-       Error=WINOLDAP_WinErr;
+       error=WINOLDAP_WinErr;
        r.x.ax=0x1708;
        __dpmi_int(0x2F,&r);
        return 0;
@@ -381,7 +380,7 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
  __dpmi_int(0x2F,&r);
  if (r.x.ax==0)
    {
-    Error=WINOLDAP_ClpInUse;
+    error=WINOLDAP_ClpInUse;
     return NULL;
    }
  r.x.ax=0x1704;
@@ -404,7 +403,7 @@ char *TVDOSClipboard::paste(int id, unsigned &len)
           len=strlen(p);
          }
        else
-          Error=WINOLDAP_Memory;
+          error=WINOLDAP_Memory;
        FreeDOSMem(BaseAddress);
       }
    }

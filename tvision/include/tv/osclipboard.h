@@ -9,8 +9,9 @@
 ***************************************************************************/
 
 class TScreen;
-class TVX11Clipboard;
 class TVDOSClipboard;
+class TVWin32Clipboard;
+class TVX11Clipboard;
 
 class TVOSClipboard
 {
@@ -36,7 +37,8 @@ protected:
  static const char **nameErrors;
 
  friend class TScreen;
- friend class TVX11Clipboard;
  friend class TVDOSClipboard;
+ friend class TVX11Clipboard;
+ friend class TVWin32Clipboard;
 };
 

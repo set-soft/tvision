@@ -20,6 +20,7 @@ added some routines and adapted it to the new architecture.
 #define Uses_TEvent
 #define Uses_TGKey
 #include <tv.h>
+#include <tv/win32/win32clip.h>
 
 // I delay the check to generate as much dependencies as possible
 #ifdef TVOS_Win32
@@ -83,6 +84,7 @@ void TScreenWinNT::InitOnce()
  TScreen::Resume=Resume;
  TScreen::Suspend=Suspend;
 
+ TVWin32Clipboard::Init();
  TGKeyWinNT::Init();
  THWMouseWinNT::Init();
 
