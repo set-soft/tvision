@@ -219,6 +219,7 @@ sub UpdateSpec()
 {
  $ReplaceTags{'version'}=$Version;
  ReplaceText('redhat/librhtv.spec.in',"redhat/librhtv-$Version.spec");
+ ReplaceText('qnxrtp/tvision.qpg.in',"qnxrtp/tvision.qpg");
 }
 
 sub SeeCommandLine
@@ -716,7 +717,14 @@ sub LookForNCurses
     return;
    }
  # Assume it is -lncurses
- $conf{'NameCurses'}='ncurses';
+ if ($OSf ne 'QNXRtP')
+ {
+  $conf{'NameCurses'}='ncurses'
+ }
+ else
+ {
+  $conf{'NameCurses'}='ncursesS'
+ }
  $test='
 #include <stdio.h>
 #include <ncurses.h>

@@ -753,6 +753,7 @@ names/nview.cc
 names/nwindow.cc
 newstr.cc
 qnxrtp/tvision.qpg
+qnxrtp/tvision.qpg.in
 readme.in
 readme.txt
 redhat/config-rpm.sh
