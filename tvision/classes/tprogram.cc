@@ -170,7 +170,7 @@ void TProgram::getEvent(TEvent& event)
                     lastIdleClock=Clock();
                     inIdle=True;
                     }
-                if (TScreen::CheckForWindowSize())
+                if (TScreen::checkForWindowSize())
                   {
                    setScreenMode(TScreen::screenMode);
                    Redraw();
@@ -274,7 +274,7 @@ TMenuBar *TProgram::initMenuBar( TRect r )
 
 void TProgram::initScreen()
 {
-    if( !dual_display && (TScreen::screenMode & 0x00FF) != TDisplay::smMono )
+    if( !TDisplay::dual_display && (TScreen::screenMode & 0x00FF) != TDisplay::smMono )
         {
         if( (TScreen::screenMode & TDisplay::smFont8x8) != 0 )
             shadowSize.x = 1;
@@ -329,10 +329,10 @@ void TProgram::setScreenMode( ushort mode, char *command )
     TRect  r;
 
     TMouse::hide();
-    if (!dual_display)
+    if (!TDisplay::dual_display)
        {
        if (mode==0xFFFF && command)
-          TScreen::setVideoMode( command );
+          TScreen::setVideoModeExt( command );
        else
           TScreen::setVideoMode( mode );
        }
