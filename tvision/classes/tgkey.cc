@@ -17,6 +17,7 @@ have such a class.
 #define Uses_FullSingleKeySymbols
 #define Uses_ctype
 #define Uses_string
+#define Uses_stdlib
 #include <tv.h>
 
 /*****************************************************************************
@@ -151,39 +152,134 @@ ushort TGKey::KeyNameToNumber(char *s)
   They are shared by various drivers.
 *****************************************************************************/
 
+// This table maps the Unicode for greek letters with the latin letter for
+// the key that generates it. Example: alpha (with any accent) is generated
+// pressing the key with the latin A letter.
+stIntCodePairs TGKey::GreekKeyboard[]=
+{
+// With tonos
+{ 0x0386,'A' },/* 0x0387 */{ 0x0388,'E' },{ 0x0389,'H' },{ 0x038A,'I' },
+ /* 0x038B */{ 0x038C,'O' },/* 0x038D */{ 0x038E,'Y' },{ 0x038F,'V' },
+// Dialytica and tonos
+{ 0x0390,'i' },
+// Capitals
+{ 0x0391,'A' },{ 0x0392,'B' },{ 0x0393,'G' },{ 0x0394,'D' },{ 0x0395,'E' },
+{ 0x0396,'Z' },{ 0x0397,'H' },{ 0x0398,'U' },{ 0x0399,'I' },{ 0x039A,'K' },
+{ 0x039B,'L' },{ 0x039C,'M' },{ 0x039D,'N' },{ 0x039E,'J' },{ 0x039F,'O' },
+{ 0x03A0,'P' },{ 0x03A1,'R' },{ 0x03A3,'S' },{ 0x03A4,'T' },{ 0x03A5,'Y' },
+{ 0x03A6,'F' },{ 0x03A7,'X' },{ 0x03A8,'C' },{ 0x03A9,'V' },
+// With dialytica
+{ 0x03AA,'I' },{ 0x03AB,'Y' },
+// With tonos
+{ 0x03AC,'a' },{ 0x03AD,'e' },{ 0x03AE,'h' },{ 0x03AF,'i' },
+// Dialytica and tonos
+{ 0x03B0,'y' },
+// Smalls
+{ 0x03B1,'a' },{ 0x03B2,'b' },{ 0x03B3,'g' },{ 0x03B4,'d' },{ 0x03B5,'e' },
+{ 0x03B6,'z' },{ 0x03B7,'h' },{ 0x03B8,'u' },{ 0x03B9,'i' },{ 0x03BA,'k' },
+{ 0x03BB,'l' },{ 0x03BC,'m' },{ 0x03BD,'n' },{ 0x03BE,'j' },{ 0x03BF,'o' },
+{ 0x03C0,'p' },{ 0x03C1,'r' },{ 0x03C3,'s' },{ 0x03C4,'t' },{ 0x03C5,'y' },
+{ 0x03C6,'f' },{ 0x03C7,'x' },{ 0x03C8,'c' },{ 0x03C9,'v' },
+// With dialytica
+{ 0x03CA,'i' },{ 0x03CB,'y' },
+// With tonos
+{ 0x03CC,'o' },{ 0x03CD,'y' },{ 0x03CE,'v' }
+};
+
+// Same for russian keyboards
+stIntCodePairs TGKey::RussianKeyboard[]=
+{
+{ 0x0410,'F' },{ 0x0411,'<' },{ 0x0412,'D' },{ 0x0413,'U' },{ 0x0414,'l' },
+{ 0x0415,'T' },{ 0x0416,':' },{ 0x0417,'P' },{ 0x0418,'B' },{ 0x0419,'Q' },
+{ 0x041a,'R' },{ 0x041b,'k' },{ 0x041c,'V' },{ 0x041d,'Y' },{ 0x041e,'J' },
+{ 0x041f,'G' },{ 0x0420,'H' },{ 0x0421,'C' },{ 0x0422,'N' },{ 0x0423,'E' },
+{ 0x0424,'A' },{ 0x0425,'{' },{ 0x0426,'W' },{ 0x0427,'X' },{ 0x0428,'I' },
+{ 0x0429,'O' },{ 0x042a,']' },{ 0x042b,'S' },{ 0x042c,'M' },{ 0x042d,'"' },
+{ 0x042e,'>' },{ 0x042f,'Z' },{ 0x0430,'f' },{ 0x0431,',' },{ 0x0432,'d' },
+{ 0x0433,'u' },{ 0x0434,'L' },{ 0x0435,'t' },{ 0x0436,';' },{ 0x0437,'p' },
+{ 0x0438,'b' },{ 0x0439,'q' },{ 0x043a,'r' },{ 0x043b,'K' },{ 0x043c,'v' },
+{ 0x043d,'y' },{ 0x043e,'j' },{ 0x043f,'g' },{ 0x0440,'h' },{ 0x0441,'c' },
+{ 0x0442,'n' },{ 0x0443,'e' },{ 0x0444,'a' },{ 0x0445,'[' },{ 0x0446,'w' },
+{ 0x0447,'x' },{ 0x0448,'i' },{ 0x0449,'o' },{ 0x044a,'}' },{ 0x044b,'s' },
+{ 0x044c,'m' },{ 0x044d,'\'' },{ 0x044e,'.' },{ 0x044f,'z' }
+};
+
+
 int TGKey::defaultSetCodePage(int id)
 {
  switch (id)
    {
     case TVCodePage::KOI8r:
-         NonASCII2ASCII=KOI8_NonASCII2ASCII;
-         CompareASCII=KOI8_CompareASCII;
+    case TVCodePage::PC855:
+    case TVCodePage::PC866:
+    case TVCodePage::ISORussian:
+    case TVCodePage::KOI_8r:
+    case TVCodePage::KOI_8crl:
+    case TVCodePage::CP1251:
+    case TVCodePage::CP10007:
+    case TVCodePage::CP100072:
+         // Not sure about the rest of russian code pages.
+         FillKeyMapForCP(id,RussianKeyboard,sizeof(RussianKeyboard)/sizeof(stIntCodePairs));
+         NonASCII2ASCII=Generic_NonASCII2ASCII;
+         CompareASCII=Generic_CompareASCII;
+         break;
+    case TVCodePage::PC737:
+    case TVCodePage::PC869:
+    case TVCodePage::CP1253:
+    case TVCodePage::ISOGreek:
+         FillKeyMapForCP(id,GreekKeyboard,sizeof(GreekKeyboard)/sizeof(stIntCodePairs));
+         NonASCII2ASCII=Generic_NonASCII2ASCII;
+         CompareASCII=Generic_CompareASCII;
          break;
     default:
+         NonASCII2ASCII=defaultNonASCII2ASCII;
+         CompareASCII=defaultCompareASCII;
          return 0;
    }
  return 1;
 }
 
-/* Linux KOI8 */
-char TGKey::KOI8Layout[64]=
-{
- '.','f',',','w','L','t','a','u','[','b','q','r','K','v','y','j', // 192 ...
- 'g','z','h','c','n','e',';','d','m','s','p','i','\'','o','x','}',
- '>','F','<','W','l','T','A','U','{','B','Q','R','k','V','Y','J',
- 'G','Z','H','C','N','E',':','D','M','S','P','I','"','O','X',']'
-};
+uchar TGKey::KeyMap[128];
 
-uchar TGKey::KOI8_NonASCII2ASCII(uchar val)
+static
+int compare(const void *v1, const void *v2)
 {
- return val>=192 ? KOI8Layout[val-192] : val;
+ stIntCodePairs *p1=(stIntCodePairs *)v1;
+ stIntCodePairs *p2=(stIntCodePairs *)v2;
+ return (p1->unicode>p2->unicode)-(p1->unicode<p2->unicode);
 }
 
-int TGKey::KOI8_CompareASCII(uchar val, uchar code)
+/**[txh]********************************************************************
+
+  Description:
+  Fills the KeyMap table using the provided keyboard layout.
+  
+***************************************************************************/
+
+TGKey::FillKeyMapForCP(int id, stIntCodePairs *keyboard, size_t szKb)
 {
- if (val>=0xC0)  val=KOI8Layout[val-0xC0];
- if (code>=0xC0) code=KOI8Layout[code-0xC0];
+ stIntCodePairs cp[256];
+ TVCodePage::GetUnicodesForCP(id,cp);
+ ushort *tr=TVCodePage::GetTranslate(id);
+ int i;
+ stIntCodePairs s;
+ for (i=128; i<256; i++)
+    {
+     s.unicode=TVCodePage::UnicodeForInternalCode(tr[i]);
+     void *res=bsearch(&s,keyboard,szKb,sizeof(stIntCodePairs),compare);
+     KeyMap[i-128]=res ? ((stIntCodePairs *)res)->code : i;
+    }
+}
+
+uchar TGKey::Generic_NonASCII2ASCII(uchar ascii)
+{
+ return ascii>=0x80 ? KeyMap[ascii-0x80] : ascii;
+}
+
+int TGKey::Generic_CompareASCII(uchar val, uchar code)
+{
+ if (val >=0x80) val =KeyMap[val- 0x80];
+ if (code>=0x80) code=KeyMap[code-0x80];
  return val==code;
 }
-
 

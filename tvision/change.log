@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.381  2002/12/10 19:47:53  set
+* Modified: THelpFile::getTopic to be virtual as suggested by Chipzz
+<chipzz@ULYSSIS.Org>.
+
 Revision 2.380  2002/12/10 18:10:43  set
 * Modified: Allocated separated internal codes for cyrillic and greek
 letters that are identical to latin ones. This wastes memory but simplifies
