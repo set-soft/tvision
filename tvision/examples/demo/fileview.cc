@@ -118,7 +118,7 @@ void TFileViewer::readFile( const char *fName )
                IfStreamGetLine(fileToView,line,sizeof line)
              )
             {
-            limit.x = max( limit.x, strlen( line ) );
+            limit.x = max( limit.x, (int)strlen( line ) );
             fileLines->insert( newStr( line ) );
             }
         isValid = True;
