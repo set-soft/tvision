@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.173  2002/06/24 15:17:42  set
+* Fixed: A typedef struct v.s. struct issue reported by gcc 3.1. Reported
+by Ortwin.Gasper@t-online.de.
+
 Revision 2.172  2002/06/24 15:10:44  set
 * Fixed: dlgdsn example to compile with gcc 3.1. Patch from Andris.
 

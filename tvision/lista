@@ -635,6 +635,7 @@ names/nvalidat.cc
 names/nview.cc
 names/nwindow.cc
 newstr.cc
+qnxrtp/qnx6pkg/tvision-dev.qpg
 readme.in
 readme.txt
 stream/sbackgro.cc
