@@ -1,4 +1,10 @@
 $Log$
+-----------------------------------------------------------------------------
+v1.0.9 release.
+
+Revision 1.114  1999/10/17 22:30:03  set
+* Updated for release of 1.0.9.
+
 Revision 1.113  1999/10/10 14:57:57  set
 * Added: Support for DOS greek keyboards.
 * Modified: Now all the classes that uses acelerators doesn't directly check
