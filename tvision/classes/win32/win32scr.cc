@@ -11,6 +11,12 @@ some routines and adapted it to the new architecture.
 thread that monitors the window size is different, that's why a lock is
 needed.
  ToDo: Set UseScreenSaver when we are in full screen.
+
+ Notes:
+1) I changed all the code related to the save/restore state using a new
+screen buffer. I comment more in the "WinNT" driver. One really strange
+thing is that this driver behaves better with the cursor. Don't know why.
+I also added the resize window stuff.
   
 ***************************************************************************/
 
@@ -39,7 +45,17 @@ needed.
 #include <tv/win32/mouse.h>
 #include <tv/win32/key.h>
 
-CHAR_INFO                 *TScreenWin32::buffer=NULL;
+//#define DEBUG
+#ifdef DEBUG
+ #define DBPr1(a)     fputs(a,stderr)
+ #define DBPr2(a,b)   fprintf(stderr,a,b)
+ #define DBPr3(a,b,c) fprintf(stderr,a,b,c)
+#else
+ #define DBPr1(a)
+ #define DBPr2(a,b)
+ #define DBPr3(a,b,c)
+#endif
+
 CONSOLE_SCREEN_BUFFER_INFO TScreenWin32::info;
 int                        TScreenWin32::ExitEventThread=0;
 HANDLE                     TScreenWin32::EventThreadHandle=NULL;
@@ -47,35 +63,46 @@ DWORD                      TScreenWin32::oldConsoleMode,
                            TScreenWin32::newConsoleMode;
 unsigned                   TScreenWin32::xCurStart,
                            TScreenWin32::yCurStart;
+unsigned                   TScreenWin32::saveScreenWidth,
+                           TScreenWin32::saveScreenHeight;
 
 TScreenWin32::TScreenWin32()
 {
- InitConsole();
+ if (!InitConsole()) return;
  flags0=CodePageVar | CursorShapes;
  screenMode=startupMode=getCrtMode();
  cursorLines=startupCursor=getCursorType();
- screenWidth =GetCols();
- screenHeight=GetRows();
+ saveScreenWidth =screenWidth =GetCols();
+ saveScreenHeight=screenHeight=GetRows();
  screenBuffer=new ushort[screenHeight*screenWidth];
  ZeroMemory(screenBuffer,screenHeight*screenWidth*sizeof(ushort));
 
- SaveScreen();
  GetCursorPos(xCurStart,yCurStart);
  initialized=1;
+ suspended=0;
  setCrtData();
 }
 
-void TScreenWin32::InitConsole()
+int TScreenWin32::InitConsole()
 {
  // Get handles to access Standard Input and Output
- hOut=GetStdHandle(STD_OUTPUT_HANDLE);
- hIn =GetStdHandle(STD_INPUT_HANDLE);
+ hIn    =GetStdHandle(STD_INPUT_HANDLE);
+ hStdOut=GetStdHandle(STD_OUTPUT_HANDLE);
+ // Create a new buffer, it have their own content and cursor
+ hOut=CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE,
+                                0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
+ if (hStdOut==INVALID_HANDLE_VALUE || hOut==INVALID_HANDLE_VALUE)
+    return 0; // Something went wrong
+ // Make the new one the active
+ if (!SetConsoleActiveScreenBuffer(hOut))
+    return 0;
 
  // Enable mouse input
  GetConsoleMode(hIn,&oldConsoleMode);
  newConsoleMode=oldConsoleMode | ENABLE_MOUSE_INPUT|ENABLE_WINDOW_INPUT;
  newConsoleMode&=~(ENABLE_LINE_INPUT|ENABLE_ECHO_INPUT|ENABLE_PROCESSED_INPUT);
  SetConsoleMode(hIn,newConsoleMode);
+ SetConsoleCtrlHandler(ConsoleEventHandler,TRUE);
 
  GetConsoleScreenBufferInfo(hOut,&ConsoleInfo);
 
@@ -89,6 +116,8 @@ void TScreenWin32::InitConsole()
  TScreen::System=System;
  TScreen::Resume=Resume;
  TScreen::Suspend=Suspend;
+ TScreen::setCrtModeRes=SetCrtModeRes;
+ TScreen::setVideoModeRes=SetVideoModeRes;
 
  TVWin32Clipboard::Init();
  TGKeyWin32::Init();
@@ -96,6 +125,8 @@ void TScreenWin32::InitConsole()
 
  DWORD EventThreadID;
  EventThreadHandle=CreateThread(NULL,0,HandleEvents,NULL,0,&EventThreadID);
+
+ return 1;
 }
 
 void TScreenWin32::DoneConsole()
@@ -138,6 +169,8 @@ DWORD WINAPI TScreenWin32::HandleEvents(void *)
                   TGKeyWin32::HandleKeyEvent();
                   break;
 
+             // Vadim wrote it, I never could make Windows resize.
+             // Not even providing a larger screen buffer.
              case WINDOW_BUFFER_SIZE_EVENT:
                   EnterCriticalSection(&lockWindowSizeChanged);
                   WindowSizeChanged=1;
@@ -157,25 +190,39 @@ DWORD WINAPI TScreenWin32::HandleEvents(void *)
 
 void TScreenWin32::Resume()
 {
- GetCursorPos(xCurStart,yCurStart);
- SaveScreen();
+ DBPr1("TScreenWin32::Resume\n");
+ // First switch to our handle
+ SetConsoleActiveScreenBuffer(hOut);
+ // Now we can save the current window size
+ GetConsoleScreenBufferInfo(hOut,&ConsoleInfo);
+ saveScreenWidth =ConsoleInfo.dwSize.X;
+ saveScreenHeight=ConsoleInfo.dwSize.Y;
+ // Restore our window size
+ SetCrtModeRes(screenWidth,screenHeight);
+ GetConsoleScreenBufferInfo(hOut,&ConsoleInfo);
  setCrtData();
+ // Invalidate the cache to force a redraw
+ ZeroMemory(screenBuffer,screenHeight*screenWidth*sizeof(ushort));
+
  GetConsoleMode(hIn,&oldConsoleMode);
  SetConsoleMode(hIn,newConsoleMode);
+ SetConsoleCtrlHandler(ConsoleEventHandler,TRUE);
 }
 
 void TScreenWin32::Suspend()
 {
- RestoreScreen();
- SetCursorPos(xCurStart,yCurStart);
+ // Restore window size (using our handle!)
+ SetCrtModeRes(saveScreenWidth,saveScreenHeight);
+ // Switch to the original handle
+ SetConsoleActiveScreenBuffer(hStdOut);
  SetConsoleMode(hIn,oldConsoleMode);
+ SetConsoleCtrlHandler(ConsoleEventHandler,FALSE);
 }
 
 TScreenWin32::~TScreenWin32()
 {
  Suspend();
  suspended=1;
- SaveScreenReleaseMemory();
  setCursorType(startupCursor);
  DoneConsole();
  if (screenBuffer)
@@ -245,40 +292,6 @@ void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)
   }
 }
 
-void TScreenWin32::SaveScreen()
-{
- GetConsoleScreenBufferInfo(hOut,&info);
- if (buffer)
-   {
-    delete buffer;
-    buffer=NULL;
-   }
- buffer=new CHAR_INFO[info.dwSize.Y*info.dwSize.X];
- if (buffer)
-   {// SET: The rectangle is 0 to size-1
-    SMALL_RECT rect={ 0,0, info.dwSize.X-1,info.dwSize.Y-1 };
-    COORD      start={0,0};
-    ReadConsoleOutput(hOut,buffer,info.dwSize,start,&rect);
-  }
-}
-
-void TScreenWin32::RestoreScreen()
-{
- if (buffer)
-   {
-    SMALL_RECT rect={ 0,0, info.dwSize.X-1,info.dwSize.Y-1 };
-    COORD      start={0,0};
-    WriteConsoleOutput(hOut,buffer,info.dwSize,start,&rect);
-   }
-}
-
-void TScreenWin32::SaveScreenReleaseMemory(void)
-{
- if (buffer)
-    delete buffer;
- buffer = NULL;
-}
-
 #ifndef TVCompf_Cygwin
 int TScreenWin32::System(const char *command, pid_t *pidChild)
 {
@@ -339,25 +352,101 @@ TScreen *TV_Win32DriverCheck()
  return drv;
 }
 
-/*
-void TScreenWin32::setVideoMode( ushort mode )
+/**[txh]********************************************************************
+
+  Description:
+  Change the window size to the desired value. The font size is ignored
+because it can't be controlled by the application, the Win32 API reference
+I have says: "A screen buffer can be any size, limited only by available
+memory. The dimensions of a screen buffer's window cannot exceed the
+corresponding dimensions of either the screen buffer or the maximum window
+that can fit on the screen based on the current font size (controlled
+exclusively by the user).".@*
+  It only works if we are windowed and this will prevent from going full
+screen unless Windows knows an equivalent text mode.
+  
+  Return: 0 no change, 1 full change, 2 approx. change. by SET
+  
+***************************************************************************/
+
+int TScreenWin32::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
 {
-   if (screenBuffer) delete screenBuffer;
-   setCrtMode( fixCrtMode( mode ) );
-   setCrtData();
-   screenBuffer = new ushort[screenWidth*screenHeight];
-   ZeroMemory(screenBuffer, getRows()*getCols()*sizeof(ushort));
+ CONSOLE_SCREEN_BUFFER_INFO info;
+ DBPr3("TScreenWin32::SetCrtModeRes(%d,%d)\n",w,h);
+ // Find current size
+ if (!GetConsoleScreenBufferInfo(hOut,&info))
+   {
+    DBPr1("GetConsoleScreenBufferInfo failed\n");
+    return 0;
+   }
+ // Is the same used?
+ if (info.dwSize.X==(int)w && info.dwSize.Y==(int)h)
+   {
+    DBPr3("Already using %d,%d size\n",w,h);
+    return 0;
+   }
+ // Find the max. size, depends on the font and screen size.
+ COORD max=GetLargestConsoleWindowSize(hOut);
+ COORD newSize={w,h};
+ if (newSize.X>max.X) newSize.X=max.X;
+ if (newSize.Y>max.Y) newSize.Y=max.Y;
+ // The buffer must be large enough to hold both modes (current and new)
+ COORD newBufSize=newSize;
+ if (info.dwMaximumWindowSize.X>newBufSize.X)
+    newBufSize.X=info.dwMaximumWindowSize.X;
+ if (info.dwMaximumWindowSize.Y>newBufSize.Y)
+    newBufSize.Y=info.dwMaximumWindowSize.Y;
+ DBPr3("Enlarging buffer from %d,%d to",info.dwMaximumWindowSize.X,
+       info.dwMaximumWindowSize.Y);
+ DBPr3(" %d,%d\n",newBufSize.X,newBufSize.Y);
+ // Enlarge the buffer size. It fails if not windowed.
+ if (!SetConsoleScreenBufferSize(hOut,newBufSize))
+   {
+    DBPr1("SetConsoleScreenBufferSize failed!\n");
+    return 0;
+   }
+ // Resize the window.
+ SMALL_RECT r={0,0,newSize.X-1,newSize.Y-1};
+ DBPr3("Resizing window to %d,%d\n",newSize.X,newSize.Y);
+ if (!SetConsoleWindowInfo(hOut,TRUE,&r))
+   {// Revert buffer size
+    DBPr1("SetConsoleWindowInfo failed!\n");
+    newSize.X=info.dwMaximumWindowSize.X;
+    newSize.Y=info.dwMaximumWindowSize.Y;
+    SetConsoleScreenBufferSize(hOut,newSize);
+    return 0;
+   }
+ // Now we can shrink the buffer to the needed size
+ SetConsoleScreenBufferSize(hOut,newSize);
+ // Ok! we did it.
+ return fW!=-1 || fH!=-1 || newSize.X!=(int)w || newSize.Y!=(int)h ? 2 : 1;
 }
 
-void TScreenWin32::setVideoMode( char *mode )
-{
-   if (screenBuffer) delete screenBuffer;
-   setCrtMode( mode );
-   setCrtData();
-   screenBuffer = new ushort[screenWidth*screenHeight];
-   ZeroMemory(screenBuffer, getRows()*getCols()*sizeof(ushort));
+int TScreenWin32::SetVideoModeRes(unsigned w, unsigned h, int fW, int fH)
+{// Set the screen mode
+ int ret=setCrtModeRes(w,h,fW,fH);
+ if (ret)
+   {// Memorize new values:
+    // Cache the values for TDisplay
+    GetConsoleScreenBufferInfo(hOut,&ConsoleInfo);
+    screenWidth =ConsoleInfo.dwSize.X;
+    screenHeight=ConsoleInfo.dwSize.Y;
+    DeleteArray(screenBuffer);
+    screenBuffer=new ushort[screenHeight*screenWidth];
+    // Cache the data about it and initialize related stuff
+    setCrtData();
+   }
+ return ret;
 }
-*/
+
+// Anatoli's idea
+BOOL WINAPI TScreenWin32::ConsoleEventHandler(DWORD dwCtrlType)
+{
+ if (dwCtrlType==CTRL_C_EVENT || dwCtrlType==CTRL_BREAK_EVENT)
+    return TRUE;
+ return FALSE;
+}
+
 #else
 
 #include <tv/win32/screen.h>

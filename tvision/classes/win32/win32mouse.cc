@@ -41,9 +41,15 @@ CRITICAL_SECTION THWMouseWin32::lockMouse;
 void THWMouseWin32::Init()
 {
  THWMouse::GetEvent=THWMouseWin32::GetEvent;
+ THWMouse::Resume=THWMouseWin32::Resume;
  InitializeCriticalSection(&lockMouse);
  evMouseLength=0;
  evMouseIn=evMouseOut=&evMouseQueue[0];
+ Resume();
+}
+
+void THWMouseWin32::Resume()
+{
  // SET: This is supposed to report if mouse is present and how many buttons
  // have. I put a detailed comment in winnt driver.
  buttonCount=GetSystemMetrics(SM_CMOUSEBUTTONS);

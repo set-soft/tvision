@@ -20,6 +20,7 @@ protected:
  virtual ~THWMouseWin32();
 
  static void GetEvent(MouseEventType &me);
+ static void Resume();
 
  // For this driver
  // Put a mouse event in the queue

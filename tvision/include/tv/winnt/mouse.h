@@ -17,6 +17,7 @@ protected:
  virtual ~THWMouseWinNT();
 
  static void GetEvent(MouseEventType &me);
+ static void Resume();
 
  // For this driver
  static INPUT_RECORD inpRec;

@@ -53,6 +53,12 @@ void THWMouseWinNT::GetEvent(MouseEventType &me)
 void THWMouseWinNT::Init()
 {
  THWMouse::GetEvent=THWMouseWinNT::GetEvent;
+ THWMouse::Resume=THWMouseWinNT::Resume;
+ Resume();
+}
+
+void THWMouseWinNT::Resume()
+{
  // SET: According to Win32 API reference an application should check if the
  // mouse is installed and can find how many buttons have the mouse using
  // calls to GetSystemMetrics. Windows supports upto 3 buttons :-(
@@ -62,6 +68,7 @@ void THWMouseWinNT::Init()
  // events from the wheel.
  buttonCount=GetSystemMetrics(SM_CMOUSEBUTTONS);
 }
+
 #else
 
 #include <tv/winnt/screen.h>

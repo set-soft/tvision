@@ -5,6 +5,9 @@
 #if defined(TVOS_Win32) && !defined(WINNTSCR_HEADER_INCLUDED)
 #define WINNTSCR_HEADER_INCLUDED
 
+#define USE_NEW_BUFFER
+#define hCurrentOut hOut
+
 // virtual to avoid problems with multiple inheritance
 class TDisplayWinNT : virtual public TDisplay
 {
@@ -34,10 +37,15 @@ protected:
  // Low level routines, doesn't use cached values
  static void   GetCursorPosLow(unsigned &x, unsigned &y);
  static void   GetCursorShapeLow(unsigned &start, unsigned &end);
+ static void   SetCursorShapeLow(unsigned start, unsigned end);
+ static void   SetCursorPosLow(unsigned x, unsigned y);
 
  // Variables for this driver
  // Input/output handles
  static HANDLE hOut,hIn;
+ #ifdef USE_NEW_BUFFER
+ static HANDLE hStdOut;
+ #endif
  // Cursor position
  static unsigned currentCursorX,currentCursorY;
  // Cursor shape
@@ -72,25 +80,30 @@ protected:
  static void   SetCharacter(unsigned offset, ushort value);
  static void   SetCharacters(unsigned dst, ushort *src, unsigned len);
  static int    System(const char *command, pid_t *pidChild);
+ static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
 
  // Support functions
+ #ifndef USE_NEW_BUFFER
  static void SaveScreen();
  static void SaveScreenReleaseMemory();
  static void RestoreScreen();
- static void ScreenUpdate();
+ #endif
+ //static void ScreenUpdate();
  static BOOL WINAPI ConsoleEventHandler(DWORD dwCtrlType);
  static void ensureOutBufCapacity(unsigned count);
  // Initialization done at start
- static void InitOnce();
+ static int  InitOnce();
 
  // Support variables
  // Old console state
+ #ifndef USE_NEW_BUFFER
  static ushort*  saveScreenBuf;
  static unsigned saveScreenSize;
  static unsigned saveScreenCursorStart, saveScreenCursorEnd;
- static unsigned saveScreenWidth, saveScreenHeight;
  static unsigned saveScreenCursorX, saveScreenCursorY;
+ #endif
  static DWORD    saveScreenConsoleMode;
+ static unsigned saveScreenWidth, saveScreenHeight;
  // Buffer used to arrange the data as needed by Win32 API
  static CHAR* outBuf;
  static WORD* outBufAttr;
