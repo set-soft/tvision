@@ -132,6 +132,9 @@ protected:
  static uint16  unicode2index(uint16 unicode);
  inline // Ensure the glyph is available as XImage
  static void    checkUnicodeGlyph(uint16 code);
+ // Helper to set the bacground and foreground in one step
+ static void    XSetBgFg(uint16 attr);
+ static void    XSetBgFgC(uint16 attr);
  
  // Variables for this driver
  // Foreground and background colors

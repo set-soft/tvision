@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.399.2.8  2003/02/18 14:53:37  set
+* Added: [X11] Configuration options to use X11 fonts instead of internal
+fonts. Only available for Unicode16 mode. Documented.
+* Added: Japanese text to the example and a configuration that (at least in
+my system) allows to display it. Snapshot in the web page.
+
 Revision 2.399.2.7  2003/02/17 18:12:02  set
 * Added: [X11] Two configuration variables to control if we want Unicode 16
 mode and which SFT to use. Also added a search in various directories and

@@ -174,8 +174,7 @@ void TScreenX11::setCharacter(unsigned offset, uint32 value)
  uchar *theChar=(uchar *)(screenBuffer+offset);
  uchar newChar=theChar[charPos];
  uchar newAttr=theChar[attrPos];
- XSetBackground(disp,gc,colorMap[newAttr>>4]);
- XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+ XSetBgFg(newAttr);
  UnDrawCursor();
  drawChar(gc,x,y,newChar,newAttr);
  DrawCursor();
@@ -202,8 +201,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
        sb[attrPos]=newAttr;
        if (newAttr!=oldAttr)
          {
-          XSetBackground(disp,gc,colorMap[newAttr>>4]);
-          XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+          XSetBgFg(newAttr);
           oldAttr=newAttr;
          }
        drawChar(gc,x,y,newChar,newAttr);
@@ -1004,8 +1002,7 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
        sb[attrPos]=newAttr;
        if (newAttr!=oldAttr)
          {
-          XSetBackground(disp,gc,colorMap[newAttr>>4]);
-          XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+          XSetBgFg(newAttr);
           oldAttr=newAttr;
          }
        drawCharU16(gc,x,y,newChar);
@@ -1029,8 +1026,7 @@ void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
 
- XSetBackground(disp,gc,colorMap[newAttr>>4]);
- XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+ XSetBgFg(newAttr);
  UnDrawCursor();
  drawCharU16(gc,x,y,newChar);
  DrawCursor();
@@ -1045,8 +1041,7 @@ void TScreenX11::writeLineX11U16(int x, int y, int w, void *str, unsigned color)
 {
  if (!w) return; // Nothing to do
 
- XSetBackground(disp,gc,colorMap[color>>4]);
- XSetForeground(disp,gc,colorMap[color&15]);
+ XSetBgFg(color);
 
  XChar2b *s=(XChar2b *)str;
  #ifndef TV_BIG_ENDIAN
@@ -1627,28 +1622,43 @@ void TScreenX11::UnDrawCursor()
     uchar *theChar=(uchar *)(screenBuffer+offset);
     uchar newChar=theChar[charPos];
     uchar newAttr=theChar[attrPos];
-    int bg=newAttr>>4;
-    int fg=newAttr & 0xF;
-   
-    XSetBackground(disp,cursorGC,colorMap[bg]);
-    XSetForeground(disp,cursorGC,colorMap[fg]);
+    XSetBgFgC(newAttr);
     drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
    }
  else
    {
-    uint16 *buf=screenBuffer+offset*2;
-    uchar newChar=buf[charPos];
-    uchar newAttr=buf[attrPos];
-    int bg=newAttr>>4;
-    int fg=newAttr & 0xF;
-   
-    XSetBackground(disp,cursorGC,colorMap[bg]);
-    XSetForeground(disp,cursorGC,colorMap[fg]);
-    if (u2c)
+    if (useX11Font)
+      {
+       uint16 *buf=screenBuffer+offset*2;
+       writeLineX11U16(cursorX,cursorY,1,buf+charPos,buf[attrPos]);
+      }
+    else
+      {
+       uint16 *buf=screenBuffer+offset*2;
+       uchar newChar=buf[charPos];
+       uchar newAttr=buf[attrPos];
+       XSetBgFgC(newAttr);
        drawCharU16(cursorGC,cursorX*fontW,cursorY*fontH,newChar);
+      }
    }
  cursorInScreen=0;
  return;
+}
+
+void TScreenX11::XSetBgFgC(uint16 attr)
+{
+ int bg=attr>>4;
+ int fg=attr & 0xF;
+ XSetBackground(disp,cursorGC,colorMap[bg]);
+ XSetForeground(disp,cursorGC,colorMap[fg]);
+}
+
+void TScreenX11::XSetBgFg(uint16 attr)
+{
+ int bg=attr>>4;
+ int fg=attr & 0xF;
+ XSetBackground(disp,gc,colorMap[bg]);
+ XSetForeground(disp,gc,colorMap[fg]);
 }
 
 void TScreenX11::DrawCursor()
@@ -1673,16 +1683,26 @@ void TScreenX11::DrawCursor()
       {
        uint16 *buf=screenBuffer+offset*2;
        attr=buf[attrPos];
-       if (u2c)
+       if (useX11Font)
+         {
+          writeLineX11U16(cursorX,cursorY,1,buf,attr);
+          if (cursorInScreen)
+            {
+             XSetBgFgC(attr);
+             int y;
+             for (y=cShapeFrom; y<cShapeTo; y++)
+                 XDrawLine(disp,mainWin,cursorGC,cursorPX,cursorPY+y,cursorPX+fontW-1,cursorPY+y);
+            }
+          XFlush(disp);
+          return;
+         }
+       else
          {
           uint16 code=unicode2index(buf[charPos]);
           memcpy(cursorData,glyphs+code*fontSz,fontSz);
          }
       }
-    int bg=attr>>4;
-    int fg=attr & 0xF;
-    XSetBackground(disp,cursorGC,colorMap[bg]);
-    XSetForeground(disp,cursorGC,colorMap[fg]);
+    XSetBgFgC(attr);
 
     //fprintf(stderr,"DrawCursor: cursorInScreen=%d from/to %d/%d\n",cursorInScreen,cShapeFrom,cShapeTo);
     /* If the cursor is on draw it over the character */
@@ -1879,9 +1899,7 @@ void TScreenX11::writeLineCP(int x, int y, int w, void *s, unsigned color)
  if (w<=0)
     return; // Nothing to do
 
- XSetBackground(disp,gc,colorMap[color>>4]);
- XSetForeground(disp,gc,colorMap[color&15]);
-
+ XSetBgFg(color);
  x*=fontW; y*=fontH;
  UnDrawCursor();
  XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
@@ -1934,9 +1952,7 @@ void TScreenX11::writeLineU16(int x, int y, int w, void *s, unsigned color)
  if (w<=0)
     return; // Nothing to do
 
- XSetBackground(disp,gc,colorMap[color>>4]);
- XSetForeground(disp,gc,colorMap[color&15]);
-
+ XSetBgFg(color);
  x*=fontW; y*=fontH;
  UnDrawCursor();
  uint16 *str=(uint16 *)s;

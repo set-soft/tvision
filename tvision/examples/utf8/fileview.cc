@@ -44,6 +44,7 @@ UNIX.
 #define Uses_TDeskTop
 #define Uses_TView
 #define Uses_TWindow
+#define Uses_TScroller
 #include <tv.h>
 
 UsingNamespaceStd
@@ -150,22 +151,28 @@ class TDemoWindow : public TWindow      // define a new window class
 public:
 
    TDemoWindow( const TRect& r, const char *aTitle, short aNumber );
+    void makeInterior();
 
 };
 
-class TInterior : public TView
+class TInterior : public TScroller
 {
 
 public:
 
-    TInterior( const TRect& bounds );   // constructor
+    TInterior( const TRect& bounds, TScrollBar *aHScrollBar,
+           TScrollBar *aVScrollBar ); // constructor
     virtual void draw();                // override TView::draw
 };
 
-TInterior::TInterior( const TRect& bounds ) : TView( bounds )
+TInterior::TInterior( const TRect& bounds, TScrollBar *aHScrollBar,
+              TScrollBar *aVScrollBar ) :
+       TScroller( bounds, aHScrollBar, aVScrollBar )
 {
     growMode = gfGrowHiX | gfGrowHiY;   //make size follow that of the window
     options = options | ofFramed;
+    state |= sfCursorVis;
+    setLimit( maxLineLength, maxLines );
 }
 
 void TInterior::draw()
@@ -178,11 +185,12 @@ void TInterior::draw()
         TDrawBufferU16 b;
         b.moveChar( 0, ' ', color, size.x );
         // fill line buffer with spaces
-        if( lines[i] )
+        int j = delta.y + i;       // delta is scroller offset
+        if( lines[j] )
             {
             // This is something like strncpy but works for Unicode16
             uint16 d[maxLineLength];
-            uint16 *o=lines[i];
+            uint16 *o=lines[j];
             int p=0;
             while (p<size.x && o[p])
               {
@@ -194,6 +202,17 @@ void TInterior::draw()
             }
         writeLine( 0, i, size.x, 1, b);
         }
+}
+
+void TDemoWindow::makeInterior()
+{
+    TScrollBar *vScrollBar =
+        standardScrollBar( sbVertical | sbHandleKeyboard );
+    TScrollBar *hScrollBar =
+        standardScrollBar( sbHorizontal |  sbHandleKeyboard );
+    TRect r = getClipRect();    // get exposed view bounds
+    r.grow( -1, -1 );           // shrink to fit inside window frame
+    insert( new TInterior( r, hScrollBar, vScrollBar ));
 }
 
 TMyApp::TMyApp() :
@@ -269,9 +288,7 @@ TDemoWindow::TDemoWindow( const TRect& bounds, const char *aTitle,
          TWindow( bounds, aTitle, aNumber),
          TWindowInit( &TDemoWindow::initFrame )
 {
-    TRect r = getClipRect();    // get exposed area
-    r.grow(-1, -1);             // make interior fit inside window frame
-    insert( new TInterior(r) ); // add interior to window
+    makeInterior(); // creates scrollable interior and inserts into window
 }
 
 
