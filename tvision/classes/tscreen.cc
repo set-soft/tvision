@@ -13,6 +13,8 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #ifdef __DJGPP__
 
+#include <conio.h>
+
 #define Uses_TScreen
 #define Uses_TEvent
 #include <tv.h>
@@ -25,7 +27,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <sys/movedata.h>
 #define REGS __dpmi_regs
 
-#include <conio.h>
 #include <pc.h>
 #include <stdio.h>
 #include <sys/mono.h>

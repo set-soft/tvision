@@ -4,9 +4,9 @@
  *      Copyright (c) 1994 by Borland International
  *      All Rights Reserved.
  *
-
-Modified by Robert H”hne to be used for RHIDE.
-
+ *
+ * Modified by Robert H”hne to be used for RHIDE.
+ *
  *
  *
  */
@@ -261,7 +261,7 @@ void TGroup::freeBuffer()
 #if 0
         TVMemMgr::freeDiscardable( buffer );
 #else
-	delete[] buffer;
+        DeleteArray(buffer);
 #endif
         buffer = 0;
         }
@@ -320,8 +320,8 @@ static void doHandleEvent( TView *p, void *s )
             if( (p->options & ofPostProcess) == 0 )
                 return;
             break;
-	default:
-	    break;
+        default:
+            break;
         }
     if( (ptr->event.what & p->eventMask) != 0 )
         p->handleEvent( ptr->event );

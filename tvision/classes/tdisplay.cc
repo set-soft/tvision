@@ -17,6 +17,7 @@ Modified by Robert H”hne to be used for RHIDE.
 // they can inconditionally declare symbols like NULL
 #include <stdlib.h>
 #define Uses_string
+#include <conio.h>
 
 #define Uses_TScreen
 #define Uses_TEvent
@@ -30,7 +31,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define INTR(nr,r) __dpmi_int(nr,&r)
 #include <pc.h>
 
-#include <conio.h>
 #include <sys/farptr.h>
 #include <errno.h>
 #include <sys/movedata.h>

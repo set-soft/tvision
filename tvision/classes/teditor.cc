@@ -1289,7 +1289,7 @@ lab2:
   if ((uint32)di == curPtr) goto lab4;
   if ((uint32)di == bufLen) goto lab4;
   // SET: When lines end only with \n it fails
-  #ifndef __linux__
+  #ifndef TVOS_UNIX
   if (buffer[di+bx] != '\n') goto lab4;
   di++;
   #endif

@@ -14,6 +14,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #ifdef __DJGPP__
 
 #include <stdlib.h>
+#include <conio.h>
+
 #define Uses_TEvent
 #define Uses_TEventQueue
 #include <tv.h>
@@ -33,7 +35,6 @@ Boolean THWMouse::noMouse = False;
 #define REGS union REGS
 #define INTR(nr,r) int86(nr,&r,&r)
 #endif
-#include <conio.h>
 #include <sys/farptr.h>
 #include <go32.h>
 

@@ -12,10 +12,18 @@ They are a hack, the original TV had it made in assembler (edits.asm) and
 Robert did a quick hack. We still using some of this code so isn't too bad
 ;-)
 
+  JASC -> Jul 2000, endian stuff
+
 *****************************************************************************/
 
 #define Uses_TEditor
 #include <tv.h>
+
+#if defined(TV_BIG_ENDIAN)
+ #define endianCol( letra, color ) ((((unsigned)letra)<<8) | ((unsigned)color))
+#else
+ #define endianCol( letra, color ) ((((unsigned)color)<<8) | ((unsigned)letra))
+#endif
 
 #define CALL if (call10(this,(ushort *)DrawBuf,color,count,offset,LinePtr,bufptr,Width) == False) return
 
@@ -23,18 +31,18 @@ Robert did a quick hack. We still using some of this code so isn't too bad
 do {\
   int count = Width-offset;\
   if (count<=0) return flag;\
-  while (count--) drawBuf[bufptr++] = (color << 8) | ' ';\
+  while (count--) {drawBuf[bufptr++] = endianCol(' ', color);}\
   return flag;\
 } while (0)
 
 #define SETCHAR(c)\
 do {\
-  drawBuf[bufptr++] = (color << 8) | (c);\
+  drawBuf[bufptr++] = endianCol(' ', color);\
   offset++;\
 } while (0)
 
-Boolean call10(const TEditor *edit,ushort *drawBuf,ushort color,int cx,
-  int &offset, unsigned &lineptr,int &bufptr,int Width)
+Boolean call10(const TEditor *edit, ushort *drawBuf, ushort color, int cx,
+               int &offset, unsigned &lineptr, int &bufptr, int Width)
 {
   uchar c;
   int count = cx - lineptr;
@@ -51,7 +59,7 @@ Boolean call10(const TEditor *edit,ushort *drawBuf,ushort color,int cx,
 #if 1
         } while (offset & 7);
 #else
-	} while ((offset % TEditor::tabSize) != 0);
+        } while ((offset % TEditor::tabSize) != 0);
 #endif
       }
       else
@@ -72,11 +80,8 @@ Boolean call10(const TEditor *edit,ushort *drawBuf,ushort color,int cx,
 #define normalColor (Colors & 0xff)
 #define selectColor (Colors >> 8)
 
-void TEditor::formatLine( void *DrawBuf,
-			  uint32 LinePtr,
-			  int Width,
-			  ushort Colors
-                        )
+void TEditor::formatLine( void *DrawBuf, uint32 LinePtr, int Width,
+                          ushort Colors )
 {
   int count,offset,bufptr;
   ushort color;
@@ -99,6 +104,6 @@ void TEditor::formatLine( void *DrawBuf,
   CALL;
   count = Width-offset;
   if (count<=offset) return;
-  while (count--) ((ushort *)(DrawBuf))[bufptr++] = (color << 8) | ' ';
+  while (count--) ((ushort *)(DrawBuf))[bufptr++] = endianCol(' ', color);
 }
 
