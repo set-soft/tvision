@@ -19,6 +19,32 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define __INC_STDDLG_H
 
+// SET: Start of the TEditor classes re-incorporated in 1.0.4
+#ifdef Uses_TEditWindow
+#define Uses_TWindow
+#define Uses_TFileEditor
+#endif
+
+#ifdef Uses_TFileEditor
+#define Uses_TEditor
+#endif
+
+#ifdef Uses_TMemo
+#define Uses_TEditor
+#endif
+
+#ifdef Uses_TEditor
+#define Uses_TView
+#define Uses_TPalette
+#define Uses_TCommandSet
+#define INCL_EDITORS_H
+#endif
+
+#ifdef Uses_TEditorApp
+#define INCL_TVEDIT_H
+#endif
+// SET: End of the TEditor classes
+
 #if defined( Uses_TGKey )
 #define __INC_GKEY_H
 #endif
@@ -620,3 +646,13 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( __INC_FILEVIEW_H )
 #include <fileview.h>
 #endif
+
+// SET: Start of the TEditor classes re-incorporated in 1.0.4
+#ifdef INCL_EDITORS_H
+#include <editors.h>
+#endif
+
+#ifdef INCL_TVEDIT_H
+#include <tvedit.h>
+#endif
+// SET: End of the TEditor classes

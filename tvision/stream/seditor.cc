@@ -1,0 +1,12 @@
+#define Uses_TStreamableClass
+#define Uses_TEditor
+#include <tv.h>
+__link( RView )
+__link( RScrollBar )
+__link( RIndicator )
+
+TStreamableClass REditor( TEditor::name,
+                          TEditor::build,
+                          __DELTA(TEditor)
+                        );
+
