@@ -45,6 +45,9 @@ public:
 
     TView *link;
 
+    // SET: Now labels propagate the disabled state.
+    virtual void setState( ushort aState, Boolean enable );
+
 protected:
 
     Boolean light;

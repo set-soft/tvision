@@ -26,7 +26,7 @@ Modified by Salvador E. Tropea: added i18n support.
 #define Uses_TScreen
 #include <tv.h>
 
-#define cpLabel "\x07\x08\x09\x09"
+#define cpLabel "\x07\x08\x09\x09\x0D\x0D"
 
 TLabel::TLabel( const TRect& bounds, const char *aText, TView* aLink) :
     TStaticText( bounds, aText )
@@ -58,21 +58,40 @@ void TLabel::shutDown()
     TStaticText::shutDown();
 }
 
+// SET: Now labels propagate the disabled state.
+void TLabel::setState( ushort aState, Boolean enable )
+{
+    TView::setState( aState, enable );
+    if( aState == sfDisabled )
+        {
+        link->setState( aState, enable );
+        drawView();
+        }
+}
+
 void TLabel::draw()
 {
     ushort color;
     TDrawBuffer b;
     uchar scOff;
 
-    if( light )
-        {
-        color = getColor(0x0402);
-        scOff = 0;
+    if( state & sfDisabled )
+        {// SET: Now disabled labels shows it
+        color = getColor(0x0605);
+        scOff = 4;
         }
     else
         {
-        color = getColor(0x0301);
-        scOff = 4;
+        if( light )
+            {
+            color = getColor(0x0402);
+            scOff = 0;
+            }
+        else
+            {
+            color = getColor(0x0301);
+            scOff = 4;
+            }
         }
 
     b.moveChar( 0, ' ', color, size.x );
