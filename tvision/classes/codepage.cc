@@ -2469,4 +2469,26 @@ ccIndex TVCodePage::AddCodePage(CodePage *cp)
  return CodePages->insert(cp);
 }
 
+/**[txh]********************************************************************
 
+  Description:
+  This is a helper for the TVFontCollection class the parameters of this
+function could change in the future.@*
+  Basically it finds a replacement for a missing symbol in a font. It allows
+using incomplete font.
+  
+  Return: The replacement or -1 if none known.
+  
+***************************************************************************/
+
+int TVCodePage::LookSimilarInRange(int code, int last)
+{
+ while (code>last && !(code>=' ' && code<='~'))
+   {
+    if (code<256)
+       code=Similar[code];
+    else
+       code=Similar2[code-256];
+   }
+ return code>last ? -1 : code;
+}

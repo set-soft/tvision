@@ -12,12 +12,12 @@
 
 struct TVBitmapFont
 {
- int first, last; // Currently unsupported
+ int first, last; // Currently is barely supported. The range includes both ends.
  unsigned lines;       // Height
  unsigned width;       // Width in pixels
  // --- Not in disk:
  int wBytes;      // Width in bytes. To avoid computing it all the time
- uchar *fontFull; // 587 chars
+ uchar *fontFull; // last-first+1 chars
  uchar *font;     // 256 according to the code page
 };
 

@@ -273,7 +273,17 @@ void TVFontCollection::CreateFont(void *item, void *arg)
  uchar *dest=f->font;
  memset(f->font,0,size);
  for (i=0; i<256; i++,dest+=size1)
-     memcpy(dest,&f->fontFull[map[i]*size1],size1);
+    {
+     int index=map[i];
+     if (index>f->last)
+       {
+        index=TVCodePage::LookSimilarInRange(index,f->last);
+        if (index==-1)
+           index=f->first;
+       }
+     index-=f->first;
+     memcpy(dest,&f->fontFull[index*size1],size1);
+    }
 
  #if 0
  // This code stores the generated font to disk, is used for debug

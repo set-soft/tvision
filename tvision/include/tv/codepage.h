@@ -69,6 +69,7 @@ public:
                 { idApp=curAppCP; idScr=curScrCP; }
  static void    GetDefaultCodePages(int &idScr, int &idApp)
                 { idApp=defAppCP; idScr=defScrCP; }
+ static int     LookSimilarInRange(int code, int last);
 
  // Arbitrary names for the supported code pages
  // Just to avoid using the magics, look in codepage.cc for more information
