@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.134  2002/06/07 14:34:17  set
+* Fixed: xtmouse.h lack of new line at the end of file. Patch by Andris.
+* Test: Looks like some glibc 2.2.5 includes libintl.h without explicit
+request. It generates some conflicts. Here I include a possible workaround.
+Reported by Andris.
+
 Revision 2.133  2002/06/07 02:15:07  terrible
 * Updated: Debian packaging with small changes.
 
