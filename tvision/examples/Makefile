@@ -107,4 +107,5 @@ videomode/test.exe: videomode/test.gpr
 
 clean:
 	@echo 'Cleaning examples.'
-	-@rm -f */*.o */*.exe */*.gdt */*.bkp *.bkp */*.dst
+	-@rm -f */*.o */*/*.o */*.exe */*/*.exe */*.gdt */*/*.gdt */*.bkp \
+	*/*/*.bkp *.bkp */*.dst */*/*.dst

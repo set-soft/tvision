@@ -12,7 +12,7 @@
 #define Uses_string
 #define Uses_stdlib
 // SET: Why? I think you can just let #define Uses_unistd, it shouldn't conflict
-#ifdef TVCompf_Cygwin
+#if defined(TVCompf_Cygwin) || defined(TVCompf_MinGW)
  #define Uses_unistd
 #endif
 #define Uses_AllocLocal
