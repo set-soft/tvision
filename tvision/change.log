@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.308  2002/09/13 12:26:29  set
+* Modified: [DOS] The mouse handler un/hook methode. I got nasty GPFs with
+the old code. I also disabled some code in TVApplication that shouldn't
+be there. Some problems still there.
+
 Revision 2.307  2002/09/13 12:25:02  set
 * Fixed: The dummy international library used "gcc" inconditionally. Now is
 configured.

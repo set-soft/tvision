@@ -165,7 +165,7 @@ sub RunGCCTest
 
  RunRedirect($command,$ErrorLog);
  $test=`./test.exe`;
- #print "$command: $test";
+ #print "\n$command: $test";
  # Does anybody know why I can't delete the exe here?
  # In Linux it makes the variable $test to change!
  #unlink('test.o',$file,'test.exe');
@@ -546,6 +546,8 @@ sub FindCFLAGS
     # Looks like that's common and some sysadmins doesn't configure gcc to
     # look there:
     $ret.=' -I/usr/local/include' if ($OSf eq 'FreeBSD');
+    # Darwin is using a temporal size
+    $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;

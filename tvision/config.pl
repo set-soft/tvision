@@ -84,7 +84,7 @@ $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
 # be added for things like FreeBSD or SunOS. But not for QNX.
 $MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSf eq 'Linux') || ($OSf eq 'QNXRtP'));
-$OSUSesIntl=($OS eq 'DOS') || ($OS eq 'Win32');
+$OSUSesIntl=($OS eq 'DOS') || ($OS eq 'Win32') || ($OSf eq 'Darwin');
 if ($OSUSesIntl)
   {
    if ((@conf{'intl-force-dummy'} ne 'yes') && (@conf{'intl'} eq 'yes'))
@@ -480,7 +480,7 @@ int main(void)
 
 sub LookForXlib()
 {
- my ($test,$o,$libs);
+ my ($test,$o,$libs,$testPr);
 
  print 'Looking for X11 libs: ';
  if (@conf{'HAVE_X11'})
@@ -488,7 +488,7 @@ sub LookForXlib()
     print "@conf{'HAVE_X11'} (cached)\n";
     return;
    }
- $test='
+ $testPr='
 #include <stdio.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -508,7 +508,7 @@ int main(void)
  $o='';
  $o.='-I'.$conf{'X11IncludePath'} if $conf{'X11IncludePath'};
  $o.=" -L$conf{'X11LibPath'} $libs";
- $test=RunGCCTest($GCC,'c',$test,$o);
+ $test=RunGCCTest($GCC,'c',$testPr,$o);
  if ($test=~/OK, (\d+)\.(\d+)/)
    {
     $conf{'HAVE_X11'}='yes';
@@ -519,13 +519,15 @@ int main(void)
     if (!$conf{'X11IncludePath'})
       {
        $conf{'X11IncludePath'}='/usr/X11R6/include';
-       $o.="-I$conf{'X11IncludePath'} -L$conf{'X11LibPath'} $libs";
+       $o.=" -I$conf{'X11IncludePath'} -L$conf{'X11LibPath'} $libs";
+       $test=RunGCCTest($GCC,'c',$testPr,$o);
        if ($test=~/OK, (\d+)\.(\d+)/)
          {
           $conf{'HAVE_X11'}='yes';
           print "yes OK (X$1 rev $2)\n";
           return;
          }
+         die;
       }
     $conf{'HAVE_X11'}='no';
     print "no, disabling X11 version\n";
@@ -718,6 +720,7 @@ sub GenerateMakefile
    }
  $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy\n";
  $rep.="\tcp intl/dummy/libtvfintl.a $makeDir\n";
+ $rep.="\tranlib $makeDir/libtvfintl.a\n" if $conf{'UseRanLib'};
  $rep.="\trm -f linuxso/libtvfintl.a\n\tln -s intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
  $text=~s/\@intl_dummy_rule\@/$rep/g;
 
