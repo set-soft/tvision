@@ -1,9 +1,20 @@
 Hi!
 
-Introduction:
-------------
+The small sections are:
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.2.
+1. Introduction
+2. Notes about the package
+3. Compilation and use
+4. Linux dynamic libraries
+5. Examples
+6. How to submit a patch
+7. Contact information
+
+
+1. Introduction:
+---------------
+
+  That's the Turbo Vision distribution (TVision for short) v1.0.3.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -31,8 +42,8 @@ lot of important information for the binary too.
 
 
 
-Notes about the package:
------------------------
+2. Notes about the package:
+--------------------------
 
   As you are reading it you already unpacked it but here are some notes:
   The files that must be in DOS format are listed in lista.dos, the rest are
@@ -49,8 +60,8 @@ package and are included.
 
 
 
-Compilation and use:
--------------------
+3. Compilation and use:
+----------------------
 
   To compile the library go to the directory for your system (djgpp or linux)
 and run rhide or make in this directory.
@@ -85,8 +96,35 @@ debug information.
 
 
 
-Examples:
----------
+4. Linux dynamic libraries:
+--------------------------
+
+From sources:
+  To create the .so library go to the linuxso directory, run makemak.pl
+(yes, you'll need Perl for it, that's standard in Debian) and then edit and
+run the instlib installation script.
+
+From binary distribution:
+  Edit and run the instlib script.
+
+  That's very experimental so be careful I don't know if the version numbers
+are OK and what will happend if you try to execute something created with
+the 1.0.3 library using the 1.0.4 library. If you have hints about this
+topic please contact me.
+  My tests shows that a small TVision example (examples/dyntxt) is only 14Kb
+long when linked dynamically and without debug information. But you should
+know that dynamically linked executables are slower than static ones,
+specially when you call a lot of small and fast library functions, that's
+because the address resolution overhead.
+  I distribute the .so file with debug information but the installation
+script removes it in the installed copy. You can change the script or move
+the version with debug information to your libs directory.
+
+
+
+
+5. Examples:
+-----------
 
   I included a collection of nine examples I got from the net and ported to
 this TVision. The examples are shipped only with the sources distribution.
@@ -94,8 +132,8 @@ this TVision. The examples are shipped only with the sources distribution.
 
 
 
-How to submit a patch:
----------------------
+6. How to submit a patch:
+------------------------
 
   The simplest way is running a diff between your current directory and a
 copy of the library as you downloaded it. Don't forget to specify the exact
@@ -105,8 +143,8 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-Contact information:
--------------------
+7. Contact information:
+----------------------
 
 Salvador E. Tropea (SET)
 Curapaligue 2124
