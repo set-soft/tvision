@@ -170,7 +170,7 @@ TScreenWinNT::TScreenWinNT()
     maxX=aux;
  if (optSearch("ScreenHeight",aux))
     maxY=aux;
- if (maxX!=startScreenWidth || maxY!=startScreenHeight)
+ if (maxX!=saveScreenWidth || maxY!=saveScreenHeight)
    {
     cursorLines=getCursorType();
     setCrtModeRes(maxX,maxY);

@@ -86,10 +86,9 @@ TScreenWin32::TScreenWin32()
     maxX=aux;
  if (optSearch("ScreenHeight",aux))
     maxY=aux;
- if (maxX!=startScreenWidth || maxY!=startScreenHeight)
+ if (maxX!=saveScreenWidth || maxY!=saveScreenHeight)
     setCrtModeRes(maxX,maxY);
 
- startupMode=getCrtMode();
  cursorLines=getCursorType();
  screenWidth =GetCols();
  screenHeight=GetRows();
@@ -324,7 +323,8 @@ int TScreenWin32::System(const char *command, pid_t *pidChild)
   return system(command);
 }
 #else
-// fork mechanism is implemented in Cygwin, so linux code should work -- OH!
+// fork mechanism is implemented in Cygwin, so linux code should work -- OH
+
 // SET: Call to an external program, optionally forking
 int TScreenWin32::System(const char *command, pid_t *pidChild)
 {
