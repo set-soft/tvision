@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.219  2004/10/29 15:54:49  set
+* Fixed: [DOS] The default encoding wasn't CP437. From a report by
+jessehardy/126/com, a chinese user of RHIDE using code page 936.
+
 Revision 2.399.2.218  2004/10/29 15:25:42  set
 * Fixed: [Compilation][MSVC] Typo in mlink.cc and wrong reference to
 ../compat/obj in common.nmk. Both patches from Grzegorz. With this the
