@@ -53,7 +53,7 @@ TSortedListBox::TSortedListBox( const TRect& bounds,
     setCursor(1, 0);
 }
 
-static Boolean equal( const char *s1, const char *s2, ushort count)
+static Boolean TVision_equal( const char *s1, const char *s2, ushort count)
 {
     return Boolean( strncasecmp( s1, s2, count ) == 0 );
 }
@@ -135,7 +135,7 @@ void TSortedListBox::handleEvent(TEvent& event)
             if( value < range )
                 {
                 getText( newString, value, 255 );
-                if( equal( curString, newString, searchPos+1 ) )
+                if( TVision_equal( curString, newString, searchPos+1 ) )
                     {
                     if( value != oldValue )
                         {

@@ -28,7 +28,7 @@ fpbase::fpbase()
 
 fpbase::fpbase(int f)
 {
- buf=CLY_NewFBFromFD(f);
+ CLY_NewFBFromFD(buf,f);
  pstream::init(buf);
 }
 
@@ -41,7 +41,7 @@ fpbase::fpbase( const char *name, CLY_OpenModeT omode, int prot )
 
 fpbase::fpbase( int f, char *b, int len )
 {
- buf=CLY_NewFBFromFD(f);
+ CLY_NewFBFromFD(buf,f);
  buf->CLY_PubSetBuf(b,len);
  pstream::init(buf);
 }

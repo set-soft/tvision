@@ -1603,7 +1603,7 @@ void TVCodePage::FillTables(int id)
 
 TVCodePage::~TVCodePage()
 {
- destroy(CodePages);
+ CLY_destroy(CodePages);
  CodePages=NULL;
 }
 

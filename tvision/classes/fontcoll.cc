@@ -522,7 +522,7 @@ TVBitmapFontDescCol *TVFontCollection::CreateListOfFonts(const char *dir,
    }
  if (col->getCount()==0)
    {
-    destroy(col);
+    CLY_destroy(col);
     return NULL;
    }
  return col;
@@ -533,7 +533,7 @@ void TVBitmapFontDescCol::freeItem(void *item)
  TVBitmapFontDesc *p=(TVBitmapFontDesc *)item;
  DeleteArray(p->name);
  DeleteArray(p->file);
- destroy(p->sizes);
+ CLY_destroy(p->sizes);
  delete p;
 }
 

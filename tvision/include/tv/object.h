@@ -23,21 +23,21 @@ public:
 
     virtual ~TObject();
 
-    static void destroy( TObject * );
+    static void CLY_destroy( TObject * );
     virtual void shutDown();
 
 private:
 
 };
 
-inline void TObject::destroy( TObject *o )
+inline void TObject::CLY_destroy( TObject *o )
 {
     if( o != 0 )
         o->shutDown();
     delete o;
 }
 
-inline void destroy( TObject *o )
+inline void CLY_destroy( TObject *o )
 {
   if (o) 
   {
@@ -49,7 +49,7 @@ inline void destroy( TObject *o )
 // SET: It also sets the pointer to 0
 #define destroy0(o) \
 { \
- destroy(o);\
+ CLY_destroy(o);\
  o=0;\
 }
 

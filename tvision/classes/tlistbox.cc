@@ -74,7 +74,7 @@ void TListBox::getText( char *dest, ccIndex item, short maxChars )
 void TListBox::newList( TCollection *aList, Boolean destroyItems )
 {
     if( destroyItems )
-       destroy( items );
+       CLY_destroy( items );
     items = aList;
     if( aList != 0 )
         setRange( aList->getCount() );

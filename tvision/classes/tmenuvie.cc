@@ -338,7 +338,7 @@ ushort TMenuView::execute()
                         r.a.x--;
                     target = topMenu()->newSubView(r, current->subMenu,this);
                     result = owner->execView(target);
-                    destroy( target );
+                    CLY_destroy( target );
                     }
                 else if( action == doSelect )
                     result = current->command;

@@ -58,7 +58,7 @@ TInputLine::TInputLine( const TRect& bounds, int aMaxLen ) :
 
 void TInputLine::SetValidator(TValidator * aValidator)
 {
-  destroy(validator);
+  CLY_destroy(validator);
   validator = aValidator;
   if (validator)
     validator->SetOwner(this);
@@ -67,7 +67,7 @@ void TInputLine::SetValidator(TValidator * aValidator)
 TInputLine::~TInputLine()
 {
     delete[] data;
-    destroy(validator);
+    CLY_destroy(validator);
 }
 
 Boolean TInputLine::canScroll( int delta )

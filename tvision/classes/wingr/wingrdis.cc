@@ -610,7 +610,7 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
   SetFontMode( mode.font );  // Change hard font
   winRecalc  ( 0, 0      );  // Modify window size
 
-  destroy( pd );  // No longer needed
+  CLY_destroy( pd );  // No longer needed
 
   SetCursorShape( 0x58
                 , 0x64 ); }

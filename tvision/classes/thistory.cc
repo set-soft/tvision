@@ -96,7 +96,7 @@ void THistory::handleEvent( TEvent& event )
                 link->selectAll( True );
                 link->drawView();
                 }
-            destroy( historyWindow );
+            CLY_destroy( historyWindow );
             }
         clearEvent( event );
         }
