@@ -35,7 +35,6 @@ Boolean THWMouse::noMouse = False;
 
 static int last_x=0,last_y=0,visible=0;
 static unsigned short mouse_char;
-static int my_buttonCount=0;
 static char XTermDetected=0;
 
 extern int TScreen_suspended;
@@ -110,7 +109,7 @@ void THWMouse::resume()
 {
  if (handlerInstalled)
     return;
-
+ fflush(stderr);
  // SET: Are we in a xterm* ?
  // Note: we can't try gpm first, it mess the xterm mouse, it took me a lot
  // of time to figure out why it worked in a simple example but not in a real
@@ -138,7 +137,7 @@ void THWMouse::resume()
       {
        LOG("gpm server version " << Gpm_GetServerVersion(NULL));
        handlerInstalled=True;
-       buttonCount=my_buttonCount;
+       buttonCount=3;
       }
    }
   show();
@@ -160,13 +159,13 @@ void THWMouse::suspend()
 {
  if (!handlerInstalled)
     return;
+ handlerInstalled=False;
+ hide();
+ buttonCount=0;
 
  if (XTermDetected)
    {
-    hide();
     XTermDetected=0;
-    handlerInstalled=False;
-    buttonCount=0;
     // Disable mouse tracking and restore old hilittracking (GPM_XTERM_OFF)
     TScreen::SendToTerminal("\x1B[?1000l\x1B[?1001r");
     LOG("xterm mouse disabled");
@@ -174,14 +173,9 @@ void THWMouse::suspend()
  else
    {
     if (gpm_fd==-1)
-      {
-       handlerInstalled=False;
        return;
-      }
-    hide();
-    my_buttonCount = buttonCount;
-    buttonCount = 0;
     Gpm_Close();
+    LOG("gpm connection closed")
    }
 }
 

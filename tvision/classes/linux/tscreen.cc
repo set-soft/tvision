@@ -46,8 +46,11 @@ extern char *program_invocation_short_name;
 
 static int use_pc_chars = 1;
 int timeout_wakeup,timer_value;
-int vcs_fd=-1;          /* virtual console system descriptor */
-int tty_fd=-1; /* tty descriptor */
+
+int vcsWfd=-1;          /* virtual console system descriptor */
+int vcsRfd=-1;          /* SET: Same for reading */
+int tty_fd=-1;          /* tty descriptor */
+
 /* can I access the MDA ports ? */
 int port_access=0;
 FILE *tty_file=0;
@@ -60,8 +63,6 @@ extern int cur_x,cur_y;
 enum { PAL_MONO, PAL_LOW, PAL_HIGH, PAL_LOW2 };
 static int palette;
 static int force_redraw = 0;
-
-//#define DELAY_SIGALRM 100 garbage ;-)
 
 #if 0 // Not needed right now, but I keep it, SET
 /**[txh]********************************************************************
@@ -219,16 +220,24 @@ void TV_WindowSizeChanged(int sig)
  signal(sig,TV_WindowSizeChanged);
 }
 
+// SET: That's the job of curses endwin(), additionally it does a much more
+// complete work so I don't see the point of duplicating work, in my system
+// I didn't see any change after removing it, but I left the code just in
+// case
+#ifdef SAVE_TERMIOS
 static struct termios old_term,new_term;
+#endif
 
 void startcurses()
 {
   int xterm=0;
 
   char *terminal = getenv("TERM");
+  #ifdef SAVE_TERMIOS
   /* Save the terminal attributes so we can restore them later. */
   /* for the user screen */
   tcgetattr (STDOUT_FILENO, &old_term);
+  #endif
 
   /* The following chunck of code is to have a valid tty for output, even
      if stdout is redirected */
@@ -283,11 +292,11 @@ void startcurses()
   timeout(0);
 
   /* Ensure we are using the right set of characters */
-  if (vcs_fd < 0)
+  if (!canWriteVCS)
      TScreen::SendToTerminal(enter_pc_charset_mode);
 
   /* Select the palette and characters handling according to the terminal */
-  if (vcs_fd >= 0)
+  if (canWriteVCS)
     {
      palette = PAL_HIGH;
      TScreen::screenMode = TScreen::smCO80;
@@ -333,9 +342,11 @@ void startcurses()
       }
    }
 
+  #ifdef SAVE_TERMIOS
   /* Save the terminal attributes so we can restore them later. */
   /* for our screen */
   tcgetattr (tty_fd, &new_term);
+  #endif
 
   // SET: Generate a map to convert special chars into curses values
   InitPCCharsMapping(use_pc_chars);
@@ -631,21 +642,21 @@ TScreen::TScreen()
   }
   #ifdef __FreeBSD__
   /*
-          * Kludge: until we find a right way to fix the "last-line" display
+   * Kludge: until we find a right way to fix the "last-line" display
    * problem, this is a solution.
-          */
+   */
   screenHeight--;
   #endif
-  LOG("screen size is " << (int) screenWidth << "x" <<
-      (int) screenHeight);
+  LOG("screen size is " << (int)screenWidth << "x" << (int)screenHeight);
   screenBuffer = new ushort[screenWidth * screenHeight];
 
   /* vcs stuff */
-  
-  vcs_fd = -1;
-  if (strstr(env, "novcs") != NULL) LOG("vcs support disabled");
+  vcsWfd=-1;
+  vcsRfd=-1;
+  if (strstr(env,"novcs"))
+     LOG("vcs support disabled by user");
   else
-  {
+   {
     /*
      * This approach was suggested by:
      * Martynas Kunigelis <algikun@santaka.sc-uni.ktu.lt>
@@ -655,7 +666,7 @@ TScreen::TScreen()
     char path[PATH_MAX];
     sprintf(path, "/proc/%d/stat", getpid());
     if ((statfile = fopen(path, "r")) != NULL)
-    {
+     {
       int dev;
   
       /* TTYs have 4 as major number */
@@ -666,15 +677,30 @@ TScreen::TScreen()
       {
         LOG("virtual console detected");
         sprintf(path, "/dev/vcsa%d", dev & 0xff);
-        if ((vcs_fd = open(path, O_RDWR)) < 0)
-        {
-          LOG("unable to open " << path <<
-                  ", running in stdout mode");
-        }
+
+        if (TurboVision_screenOptions & TurboVision_screenUserScreenNeeded)
+          { // SET: Full VCSA or Curses, not half. See screen.h.
+           if ((vcsRfd=vcsWfd=open(path,O_RDWR))<0)
+              LOG("unable to open " << path << ", running in stdout mode");
+          }
+        else
+          {
+           // SET: Open it with two files, one for write and the other for read.
+           // Doing it the administrator can give write access to some users,
+           // but not read, that's very secure.
+           if ((vcsWfd=open(path,O_WRONLY))<0)
+              LOG("unable to open " << path << ", running in stdout mode");
+           else
+             if ((vcsRfd=open(path,O_RDONLY))<0)
+                LOG("only write access to " << path);
+          }
       }
       fclose(statfile);
-    }
-  }
+     }
+   }
+  // SET: Set the cursor to a known position to avoid reading the postion.
+  if (canOnlyWriteVCS)
+     TDisplay::SetCursor(0,0);
 
   #ifdef __i386__
   port_access = !ioperm(0x3b4, 7, 1);
@@ -700,41 +726,44 @@ TScreen::TScreen()
   setegid(getgid());
 
   /* internal stuff */
-  
-//  in = out = &queue[0];
-//  timeout_auto = -1;
-//  timeout_esc = -1;
+  //in = out = &queue[0];
+  //timeout_auto = -1;
+  //timeout_esc = -1;
   timeout_wakeup = timer_value = 0;
-  
-  if (vcs_fd < 0)
-  // Fill the screenBuffer with spaces
-  {
-    int i,len = screenWidth*screenHeight;
-    for (i=0;i<len;i++)
-        screenBuffer[i] = 0x0720;
-  }
-#if 0
-  resume();
-#else
+
+  // Cases:
+  // 1) we can't read VCSs but can write: then the user screen is a fake.
+  // 2) we uses curses then the endwin() does the work and we start from
+  // blank
+  if (!canReadVCS)
+    {
+     // Fill the screenBuffer with spaces
+     int i,len = screenWidth*screenHeight;
+     for (i=0;i<len;i++)
+         screenBuffer[i] = 0x0720;
+    }
+
   startcurses();
   SaveScreen();
   setVideoMode(screenMode);
   TScreen_suspended = 0;
-#endif
 }
 
 void TScreen::resume()
 {
-  if (!TScreen_suspended) return;
+  if (!TScreen_suspended)
+     return;
   if (!dual_display)
-  {
-    SaveScreen();
-  }
+     SaveScreen();
   setVideoMode(screenMode);
+
+  #ifdef SAVE_TERMIOS
   /* Restore the terminal attributes. */
   /* for our screen */
-  tcsetattr (tty_fd, TCSANOW, &new_term);
-  TScreen_suspended = 0;
+  tcsetattr(tty_fd, TCSANOW, &new_term);
+  #endif
+
+  TScreen_suspended=0;
   // SET: To go back from a temporal ncurses stop we must use just doupdate
   // or refresh. (see suspend).
   doupdate();
@@ -742,22 +771,24 @@ void TScreen::resume()
 
 TScreen::~TScreen()
 {
-#if 0
-  suspend();
-#else
   // FIXME: When I know, how to get the cursor state
   setCursorType(0x0607); // make the cursor visible
   stopcurses();
+
+  #ifdef SAVE_TERMIOS
   tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
+  #endif
+
   if (!TScreen_suspended)
-  {
-    RestoreScreen();
-  }
+     RestoreScreen();
   TScreen_suspended = 1;
-#endif
+
   delete screenBuffer;
   LOG("terminated");
-  if (vcs_fd >= 0) close(vcs_fd);
+  if (vcsWfd>=0)
+     close(vcsWfd);
+  if (vcsRfd>=0)
+     close(vcsRfd);
   if (mono_mem)
   {
     munmap((char *)mono_mem, 80*25*2);
@@ -782,9 +813,11 @@ void TScreen::suspend()
     // the ncurses engine, I tried it using tty mode (xterm) and vcs mode and
     // seems to work.
     endwin();
+    #ifdef SAVE_TERMIOS
     /* Restore the terminal attributes. */
     /* for the user screen */
     tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
+    #endif
     
     RestoreScreen();
   }
@@ -902,11 +935,11 @@ void TScreen::getCharacter(unsigned offset,ushort *buf,unsigned count)
     memcpy(buf, mono_mem+offset, count*sizeof(ushort));
     return;
   }
-  if (vcs_fd >= 0)      /* use vcs */
+  if (canReadVCS)      /* use vcs */
   {
-    lseek(vcs_fd, offset * sizeof(ushort) + 4, SEEK_SET);
-    read(vcs_fd, buf, count*sizeof(ushort));
-  }
+    lseek(vcsRfd, offset * sizeof(ushort) + 4, SEEK_SET);
+    read(vcsRfd, buf, count*sizeof(ushort));
+  }    
   else                  /* standard out */
   {
     memcpy(buf,screenBuffer+offset,count*sizeof(ushort));
@@ -936,10 +969,15 @@ void TScreen::setCharacter(unsigned dst,ushort *src,unsigned len)
     memcpy(mono_mem+dst, src, len*sizeof(ushort));
     return;
   }
-  if (vcs_fd >= 0)      /* use vcs */
+  if (canWriteVCS)      /* use vcs */
   {
-    lseek(vcs_fd, dst * sizeof(ushort) + 4, SEEK_SET);
-    write(vcs_fd, src, len * sizeof(ushort));
+    unsigned length=len*sizeof(ushort);
+
+    lseek(vcsWfd,dst*sizeof(ushort)+4,SEEK_SET);
+    write(vcsWfd,src,length);
+    if (!canReadVCS)
+       // SET: cache it to avoid reads that needs special priviledges
+       memcpy(screenBuffer+dst,src,length);
   }
   else                  /* standard out */
   {
@@ -995,7 +1033,43 @@ void setBlinkState()
 int getBlinkState()
 { // SET: 1 means blink enabled and hence only 8 colors (was a bug)
   // Report it according to the mode (vcs v.s. tty)
-  return vcs_fd==-1 ? 1 : 0;
+  return canWriteVCS ? 1 : 0;
+}
+
+/*****************************************************************************
+
+  Save/Restore screen
+
+*****************************************************************************/
+
+static ushort *user_buffer=0;
+static int user_buffer_size;
+static int user_cursor_x,user_cursor_y;
+
+
+void RestoreScreen()
+{
+ if (canWriteVCS)
+   {
+    TScreen::setCharacter(0,user_buffer,user_buffer_size);
+    TScreen::SetCursor(user_cursor_x,user_cursor_y);
+   }
+}
+
+void SaveScreen()
+{
+ if (canWriteVCS)
+   {
+    user_buffer_size = TScreen::getCols()*TScreen::getRows();
+    user_buffer = (ushort *)realloc(user_buffer,user_buffer_size*sizeof(ushort));
+    TScreen::getCharacter(0,user_buffer,user_buffer_size);
+    TScreen::GetCursor(user_cursor_x,user_cursor_y);
+   }
+}
+
+void SaveScreenReleaseMemory(void)
+{
+ free(user_buffer);
 }
 #endif // __linux__
 

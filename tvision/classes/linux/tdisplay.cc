@@ -36,17 +36,17 @@ inline void safeput(char *&p, char *cap)
 }
 
 int cur_x = 0, cur_y = 0;
-extern int vcs_fd;
-extern int tty_fd;
 
 void TDisplay::SetCursor(int x,int y)
 {
-  if (vcs_fd >= 0)	/* use vcs */
+  if (canWriteVCS)
   {
     unsigned char where[2] = {x, y};
 
-    lseek(vcs_fd, 2, SEEK_SET);
-    write(vcs_fd, where, sizeof(where));
+    lseek(vcsWfd, 2, SEEK_SET);
+    write(vcsWfd, where, sizeof(where));
+    // SET: cache the value to avoid the need to read it
+    cur_x=x; cur_y=y;
   }
   else			/* standard out */
   {
@@ -61,15 +61,24 @@ void TDisplay::SetCursor(int x,int y)
 
 void TDisplay::GetCursor(int &x,int &y)
 {
-  if (vcs_fd >= 0)	/* use vcs */
-  {
-    unsigned char where[2];
-
-    lseek(vcs_fd, 2, SEEK_SET);
-    read(vcs_fd, where, sizeof(where));
-    x = where[0];
-    y = where[1];
-  }
+  if (canWriteVCS) /* use vcs */
+    {
+     // SET: We need special priviledges to read /dev/vcsaN, but not for
+     // writing so avoid the need of reads.
+     if (canReadVCS)
+       {
+        unsigned char where[2];
+    
+        lseek(vcsRfd, 2, SEEK_SET);
+        read(vcsRfd, where, sizeof(where));
+        x = where[0];
+        y = where[1];
+       }
+     else
+       {
+        x=cur_x; y=cur_y;
+       }
+    }
   else
   {
     char s[40];
