@@ -284,9 +284,8 @@ void rh_save_vesa()
 
   while (offset < saved_size)
   {
-    if (ModeAttributes & 0x10) // graphic ??
+    if (ModeAttributes & 0x10) // graphic ?
     {
-
       r.x.ax = 0x4f05;
       r.x.bx = window_r;
       r.x.dx = seg;
@@ -315,7 +314,10 @@ void rh_save_vesa()
           }
       }
     }
-    if (NumberOfPlanes == 1)
+    // SET: Text modes are 1 plane but some BIOS like the S3 ones reports it
+    // as 4 planes because the fonts are located in the second pair of banks.
+    // S3 BIOSes are normally buggy so I guess that's just another bug by S3.
+    if (NumberOfPlanes==1 || !(ModeAttributes & 0x10))
     {
       movedata(_dos_ds,win_seg_r,_my_ds(),(int)buffer+offset,win_size);
       offset += win_size;
@@ -422,7 +424,7 @@ void rh_restore_vesa()
          }
       }
     }
-    if (NumberOfPlanes == 1)
+    if (NumberOfPlanes==1 || !(ModeAttributes & 0x10))
     {
       movedata(_my_ds(),(int)buffer+offset,_dos_ds,win_seg_w,win_size);
       offset += win_size;
