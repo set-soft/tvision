@@ -78,7 +78,7 @@ DIR* opendir(const char* name)
 
     /* add "*" mask to the dir name */
     len = strlen(name);
-    path = alloca(len + 5);
+    path = (char *)alloca(len + 5);
     strcpy(path, name);
     if (path[len-1] == '/' || path[len-1] == '\\')
 	strcpy(path + len, "*");
