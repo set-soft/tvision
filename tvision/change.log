@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.399.2.170  2004/06/25 13:57:23  set
+* Fixed: [MSVC] the WinGr driver can't be compiled with 4.0 because it uses
+too much features only available in newer versions.
+* Fixed: [MSVC] the lack of snprintf request in cl/needs.h.
+* Both from Arnold Wiegert reports.
+
 Revision 2.399.2.169  2004/06/23 20:02:30  set
 * Added: [MSVC] Version 4.0 seems to report version 1000 and lacks
 snprintf. I also needs new.h instead of new.
