@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 1.242.2.29  2002/05/16 21:22:35  set
+* Modified: [Linux] Added Scroll-Lock to the patch list, it freezies the
+application and some people thinks it hanged. To make it worst some idiots
+put the S-L key very close to Home just to insert a stupid key to make
+the machine sleep and hence is quite easy to press S-L instead of Home. So
+now TV remaps S-L to Home. From a report by David A. Capello
+<dacap@users.sourceforge.net>.
+
 Revision 1.242.2.28  2002/05/07 16:54:33  set
 * Added: [FreeBSD] getopt_long request in compatlayer. Reported by
 miniEleph.
