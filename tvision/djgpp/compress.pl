@@ -1,7 +1,13 @@
 #!/usr/bin/perl
-$oldv='1.0.7';
-$newv='1.0.8';
-@files=('../readme.txt');
+require "../miscperl.pl";
+
+GetVersion('../');
+
+$r=cat('../include/tv.h');
+if ($r!~/$Version/)
+  {
+   die "Error! inconsistent version in tv.h\n";
+  }
 
 $doBinary=0;
 foreach $i (@ARGV)
@@ -30,27 +36,14 @@ else
    print "uptodate\n";
   }
 
-# Patch the version number
-$oldv2='v'.$oldv;
-$newv2='v'.$newv;
-foreach $i (@files)
-  {
-   print 'Processing '."$i";
-   $r=&cat($i);
-   if ($r =~ /$oldv2/)
-     {
-      $r =~ s/$oldv2/$newv2/g;
-      &replace($i,$r);
-      print " updated version\n";
-     }
-   else
-     {
-      print " is uptodate\n";
-     }
-  }
+# Patch the version number in the readme.txt
+print "Processing readme file\n";
+$r=cat('../readme.in');
+$r=~s/\@version\@/$Version/g;
+replace('../readme.txt',$r);
 
 # Generate the manifest and version files
-$nv=$newv;
+$nv=$Version;
 $nv=~ s/\.//g;
 $binmft="manifest/tv$nv".'b.mft';
 $binver="manifest/tv$nv".'b.ver';
@@ -90,8 +83,8 @@ foreach $i (@files)
   }
 $r.="$binmft\n$binver\n";
 replace($binmft,$r);
-replace($binver,"Turbo Vision - C++ Text User Interface library, binaries (version $newv)");
-replace($srcver,"Turbo Vision - C++ Text User Interface library, sources  (version $newv)");
+replace($binver,"Turbo Vision - C++ Text User Interface library, binaries (version $Version)");
+replace($srcver,"Turbo Vision - C++ Text User Interface library, sources  (version $Version)");
 
 # Generate the zip files
 $bindist="tv$nv".'b.zip';
@@ -106,28 +99,3 @@ if ($doBinary)
   }
 
 chdir('contrib/tvision/djgpp');
-
-
-sub cat
-{
- local $/;
- my $b;
-
- open(FIL,$_[0]) || return 0;
- $b=<FIL>;
- close(FIL);
-
- $b;
-}
-
-
-sub replace
-{
- my $b=$_[1];
-
- open(FIL,">$_[0]") || return 0;
- print FIL ($b);
- close(FIL);
-}
-
-

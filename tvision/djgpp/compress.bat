@@ -1,1 +1,2 @@
-perl compress.pl
+@Echo off
+@perl compress.pl
