@@ -414,7 +414,7 @@ void TGKey::fillTEvent(TEvent &e)
  TGKey::gkey();
  if (Abstract!=kbMouse)
    {
-    e.keyDown.charScan.charCode=ascii;
+    e.keyDown.charScan.charCode=sFlags & kblAltL ? 0 : ascii;
     e.keyDown.charScan.scanCode=TGKey::rawCode.b.scan;
     e.keyDown.raw_scanCode=TGKey::rawCode.b.scan;
     e.keyDown.keyCode=Abstract;
