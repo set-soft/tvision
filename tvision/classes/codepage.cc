@@ -72,6 +72,7 @@ That's a good use for the input code page.
 #define Uses_TFileInfoPane
 #define Uses_TDeskTop
 #define Uses_TListViewer
+#define Uses_TGKey
 
 // Needed for extra remaps
 #define Uses_TProgram
@@ -1359,6 +1360,7 @@ TVCodePage::TVCodePage(int idApp, int idScr, int idInp)
  CreateOnTheFlyInpRemap(idInp,idApp);
  curInpCP=defInpCP=idInp;
  defAppCP=idApp;
+ TGKey::SetCodePage(idInp);
  if (idApp!=curAppCP)
    {
     curAppCP=idApp;
@@ -1499,6 +1501,7 @@ void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
     CreateOnTheFlyInpRemap(idInp,idApp);
  curScrCP=idScr;
  curInpCP=idInp;
+ TGKey::SetCodePage(idInp);
  if (curAppCP!=idApp)
    {
     curAppCP=idApp;

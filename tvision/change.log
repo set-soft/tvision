@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.354  2002/11/25 14:59:02  set
+* Fixed: In systems using ACMs with unknown Unicodes the translation table
+got 0xFFFF and when using it some memory corruption could appear. Reported
+and investigated by Martijn Versteegh.
+
 Revision 2.353  2002/11/05 14:49:33  set
 * Added: [WWW] a link to Sigala's documentation and a comment about the
 documentation for the new classes.

@@ -31,6 +31,7 @@
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
 #define Uses_TScreen
+#define Uses_TVCodePage
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -910,32 +911,10 @@ void TGKeyLinux::Init(int map)
  TGKey::SetKbdMapping =TGKeyLinux::SetKbdMapping;
  if (map==KOI8)
    {
-    TGKey::NonASCII2ASCII=KOI8_NonASCII2ASCII;
-    TGKey::CompareASCII=KOI8_CompareASCII;
+    TGKey::SetCodePage(TVCodePage::KOI8r);
     LOG("Using KOI8 keyboard table");
    }
 }
-
-char TGKeyLinux::KOI8Layout[64]=
-{
- '.','f',',','w','L','t','a','u','[','b','q','r','K','v','y','j', // 192 ...
- 'g','z','h','c','n','e',';','d','m','s','p','i','\'','o','x','}',
- '>','F','<','W','l','T','A','U','{','B','Q','R','k','V','Y','J',
- 'G','Z','H','C','N','E',':','D','M','S','P','I','"','O','X',']'
-};
-
-uchar TGKeyLinux::KOI8_NonASCII2ASCII(uchar val)
-{
- return val>=192 ? KOI8Layout[val-192] : val;
-}
-
-int TGKeyLinux::KOI8_CompareASCII(uchar val, uchar code)
-{
- if (val>=0xC0)  val=KOI8Layout[val-0xC0];
- if (code>=0xC0) code=KOI8Layout[code-0xC0];
- return val==code;
-}
-
 #else // TVOSf_Linux
 
 #include <tv/linux/key.h>
