@@ -7,7 +7,11 @@
  * All Rights Reserved.
  *
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified by Salvador E. Tropea <set@ieee.org>, <set@users.sourceforge.net>
  */
+
+#if defined(Uses_THelpFile) && !defined(THelpFile_Included)
+#define THelpFile_Included
 
 const long magicHeader = 0x46484246L; //"FBHF"
 
@@ -180,3 +184,6 @@ public:
 extern void notAssigned( opstream& s, int value );
 
 extern TCrossRefHandler crossRefHandler;
+
+#endif // Uses_THelpFile && !THelpFile_Included
+
