@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.41  2003/04/21 15:43:10  set
+* Fixed: [DOS] the arguments of TScreen::setCharacter (ushort to uint).
+
 Revision 2.399.2.40  2003/04/21 15:16:39  set
 * Added: Dummy versions of the TVIntl members for systems without gettext.
 
