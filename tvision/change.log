@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.53  2002/05/07 16:54:08  set
+* Added: [FreeBSD] getopt_long request in compatlayer. Reported by
+miniEleph.
+
 Revision 2.52  2002/05/06 15:04:15  set
 * Added: X11R6 include directory to the configuration script. It looks like
 this directory isn't automagically included in FreeBSD. Also added options

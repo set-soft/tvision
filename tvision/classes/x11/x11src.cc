@@ -96,22 +96,30 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
 
 void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
 {
- memcpy(screenBuffer+offset,values,count*2);
-
  unsigned x,y;
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
 
- uchar *b=(uchar *)values,aux;
+ uchar *b=(uchar *)values,newChar,newAttr;
  uchar *sb=(uchar *)(screenBuffer+offset);
+ unsigned oldAttr=0x100;
  UnDrawCursor();
  while (count--)
    {
-    aux=sb[charPos]=b[charPos];
-        sb[attrPos]=b[attrPos];
-    XSetBackground(disp,gc,colorMap[b[attrPos]>>4]);
-    XSetForeground(disp,gc,colorMap[b[attrPos]&0xF]);
-    XPutImage(disp,mainWin,gc,ximgFont[aux],0,0,x,y,fontW,fontH);
+    newChar=b[charPos];
+    newAttr=b[attrPos];
+    if (newChar!=sb[charPos] || newAttr!=sb[attrPos])
+      {
+       sb[charPos]=newChar;
+       sb[attrPos]=newAttr;
+       if (newAttr!=oldAttr)
+         {
+          XSetBackground(disp,gc,colorMap[newAttr>>4]);
+          XSetForeground(disp,gc,colorMap[newAttr&0xF]);
+          oldAttr=newAttr;
+         }
+       XPutImage(disp,mainWin,gc,ximgFont[newChar],0,0,x,y,fontW,fontH);
+      }
     x+=fontW; b+=2; sb+=2;
    }
  XFlush(disp);
