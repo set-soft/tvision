@@ -1,18 +1,8 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1998-2001 Salvador Eduardo Tropea */
+/* Copyright (C) 1998-2002 Salvador Eduardo Tropea */
 /*
 TODO:
 TurboVision_screenOptions
-Un mecanismo para deshabilitar el uso de vcs como opción
-   * Environment variable support.
-   * Date: Wed, 29 Jan 1997 16:51:40 +0100 (MET)
-  char env[PATH_MAX] = "", *p;
-  if ((p = getenv("TVOPT")) != NULL)
-  {
-     LOG("environment variable TVOPT=" << p);
-     for (char *d = env; *p != '\0'; p++)
-       *d++ = uctolower(*p);
-  }
 See ToDo in the mouse initialization.
 
 TODO:

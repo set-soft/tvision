@@ -48,7 +48,7 @@ int         (*TDisplay::setDisPaletteColors)(int from, int number, TScreenColor 
                                                   =TDisplay::defaultSetDisPaletteColors;
 int           TDisplay::argc                      =0;
 char        **TDisplay::argv                      =NULL;
-char        **TDisplay::environ                   =NULL;
+char        **TDisplay::environment               =NULL;
 TScreenColor  TDisplay::OriginalPalette[16];
 TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
@@ -229,7 +229,7 @@ void TDisplay::setArgv(int aArgc, char **aArgv, char **aEnvir)
 {
  argc=aArgc;
  argv=aArgv;
- environ=aEnvir;
+ environment=aEnvir;
 }
 
 /*****************************************************************************

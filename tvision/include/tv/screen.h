@@ -131,7 +131,10 @@ protected:
  // provide it.
  static int    argc;
  static char **argv;
- static char **environ;
+ // Note: MinGW defines a macro called environ in stdlib.h so no C++
+ // member can be named environ. It should be just _environ and the
+ // internal name __environ. Is a serious namespace pollution.
+ static char **environment;
  // Special options
  enum Options1
  {
