@@ -294,7 +294,7 @@ void  TInputLine::handleEvent( TEvent& event )
                     selEnd = 0;
                     if( firstPos > curPos )
                         firstPos = curPos;
-                    i = curPos - size.x + 3;
+                    i = curPos - size.x + 2;
                     if( firstPos < i )
                         firstPos = i;
                     drawView();
@@ -310,7 +310,7 @@ void TInputLine::selectAll( Boolean enable )
         curPos = selEnd = strlen(data);
     else
         curPos = selEnd = 0;
-    firstPos = max( 0, curPos-size.x+3 );
+    firstPos = max( 0, curPos-size.x+2 );
     drawView();
 }
 

@@ -1,4 +1,15 @@
 $Log$
+Revision 1.90  1999/08/11 01:43:49  set
+* Applied 7 patches from Laurynas Biveinis <lauras@softhome.net>, he adapted
+a lot of patches floating around the net for the original TV to this port:
+* Fixed: TGroup re-entrancy fix
+* Fixed: memory leak in TNSCollection
+* Fixed: disabled views can be selected through labels
+* Fixed: TCheckBoxes & TRadioButtons problem with streams
+* Fixed: TChDirDialog::shutDown()
+* Fixed: TEditor sometimes fails to find words
+* Fixed: bug in TFileDialog::valid()
+
 Revision 1.89  1999/08/07 21:30:11  set
 * Added: Now TListViewer is verbose and sends a broadcast when a new item is
 focused. It can be used to update other views according to it.
@@ -55,6 +66,9 @@ Revision 1.79  1999/07/17 22:03:37  root (set)
 * Fixed: When exiting and the screen is already suspended I avoid cleaning
 it because it is supposed to be already cleaned. Not sure is the best, I
 tested it in ttyN and ttypN and works ok for the command line options.
+
+-----------------------------------------------------------------------------
+v1.0.7 release.
 
 Revision 1.78  1999/07/13 23:10:05  set
 * Fixed: 18 const name... in the examples. Reported by Matt Mueller

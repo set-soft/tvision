@@ -38,13 +38,14 @@ void TStringList::get( char *dest, ushort key )
         }
 
     TStrIndexRec *cur = index;
-    while( cur->key + MAXKEYS < key && cur - index < indexSize )
+    while ((cur->key + cur->count - 1 < key) && (cur - index < indexSize))
         cur++;
-    if( cur->key + MAXKEYS < key )
-        {
+    if ((cur->key + cur->count - 1 < key) || (cur->key > key))
+    {
         *dest = EOS;
         return;
-        }
+    }
+
     ip->seekg( basePos + cur->offset );
     int count = key - cur->key;
     do  {
