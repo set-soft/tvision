@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.233  2002/07/24 19:57:02  set
+* Modified: Part of the font settings API, now you can set both fonts in
+one call. Modified for X11, Linux and DOS. Tested for X11 and Linux.
+* Fixed: [X11] various bugs with the cursor that appears when: a) you
+change the font size and b) you use 2 fonts.
+* Added: A message to the font example to explain a fail to set a secondary
+font that have a size that doesn't match the primary font.
+
 Revision 2.232  2002/07/23 12:27:50  set
 * Fixed: Lack of Uses_limits in fontcol.cc.
 
