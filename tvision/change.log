@@ -1,4 +1,12 @@
 $Log$.
+Revision 2.489  2003/07/28 18:05:17  set
+* Fixed: The configure script to accept command line optins like:
+--cflags="..." without breaking the options. Reported by Ivan.
+* Modified: Now the i18n catalogs are named "tvisionVERSION", it makes
+easier to have more than one TV installed and remove one without altering
+the other. Suggested by Ivan.
+* Modified: The OS clipboard code to return translated messages.
+.
 Revision 2.488  2003/07/28 02:53:52  terrible
 * Fixed: configset didn't wait for an ENTER because the read command
 required an argument. While I was there I did cosmetic changes.

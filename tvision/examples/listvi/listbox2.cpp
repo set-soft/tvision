@@ -124,7 +124,7 @@ void TApp::AboutDialog() {
 	pd->insert(new TButton(TRect(13, 7, 22,9), "~O~k", cmOK, bfDefault));
 	   deskTop->execView(pd);
   }
-  destroy(pd);
+  CLY_destroy(pd);
 }
 //*******************************************************
 
@@ -135,7 +135,7 @@ void TApp::ListDialog() {
 
   if(validView(pd)) deskTop->execView(pd);
 
-  destroy(pd);
+  CLY_destroy(pd);
 }
 //*******************************************************
 

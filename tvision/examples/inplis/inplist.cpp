@@ -102,7 +102,7 @@ ushort TInputBox::inputData( )
     control = owner->execView((TView *)te);
     if (control != kbEsc)
        te->get(v->value);
-    destroy((TView *)te);
+    CLY_destroy((TView *)te);
    }
   return control;
  }

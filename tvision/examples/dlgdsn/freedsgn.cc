@@ -210,14 +210,14 @@ void TFreeDsgnApp::handleEvent(TEvent& event)
 //         r.a.y = r.b.y - 1;
            ((TAppWindow *)w)->setStatusLine(initStatusLine(r));
            application->execView(w);
-           TObject::destroy(w);
+           TObject::CLY_destroy(w);
         break;
         case cmChangeDir:
            d = (TDialog *) validView( new TChDirDialog(0, 0) );
            if (d != 0)
            {
               deskTop->execView(d);
-              TObject::destroy(d);
+              TObject::CLY_destroy(d);
            }
            break;
         case cmOpenObj:

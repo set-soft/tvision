@@ -224,7 +224,7 @@ void TlnInfoWindow::handleEvent(TEvent& event)
         lock();
         if (items[i] != NULL) {
           remove(items[i]);
-          destroy(items[i]);
+          CLY_destroy(items[i]);
         }
 
 

@@ -168,9 +168,9 @@ void TestDialog::handleEvent( TEvent& event )
 
 void Shell::Test()
 {
-	TestDialog *d = new TestDialog;		// create dialog
+	TestDialog *d = new TestDialog;   // create dialog
 	deskTop->execView( d );           // execute it
-	destroy( d );                     // destroy it
+	CLY_destroy( d );                 // destroy it
 
 	// Note: This doesn't illustrate the getData() and setData()
 	// functions, which work as usual for TVision objects.  If you

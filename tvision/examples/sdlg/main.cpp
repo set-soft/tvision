@@ -53,7 +53,7 @@ TApp::TApp() : TProgInit(initStatusLine, initMenuBar, initDeskTop)
 	if(validView(dlg) != 0)
 		{
 		deskTop->execView(dlg);
-		destroy(dlg);
+		CLY_destroy(dlg);
 		}
 }
 
