@@ -81,17 +81,20 @@ $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
 # be added for things like FreeBSD or SunOS.
 $MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSf eq 'Linux'));
-if ((@conf{'intl-force-dummy'} ne 'yes') &&
-    (($OS eq 'DOS') || ($OS eq 'Win32')) && (@conf{'intl'} eq 'yes'))
+$OSUSesIntl=($OS eq 'DOS') || ($OS eq 'Win32');
+if ($OSUSesIntl)
   {
-   $MakeDefsRHIDE[2].=' intl';
-  }
-else
-  {# Use the dummy unless the user requested not to use it
-   if ((@conf{'intl-force-dummy'} eq 'yes') || (@conf{'no-intl'} ne 'yes'))
+   if ((@conf{'intl-force-dummy'} ne 'yes') && (@conf{'intl'} eq 'yes'))
      {
-      $MakeDefsRHIDE[2].=' tvfintl';
-      $UseDummyIntl=1;
+      $MakeDefsRHIDE[2].=' intl';
+     }
+   else
+     {# Use the dummy unless the user requested not to use it
+      if ((@conf{'intl-force-dummy'} eq 'yes') && (@conf{'no-intl'} ne 'yes'))
+        {
+         $MakeDefsRHIDE[2].=' tvfintl';
+         $UseDummyIntl=1;
+        }
      }
   }
 $MakeDefsRHIDE[2].=' iconv' if (@conf{'iconv'} eq 'yes') && !$UseDummyIntl;
