@@ -1326,7 +1326,7 @@ void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
   
 ***************************************************************************/
 
-void TVCodePage::SetCodePage(int idScr, int idApp=-1)
+void TVCodePage::SetCodePage(int idScr, int idApp)
 {
  if (CurrentCP!=idApp || CurrentScrCP!=idScr)
     CreateOnTheFlyRemap(idApp,idScr);

@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.169  2002/06/24 15:01:35  set
+* Modified: [DJGPP] to use /dev/env/DJDIR/etc as directory for
+configuration.
+
 Revision 2.168  2002/06/24 15:00:29  set
 * Fixed: A couple of errors in new classes exposed when compiling for
 djgpp.

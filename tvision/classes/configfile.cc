@@ -238,8 +238,8 @@ int TVConfigFile::ReadBranch(TVConfigFileTreeNode *parent)
           if (EatSpaces()) return -9;
           if (*s=='"')
             {
-             char *string;
-             if (!(string=GetString())) return -10;
+             char *string=GetString();
+             if (!string) return -10;
              aux=new TVConfigFileTreeNode;
              aux->string=string;
              aux->type=tString;

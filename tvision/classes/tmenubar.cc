@@ -164,7 +164,7 @@ TRect TMenuBar::getItemRect( TMenuItem *item )
     TRect r( y, 0, y, 1 );
     y = compactMenu ? 1 : 2; // SET
     TMenuItem *p = menu->items;
-    while( True )
+    while( p )
         {
         r.a.x = r.b.x;
         if( p->name != 0 )
