@@ -30,9 +30,13 @@ classes/tdircoll.cc
 classes/tdirlist.cc
 classes/tdisplay.cc
 classes/tdrawbuf.cc
+classes/teditor.cc
+classes/teditorf.cc
+classes/teditwin.cc
 classes/tevent.cc
 classes/tfilecol.cc
 classes/tfiledia.cc
+classes/tfileedi.cc
 classes/tfileinf.cc
 classes/tfileinp.cc
 classes/tfilelis.cc
@@ -49,6 +53,7 @@ classes/tinputli.cc
 classes/tlabel.cc
 classes/tlistbox.cc
 classes/tlistvie.cc
+classes/tmemo.cc
 classes/tmenubar.cc
 classes/tmenubox.cc
 classes/tmenuvie.cc
@@ -87,6 +92,9 @@ classes/tsubmenu.cc
 classes/ttermina.cc
 classes/ttextdev.cc
 classes/tvalidat.cc
+classes/tvedit1.cc
+classes/tvedit2.cc
+classes/tvedit3.cc
 classes/tview.cc
 classes/twindow.cc
 classes/linux/tdisplay.cc
@@ -239,6 +247,8 @@ fileview.cc
 gkey.cc
 gkey.gpr
 histlist.cc
+include/editors.h
+include/tvedit.h
 include/video.h
 include/app.h
 include/applictn.h
@@ -387,8 +397,11 @@ names/ndesktop.cc
 names/ndialog.cc
 names/ndircoll.cc
 names/ndirlist.cc
+names/neditor.cc
+names/neditwi.cc
 names/nfilecol.cc
 names/nfiledia.cc
+names/nfiledtr.cc
 names/nfileinf.cc
 names/nfileinp.cc
 names/nfilelis.cc
@@ -401,6 +414,7 @@ names/ninputli.cc
 names/nlabel.cc
 names/nlistbox.cc
 names/nlistvie.cc
+names/nmemo.cc
 names/nmenubar.cc
 names/nmenubox.cc
 names/nmenuvie.cc
@@ -439,8 +453,11 @@ stream/sdesktop.cc
 stream/sdialog.cc
 stream/sdircoll.cc
 stream/sdirlist.cc
+stream/seditor.cc
+stream/seditwin.cc
 stream/sfilecol.cc
 stream/sfiledia.cc
+stream/sfileedi.cc
 stream/sfileinf.cc
 stream/sfileinp.cc
 stream/sfilelis.cc
@@ -453,6 +470,7 @@ stream/sinputli.cc
 stream/slabel.cc
 stream/slistbox.cc
 stream/slistvie.cc
+stream/smemo.cc
 stream/smenubar.cc
 stream/smenubox.cc
 stream/smenuvie.cc
