@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
         int skip=0;
         while (fgets(b,maxLine,ori))
           {
-           if (isalpha(b[0]) && (sep=strchr(b,':'))!=0)
+           if ((isalpha(b[0]) || b[0]=='.') && (sep=strchr(b,':'))!=0)
              {
               char *ext=sep-1;
               for (;*ext!='$' && ext>b; ext--);
