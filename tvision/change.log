@@ -1,4 +1,7 @@
 $Log$
+Revision 1.116  1999/10/29 01:50:22  root (set)
+* Added: [Linux] call to dch to update the Debian version. Suggested by Ivan.
+
 Revision 1.115  1999/10/26 00:07:30  set
 * Added: TFileDialog is now "growable".
 * Added: [Linux] TScreen disables the Xon/Xoff flow control so ^Q/^S can be
