@@ -1,4 +1,18 @@
-$Log$.
+$Log$
+Revision 2.30  2001/12/31 21:59:23  set
+* Modified: Now if gettext isn't detected the configuration uses the fake
+internationalization dummy. It can be disabled with --no-intl. Why? it allows
+people to install gettext *after* compiling TV, they just need to change the
+linker options and all works. Pointed out by Laurynas.
+* Added: --force-dummy option. It forces the use of tvfintl even if gettext
+is installed. That's useful when most of your TV applications won't use intl
+library. I use it for the editor that I compile using their own gettext under
+DOS, in this way I avoid using iconv.
+* Added: Documentation about it.
+*** IMPORTANT *** I don't include libintl.h anymore and assume the
+prototypes. This helps with the dummy and I doubt it will collide. If some
+day it collides the configuration could indicate how to solve it.
+
 Revision 2.29  2001/12/30 23:34:07  set
 * Fixed: A couple of new[]/delete style missmatches while debugging setedit
 with MSS 1.2.1.
