@@ -1,7 +1,13 @@
 $Log$
+Revision 1.110  1999/09/24 02:57:52  set
+* Fixed: I forgot to uncomment a test in the TListView class. It produced the
+wrong broadcast when the focus changed.
+
 Revision 1.109  1999/09/24 02:08:05  set
 * Fixed: Compilation problems in vgastate.h when using gcc 2.95. First
-reported by Laurynas. Then by other user I don't have info right now.
+reported by Laurynas and then by "Sriviroolchai, Tanes"
+<TS312094@exchange.Thailand.NCR.com> who included some notes from gcc's FAQ
+commenting about the problem.
 .
 Revision 1.108  1999/09/24 00:55:36  set
 * Fixed: A bug introduced by us to the TFileList class in the vertical scroll
