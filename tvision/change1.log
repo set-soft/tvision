@@ -1,0 +1,1621 @@
+This is the log file for versions of the 1.x series
+
+Tagged as tv1_1_3b2 and branched tv1_1_3b2_patches
+Revision 1.242  2001/11/06 23:31:08  set
+* Fixed: A typo in compatlayer.h, it defined sdtio instead of stdio ;-).
+Reported by "Jerzy Witkowski" <jwi@pl.ibm.com>.
+
+Revision 1.241  2001/10/31 01:00:56  set
+* Added: --no-fhs to the configuration. Patch provided by
+jimmy@ncp.infonet.bg.
+
+Revision 1.240  2001/10/25 00:32:12  set
+* Fixed: The gkey.cc program assumed that Linux is the only UNIX ;-) I
+noticed it while trying to test the keyboard routines running Solaris.
+
+Revision 1.239  2001/10/23 00:57:43  set
+* Fixed: Some compilation problems when using the last CVS snapshot of gcc
+3.1. All in the examples and related to specify std namespace as the
+default namespace. Patches provided by Andris Pavenis, just converted to
+the little macro I use to hide namespace stuff.
+
+Revision 1.238  2001/10/22 23:35:05  set
+* Added: linuxso/Makefile and linuxso/compat.mak to the distribution list.
+They are needed in some cases.
+
+Revision 1.237  2001/10/20 01:02:51  set
+* Merged Debian packaging patches from Ivan:
+  * Now compiles with -D_REENTRANT as Debian Policy mandates.
+  * Now runs ./configure before make clean (reported by Salvador).
+  * Don't eliminate the ldconfig invocation of the upstream Makefile,
+    it seems that upstream has corrected its Makefile now (done after
+    Salvador reported that it didn't work on all systems, because I was
+    overwriting the Makefile while I was reading it, specially on
+    multiprocesor systems).
+  * Added include/tv/configtv.h to files_to_backup.
+* Fixed: The configuration script modified RHIDE Makefiles in the wrong way
+when the original RHIDE variable used more than one line.
+* Modified: Ivan added more log info to the Linux mouse.
+
+Revision 1.236  2001/10/18 00:35:42  set
+* Merged patches for Debian stuff from Ivan.
+
+Revision 1.235  2001/10/18 00:10:06  set
+* Fixed: I forgot to update the linux/Makefile file from the project file.
+It prevented the code to compile for FreeBSD.
+
+Revision 1.234  2001/10/17 23:52:54  set
+* Fixed: [Linux] DECIMAL_POINT is GNU specific and not the right value to
+use like the glibc info says. The value RADIXCHAR is indicated like this:
+"The name `RADIXCHAR' is a deprecated alias still used in Unix98." so I
+used DECIMAL_POINT. But the same idiots moved DECIMAL_POINT to _GNU_SOURCE
+section because it *isn't* standard (glibc 2.2.x). So now I use RADIXCHAR.
+Now I wonder what idiot wrote "The Elegant and Fast Way X/Open's
+`nl_langinfo'." when this is poorly supported and have such a details.
+
+Revision 1.233  2001/10/17 23:28:18  set
+* Fixed: Not all of the configured values were transfered to the makefile.
+They were correctly put in the *.env files but not in the makefile. It
+included the GNU ar name.
+* Fixed: The compat layer makefile wasn't configured.
+
+Revision 1.232  2001/10/17 22:38:51  set
+* Fixed: [UNIX] Unconditional request for definekey()
+
+Revision 1.231  2001/10/17 22:35:55  set
+* Fixed: Now clean target also deletes the configure.cache.
+
+Revision 1.230  2001/10/17 22:32:57  set
+* Fixed: Now "make clean" really cleans the example objects and executables.
+* Added: A makefile for the examples, mostly to make the clean but can be
+used to generate all the examples.
+* Added: An examples target to the makefile.
+* Added: Now the configure script says if the configuration header was
+replaced or not.
+
+Revision 1.229  2001/10/17 21:52:58  set
+* Added: A #undef gettext in intl.h for DOS. I hope it solve collisions with
+conio.h that are popping again (with old gettext versions).
+
+Revision 1.228  2001/10/17 00:28:12  set
+* Modified: The Win32 port uses a case sensitive glob to match wildcards in
+directories but Win32 isn't really case sensitive (is HPFS case sensitive?).
+Owen Rudge <owen@osplus.co.uk> reported problems because *.txt and *.TXT
+doesn't match the same files. So I disabled the case sensitive comparisson.
+
+Revision 1.227  2001/10/17 00:00:29  set
+* Added: to the readme notes about some success compiling for Linux+HPPA+gcc
+3.0 reported by Joël Soete <JSO@EUROPAY.COM>. [ISO-1]
+
+Revision 1.226  2001/10/16 23:53:18  set
+* Fixed: A couple of formating errors in the ASCII table and Calendar of the
+demo example. Patch from Waldemar Schultz <schultz@mathematik.tu-muenchen.de>
+
+Revision 1.225  2001/10/13 23:53:49  set
+* Fixed: The clean target didn't ignore errors from the examples/clean
+script.
+
+Revision 1.224  2001/10/13 23:30:24  set
+* Added: International dummy library to the Makefile. Suggested by
+Laurynas.
+* Merged: Changes for the Debian stuff from Ivan.
+
+Revision 1.223  2001/10/13 22:50:05  set
+* Removed autoconf example because it doesn't work anymore. Laurynas is
+working on a new version.
+
+Revision 1.222  2001/10/13 21:40:20  set
+* Fixed: The BC++ 5.5 makefile lacked a rule to make C++ components of
+compatlayer (currently just a file). Patch by Owen Rudge <owen@osplus.co.uk>.
+.
+Revision 1.221  2001/10/12 02:54:44  set
+-----------------------------------------------------------------------------
+v1.1.3 release. Switching to stable.
+
+Revision 1.220  2001/10/10 14:56:15  set
+* Fixed: The TRangeValidator was supposed to support hexa numbers but
+didn't accept A-Fa-f. Also changed the complex and slow scanfs to
+strtol/stroul. Reported and solutions suggested by Andris.
+* Added: An example of TRangeValidator to the Tutorial number 16. I used it
+to test the changes ;-). I also added an example of the messageBoxes that
+uses printf style parameters.
+
+Revision 1.219  2001/10/08 23:36:18  set
+* Fixed: [gcc 3.x] fpstream(int fd) was creating a text mode stream and not
+binary.
+
+Revision 1.218  2001/10/07 23:30:00  set
+* Fixed: Damn! BC++ 5.5 implementation of ifstream::getline differs from gcc
+v2.x and v3.x. So now I created a compatlayer macro: IfStreamGetLine(object,
+buffer, size). For gcc it expands to object.getline(buffer,size) but for bcc
+is expanded to a function call that makes get for the line and then removes
+the EOL. Now the demo and tutorials seems to work for the three compilers.
+
+Revision 1.217  2001/10/07 22:21:16  set
+* Fixed: The demo to work with gcc 3.x streams. Andris suggested the fix
+according to the following information: C++ standard draft at
+ftp://research.att.com/dist/c++std/WP/ says about get in (27.6.1.3): If the
+function inserts no characters, it calls setstate(failbit), which may throw
+ios_base::failure (27.4.5.3). It looks like it makes get to stop reading and
+the best is to use getline. In the gcc 2.x iostream info file says: "If
+DELIM was present in the input, it remains available as if unread; to
+discard it instead, see `iostream::getline'."
+
+Revision 1.216  2001/10/07 22:05:20  set
+* Added: A nl_langinfo replacement to compatlayer library, it just
+implements part of the functionallity. BTW according to glibc people using
+localeconv is for lames ... it looks like djgpp, MinGW, CygWin, BC++, etc.
+users are lames ...
+
+Revision 1.215  2001/10/07 20:27:32  set
+* Fixed: I forgot to install the cl/*.h files!
+* Added: A mechanism to create the .deb packages without root priviledges.
+I used information from Ivan. The easiest way is running
+debina/builpackage.
+
+Revision 1.214  2001/10/07 19:44:03  set
+* Merged patches from Ivan for the Debian package, they avoid deleting
+default configuration files.
+
+Revision 1.213  2001/10/06 18:19:12  set
+* Added: Support for localized decimal point in the pocket calculator. The
+user types the '.' key but the calculator displays the right decimal point
+symbol. Without it the calculator fails to work for locales that uses
+another decimal point (like mine).
+
+Revision 1.212  2001/09/30 21:03:31  set
+* Fixed: Now the scripts generate Debian versions with -0.1 as suggested by
+Ivan.
+* Fixed: debian/control.in had extra \n at the end that were passed to
+debian/control every time.
+
+Revision 1.211  2001/09/29 02:11:10  set
+* Modified: I made the library compile with gcc 3.0.1. This new version of
+gcc implments the ISO C++ 1998 standard and hence changes a lot of things
+about the C++ streams. I got some help from Andris Pavenis and Christoph
+Bauer. Andris already compiled the library using some quick and dirty patches
+and Christoph suggested good solutions for some of the problems.
+* Fixed: New standards enforce the use of an EOL at the last line of code.
+* Fixed: New standards deprecates multi-line strings, they are very
+convenient for inline assembler. That's a really bad thing.
+* Added: A good amount of macros to compatlayer to reduce the impact of the
+new streams semantics.
+* Modified: Now fpbase::filebuf buf; is a pointer (is a private member).
+* Added: fpstream::filelength() because now is invalid to ask for the file
+descriptor of a stream.
+* Modified: The asm(register) modifier now doesn't work as with gcc<3.
+* Fixed: A huge amount of errors in the dialog editor that gcc 3 now
+detects (like bizarre casts or returning pointers to local variables).
+.
+Revision 1.210  2001/09/26 00:08:09  set
+* Modified: [DOS] Now the useBIOS variable is the default for the keyboard
+routines. According to reports of various users it looks like some new
+BIOSes are handling the keyboard buffer in a not standard way. Until we
+don't find what exactly is going on I decided to use the BIOS routines by
+default (which fixes the problems). An example of report was from
+Jcbk455@aol.com, he reported ASCII 7 inserted every 13 keystrokes. I
+consulted in the lists and nobody was against it, Robert was in favor.
+
+Revision 1.209  2001/09/25 23:18:41  set
+* Modified: [UNIX] Now if the user is the superuser (uid 0 is ok?) the
+library uses the owner mask to report R.O. status. This is not quite true,
+the root can write on it but if the volume is R.O. I think that's the best
+clue we have.
+
+Revision 1.208  2001/09/25 23:08:01  set
+* Added: [Linux] Support for /dev/vc/NN devices in the keyboard routines.
+Thanks to Andris, he have a system that uses it.
+
+Revision 1.207  2001/09/25 02:17:04  set
+* Fixed: Problems in TEditor class when handling UNIX files.
+* Fixed: A bug introduced by JASC while adapting teditorf.cc to work for
+big endian platforms. It rendered TEditor buffers as only spaces ;-)
+Reported by Owen Rudge <owen@osplus.co.uk>.
+* Fixed: Tons of warnings, some of them bugs that made impossible to
+compile the Dialog Design program.
+* Fixed: One of the desklogo examples was supposed to show the use of ^Z
+signal handling but forgot to include signal.h (generated obvious errors).
+* Fixed: Removed header dependencies from all examples, now they depend
+only on headers included with #include "". I did it because patchenv.pl
+can't handle multiple directories and I think that isn't really necesary.
+In this way I'll never let pass system dependent dependencies.
+
+Revision 1.206  2001/09/23 20:05:12  set
+* Modified: Moved all the macros to define if we need \r\n or \n from
+setedit to the compatlayer library.
+
+Revision 1.205  2001/09/23 19:08:27  set
+* Modified: [Linux][Xterm] Now if the library detects xterm puts the keypad
+in the normal mode (looks like ncurses put it in a special mode) it makes
+the keypad usable. I'm sick of these silly ncurses+terminfo stuff.
+
+Revision 1.204  2001/09/22 02:16:56  set
+* Modified: [UNIX] The behavior of file attribute functions of compat
+layer, now the IsReadOnly tries to be a little more cleaver looking for the
+file group and the groups where the user is.
+
+Revision 1.203  2001/09/21 02:30:20  set
+* Fixed: New standards seems to enforce a \n at the end of all sources. At
+least gcc 3.0 says that. I added it to all the tests in the configuration
+scripts.
+* Fixed: [DOS] GCC 3.0 doesn't compile C++ code using the C compiler. The
+configure script can detect it, but as it only happened with very old gcc
+versions the scripts were looking for gxx and currently the C++ compiler is
+inoked using gpp.
+* Added: More MSS details (from last change).
+* Added: More packed details (from last change).
+* Added: no_mss.h and yes_mss.h to the distribution list.
+* Fixed: glob.c had text after a #endif, gcc 3.0 detects it.
+* Fixed: isrelpath.c didn't end with \n, gcc 3.0 detects it.
+Note: Sergey Krivulja <skrivulja@erec.ru> reported it also for gcc 2.96.
+
+Revision 1.202  2001/09/21 01:20:43  set
+* Added: Now the library is `MSS aware'. Laurynas sent me some patches for
+it and I adapted them. MSS is a memory debugger.
+* Modified: Uniformized the use of __attribute__((packed)) [Laurynas
+patches] and added to the compatlayer.
+* Modified: Now the uint* and uchar, uint, ulong, etc. types are part of
+compatlayer. I saw a collision with types defined but GNU libc (only for C
+sources where you can't define the same type twice :-(. Currently is solved
+case by case but I think it could be solved computing what headers are
+requested. It looks like for some ancient reason sys/types.h defines it.
+This action changed all name files.
+* Modified: The Boolean type is now also part of compatlayer.
+
+Revision 1.201  2001/09/20 22:26:53  set
+* Fixed: The keyboard internal structure wasn't "endian aware". Wow! now
+the mouse, shadows and keyboard seems to work for PPC and SPARC.
+
+Revision 1.200  2001/09/20 01:11:37  set
+* Modified: Now the configuration script doesn't need pwd, if it fail uses
+cd command.
+* Added: Creation of examples/rhide.env for the Win32 target.
+* Added: Now the config.pl updates the win32 Makefile so MinGW users without
+all the needed tools have a chance to compile.
+* Modified: Now the configuration detects more details and defines
+preprocessor variables acording to it. The definitions are also less
+confusing. Now they are OS, OSf (subtype of OS), Comp (Compiler), Compf
+(subtype of compiler) and CPU. With it I removed almost all magic __*__ tests
+that are usually tricky and not so clear.
+* Added: Cygwin target, with the help of Ronald Landheer
+<ronald@landheer.com>.
+* Added: Better prefix detection for MinGW.
+* Fixed: The version.txt file messed things if ended with \n, now is ok.
+* Added: A definition to compatlayer to identify systems where drive letters
+have any sense (CLY_HaveDriveLetters).
+* Added: More use of compatlayer Uses_* mechanism.
+* Added: Uses_abort to compatlayer (MSVC have it process.h).
+* Added: More code to solve the endian problems with the shadows.
+* Added: Code to solve the endian problem with the mouse attribute.
+* Modified: win32/trans.cc, win32/console.cc and win32/gkey.cc now are just
+one file. It helps to maintain uniform the list of files.
+* Modified: the win32/readme.txt to reflect the changes.
+
+Revision 1.199  2001/09/16 20:05:39  set
+* Updated: Distribution readme and debian/changelog.
+* Fixed: debian/control had extra new line characters.
+* Fixed: Now the scripts of distribution updates debian/changelog with my
+name and stating it was a script. Sugested by Ivan.
+* Added: .exe files to the list of excluded in Linux source distribution.
+
+Revision 1.198  2001/09/16 18:09:00  set
+* Added: Code to solve the endian problem in shadows. Must be tested.
+
+Revision 1.197  2001/09/16 17:52:53  set
+* Added: Updated information about supported platforms to readme.in.
+* Added: A clean target to the makefile. It only deletes the objects and
+libraries.
+
+Revision 1.196  2001/09/16 16:52:07  set
+* Added: Architecture detection to the configure. It defines TVCPU_$(Arch).
+* Added: GNU make detection to the configure. It supports gmake as name.
+* Added: GNU ar detection to the configure. It supports gar as name.
+* Fixed: In systems different than Linux and DOS RHIDE makefiles doesn't
+include -lstdc++ (RHIDE_TYPED_LIBS_$(RHIDE_OS).cc is not defined). So now
+the configuration puts them as RHIDE_OS_LIBS. Seen on FreeBSD and Solaris.
+* Added: Support for ncurses installed as -lcurses (I saw it in Solaris).
+* Added: Now CFLAGS and CXXFLAGS can be passed to the configuration in the
+command line (must use the perl script directly, no the shell script!). It
+made the configset script usable with any UNIX shell (/bin/sh isn't bash in
+a lot of UNIX systems).
+* Fixed: When detecting if define_key is available in ncurses the version
+isn't enough. Seen on Solaris.
+* Fixed: Warning about configure.cache not exits in configset.
+* Fixed: When detecting gpm in systems lacking it the config script said
+"too old" instead of "non existent". It was a side effect.
+* Added: SunOS to the list of systems supported by the configuration. It
+doesn't mean the library is working there.
+* Modified: References to __i386__ by TVCPU_x86.
+* Fixed: When creating the dynamic library the list of libraries was listed
+twice.
+
+Revision 1.195  2001/09/16 12:44:19  set
+* Fixed: [Linux] Now <sys/ioperm.h> is included only when needed
+(i386+Linux). After fixing it the code compiled for Linux: Alpha, PPC
+(RS/6000) and SPARC (Ultra60 w/2 CPUs) and FreeBSD+x86. Some big endian
+details must be solved but the demo works for all the platforms. Some
+configuration details must also be solved.
+
+Revision 1.194  2001/09/09 22:10:48  set
+* Fixed: [BC++/Win32] Some unused variable warnings. It looks like BC++ 5.5
+needs something like if (unused) unused=0; to understand we don't want it.
+* Fixed: [BC++/Win32] Some comparisson between signed and unsigned.
+* Added: Now both compress scripts (djgpp and linux) updates the BC++ 5.5
+makefile.
+* Modified: intl.h to define HAVE_INTL_SUPPORT as 1 like in the
+configuration file or gcc will get mad.
+.
+Revision 1.193  2001/09/09 19:58:18  set
+* Modified: version to 1.1.1.
+* Added: Comments about the modification of the cursor behavior.
+
+Revision 1.192  2001/09/08 20:16:14  set
+* Added: itoa to the compatlayer. This function is fast for converting
+integers into strings and seems to be suitable for calling from an async
+point (like a signal). I used djgpp implementation.
+* Fixed: when TDesktop was locked nothing but the cursor was updated. Now
+the cursor isn't updated. I hope it doesn't break anything, I think I did
+it in a clean way. In the past while the editor was loading a big list of
+texts the desktop remained locked but you could see the cursor jumping all
+around the screen as the TCEditors were inserted/selected in the desktop.
+Now the cursor remains still until unlock calls resetCursor().
+
+Revision 1.191  2001/09/08 18:02:01  set
+* Modified: [Linux] Now the TV_system function creates a new session for
+the child process it implies two important things: 1) The child is a leader
+of a group so calling kill(-pid_child... kills all the processes in their
+group. 2) The child doesn't have controlling terminal so it can't read/
+write to the parent console. I think that's good. The output is usually
+redirected so no problem there, but I must investigate what happends if the
+process reads (just error or a signal?).
+
+Revision 1.190  2001/09/05 20:10:44  set
+* Added: [Linux] Now I also patch the ^[ key to just return [ (not ESC).
+This enables a needed key for setedit.
+* Fixed: [Linux] gkey.cc to compile with the current library.
+
+Revision 1.189  2001/09/05 18:40:29  set
+* Fixed: Some problems in the TSortedCollection incremental search. The
+backspace wasn't working (at least on Linux), the `.' didn't show the jump
+to the extension correctly, files with more than one . weren't supported,
+etc. I hope it now works better.
+
+Revision 1.188  2001/09/04 19:23:48  set
+* Fixed: [Win32+BC++] bug when only one key modifier (Shift, Control, Alt)
+was detected. Patch from Anatoli Soltan <anatoli@iname.com>
+
+Revision 1.187  2001/09/04 18:32:14  set
+* Added: inline TMenuItem& operator + ( TMenuItem& s, TMenuItem& i ).
+It makes the creation of nested menues more readable. Sugested by Dean
+Wakerley <dean@wakerley.com>.
+
+Revision 1.186  2001/09/04 18:05:42  set
+* Fixed: It was impossible to use CFLAGS options that contained
+option=value because it confused patchenv.pl failing to configure the
+makefiles. Reported by Norberto Alfredo Bensa <nbensa@hotmail.com>
+
+Revision 1.185  2001/09/04 03:46:22  set
+* Added: The TColorSelector mark wasn't available to remap to other code
+page (fixed code 8). Now is TColorSelector::mark.
+
+Revision 1.184  2001/09/03 23:11:23  set
+* Added: Options for the TFileCollection to sort .* files after the rest.
+* Added: Options for the TFileCollection that affects TFileList so some
+files aren't listed: *~, *.bkp and .*. I also reindented and cleaned some
+code in tfilelis.cc.
+
+Revision 1.183  2001/09/03 20:20:28  set
+* Added: Now any TCluster (radio buttons, check boxes, etc.) that have a
+state sfDisabled is painted with a different color. I mapped it to color
+0x3E (previously reserved) and by default is dark gray over cyan.
+
+Revision 1.182  2001/09/01 22:37:28  set
+* Added: A new parameter for TV_System: pid_t *pidChild=0 if this parameter
+is passed and the OS supports it and we implemented it (read: only for
+Linux right now ;-) system creates a child process and calls exec with the
+provided command. As a result the command starts to run in background. The
+pidChild pointer is filled with the pid of the child. Right now all is too
+POSIX and I hope I will be able to generalize it for other systems.
+
+Revision 1.181  2001/08/31 19:36:56  set
+* Modified: Now if the terminal have fixed encoding the scroll bars uses
+the original chars. That's because we can't trust in any redefined value.
+
+Revision 1.180  2001/08/31 19:34:58  set
+* Added: A function to know if the terminal have a fixed encoding and we
+shouln't offer to the user recoding options. Boolean codePageVariable()
+
+Revision 1.179  2001/08/31 01:13:44  set
+* Modified: I cleaned the writeBlock() function of tscreen.cc. It became a
+mess. I removed the C_, C__ and C___ macros and the __SAVECURSOR_OK option.
+Also removed some redundant checks and reindented the code.
+* Fixed: Now writeBlock() is Endian safe. I got reports from David Nock
+<nockdg@es.co.nz> who was working in a Linux PPC. I used code ideas from
+the version that José Angel Sánchez Caso (JASC) <jasanchez@polar.es> sent
+me but I couldn't find time to merge.
+* Added: Two functions to compat layer library to get the high and low
+nibble of 16 bits values (according to the endianess of the platform).
+* Fixed: Some times after a suspend/resume of the keyboard ttyname failed
+to return the name of the terminal (who knows why?). Now if the name was
+already known and the new calls fails the old information is used. It was
+part of an Andris patch that I applied but not enabled because I have
+doubts about a line that now I left commented.
+
+Revision 1.178  2001/08/30 20:58:23  set
+* Modified: [Linux] A lot of low level details in the TScreen class:
+* Added: An internal variable TerminalType to hold the type of terminal, it
+can be:
+VCSA_TERMINAL   The Linux console with access to /dev/vcsa*.
+LINUX_TERMINAL  The Linux console without access to /dev/vcsa*
+GENER_TERMINAL  A generic terminal.
+* Modified: Now LINUX_TERMINAL sets the terminal to use G1 charset and sets
+the G1 charset to the screen font (user defined). It means that now TV
+applications that doesn't have access to /dev/vcsa* have access to all
+symbols anyways. I had to do some tricks to get some control characters
+printed. I used the UTF-8 mode that Linux have (unicode). So now the fonts
+loaded by the user will be used (I can see my accents correctly).
+* Fixed: The 127 and 128+27 codes are control characters and shouldn't be
+printed. It deformed the "ASCII" window.
+* Fixed: After suspend/resume the calls to endwin/doupdate messed up the
+selected charset. I think that's a bug in ncurses. It was noted when you
+suspended to a shell and resumed (frames damaged). Now the library ensures
+the right charset is selected after doupdate().
+* Modified: Now RestoreScreen() (called by suspend) clears the screen if
+the user screen can't be restored. That's good for calling a shell and is
+less confusing than just do nothing.
+* Modified: Now when using GENER_TERMINAL only the frames are remapped from
+PC437 letting some ISO Latin 1 accents alive. That's not perfect but is
+better than previous behavior. I have ideas about how to enhance it.
+
+Revision 1.177  2001/08/30 20:42:19  set
+* Added: Now the install target is separated in three parts:
+install-headers, install-static and install-dynamic. The install target
+means the three, but you can just install the dynamic library. It helped me
+a lot while testing things with the editor.
+
+Revision 1.176  2001/08/29 23:27:07  set
+* Fixed: An error in the config.pl that put libintl.a for Linux target.
+
+Revision 1.175  2001/08/29 22:49:01  set
+* Added: A function to get the name of the shell to the compat layer
+library.
+
+Revision 1.174  2001/08/28 20:57:50  set
+* Modified: Disable the sched_yield() method in yieldpro.c. I don't know if
+it's working, I guess so, but top says the applications uses 99% of the
+CPU. I guess that's because I only running this application (all the rest
+are sleepping) and hence Linux doesn't have anyone to yield the CPU and
+returns inmediatly. That's OK, but I'm sure users will complain because it
+gives the impression that we eat all the CPU.
+
+Revision 1.173  2001/08/28 16:22:48  set
+* Added: A dummy libintl.a library. This is provided for people that have
+configured the library with international support but want to create one or
+more executables without it. I created it after some mails from Laurynas
+Biveinis <lauras@softhome.net>.
+* Added: An explanation of it to the readme.txt file and also some
+explanation about the impact of libiconv.a.
+.
+Revision 1.172  2001/08/28 14:26:32  set
+* Added: Support for gettext 0.10.37 and newer that needs libiconv. I tested
+it with 0.10.39 and libiconv 1.7. The detection was enhanced and the examples
+are configured to use -liconv if needed. Thanks to Laurynas for ideas and
+some Perl patches.
+.
+Revision 1.171  2001/08/27 19:57:56  set
+* Modified: Now the yieldproc.c module uses the POSIX sched_yield function
+if available. It must be tested to see if that's good. Sugested by
+Robert Varga <nite@hq.alert.sk>.
+.
+Revision 1.170  2001/08/17 00:15:44  set
+* Modified: The debian files. Mainly to reflect the new dependencies and
+warn users about doubts in Borland's license. From Ivan Baldo.
+* Fixed: [Linux] The dynamic library didn't recompile the compat library
+with -fPIC. Report and ideas by Ivan Baldo.
+
+Revision 1.169  2001/08/16 02:51:32  set
+* Fixed: The bug mentioned in the last check in. Now when looking for the
+parent's console we stop if any parent isn't attached to a terminal. It
+works for my X because none of the X terminals I have are attached to a
+terminal, but we must see if that's enough.
+
+Revision 1.168  2001/08/16 01:55:48  set
+* Fixed: The terminal attributes saved in startcurses were not restored in
+stopcurses (but in the destructor) making assymetric the calls. Patch by
+Robert.
+* Modified: Now sys/perm.h is used and asm/io.h doesn't need to be
+protected from sys/io.h. Robert hint.
+* Added: Now if the library isn't in a virtual console the library tries
+harder to find out if this is situation is because the parent spawned the
+program in a terminal like a pts/x. If this is the case the library finds
+what terminal owns the parent and uses it. This is very nice to bypass
+programs like Midnight Commander, but have a serious drawback that I must
+fix in the next minutes: X is also bypassed ;-). Patch from Robert.
+* Fixed: ticks.h used NULL without including stdio.h. Patch from Robert.
+* Fixed: Warning about unused variable in gkeyli.cc when HAVE_KEYSYMS was
+not enabled. Patch from Robert.
+
+Revision 1.167  2001/08/15 23:58:19  set
+* Added: The .mak files to the Linux distribution.
+Released as beta.
+
+Revision 1.166  2001/08/14 15:20:47  set
+* Added: Makefiles for all the examples. They are created/updated when the
+package is created and updated by the configure script to be adapted to the
+target system. Documented.
+* Fixed: Various compilation errors in the examples.
+.
+Revision 1.165  2001/08/13 23:31:28  set
+* Added: The Dialog Editor to the distribution and mentioned in the readme.
+* Added: A .po file containing all the messages that can be internationalized
+in Turbo Vision.
+.
+Revision 1.164  2001/08/12 20:56:34  set
+* Added: A check in TCluster::draw to avoid buffer overflows. I don't know if
+it is really needed but a user asked for it and is better to double check
+this nasty details. Sent by Warlei Alves.
+* Added: A Dialog Editor created by Warlei Alves, he can't follow this
+project so now it will be part of the examples directory.
+.
+Revision 1.163  2001/08/12 19:41:05  set
+* Fixed: A problem only found in RHIDE. Programs should never call
+TScreen::resume() directly but TApplication::resume() instead. RHIDE abuses
+of some Turbo Vision internals and hence needs to call TScreen::resume(). The
+problem is that TProgam::buffer is tied to TScreen::screenBuffer and if you
+call TScreen::resume() and it reallocates TScreen::screenBuffer then
+TProgam::buffer gets unsynchronized and TProgram writes to deallocated data.
+Andris sent me a patch to make it happend only in almost impossible cases,
+but it could theoretically happend anyways. So I added a new TProgram member
+called syncScreenBuffer(). If a program abuses TV calling TScreen::resume()
+directly, then it should call TProgram::syncScreenBuffer() inmediatly.
+.
+Revision 1.162  2001/08/12 16:47:42  set
+* Merged patches from Andris addressing compile issues related to gcc v2.97
+and newer releases:
+1) Internal string functions must be declared (#include <string.h>).
+2) Is no longer valid to directly cast a pointer to a integer smaller than
+it, two casts are needed.
+3) Friend classes must be explicitly named as classes.
+.
+Revision 1.161  2001/08/05 00:27:56  set
+* Fixed: Problems with the detection of input/output functions provided by
+libc 2.1.3.
+
+Revision 1.160  2000/12/09 21:17:06  set
+* Applied changes from Anatoli to the WinNT port. They enhances the
+configuration process and fixes some problems and typos. Read-only temporals
+was fixed.
+* Reverted the if ( !key ) return False; added to TNSSortedCollection::search
+because it generated a nasty bug in the editor.
+* Updated the winnt/readme.txt to reflect the current steps.
+* Added a TODO file.
+.
+Revision 1.159  2000/09/24 14:53:46  set
+* Added: Endianess detection to the configure mechanism. It defines
+TV_BIG_ENDIAN for big endian machines.
+* Modified: Solved collisions between gettext and conio.h.
+* Added: New members to ipstream and opstream, they are intended to write
+architecture independent values to disk. This started with a patch from
+Jose Angel Sanchez Caso (JASC).
+* Added: Names for platform independent types in ttypes.h. Currently they are
+defined correctly only for x86 (gcc, MSVC and Borland).
+* Fixed: Unconditional inclusion of gpm in UNIX, this is not good.
+* Added: Big endian support in teditorf.cc by JASC.
+* Fixed: __linux__ conditionals made generic UNIX.
+* Merged some fixes to compile with -DNO_STREAM from Laurynas Biveinis
+<lauras@softhome.net>, more work is needed to complete it.
+
+Revision 1.158  2000/08/10 23:58:26  root (set)
+* Fixed: The glibc 2.1.3 outb check to be done by configure script. Hey!
+these guys have 2 errors: (1) they should provide a way to avoid collisions
+with kernel headers (they are older) and (2) They doesn't have the ".3" info,
+just 2 and 1 (MINOR), that's quite stupid.
+.
+Revision 1.157  2000/08/09 23:25:26  root (set)
+* Fixed: Now glibc 2.1.3 defines outb/inb so they get defined twice (glibc+
+kernel headers). I added a test to avoid including the kernel headers if they
+were defined. But I must check it because I don't have 2.1.3 at home.
+* Added: Now the compatibility layer saves the UID/GID when asking for the
+files attributes. Under DOS/Win32 this is avoided.
+
+Revision 1.156  2000/06/06 00:28:30  root (set)
+* Added: A warning message to the configure script if gpm can't be found under
+Linux.
+
+Revision 1.155  2000/06/06 00:12:55  root (set)
+* Fixed: [Linux] the dynamic library unconditionally requested libgpm even
+when the configure detected it wasn't installed.
+
+Revision 1.154  2000/06/04 18:40:39  set
+* Updated: The list of files and DOS files.
+.
+Revision 1.153  2000/05/23 01:43:23  set
+* Added: Now the configuration process generates the BC++ makefile. Even when
+people using BC++ won't use it I can use it to update the makefile.
+* Fixed: conflib.pl declared local variables wrongly.
+* Added: A function to conflib.pl to collect project items from a .mak.
+* Added: fileview.cc to the BC++ port.
+.
+Revision 1.152  2000/05/22 23:52:32  set
+* Modified: Now the configtv.h isn't generated if the new one is identical.
+It avoids a masive recompile after configuring.
+.
+Revision 1.151  2000/05/20 20:02:21  set
+* Modified: The generated make file to use PHONY and force a real check of
+all the dependencies even if the library is already generated.
+* Added: Now the win32/Makefile file is generated from the djgpp's file
+during the configuration process. For this I modified the djgpp/vga* files to
+produce no code if they are compiled without djgpp.
+* Added: a thanks section to the main readme.
+* Added: some details in the readme, specially about RMS doubts and what I'm
+doing about it. Also to make clear the win32 and winnt targets are there and
+both works for win32.
+* Fixed: a NO_STREAMABLE instead of NO_STREAM in tparamte.cc. Reported by
+Egon Eckert <egon@chance.cz>.
+* Merged changes from Anatoli Soltan. Now the BC++ code runs under Windows
+95 too!
+* Fixed: Some warnings emitted by gcc 2.95.2 with the examples/demo code.
+* Added: getcwd to the compatlayer library.
+
+Revision 1.150  2000/05/16 02:08:05  set
+* Added: A new constructor for TListBox and TSortedListBox that accepts two
+scroll bars. I don't know why original TV lacks it when TListViewer have it
+(base class).
+* Modified: The behavior of the TListViewer class, now when you press the
+left or right key and the viewer have and horizontal scroll bar and there is
+just one column the handleEvent calls to the scroll bar handleEvent instead
+of just return. I think that's very sensitive.
+.
+Revision 1.149  2000/05/13 16:02:39  set
+* Fixed: Yet another call to delete without []. Pointed out by Laurynas.
+.
+Revision 1.148  2000/05/12 23:13:05  root (set)
+* Fixed: Some details in the compat layer library to compile under Linux
+(first compilation issues ;-)
+
+Revision 1.147  2000/05/12 02:28:35  set
+* Incorporated the WinNT port (using BC++ 5.5) from Anatoli Soltan
+<anatoli@iname.com>.
+* Separated most OS sensitive stuff to a sub-library called "Compat Layer".
+This will break some code, specially RHIDE, so I'm changing the middle
+version. This new library allows clean support of DOS/djgpp, Linux/gcc,
+Win32/MingW32 and WinNT/BC++ without too much conditionals.
+.
+Revision 1.146  2000/04/29 17:09:42  set
+* Added: Mixer stuff.
+.
+Revision 1.145  2000/04/20 19:56:54  root (set)
+* Fixed: Some details in linux/tscreen.cc to try to compile it under other
+UNIX flavors. I disabled all the x86 specific code for other flavors (is i386
+and OS specific) and also changed some stuff that seems to be defined only
+by ncurses and not BSD's curses.
+
+Revision 1.144  2000/04/20 19:18:52  set
+* Modified: Some #ifdef __linux__ by TVOS_UNIX to test it under other
+flavors.
+.
+Revision 1.143  2000/04/13 01:07:02  set
+* Fixed: [DOS] Now when BIOS is selected the keyboard is polled really using
+BIOS. Previous code used djgpp's kbhit() and it doesn't really call BIOS.
+* Modified: Now the canScroll member of TInputLine is just protected and not
+private.
+.
+Revision 1.142  2000/04/13 00:41:17  root (set)
+* Updated: The Linux .gpr for the new headers structure (tv/...).
+* Fixed: Tab key problems when using the Eterm trick.
+* Fixed: Some warnings reported by gcc 2.7.2.3.
+
+Revision 1.141  2000/04/12 23:36:37  set
+* Added: A "non-inline" version of the functions defined in the djgpp's
+vgaregs.h file. They are needed to compile the DOS version without
+optimization. The problem was reported by Laurynas.
+.
+Revision 1.140  2000/04/12 23:13:48  set
+* Added: An example of autoconf/automake macro for the library. Contributed
+by Laurynas.
+.
+Revision 1.139  2000/02/27 18:30:20  set
+* Added: A callback to the TButton class. Now you don't need to create a new
+class just because a dialog have a non-standard button.
+.
+Revision 1.138  2000/02/27 15:06:18  set
+* Added: 32 bits versions of TRadioButtons and TCheckBoxes. They have the
+same name but just appends "32". These objects only override dataSize() to
+return 4. They are much better because: (1) You can have 32 items (not just
+16) and (2) structures doesn't need to be packed for 32 bits machines.
+.
+Revision 1.137  2000/02/05 22:22:20  set
+* Added: Now if a program executes a dialog while the desktop is locked it is
+temporally unlocked so the user can see the dialog and then is locked again.
+.
+Revision 1.136  2000/02/05 20:42:18  set
+* Added: Add and Done buttons to the FileOpenDialog, they are controlled by
+the fdDoneButton and fdAddButton options. They are suitable for selecting
+files used in a list (list of MP3s and project in my editor). Seuggested for
+RHIDE by Waldemar Schultz <schultz@ma.tum.de>.
+.
+Revision 1.135  2000/02/05 00:14:55  root (set)
+* Modified: [UNIX] gkeyli.cc now should compile in most UNIX systems that
+have ncurses. All the funcy Linux stuff is conditional.
+* Modified: [UNIX] the KEY_MOUSE ncurses value seems to be new in 1.9.9 so to
+support older versions (as 1.8.6) now their use is conditional.
+* Fixed: The dependencies in the Linux Makefile to accomodate the new
+location of the headers.
+* Added: -I/usr/local/include and -L/usr/local/lib to FreeBSD compilation
+flags. Most of these changes are towards FreeBSD support with the help of
+some tests by Alex Matulich <alex@unicorn.us.com>.
+
+Revision 1.134  2000/02/04 02:18:44  root (set)
+* Fixed: Tab is an exception to the modifications done in 1.129.
+
+Revision 1.133  2000/02/04 02:03:58  root (set)
+* Modified: The configure process now only configures the target OS.
+* Modified: TStatusItem now uses copies of the strings passed.
+
+Revision 1.132  2000/02/03 00:17:48  set
+* Added: Win32 target to the configure process. I must admit the user needs a
+very UNIXified system to run it joining Mingw32 with some goodies from Cygwin
+and Perl from djgpp but works as well as the DOS and Linux process.
+* Added: [Win32] A readme and a reference to it in the main readme.
+* Modified: [Win32] The Makefile to generate the demo.exe from it and be
+configured in a more common way. Also to name the library in the same way
+used under DOS and Linux. I think that's the Right Thing(TM) because in this
+ways programs can be ported from one platform to another without changes.
+.
+Revision 1.131  2000/02/01 01:51:36  set
+* Changed: Now tv.h is located in $prefix/include/rhtvision and the rest in
+$prefix/include/rhtvision/tv. It will avoid collisions with headers from
+other libraries. Suggested by Andris.
+.
+Revision 1.130  2000/02/01 00:15:01  set
+* Added: [Win32] A directory for the demo obj files.
+* Added: [Win32] Workaround for a "feature" in Mingw32 980701-4 localtime
+function. It returns a NULL pointer if the date is somewhat big.
+* Added: [Win32] Get/SetWindowTitle() members to TDisplay.
+* Added: Now the demo sets the window title (only supported for DOS target
+running under W95+ and Win32 currently).
+* Fixed: [Win32] Some warning in compilation.
+.
+Revision 1.129  2000/02/01 00:03:12  root (set)
+* Fixed: [Linux] An old annoying "feature" that made the code report control
+(arrows, etc.) keys as ASCII valid values. I got it reported many times but
+finally Andris triggered the fix.
+
+Revision 1.128  2000/01/29 15:27:42  set
+* NEW: Merged patches from Vadim Beloborodov <bvr@cc.pib.alex-ua.com> to
+support Win32 console.
+.
+Revision 1.127  2000/01/26 00:27:35  set
+* Added: A new couple of TScreen members to Set/Get the window title under
+Windows 9x. I hope to extend it to xterm.
+.
+-----------------------------------------------------------------------------
+v1.0.10 release.
+
+Revision 1.126  2000/01/02 16:38:59  set
+* Adjustments to realease v1.0.10.
+.
+Revision 1.125  1999/12/22 00:40:08  root (set)
+* Bug found: [Linux] When suspending a TV application in a remote terminal
+and using a font different than the default the frames gets scrambled when
+resuming the application. I can reproduce it, but I don't have a clue about
+the source of the problem. Remote terminals are complex and full of problems
+so I don't plan to spend time searching the source of the problem. Reported
+by Matt Mueller <donut@azstarnet.com>
+
+Revision 1.124  1999/12/19 19:50:08  root (set)
+* Added: Now the library also patches the Ctrl+Shift+Tab combination so the
+kernel reports it. Ivan reported it as a bug.
+
+Revision 1.123  1999/12/05 13:28:08  root (set)
+* Applied patchs from Ivan for the Debian files (sets architecture to any).
+
+Revision 1.122  1999/12/05 13:12:59  root (set)
+* Modified: Now the initialization of the TScreen is called from TProgInit.
+I must test it under DOS. The old methode failed for the examples.
+* Added: [Linux] An example on how to suspend an application with ^Z and then
+resume it.
+.
+Revision 1.121  1999/12/02 23:47:57  set
+* Fixed: A bug in the DeskLogo examples. Pointed as a problem by Arvin
+Baccay <arvinbaccay@yahoo.com>.
+.
+Revision 1.120  1999/11/20 14:52:55  set
+* Fixed: Problem with rhgdb messing terminal settings. Patch from Andris to
+enable the old code that saves/restores the terminfo stuff.
+.
+Revision 1.119  1999/11/04 01:12:09  set
+* Updated Debian files from Ivan.
+.
+Revision 1.118  1999/11/04 01:01:52  set
+* Modified: The code used to disable ^Q/^S is now more generic and also
+disables ^C, ^/ and ^Z.
+.
+Revision 1.117  1999/10/30 19:23:43  root (set)
+* Changed: Now TScreen is initialized from the TApplication constructor and
+not from a static variable that triggers the constructor. Suggested by
+Christoph Bauer <c_bauer@informatik.uni-kl.de>.
+
+Revision 1.116  1999/10/29 01:50:22  root (set)
+* Added: [Linux] call to dch to update the Debian version. Suggested by Ivan.
+
+Revision 1.115  1999/10/26 00:07:30  set
+* Added: TFileDialog is now "growable".
+* Added: [Linux] TScreen disables the Xon/Xoff flow control so ^Q/^S can be
+used in X terminals.
+.
+-----------------------------------------------------------------------------
+v1.0.9 release.
+
+Revision 1.114  1999/10/17 22:30:03  set
+* Updated for release of 1.0.9.
+
+Revision 1.113  1999/10/10 14:57:57  set
+* Added: Support for DOS greek keyboards.
+* Modified: Now all the classes that uses acelerators doesn't directly check
+the ASCII of the acelerator with the keyboard ASCII. That's because the same
+key could generate more than one ASCII. That's the case of greek keyboards
+where the keyboard generates the latin and greeks values.
+.
+Revision 1.112  1999/10/02 15:18:07  set
+* Added: some files missing in the distribution, not indispensable ones.
+* Added: [DOS] Now the configure script patches libint.h in case the user
+have a buggy one (found in gettext 0.10.32).
+.
+Revision 1.111  1999/09/28 02:25:00  set
+* Fixed: Applied patch for Debian files from Ivan.
+.
+Revision 1.110  1999/09/24 02:57:52  set
+* Fixed: I forgot to uncomment a test in the TListView class. It produced the
+wrong broadcast when the focus changed.
+
+Revision 1.109  1999/09/24 02:08:05  set
+* Fixed: Compilation problems in vgastate.h when using gcc 2.95. First
+reported by Laurynas and then by "Sriviroolchai, Tanes"
+<TS312094@exchange.Thailand.NCR.com> who included some notes from gcc's FAQ
+commenting about the problem.
+.
+Revision 1.108  1999/09/24 00:55:36  set
+* Fixed: A bug introduced by us to the TFileList class in the vertical scroll
+bar (wrong page step). I added a new member to TListViewer to fix it, is
+called setNumCols(int aNumCols) and it also updates scroll bars (not just the
+number of columns). Reported by Sean <sproctor@enter.net>.
+.
+Revision 1.107  1999/09/24 00:28:24  set
+* Added: Better handling of some situations in TScreen, patch from Robert:
+"I made now a patch for tscreen.cc to use at firts the infromation
+from terminfo to decide if we can use PAL_LOW ot PAL_HIGH
+and as next I used in mapcolor as the first choice the
+set_a_foreground and set_a_background strings and only if
+they are not defined using set_foreground and set_background.
+The reason for this is, that I analized some terminfo records and
+found, that often the set_a_... are defined but not the set_..."
+.
+Revision 1.106  1999/09/23 23:55:42  root (set)
+* Fixed: Relative symlinks for dynamic libraries [Linux]. Patch by Ivan.
+* Fixed: Pemission 644 and not 755 for libraries [Linux]. Patch by Ivan.
+* Added: Now the Linux compress updates the debian/control file.
+* Modified: The Debian scripts (by Ivan).
+
+Revision 1.105  1999/09/17 03:38:30  root (set)
+* Added: Support for the FHS in the configure script (not used for the
+library).
+* Fixed: Some details of the configure process for Linux.
+
+Revision 1.104  1999/09/16 02:26:54  set
+* Modified: Now the file open dialog have space for 2 more filenames.
+.
+Revision 1.103  1999/09/12 19:47:54  set
+* Moved a lot of code from the config.pl script to conflib.pl to share it
+with the editor.
+* Fixed: some small details in the configuration mechanism. Tested under DOS
+and works OK.
+.
+Revision 1.102  1999/09/12 00:38:24  set
+* Removed the compilation options from the .gpr files because that's
+configured by the configure mechanism now.
+* Added an option to makemak.pl to avoid displaying the installation options.
+That's to avoid confusion when the script is called from the makefile.
+
+Revision 1.101  1999/09/09 02:25:16  root (set)
+* Added: More details to the configure mechanism, including CFLAGS setting,
+a script to set my default values, corrections in the readme.txt, etc.
+
+Revision 1.100  1999/09/08 02:09:39  root (set)
+* Added: A config header (configtv.h), configuration for the makefiles and
+RHIDE projects, unified the intl.h headers and made conditional using a
+configuration variable and other configuration enhancements.
+.
+Revision 1.99  1999/09/07 01:12:26  set
+* Added: First attempt for a UNIXified configure/make/make install mechanism.
+Not using autoconf yet, just some Perl scripts.
+.
+Revision 1.98  1999/09/02 23:26:05  set
+* Fixed: I forgot some files, so I'm releasing a fixed .zip.
+.
+-----------------------------------------------------------------------------
+v1.0.8 pre-release.
+
+Revision 1.97  1999/08/29 20:20:13  set
+* Changes for release.
+
+Revision 1.96  1999/08/26 00:32:19  set
+* Applied 7 more patches from Laurynas Biveinis <lauras@softhome.net>:
+* Fixed: validation bypassed when switching windows
+* Fixed: missing stream class members in TSortedListBox
+* Fixed: memory leak in opstream::seekp
+* Fixed: potential crash in TListViewer::setRange
+* Fixed: Alt-number bypass view validation
+* Fixed: THistory::handleEvent doesn't always put '\0'
+* Fixed: TInputLine::options not read correctly
+* Also: Now is possible to pass backslashes to TDirListBox. Patch suggested
+by Laurynas too.
+
+Revision 1.95  1999/08/25 00:11:17  set
+* Fixed: One of the new broadcasts was overlying a TButton command. Now I
+moved the TButton command to the views.h file so it won't happend again. I
+don't know why the original programmers left a lot of things in the .cc files
+instead of putting them in the headers.
+.
+Revision 1.94  1999/08/22 23:26:54  set
+* Fixed: the doit UNIX script to apply the patches.
+* Modified: the number of one broadcast to be equal to the original.
+.
+Revision 1.93  1999/08/16 14:51:50  set
+* Added: As the VGA Save State BIOS call is amazingly buggy in a lot of video
+boards (Matrox in particular) I added a version of this service but made with
+low level in/out commands. Is relative complex to enable right now but will
+be easier in the future if I find it really solves the problems. Anders Blom
+<anders.blom@mbox322.swipnet.se> helped a lot testing it in your Matrox board
+and now also Nate Eldredge <nate@cartsys.com> is testing some of the
+routines.
+.
+Revision 1.92  1999/08/14 02:13:32  set
+* Applied 8 more patches from Laurynas Biveinis <lauras@softhome.net>:
+* Fixed: unnecesarry stack usage in drivers2.cc
+* Fixed: TNSCollection::error should be not static
+* Fixed: TPReadObjects::registerObject w/ and w/o assertion check.
+* Fixed: incorrect scroll arrow display in TInputLine
+* Fixed: EOF not always detected in ipstream
+* Fixed: memory usage bug in HistRect ctor
+* Fixed: TButton w/o bfDefault can became such.
+* Fixed: TDirListBox is unusable outside TChDirDialog
+* Added: I also added an oprator [] for collections. It isn't inline and can
+be used as an alternative of at() when the speed isn't so important but the
+size is the point.
+.
+Revision 1.91  1999/08/14 00:50:57  set
+* Applied 6 more patches from Laurynas Biveinis <lauras@softhome.net>:
+* Fixed: unnecesary TInputLine scrolling.
+* Fixed: if TListViewer has no scrollbar, it's never redrawed.
+* Fixed: TMenuView bug - ability to execute disabled items.
+* Fixed: TMenuView::updateMenu crash.
+* Fixed: TStringList does not properly read strings.
+* Fixed: TWindow frame lost if valid(cmClose) == False
+.
+Revision 1.90  1999/08/11 01:43:49  set
+* Applied 7 patches from Laurynas Biveinis <lauras@softhome.net>, he adapted
+a lot of patches floating around the net for the original TV to this port:
+* Fixed: TGroup re-entrancy fix
+* Fixed: memory leak in TNSCollection
+* Fixed: disabled views can be selected through labels
+* Fixed: TCheckBoxes & TRadioButtons problem with streams
+* Fixed: TChDirDialog::shutDown()
+* Fixed: TEditor sometimes fails to find words
+* Fixed: bug in TFileDialog::valid()
+
+Revision 1.89  1999/08/07 21:30:11  set
+* Added: Now TListViewer is verbose and sends a broadcast when a new item is
+focused. It can be used to update other views according to it.
+* Updated Robert Hoehne's license text.
+.
+Revision 1.88  1999/08/03 02:04:57  set
+* Added: Now TClusters (TRadioButton and TCheckBox) sends broadcasts to your
+owner each time the movedTo and press member are called. This behavior is the
+default but can be disabled setting the TCluster::extraOptions static
+variable to 0. The new broadcasts sends a pointer to the view that is sending
+the message, the owner must know what exactly is this pointer.
+.
+Revision 1.87  1999/08/02 00:44:24  set
+* Modified: Now TFileCollection sorting is configurable. By default it sorts
+like the Turbo Vision help says (directories at the end of the list, no case
+sensitive, .. is the last in the list). I did it because many people seems to
+like it, I like another layout and Robert yet another. So now everybody can
+get what s/he wants ;-)
+.
+Revision 1.86  1999/08/01 18:01:46  set
+* Added: Now TWindow::close() sends a broadcast cmClosingWindow to
+TProgram::Application.
+.
+Revision 1.85  1999/08/01 13:34:13  set
+* Added: Now is possible to setup TDeskTop so windows are tiled first
+vertically. For it I added get/setOptions members to TDeskTop, it get/sets
+a flags variable. The dsktTileVertical is the only flag available now.
+.
+Revision 1.84  1999/07/31 19:52:31  set
+* Fixed: In the TDemo example: I forgot to add the link request for the
+streaming structures of the calculator that now are in the library. Reported
+by Laurynas.
+.
+Revision 1.83  1999/07/31 19:47:52  set
+* Fixed: A couple of warnings about delete (void *) reported by gcc 2.95 in
+the examples.
+* Fixed: A call to delete without [] in dirent.h. Patch by Laurynas.
+.
+Revision 1.82  1999/07/27 22:06:03  root (set)
+* Fixed: Some calls to delete instead of delete[] and delete instead of free.
+Patches and suggestions by Laurynas Biveinis <lauras@softhome.net>.
+* Added: Now TProgram::idle() releases the CPU by default. You can avoid it
+with TProgram::doNotReleaseCPU=1;. Suggested by Laurynas.
+
+Revision 1.81  1999/07/26 23:48:33  set
+* Added: TListBoxRec is now publically available from the headers.
+* Modified: TSortedListBox::searchPos is now protected instead of private so
+childs can know something about the incremental selection.
+.
+Revision 1.80  1999/07/21 01:15:14  set
+* Added: A script to create snap-shots as diffs.
+.
+Revision 1.79  1999/07/17 22:03:37  root (set)
+* Fixed: When exiting and the screen is already suspended I avoid cleaning
+it because it is supposed to be already cleaned. Not sure is the best, I
+tested it in ttyN and ttypN and works ok for the command line options.
+
+-----------------------------------------------------------------------------
+v1.0.7 release.
+
+Revision 1.78  1999/07/13 23:10:05  set
+* Fixed: 18 const name... in the examples. Reported by Matt Mueller
+<donut@azstarnet.com>.
+* Added: example on how to release the CPU in the idle() member to the demo
+example [Linux patch by Matt, I did the djgpp part].
+.
+Revision 1.77  1999/07/12 23:36:58  root (set)
+* Added: An Eterm theme example and instructions to install it.
+
+Revision 1.76  1999/07/07 23:02:04  set
+* Added: a new couple of members to TCommandSet, they are used to enable or
+disable a range of commands. I usedit in the editor to disable all the editor
+commands when the editor loses the focus. I think that's usefull for any
+class that have a big number of commands. The editor currently have over than
+128 commands.
+.
+Revision 1.75  1999/07/03 16:55:54  set
+* Fixed: Another call to delete instead of delete[] in the TInputLine
+destructor. Patch by Laurynas Biveinis <lauras@softhome.net>.
+.
+Revision 1.74  1999/07/01 02:42:49  root (set)
+* Added: Support for the --report-as-keysyms options of Eterm 0.8.10. It
+makes the programs work very well under Eterm, example: in my editor now is
+posible to select text with shift and use strange keyboard combinations as
+Ctrl+Shift+Insert. With it the support for Eterm is just excellent, slow but
+very complet. (Note: I added this swithc to Eterm ;-) THANKs goes to mej
+that accepted the patch and commited it in the CVS tree).
+
+Revision 1.73  1999/06/30 23:29:42  set
+* Fixed: windowSizeChanged is from TDisplay, but was declared as TScreen
+member, gcc 2.96 warns about it as an ANSI C++ violation.
+.
+Revision 1.72  1999/06/27 20:40:47  root (set)
+* Added: More information in Linux TScreen module for cases where the
+library fails to open the terminal for output. It seems to happend in some
+new Linux installations.
+
+Revision 1.71  1999/06/27 20:19:47  set
+* Fixed: TFileInfoPane was using an unitialized buffer when the open dialogs
+didn't have any match.
+
+Revision 1.70  1999/06/25 01:29:06  root (set)
+* Ported: The TChdirDialog class to Linux. It was there but was a dummy. Now
+I can navigate the disk with it.
+.
+Revision 1.69  1999/06/24 22:33:53  set
+* Modified: Now the File Dialog uses an horizontal scroll bar and 2 columns
+when only SFNs are available and a vertical scroll bar and 1 column when LFNs
+are available. Ivan complained about the horizontal bar ;-)
+.
+Revision 1.68  1999/06/24 01:55:10  set
+* Added: The Calculator from the TVDemo to the library. I did a lot of
+changes to the class (it was buggy and had portability problems). Now you
+can have the calculator in any program use Uses_TCalculator, see the demo
+for an example.
+.
+Revision 1.67  1999/06/23 23:05:34  set
+* Added: Select button to the TFileDialog class (option: fdSelectButton
+command: cmFileSelect).
+* Modified/Fixed: Now the TFileList generates the cmFileDoubleClicked
+broadcast as specified in the TVision help (was a bug in 1.03 fixed in 2.0).
+.
+Revision 1.66  1999/06/23 02:31:30  set
+* Changed: The distance between the buttons in the File Dialog, it was 3 and
+now is 2 to allow more buttons (my editor adds 2 buttons).
+.
+Revision 1.65  1999/06/23 01:15:56  set
+* Modified: Now the file dialog doesn't show ".." in the root directory (DOS).
+* Fixed: Calling the file dialog with fdNoLoadDir (needed to avoid an extra
+directory read, sometimes quite slow) was using a null pointer, also fixed
+a memory leak (not releasing the current directory in readDirectory) and
+changed delete (char *)directory to delete[] directory;
+.
+Revision 1.64  1999/06/16 01:44:04  root
+* Added: Now the Linux keyboard routines disables ^Z because it is dangerous.
+Sugested by Luis Pistoia <lu5gpl@arnet.com.ar>.
+.
+Revision 1.63  1999/06/12 00:16:15  set
+* Fixed: Some calls to delete for memory allocated with new[]. Patchs from
+Laurinas, some of them overlaps with patches from Andris.
+.
+Revision 1.62  1999/06/11 23:55:14  set
+* Fixed: Some calls to delete operator passing a void *. Now falling back to
+char *. Also the new operator in HistRec class was returning 0 and the new
+drafts says it should rise an exception instead. These things are reported
+by egcs 2.95.x snapshots with two new warnings:
+warning: `void *' is not a pointer-to-object type
+operator new should throw an exception, not return NULL
+The basic patches (I changed them before applying) were sent bt Andris
+Pavenis (he ever uses a cutting edge version of the compiler).
+.
+Revision 1.61  1999/06/11 00:21:52  set
+* Included some files I forgot in the list (keyboard extender and pif
+example).
+.
+-----------------------------------------------------------------------------
+v1.0.6 release.
+
+Revision 1.59  1999/06/05 22:38:19  root (set)
+* Applied patches for Debian package v1.0.5-2. (from Ivan).
+
+Revision 1.58  1999/06/05 02:18:59  set
+* Modified: The destroy0 macro to be possible your use in cases like:
+if (...) destroy0(...); Suggested by Laurynas Biveinis <lauras@softhome.net>.
+Patch from Laurynas rejected because is not practical (generates temporals).
+.
+Revision 1.57  1999/06/05 01:35:19  set
+* Fixed: Calls to delete without using []. According to new standards:
+Here is text from a relative old draft of the standard:
+0 Accredited Standards Committee*              Doc No:X3J16/96-0225
+  X3, INFORMATION PROCESSING SYSTEMS                  WG21/N1043
+...
+  5.3.4  New                                                  [expr.new]
+...
+21The  way the object was allocated determines how it is freed: if it is
+  allocated by ::new, then it is freed by ::delete,  and  if  it  is  an
+  array, it is freed by delete[] or ::delete[] as appropriate.
+...
+  5.3.5  Delete                                            [expr.delete]
+...
+2 ...                      .  In either alternative, if the value of the
+  operand of delete is the null pointer the operation has no effect.  In
+  the  first  alternative  (delete  object), the value of the operand of
+  delete shall be a pointer to a non-array  object  created  by  a  new-
+  expression, or a pointer to a sub-object (_intro.object_) representing
+  a base class of such an object (_class.derived_).  If not, the  behav-
+  ior is undefined.  In the second alternative (delete array), the value
+  of the operand of delete shall be the  pointer  value  which  resulted
+  from a previous array new-expression.18) If not, the behavior is unde-
+  fined.  [Note: this means that the  syntax  of  the  delete-expression
+  must  match the type of the object allocated by new, not the syntax of
+  the new-expression.  ] [Note: a pointer to a const  type  can  be  the
+  operand  of  a delete-expression; it is not necessary to cast away the
+  constness (_expr.const.cast_) of the pointer expression before  it  is
+  used as the operand of the delete-expression.  ]
+  _________________________
+  18)  For  non-zero-length arrays, this is the same as a pointer to the
+  first element of the array  created  by  that  new-expression.   Zero-
+  length arrays do not have a first element.
+And the comp.lang.c++ FAQ says:
+[16.12] Can I drop the [] when deleteing array of some built-in type
+(char, int, etc)?
+No!
+Patches to add [] in some necesary places and FAQ quotation provided by
+Laurynas Biveinis <lauras@softhome.net>.
+I also applied the part that says that is not necesary to cast a const
+char * to char * when calling delete.
+.
+Revision 1.56  1999/06/05 00:40:35  set
+* Fixed: Some key bindings in TEditor class (Enter and Backspace for example).
+* Modified: Now the doEditDialog function provided in tvedit3.cc can be used
+for quick applications because I defined a new version:
+ushort doEditDialogDefault( int dialog, va_list arg )
+So you can set TEditor to your own function, handle only some cases and call
+doEditDialogDefault for the rest. I used it for the installer of the editor.
+.
+Revision 1.55  1999/05/29 00:52:23  root (set)
+* Removed some Debian files no longer needed (Ivan).
+
+Revision 1.54  1999/05/28 01:02:39  set
+* Added: Windows NT detection (using the OS environment variable) to the
+mouse class so now if NT is detected the mouse is polled and not hooked.
+Looks like NT's mouse driver emulation fails to call the RMCB and jumps to
+nowhere crashing. Now the mouse is functional in NT.
+* Added: A workaround for a bug in Windows NT 4.0 when setting the video
+modes with int 0x10. Looks like this bug isn't reproductable in all the
+machines but happends in the one I used. NT is clobbering the number of tics
+since midnight in the BIOS data area, the number that appears is big enough
+to generate a divide overflow in the next call to int 0x21 service 0x2C (get
+time), as that's an exception in the real mode code the djgpp program is
+killed or hangs.
+.
+Revision 1.53  1999/05/26 00:03:51  set
+* Fixed: a leak in TResourceFile constructor. Patch submited by Laurynas
+Biveinis <lauras@softhome.net>.
+
+Revision 1.52  1999/05/23 22:58:08  root (set)
+* Modified: Now, in Linux, left alt and right alt are different keys. I did
+it because that's the only way to paste with gpm.
+.
+Revision 1.51  1999/05/21 14:10:02  root (set)
+* Fixed: When I removed some code in TScreen I made stdout the output of the
+library, but then redirecting the stdout from the program and printing sent
+undesired escape sequences to the redirected file. For this reason I open the
+tty with other file handle. *NHP* (Never Hit Public, it means only I used a
+version with this bug).
+
+Revision 1.50  1999/05/20 22:57:25  root (set)
+* Fixed: Now Uses_TStrListMaker defines Uses_TStringList. Patch by Laurynas
+Biveinis <lauras@softhome.net>.
+
+Revision 1.49  1999/05/20 02:00:02  root (set)
+* Changed: Now TScreen shows an error message if you redirect stdout in the
+Linux version, that's nicer than the old behavior: SIGSEGVs ;-)
+* Modified: Now TScreen includes sys/io.h instead of sys/perm.h for glibc
+because looks like sys/perm.h isn't included in Alpha/Linux's glibc.
+Sugested by Dim Zegebart <zager@post.comstar.ru>.
+
+Revision 1.48  1999/05/19 23:27:55  set
+* Fixed: a bug in TStrListMaker destructor, ugh! looks like nobody used it
+;-). Patch by Laurynas Biveinis <lauras@softhome.net>.
+.
+Revision 1.47  1999/05/16 22:09:14  root (set)
+* Added: My DOS TSR to enhance the keyboard to the distribution.
+* Added: A .pif example showing how to prevent using the program in a window
+and recover some keys like Alt+Space.
+* Moved the Linux code from screen.cc to classes/linux/tscreen.cc.
+* Added: The ability to use VCSAs even if they are write only.
+* Removed the tcget/setattr calls from TScreen because that's done by ncurses.
+* Added: A variable to fine tune the video driver called
+TurboVision_screenOptions, by now only have meaning under Linux and is used
+to tell the TScreen class to not use VCSAs if they are write only (because
+then suspend/resume doesn't work properly).
+* Modified: Now Alt+key doesn't have any ASCII value associated so if you
+press Alt+8 the program won't display 8 if there is no action for Alt+8.
+* Added: Documentation in the readmes about the limitations and
+particularities of each platform. For example: what doesn't work when using
+telnet, how can you paste using gpm, etc.
+
+Revision 1.46  1999/05/15 23:51:09  root (set)
+* Good news for xterm funs:
+* Fixed: A bug in the startcurses() that made xterm report the wrong codes
+for arrow keys and other keys.
+* Fixed: A bug and a lack of some stuff during the exit that left the
+terminal in a wrong state after exit (including not restoring the screen)
+* Added: Support for mouse, isn't as good as gpm because you can't track the
+position in real time, but you can resize and move windows anyways.
+* Fixed: A bug in the bold reset code, it made a funny effect: when starting
+the desktop was with normal fonts, but with the use all were becoming bold.
+* Fixed: xterm (and others) doesn't have 16 backgrounds and the color dialog
+was trying to show 16.
+* Fixed: Now the "User screen" works when the program is in a terminal.
+* Added: A temporal workaround to support Eterm when the user have TERM=xterm
+(the default in Debian, bug mess Home and End). You need ncurses 4.2 for that.
+* Discovered: A thing that was floating in my mind: why mc interfers? simply:
+mc runs the childs in ttypN consoles, so you are in a terminal when starting
+the editor from mc.
+* Modified: Now the ESC delay is 100ms and not 1s.
+* Fixed: The DEC character mapping for the scroll bar that is full and the
+block used for the color selector. They aren't pretty but at least you can
+understand what they mean.
+* Added: Handling for SIGWINCH, so now TV applications are resized if the
+xterm window is resized.
+
+Revision 1.45  1999/05/13 03:05:03  root (set)
+* Added: Support for xterm way of reporting ALT+key (key | 0x80). Now the
+startcurses() routine sets the "XtermMode" when the TERM is xterm*. It makes
+the editor work much better under xterm, at least in my system.
+
+Revision 1.44  1999/05/12 00:46:41  set
+* Fixed: A bug in TSortedListBox when pressing delete it was dereferencing
+curString[65536] when the variable is a 256 bytes buffer producing random
+crashes. Reported by Christopher Nelson <paradox@gye.satnet.net>.
+* Fixed: The logic in backspace used by TSortedListBox was wrong, now seems
+to work as expected. I saw it while fixing the other.
+.
+Revision 1.43  1999/05/10 22:44:32  set
+*** NEW *** Thanks to the effort by Dim Zegebart <zager@post.comstar.ru>
+(who had patient to test my patches in this platform and send me the errors
+reported by gcc and trace backs from the crashes) we managed to get the first
+TV programs running in Alpha/Linux.
+* Changed: Now the TScreen::screenBuffer member is an (ushort *) instead of
+a long. I did it because the code for screen used a lot of casts and have
+some errors casting this value to (int) which works in i386 but generated a
+SIGSEGV under Alpha ;-).
+.
+Revision 1.42  1999/05/08 01:49:00  set
+* Changed: The initialization for TEventQueue::eventQueue. Looks like egcs
+2.91.66 doesn't like partially initialized structures and what is worst likes
+to crash if the non-initialized part is an anonymous union (like in TEvent).
+In Linux egcs dies, in W95 survives and you get the warning. Ivan reported it
+when he tried to make a .deb for Potato using egcs 1.1.2.
+.
+Revision 1.41  1999/05/06 03:36:24  set
+* Added: Now TMenuBar and TStatusLine uses one character around the name of
+the item in *both* sides and don't overlap with the next. That's the original
+behavior of TV. As it will reduce the number of visible items in the menu
+bar for RHIDE (specially in spanish ;-) I added code to automagically compact
+the items when they don't have enough space. The compactXXXX member reflects
+it and can be forced externally. The value is computed in the constructors
+and in the changeBounds. The changes where based in a patch that "Norberto
+Alfredo Bensa" <norberto.bensa@abaconet.com.ar> sent me to unconditionally
+have the original behavior (which is unacceptable for RHIDE). So I did it in
+a way that won't mess RHIDE and is good for users at the same time.
+.
+Revision 1.40  1999/05/02 14:00:36  set
+* Added: The desklogo example to the distribution. I already added it in the
+CVS tree (see Revision 1.26) but forgot to add it to the list of distributed
+files. Noted by "Norberto Alfredo Bensa" <norberto.bensa@abaconet.com.ar>
+.
+Revision 1.39  1999/05/02 13:51:09  set
+* Avoided the distribution of the Debian files in the DOS release because
+these files aren't 8+3 clean and will confuse users.
+.
+Revision 1.38  1999/04/28 22:57:09  set
+* Enclosed all the monochrome code that makes I/O access to the MDA registers
+and maps the video memory under Linux with #ifdef __i386__ because looks like
+it isn't good idea for Alpha machines ;-).
+.
+Revision 1.37  1999/04/27 22:34:24  set
+* Ported the TParamText class from TV 2.0. The old version seems to be from
+1.03 and wasn't portable, in fact it failed to even compile under Alpha
+Linux. I added some check to avoid a buffer overflow, something that the
+original library never did. I also adapted the getText member for our port
+that uses an extra parameter (again to avoid buffer overflows).
+.
+-----------------------------------------------------------------------------
+v1.0.5 released. Sources uploaded to DJ's server and my home page. Linux
+sources uploaded to my home page. Sources sent to www.linux.org.ar (DanX).
+
+Revision 1.36  1999/04/21 22:46:34  set
+* Fixed: The open dialog didn't allow to open files using [];,=+ That's OK
+for plain DOS, but when running in Win9x+GUI the LFN API supports it.
+
+Revision 1.35  1999/04/18 22:19:18  root
+* Applied changes to the Debian files from Ivan.
+.
+Revision 1.34  1999/04/13 00:58:11  set
+* Modified: The default VESA routines to avoid using DOS allocated memory for
+the video mode information. I did it because at least one VESA 2.0 TSR for
+S3 chipsets returns more memory than the specified by the spec and corrupts
+memory. It could be one of the problems with S3 boards.
+.
+Revision 1.33  1999/04/10 23:44:10  set
+* I was debugging my editor with YAMD to find malloc/free errors, out of
+bounds read/writes and leaks. As a result I added propper memory deallocation
+to various classes:
+* Added: delete mouse to ~TEventQueue.
+* Added: delete font to ~TDisplay.
+* Modified: TPWriteObjects to destroy your items.
+* Added: free to the screen stuff.
+* Added: destroy0 to the object.h, that's a macro to call destroy and assign
+0 to the freed pointer.
+* Added: a member function to collections called setOwnerShip. Passing false
+to it the items of the collection aren't removed by shutDown (usefull for
+collections of static strings).
+.
+Revision 1.32  1999/04/04 01:42:36  set
+* Fixed: Problems in intl.h with glibc>=2.1. Patch provided by Andris.
+* Fixed: TChDirDialog used a fixed maxlength for the directory name instead
+of using a limit from the headers. Patch provided by Andris.
+* Fixed: TTerminal::prevLine was 100% broken. I rewrote it. Reported by
+Andris.
+* Fixed?: a label at the end of the post inst files for Debian. Ivan told me
+what was needed, not sure if I did it ok.
+.
+Revision 1.31  1999/04/01 01:28:52  set
+* Fixed: Now you can set a VESA video mode using void TDisplay::setCrtMode.
+It wasn't possible before because it ever used service 0, now if the mode is
+greater than 0x100 I use VBE.
+.
+Revision 1.30  1999/03/24 23:03:38  root
+* Incorporated the 1.0.3-6 Debian package diffs.
+* Fixed: Problem with dependencies of the .so library (by Ivan).
+.
+Revision 1.29  1999/03/23 01:01:38  set
+* Added an explanation in the readme.txt about the debian directory that will
+generate warnings when uncompressed in plain DOS.
+* Modified the compress.pl scripts to only replace vX.X.X in the readme and
+not just X.X.X.
+.
+Revision 1.28  1999/03/23 00:50:35  set
+* Changed the name of the library because Sigala's port is older in the Linux
+arena and I think the right thing is to differentiate this port calling it
+librhtv.a instead of libtv.a. For this reason I changed all the references to
+the old name.
+* Changed to version 1.0.5 in the scripts.
+* Added the Debian stuff to the sources distribution. It will generate some
+warnings when using 8+3 filenames in the uncompressor but these files aren't
+needed for DOS.
+.
+Revision 1.27  1999/02/23 22:45:26  root
+* Tested the Debian distribution stuff. Works after a couple of small patches
+to the rules make script.
+.
+Revision 1.26  1999/02/23 00:06:25  set
+* Added an example of how to change the desktop appearance. Contributed by
+Joel <jso@europay.com>.
+.
+Revision 1.25  1999/02/22 23:04:30  set
+* Included the debian directory for the debianization but yet not included in
+the distribution package. Debian package by Ivan Baldo <lubaldo@adinet.com.uy>
+.
+Revision 1.24  1999/02/18 02:41:34  set
+* Compiled with djgpp v2.02 and gcc 2.8.1.
+.
+-----------------------------------------------------------------------------
+v1.0.4 released. Sources and binaries uploaded to DJ's server and my home
+page. Linux sources and binaries uploaded to my home page (including a
+dynamic version).
+
+Revision 1.23  1999/02/16 00:33:56  set
+* Added more information in readme.txt and fixed some typos.
+* Changed the version to 1.0.4 because I'll release it soon.
+
+Revision 1.22  1999/02/10 22:10:29  set
+* Fixed a bug in the new terminals code for frames (I forgot to initialize
+the array when we use the PC characters).
+.
+Revision 1.21  1999/02/07 13:56:54  set
+* Added a "Try" button to the TColorDialog. It makes a redraw of the screen
+and generates a cmUpdateColorsChanged broadcast. The broadcast should be used
+by special classes that needs to know that the colors changed, the only one
+I know about is my own editor that have a color's cache. This idea was based
+on a crazy report by "a.meyer" <hexx3000@schaltzentrale.mvnet.de> ;-).
+* Added a Uses_TColorCommands request for the cmUpdateColorsChanged located
+in colorsel.h.
+.
+Revision 1.20  1999/02/02 23:03:19  root (set)
+* Adapted the TEditor family to Linux (file I/O stuff and \r\n differences).
+
+Revision 1.19  1999/02/02 01:55:54  set
+* Added the TEditor, TFileEditor, TEditorWindow and TMemo classes. I taked
+the code from the old RHIDE BETA 4 and adapted it for the new keyboard and
+did other small changes.
+* Added TEditorApp to the library and a small example to test it.
+
+Revision 1.18  1999/02/02 00:56:55  set
+* Minor changes in the readme.txt and porting.txt to give some hints.
+.
+Revision 1.17  1999/01/31 20:12:44  set
+* Added support for S3 (buggy) BIOSes in vesa.cc. It helps to support VESA
+text modes when using S3 boards. Reported and tested by Jerzy Witkowski
+<jwi@pl.ibm.com>.
+
+Revision 1.16  1999/01/31 19:20:14  root (set)
+* Adjusted the examples for Linux (some used dos.h).
+* Cleaned the /usr/... dependencies in the example gprs.
+* Trying to start a shared repository between DOS and Linux.
+.
+Revision 1.10  1999/01/22 01:21:19  root (set)
+Passed the changes from DOS to Linux.
+
+Revision 1.14  1999/01/22 01:05:37  set
+* Fixed the UNIX terminals code to use the ACS_xxxx macros for the frames
+instead of falling back to just ASCII. It makes the program look *much*
+better when using xterm, gnome-terminal, eterm, etc.
+
+Revision 1.13  1999/01/22 00:34:11  set
+* Added clarification in the readme.txt about: license, RHIDE version needed
+no-rtti stuff.
+* Made the n() macro in tvutil.h visible only when Uses_n is defined.
+(Problems reported by Jerzy Witkowski <jwi@pl.ibm.com>).
+* Fixed the examples to avoid warnings about NULL redefined.
+.
+Revision 1.12  1999/01/19 22:54:22  set
+* Fixed the gkey.gpr to be usable by anyone ;-). I added an rhide.env file to
+give just another example on how to use it with TVision.
+.
+Revision 1.11  1999/01/19 22:33:36  set
+* Released the 1.0.3 version and uploaded to DJ's server.
+.
+Revision 1.9  1999/01/18 22:55:18  root (set)
+* Copied the changes from DOS.
+* Added the versions of libraries I use for Linux in the change.log.
+
+Revision 1.10  1999/01/18 22:41:54  set
+* Fixed the djgpp makefile switchs.
+* Added code to the compress perl script to regenerate the makefile if the
+it's older than the project.
+
+Revision 1.9  1999/01/13 23:26:57  set
+* Added "delete.me" files to ensure the empty directories are packaged.
+* Silly boy, silly boy, I don't how but some silly options were included in
+the DOS libtv.gpr (-funsigned-char and a -W that makes problems with gcc
+2.7.x).
+* Moved the #include of the standard headers to include these headers before
+the C++ headers. If I don't do it default djgpp installations barf about
+redefined NULL (no Linux libc5 nor glibc).
+* Added instructions to workaround a bug in the gettext distribution for
+djgpp.
+.
+Revision 1.8  1999/01/13 00:55:43  set
+Passed the changes to DOS.
+.
+Revision 1.7  1999/01/13 00:35:35  root (set)
+Added a linuxso directory to create the dynamically linked version of the
+library.
+
+Revision 1.7  1999/01/10 16:25:41  set
+Fixed the demohelp.h32 name (to be lowercase).
+
+Revision 1.6  1999/01/10 16:04:05  root (set)
+Added demo to the Linux distribution.
+.
+Revision 1.6  1999/01/10 00:47:21  set
+Added the Borland's TVision demo. I taked it from the Sigala's port.
+
+Revision 1.5  1999/01/09 20:13:10  set
+Incorporated nine examples that implements various widgets. They are very
+small applications so the user can see how a simple TVision application can
+be setup.
+.
+Revision 1.4  1999/01/09 17:29:09  set
+Changed compress.bat for a Perl script that generates the manifest and
+version djgpp files and compress the files in the djgpp fashion. Asked by DJ.
+.
+Revision 1.3  1999/01/09 17:24:58  set
+Modifications from Linux version.
+.
+Revision 1.4  1999/01/09 16:14:41  root (set)
+Changed linux/compress by a Perl script that updates readme.txt (version),
+generates the tarred files with the right version name and creates the .lsm.
+(linux/compress)
+
+Revision 1.3  1999/01/09 14:40:24  root (set)
+Changed the Linux compress script to be much more efficient. Added a couple
+of files to indicate files to include/exclude in the Linux distribution.
+Changed the name of the Linux distribution to 'rhtvision' to avoid collisions
+with the already existing tvision package by Sergio Sigala.
+
+gkey.cc
+Modified to support a command line switch that enables the new keyboard
+mapping the old is the default because is the most common (Debian 2.0 and
+Red Hat 5.1).
+
+gkeyli.cc
+Added TGKey::SetKbdMapping to support the new keyboard mapping found in the
+kbd package shipped with Red Hat 5.2. Using
+TGKey::SetKbdMapping(KBD_REDHAT52_STYLE) the new mapping is enabled. It
+supports F1-F12, Shift+F1-F12 and Ctrl+F1-F12. Not only a special keyboad map
+is needed but a special linux terminfo description is needed too.
+If the program runs in console that's not needed but you'll get only F1-F10.
+
+Revision 1.2  1998/12/30 01:01:12  set
+Removed the redundant translation of the Linux IOCTL shift flags to BIOS
+format.
+Moved 90% of the conditional code to the Linux module.
+Fixed the Linux code to report left and right alt.
+Added entries to patch the right alt + function key, not only left alt.
+Added Shit+PgUp, Shift+PgDn, Ctrl+Backspace and Ctrl+Space to the list of
+patched keys.
+
+Release 1.0.1
+
+* Some changes in the readmes and gpr files.
+* Patches from Robert.
+
+date: 1998/12/14 23:36:35;  author: set;
+Converted all the calls to ctype functions to macros. These macros avoids
+passing negative values.
+Added right dependencies in gpr and makefiles.
+
+Revision 1.1  1998/12/22 23:57:46  set
+Renamed readme.src to readme.txt.
+Added a small change.log, not yet definitive.
+
+Release 1.0.0
+
+* Arranged the first release
+
+date: 1998/12/14 22:03:08;  author: set;
+Imported the pre-release 1.0.0. These are the files I sent to Robert for
+revision.
+
