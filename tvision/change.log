@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.95  2002/05/29 17:56:02  set
+* Fixed: [UNIX] TFileEditor was trying to convert UNIX files into DOS
+format ;-) and what is worst using a temporal file with random rights. Now
+the TVEdit example works on Linux.
+
 Revision 2.94  2002/05/29 16:08:14  set
 * Modified: TMenuBox to move the cursor to the selected menuitem. That's
 an experiment to see if Braille Terminals gets benefited. Tapio Kelloniemi

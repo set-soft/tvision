@@ -42,7 +42,6 @@ int            TScreenXTerm::palette;
 int            TScreenXTerm::oldCol=-1,
                TScreenXTerm::oldBack=-1,
                TScreenXTerm::oldFore=-1;
-int            TScreenXTerm::selCharset=0;
 
 #define force_redraw 0
 
@@ -109,6 +108,16 @@ int TScreenXTerm::InitOnce()
     error=_("can't configure terminal mode");
     return 3;
    }
+
+ // Impossible to know the actual palette, just assume a default
+ memcpy(OriginalPalette,PC_BIOSPalette,sizeof(OriginalPalette));
+ memcpy(ActualPalette,PC_BIOSPalette,sizeof(ActualPalette));
+
+ // Setup the driver properties.
+ // We can change the palette (but can't restore it perfectly).
+ //  I assume that's XTerm 4.x or Eterm 0.9.x, this doesn't work
+ // for older versions.
+ flags0=CanSetPalette;
  return 0;
 }
 
@@ -119,6 +128,9 @@ TScreenXTerm::TScreenXTerm()
  char *terminal=getenv("TERM");
  if (!terminal || !(!strncmp(terminal,"xterm",5) || !strncasecmp(terminal,"Eterm",5)))
     return;
+
+ if (!strncasecmp(terminal,"Eterm",5))
+    terminalType=Eterm;
 
  // Initialize terminal
  if (InitOnce())
@@ -148,15 +160,21 @@ TScreenXTerm::TScreenXTerm()
 
  TGKeyXTerm::Init();
 
- if (!strncasecmp(terminal,"Eterm",5))
-   {// Only 8 colors
+ if (terminalType==Eterm)
+   {// Only 8 colors + brightness (8*2+8*2)
     palette=PAL_LOW;
     THWMouseXTermFull::Init(THWMouseXTermFull::modeEterm);
+    // Eterm 0.9.x supports palette setting
+    TDisplay::setDisPaletteColors=SetDisPaletteColorsEt;
+    ResetPaletteColors=ResetPaletteColorsEt;
    }
  else
-   {
+   {// 16+16 colors
     palette=PAL_HIGH;
     THWMouseXTermFull::Init(THWMouseXTermFull::modeXTerm);
+    // XTerm from X 4.x supports palette setting
+    TDisplay::setDisPaletteColors=SetDisPaletteColorsXT;
+    ResetPaletteColors=ResetPaletteColorsXT;
    }
  TScreenXTerm::screenMode=TScreenXTerm::smCO80;
  LOG((palette==PAL_HIGH ? "Using high palette" : "Using low palette"));
@@ -184,6 +202,9 @@ void TScreenXTerm::Suspend()
  oldCol=oldBack=oldFore=-1;
  // Restore screen contents
  RestoreScreen();
+ // Restore the palette, must be before restoring the charset
+ if (paletteModified)
+    ResetPaletteColors();
  // Restore the cursor shape
  setCursorType(startupCursor);
  // That's the default, we don't know the original values
@@ -217,6 +238,9 @@ void TScreenXTerm::Resume()
  selCharset=0;
  // Save cursor position, attributes and charset
  fputs("\E7",stdout);
+ // Setup our palette
+ if (paletteModified)
+    SetDisPaletteColorsXT(0,16,ActualPalette);
  // When we set the video mode the cursor is hidded
  ushort oldCursorLines=cursorLines;
  // Check for video size change and save some state
@@ -440,16 +464,17 @@ void TScreenXTerm::mapColor(int col)
  fore=col & 15;
 
  if (palette==PAL_LOW)
-   {// Just 8 colors, but use bold
+   {// Just 8 colors, but use bold and blink getting 16+16
     if (fore!=oldFore && back!=oldBack)
-       fprintf(stdout,"\E[%d;%d;%dm",fore>7 ? 1 : 22,
-               30+map[fore & 7],40+map[back]);
+       fprintf(stdout,"\E[%d;%d;%d;%dm",
+               fore>7 ? 1 : 22,30+map[fore],
+               back>7 ? 5 : 25,40+map[back]);
     else
      {
       if (fore!=oldFore)
-         fprintf(stdout,"\E[%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7]);
+         fprintf(stdout,"\E[%d;%dm",fore>7 ? 1 : 22,30+map[fore]);
       else
-         fprintf(stdout,"\E[%dm",40+map[back]);
+         fprintf(stdout,"\E[%d;%dm",back>7 ? 5 : 25,40+map[back]);
      }
    }
  else
