@@ -53,6 +53,12 @@ void TFileList::focusItem( ccIndex item )
   message( owner, evBroadcast, cmFileFocused, list()->at(item) );
 }
 
+// SET: From TV 2.0
+void TFileList::selectItem( ccIndex item )
+{
+    message( owner, evBroadcast, cmFileDoubleClicked, list()->at(item) );
+}
+
 void TFileList::getData( void * )
 {
 }
@@ -88,6 +94,7 @@ void TFileList::getText( char *dest, ccIndex item, short maxChars )
   strcat( dest, DIRSEPARATOR_ );
 }
 
+/* SET: Moved (TV 2.0)
 void TFileList::handleEvent( TEvent & event )
 {
   if ( event.what == evMouseDown && event.mouse.doubleClick )
@@ -99,7 +106,7 @@ void TFileList::handleEvent( TEvent & event )
   }
   else
     TSortedListBox::handleEvent( event );
-}
+}*/
 
 void TFileList::readDirectory( const char *dir, const char *wildCard )
 {

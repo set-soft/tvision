@@ -90,6 +90,14 @@ TFileDialog::TFileDialog( const char *aWildCard,
         r.b.y += 2;
         }
 
+    if( (aOptions & fdSelectButton) != 0 )
+        {
+        insert( new TButton( r, _("~S~elect"), cmFileSelect, opt ) );
+        opt = bfNormal;
+        r.a.y += 2;
+        r.b.y += 2;
+        }
+
     if( (aOptions & fdReplaceButton) != 0 )
         {
         insert( new TButton( r, _("~R~eplace"), cmFileReplace, opt ) );
@@ -203,6 +211,7 @@ void TFileDialog::handleEvent(TEvent& event)
             case cmFileOpen:
             case cmFileReplace:
             case cmFileClear:
+            case cmFileSelect:
                 {
                 endModal(event.message.command);
                 clearEvent(event);
@@ -211,6 +220,15 @@ void TFileDialog::handleEvent(TEvent& event)
             default:
                 break;
             }
+    // SET: From TV 2.0
+    else if( event.what == evBroadcast && event.message.command == cmFileDoubleClicked )
+        {
+        event.what = evCommand;
+        event.message.command = cmOK;
+        putEvent( event );
+        clearEvent( event );
+        }
+
 }
 
 void TFileDialog::readDirectory()

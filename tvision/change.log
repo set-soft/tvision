@@ -1,4 +1,8 @@
 $Log$
+Revision 1.66  1999/06/23 02:31:30  set
+* Changed: The distance between the buttons in the File Dialog, it was 3 and
+now is 2 to allow more buttons (my editor adds 2 buttons).
+.
 Revision 1.65  1999/06/23 01:15:56  set
 * Modified: Now the file dialog doesn't show ".." in the root directory (DOS).
 * Fixed: Calling the file dialog with fdNoLoadDir (needed to avoid an extra
