@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.253  2002/08/12 17:47:12  set
+* Fixed: [MinGW] GNU install doesn't support mixed \ and /. Patch by Igor
+Gnip <gnipi@digitalsystem.co.yu>
+* Fixed: [MinGW] some examples uses usleep and it isn't provided by MinGW.
+Added a macro to compatlayer.h. Igor Gnip <gnipi@digitalsystem.co.yu>
+
 Revision 2.252  2002/08/12 16:25:04  set
 * Added: [DOS] Support for the setCtrModeRes member. It searchs the closest
 mode available. I also tested VESA modes successfuly.
