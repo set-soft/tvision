@@ -173,7 +173,7 @@ TRect TMenuBar::getItemRect( TMenuItem *item )
             return r;
         p = p->next;
         }
-    //return TRect(0, 0, 0, 0); // SAA: should not ever happen
+    return TRect(0, 0, 0, 0); // SAA: should not ever happen
 }
 
 #if !defined( NO_STREAM )
