@@ -27,7 +27,15 @@ TScreen *TV_AlconDriverCheck()
 TScreenAlcon::TScreenAlcon()
 {
     // Create screen.
-    AlCon_Init(screenWidth, screenHeight);
+    if (AlCon_Init(screenWidth, screenHeight))
+        return ;
+    /*
+        Even though we initialised AlCon with a wanted screen
+        width and height, it might have had to change it in order
+        to accomodate the font which was loaded.
+    */
+    screenWidth = AlCon_ScreenCols();
+    screenHeight = AlCon_ScreenRows();
     
     TDisplayAlcon::Init();
 

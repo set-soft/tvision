@@ -3,7 +3,7 @@
 /*
   Copyright (c) 2001 by Salvador E. Tropea (SET) <set@ieee.org>
   This code is covered by the GPL license. A copy of the license should
-be provided in the same package.
+  be provided in the same package.
 */
 #include <stdio.h>
 #include <string.h>
@@ -64,7 +64,19 @@ PalCol BIOSPalette[16]={
 
 static int cursorX, cursorY;
 static int cursorPX, cursorPY;
-static int maxX, maxY;
+
+/*
+   The variables _screen_width, _screen_height, _font_width and
+   _font_height are read only. They are modified ONLY when the font
+   is changed. The first two tell the number of text characters
+   that fit into the physical screen. The last two tell the number
+   of screen pixels a text cell has in Allegro. The font size is
+   initialised by default to a 8x16 font so the AlCon_Init function
+   can set a reasonable default screen size.
+*/
+static int _screen_width, _screen_height;
+static int _font_width = 8, _font_height = 16;
+
 static int colors[16];
 static int fg,bg;
 static char cursorEnabled=1, cursorInScreen=0;
@@ -157,8 +169,9 @@ void AlCon_CursorHome()
 void AlCon_GotoXY(int x, int y)
 {
  AlCon_ScareCursor();
- cursorX=x; cursorY=y;
- cursorPX=(x-1)*8; cursorPY=(y-1)*16;
+ cursorX = x; cursorY = y;
+ cursorPX = (x - 1) * _font_width;
+ cursorPY = (y - 1) * _font_height;
  AlCon_UnScareCursor();
 }
 
@@ -174,12 +187,12 @@ int AlCon_WhereY()
 
 int AlCon_ScreenCols()
 {
- return maxX;
+ return _screen_width;
 }
 
 int AlCon_ScreenRows()
 {
- return maxY;
+ return _screen_height;
 }
 
 
@@ -224,8 +237,8 @@ void AlCon_Clear()
  AlCon_DisableAsync();
  clear_to_color(screen,bg);
  AlCon_EnableAsync();
- memset(chars,' ',maxX*maxY);
- memset(attrs,curAttr,maxX*maxY);
+ memset(chars,' ', _screen_width * _screen_height);
+ memset(attrs,curAttr, _screen_width * _screen_height);
 }
 
 void AlCon_ClrScr()
@@ -242,23 +255,23 @@ void AlCon_ClrScr()
 
 void AlCon_NewLine()
 {
- if (cursorY==maxY)
+ if (cursorY == _screen_height)
    { // Scroll
     int ybot,xmax;
     unsigned offset;
     AlCon_DisableAsync();
-    ybot=(maxY-1)*16;
-    xmax=maxX*8;
-    blit(screen,screen,0,16,0,0,xmax,ybot);
-    rectfill(screen,0,ybot,xmax,maxY*16,colors[bg]);
+    ybot = (_screen_height - 1) * _font_height;
+    xmax = _screen_width * _font_width;
+    blit(screen, screen, 0, _font_height, 0, 0, xmax, ybot);
+    rectfill(screen,0,ybot,xmax, _screen_height * _font_height, colors[bg]);
     AlCon_EnableAsync();
 
     // Same for buffers
-    memcpy(chars,chars+maxX,maxX*(maxY-1));
-    memcpy(attrs,attrs+maxX,maxX*(maxY-1));
-    offset=(maxY-1)*maxX;
-    memset(chars+offset,' ',maxX);
-    memset(attrs+offset,curAttr,maxX);
+    memcpy(chars, chars + _screen_width, _screen_width * (_screen_height - 1));
+    memcpy(attrs, attrs + _screen_width, _screen_width * (_screen_height - 1));
+    offset = (_screen_height - 1) * _screen_width;
+    memset(chars+offset,' ', _screen_width);
+    memset(attrs+offset,curAttr, _screen_width);
 
     AlCon_GotoXY(1,cursorY);
    }
@@ -273,16 +286,16 @@ void AlCon_PutStr(const char *s)
  
  int l=strlen(s);
  AlCon_DisableAsync();
- while (cursorX+l>maxX)
+ while (cursorX + l > _screen_width)
    {
-    char b[maxX+1];
-    int count=maxX-cursorX+1;
+    char b[_screen_width + 1];
+    int count = _screen_width - cursorX + 1;
     unsigned offset;
     strncpy(b,s,count);
     b[count]=0;
     textout_ex(screen,_current_font,b,cursorPX,cursorPY,colors[fg], colors[bg]);
 
-    offset=(cursorX-1)+(cursorY-1)*maxX;
+    offset = (cursorX - 1) + (cursorY - 1) * _screen_width;
     memcpy(chars+offset,b,count);
     memset(attrs+offset,curAttr,count);
 
@@ -295,12 +308,12 @@ void AlCon_PutStr(const char *s)
     unsigned offset;
     textout_ex(screen,_current_font,s,cursorPX,cursorPY,colors[fg], colors[bg]);
 
-    offset=(cursorX-1)+(cursorY-1)*maxX;
+    offset = (cursorX - 1) + (cursorY - 1) * _screen_width;
     memcpy(chars+offset,s,l);
     memset(attrs+offset,curAttr,l);
 
     cursorX+=l;
-    cursorPX+=l*8;
+    cursorPX += l * _font_width;
    }
  AlCon_EnableAsync();
 }
@@ -364,9 +377,10 @@ void AlCon_PutBuf(unsigned offset, uint16 *buffer, int len)
  int prevMode;
  aux[1]=0;
 
- x=(offset%maxX)*8;
- y=(offset/maxX)*16;
- mx=maxX*8; my=maxY*16;
+ x = (offset % _screen_width) * _font_width;
+ y = (offset / _screen_width) * _font_height;
+ mx = _screen_width * _font_width;
+ my = _screen_height * _font_height;
  AlCon_DisableAsync();
  for (i=0; i<len; i++)
     {
@@ -375,10 +389,10 @@ void AlCon_PutBuf(unsigned offset, uint16 *buffer, int len)
      nBg=b[attrPos]>>4;
      nFg=b[attrPos] & 0xF;
      textout_ex(screen,_current_font,(char *)aux,x,y,colors[nFg], colors[nBg]);
-     x+=8;
+     x += _font_width;
      if (x>mx)
        {
-        x=0; y+=16;
+        x=0; y += _font_height;
         if (y>my)
            break;
        }
@@ -414,8 +428,8 @@ void AlCon_PutChar(unsigned offset, uint16 value)
  aux[1]=0;
 
  offset/=2;
- x=(offset%maxX)*8;
- y=(offset/maxX)*16;
+ x = (offset % _screen_width) * _font_width;
+ y = (offset / _screen_width) * _font_height;
  AlCon_DisableAsync();
 
  aux[0]=chars[offset]=b[charPos];
@@ -436,7 +450,7 @@ void AlCon_PutChar(unsigned offset, uint16 value)
 void AlCon_UnDrawCursor(int *aFgCol)
 {
  ASSERT(_current_font);
- unsigned offset=(cursorX-1)+(cursorY-1)*maxX;
+ unsigned offset = (cursorX - 1) + (cursorY - 1) * _screen_width;
  int bg=attrs[offset]>>4;
  int fg=attrs[offset] & 0xF;
  char b[2];
@@ -464,7 +478,7 @@ void AlCon_IntCursor()
 void AlCon_SetCursorShape(int from, int to)
 {
  from&=0xF; to&=0xF;
- memset(_cursorData[1]->dat,0,16);
+ memset(_cursorData[1]->dat,0,_font_height);
  memset(_cursorData[1]->dat+from,0xFF,to-from+1);
  cShapeFrom=from;
  cShapeTo=to;
@@ -497,67 +511,75 @@ int AlCon_IsVisCursor()
     
 *****************************************************************************/
 
-void AlCon_Init(int w, int h)
+/**[txh]********************************************************************
+
+  Description: Initialization of the AlCon layer. Pass the number of text
+  characters you want to have with a default 8x16 font.
+  
+  Return: Zero if everything went fine, non zero otherwise.
+  
+***************************************************************************/
+
+int AlCon_Init(int w, int h)
 {
- int i;
-
- set_uformat(U_ASCII);
- //set_uformat(U_UTF8);
-
- allegro_init();
- install_keyboard();
- al_mouse_buttons = install_mouse();
- al_mouse_wheel = mouse_z;
- // Clamp allegro return of "no mouse" to TVision interpretation.
- if (al_mouse_buttons < 0)
-    al_mouse_buttons = 0;
- // And add "fake wheel buttons" if the mouse has at least two.
- if (al_mouse_buttons > 1)
-    al_mouse_buttons = 5;
- install_timer();
-
- /* Load a binary font */
- _AlCon_LoadCustomFont("rom-PC437.016");
-
- /* If we are in a graphic mode and we know the depth use it */
- if (desktop_color_depth())
-    set_color_depth(desktop_color_depth());
- else
-#ifdef BPP
-    set_color_depth(BPP);
-#else
-    set_color_depth(8);
-#endif
- if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,8*w,16*h,0,0))
-   {
-    set_gfx_mode(GFX_TEXT,0,0,0,0);
-    allegro_message("Can't initialize graphics mode\n%s\n",allegro_error);
-    exit(2);
+   set_uformat(U_ASCII);
+   //set_uformat(U_UTF8);
+  
+   allegro_init();
+   install_keyboard();
+   al_mouse_buttons = install_mouse();
+   al_mouse_wheel = mouse_z;
+   // Clamp allegro return of "no mouse" to TVision interpretation.
+   if (al_mouse_buttons < 0)
+      al_mouse_buttons = 0;
+   // And add "fake wheel buttons" if the mouse has at least two.
+   if (al_mouse_buttons > 1)
+      al_mouse_buttons = 5;
+   install_timer();
+  
+   /* If we are in a graphic mode and we know the depth use it */
+   if (desktop_color_depth()) {
+      set_color_depth(desktop_color_depth());
+   } else {
+      #ifdef BPP
+      set_color_depth(BPP);
+      #else
+      set_color_depth(8);
+      #endif
    }
-
- w = SCREEN_W/8; h = SCREEN_H/16;
- maxX=w; maxY=h;
-
- /* Create default cursor shape */
- _cursorData[0]=0;
- _cursorData[1]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+16);
- _cursorData[1]->w=8;
- _cursorData[1]->h=16;
- AlCon_SetCursorShape(14,15);
-
- /* Create the text mode palette */
- for (i=0; i<16; i++)
-     colors[i]=makecol(BIOSPalette[i].r,BIOSPalette[i].g,BIOSPalette[i].b);
-
- /* Allocate "screen" buffers */
- chars=(unsigned char *)malloc(w*h);
- attrs=(unsigned char *)malloc(w*h);
-
- install_int(AlCon_IntCursor,500);
-
- AlCon_SetColors(7,0);
- AlCon_ClrScr();
- show_mouse(screen);
+   
+   if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, _font_width * w, _font_height * h,
+         _font_width * w, _font_height * h)) {
+      set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+      allegro_message("Can't initialize graphics mode\n%s\n",allegro_error);
+      return 2;
+   }
+  
+   /* Load a binary font */
+   _AlCon_LoadCustomFont("rom-PC437.016");
+  
+   /* Create default cursor shape */
+   _cursorData[0] =0;
+   _cursorData[1] =(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH) + _font_height);
+   _cursorData[1]->w = _font_width;
+   _cursorData[1]->h = _font_height;
+   AlCon_SetCursorShape(14,15);
+  
+   /* Create the text mode palette */
+   for (int i = 0; i < 16; i++)
+       colors[i] = makecol(BIOSPalette[i].r,
+         BIOSPalette[i].g, BIOSPalette[i].b);
+  
+   /* Allocate "screen" buffers */
+   chars = (unsigned char *)malloc(_screen_width * _screen_height);
+   attrs = (unsigned char *)malloc(_screen_width * _screen_height);
+  
+   install_int(AlCon_IntCursor, 500);
+  
+   AlCon_SetColors(7, 0);
+   AlCon_ClrScr();
+   show_mouse(screen);
+   return 0;
 }
 
 void AlCon_Exit()
@@ -685,20 +707,20 @@ int AlCon_GetMouseButtons(void)
 
 void AlCon_GetMousePos(int *x, int *y, int *buttons)
 {
- if (al_mouse_buttons == 1)
-    return ;
-    
- poll_mouse();
- *x=mouse_x/8;
- *y=mouse_y/16;
- *buttons=mouse_b;
-
- // Emulate 4th and 5th buttons through wheelmouse control.
- if (mouse_z > al_mouse_wheel)
-    *buttons |= 1 << 3;
- if (mouse_z < al_mouse_wheel)
-    *buttons |= 1 << 4;
- al_mouse_wheel = mouse_z;
+   if (al_mouse_buttons == 1)
+      return ;
+      
+   poll_mouse();
+   *x = mouse_x / _font_width;
+   *y = mouse_y / _font_height;
+   *buttons = mouse_b;
+  
+   // Emulate 4th and 5th buttons through wheelmouse control.
+   if (mouse_z > al_mouse_wheel)
+      *buttons |= 1 << 3;
+   if (mouse_z < al_mouse_wheel)
+      *buttons |= 1 << 4;
+   al_mouse_wheel = mouse_z;
 }
 
 /**[txh]********************************************************************
@@ -714,6 +736,7 @@ void AlCon_GetMousePos(int *x, int *y, int *buttons)
 static void _AlCon_LoadCustomFont(const char *filename)
 {
    ASSERT(filename);
+   ASSERT(screen && "You have to call set_gfx_mode before.");
    static bool one_custom_font_loaded = false;
 
    FILE *file = fopen(filename, "rb");
@@ -721,6 +744,8 @@ static void _AlCon_LoadCustomFont(const char *filename)
       // We have to cover up if there was no previous font.
       if (!one_custom_font_loaded) {
          _current_font = font;
+         // Allegro font is by default 8x8.
+         _font_width = _font_height = 8;
       }
    } else {
       char font_buffer[4096];
@@ -728,24 +753,36 @@ static void _AlCon_LoadCustomFont(const char *filename)
       fread(font_buffer, 4096, 1, file);
       fclose(file);
       one_custom_font_loaded = true;
+      // TODO: Recognise file size and set height accordingly.
+      _font_width = 8;
+      _font_height = 16;
 
       // Copy font from buffer to internal structure.
       for (int i = 0; i < 0x100; i++) {
-         if (!_ascii_data[i]) {
-            // Don't reserve twice the memory.
-            _ascii_data[i] = (FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+16);
-            _ascii_data[i]->w = 8;
-            _ascii_data[i]->h = 16;
-         }
-         memcpy(_ascii_data[i]->dat, &font_buffer[i*16], 16);
+         // Free previously allocated memory.
+         if (_ascii_data[i])
+            free(_ascii_data[i]);
+            
+         _ascii_data[i] = (FONT_GLYPH *)malloc(sizeof(FONT_GLYPH) + _font_height);
+         _ascii_data[i]->w = _font_width;
+         _ascii_data[i]->h = _font_height;
+
+         memcpy(_ascii_data[i]->dat, &font_buffer[i * _font_height],
+            _font_height);
       }
       _current_font = &_custom_font;
+      _custom_font.vtable = font->vtable;
+      _custom_font.height = _font_height;
+      _custom_font.data = &_ascii_monofont;
    }
 
    // Fill global variables.
-   _cursorFont.vtable = _custom_font.vtable = font->vtable;
-   _cursorFont.height = _custom_font.height = 16;
-   _custom_font.data = &_ascii_monofont;
+   _cursorFont.vtable = font->vtable;
+   _cursorFont.height = _font_height;
    _cursorFont.data = &_cursorMonoFont;
+
+   // Set the size of the font and screen.
+   _screen_width = SCREEN_W / _font_width;
+   _screen_height = SCREEN_H / _font_height;
 }
 

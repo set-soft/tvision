@@ -60,7 +60,7 @@ extern void AlCon_ShowCursor();
 extern int AlCon_IsVisCursor();
 
 /* Initialization routines */
-extern void AlCon_Init(int w, int h);
+extern int AlCon_Init(int w, int h);
 extern void AlCon_Exit();
 
 /* Keyboard input routines */
