@@ -262,7 +262,14 @@ void TButton::setState( ushort aState, Boolean enable )
 {
     TView::setState(aState, enable);
     if( aState & (sfSelected | sfActive) )
+    {
+        if(!enable)
+        {                           // BUG FIX - EFW - Thu 10/19/95
+            state &= ~sfFocused;
+            makeDefault(False);
+        }
         drawView();
+    }
     if( (aState & sfFocused) != 0 )
         makeDefault( enable );
 }

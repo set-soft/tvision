@@ -94,7 +94,13 @@ void advanceStringPointer()
 void deleteString()
 {
     size_t len = curRec->len;
-    movmem( next( curRec ), curRec, size_t( (char *)lastRec - (char *)curRec ) );
+
+    // BUG FIX - EFW - Mon 10/30/95
+    // This insures that if n = lastRec, no bytes are copied and
+    // a GPF is prevented.
+    HistRec *n = next(curRec);
+    memcpy(curRec, n, size_t((char *)lastRec - (char *)n));
+
     lastRec = backup( lastRec, len );
 }
 

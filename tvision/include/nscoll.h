@@ -43,7 +43,7 @@ public:
     void atPut( ccIndex index, void *item );
     virtual ccIndex insert( void *item );
 
-    static void error( ccIndex code, ccIndex info );
+    virtual void error( ccIndex code, ccIndex info );
 
     void *firstThat( ccTestFunc Test, void *arg );
     void *lastThat( ccTestFunc Test, void *arg );
@@ -59,6 +59,9 @@ public:
     // in it. I think that's a common case and strduping each insertion is
     // a real waste.
     void setOwnerShip(Boolean option) { shouldDelete=option; }
+    // SET: That's quite natural. I did it slower than at() but also smaller
+    // I added it after error became virtual which makes it really bloated.
+    void *operator[](ccIndex i);
 
 protected:
 
