@@ -1,4 +1,10 @@
 $Log$
+Revision 1.215  2001/10/07 20:27:32  set
+* Fixed: I forgot to install the cl/*.h files!
+* Added: A mechanism to create the .deb packages without root priviledges.
+I used information from Ivan. The easiest way is running
+debina/builpackage.
+
 Revision 1.214  2001/10/07 19:44:03  set
 * Merged patches from Ivan for the Debian package, they avoid deleting
 default configuration files.
