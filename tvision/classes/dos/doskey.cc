@@ -8,7 +8,10 @@
   The original comment about the first TGKey class I sent to Robert when was
 the maintainer of TV is located at the end of this file. It have some
 intersting information.
-  
+
+  Configuration variables:
+  BIOSKey
+
 ***************************************************************************/
 
 #include <tv/configtv.h>
@@ -18,6 +21,7 @@ intersting information.
 #define Uses_TGKey
 #define Uses_FullSingleKeySymbols
 #define Uses_string
+#define Uses_TScreen
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -470,7 +474,9 @@ void TGKeyDOS::Init()
  TGKey::NonASCII2ASCII=NonASCII2ASCII;
  TGKey::CompareASCII=CompareASCII;
  // Default to direct mode
- SetKbdMapping(dosUseDirect);
+ long useBIOS=0;
+ TScreen::optSearch("BIOSKey",useBIOS);
+ SetKbdMapping(useBIOS ? dosUseBIOS : dosUseDirect);
 }
 
 //---------------- TEST
