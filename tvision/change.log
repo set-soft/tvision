@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.43  2002/04/29 19:19:01  set
+* Added: compat.mak to CVS so people without RHIDE can compile.
+* Fixed: linuxso/makemak.pl needs to create a link to rhide.env for RHIDE
+1.4.9 and newer.
+
 Revision 2.42  2002/04/22 18:26:55  set
 * Fixed: The file collection didn't support duplicates, but when it was
 configured to be no case sensitive in an OS that is case sensitive some
