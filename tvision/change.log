@@ -1,4 +1,10 @@
 $Log$
+Revision 1.67  1999/06/23 23:05:34  set
+* Added: Select button to the TFileDialog class (option: fdSelectButton
+command: cmFileSelect).
+* Modified/Fixed: Now the TFileList generates the cmFileDoubleClicked
+broadcast as specified in the TVision help (was a bug in 1.03 fixed in 2.0).
+.
 Revision 1.66  1999/06/23 02:31:30  set
 * Changed: The distance between the buttons in the File Dialog, it was 3 and
 now is 2 to allow more buttons (my editor adds 2 buttons).
