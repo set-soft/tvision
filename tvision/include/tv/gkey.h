@@ -52,60 +52,138 @@ kbMouse=102,kbEterm=103
 ;
 #endif
 
+/* IBM BIOS flags, not all implemented in most platforms */
+/*
+bit 15: SysReq key pressed;
+bit 14: Caps lock key currently down;
+bit 13: Num lock key currently down;
+bit 12: Scroll lock key currently down;
+bit 11: Right alt key is down;
+bit 10: Right ctrl key is down;
+bit 9: Left alt key is down;
+bit 8: Left ctrl key is down;
+bit 7: Insert toggle;
+bit 6: Caps lock toggle;
+bit 5: Num lock toggle;
+bit 4: Scroll lock toggle;
+bit 3: Either alt key is down (some machines, left only);
+bit 2: Either ctrl key is down;
+bit 1: Left shift key is down;
+bit 0: Right shift key is down
+*/
+const unsigned
+ kbSysReqPress     =0x8000,
+ kbCapsLockDown    =0x4000,
+ kbNumLockDown     =0x2000,
+ kbScrollLockDown  =0x1000,
+ kbRightAltDown    =0x0800,
+ kbRightCtrlDown   =0x0400,
+ kbLeftAltDown     =0x0200,
+ kbLeftCtrlDown    =0x0100,
+ kbInsertToggle    =0x0080,
+ kbCapsLockToggle  =0x0040,
+ kbNumLockToggle   =0x0020,
+ kbScrollLockToggle=0x0010,
+ kbAltDown         =0x0008,
+ kbCtrlDown        =0x0004,
+ kbLeftShiftDown   =0x0002,
+ kbRightShiftDown  =0x0001;
+
+
 struct TEvent;
 
 // A class to encapsulate the globals, all is static!
 class TGKey
 {
 public:
- TGKey() {};
- static int  kbhit(void);
- static void clear(void);
- static unsigned short gkey(void);
- static void fillTEvent(TEvent &e);
+ TGKey() { resume(); };
+
+ static void       suspend();
+ static void       resume();
+ static void     (*Suspend)();
+ static void     (*Resume)();
+
+ static int      (*kbhit)();
+ static void     (*clear)();
+ static ushort   (*gkey)();
+ // This is optional. Some platforms doesn't support it and the returned value
+ // can be outdated.
+ static unsigned (*getShiftState)();
+ static void     (*fillTEvent)(TEvent &e);
 
  // Values that must be provided by any replacement
- static int  Abstract;
- static char ascii;
- static char *KeyNames[]; // Because we need it for config.
+ //static int  Abstract;
+ //static char ascii;
+
  // Very used by: menues and hotkeys (buttons, status bar, etc).
- static char GetAltChar(unsigned short keyCode, uchar ascii);
- static unsigned short GetAltCode(char ch);
- static int CompareASCII(uchar val, uchar code);
- static ushort GetAltSettings(void) { return AltSet; }
- static void SetAltSettings(ushort altSet) { AltSet=altSet; }
- static ushort KeyNameToNumber(char *s);
- #ifdef TVOS_UNIX
- #define KBD_OLD_STYLE      0
- #define KBD_REDHAT52_STYLE 1
- #define KBD_XTERM_STYLE    2
- #define KBD_NO_XTERM_STYLE 3
- #define KBD_ETERM_STYLE    4
- #else
- #define KBD_US             0
- #define KBD_GREEK_CP737    1
- #endif
- static void SetKbdMapping(int version);
- static int  GetKbdMapping(void) { return Mode; };
+ // Get the ascii associated to Alt+key, example Alt+A => A
+ static char     GetAltChar(unsigned short keyCode, uchar ascii);
+ // The reverse (know the alt code when we know the ASCII)
+ static ushort   GetAltCode(uchar ch);
+ // Find the code for the name of a key
+ static ushort   KeyNameToNumber(char *s);
+ static const
+           char *NumberToKeyName(unsigned val);
+
+ // Alt keys interpretation
+ static ushort   GetAltSettings(void) { return AltSet; }
+ static void     SetAltSettings(ushort altSet) { AltSet=altSet; }
+
+ // Special functions when we must deal with international stuff like a
+ // shortcut in greek or cyrilic.
+ // When a key character is over 128 and we want to know the ascii of
+ // the key that generates it.
+ static uchar  (*NonASCII2ASCII)(uchar val);
+ // Compares two values according to the associated ASCII
+ static int    (*CompareASCII)(uchar val, uchar code);
+
+ enum keyMode
+ {
+  // Linux styles
+  linuxOldStyle=0,
+  linuxRH52=1,
+  linuxXterm=2,
+  linuxNoXterm=3,
+  linuxEterm=4,
+  // DOS
+  dosUS=0,
+  dosGreek737=20
+ };
+ static void   (*SetKbdMapping)(int version);
+ static int      GetKbdMapping(void) { return Mode; };
 
  // PC specific
- static int useBIOS;
- static int translateKeyPad;
+ //static int useBIOS;
+ //static int translateKeyPad;
 
  // Here just for test
- static unsigned short sFlags;
+ //static unsigned short sFlags;
 
 protected:
- static void GetRaw(void);
+ //static void GetRaw(void);
 
+ static uchar    defaultNonASCII2ASCII(uchar val);
+ static int      defaultCompareASCII(uchar val, uchar code);
+ static void     defaultSetKbdMapping(int version);
+ static int      defaultKbhit(void);
+ static void     defaultClear(void);
+ static ushort   defaultGkey(void);
+ static unsigned defaultGetShiftState();
+ static void     defaultFillTEvent(TEvent &e);
+ static void     defaultSuspend();
+ static void     defaultResume();
+
+ // Needed for configuration.
+ static char    *KeyNames[];
  // 0 => Left alt is used
  // 1 => Right alt is used
  // 2 => Both alts are the same
- static ushort AltSet;
+ static ushort   AltSet;
+ static char     suspended;
 
- static KeyType rawCode;
+ //static KeyType rawCode;
  // SetKbdMapping:
- static int Mode;
+ static int      Mode;
 };
 
 extern unsigned short getshiftstate();
