@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.224  2002/07/19 20:01:14  set
+* Added: [X11] Support for fonts with width > 8 pixels. For testing
+purposes I added a 12x24 font. The code can be compiled to use it.
+
 Revision 2.223  2002/07/19 14:02:28  set
 * Updated: DOS project.
 * Fixed: Compilation of dosscr.cc, I forgot one debug macro.

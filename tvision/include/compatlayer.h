@@ -1454,10 +1454,23 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_getopt) && !defined(Included_getopt)
  #define Included_getopt 1
  #include <getopt.h>
+ // Define our aliases
+ #define CLY_optarg             optarg
+ #define CLY_optind             optind
+ #define CLY_opterr             opterr
+ #define CLY_optopt             optopt
+ #define CLY_option             option
+ #define CLY_no_argument        no_argument
+ #define CLY_required_argument  required_argument
+ #define CLY_optional_argument  optional_argument
+ #define CLY_getopt             getopt
+ #define CLY_getopt_long        getopt_long
+ #define CLY_getopt_long_only   getopt_long_only
 #endif
 
 #if defined(Include_cl_getopt) && !defined(Included_cl_getopt)
  #define Included_cl_getopt 1
+ // This header defines all as CLY_* to avoid conflicts
  #include <cl/getopt.h>
 #endif
 
