@@ -1,4 +1,15 @@
 #!/bin/sh
+# Copyright (C) 1999-2003 by Salvador E. Tropea (SET),
+# see copyrigh file for details
+#
+echo
+echo This batch file configures the packages using the settings that the
+echo *maintainer* uses for your own needs.
+echo These settings doesn\'t have to be the same you want.
+echo The most common defaults are obtained by just running configure.bat.
+echo If you want to reconfigure the package first delete configure.cache
+echo
+sleep 2
 rm -f configure.cache
 rm -f Makefile
 perl config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe --with-debug
