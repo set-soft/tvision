@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.18  2003/02/27 19:22:15  set
+* Fixed: Direct use of data member in TFileInputLine.
+* Fixed: Error in tinputli.cc (setDataFromStr).
+
 Revision 2.399.2.17  2003/02/25 19:34:42  set
 * Modified: Well, Iván wanted templates ... now we have them. I recoded the
 TInputLine stuff adding an intermediate class (TInputLineBaseT<T,D>) it
