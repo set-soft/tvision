@@ -157,7 +157,7 @@ ushort doEditDialogDefault( int dialog, va_list arg )
                                mfInformation | mfYesNoCancel );
         case edSaveAs:
             {
-            return execDialog( new TFileDialog( "*.*",
+            return execDialog( new TFileDialog( "*",
                                                 _("Save file as"),
                                                 _("~N~ame"),
                                                 fdOKButton,
