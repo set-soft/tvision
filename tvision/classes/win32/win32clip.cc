@@ -80,6 +80,9 @@ char *TVWin32Clipboard::paste(int id, unsigned &len)
           p=new char[len+1];
           memcpy(p,d,len);
           p[len]=0;
+          // The returned length doesn't have to be the exact length of the string.
+          // Reported by Warren H. Holt
+          len=strlen(p);
           GlobalUnlock(hMem);
          }
        else
