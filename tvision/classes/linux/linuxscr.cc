@@ -861,7 +861,8 @@ TScreenLinux::TScreenLinux()
    {
     TScreenFont256 *font=frCB(0,linuxFont.width,linuxFont.height);
     SetFont(1,font,0,NULL);
-    DeleteArray(font->data);
+    if (font)
+       DeleteArray(font->data);
     delete font;
    }
 }
