@@ -5,18 +5,19 @@ The small sections are:
 0.  Ultra quick instructions
 1.  Introduction
 2.  Notes about the package
-3.  Compilation and use
-4.  Linux/UNIX dynamic libraries
-5.  Libraries and tools needed
-6.  Examples
-7.  Dialog editor
-8.  Targets supported, limitations
-9.  CPU usage
-10. Notes about international support
-11. How to submit a patch
-12. Memory Debuggers
-13. Special thanks
-14. Contact information
+3.  Compilation and installation
+4.  Using the library to compile your program
+5.  Linux/UNIX dynamic libraries
+6.  Libraries and tools needed
+7.  Examples
+8.  Dialog editor
+9.  Targets supported, limitations
+10. CPU usage
+11. Notes about international support
+12. How to submit a patch
+13. Memory Debuggers
+14. Special thanks
+15. Contact information
 
   The instructions to compile the source code can be found in the INSTALL.txt
 file. I strongly suggest reading the INSTALL.txt file and the files indicated
@@ -56,7 +57,7 @@ compilers.
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TV for short) v2.0.2.
+  That's the Turbo Vision distribution (TV for short) v2.0.3.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -171,8 +172,8 @@ INSTALL.txt file.
 
 
 
-3. Compilation and use:
-----------------------
+3. Compilation and installation:
+-------------------------------
 
   The compilation instructions are in the INSTALL.txt file.
   All the .o/.obj files are stored in the makes/obj directory it helps to
@@ -200,7 +201,72 @@ changes in the library without needing to reinstall all the time.
 
 
 
-4. Linux/UNIX dynamic libraries:
+4. Using the library to compile your program:
+--------------------------------------------
+
+  In order to compile your program you'll have to set your compiler to search
+the header files in the directory where the Turbo Vision are installed. This
+is usually achieved using the -I command option. Here is an example: suppose
+the prefix is /usr/local then the headers will be installed to
+/usr/local/include/rhtvision So you'll have to use
+-I/usr/local/include/rhtvision as command line option for the compiler.
+  All TV programs includes tv.h header and no other headers. To avoid pulling
+a huge header and a lot of definitions TV have a "request" system. Suppose
+you want to use the TView class, then you add to your source code:
+
+#define Uses_TView
+#include <tv.h>
+
+  Take a look at the examples and tutorial to see real word examples. The
+point is that you never do things like:
+
+#include <tv/view.h>
+
+  This works, but could change in the future.
+  If you want to make your application more portable include the standard C
+headers using definitions like Uses_stdio. This will save time because the
+header will be included just once (the library could need to request it from
+its own headers) and will solve some portability problems. To learn more
+about read the include/compatlayer.h file and take a look at the files
+located in the compat directory.
+  In order to link your TV application you'll have to provide the name of the
+library and the path where the library is installed.
+  To simplify the above mentioned task the library provides a small program
+called "rhtv-config". This program can be used to know the paths from a
+script or makefile. Running the program without arguments will print the
+usage information. Here is an example for a POSIX shell and the gcc
+compiler:
+
+$ gcc -o tv_logo `rhtv-config --include` tv_logo.cc `rhtv-config --dir-libs` `rhtv-config --dlibs`
+
+  It compiles one of the example found in the examples/desklogo directory.
+  For those not familiar with the above syntaxis: the reverse quotes are used
+to execute a program and replace the text with the output of the executed
+command. For the example I used for the include directory it means that:
+
+$ gcc -o tv_logo `rhtv-config --include`
+
+  Is equivalent to:
+
+$ gcc -o tv_logo -I/usr/local/include/rhtvision
+
+  Currently it works only for systems using gcc. If you are interested in
+applying this concept to other of the supported compilers consider helping me
+with some information and tests.
+  Note the tool supports a switch for dynamic linking and static linking.
+Currently static linking really means "link statically with TV and
+dynamically with the rest of libraries". This is just to allow users to
+distribute programs that doesn't need downloading TV itselft. Also note that
+when linking dynamically you only have to indicate rhtv library, that's
+because the library was linked providing its dependencies, but when you link
+statically you have to list all the dependencies, sometimes this is long. In
+my Linux system it the list of dependencies is: -lstdc++ -lncurses -lm -lgpm
+-lX11 -lXmu
+
+
+
+
+5. Linux/UNIX dynamic libraries:
 -------------------------------
 
   The configure/make process generates it.
@@ -213,14 +279,14 @@ because the address resolution overhead.
 
 
 
-5. Libraries needed:
+6. Libraries needed:
 -------------------
 
   Consult the doc/install/tools.txt file.
 
 
 
-6. Examples:
+7. Examples:
 -----------
 
   I included a collection of over than 13 examples I got from the net and
@@ -246,7 +312,7 @@ about the MSVC command line usage and want to help with it.
 
 
 
-7. Dialog Editor:
+8. Dialog Editor:
 ----------------
 
   In the examples directory you'll find a directory called dlgdsn. This
@@ -262,7 +328,7 @@ dialog editor.
 
 
 
-8. Targets supported, limitations:
+9. Targets supported, limitations:
 ---------------------------------
 
   The library compiles and runs in FreeBSD, DOS, Linux, QNX, Solaris and
@@ -281,7 +347,7 @@ configuration options.
 
 
 
-9.  CPU usage:
+10. CPU usage:
 -------------
 
   Since v1.0.8 the TProgram::idle() member releases the CPU to the OS. If for
@@ -299,7 +365,7 @@ minimal amount of time.
 
 
 
-10. Notes about international support:
+11. Notes about international support:
 -------------------------------------
 
   The configuration script detects if the internationalization support is
@@ -337,7 +403,7 @@ libiconv.
 
 
 
-11. How to submit a patch:
+12. How to submit a patch:
 -------------------------
 
   The simplest way is running a diff between your current directory and a
@@ -348,7 +414,7 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-12. Memory Debuggers:
+13. Memory Debuggers:
 --------------------
 
   The library supports the MSS memory debugger version 1.2.1 for DOS. The
@@ -362,7 +428,7 @@ changes in the library contact me.
 
 
 
-13. Special thanks:
+14. Special thanks:
 ------------------
 
 They goes to the people listed in THANKS file. If I omitted you please let me
@@ -371,7 +437,7 @@ know.
 
 
 
-14. Contact information:
+15. Contact information:
 -----------------------
 
 Salvador E. Tropea (SET)
