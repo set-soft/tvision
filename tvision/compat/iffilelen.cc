@@ -1,9 +1,12 @@
 /*
  Copyright (c) 2001 by Salvador E. Tropea
  Covered by the GPL license.
+ Note: I included CLY_IfStreamGetLine here. I know it could be confusing but
+ adding a new file isn't good.
 */
 #define Uses_filelength
 #include <compatlayer.h>
+#include <cl/needs.h>
 #include <fstream.h>
 
 #if CLY_ISOCpp98
@@ -20,3 +23,16 @@ long CLY_ifsFileLength(ifstream &f)
  return filelength(f.rdbuf()->fd());
 }
 #endif
+
+#ifdef NEEDS_IFSTREAMGETLINE
+int CLY_IfStreamGetLine(ifstream &is, char *buffer, unsigned len)
+{
+ if (is.get(buffer,len))
+   {
+    char c;
+    is.get(c); // grab trailing newline
+    return 1;
+   }
+ return 0;
+}
+#endif // NEEDS_IFSTREAMGETLINE

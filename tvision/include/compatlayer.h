@@ -146,6 +146,10 @@ typedef unsigned long  ulong;
  #ifdef Uses_strstream
   #define Include_strstream
  #endif
+ // ifstream::getline behaves strangely in BC++
+ // I take the gcc implementation.
+ #define IfStreamGetLine(istream,buffer,size) \
+         istream.getline(buffer,size)
 
  // ISO C++ 1998 standard changed a lot of details in the standard C++
  // library. GCC implemented it in version 3.0. BC++ implemented some
@@ -611,6 +615,14 @@ typedef unsigned long  ulong;
   #define Uses_CLY_nl_langinfo
  #endif
 
+ // ifstream::getline behaves strangely in BC++
+ // I take the gcc implementation, here is a replacement.
+ #define IfStreamGetLine(istream,buffer,size) \
+         CLY_IfStreamGetLine(istream,buffer,size)
+ #ifdef Uses_IfStreamGetLine
+  int CLY_IfStreamGetLine(ifstream &is, char *buffer, unsigned len);
+ #endif
+
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff
@@ -758,6 +770,10 @@ typedef unsigned long  ulong;
   #define Uses_CLY_nl_langinfo
  #endif
 
+ // ifstream::getline behaves strangely in BC++
+ // I take the gcc implementation. I hope MSVC is like it.
+ #define IfStreamGetLine(istream,buffer,size) \
+         istream.getline(buffer,size)
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff

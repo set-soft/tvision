@@ -16,10 +16,11 @@
  */
 
 // SET: moved the standard headers before tv.h
-#include <stdio.h>
+#define Uses_stdio
 #define Uses_string
-#include <stdlib.h>
-#include <ctype.h>
+#define Uses_stdlib
+#define Uses_ctype
+#define Uses_IfStreamGetLine
 
 #define Uses_MsgBox
 #define Uses_TKeys
@@ -112,8 +113,8 @@ void TFileViewer::readFile( const char *fName )
         // SET: Changed to use getline as suggested by Andris.
         // New standards makes the use of get incorrect.
         while( !lowMemory() &&
-               !fileToView.eof() && 
-               fileToView.getline( line, sizeof line )
+               !fileToView.eof() &&
+               IfStreamGetLine(fileToView,line,sizeof line)
              )
             {
             limit.x = max( limit.x, strlen( line ) );
