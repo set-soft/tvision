@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis and Christoph Bauer.
 
  *
  *
@@ -33,13 +35,14 @@ class fpstream : public fpbase, public iopstream
 public:
 
     fpstream();
-    fpstream( const char *, int, int = FILEBUF_OPENPROT );
+    fpstream( const char *, CLY_OpenModeT, int = CLY_FBOpenProtDef );
     fpstream( int );
     fpstream( int, char *, int );
     ~fpstream();
+    long filelength();
 
     filebuf * rdbuf();
-    void open( const char *, int, int = FILEBUF_OPENPROT );
+    void open( const char *, CLY_OpenModeT, int = CLY_FBOpenProtDef );
 
 };
 

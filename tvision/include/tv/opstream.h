@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis and Christoph Bauer.
 
  *
  *
@@ -38,9 +40,9 @@ public:
     opstream( streambuf * );
     ~opstream();
 
-    streampos tellp();
-    opstream& seekp( streampos );
-    opstream& seekp( streamoff, ios::seek_dir );
+    CLY_StreamPosT tellp();
+    opstream& seekp( CLY_StreamPosT );
+    opstream& seekp( CLY_StreamOffT, CLY_IOSSeekDir );
     opstream& flush();
 
     void writeByte( uchar );

@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis and Christoph Bauer.
 
  *
  *
@@ -33,8 +35,8 @@ public:
 
     ifpstream();
     ifpstream( const char *,
-                      int = ios::in,
-                      int = FILEBUF_OPENPROT
+                      CLY_OpenModeT = ios::in,
+                      int = CLY_FBOpenProtDef
                     );
     ifpstream( int );
     ifpstream( int, char *, int );
@@ -42,8 +44,8 @@ public:
 
     filebuf * rdbuf();
     void open( const char *,
-                      int = ios::in,
-                      int = FILEBUF_OPENPROT
+                      CLY_OpenModeT = ios::in,
+                      int = CLY_FBOpenProtDef
                     );
 
 };
