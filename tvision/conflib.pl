@@ -188,6 +188,10 @@ sub RunGCCTest
 # DOS:@*
 # 6) Use the DJDIR environment variable.@*
 #   The result is stored in the prefix configuration key.
+# WIN32:@*
+# 7) Locate make.exe in PATH and use parent directory for prefix. If the
+# prefix string contains backslashes, convert them to slashes.
+# make.exe must reside in $prefix/bin directory
 #
 ####################################################################[txi]###
 
@@ -243,6 +247,7 @@ sub LookForPrefix
               ($i=~/(.*)[\\\/][bB][iI][nN]/))
             {
              $prefix=$1;
+             $prefix=~s/\\/\//;
              $found=1;
             }
          }

@@ -389,6 +389,9 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_ssize_t
    #define Uses_CLY_ssize_t 1
   #endif
+  #ifndef usleep
+   #define usleep(microseconds) _sleep(microseconds/1000)
+  #endif
  #endif
 
  /* Win32/Cygwin -- OH! */
