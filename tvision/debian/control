@@ -6,7 +6,7 @@ Standards-Version: 2.4.0.0
 
 Package: rhtvision1-dev
 Architecture: i386
-Depends: rhtvision1, libc6-dev, libgpmg1-dev, ncurses3.4-dev
+Depends: rhtvision1, libc6-dev, libgpmg1-dev, libncurses4-dev
 Provides: rhtvision-dev
 Conflicts: rhtvision-dev
 Description: Development files for the RHTVision library - a TUI interface.

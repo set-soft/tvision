@@ -1,0 +1,51 @@
+How to unpack the files:
+You have to have the debianized source installed on a directory called
+"rhtvision-version" (where the "version" part is a Debian style version).
+Then, if the package is not a native Debian package or has some changes from
+the native package, then put the original upstream version in a directory
+called "rhtvision-version.orig". You can have the original upstream version
+in a file called "rhtvision-version.orig.tar.gz" instead if you want.
+
+
+How to make the .deb, .tar.gz, .dsc and .changes files:
+   cd rhtvision-version
+   dpkg-buildpackage
+or
+   dpkg-buildpackage -sa (for including the upstream .tar.gz).
+
+Optionally, you can add the -vVERSION switch wich indicates that the changes
+listed in the .changes file are from version "VERSION" wich it is a version
+listed in the changelog file up to the end of the changelog file.
+
+
+How to make the .deb, .tar.gz, .dsc and .changes files (and other things)
+step by step (this is usefull for development):
+
+1) To clean the unnecessary previously generated files:
+   cd rhtvision-version
+   debian/rules clean
+
+2) To generate the .deb files:
+   cd rhtvision-version
+   debian/rules binary-arch
+
+3) To generate the source package:
+   dpkg-source -b rhtvision-version (creates .dsc and .diff file, if
+                                     maintainer version is 1 or 0, it adds
+                                     the .tar.gz file of the original).
+   dpkg-source -b -su rhtvision-version (creates .dsc, .diff and .tar.gz
+                                         file of the original).
+
+4) To check the package (binary and source):
+   lintian --allow-root -i *.deb *.dsc
+
+5) To generate the .changes file (when uploading the package):
+   dpkg-genchanges (this don't works... I have to see how I have to do to
+                    make it work yet...).
+
+
+
+Other notes:
+   - There is a clean-debian target on the debian/rules file, it only cleans
+     Debian specific files and not upstream build files.
+
