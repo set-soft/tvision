@@ -123,6 +123,7 @@ compat/getshell.c
 compat/isdir.c
 compat/isrelpath.c
 compat/iswild.c
+compat/itoa.c
 compat/mkstemp.c
 compat/ntdirent.c
 compat/pathvalid.c

@@ -1,4 +1,13 @@
 $Log$
+Revision 1.191  2001/09/08 18:02:01  set
+* Modified: [Linux] Now the TV_system function creates a new session for
+the child process it implies two important things: 1) The child is a leader
+of a group so calling kill(-pid_child... kills all the processes in their
+group. 2) The child doesn't have controlling terminal so it can't read/
+write to the parent console. I think that's good. The output is usually
+redirected so no problem there, but I must investigate what happends if the
+process reads (just error or a signal?).
+
 Revision 1.190  2001/09/05 20:10:44  set
 * Added: [Linux] Now I also patch the ^[ key to just return [ (not ESC).
 This enables a needed key for setedit.
