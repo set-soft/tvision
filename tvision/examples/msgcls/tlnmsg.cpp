@@ -72,8 +72,8 @@ TPalette& TMsgListViewer::getPalette() const
 // ********************************************************************
 
 TlnMsgWindow::TlnMsgWindow(const TRect& bounds) :
-  TWindow(bounds, "Message", wnNoNumber),
-  TWindowInit( &TlnMsgWindow::initFrame)
+  TWindowInit( &TlnMsgWindow::initFrame),
+  TWindow(bounds, "Message", wnNoNumber)
 {
   TScrollBar * vBar;
   TScrollBar * hBar;
@@ -166,8 +166,8 @@ TPalette& TStaticPrompt::getPalette() const
 TlnInfoWindow::TlnInfoWindow( const TRect& bounds,
                               const char * aTitle,
                               short aNumber) :
-  TWindow (bounds, aTitle, aNumber),
-  TWindowInit(&TlnInfoWindow::initFrame)
+  TWindowInit(&TlnInfoWindow::initFrame),
+  TWindow (bounds, aTitle, aNumber)
 {
   unsigned i;
 

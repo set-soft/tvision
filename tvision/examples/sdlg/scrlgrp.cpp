@@ -14,8 +14,8 @@
 // ===================================================================
 
 ScrollGroup::ScrollGroup(const TRect& bounds, TScrollBar* hsb, TScrollBar* vsb) :
-	TGroup(bounds),
 	ScrollGroupInit(initBackground),
+	TGroup(bounds),
 	hScrollBar(hsb),
 	vScrollBar(vsb),
 	background(0)

@@ -32,8 +32,8 @@ TDeskInit::TDeskInit( TBackground *(*cBackground)( TRect ) ) :
 }
 
 TDeskTop::TDeskTop( const TRect& bounds ) :
-    TGroup(bounds),
     TDeskInit( &TDeskTop::initBackground )
+    , TGroup(bounds)
 {
     growMode = gfGrowHiX | gfGrowHiY;
 
@@ -273,8 +273,8 @@ TStreamable *TDeskTop::build()
 }
 
 TDeskTop::TDeskTop( StreamableInit ) :
-    TGroup( streamableInit ),
     TDeskInit( NULL )
+    , TGroup( streamableInit )
 {
 }
 #endif // NO_STREAM

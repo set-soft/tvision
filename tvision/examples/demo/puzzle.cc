@@ -147,7 +147,8 @@ void TPuzzleView::draw()
             if(board[i][j] == ' ')
                 buf.moveStr( (short)(j*3), tmp, color[0]);
             else
-                buf.moveStr( (short)(j*3), tmp, color[map[board[i][j]-'A']]);
+                buf.moveStr( (short)(j*3), tmp, 
+                             color[(int) map[board[i][j]-'A']]);
             }
         writeLine(0, i, 18, 1, buf);
         }
@@ -358,8 +359,8 @@ TStreamableClass RPuzzleWindow( TPuzzleWindow::name,
 
 
 TPuzzleWindow::TPuzzleWindow() :
-    TWindow( TRect(1, 1, 21, 7), "Puzzle", wnNoNumber),
     TWindowInit( &TPuzzleWindow::initFrame )
+    , TWindow( TRect(1, 1, 21, 7), "Puzzle", wnNoNumber)
 {
     flags &= ~(wfZoom | wfGrow);
     growMode = 0;

@@ -144,8 +144,8 @@ void TMyApp::handleEvent(TEvent& event)
 
 
 THelpDemo::THelpDemo() :
-    TDialog(TRect(0, 0, 30, 12), "Help Demo Box"),
-    TWindowInit(&THelpDemo::initFrame)
+    TWindowInit(&THelpDemo::initFrame),
+    TDialog(TRect(0, 0, 30, 12), "Help Demo Box")
 {
     TView *control = new TStaticText(TRect(2, 5, 17, 7), "Example of help contexts");
     insert(control);

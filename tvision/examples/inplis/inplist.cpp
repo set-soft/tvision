@@ -151,7 +151,9 @@ void TInputBox::handleEvent(TEvent& event)
 
 
 TInputDialog::TInputDialog(const TRect& r, const char *aTitle, TCollection *aList)
-                  :TDialog(r, aTitle),TWindowInit( &TInputDialog::initFrame )
+                  : TWindowInit( &TInputDialog::initFrame )
+                  , TDialog(r, aTitle)
+                   
  {
    options   |= ofCentered;
    TRect r1   = getExtent();

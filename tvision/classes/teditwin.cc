@@ -31,8 +31,8 @@ TEditWindow::TEditWindow( const TRect& bounds,
                           const char *fileName,
                           int aNumber
                         ) :
-    TWindow( bounds, 0, aNumber ),
     TWindowInit( &TEditWindow::initFrame )
+    , TWindow( bounds, 0, aNumber )
 {
     options |= ofTileable;
 
@@ -114,8 +114,8 @@ TStreamable *TEditWindow::build()
 }
 
 TEditWindow::TEditWindow( StreamableInit ) :
-    TWindow( streamableInit ),
     TWindowInit( NULL )
+    , TWindow( streamableInit )
 {
 }
 

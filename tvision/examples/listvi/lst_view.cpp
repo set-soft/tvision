@@ -75,8 +75,8 @@ void TListViewBox::putData(void *rec)
 
 TListViewDialog::TListViewDialog(const TRect &trect, char *title,
 					char *aList[],char *aList2[],int aListSize,int wList)
-					:TDialog(trect, title),
-					 TWindowInit(TDialog::initFrame) {
+					: TWindowInit(TDialog::initFrame)
+					, TDialog(trect, title) {
   options |= ofCentered;
   int lbwidth=(trect.b.x-trect.a.x)-3-3;
   int lbhite =(trect.b.y-trect.a.y)-2;

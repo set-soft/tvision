@@ -282,8 +282,8 @@ TStreamableClass RCalendarWindow( TCalendarWindow::name,
 
 
 TCalendarWindow::TCalendarWindow() :
-    TWindow( TRect(1, 1, 23, 11), "Calendar", wnNoNumber ),
     TWindowInit( &TCalendarWindow::initFrame )
+    , TWindow( TRect(1, 1, 23, 11), "Calendar", wnNoNumber )
 {
     TRect r(getExtent());
 

@@ -21,6 +21,7 @@
  ***************************************************************************/
  
 #include <stdio.h>
+#define Uses_string
 
 #define Uses_MsgBox
 #define Uses_TFileDialog
@@ -32,6 +33,9 @@
 
 #include <tv.h>
 #include "strmoper.h"
+
+// didn't find std::ios (AP)
+#include IOSTREAM_HEADER
 
 UsingNamespaceStd
 

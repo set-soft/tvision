@@ -241,7 +241,7 @@ TFrame::TFrame( StreamableInit ) : TView( streamableInit )
 }
 #endif // NO_STREAM
 
-char FrameMask[maxViewWidth];
+unsigned char FrameMask[maxViewWidth];
 
 void TFrame::frameLine( TDrawBuffer& frameBuf, short y, short n, uchar color )
 {
@@ -292,7 +292,7 @@ lab10:
   {
     uchar * framechars = (uchar *)malloc(dx);
     for (i=0;i<dx;i++)
-        framechars[i] = (uchar)frameChars[FrameMask[i]];
+        framechars[i] = (uchar)frameChars[(unsigned) FrameMask[i]];
     frameBuf.moveBuf(0,framechars,color,dx);
     free(framechars);
   }

@@ -27,7 +27,7 @@ public:
 	       TScrollBar *aVScrollBar,
 	       uint32 aBufSize
 	     );
-    ~TTerminal();
+    virtual ~TTerminal();
 
     virtual int do_sputn( const char *s, int count );
 

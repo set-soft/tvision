@@ -22,8 +22,8 @@ Modified by Robert H”hne to be used for RHIDE.
                  "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3A\x3B\x3C\x3D\x3E\x3F"
 
 TDialog::TDialog( const TRect& bounds, const char *aTitle ) :
-    TWindow( bounds, aTitle, wnNoNumber ),
     TWindowInit( &TDialog::initFrame )
+    , TWindow( bounds, aTitle, wnNoNumber )
 {
      growMode = 0;
      flags = wfMove | wfClose;
@@ -100,8 +100,8 @@ TStreamable *TDialog::build()
 }
 
 TDialog::TDialog( StreamableInit ) :
-    TWindow( streamableInit ),
     TWindowInit( 0 )
+    , TWindow( streamableInit )
 {
 }
 #endif // NO_STREAM

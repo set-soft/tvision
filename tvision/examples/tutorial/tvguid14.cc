@@ -174,8 +174,8 @@ void TInterior::draw()       // modified for scroller
 // modified from tvguid08:
 TDemoWindow::TDemoWindow( const TRect& bounds, const char *aTitle,
               short aNumber) :
-         TWindow( bounds, aTitle, aNumber),
-         TWindowInit( &TDemoWindow::initFrame )
+         TWindowInit( &TDemoWindow::initFrame ),
+         TWindow( bounds, aTitle, aNumber)
 {
     TRect lbounds = getExtent();
     TRect r( lbounds.a.x, lbounds.a.y, lbounds.b.x/2+1, lbounds.b.y );
