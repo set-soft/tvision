@@ -311,6 +311,14 @@ void TScreen::setCharacter(unsigned offset,ushort *values,unsigned count)
   }
 }
 
+int TV_System(const char *command, pid_t *pidChild)
+{
+  // fork mechanism not available
+  if (pidChild)
+     *pidChild=0;
+  return system(command);
+}
+
 /**[txh]********************************************************************
 
   Description:

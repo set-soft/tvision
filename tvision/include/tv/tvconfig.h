@@ -29,10 +29,9 @@ const int maxReplaceStrLen = 80;
 #include <tv/intl.h>
 #include <sys/types.h>
 
-#ifdef TVOSf_NT
-int TV_System(const char *command);
-#else
-#define TV_System(cmd) system(cmd)
+#ifndef pid_t
+# define pid_t int
 #endif
+int TV_System(const char *command, pid_t *pidChild=0);
 
 #endif	// CONFIG_H_INCLUDED
