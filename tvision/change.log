@@ -1,4 +1,17 @@
-$Log$.
+$Log$
+Revision 2.327  2002/09/18 12:28:29  set
+* Fixed: [DOS] I restored the screen after releasing the memory used to
+hold the old content :-P it generated random artifacts in upper left corner
+of the screen at exit.
+* Added: [DOS] Two configuration options: SaveVGAState, it can be used to
+disable the VGA state save/restore mechanism. When disabled the support for
+restoring graphic modes is limited, but the simple text modes aren't
+affected. And another option called VGABIOSState disabling it (but not the
+other) the save/restore mechanism uses an internal routine I coded. This
+routine uses the VGA registers for it. This needs a 100% VGA compatible
+board or a Win32 driver that fully emulates a VGA board when running in
+Win32 environments.
+
 Revision 2.326  2002/09/17 13:00:29  set
 * Fixed: [MinGW] Some perl interpreter returns paths with back slashes and
 MSYS tools doesn't tolerate mixed slashes.
