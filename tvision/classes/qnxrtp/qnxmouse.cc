@@ -27,8 +27,8 @@ int THWMouseQNXRtP::MousePositionX=0;
 int THWMouseQNXRtP::MousePositionY=0;
 int THWMouseQNXRtP::MouseButtons;
 
-int THWMouseQNXRtP::MouseMikkiPositionX=0;
-int THWMouseQNXRtP::MouseMikkiPositionY=0;
+int THWMouseQNXRtP::MouseMickeyPositionX=0;
+int THWMouseQNXRtP::MouseMickeyPositionY=0;
 
 THWMouseQNXRtP::~THWMouseQNXRtP()
 {
@@ -49,8 +49,8 @@ int  THWMouseQNXRtP::OpenDeviMouse()
    MousePositionX=0;
    MousePositionY=0;
    MouseButtons=0;
-   MouseMikkiPositionX=0;
-   MouseMikkiPositionY=0;
+   MouseMickeyPositionX=0;
+   MouseMickeyPositionY=0;
    
    return 1;
 }
@@ -60,13 +60,14 @@ void THWMouseQNXRtP::CloseDeviMouse()
    if (mousehandle!=-1)
    {
       close(mousehandle);
+      mousehandle=-1;
    }
 
    MousePositionX=0;
    MousePositionY=0;
    MouseButtons=0;
-   MouseMikkiPositionX=0;
-   MouseMikkiPositionY=0;
+   MouseMickeyPositionX=0;
+   MouseMickeyPositionY=0;
 }
 
 void THWMouseQNXRtP::ProcessDeviMouse()
@@ -97,27 +98,27 @@ void THWMouseQNXRtP::ProcessDeviMouse()
                   selectret=read(mousehandle, &pkt, sizeof(struct _mouse_packet));
                   if (selectret==sizeof(struct _mouse_packet))
                   {
-                     MouseMikkiPositionX+=pkt.dx;
-                     if (MouseMikkiPositionX<0)
+                     MouseMickeyPositionX+=pkt.dx;
+                     if (MouseMickeyPositionX<0)
                      {
-                        MouseMikkiPositionX=0;
+                        MouseMickeyPositionX=0;
                      }
-                     MouseMikkiPositionY-=pkt.dy;
-                     if (MouseMikkiPositionY<0)
+                     MouseMickeyPositionY-=pkt.dy;
+                     if (MouseMickeyPositionY<0)
                      {
-                        MouseMikkiPositionY=0;
+                        MouseMickeyPositionY=0;
                      }
-                     TempMousePositionX=MouseMikkiPositionX/6;
-                     TempMousePositionY=MouseMikkiPositionY/14;
+                     TempMousePositionX=MouseMickeyPositionX/6;
+                     TempMousePositionY=MouseMickeyPositionY/14;
                      if (TempMousePositionX>=cols)
                      {
                         TempMousePositionX=cols-1;
-                        MouseMikkiPositionX=TempMousePositionX*6;
+                        MouseMickeyPositionX=TempMousePositionX*6;
                      }
                      if (TempMousePositionY>=rows)
                      {
                         TempMousePositionY=rows-1;
-                        MouseMikkiPositionY=TempMousePositionY*14;
+                        MouseMickeyPositionY=TempMousePositionY*14;
                      }
                      if ((pkt.hdr.buttons & _POINTER_BUTTON_LEFT)==_POINTER_BUTTON_LEFT)
                      {
@@ -163,36 +164,42 @@ void THWMouseQNXRtP::Init()
    if (OpenDeviMouse())
    {
       buttonCount=3;
+
+      THWMouse::Show=Show;
+      THWMouse::Hide=Hide;
+      THWMouse::Suspend=Suspend;
+      THWMouse::Resume=Resume;
+      THWMouse::GetEvent=GetEvent;
    }
    else
    {
       buttonCount=0;
    }
-
-   THWMouse::Show=Show;
-   THWMouse::Hide=Hide;
-   THWMouse::Suspend=Suspend;
-   THWMouse::Resume=Resume;
-   THWMouse::GetEvent=GetEvent;
 }
 
 void THWMouseQNXRtP::Show()
 {
-   int cols=TDisplayQNXRtP::GetCols();
-   ushort offset=MousePositionY*cols+MousePositionX;
-   ushort mdata=TScreenQNXRtP::screenBuffer[offset];
+   if (mousehandle!=-1)
+   {
+      int cols=TDisplayQNXRtP::GetCols();
+      ushort offset=MousePositionY*cols+MousePositionX;
+      ushort mdata=TScreenQNXRtP::screenBuffer[offset];
 
-   // Windows 2000 style, text mouse cursor.
-   mdata=(mdata & 0x00FF) | (mdata & 0x8800) | (~(mdata) & 0x7000) | (~(mdata) & 0x0700);
-   TScreenQNXRtP::writeBlock(offset, 1, &mdata, &mdata);
+      // a la Windows 2000 style text mouse cursor.
+      mdata=(mdata & 0x00FF) | (mdata & 0x8800) | (~(mdata) & 0x7000) | (~(mdata) & 0x0700);
+      TScreenQNXRtP::writeBlock(offset, 1, &mdata, &mdata);
+   }
 }
 
 void THWMouseQNXRtP::Hide()
 {
-   int cols=TDisplayQNXRtP::GetCols();
-   ushort offset=MousePositionY*cols+MousePositionX;
+   if (mousehandle!=-1)
+   {
+      int cols=TDisplayQNXRtP::GetCols();
+      ushort offset=MousePositionY*cols+MousePositionX;
 
-   TScreenQNXRtP::writeBlock(offset, 1, TScreenQNXRtP::screenBuffer+offset, TScreenQNXRtP::screenBuffer+offset);
+      TScreenQNXRtP::writeBlock(offset, 1, TScreenQNXRtP::screenBuffer+offset, TScreenQNXRtP::screenBuffer+offset);
+   }
 }
 
 void THWMouseQNXRtP::Suspend()
