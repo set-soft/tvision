@@ -1,4 +1,37 @@
 $Log$
+Revision 1.4  1999/01/09 16:14:41  root
+Changed linux/compress by a Perl script that updates readme.txt (version),
+generates the tarred files with the right version name and creates the .lsm.
+(linux/compress)
+
+Revision 1.3  1999/01/09 14:40:24  root
+Changed the Linux compress script to be much more efficient. Added a couple
+of files to indicate files to include/exclude in the Linux distribution.
+Changed the name of the Linux distribution to 'rhtvision' to avoid collisions
+with the already existing tvision package by Sergio Sigala.
+
+gkey.cc
+Modified to support a command line switch that enables the new keyboard
+mapping the old is the default because is the most common (Debian 2.0 and
+Red Hat 5.1).
+
+gkeyli.cc
+Added TGKey::SetKbdMapping to support the new keyboard mapping found in the
+kbd package shipped with Red Hat 5.2. Using
+TGKey::SetKbdMapping(KBD_REDHAT52_STYLE) the new mapping is enabled. It
+supports F1-F12, Shift+F1-F12 and Ctrl+F1-F12. Not only a special keyboad map
+is needed but a special linux terminfo description is needed too.
+If the program runs in console that's not needed but you'll get only F1-F10.
+
+Revision 1.2  1998/12/30 01:01:12  set
+Removed the redundant translation of the Linux IOCTL shift flags to BIOS
+format.
+Moved 90% of the conditional code to the Linux module.
+Fixed the Linux code to report left and right alt.
+Added entries to patch the right alt + function key, not only left alt.
+Added Shit+PgUp, Shift+PgDn, Ctrl+Backspace and Ctrl+Space to the list of
+patched keys.
+
 Release 1.0.1
 
 * Some changes in the readmes and gpr files.

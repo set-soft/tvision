@@ -1,13 +1,88 @@
-cd ../..
-rm -f tvision-1.0.1.source.tar.gz tvision-1.0.1.bin.tar.gz tv100s.zip
-zip -r0 tvision/linux/tmp/tv101s tvision -x "*.o" "*.gdt" "*.bkp" "*.dst" "*.a" "*cvs/*" "*CVS/*"
-cd tvision/linux/tmp/
-unzip tv101s.zip
-mv tv101s.zip tvision.zip
-zip -9m  ../../../tv101s.zip tvision.zip
-tar -zcvf tvision-1.0.1.source.tar.gz tvision
-cd ../../..
-mv tvision/linux/tmp/tvision-1.0.1.source.tar.gz .
-rm -r tvision/linux/tmp/*
-tar -zcvf tvision-1.0.1.bin.tar.gz tvision/readme.txt tvision/copying* tvision/borland.txt tvision/linux/libtv.a tvision/linux/sacadeb tvision/include/*.h tvision/linux/tmp
+#!/usr/bin/perl
+$oldv='1.0.1';
+$newv='1.0.2';
+@files=('../readme.txt');
+
+# Patch the version number
+foreach $i (@files)
+  {
+   print 'Processing '."$i";
+   $r=&cat($i);
+   if ($r =~ /$oldv/)
+     {
+      $r =~ s/$oldv/$newv/g;
+      &replace($i,$r);
+      print " updated version\n";
+     }
+   else
+     {
+      print " is uptodate\n";
+     }
+  }
+
+# Generate the tar files
+$bindist="rhtvision-$newv.bin.i386.elf.static.linux.tar.gz";
+$srcdist="rhtvision-$newv.src.tar.gz";
+chdir('../..');
+unlink("rhtvision-$newv.src.tar.gz","rhtvision-$newv.bin.i386.elf.static.linux.tar.gz");
+system("tar -X tvision/linux/exclude.txt -zcvf $srcdist tvision");
+system("tar -zcvf $bindist --exclude=*CVS `cat tvision/linux/inclubin.txt`");
+
+# Generate the lsm distribution file (Linux Software Map entry).
+$lsm=
+"Begin3
+Title:          Turbo Vision (Robert Hoehne port)
+Version:        $newv
+Entered-date:   !3
+Description:    Turbo Vision port to Linux. C++ Text UI. Not 100% Borland compatible.
+Keywords:       c++ cui tui framework interface tv tvision
+Author:         robert.hoehne\@gmx.net.de (Robert Hoehne)
+                salvador\@inti.gov.ar (Salvador E. Tropea)
+Maintained-by:  salvador\@inti.gov.ar (Salvador E. Tropea)
+Primary-site:   www.geocities.com /SiliconValley/Vista/6552
+                !1
+                !2
+Alternate-site: sunsite.unc.edu /pub/Linux/devel/lang/c++
+                !1
+                !2
+Original-site:  ftp.borland.com /pub/borlandcpp/devsupport/archive/turbovision
+                232k tv.zip
+Platforms:      Linux, GNU g++, gpm, ncurses
+Copying-policy: GPL
+End";
+
+$r= int((-s $srcdist)/1024+0.5)."k $srcdist";
+$lsm =~ s/\!1/$r/g;
+$r= int((-s $bindist)/1024+0.5)."k $bindist";
+$lsm =~ s/\!2/$r/g;
+@t=localtime(time());
+@mes=('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+$r=$t[3].$mes[$t[4]].$t[5];
+$r='0'.$r if length($r)<7;
+$lsm =~ s/\!3/$r/g;
+replace('rhtvision.lsm',$lsm);
+
+
+sub cat
+{
+ local $/;
+ my $b;
+
+ open(FIL,$_[0]) || return 0;
+ $b=<FIL>;
+ close(FIL);
+
+ $b;
+}
+
+
+sub replace
+{
+ my $b=$_[1];
+
+ open(FIL,">$_[0]") || return 0;
+ print FIL ($b);
+ close(FIL);
+}
+
 

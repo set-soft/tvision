@@ -224,7 +224,9 @@ include/textdev.h
 include/view.h
 include/window.h
 +linux/compress
+linux/exclude.txt
 linux/gkeyli.cc
+linux/inclubin.txt
 -linux/libtv.gpr
 linux/Makefile
 +linux/sacadeb

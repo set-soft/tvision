@@ -452,7 +452,7 @@ void InterpretAbstract(void)
     printf(" ALT-L");
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
   unsigned short key;
 #ifdef __linux__
@@ -461,6 +461,8 @@ int main(void)
   void patch_keyboard();
   startcurses();
   patch_keyboard();
+  if (argc>1 && strcmp(argv[1],"rh52")==0)
+     TGKey::SetKbdMapping(KDB_REDHAT52_STYLE);
 #endif
   // Setup the mode where the alt left/right are different
   TGKey::SetAltSettings(0);

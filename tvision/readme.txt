@@ -3,7 +3,7 @@ Hi!
 Introduction:
 ------------
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.1.
+  That's the Turbo Vision distribution (TVision for short) v1.0.2.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
