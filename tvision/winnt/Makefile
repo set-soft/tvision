@@ -46,8 +46,8 @@ TV_OBJS_ =  +beep.obj +drivevalid.obj +expandpath.obj +fexpand.obj +fileattrs.ob
 +pathvalid.obj +regex.obj +releasec.obj +strlwr.obj +strupr.obj +ticks.obj +unc.obj\
 +unc_95.obj +unc_nt.obj +validfilename.obj +yieldpro.obj +calcdisp.obj +calculat.obj\
 +codepage.obj +configfile.obj +dosdis.obj +doskey.obj +dosmouse.obj +dosscr.obj\
-+drivers2.obj +dual.obj +fileview.obj +fpbase.obj +fpstream.obj +help.obj\
-+helpbase.obj +histlist.obj +ifpstrea.obj +iopstrea.obj +ipstream.obj\
++drivers2.obj +dual.obj +fileview.obj +fontcoll.obj +fpbase.obj +fpstream.obj\
++help.obj +helpbase.obj +histlist.obj +ifpstrea.obj +iopstrea.obj +ipstream.obj\
 +linuxdis.obj +linuxkey.obj +linuxmouse.obj +linuxscr.obj +misc.obj +msgbox.obj\
 +nbackgro.obj +nbutton.obj +ncalcdis.obj +ncalcula.obj +nchdirdi.obj\
 +ncheckbo.obj +nclrdisp.obj +ncluster.obj +ncollect.obj +ncolordi.obj\

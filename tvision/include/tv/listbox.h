@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to add functionality.
 
  *
  *
@@ -39,6 +40,9 @@ public:
     virtual void getText( char *dest, ccIndex item, short maxLen );
     virtual void newList( TCollection *aList );
     virtual void setData( void *rec );
+    // SET: You not always want to destroy the items.
+    virtual void newList( TCollection *aList, Boolean destroyItems );
+    virtual void setData( void *rec, Boolean destroyItems );
 
     TCollection *list();
 
