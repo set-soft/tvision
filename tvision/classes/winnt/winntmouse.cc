@@ -11,8 +11,9 @@ Modified by Anatoli Soltan to be used under Win32 consoles.
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef _WIN32
+#ifdef TVOS_Win32
 
 #define Uses_TEvent
 #define Uses_TEventQueue
@@ -98,5 +99,5 @@ void THWMouse::getEvent( MouseEventType& me )
   me.where.y = inpRec.Event.MouseEvent.dwMousePosition.Y;
 }
 
-#endif // _WIN32
+#endif // TVOS_Win32
 

@@ -9,7 +9,7 @@
 #define Uses_string
 #include <compatlayer.h>
 
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 #include <fcntl.h>
 static const char * const IllegalChars1 = ";,=+<>|\"[]/";
 static const char * const IllegalChars2 = "<>|/\"";

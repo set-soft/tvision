@@ -14,7 +14,7 @@ for SETEdit and not a full set.
 #include <compatlayer.h>
 
 
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 /*
   In DOS owr best choice is _chmod, it can give information as file hidden
   or system file.
@@ -56,11 +56,13 @@ void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
 {
  *mode=0x20;
 }
-#endif // TVOSf_djgpp
+#define FILE_ATTRS_DEFINED
+#endif // TVCompf_djgpp
 
 
 
-#ifdef TVOS_UNIX
+#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && \
+    !defined(FILE_ATTRS_DEFINED)
 /*
   In UNIX the best way is just use chmod which is POSIX and should be
 enough.
@@ -106,11 +108,12 @@ void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
  mode->user=getuid();
  mode->group=getgid();
 }
+#define FILE_ATTRS_DEFINED
 #endif
 
 
 
-#ifdef TVOS_Win32
+#if defined(TVOS_Win32) && !defined(FILE_ATTRS_DEFINED)
 /*
   In Win32 systems there are an API call for it.
 */
@@ -151,6 +154,7 @@ void CLY_FileAttrModified(CLY_mode_t *mode)
 
 void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
 {
- *mode=FILE_ATTRIBUTE_ARCHIVE;
+ *mode=(CLY_mode_t)FILE_ATTRIBUTE_ARCHIVE;
 }
+#define FILE_ATTRS_DEFINED
 #endif

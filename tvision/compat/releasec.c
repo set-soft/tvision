@@ -2,7 +2,7 @@
 /* Modified by Salvador E. Tropea, Vadim Bolodorov and Anatoli Soltan */
 #include <tv/configtv.h>
 
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 #include <dpmi.h>
 
 void CLY_ReleaseCPU()

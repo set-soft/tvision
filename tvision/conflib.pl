@@ -8,7 +8,16 @@
 $ErrorLog='errormsg.txt';
 $MakeDefsRHIDE={};
 $ExtraModifyMakefiles={};
-$OSflavor='';
+# DOS, UNIX, Win32
+$OS='';
+# Linux, FreeBSD, Solaris
+$OSf='';
+# x86, Alpha, SPARC64, SPARC, PPC, HPPA, MIPS, Unknown
+$CPU='';
+# GCC, BCPP, MSVC
+$Comp='';
+# djgpp, MinGW, Cygwin
+$Compf='';
 
 sub GetCache
 {
@@ -184,7 +193,7 @@ sub RunGCCTest
 
 sub LookForPrefix
 {
- my ($test,$prefix);
+ my ($test,$prefix,@lista,$i,$found);
 
  print 'Looking for prefix: ';
  $prefix=@conf{'prefix'};
@@ -206,7 +215,7 @@ sub LookForPrefix
     LookIfFHS();
     return;
    }
- if ($OS eq 'UNIX')
+ if (($OS eq 'UNIX') || ($Compf eq 'Cygwin'))
    {
     if (`which make`=~/(.*)\/bin\/make/)
       {
@@ -223,20 +232,22 @@ sub LookForPrefix
    }
  else
    {
-    $test=`rm --help`;
-    if ($test=~/(.*)\/BIN\/RM.EXE/)
+    if ($Compf eq 'MinGW')
       {
-       $prefix=$1;
-       if ($prefix=~/\/\/(\w)\/(.*)/)
+       @lista=split(/;/,@ENV{'PATH'});
+       $found=0;
+       foreach $i (@lista)
          {
-          $prefix="$1:/$2";
-         }
-       else
-         {
-          $prefix="c:/$prefix";
+          #print "Buscando ".$i."\\make.exe\n";
+          if (!$found && (-e $i."\\make.exe") &&
+              ($i=~/(.*)[\\\/][bB][iI][nN]/))
+            {
+             $prefix=$1;
+             $found=1;
+            }
          }
       }
-    else
+    if (!$found)
       {
        if (!$test)
          {
@@ -482,7 +493,7 @@ int main(void)
 #   Determines the flags to be used for compilation. Mechanism:@*
 # 1) Cached CFLAGS key.@*
 # 2) Environment variable CFLAGS.@*
-# 3) -O2 -gstabs+3 (-pipe if UNIX) (_WIN32 if Win32).@*
+# 3) -O2 -gstabs+3 (-pipe if UNIX).@*
 #   The result is stored in the 'CFLAGS' configuration key.
 #
 # Return: The value determined.
@@ -507,10 +518,9 @@ sub FindCFLAGS
     # In UNIX pipes are in memory and allows multithreading so they are
     # usually faster. In Linux that's faster.
     $ret.=' -pipe' if ($OS eq 'UNIX');
-    $ret.=' -D_WIN32' if ($OS eq 'Win32');
     # Looks like that's common and some sysadmins doesn't configure gcc to
     # look there:
-    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSflavor eq 'FreeBSD');
+    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSf eq 'FreeBSD');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
@@ -527,7 +537,7 @@ sub FindCFLAGS
 # 2) Environment variable CXXFLAGS.@*
 # 3) Cached CFLAGS key.@*
 # 4) Environment variable CFLAGS.@*
-# 5) -O2 -gstabs+3 (-pipe if UNIX) (_WIN32 if Win32).@*
+# 5) -O2 -gstabs+3 (-pipe if UNIX).@*
 #   The result is stored in the 'CXXFLAGS' configuration key.
 #
 # Return: The value determined.
@@ -552,8 +562,7 @@ sub FindCXXFLAGS
    {
     $ret='-O2 -gstabs+3';
     $ret.=' -pipe' if ($OS eq 'UNIX');
-    $ret.=' -D_WIN32' if ($OS eq 'Win32');
-    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSflavor eq 'FreeBSD');
+    $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSf eq 'FreeBSD');
    }
  print "$ret\n";
  $conf{'CXXFLAGS'}=$ret;
@@ -588,7 +597,7 @@ sub FindXCFLAGS
  if (!$ret)
    {
     $ret='-O3 -fomit-frame-pointer -ffast-math';
-    $ret.=' -pipe' unless ($OS eq 'dos');
+    $ret.=' -pipe' if ($OS eq 'UNIX');
    }
  print "$ret\n";
  $conf{'XCFLAGS'}=$ret;
@@ -623,7 +632,7 @@ sub FindXCXXFLAGS
  if (!$ret)
    {
     $ret='-O3 -fomit-frame-pointer -ffast-math';
-    $ret.=' -pipe' unless ($OS eq 'dos');
+    $ret.=' -pipe' if ($OS eq 'UNIX');
    }
  print "$ret\n";
  $conf{'XCXXFLAGS'}=$ret;
@@ -639,7 +648,10 @@ sub FindXCXXFLAGS
 # is assumed, if Linux or linux is returned the linux is assumed. If none
 # of these is returned the program dies. The following global variables are
 # filled according to the OS:@*
-# $OS: dos or linux.@*
+# $OS: DOS, UNIX, Win32.@*
+# $OSf: OS flavor i.e. Linux.@*
+# $Comp: Compiler i.e. GCC.@*
+# $Compf: Compiler flavor i.e. djgpp.@*
 # $stdcxx: C++ library (stdcxx or stdc++).@*
 # $defaultCXX: C++ compiler (gxx or g++).@*
 # $supportDir: Directory to look for OS specific support (djgpp or linux).@*
@@ -653,11 +665,17 @@ sub DetectOS
  my ($os,$OS);
  $os=`uname`;
  print 'Determining OS: ';
- 
+
+ $OSpr=0;
+ # Currently the configuration is oriented for GNU systems
+ # other systems should have a special configuration header
+ # created by hand.
+ $Comp='GCC';
  if ($os=~/MS\-DOS/)
    {
     $OS='DOS';
-    $OSflavor='djgpp';
+    $OSf='';
+    $Compf='djgpp';
     $stdcxx='-lstdcxx';
     $defaultCXX='gxx';
     $supportDir='djgpp';
@@ -665,7 +683,8 @@ sub DetectOS
  elsif ($os=~/[Ll]inux/)
    {
     $OS='UNIX';
-    $OSflavor='Linux';
+    $OSf='Linux';
+    $Compf='';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='linux';
@@ -673,7 +692,8 @@ sub DetectOS
  elsif ($os=~/FreeBSD/)
    {
     $OS='UNIX';
-    $OSflavor='FreeBSD';
+    $OSf='FreeBSD';
+    $Compf='';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='linux';
@@ -681,7 +701,8 @@ sub DetectOS
  elsif ($os=~/CYGWIN/)
    {
     $OS='Win32';
-    $OSflavor='Mingw';
+    $OSf='';
+    $Compf='Cygwin/MinGW';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='win32';
@@ -689,7 +710,8 @@ sub DetectOS
  elsif ($os=~/SunOS/)
    {
     $OS='UNIX';
-    $OSflavor='Solaris';
+    $OSf='Solaris';
+    $Compf='';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
     $supportDir='linux';
@@ -698,10 +720,45 @@ sub DetectOS
    {
     die('Unknown OS, you must do things by yourself');
    }
- print "$OS [$OSflavor]\n";
+ print "$OS";
+ print " [$OSf]" if $OSf;
+ print " [$Compf]" if $Compf;
+ print "\n";
  $OS;
 }
 
+sub DetectOS2
+{
+ my $test;
+ # Most MinGW users have Cygwin tools
+ if ($Compf eq 'Cygwin/MinGW')
+   {
+    print 'Detecting compiler env. better: ';
+    if ($conf{'Cygwin/MinGW'})
+      {
+       $Compf=$conf{'Cygwin/MinGW'};
+       print "$Compf (cached)\n";
+      }
+    else
+      {
+       $test='
+#include <stdio.h>
+int main(void)
+{
+ #ifdef __CYGWIN__
+ printf("Cygwin\n");
+ #else
+ printf("MinGW\n");
+ #endif
+ return 0;
+}';
+       $Compf=RunGCCTest($GCC,'c',$test,'');
+       chop($Compf);
+       $conf{'Cygwin/MinGW'}=$Compf;
+       print "$Compf\n";
+      }
+   }
+}
 
 ###[txh]####################################################################
 #
@@ -1004,7 +1061,7 @@ int main(void)
 }';
  $test=RunGCCTest($GCC,'c',$test,'');
  chop($test);
- $conf{'TV_CPU'}=$test;
+ $CPU=$conf{'TV_CPU'}=$test;
  print "$test\n";
 }
 

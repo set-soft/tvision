@@ -58,7 +58,7 @@ public:
     void write64(uint64 val);
 
     opstream& operator << ( char           val ) { writeByte(val); return *this; };
-    #ifndef __TURBOC__
+    #ifndef TVComp_BCPP
     opstream& operator << ( signed char    val ) { writeByte(val); return *this; };
     #endif
     opstream& operator << ( unsigned char  val ) { writeByte(val); return *this; };

@@ -57,7 +57,7 @@ public:
     uint32 read32();
     uint64 read64();
 
-    #ifndef __TURBOC__
+    #ifndef TVComp_BCPP
     ipstream& operator >> (signed char    &ch ) {ch=readByte();  return (*this);}
     #endif
     ipstream& operator >> (char           &ch ) {ch=readByte();  return (*this);}

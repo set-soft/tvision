@@ -11,8 +11,9 @@ Modified by Anatoli Soltan to be used under Win32 consoles.
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef _WIN32
+#ifdef TVOS_Win32
 
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
@@ -228,5 +229,5 @@ int TDisplay::SetWindowTitle(const char *name)
  return SetConsoleTitle(name);
 }
 
-#endif // _WIN32
+#endif // TVOS_Win32
 // vi: set ts=8 sw=2 et : //

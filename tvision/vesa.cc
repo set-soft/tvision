@@ -16,8 +16,9 @@ BTW: this change saved 172 bytes of code and added 20 bytes of data.
 
 /* Copyright (C) 1996-1998 Robert H”hne, this file is part of RHTVision and
    is under the GPL license */
-#ifdef __DJGPP__
+#include <tv/configtv.h>
 
+#ifdef TVCompf_djgpp
 /*
   This file is used to save/restore the graphics screen when a
   VESA mode is set.
@@ -585,5 +586,5 @@ int main(int argc, char *argv[])
 }
 #endif
 
-#endif // __DJGPP__
+#endif // DJGPP
 

@@ -11,8 +11,9 @@ Modified by Anatoli Soltan to be used under Win32 consoles.
  *
  *
  */
+#include <tv/configtv.h>
 
-#ifdef _WIN32
+#ifdef TVOS_Win32
 
 #define Uses_TScreen
 #define Uses_TEvent
@@ -409,6 +410,6 @@ Boolean TScreen::codePageVariable()
 {
  return True;
 }
-#endif // _WIN32
+#endif // TVOSf_WIN32
 // vi: set ts=8 sw=2 et : //
 

@@ -10,4 +10,7 @@
 //#define HAVE_INTL_SUPPORT
 
 #define TVOS_Win32
-#define TVOSf_NT
+#define TVOSf_
+#define TVComp_BCPP
+#define TVCompf_
+#define TVCPU_x86

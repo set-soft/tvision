@@ -5,21 +5,21 @@
 
 #include <tv.h>
 
-#ifdef DJGPP
+#ifdef TVCompf_djgpp
 #include <dpmi.h>
 #include <sys/farptr.h>
 #endif
 
 int dual_display_supported()
 {
-#ifdef DJGPP
+#ifdef TVCompf_djgpp
   __dpmi_regs r;
   r.x.ax = 0x1a00;
   __dpmi_int(0x10,&r);
   if (r.h.al != 0x1a) return 0;
   if (r.h.bh == 0x01) return 1;
 #endif
-#ifdef __linux__
+#ifdef TVOSf_Linux
   extern unsigned short *mono_mem;
   return (mono_mem != NULL);
 #endif

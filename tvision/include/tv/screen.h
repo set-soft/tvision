@@ -151,7 +151,7 @@ public:
     friend void TV_WindowSizeChanged(int sig);
 };
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 // SET: DOS windows doesn't change resolution externally ;-)
 inline
 int TDisplay::CheckForWindowSize(void)
@@ -162,7 +162,7 @@ int TDisplay::CheckForWindowSize(void)
 
 #ifdef TVOS_UNIX
 // SET: Added the following functionallity:
-// Linux specific stuff, enclose it in __linux__ section:
+// Linux specific stuff, enclose it in TVOSf_Linux section:
 //   If you want to setup a specific value define this variable in your code
 // and assign a value. If the variable isn't in your code the linker will use
 // a definition found in the library.

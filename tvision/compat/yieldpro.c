@@ -1,6 +1,6 @@
 #include <tv/configtv.h>
 
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 #include <dpmi.h>
 #include <unistd.h>
 

@@ -7,16 +7,17 @@
 */
 
 #include <cl/needs.h>
-#ifdef NEEDS_GETCURDIR
+
 #define Uses_limits
 #define Uses_string
+#define Uses_unistd
 #include <compatlayer.h>
 
-#ifdef TVOSf_djgpp
+#ifdef NEEDS_GETCURDIR
+
+#ifdef TVCompf_djgpp
 // DOS version by Robert
-#include <unistd.h>
 #include <dir.h>
-#include <string.h>
 
 int CLY_getcurdir(int drive, char *buffer)
 {
@@ -31,14 +32,11 @@ int CLY_getcurdir(int drive, char *buffer)
   strcpy(buffer,buffer+3);
   return 0;
 }
-#endif
+#endif // DJGPP
 
-#if defined(TVOS_Win32) && !defined(__TURBOC__)
+#if defined(TVOS_Win32) && !defined(TVComp_BCPP) && !defined(TVCompf_Cygwin)
 // MSVC/MingW Windows version by Vadim and Anatoli
 #include <direct.h>
-#define Uses_limits
-#define Uses_string
-#include <compatlayer.h>
 
 int CLY_getcurdir(int drive, char *buffer)
 {
@@ -46,11 +44,10 @@ int CLY_getcurdir(int drive, char *buffer)
   strcpy(buffer,buffer+3);
   return 0;
 }
-#endif
+#endif // MSVC/MingW
 
-#ifdef TVOS_UNIX
-// Linux version
-#include <unistd.h>
+#if defined(TVOS_UNIX) || defined(TVCompf_Cygwin)
+// Linux and CygWin version
 
 int CLY_getcurdir(int drive, char *buffer)
 {
@@ -59,14 +56,7 @@ int CLY_getcurdir(int drive, char *buffer)
 }
 #endif
 
-#else  // NEEDS_GETCURDIR
-
-#define Uses_limits
-#define Uses_string
-#define Uses_unistd
-#include <compatlayer.h>
-
-#endif // else NEEDS_GETCURDIR
+#endif // NEEDS_GETCURDIR
 
 void CLY_GetCurDirSlash(char *dir)
 {

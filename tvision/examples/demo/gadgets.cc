@@ -28,15 +28,10 @@
 #define Uses_TRect
 #define Uses_TView
 #define Uses_TDrawBuffer
+#define Uses_strstream
 #include <tv.h>
 
-#ifdef _MSC_VER
-#include <strstrea.h>
-#else
-#include <strstream.h>
-#endif
 #include <iomanip.h>
-
 #include "gadgets.h"
 
 //extern "C" unsigned long farcoreleft( void );
