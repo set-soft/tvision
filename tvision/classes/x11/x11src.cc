@@ -26,6 +26,8 @@
                          fails to follow the hints. This helps to avoid problems found
                          in KDE 3.1 alpha.
    InternalBusyCursor    When enabled we use our own mouse cursor for it
+   Unicode16             Try using unicode16 mode.
+   UnicodeFont           Name of the font to use for unicode16 mode.
 
 */
 
@@ -807,10 +809,113 @@ static int firstGlyph, lastGlyph, numGlyphs;
 static XImage **unicodeGlyphs;
 static TVPartitionTree556 *u2c;
 static uchar *glyphs;
+static const char *tryUnicodeFont=NULL;
+
+static
+const char *DataPaths[]=
+{
+ "/usr/share/rhtvision",
+ "/usr/local/share/rhtvision",
+ "/usr/share/setedit",
+ "/usr/local/share/setedit",
+ 0
+};
+
+static
+void ConcatUpto(char *d, const char *o1, const char *o2, const char *o3,
+                int size)
+{
+ int i=0;
+
+ while (i<size && *o1)
+    d[i++]=*(o1++);
+ if (i==size)
+   {
+    d[i-1]=0;
+    return;
+   }
+ if (i && d[i-1]!='/')
+    d[i++]='/';
+ while (i<size && *o2)
+    d[i++]=*(o2++);
+ if (i==size)
+   {
+    d[i-1]=0;
+    return;
+   }
+ if (o3)
+   {
+    if (i && d[i-1]!='/')
+       d[i++]='/';
+    while (i<size && *o3)
+       d[i++]=*(o3++);
+    if (i==size)
+      {
+       d[i-1]=0;
+       return;
+      }
+   }
+ d[i]=0;
+}
+
+static
+int CanOpen(const char *file)
+{
+ //printf("Testing %s\n",file);
+ FILE *f=fopen(file,"rt");
+ if (f)
+   {
+    fclose(f);
+    return 1;
+   }
+ return 0;
+}
+
+static
+char *LookForFile(const char *name)
+{
+ char test[PATH_MAX];
+
+ char *env=getenv("TV_FONTS");
+ if (env)
+   {
+    ConcatUpto(test,env,name,NULL,PATH_MAX);
+    if (CanOpen(test))
+       return newStr(test);
+   }
+
+ env=getenv("HOME");
+ if (env)
+   {
+    ConcatUpto(test,env,".tv",name,PATH_MAX);
+    if (CanOpen(test))
+       return newStr(test);
+   }
+
+ int i=0;
+ while (DataPaths[i])
+   {
+    ConcatUpto(test,DataPaths[i],name,NULL,PATH_MAX);
+    if (CanOpen(test))
+       return newStr(test);
+    i++;
+   }
+ return NULL;
+}
 
 void TScreenX11::LoadFontAsUnicode()
 {// Load an SFT file with plenty of glyphs and sizes
- uF=new TVFontCollection("/usr/share/setedit/rombios.sft",TVCodePage::ISOLatin1Linux);
+ const char *fontName=NULL;
+
+ if (tryUnicodeFont)
+    fontName=LookForFile(tryUnicodeFont);
+ if (!fontName)
+    fontName=LookForFile("rombios.sft");
+ if (!fontName)
+    return;
+ uF=new TVFontCollection(fontName,TVCodePage::ISOLatin1Linux);
+ DeleteArray(fontName);
+
  if (!uF->GetError())
    {// Get the information for all the available glyphs
     glyphs=uF->GetFontFull(fontW,fontH,firstGlyph,lastGlyph);
@@ -1007,8 +1112,13 @@ TScreenX11::TScreenX11()
  if (optSearch("DontResizeToCells",aux))
     dontResizeToCells=aux;
 
- /* Experimental stuff, here just for testing purposes */
- LoadFontAsUnicode();
+ /* If the user wants Unicode mode try to load a proper font */
+ aux=0;
+ if (optSearch("Unicode16",aux))
+   {
+    tryUnicodeFont=optSearch("UnicodeFont");
+    LoadFontAsUnicode();
+   }
 
  TDisplayX11::Init();
 
@@ -1033,8 +1143,11 @@ TScreenX11::TScreenX11()
  TScreen::setDisPaletteColors=SetDisPaletteColors;
  TScreen::getFontGeometry=GetFontGeometry;
  TScreen::getFontGeometryRange=GetFontGeometryRange;
- TScreen::setFont=SetFont;
- TScreen::restoreFonts=RestoreFonts;
+ if (drawingMode==codepage)
+   {
+    TScreen::setFont=SetFont;
+    TScreen::restoreFonts=RestoreFonts;
+   }
  TScreen::setCrtModeRes=SetCrtModeRes;
  TDisplay::beep=Beep;
 
@@ -1186,13 +1299,14 @@ TScreenX11::TScreenX11()
  // We can change the palette.
  // A redraw is needed after setting the palette. But currently is in the color setting.
  // We can set the fonts and even change their size.
- flags0=CanSetPalette | CanReadPalette | CodePageVar    | CursorShapes /*| PalNeedsRedraw*/ |
-        CanSetBFont   | CanSetSBFont   | CanSetFontSize | CanSetVideoSize |
-        NoUserScreen;
+ flags0=CanSetPalette   | CanReadPalette | CodePageVar    | CursorShapes /*| PalNeedsRedraw*/ |
+        CanSetVideoSize | NoUserScreen;
+ if (drawingMode==codepage)
+    // We can't change the font when using Unicode16 mode
+    flags0|=CanSetBFont | CanSetSBFont | CanSetFontSize;
 
  if (createCursors())
     TScreen::showBusyState=ShowBusyState;
-
 }
 
 void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h)

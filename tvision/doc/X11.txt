@@ -132,10 +132,20 @@ InpCP             Input encoding.
 
 Font10x20              Selects the 10x20 font instead of 8x16.
 HideCursorWhenNoFocus  By default enabled
-DontResizeToCells      Don't resize the window to a cells multiple size if the WM
-                       fails to follow the hints. This helps to avoid problems found
-                       in KDE 3.1 alpha.
+DontResizeToCells      Don't resize the window to a cells multiple size if the
+                       WM fails to follow the hints. This helps to avoid
+                       problems found in KDE 3.1 alpha.
 InternalBusyCursor     When enabled we use our own mouse cursor for it.
+Unicode16              When selected the driver will try to use 16 bits Unicode
+                       mode.
+UnicodeFont            Name of the font to use for Unicode mode. Just the file
+                       name without path. Use TV_FONTS to specify a path
+                       different than:
+                       ~/.tv
+                       /usr/share/rhtvision
+                       /usr/local/share/rhtvision
+                       /usr/share/setedit
+                       /usr/local/share/setedit
 
 * I don't know if anybody can be interested on it, but this driver compiles
 and run for Windows. You need to use Cygwin with the XFree86 port installed
