@@ -423,7 +423,7 @@ void startcurses()
       }
     else if (has_colors())
       { // Generic color terminal, that's more a guess than a real thing
-       palette = max_colors > 8 ? PAL_HIGH : PAL_LOW;
+       palette = (max_colors>8) || !strcmp(terminal,"screen") ? PAL_HIGH : PAL_LOW;
        TScreen::screenMode = TScreen::smCO80;
        use_pc_chars = 0;
        LOG("Using color palette (" << max_colors << "-8 colors)");
@@ -535,9 +535,9 @@ static void mapColor(char *&p, int col)
           if (fore==back)
              fore=(fore+1) & 7;    /* kludge */
           if (back!=old_back)
-             safeput(p,tparm(SB,back));
+             safeput(p,tparm(SB,map[back]));
           if (fore!=old_fore)
-             safeput(p,tparm(SF,fore));
+             safeput(p,tparm(SF,map[fore]));
           break;
      /* SET: That's an alternative code for PAL_HIGH
      case PAL_LOW2:
