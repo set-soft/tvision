@@ -265,6 +265,9 @@ provide a call back).
 monochrome display.
 * PatchKeys. This is one by default and can be used to disable the keyboard
 patching explained in 2.
+* BrokenCursorShape. This is one by default and can be used to indicate we
+are using a broken console where the cursor shape can't be changed. This
+happends with some frame buffer consoles that fails to implement it.
 
   An example of configuration file is shown in 3.4.
   Read the ConfigFile.txt for more information about configuration files.

@@ -20,6 +20,7 @@ is explained.
   InpCP
   LoadSecondFont
   ScreenPalette
+  BrokenCursorShape
 
 *****************************************************************************/
 /*
@@ -682,7 +683,13 @@ int TScreenLinux::InitOnce()
  // Even when Linux have a blanker we run in full screen so screen savers
  // could be used with some sense.
  // We support fonts, but we can change their geometry at will.
- flags0=CanSetPalette | CodePageVar | CursorShapes | UseScreenSaver;
+ flags0=CanSetPalette | CodePageVar | UseScreenSaver;
+ // Some fbcon drivers fail to implement the cursor shape stuff.
+ // Using this variable we can inform it to the application.
+ long brokenCursorShapes=0;
+ optSearch("BrokenCursorShape",brokenCursorShapes);
+ if (!brokenCursorShapes)
+    flags0|=CursorShapes;
  if (canSetFonts)
    {
     flags0|=CanSetBFont;
