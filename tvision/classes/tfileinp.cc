@@ -43,8 +43,9 @@ NULL.@p
 ***************************************************************************/
 
 static
-void strCat(char *dest, char *s1, char *s2, char *s3, int max)
+int strCat(char *d, char *s1, char *s2, char *s3, int max)
 {
+ char *dest=d;
  char *end=dest+max;
 
  for (;*s1 && dest<end; s1++) *(dest++)=*s1;
@@ -53,6 +54,7 @@ void strCat(char *dest, char *s1, char *s2, char *s3, int max)
  if (s3)
     for (;*s3 && dest<end; s3++) *(dest++)=*s3;
  *dest=0;
+ return dest-d;
 }
 
 void TFileInputLine::handleEvent( TEvent& event )
@@ -64,11 +66,11 @@ void TFileInputLine::handleEvent( TEvent& event )
       )
         {
         if( (((TSearchRec *)event.message.infoPtr)->attr & FA_DIREC) != 0 )
-           strCat(data,((TSearchRec *)event.message.infoPtr)->name,
+           dataLen=strCat(data,((TSearchRec *)event.message.infoPtr)->name,
                   DIRSEPARATOR_,((TFileDialog *)owner)->wildCard,
                   maxLen);
         else
-           strCat(data,((TSearchRec *)event.message.infoPtr)->name,0,0,maxLen);
+           dataLen=strCat(data,((TSearchRec *)event.message.infoPtr)->name,0,0,maxLen);
         drawView();
         }
 }

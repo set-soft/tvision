@@ -480,7 +480,7 @@ void TInputLineBaseT<T,D>::setDataFromStr(void *str)
  unsigned ds=dataSize()/sizeof(T)-1, i;
  T *s=(T *)str;
  T *d=(T *)data;
- for (i=0; i<ds && *s; i++)
+ for (i=0; i<ds && s[i]; i++)
      d[i]=s[i];
  d[i]=EOS;
  dataLen=i;
