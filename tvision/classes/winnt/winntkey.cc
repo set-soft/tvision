@@ -83,17 +83,17 @@ void TGKey::fillTEvent(TEvent &e)
   shiftState = 0;
   if (dwCtlState & SHIFT_PRESSED)
     shiftState |= kbShiftCode;
-  else if (dwCtlState & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED))
+  if (dwCtlState & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED))
     shiftState |= kbCtrlCode;
-  else if (dwCtlState & LEFT_ALT_PRESSED)
+  if (dwCtlState & LEFT_ALT_PRESSED)
     shiftState |= kbAltLCode;
-  else if (dwCtlState & RIGHT_ALT_PRESSED)
+  if (dwCtlState & RIGHT_ALT_PRESSED)
     shiftState |= kbAltRCode;
-  //else if (dwCtlState & SCROLLLOCK_ON)
+  //if (dwCtlState & SCROLLLOCK_ON)
   //  shiftState |= kbScrollState;
-  //else if (dwCtlState & NUMLOCK_ON)
+  //if (dwCtlState & NUMLOCK_ON)
   //  shiftState |= kbNumState;
-  //else if (dwCtlState & CAPSLOCK_ON)
+  //if (dwCtlState & CAPSLOCK_ON)
   //  shiftState |= kbCapsState;
 
   e.keyDown.charScan.scanCode = inpRec.Event.KeyEvent.wVirtualScanCode;
