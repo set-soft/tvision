@@ -23,6 +23,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TPalette
+#define Uses_TProgram // SET: TProgram::application broadcast
 #include <tv.h>
 
 const TPoint minWinSize = {16, 6};
@@ -67,7 +68,10 @@ void TWindow::close()
 {
     frame = 0;  // so we don't try to use the frame after it's been deleted
     if( valid( cmClose ) )
+        { // SET: tell the application we are closing
+        message( TProgram::application, evBroadcast, cmClosingWindow, this );
         destroy( this );
+        }
 }
 
 void TWindow::shutDown()
