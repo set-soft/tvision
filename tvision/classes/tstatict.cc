@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
@@ -14,6 +14,10 @@ Modified by Robert H”hne to be used for RHIDE.
 // they can inconditionally declare symbols like NULL
 #include <ctype.h>
 #include <string.h>
+
+#ifdef _MSC_VER
+#include <malloc.h> //alloca()
+#endif
 
 #define Uses_TStaticText
 #define Uses_TDrawBuffer
@@ -32,7 +36,7 @@ TStaticText::TStaticText( const TRect& bounds, const char *aText ) :
 
 TStaticText::~TStaticText()
 {
-    delete[] text;
+    DeleteArray(text);
 }
 
 void TStaticText::draw()
@@ -42,7 +46,7 @@ void TStaticText::draw()
     int i, j, l, p, y;
     TDrawBuffer b;
     int maxLen = size.x*size.y;
-    char s[maxLen+1];
+    char *s=(char *)alloca(maxLen+1);
 
     color = getColor(1);
     getText(s, maxLen);

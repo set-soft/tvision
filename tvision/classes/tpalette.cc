@@ -6,13 +6,16 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
 
 #define Uses_TPalette
 #include <tv.h>
+#ifdef _MSC_VER
+#include <string.h> //memcpy()
+#endif
 
 TPalette::TPalette( const char* d, ushort len ) :
     data( new uchar[ len+1 ] )

@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
@@ -14,6 +14,9 @@ Modified by Robert H”hne to be used for RHIDE.
 // they can inconditionally declare symbols like NULL
 #include <string.h>
 #include <stdio.h>
+#ifdef _MSC_VER
+#include <malloc.h> //alloca()
+#endif
 
 #define Uses_TKeys
 #define Uses_TKeys_Extended
@@ -1150,9 +1153,13 @@ lab20:
   }
   // the mouse is in the draw area or an event has occoured during
   // the above drawing
+  #ifndef _WIN32
   TMouse::hide();
+  #endif
   call50();
+  #ifndef _WIN32
   TMouse::show();
+  #endif
   if (((TGroup *)(_view))->lockFlag) return;
   goto lab10;
 }

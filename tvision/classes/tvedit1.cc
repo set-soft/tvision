@@ -1,4 +1,5 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
+/* Modified by Vadim Beloborodov to be used on WIN32 console */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -9,6 +10,7 @@
 
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h> //strcpy()
 //#include <strstrea.h>
 #include <iomanip.h>
 

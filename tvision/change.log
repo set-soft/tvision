@@ -1,4 +1,8 @@
 $Log$
+Revision 1.127  2000/01/26 00:27:35  set
+* Added: A new couple of TScreen members to Set/Get the window title under
+Windows 9x. I hope to extend it to xterm.
+.
 -----------------------------------------------------------------------------
 v1.0.10 release.
 

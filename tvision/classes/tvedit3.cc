@@ -1,4 +1,5 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
+/* Modified by Vadim Beloborodov to be used on WIN32 console */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -29,7 +30,11 @@
 #include <tv.h>
 
 #include <stdarg.h>
+#ifdef _MSC_VER
+#include <strstrea.h>
+#else
 #include <strstream.h>
+#endif
 #include <iomanip.h>
 
 TMenuBar *TEditorApp::initMenuBar( TRect r )

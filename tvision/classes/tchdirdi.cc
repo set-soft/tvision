@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
@@ -15,7 +15,12 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef _MSC_VER
+#include <io.h>
+#include <direct.h>
+#else
 #include <unistd.h>
+#endif
 
 #define Uses_MsgBox
 #define Uses_TChDirDialog
@@ -112,7 +117,7 @@ void TChDirDialog::handleEvent( TEvent& event )
                     {
                     TDirEntry *p = dirList->list()->at( dirList->focused );
                     strcpy( curDir, p->dir() );
-#ifdef __DJGPP__
+#if (defined(__DJGPP__) || defined(_WIN32))
                     if( strcmp( curDir, _("Drives") ) == 0 )
                         break;
                     else if( driveValid( curDir[0] ) )
@@ -130,13 +135,13 @@ void TChDirDialog::handleEvent( TEvent& event )
                     break;
                     }
                 case cmDirSelection:
-                    chDirButton->makeDefault((Boolean)event.message.infoPtr);
+                    chDirButton->makeDefault((Boolean)(event.message.infoPtr!=NULL));
                     return; // Do not use break here ! 
                 default:
                     return;
                 }
             dirList->newDirectory( curDir );
-#ifdef __DJGPP__
+#if (defined(__DJGPP__) || defined(_WIN32))
             int len = strlen( curDir );
 	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;
@@ -164,7 +169,7 @@ void TChDirDialog::setUpDialog()
         dirList->newDirectory( curDir );
         if( dirInput != 0 )
             {
-#ifdef __DJGPP__
+#if (defined(__DJGPP__) || defined(_WIN32))
             int len = strlen( curDir );
 	    if( len > 3 && curDir[len-1] == DIRSEPARATOR )
                 curDir[len-1] = EOS;

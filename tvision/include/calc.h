@@ -40,7 +40,7 @@ const int cmCalcButton  = 200,
 
 class TRect;
 class TPalette;
-class TEvent;
+struct TEvent;
 
 class TCalcDisplay : public TView
 {

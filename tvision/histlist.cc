@@ -37,11 +37,6 @@ void *HistRec::operator new( size_t, HistRec *hr )
     return hr;
 }
 
-#ifdef __GNUC__
-#define NEVER_RETURNS __attribute__((noreturn))
-#else
-#endif
-
 void NEVER_RETURNS *HistRec::operator new( size_t )
 {
     abort();

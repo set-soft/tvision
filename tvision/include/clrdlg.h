@@ -15,7 +15,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TColorDialog
 
 class TColorGroup;
-class TEvent;
+struct TEvent;
 class TColorDisplay;
 class TColorGroupList;
 class TLabel;

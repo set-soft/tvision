@@ -6,13 +6,18 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
 #include <string.h>
 #include <stdio.h>
+#ifdef _MSC_VER
+#include <io.h>
+#include <malloc.h> //alloca()
+#else
 #include <unistd.h>
+#endif
 #include <stdlib.h>
 
 #define Uses_MsgBox
@@ -26,6 +31,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #include <errno.h>
 #include <ctype.h>
+#ifndef _WIN32
 #ifdef __DJGPP__
 #include <dir.h>
 #endif
@@ -33,6 +39,9 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <dirent.h>
 #include <fnmatch.h>
 #include <glob.h>
+#else
+#include <direct.h>
+#endif
 
 TFileList::TFileList( const TRect& bounds,
           TScrollBar *aScrollBar) :
@@ -131,7 +140,24 @@ struct __dj_DIR {
 extern "C" size_t _file_time_stamp(unsigned);
 
 #else
+#ifdef _WIN32
 
+struct DirSearchRec : public TSearchRec
+{
+	void readFf_blk(_finddata_t  &s)
+	{
+		attr = 0;
+		if (s.attrib & _A_ARCH)
+			attr = FA_ARCH;
+		if (s.attrib & _A_SUBDIR)
+			attr |= FA_DIREC;
+		strcpy(name, s.name);
+		size = s.size;
+		time = s.time_write;
+	}
+};
+
+#else
 struct DirSearchRec : public TSearchRec
 {
   /* SS: changed */
@@ -146,7 +172,7 @@ struct DirSearchRec : public TSearchRec
   }
 
 };
-
+#endif
 #endif
 
 #ifdef __DJGPP__ // this is really faster then the glob methode
@@ -158,7 +184,7 @@ void TFileList::readDirectory( const char *aWildCard )
   TFileCollection *fileList = new TFileCollection( 5, 5 );
   char *wildcard = (char *)alloca(strlen(aWildCard)+1);
   strcpy(wildcard,aWildCard);
-  char *slash = strrchr(wildcard,'/');
+  char *slash = strrchr(wildcard,DIRSEPARATOR);
   char *path;
   // SET: Added code to remove .. in the root directory
   int removeParent=0;
@@ -216,7 +242,97 @@ void TFileList::readDirectory( const char *aWildCard )
 }
 
 #else
+#ifdef _WIN32
+void TFileList::readDirectory( const char *aWildCard )
+{
+  long dir;
+  _finddata_t de;
+  _finddata_t pde;
+  int hasparent=0;
+  DirSearchRec *p;
+  TFileCollection *fileList = new TFileCollection( 5, 5 );
+  char *wildcard = (char *)alloca(strlen(aWildCard)+1);
+  strcpy(wildcard,aWildCard);
+  char *slash = strrchr(wildcard,DIRSEPARATOR);
+  char *path;
+  // SET: Added code to remove .. in the root directory
+  int removeParent=0;
+  char dirpath[PATH_MAX];
+  
+  if (slash)
+  {
+    *slash = 0;
+    path = wildcard;
+    if (strlen(path) == 2 && path[1] == ':')
+    {
+      path = (char *)alloca(4);
+      strcpy(path,wildcard);
+      strcat(path,DIRSEPARATOR_);
+    }
+	strcpy(dirpath,path);
+	strcat(dirpath,DIRSEPARATOR_"*");
+    if (strlen(path) == 3 && path[1] == ':')
+       removeParent=1;
+    *slash = DIRSEPARATOR;
+  }
+  else
+  {
+    slash = wildcard;
+    path = ".";
+    char *cwd=getcwd(0,PATH_MAX);
+    if (cwd)
+      {
+       if (strlen(cwd)==3 && cwd[1] == ':')
+          removeParent=1;
+       free(cwd);
+      }
+	strcpy(dirpath,path);
+	strcat(dirpath,DIRSEPARATOR_"*");
+  }
+  //find all directories
+  dir = _findfirst( dirpath, &de ) ;
+  if (dir!=-1) do 
+  {
+    if (!(de.attrib & _A_SUBDIR)) continue;
+    if (de.name[0]=='.') {
+		if( de.name[1]=='.' ) {
+            pde = de;
+            hasparent=1;
+        }
+		continue;
+	}
+    p = new DirSearchRec;
+	p->readFf_blk( de );
+    fileList->insert(p);
+  } while (_findnext(dir,&de)==0);
+  if (dir!=-1) _findclose(dir);
 
+  //find all files
+  dir = _findfirst( wildcard, &de ) ;
+  if (dir!=-1) do 
+  {
+    if (de.attrib & _A_SUBDIR) continue;
+    p = new DirSearchRec;
+	p->readFf_blk( de );
+    fileList->insert(p);
+  } while (_findnext(dir,&de)==0);
+  if (dir!=-1) _findclose(dir);
+
+  if (!removeParent && hasparent) {
+	p = new DirSearchRec;
+	p->readFf_blk( pde );
+    fileList->insert(p);
+  }
+  newList(fileList);
+  if (list()->getCount() > 0)
+    message( owner, evBroadcast, cmFileFocused, list()->at(0) );
+  else
+  {
+    static DirSearchRec noFile;
+    message( owner, evBroadcast, cmFileFocused, &noFile );
+  }
+}
+#else
 void TFileList::readDirectory( const char *aWildCard )
 {
   /* SS: changed */
@@ -327,7 +443,7 @@ void TFileList::readDirectory( const char *aWildCard )
     message( owner, evBroadcast, cmFileFocused, &noFile );
   }
 }
-
+#endif
 #endif
 
 #if !defined( NO_STREAM )

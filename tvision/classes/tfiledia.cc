@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
@@ -73,7 +73,11 @@ TFileDialog::TFileDialog( const char *aWildCard,
     his->growMode=gfGrowLoX | gfGrowHiX;
     insert(his);
     
+	#ifndef _WIN32
     int longNames=TV_HaveLFNs(); // SET
+	#else
+	int longNames=1;
+	#endif
     TScrollBar *sb = longNames ?
                      new TScrollBar( TRect( 34, 5, 35, 16 ) ) :
                      new TScrollBar( TRect( 3, 15, 34, 16 ) );
@@ -176,7 +180,7 @@ void TFileDialog::sizeLimits(TPoint& min, TPoint& max)
 
 TFileDialog::~TFileDialog()
 {
-    delete[] directory;
+    DeleteArray(directory);
 }
 
 void TFileDialog::shutDown()
@@ -278,7 +282,7 @@ void TFileDialog::readDirectory()
 
 void TFileDialog::setUpCurDir()
 {
-    delete[] directory;
+    DeleteArray(directory);
     char curDir[PATH_MAX];
     getCurDir( curDir );
     directory = newStr( curDir );

@@ -21,7 +21,7 @@ public:
 
     TSItem( const char *aValue, TSItem *aNext )
         { value = newStr(aValue); next = aNext; }
-    ~TSItem() { delete[] value; }
+    ~TSItem() { DeleteArray(value); }
 
     const char *value;
     TSItem *next;

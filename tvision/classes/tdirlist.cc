@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
@@ -60,7 +60,7 @@ Boolean TDirListBox::isSelected( ccIndex item )
     return Boolean( item == cur );
 }
 
-#ifndef __DJGPP__
+#if (!defined(__DJGPP__) && !defined(_WIN32))
 
 void TDirListBox::showDrives( TDirCollection * )
 {
@@ -68,8 +68,14 @@ void TDirListBox::showDrives( TDirCollection * )
 
 #else
 
+#ifndef _WIN32
 #include <dir.h> // getdisk()
 #include <dos.h>
+#else
+#include <io.h>
+#include <direct.h> //_getdrive()
+#define getdisk() (_getdrive()-1)
+#endif
 
 void TDirListBox::showDrives( TDirCollection *dirs )
 {
@@ -124,7 +130,7 @@ extern "C" char *ffname(struct ffblk *);
 #define N(s) s.ff_name
 #endif
 
-#ifndef __DJGPP__
+#if (!defined(__DJGPP__) && !defined(_WIN32))
 #include <dirent.h>
 #include <sys/stat.h>
 
@@ -213,7 +219,82 @@ void TDirListBox::showDirs( TDirCollection *dirs )
 }
 
 #else
+#ifdef _WIN32
+void TDirListBox::showDirs( TDirCollection *dirs )
+{
+    const int indentSize = 2;
+    int indent = indentSize;
 
+    char buf[PATH_MAX*2];
+    memset( buf, ' ', sizeof( buf ) );
+    char *name = buf + PATH_MAX;
+
+    char *org = name - strlen(pathDir);
+    strcpy( org, pathDir );
+
+    char *curDir = dir;
+    char *end = dir + 3;
+    char hold = *end;
+    *end = EOS;         // mark end of drive name
+    strcpy( name, curDir );
+    dirs->insert( new TDirEntry( org, name ) );
+
+    *end = hold;        // restore full path
+    curDir = end;
+    while( (end = strchr( curDir, DIRSEPARATOR )) != 0 )
+        {
+        *end = EOS;
+        strncpy( name, curDir, size_t(end-curDir) );
+        name[size_t(end-curDir)] = EOS;
+        dirs->insert( new TDirEntry( org - indent, dir ) );
+        *end = DIRSEPARATOR;
+        curDir = end+1;
+        indent += indentSize;
+        }
+
+    cur = dirs->getCount() - 1;
+
+    end = strrchr( dir, DIRSEPARATOR );
+    char path[PATH_MAX];
+    strncpy( path, dir, size_t(end-dir+1) );
+    end = path + unsigned(end-dir)+1;
+    strcpy( end, "*" );
+
+    Boolean isFirst = True;
+    _finddata_t ff;
+    long res = _findfirst( path, &ff );
+    if (res != -1 ) {
+        do {
+        	if( (ff.attrib & _A_SUBDIR) != 0 && ff.name[0] != '.' ) {
+	            if( isFirst ) {
+	                memcpy( org, firstDir, strlen(firstDir)+1 );
+    	            isFirst = False;
+                }
+        	    else
+            	    memcpy( org, middleDir, strlen(middleDir)+1 );
+	            strcpy( name, ff.name);
+    	        strcpy( end, ff.name );
+        	    dirs->insert( new TDirEntry( org - indent, path ) );
+            }
+        } while( _findnext( res, &ff)==0 );
+       _findclose( res );
+    }
+
+    char *p = dirs->at(dirs->getCount()-1)->text();
+    char *i = strchr( p, graphics[0] );
+    if( i == 0 )
+        {
+        i = strchr( p, graphics[1] );
+        if( i != 0 )
+            *i = graphics[0];
+        }
+    else
+        {
+        *(i+1) = graphics[2];
+        *(i+2) = graphics[2];
+        }
+}
+#else //__DJGPP__
 void TDirListBox::showDirs( TDirCollection *dirs )
 {
     const int indentSize = 2;
@@ -289,14 +370,15 @@ void TDirListBox::showDirs( TDirCollection *dirs )
         *(i+2) = graphics[2];
         }
 }
-
+#endif
 #endif // __DJGPP__
 
 void TDirListBox::newDirectory( const char *str )
 {
     strcpy( dir, str );
     TDirCollection *dirs = new TDirCollection( 5, 5 );
-#ifdef __DJGPP__
+#if (defined(__DJGPP__) || defined(_WIN32))
+    #ifndef _WIN32
     // SET: Old programs created for original TV can pass backslashes here
     // and the code in showDirs assumes they are all forward.
     for (int i=0; dir[i]; i++)
@@ -304,6 +386,7 @@ void TDirListBox::newDirectory( const char *str )
         if (dir[i]=='\\')
            dir[i]='/';
        }
+    #endif
     char *drives = _("Drives");
     dirs->insert( new TDirEntry( drives, drives ) );
     if( strcmp( dir, drives ) == 0 )

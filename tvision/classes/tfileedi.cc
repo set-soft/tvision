@@ -1,4 +1,5 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
+/* Modified by Vadim Beloborodov to be used on WIN32 console */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -9,7 +10,11 @@
 #include <string.h>
 #include <fstream.h>
 #include <fcntl.h>
+#ifdef _MSC_VER
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #include <sys/stat.h>
 
@@ -90,7 +95,7 @@ Boolean TFileEditor::loadFile()
 {
     int crfound = 0,i;
     char tmp[PATH_MAX];
-    ifstream f( fileName, ios::in | ios::bin );
+    ifstream f( fileName, ios::in | IOS_BIN );
     if( !f )
         {
         setBufLen( 0 );
@@ -124,7 +129,7 @@ Boolean TFileEditor::loadFile()
               ::write(writehandle,tmpbuf,fsize);
             close(readhandle);
             close(writehandle);
-            f.open(tmp,ios::in | ios::bin);
+            f.open(tmp,ios::in | IOS_BIN);
           }
         }
         long fSize = filelength( f.rdbuf()->fd() );
@@ -218,7 +223,7 @@ Boolean TFileEditor::saveFile()
        char backupName[PATH_MAX];
        strcpy(backupName,fileName);
        dot = strrchr(backupName,'.');
-       slash = strrchr(backupName,'/');
+       slash = strrchr(backupName,DIRSEPARATOR);
        if (dot < slash) // directory has a dot but not the filename
          dot = NULL;
        if (!dot)
@@ -228,7 +233,7 @@ Boolean TFileEditor::saveFile()
        rename( fileName, backupName );
       }
 
-    ofstream f( fileName, ios::out | ios::bin );
+    ofstream f( fileName, ios::out | IOS_BIN );
 
     if( !f )
         {

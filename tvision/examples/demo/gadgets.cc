@@ -30,7 +30,11 @@
 #define Uses_TDrawBuffer
 #include <tv.h>
 
+#ifdef _MSC_VER
+#include <strstrea.h>
+#else
 #include <strstream.h>
+#endif
 #include <iomanip.h>
 
 #include "gadgets.h"

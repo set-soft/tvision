@@ -17,7 +17,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TFrame;
 class TRect;
 class TPoint;
-class TEvent;
+struct TEvent;
 class TFrame;
 class TScrollBar;
 

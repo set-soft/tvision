@@ -19,8 +19,16 @@
 #include <stdio.h>	/* SS: for sprintf(...) */
 #include <stdlib.h>
 #include <ctype.h>
+#ifdef _MSC_VER
+#include <strstrea.h>
+#include <time.h>
+#include <io.h>
+#else
 #include <sys/time.h>
 #include <unistd.h>
+#include <strstream.h>
+#endif
+
 
 #define Uses_TRect
 #define Uses_TEvent
@@ -35,7 +43,7 @@
 __link( RView )
 __link( RWindow )
 
-#include <strstream.h>
+
 #include <iomanip.h>
 
 #include "puzzle.h"

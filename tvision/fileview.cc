@@ -18,7 +18,13 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <ctype.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#ifdef _MSC_VER
+#include <io.h>
+#include <malloc.h> // alloca
+#else
 #include <unistd.h>
+#endif
+
 
 #define Uses_MsgBox
 #define Uses_TKeys
@@ -102,22 +108,22 @@ TFileViewer::~TFileViewer()
 void TFileViewer::draw()
 {
     const char *p;
+    char *s=(char *)alloca(size.x+1);
 
     ushort c =  getColor(0x0301);
     for( int i = 0; i < size.y; i++ )
         {
         TDrawBuffer b;
-	b.moveChar( 0, ' ', c, size.x );
+        b.moveChar( 0, ' ', c, size.x );
 
         if( delta.y + i < fileLines->getCount() )
             {
-            char s[size.x+1];
             p = operator[](delta.y+i);
             if( p == 0 || strlen(p) < (unsigned)delta.x )
                 s[0] = EOS;
             else
-		{
-		strncpy( s, p+delta.x, size.x );
+                {
+                strncpy( s, p+delta.x, size.x );
                 s[size.x] = EOS;
                 }
             b.moveStr( 0, s, c );
@@ -138,7 +144,7 @@ void TFileViewer::readFile( const char *fName )
 
   limit.x = 0;
   fileName = newStr( fName );
-#if defined( __DJGPP__ )
+#if defined( __DJGPP__ ) || defined(_WIN32)
   int fileToView = open(fName, O_RDONLY | O_TEXT);
 #else
   int fileToView = open(fName, O_RDONLY);

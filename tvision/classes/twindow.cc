@@ -61,7 +61,7 @@ TWindow::TWindow( const TRect& bounds,
 
 TWindow::~TWindow()
 {
-    delete[] title;
+    DeleteArray(title);
 }
 
 void TWindow::close()

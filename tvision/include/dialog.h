@@ -53,7 +53,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define __TDialog
 
 class TRect;
-class TEvent;
+struct TEvent;
 
 class TDialog : public TWindow
 {

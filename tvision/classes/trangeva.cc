@@ -40,11 +40,12 @@ TRangeValidator::TRangeValidator(long aMin,long aMax) :
 void TRangeValidator::Error()
 {
   if (Min >= 0)
-    messageBox(mfError|mfOKButton,_("Value not in the range %U to %U"),
+    messageBox(mfError|mfOKButton,_("Value not in the range %lu to %lu"),
                (unsigned long)Min,(unsigned long)Max);
   else
-    messageBox(mfError|mfOKButton,_("Value not in the range %D to %D"),
+    messageBox(mfError|mfOKButton,_("Value not in the range %li to %li"),
                Min,Max);
+  // SET: Replaced %U and %D because MSVC lacks it
 }
 
 static long get_val(const char *buf)

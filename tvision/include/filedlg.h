@@ -27,7 +27,7 @@ const ushort
 				   // WildCard by using SetData or store
 				   // the dialog on a stream.
 
-class TEvent;
+struct TEvent;
 class TFileInputLine;
 class TFileList;
 

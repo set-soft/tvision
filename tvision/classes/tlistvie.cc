@@ -6,13 +6,17 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #include <string.h>
+
+#ifdef _MSC_VER
+#include <malloc.h> //alloca()
+#endif
 
 #define Uses_TKeys
 #define Uses_TListViewer
@@ -141,12 +145,17 @@ void TListViewer::draw()
             b.moveChar( curCol, ' ', color, width );
             if( item < range )
                 {
+                #ifdef _MSC_VER
+                char *text=(char *)alloca(width+indent+1);
+                char *buf=(char *)alloca(width+1);
+                #else
                 char text[width + indent + 1]; // This was probably the
                                                // reason for a bug, because
                                                // getText assumes a buffer
                                                // with a length of maxLen + 1
-                getText( text, item, width + indent );
                 char buf[width+1];
+                #endif
+                getText( text, item, width + indent );
                 int tl = strlen(text);
                 if (tl <= indent)
                   buf[0] = 0;

@@ -142,7 +142,7 @@ void TInterior::draw()       // modified for scroller
         if( lines[j] )
             {
             char s[maxLineLength];
-            if( delta.x > strlen(lines[j] ) )
+            if( delta.x > (int)strlen(lines[j] ) )
                 s[0] = EOS;
             else
                 {

@@ -26,6 +26,38 @@ const int maxViewWidth = 132;
 const int maxViewWidth = 1024;
 #endif
 
+#ifdef __GNUC__
+#define NEVER_RETURNS __attribute__((noreturn))
+#else
+#	ifdef _MSC_VER
+#		define NEVER_RETURNS
+#	endif
+#endif
+
+#ifdef _MSC_VER
+#	define __attribute__( value )
+#	ifndef PATH_MAX
+#		define PATH_MAX 255
+#	endif
+#	pragma warning( disable : 4250 )  
+#	define strncasecmp strnicmp
+#	define strcasecmp stricmp
+#	define IOS_BIN ios::binary
+ // SET: MSVC have a non-standard delete[] support. It doesn't follow last
+ // standard. And which is worst doesn't understand it.
+ // Vadim Beloborodov pointed out this missfeature.
+#  define DeleteArray(a) delete (void *)a
+ // SET: If somebody at M$ says MSVC is ANSI compliant I'll personally kill
+ // this idiot ;-)
+#  define S_ISREG(a) (a & _S_IFREG)
+#  define random rand
+#else
+#	define IOS_BIN ios::bin
+ // SET: Anything allocated with new[] should be deleted with [].
+ // Pointed out by Laurynas Biveinis.
+#  define DeleteArray(a) delete[] a
+#endif
+
 const int maxFindStrLen    = 80;
 const int maxReplaceStrLen = 80;
 
@@ -38,15 +70,22 @@ const int maxReplaceStrLen = 80;
 #define FP_OFF(x) (int)(x)
 #define movmem(src,dst,size) memmove(dst,src,size)
 #define heapcheck() 1
-#define ltoa itoa
-#define DIRSEPARATOR '/'
-#define DIRSEPARATOR_ "/"
-#ifdef __DJGPP__
-#define PATHSEPARATOR ';'
-#define PATHSEPARATOR_ ";"
+
+#if !defined(_WIN32)
+# define ltoa itoa
+# define DIRSEPARATOR '/'
+# define DIRSEPARATOR_ "/"
 #else
-#define PATHSEPARATOR ':'
-#define PATHSEPARATOR_ ":"
+# define DIRSEPARATOR '\\'
+# define DIRSEPARATOR_ "\\"
+#endif
+
+#if (defined(__DJGPP__) || defined(_WIN32))
+# define PATHSEPARATOR ';'
+# define PATHSEPARATOR_ ";"
+#else
+# define PATHSEPARATOR ':'
+# define PATHSEPARATOR_ ":"
 #endif
 
 int getcurdir(int, char *);

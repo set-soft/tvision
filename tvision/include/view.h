@@ -23,7 +23,7 @@ struct write_args
 };
 
 class TRect;
-class TEvent;
+struct TEvent;
 class TGroup;
 class TPalette;
 class TCommandSet;

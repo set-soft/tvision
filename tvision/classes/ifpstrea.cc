@@ -6,7 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
-
+Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
@@ -20,7 +20,7 @@ ifpstream::ifpstream()
 }
 
 ifpstream::ifpstream( const char* name, int omode, int prot ) :
-        fpbase( name, omode | ios::in | ios::bin, prot )
+        fpbase( name, omode | ios::in | IOS_BIN, prot )
 {
 }
 
@@ -43,6 +43,6 @@ filebuf *ifpstream::rdbuf()
 
 void ifpstream::open( const char *name, int omode, int prot )
 {
-    fpbase::open( name, omode | ios::in | ios::bin, prot );
+    fpbase::open( name, omode | ios::in | IOS_BIN, prot );
 }
 
