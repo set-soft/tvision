@@ -87,10 +87,10 @@ TV_OBJS_ =  +beep.obj +drivevalid.obj +expandpath.obj +fexpand.obj +fileattrs.ob
 +tstrmtyp.obj +tsubmenu.obj +ttermina.obj +ttextdev.obj +tvalidat.obj\
 +tvedit1.obj +tvedit2.obj +tvedit3.obj +tview.obj +tvtext1.obj +tvtext2.obj\
 +twindow.obj +unixdis.obj +unixkey.obj +unixmouse.obj +unixscr.obj \
-   +win32dis.obj +win32key.obj +win32mouse.obj\
-+win32scr.obj +winntdis.obj +winntkey.obj +winntmouse.obj +winntscr.obj\
-+x11dis.obj +x11key.obj +x11mouse.obj +x11src.obj +xtermdis.obj +xtermkey.obj\
-+xtermmouse.obj +xtermscr.obj
+   +win32clip.obj +win32dis.obj +win32key.obj\
++win32mouse.obj +win32scr.obj +winntdis.obj +winntkey.obj +winntmouse.obj\
++winntscr.obj +x11dis.obj +x11key.obj +x11mouse.obj +x11src.obj +xtermdis.obj\
++xtermkey.obj +xtermmouse.obj +xtermscr.obj
 OBJS = $(TV_OBJS_:+=objs\)
 
 all: rhtv.lib tvex.exe
@@ -112,6 +112,18 @@ tvex.exe: objs\tvex.obj rhtv.lib
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
 {..\classes\dos}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes\linux}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes\qnxrtp}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes\unix}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes\x11}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
 
 {..\classes\win32}.cc{objs}.obj:

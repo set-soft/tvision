@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.190  2002/07/01 12:49:03  set
+Revision 2.189  2002/06/29 20:11:05  set
+* Added: [Win32] Clipboard class.
+* Updated: [BC++] Makefile to include all the drivers.
+* Fixed: [DOS] Clipboard error reporting.
+
 Revision 2.189  2002/07/01 12:38:11  set
 * Added: [DOS] Windows clipboard routines.
 * Modified: The TVOSClipboard class to report the name of the error in case
