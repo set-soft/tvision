@@ -157,11 +157,18 @@ void TCalcDisplay::calcKey(unsigned char key, unsigned code)
     double r;
     char *decPoint=nl_langinfo(RADIXCHAR);
 
-    if (code==kbBackSpace)
-       key=8;
-    else
-    if (code==kbEsc)
-       key=27;
+    switch(code)
+        {
+        case kbBackSpace:
+             key=8;
+             break;
+        case kbEsc:
+             key=27;
+             break;
+        case kbEnter: // Added by Mike
+             key=13;
+             break;
+        }
     
     key = (unsigned char)toupper(key);
     if( status == csError && key != 'C')

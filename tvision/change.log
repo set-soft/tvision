@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.108  2002/06/03 13:44:48  set
+* Added: [Win32] The "WinNT" driver. Now this is available and I also
+adapted things so the "Win32" driver is also available. It means that both:
+the code from Anatoli and Vadim can be used for BC++, Cygwin and MinGW.
+It looks like Anatoli's code is much faster and less complex. Currently
+the WinNT driver have more priority for BC++ and less for Cygwin/MinGW.
+
 Revision 2.107  2002/06/03 13:18:38  set
 * Fixed: [DOS] Typo in cursor shape code (let it enabled all the time).
 * Fixed: [DOS] Palette must be restored each time a mode is set.
