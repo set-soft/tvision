@@ -8,6 +8,7 @@
 Modified by Robert H”hne to be used for RHIDE.
 Added callback, code page stuff and various details by Salvador Eduardo Tropea.
 Added new class TButtonRef by Salvador Eduardo Tropea.
+Added i18n support by Salvador Eduardo Tropea.
 
  *
  *
@@ -44,6 +45,7 @@ TButton::TButton( const TRect& bounds,
                   ushort aFlags) :
     TView( bounds ),
     title( newStr( aTitle ) ),
+    intlTitle( NULL ),
     command( aCommand ),
     flags( aFlags ),
     amDefault( Boolean( (aFlags & bfDefault) != 0 ) )
@@ -61,6 +63,7 @@ TButton::TButton( const TRect& bounds,
 TButton::~TButton()
 {
     DeleteArray((char *)title); // SET
+    TVIntl::freeSt(intlTitle);
 }
 
 
@@ -77,15 +80,16 @@ void TButton::drawTitle( TDrawBuffer &b,
                        )
 {
     int l, scOff;
+    const char *theTitle = getText();
     if( (flags & bfLeftJust) != 0 )
         l = 1;
     else
         {
-        l = (s - cstrlen(title) - 1)/2;
+        l = (s - cstrlen(theTitle) - 1)/2;
         if( l < 1 )
             l = 1;
         }
-    b.moveCStr( i+l, title, cButton );
+    b.moveCStr( i+l, theTitle, cButton );
 
     if( showMarkers == True && !down )
         {
@@ -176,7 +180,7 @@ void TButton::handleEvent( TEvent& event )
     TPoint mouse;
     TRect clickRect;
     Boolean down = False;
-    char c = hotKey( title );
+    char c = hotKey( getText() );
 
     clickRect = getExtent();
     clickRect.a.x++;
@@ -325,6 +329,7 @@ void *TButton::read( ipstream& is )
 {
     TView::read( is );
     title = is.readString();
+    intlTitle = NULL;
     int temp;
     is >> command >> flags >> temp;
     amDefault = Boolean(temp);

@@ -122,7 +122,7 @@ void TVIntl::recodeStr(char *str, int len)
      str[i]=recodeTable[(uchar)str[i]];
 }
 
-char *TVIntl::getTextNew(const char *msgid)
+char *TVIntl::getTextNew(const char *msgid, Boolean onlyIntl)
 {
  if (!msgid) return NULL;
  const char *source;
@@ -130,6 +130,8 @@ char *TVIntl::getTextNew(const char *msgid)
     source=(const char *)LibGetText(msgid);
  else
     source=msgid;
+ if (onlyIntl && source==msgid)
+    return NULL;
  int len=strlen(source)+1;
  char *ret=new char[len];
  memcpy(ret,source,len);
@@ -151,12 +153,12 @@ const char *TVIntl::getText(const char *msgid, stTVIntl *&cache)
  else
    {
     if (curCP==cache->cp)
-       return cache->translation;
+       return cache->translation ? cache->translation : msgid;
     DeleteArray(cache->translation);
    }
- cache->translation=getTextNew(msgid);
+ cache->translation=getTextNew(msgid,True);
  cache->cp=curCP;
- return cache->translation;
+ return cache->translation ? cache->translation : msgid;
 }
 
 void TVIntl::freeSt(stTVIntl *&cache)

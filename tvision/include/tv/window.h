@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified for i18n support by Salvador Eduardo Tropea.
 
  *
  *
@@ -76,6 +77,7 @@ public:
     short palette;
     TFrame *frame;
     const char *title;
+    stTVIntl   *intlTitle;
 #if !defined( NO_STREAM )
 private:
 

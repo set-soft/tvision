@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.31  2003/04/08 15:22:41  set
+* Added: parttree.cc/h to the distribution list.
+
 Revision 2.399.2.30  2003/04/08 14:04:20  set
 * Added: Support for the new i18n features to TStaticText it affects
 TLabel and TParamText(partially).
