@@ -14,6 +14,10 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TScreen ) && !defined( __TScreen )
 #define __TScreen
 
+#ifdef __linux__
+#include <signal.h>
+#endif
+
 // That's a wrapper to enclose the DOS fonts stuff.
 // Under Linux can't be used and just returns error.
 class TFont
@@ -62,6 +66,7 @@ public:
     static TFont *GetFontHandler(void) { return font; }
     static void   SetFontHandler(TFont *f);
     static void   RestoreDefaultFont(void);
+    static int    CheckForWindowSize(void);
 
 protected:
 
@@ -71,6 +76,10 @@ protected:
     ~TDisplay() { if (font) {delete font; font=0;} };
 
     static TFont *font;
+    #ifdef __linux__
+    // SET: 1 when the size of the window where the program is running changed
+    static volatile sig_atomic_t windowSizeChanged;
+    #endif
 
 private:
 
@@ -125,6 +134,12 @@ public:
     static void setCharacter(unsigned offset,ushort value);
     static void setCharacter(unsigned offset,ushort *values,unsigned count);
 
+    #ifdef __linux__
+    // SET: That's very low level, don't call it from any place!
+    static void SendToTerminal(const char *value);
+    #endif
+
+    friend void TV_WindowSizeChanged(int sig);
 };
 
 #endif  // Uses_TScreen

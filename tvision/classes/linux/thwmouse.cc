@@ -2,18 +2,22 @@
 /* This file is part of RHIDE. */
 #ifdef __linux__
 
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <stdio.h>
+
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TScreen
 #include <tv.h>
-#include <time.h>
-#include <stdio.h>
 #include <linux/keyboard.h>
 
 extern "C" {
 #include <gpm.h>
 }
 
+//#define DEBUG
 #ifdef DEBUG
 #ifdef __linux__
 extern char *program_invocation_short_name;
@@ -32,6 +36,7 @@ Boolean THWMouse::noMouse = False;
 static int last_x=0,last_y=0,visible=0;
 static unsigned short mouse_char;
 static int my_buttonCount=0;
+static char XTermDetected=0;
 
 extern int TScreen_suspended;
 
@@ -103,17 +108,39 @@ int SetUpGPMConnection()
 
 void THWMouse::resume()
 {
-  if (gpm_fd != -1)
+ if (handlerInstalled)
     return;
-  if (SetUpGPMConnection() < 0)
-  {
-    LOG("no gpm, running without mouse");
-  }
-  else
-  {
-    LOG("gpm server version " << Gpm_GetServerVersion(NULL));
-    buttonCount = my_buttonCount;
-  }
+
+ // SET: Are we in a xterm* ?
+ // Note: we can't try gpm first, it mess the xterm mouse, it took me a lot
+ // of time to figure out why it worked in a simple example but not in a real
+ // Turbo Vision program.
+ char *term=getenv("TERM");
+ if (term && strncmp(term,"xterm",5)==0)
+   {
+    handlerInstalled=True;
+    XTermDetected=1;
+    buttonCount=3; // X uses 3 buttons
+    // Save old hilit tracking and enable mouse tracking (GPM_XTERM_ON)
+    TScreen::SendToTerminal("\x1B[?1001s\x1B[?1000h");
+    LOG("using xterm* mouse");
+   }
+ else
+   { // Try gpm
+    if (gpm_fd!=-1)
+      { // It can happend only if a bug is there
+       handlerInstalled=True;
+       return;
+      }
+    if (SetUpGPMConnection()<0)
+       LOG("no gpm, running without mouse");
+    else
+      {
+       LOG("gpm server version " << Gpm_GetServerVersion(NULL));
+       handlerInstalled=True;
+       buttonCount=my_buttonCount;
+      }
+   }
   show();
 }
 
@@ -121,16 +148,7 @@ int use_mouse_handler = 1;
 
 THWMouse::THWMouse()
 {
-  if (SetUpGPMConnection() < 0)
-  {
-    LOG("no gpm, running without mouse");
-  }
-  else
-  {
-    LOG("gpm server version " << Gpm_GetServerVersion(NULL));
-    my_buttonCount = buttonCount = 2;
-  }
-  show();
+  resume(); // SET: to avoid duplicating code
 }
 
 THWMouse::~THWMouse()
@@ -140,11 +158,31 @@ THWMouse::~THWMouse()
 
 void THWMouse::suspend()
 {
-  if (gpm_fd == -1) return;
-  hide();
-  my_buttonCount = buttonCount;
-  buttonCount = 0;
-  Gpm_Close();
+ if (!handlerInstalled)
+    return;
+
+ if (XTermDetected)
+   {
+    hide();
+    XTermDetected=0;
+    handlerInstalled=False;
+    buttonCount=0;
+    // Disable mouse tracking and restore old hilittracking (GPM_XTERM_OFF)
+    TScreen::SendToTerminal("\x1B[?1000l\x1B[?1001r");
+    LOG("xterm mouse disabled");
+   }
+ else
+   {
+    if (gpm_fd==-1)
+      {
+       handlerInstalled=False;
+       return;
+      }
+    hide();
+    my_buttonCount = buttonCount;
+    buttonCount = 0;
+    Gpm_Close();
+   }
 }
 
 void THWMouse::show()
@@ -172,31 +210,74 @@ inline int range(int test, int min, int max)
 	return test < min ? min : test > max ? max : test;
 }
 
-static int m_x=0,m_y=0,m_b=0;
+static int m_x=0,m_y=0,m_b=0,m_bOld=0;
+static int forced=0;
+
+/**[txh]********************************************************************
+
+  Description:
+  It forces the state of the mouse externally, the next call to getEvent
+will return this values instead of values from the mouse driver. That's
+used to simuate the mouse with other events like keyboard.@p
+  One interesting problem is that TV expects one event for the position
+change and another for the button change, both can't be provided in one
+step so we must emulate it too. (SET)
+
+***************************************************************************/
+
+void THWMouse::forceEvent(int x, int y, int buttons)
+{
+ forced=0;
+ if (m_x!=x || m_y!=y)
+    forced++;
+ if (m_b!=buttons)
+    forced++;
+ m_bOld=m_b;
+ m_x=x; m_y=y; m_b=buttons;
+}
 
 void THWMouse::getEvent( MouseEventType &me )
 {
+  if (!handlerInstalled)
+     return;
   Gpm_Event mev;
   me.where.x = m_x;
   me.where.y = m_y;
   me.doubleClick = False;
-  me.buttons = m_b;
-  if (!Gpm_Repeat(1) && (Gpm_GetEvent(&mev) == 1))
-  {
-    int b = mev.buttons;
-    if ((b & GPM_B_LEFT) && !(mev.type & GPM_UP))
-      me.buttons |= mbLeftButton;
-    else
-      me.buttons &= ~mbLeftButton;
-    if ((b & GPM_B_RIGHT) && !(mev.type & GPM_UP))
-      me.buttons |= mbRightButton;
-    else
-      me.buttons &= ~mbRightButton;
-    m_b = me.buttons;
-    m_x = me.where.x = range(mev.x, 0, TScreen::screenWidth - 1);
-    m_y = me.where.y = range(mev.y, 0, TScreen::screenHeight - 1);
-    draw_mouse(m_x,m_y);
-  }
+  if (forced)
+    { // SET: 2 steps, one the movement, other the buttons
+     if (forced==1)
+       {
+        me.buttons=m_b;
+        //draw_mouse(m_x,m_y);
+       }
+     else
+       {
+        me.buttons=m_bOld;
+       }
+     draw_mouse(m_x,m_y);
+     forced--;
+    }
+  else
+    {
+     me.buttons = m_b;
+     if (!XTermDetected && !Gpm_Repeat(1) && (Gpm_GetEvent(&mev) == 1))
+       {
+        int b = mev.buttons;
+        if ((b & GPM_B_LEFT) && !(mev.type & GPM_UP))
+          me.buttons |= mbLeftButton;
+        else
+          me.buttons &= ~mbLeftButton;
+        if ((b & GPM_B_RIGHT) && !(mev.type & GPM_UP))
+          me.buttons |= mbRightButton;
+        else
+          me.buttons &= ~mbRightButton;
+        m_b = me.buttons;
+        m_x = me.where.x = range(mev.x, 0, TScreen::screenWidth - 1);
+        m_y = me.where.y = range(mev.y, 0, TScreen::screenHeight - 1);
+        draw_mouse(m_x,m_y);
+       }
+    }
   // curMouse must be set, because it is used by other functions
   TEventQueue::curMouse = me;
 }

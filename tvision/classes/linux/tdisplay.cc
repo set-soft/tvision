@@ -148,4 +148,10 @@ void TDisplay::SetFontHandler(TFont *)
 {
 }
 
+int TDisplay::CheckForWindowSize(void)
+{
+ int ret=windowSizeChanged!=0;
+ windowSizeChanged=0;
+ return ret;
+}
 #endif // __linux__
