@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.399.2.11  2003/02/18 20:48:14  set
+* Added: [X11] a configuration option to select the X11 font to use. It
+should be used carefully because TV can't work with proportional fonts nor
+fonts encoded in anything but Unicode16 (ISO 10646). Documented.
+* Modified: TVCodePage to separate the "broken Linux" unicodes. It made
+frames to be single line.
+* Added: Various font examples to the tvrc used by UTF-8 example.
+* Fixed: [X11] The way I computed the font height seems to be wrong, the
+new approach seems to work for all the fonts.
+
 Revision 2.399.2.10  2003/02/18 19:09:15  set
 * Fixed: a typo in TScreen::defaultGetCharacter (extra *2) it made the
 "match pair on the fly" of SETEdit behave quite crazy.

@@ -45,6 +45,7 @@ UNIX.
 #define Uses_TView
 #define Uses_TWindow
 #define Uses_TScroller
+#define Uses_TVConfigFile
 #include <tv.h>
 
 UsingNamespaceStd
@@ -294,6 +295,19 @@ TDemoWindow::TDemoWindow( const TRect& bounds, const char *aTitle,
 
 int main()
 {
+    /* The following code could be used to replace the configuration file and
+       hardcore the values. Note that this could be a good idea for Unicode16
+       variable but is most probably quite bad for the rest */
+    #if 0
+    TProgInit::config=new TVMainConfigFile();
+    TVMainConfigFile::Add("X11","Unicode16",1);
+    TVMainConfigFile::Add("X11","UnicodeFont","boxround.sft");
+    TVMainConfigFile::Add("X11","UseX11Fonts",1);
+    TVMainConfigFile::Add("X11","FontWidth",12);
+    TVMainConfigFile::Add("X11","FontHeight",13);
+    TVMainConfigFile::Add("X11","ScreenHeight",40);
+    #endif
+
     readFile( fileToRead );
     TMyApp myApp;
     myApp.run();
