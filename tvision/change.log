@@ -1,4 +1,10 @@
 $Log$
+Revision 1.68  1999/06/24 01:55:10  set
+* Added: The Calculator from the TVDemo to the library. I did a lot of
+changes to the class (it was buggy and had portability problems). Now you
+can have the calculator in any program use Uses_TCalculator, see the demo
+for an example.
+.
 Revision 1.67  1999/06/23 23:05:34  set
 * Added: Select button to the TFileDialog class (option: fdSelectButton
 command: cmFileSelect).
