@@ -249,7 +249,7 @@ void TGroup::freeBuffer()
 #if 0
         TVMemMgr::freeDiscardable( buffer );
 #else
-	delete buffer;
+	delete[] buffer;
 #endif
         buffer = 0;
         }
