@@ -14,6 +14,9 @@
  * modification. Added: write8, write16, write32, write64, writeShort,
  * writeInt and writeLong.
  *
+ * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+ * Andris Pavenis and Christoph Bauer.
+ *
  */
 #define Uses_stdio // fprintf in writeData
 #define Uses_string
@@ -43,28 +46,28 @@ opstream::~opstream()
     destroy(objs);
 }
 
-opstream& opstream::seekp( streampos pos )
+opstream& opstream::seekp( CLY_StreamPosT pos )
 {
     objs->freeAll();
-    bp->PubSeekOff( pos, ios::beg );
+    bp->CLY_PubSeekOff( pos, ios::beg );
     return *this;
 }
 
-opstream& opstream::seekp( streamoff pos, ios::seek_dir dir )
+opstream& opstream::seekp( CLY_StreamOffT pos, CLY_IOSSeekDir dir )
 {
     objs->freeAll();
-    bp->PubSeekOff( pos, dir );
+    bp->CLY_PubSeekOff( pos, dir );
     return *this;
 }
 
-streampos opstream::tellp()
+CLY_StreamPosT opstream::tellp()
 {
-    return bp->PubSeekOff( 0, ios::cur, ios::out );
+    return bp->CLY_PubSeekOff( 0, ios::cur, ios::out );
 }
 
 opstream& opstream::flush()
 {
-    bp->PubSync();
+    bp->CLY_PubSync();
     return *this;
 }
 

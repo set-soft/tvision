@@ -12,7 +12,7 @@ Modified by Robert H”hne to be used for RHIDE.
  */
 #include <tv/configtv.h>
 
-#ifdef TVCompf_DJGPP
+#ifdef TVCompf_djgpp
 
 #include <conio.h>
 

@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis and Christoph Bauer.
 
  *
  *
@@ -18,83 +20,75 @@ Modified by Robert H”hne to be used for RHIDE.
 
 fpbase::fpbase()
 {
-    pstream::init( &buf );
+ buf=new filebuf();
+ pstream::init(buf);
 }
 
-fpbase::fpbase( int f ) : buf( f )
+fpbase::fpbase(int f)
 {
-    pstream::init( &buf );
+ buf=CLY_NewFBFromFD(f);
+ pstream::init(buf);
 }
 
-fpbase::fpbase( const char *name, int omode, int prot )
+fpbase::fpbase( const char *name, CLY_OpenModeT omode, int prot )
 {
-    pstream::init( &buf );
-    open( name, omode, prot );
+ buf=new filebuf();
+ open(name,omode,prot);
+ pstream::init(buf);
 }
 
-#ifdef TVComp_BCPP
-fpbase::fpbase( int f, char *b, int len ) : buf( f )
+fpbase::fpbase( int f, char *b, int len )
 {
-    buf.PubSetBuf(b, len);
-    pstream::init( &buf );
-}
-
-void fpbase::setbuf(char* b, int len)
-{
-    if( buf.PubSetBuf(b, len) )
-        clear(ios::goodbit);
-    else
-        setstate(ios::failbit);
-}
-#else
-fpbase::fpbase( int f, char *b, int len ) : buf( f, b, len )
-{
-    pstream::init( &buf );
+ buf=CLY_NewFBFromFD(f);
+ buf->CLY_PubSetBuf(b,len);
+ pstream::init(buf);
 }
 
 void fpbase::setbuf(char* b, int len)
 {
-    if( buf.setbuf(b, len) )
-        clear(ios::goodbit);
-    else
-        setstate(ios::failbit);
+ if (buf->CLY_PubSetBuf(b,len))
+    clear(ios::goodbit);
+ else
+    setstate(ios::failbit);
 }
 
-void fpbase::attach( int f )
+#ifdef CLY_HaveFBAttach
+void fpbase::attach(int f)
 {
-    if( buf.is_open() )
-        setstate(ios::failbit);
-    else if( buf.attach(f) )
-        clear(ios::goodbit);
-    else
-        clear(ios::badbit);
+ if (buf->is_open())
+    setstate(ios::failbit);
+ else if(buf->attach(f))
+    clear(ios::goodbit);
+ else
+    clear(ios::badbit);
 }
 #endif
 
 fpbase::~fpbase()
 {
+ delete buf;
 }
 
-void fpbase::open( const char *b, int m, int prot )
+void fpbase::open( const char *b, CLY_OpenModeT m, int prot )
 {
-    if( buf.is_open() )
-        clear(ios::failbit);        // fail - already open
-    else if( buf.open(b, m, prot) )
-        clear(ios::goodbit);        // successful open
-    else
-        clear(ios::badbit);     // open failed
+ if (buf->is_open())
+    clear(ios::failbit);        // fail - already open
+ else if (buf->CLY_FBOpen(b,m,prot))
+    clear(ios::goodbit);        // successful open
+ else
+    clear(ios::badbit);     // open failed
 }
 
 void fpbase::close()
 {
-    if( buf.close() )
-        clear(ios::goodbit);
-    else
-        setstate(ios::failbit);
+ if (buf->close())
+    clear(ios::goodbit);
+ else
+    setstate(ios::failbit);
 }
 
 filebuf *fpbase::rdbuf()
 {
-    return &buf;
+ return buf;
 }
 

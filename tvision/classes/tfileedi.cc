@@ -8,10 +8,11 @@
 /*----------------------------------------------------------*/
 #include <tv/configtv.h>
 
+#include <fstream.h>
 #define Uses_limits
 #define Uses_string
 #define Uses_fcntl
-#define Uses_filelength
+#define Uses_ifsFileLength
 #ifdef TVComp_MSC
  #include <io.h>
 #else
@@ -29,7 +30,6 @@
 #define Uses_TStreamableClass
 #define Uses_IOS_BIN
 #include <tv.h>
-#include <fstream.h>
 
 inline uint32 min( uint32 u1, uint32 u2 )
 {
@@ -92,7 +92,7 @@ Boolean TFileEditor::loadFile()
 {
     int crfound = 0,i;
     char tmp[PATH_MAX];
-    ifstream f( fileName, ios::in | IOS_BIN );
+    ifstream f( fileName, ios::in | CLY_IOSBin );
     if( !f )
         {
         setBufLen( 0 );
@@ -103,7 +103,7 @@ Boolean TFileEditor::loadFile()
 /* check for a unix text file (is a heuristic, because only 1024 chars checked */
         {
           char tmpbuf[1024];
-          long fsize = filelength( f.rdbuf()->fd() );
+          long fsize=CLY_ifsFileLength(f);
           if (fsize > 1024) fsize = 1024;
           f.read( tmpbuf, fsize);
           for (i=0;i<1024;i++)
@@ -126,10 +126,10 @@ Boolean TFileEditor::loadFile()
               ::write(writehandle,tmpbuf,fsize);
             close(readhandle);
             close(writehandle);
-            f.open(tmp,ios::in | IOS_BIN);
+            f.open(tmp,ios::in | CLY_IOSBin);
           }
         }
-        long fSize = filelength( f.rdbuf()->fd() );
+        long fSize=CLY_ifsFileLength(f);
         if( setBufSize((uint32)(fSize)) == False )
             {
             editorDialog( edOutOfMemory );
@@ -230,7 +230,7 @@ Boolean TFileEditor::saveFile()
        rename( fileName, backupName );
       }
 
-    ofstream f( fileName, ios::out | IOS_BIN );
+    ofstream f( fileName, ios::out | CLY_IOSBin );
 
     if( !f )
         {
