@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.534  2004/05/05 20:11:03  set
+Modified/Fixed/?: In "File Dialogs": Now as soon as the file list is
+selected the focused item is propagated to the other views (input line and
+info panel).
+.
 Revision 2.533  2004/04/28 15:39:37  set
 * Added: Support for the way that Putty uses to report Home and End keys.
 Not tested, from a report by Andras Szabo szaboan/kesz/hu.

@@ -56,6 +56,8 @@ class TVBitmapFontSizeCol : public TStringCollection
 public:
  TVBitmapFontSizeCol() : TStringCollection(3,3) {}
  virtual int compare(void *key1, void *key2);
+ // do not use the default delete[]
+ virtual void freeItem(void *item) { delete (TVBitmapFontSize *)item; }
 };
 
 class TVBitmapFontSizeLBox : public TSortedListBox
