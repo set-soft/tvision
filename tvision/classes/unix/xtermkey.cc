@@ -46,7 +46,7 @@ int            TGKeyXTerm::oldInFlags;
 int            TGKeyXTerm::newInFlags;
 struct termios TGKeyXTerm::inTermiosOrig;
 struct termios TGKeyXTerm::inTermiosNew;
-char          *TGKeyXTerm::error=NULL;
+const char    *TGKeyXTerm::error=NULL;
 int            TGKeyXTerm::bufferKeys[MaxLenEscapeSequence];
 int            TGKeyXTerm::keysInBuffer=0;
 int            TGKeyXTerm::nextKey=-1;

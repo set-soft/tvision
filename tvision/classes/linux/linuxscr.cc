@@ -132,7 +132,7 @@ are just broken.
 
 struct termios TScreenLinux::outTermiosOrig;
 struct termios TScreenLinux::outTermiosNew;
-char          *TScreenLinux::error=NULL;
+const char    *TScreenLinux::error=NULL;
 char           TScreenLinux::secondaryAvailable=0;
 int            TScreenLinux::mdaMemH=-1;
 ushort        *TScreenLinux::mdaMem=NULL;

@@ -47,7 +47,7 @@
 
 struct termios TScreenXTerm::outTermiosOrig;
 struct termios TScreenXTerm::outTermiosNew;
-char          *TScreenXTerm::error=NULL;
+const char    *TScreenXTerm::error=NULL;
 int            TScreenXTerm::palette;
 int            TScreenXTerm::oldCol=-1,
                TScreenXTerm::oldBack=-1,
