@@ -9,7 +9,7 @@ The small sections are:
 5.  Libraries and tools needed
 6.  Examples
 7.  Targets supported, limitations
-8.  CPU usage (how to get 0% while waiting for keys)
+8.  CPU usage
 9.  How to submit a patch
 10. Contact information
 
@@ -380,16 +380,16 @@ Windows NT: This platform isn't supported, I know the mouse fails to work and
 8.  CPU usage
 -------------
 
-  You'll see some of your programs eats 100% of the CPU while idle, why? the
-answer is very easy: Turbo Vision polls the keyboard and the mouse all the
-time. To solve it you must release the CPU. When no input from the polled
-devices is available the main class calls the idle() member. You should
-override the behavior of idle() and add some instruction to release the CPU.
-The examples/demo/tvdemo3.cc program shows how to do it. Note that you could
-use usleep for both (DOS and Linux) but in this case you should sleep for
-more than 18.2 ms to let djgpp's sleep really release the CPU. I think is
-easier to just call __dpmi_yield() and explicitly release the CPU, in this
-way you sleep the minimal amount of time.
+  Since v1.0.8 the TProgram::idle() member releases the CPU to the OS. If for
+some reason you want to eat 100% of the CPU or you want to use a methode
+different than the used by this function just set TProgram::doNotReleaseCPU
+to 1 and the class won't release the CPU.
+  For Linux I just do a usleep(1000), that's sleep for 1 ms. For djgpp I call
+to the __dpmi_yield() function. Note that you could use usleep for both
+(DOS and Linux) but in this case you should sleep for more than 18.2 ms to
+let djgpp's sleep really release the CPU. I think is easier to just call
+__dpmi_yield() and explicitly release the CPU, in this way you sleep the
+minimal amount of time.
 
 
 

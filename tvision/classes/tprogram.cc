@@ -28,6 +28,12 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TGKey
 #include <tv.h>
 
+// SET: CPU release
+#ifdef __DJGPP__
+#include <dpmi.h>
+#else
+#include <unistd.h>
+#endif
 // Public variables
 
 TStatusLine * TProgram::statusLine = 0;
@@ -39,6 +45,7 @@ TEvent TProgram::pending;
 clock_t TProgram::lastIdleClock = 0;
 clock_t TProgram::inIdleTime = 0;
 Boolean TProgram::inIdle = False;
+char    TProgram::doNotReleaseCPU = 0;
 
 extern TPoint shadowSize;
 
@@ -238,6 +245,15 @@ void TProgram::idle()
         {
         message( this, evBroadcast, cmCommandSetChanged, 0 );
         commandSetChanged = False;
+        }
+    // SET: Release the CPU unless the user doesn't want it.
+    if( !doNotReleaseCPU )
+        {
+        #ifdef __DJGPP__
+        __dpmi_yield();
+        #else
+        usleep(1000);
+        #endif
         }
 }
 

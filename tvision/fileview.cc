@@ -93,8 +93,8 @@ TFileViewer::TFileViewer( const TRect& bounds,
 
 TFileViewer::~TFileViewer()
 {
-     if (buffer) delete buffer;
-     delete fileName;
+     if (buffer) free(buffer);
+     delete[] fileName;
      fileLines->removeAll();
      destroy (fileLines);
 }
@@ -134,7 +134,7 @@ void TFileViewer::scrollDraw()
 
 void TFileViewer::readFile( const char *fName )
 {
-  if (fileName) delete fileName;
+  if (fileName) delete[] fileName;
 
   limit.x = 0;
   fileName = newStr( fName );
