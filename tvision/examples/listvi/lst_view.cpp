@@ -4,6 +4,7 @@
 //  List Viewer(s) that display String array(s)
 //  revised November 27,1993
 //  C.Porter
+//  Fixed: widths and positions of elements by Salvador E. Tropea
 // ***********************************************************************
 #include <stdlib.h>
 #include <stdio.h>
@@ -72,28 +73,30 @@ void TListViewBox::putData(void *rec)
 //************************************************************
 
 TListViewDialog::TListViewDialog(const TRect &trect, char *title,
-					char *aList[],char *aList2[],int aListSize)
+					char *aList[],char *aList2[],int aListSize,int wList)
 					:TDialog(trect, title),
 					 TWindowInit(TDialog::initFrame) {
   options |= ofCentered;
-  int lbwidth =( trect.b.x -trect.a.x)-3;
-  int lbhite = (trect.b.y -trect.a.y)-2;
-  insert (new TStaticText(TRect(3,1,12,2)," City "));
-  insert (new TStaticText(TRect(15,1,25,2)," Zip Code"));
+  int lbwidth=(trect.b.x-trect.a.x)-3-3;
+  int lbhite =(trect.b.y-trect.a.y)-2;
+  int x1=trect.a.x+3, w1=lbwidth/2;
+  int x2=x1+w1,       w2=lbwidth-w1;
+  insert (new TStaticText(TRect(x1,1,x1+w1,2)," City "));
+  insert (new TStaticText(TRect(x2,1,x2+w2,2)," Zip Code"));
   // create a scroll bar for the list box
-  listScroller = new TScrollBar(TRect(trect.a.x+lbwidth,trect.a.y+2,
-						   trect.a.x+lbwidth+1,trect.a.y+lbhite));
+  listScroller = new TScrollBar(TRect(x1+lbwidth,trect.a.y+2,
+						   x1+lbwidth+1,trect.a.y+lbhite));
 
-  listBox = new TListViewBox(TRect(trect.a.x+3, trect.a.y+2,
-		trect.a.x+lbwidth/2+2, trect.a.y+lbhite),1,0,listScroller,
+  listBox = new TListViewBox(TRect(x1, trect.a.y+2,
+		x1+w1, trect.a.y+lbhite),1,0,listScroller,
 		aList,aListSize);
-  listBox2 = new TListViewBox(TRect(trect.a.x+15, trect.a.y+2,
-		trect.a.x+lbwidth, trect.a.y+lbhite),1,0,listScroller,
+  listBox2 = new TListViewBox(TRect(x2, trect.a.y+2,
+		x2+w2, trect.a.y+lbhite),1,0,listScroller,
 		aList2,aListSize);
   // insert the list box with its scroller into the dialog box
-  inputLine = new TInputLine(TRect(listBox->origin.x,3,listBox->size.x+5, 4),listBox->size.x);
+  inputLine = new TInputLine(TRect(x1,3,x1+w1,4),wList);
   inputLine->hide(); //hide input line
-  itemNumber = new TInputLine(TRect(3,lbhite,8,lbhite+1),5);
+  itemNumber = new TInputLine(TRect(x1,lbhite,x1+w1,lbhite+1),wList);
   itemNumber->options &= (!ofSelectable); // used to hold current line number
   insert(listBox);
   insert(listBox2);
