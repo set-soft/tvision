@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.554  2004/07/03 00:10:39  set
+* Fixed: [X11] Some gcc versions can optimize "while (!safeToUnHook);" to
+an endless loop. Patch by Andris.
+
 Revision 2.553  2004/06/28 18:18:18  set
 * Fixed: [BC++] lack of QNX4 rule in "old mechanism" makefile.
 
