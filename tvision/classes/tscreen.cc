@@ -202,6 +202,7 @@ stDriver Drivers[]=
  #endif
 
  #ifdef TVOS_Win32
+  //{ TV_WinGrDriverCheck,   90, "WinGr" },
   #ifdef TVOSf_NT
    { TV_WinNTDriverCheck, 100, "WinNT" },
    { TV_Win32DriverCheck,  50, "Win32" },
