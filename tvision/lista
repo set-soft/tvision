@@ -754,9 +754,7 @@ TODO
 tvision.es
 tvision.po
 win32/Makefile
-win32/Makefile.ms
 win32/demo.mak
-win32/demo.ms
 win32/obj/delete.me
 win32/obj_demo/delete.me
 win32/readme.txt
