@@ -540,16 +540,7 @@ void TScreenQNXRtP::writeBlock(int dst, int len, ushort *old, ushort *src)
       }
       else
       {
-         if (code==0x9B)
-         {
-            safeput(p, "\x1B""[10m");
-            PCTable=-1;
-            *p++ = 0xA2;
-         }
-         else
-         {
-            *p++ = code;
-         }
+         *p++ = code;
       }
 
       if (p > out+4000)

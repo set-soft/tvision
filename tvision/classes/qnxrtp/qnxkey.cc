@@ -265,7 +265,7 @@ void TGKeyQNXRtP::FillTEvent(TEvent &e)
 
    fullcode=GKey();
 
-   if ((undecoded>0x001F)&&(undecoded<0x007F))
+   if ((undecoded>0x001F)&&(undecoded<0x00FF))
    {
       e.keyDown.charScan.charCode=(uchar)undecoded;
    }
