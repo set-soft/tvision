@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.453  2003/05/19 18:13:12  set
+* Fixed: [Linux] if the console was in UTF-8 mode:
+1) The library failed to draw some stuff during the first screen update
+(until a character that needs UTF-8 was used).
+2) The library didn't restore the UTF-8 probably causing problems to
+another applications.
+Now this is detected and if in UTF-8 the mode is reverted to single char.
+The original state is restored during Suspend and memorized again in Resume
+
 Revision 2.452  2003/05/19 14:06:39  set
 * Added: Some test programs to detect problems with Linux console handling.
 I put them in the docs directory.
