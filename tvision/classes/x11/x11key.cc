@@ -38,6 +38,7 @@ uchar    TGKeyX11::Scan;
 
 int TGKeyX11::getKeyEvent(int block)
 {
+ Status status; // Currently ignored, but Solaris doesn't support NULL as argument
  XEvent event;
 
  /* If we already have a key use it */
@@ -59,7 +60,7 @@ int TGKeyX11::getKeyEvent(int block)
        continue;
     if (event.type==KeyPress)
       {
-       lenKb=XmbLookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,NULL);
+       lenKb=XmbLookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
        bufferKb[lenKb]=0;
        /*printf("Key event %d %s 0x%04X\n",lenKb,bufferKb,Key);*/
        /* FIXME: how can I know the state before entering the application? */
