@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.179  2004/08/17 14:23:17  set
+* Fixed: [gcc] Errors in the examples when using 3.4.1. Patch by Andris.
+
 Revision 2.399.2.178  2004/08/17 13:20:58  set
 * Modified: Boolean TInputLine::insertChar(TEvent &event) to insertCharEv
 because the C++ polimorphism is quite crapy for this case.
