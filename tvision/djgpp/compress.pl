@@ -66,13 +66,13 @@ foreach $i (@files)
   }
 # Add example makefiles
 @files=glob('tvision/examples/*/*.umk');
-$r.=join("\n",@files);
+$r.="\n".join("\n",@files);
 @files=glob('tvision/examples/*/*/*.umk');
-$r.=join("\n",@files);
+$r.="\n".join("\n",@files);
 @files=glob('tvision/examples/*/*.mkf');
-$r.=join("\n",@files);
+$r.="\n".join("\n",@files);
 @files=glob('tvision/examples/*/*/*.mkf');
-$r.=join("\n",@files);
+$r.="\n".join("\n",@files);
 # Manifest and version
 $r.="\n$srcmft\n$srcver\n";
 # Sort the list
