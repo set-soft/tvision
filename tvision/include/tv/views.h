@@ -199,6 +199,11 @@ const ushort
 //      All objects that uses non ASCII symbols should remap them.
 
     cmUpdateCodePage    = 64,
+
+// SET: The user screen it not always available. This command is disabled in
+//      this case.
+
+    cmCallShell         = 65,
     
 //  Event masks
 

@@ -316,7 +316,8 @@ public:
   CanSetBFont=64,     // We can set the primary bitmap font
   CanSetSBFont=128,   // We can set the secondary bitmap font
   CanSetFontSize=256, // We can set the width and height of the font
-  CanSetVideoSize=512 // We can set the video size (window size or video mode)
+  CanSetVideoSize=512,// We can set the video size (window size or video mode)
+  NoUserScreen=0x400  // No user screen exists i.e. we are in a window we draw
  };
 
  // Used internally to avoid nested calls to suspend/resume
@@ -336,6 +337,7 @@ public:
  static Boolean canSetSBFont()     { return flags0 & CanSetSBFont    ? True : False; };
  static Boolean canSetFontSize()   { return flags0 & CanSetFontSize  ? True : False; };
  static Boolean canSetVideoSize()  { return flags0 & CanSetVideoSize ? True : False; };
+ static Boolean noUserScreen()     { return flags0 & NoUserScreen    ? True : False; };
 
 protected:
  // SET: Capabilities flags

@@ -44,7 +44,6 @@ const int cmTest90x30b=108;
 const int cmTest94x34b=109;
 const int cmTest132x25b=110;
 const int cmTest132x50b=111;
-const int cmShell=112;
 
 class TMyApp : public TApplication
 {
@@ -70,7 +69,8 @@ TMyApp::TMyApp() :
     messageBox("This terminal doesn't support changing the screen size",mfError | mfOKButton);
     quit=1;
    }
- messageBox("This terminal supports changing the screen/window size. It doesn't mean it will work",mfInformation | mfOKButton);
+ else
+    messageBox("This terminal supports changing the screen/window size. It doesn't mean it will work",mfInformation | mfOKButton);
 }
 
 void TMyApp::handleEvent(TEvent &event)
@@ -128,7 +128,7 @@ void TMyApp::handleEvent(TEvent &event)
             testMode(132,50);
             break;
 
-       case cmShell:
+       case cmCallShell:
             shell();
             break;
       }
@@ -148,7 +148,7 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
  r.b.y=r.a.y+1;
  return new TMenuBar(r,
      *new TSubMenu("~S~ystem",kbAltS)+
-       *new TMenuItem("S~h~ell",cmShell,kbNoKey,hcNoContext)+
+       *new TMenuItem("S~h~ell",cmCallShell,kbNoKey,hcNoContext)+
        *new TMenuItem("E~x~it",cmQuit,kbNoKey,hcNoContext,"Alt-X")+
      *new TSubMenu("~M~ode",kbAltM)+
        *new TMenuItem("~8~0x25",cmTest80x25,kbNoKey,hcNoContext)+

@@ -35,7 +35,6 @@ different.
 const int cmTestFont=100;
 const int cmTestRestore=101;
 const int cmTestFontSecondary=102;
-const int cmShell=103;
 
 class TMyApp : public TApplication
 {
@@ -123,7 +122,7 @@ void TMyApp::handleEvent(TEvent &event)
             testRestore();
             break;
 
-       case cmShell:
+       case cmCallShell:
             shell();
             break;
       }
@@ -147,7 +146,7 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
        *new TMenuItem("Test ~f~ont as secondary",cmTestFontSecondary,kbNoKey,hcNoContext,"")+
        *new TMenuItem("~R~estore font",cmTestRestore,kbNoKey,hcNoContext,"")+
         newLine() +
-       *new TMenuItem("S~h~ell",cmShell,kbNoKey,hcNoContext)+
+       *new TMenuItem("S~h~ell",cmCallShell,kbNoKey,hcNoContext)+
        *new TMenuItem("E~x~it",cmQuit,kbNoKey,hcNoContext,"Alt-X")
      );
 }

@@ -96,6 +96,8 @@ void TEditorApp::changeDir()
 
 void TEditorApp::dosShell()
 {
+    if( TScreen::noUserScreen() )
+        return;
     suspend();
     TScreen::System(CLY_GetShellName());
     resume();
@@ -140,7 +142,7 @@ void TEditorApp::handleEvent( TEvent& event )
                 changeDir();
                 break;
 
-            case cmDosShell:
+            case cmCallShell:
                 dosShell();
                 break;
 

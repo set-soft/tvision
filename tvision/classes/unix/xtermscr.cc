@@ -273,8 +273,8 @@ void TScreenXTerm::Resume()
  startScreenWidth =getCols();
  startScreenHeight=getRows();
  if (startScreenWidth!=screenWidth || startScreenHeight!=screenHeight)
-    fprintf(stdout,"\E[8;%d;%dt",screenWidth+(terminalType==Eterm ? 1 : 0),
-            screenHeight);
+    fprintf(stdout,"\E[8;%d;%dt",screenHeight+(terminalType==Eterm ? 1 : 0),
+            screenWidth);
  // Restore our font
  if (fontChanged)
    {

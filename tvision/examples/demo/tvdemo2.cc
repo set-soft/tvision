@@ -102,7 +102,7 @@ void TVDemo::handleEvent(TEvent &event)
                 changeDir();
                 break;
 
-            case cmDOS_Cmd:             //  DOS shell
+            case cmCallShell:             //  DOS shell
                 shell();
                 break;
 

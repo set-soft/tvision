@@ -59,6 +59,9 @@ TProgram::TProgram() :
     options = 0;
     syncScreenBuffer();
 
+    if( TScreen::noUserScreen() )
+        disableCommand( cmCallShell );
+
     if( createStatusLine != 0 &&
         (statusLine = createStatusLine( getExtent() )) != 0
       )

@@ -44,7 +44,7 @@ TMenuBar *TEditorApp::initMenuBar( TRect r )
         *new TMenuItem( _("S~a~ve as..."), cmSaveAs, kbNoKey ) +
              newLine() +
         *new TMenuItem( _("~C~hange dir..."), cmChangeDrct, kbNoKey ) +
-        *new TMenuItem( _("S~h~ell"), cmDosShell, kbNoKey ) +
+        *new TMenuItem( _("S~h~ell"), cmCallShell, kbNoKey ) +
         *new TMenuItem( _("E~x~it"), cmQuit, kbAltX, hcNoContext, "Alt+X" );
 
       TSubMenu& sub2 = *new TSubMenu( _("~E~dit"), kbAltE ) +
