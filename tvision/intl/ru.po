@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2003-01-04 18:10+0200\n"
+"PO-Revision-Date: 2003-08-08 21:47+0200\n"
 "Last-Translator: Roman Valyushenko <smhs@mail.ru>\n"
 "Language-Team: Russian (русский)\n"
 "Content-Type: text/plain; charset=KOI8-R\n"
@@ -63,17 +63,17 @@ msgstr "Нет значения после знака \"равно\""
 #. -9
 #: classes/configfile.cc:54
 msgid "Unterminated string"
-msgstr "Строка не имеет терминирующего символа (ориг. Unterminated string)"
+msgstr "Строка не имеет терминирующего символа"
 
 #. -10
 #: classes/configfile.cc:55
 msgid "Non branch in base"
-msgstr "Нет ветки в основе (ориг. Non branch in base)."
+msgstr "Non branch in base"
 
 #. -11
 #: classes/configfile.cc:56
 msgid "Trying to overwrite a value with a section"
-msgstr "Попытка перезаписать занчение секцией "
+msgstr "Попытка перезаписать значение секцией "
 
 #. -12
 #: classes/configfile.cc:57
@@ -197,7 +197,7 @@ msgstr "~О~ткрыть"
 
 #: classes/tfiledia.cc:101
 msgid "~A~dd"
-msgstr ""
+msgstr "Добавить"
 
 #: classes/tfiledia.cc:102
 #, fuzzy
@@ -520,8 +520,7 @@ msgstr "Заменить найденную строку?"
 
 #: classes/linux/linuxkey.cc:96 classes/unix/xtermkey.cc:81
 msgid "that's an interactive application, don't redirect stdin"
-msgstr ""
-"это интерактивное приложение, не перенаправляйте стандартный ввод (stdin)"
+msgstr "это интерактивное приложение, не перенаправляйте стандартный ввод (stdin)"
 
 #: classes/linux/linuxkey.cc:117 classes/unix/xtermkey.cc:88
 msgid "failed to get the name of the current terminal used for input"
@@ -582,7 +581,7 @@ msgstr "Ошибка! %s"
 
 #: classes/x11/x11src.cc:2037
 msgid "No available selection"
-msgstr "Ничего не выделено (No available selection)"
+msgstr "Ничего не выделено"
 
 #: classes/x11/x11src.cc:2038
 msgid "Unsupported data type"
@@ -598,9 +597,7 @@ msgstr "Ошибка X11"
 
 #: classes/x11/x11src.cc:2041
 msgid "Another application holds the clipboard"
-msgstr ""
-"Другое приложение блокирует буфер обмена (ориг. Another application holds "
-"the clipboard)"
+msgstr "Другое приложение блокирует буфер обмена"
 
 #: fileview.cc:151
 #, c-format
@@ -657,3 +654,4 @@ msgstr "~Alt-Ы~ Выход"
 
 #~ msgid "Not enough memory for this operation"
 #~ msgstr "Не хватает памяти для выполнения данной операции"
+
