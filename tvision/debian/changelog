@@ -1,0 +1,17 @@
+rhtvision (1.0.3-2) unstable; urgency=low
+
+  * Lots of bugfixes and now it works.
+  * First version showed to the upstream authors.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Fri, 19 Feb 1999 02:14:01 -0300
+
+rhtvision (1.0.3-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Wed, 17 Feb 1999 13:05:15 -0300
+
+Local variables:
+mode: debian-changelog
+add-log-mailing-address: "lubaldo@adinet.com.uy"
+End:

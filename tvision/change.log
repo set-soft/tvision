@@ -1,4 +1,7 @@
 $Log$
+Revision 1.24  1999/02/18 02:41:34  set
+* Compiled with djgpp v2.02 and gcc 2.8.1.
+.
 -----------------------------------------------------------------------------
 v1.0.4 released. Sources and binaries uploaded to DJ's server and my home
 page. Linux sources and binaries uploaded to my home page (including a
