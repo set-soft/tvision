@@ -84,9 +84,11 @@ void TCluster::drawBox( const char *icon, char marker)
         for( int j = 0; j <= (strings->getCount()-1)/size.y + 1; j++ )
             {
             int cur = j * size.y + i;
-            if( cur < strings->getCount() )
-                {
-                int col = column( cur );
+            int col = column( cur );
+            if ( ( cur < strings->getCount() ) &&
+                (col+cstrlen((char *)strings->at(cur))+5 < maxViewWidth) &&
+                (col<size.x) )
+               {
                 if( (cur == sel) && (state & sfSelected) != 0 )
                     color = cSel;
                 else
@@ -101,7 +103,7 @@ void TCluster::drawBox( const char *icon, char marker)
                     b.putChar( col, specialChars[0] );
                     b.putChar( column(cur+size.y)-1, specialChars[1] );
                     }
-                }
+               }
             }
         writeBuf( 0, i, size.x, 1, b );
         }
