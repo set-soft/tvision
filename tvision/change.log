@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.47  2002/05/02 19:37:15  set
+* Fixed: TDisplay::defaultGetWindowTitle(void) returned a static string,
+not newly allocated.
+* Fixed: TScreenX11 cursor was using one extra memory location. Detected
+with efence.
+
 Revision 2.46  2002/04/30 18:43:04  set
 * Fixed: rhide.env files are now included by .mak files and the old syntax
 to include another .env files isn't valid for make. Using "include" works

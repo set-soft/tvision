@@ -766,9 +766,18 @@ void TScreenX11::ProcessGenericEvents()
             maxX=event.xconfigure.width /fontW;
             maxY=event.xconfigure.height/fontH;
 
+            /* Minimal size */
             if (maxX<40) maxX=40;
             if (maxY<20) maxY=20;
 
+            /* If size changed realloc buffer and indicate it */
+            if ((maxX!=(int)lastW) || (maxY!=(int)lastH))
+              {
+               screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
+               windowSizeChanged=1;
+              }
+
+            /* Force the window to have a size in chars */
             newPW=fontW*maxX;
             newPH=fontH*maxY;
 
@@ -778,11 +787,6 @@ void TScreenX11::ProcessGenericEvents()
 
             /*printf("Nuevo: %d,%d (%d,%d)\n",maxX,maxY,lastW,lastH);*/
             XResizeWindow(disp,mainWin,newPW,newPH);
-
-            if ((maxX==(int)lastW) && (maxY==(int)lastH))
-               break;
-
-            screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
             /*printf("Nuevo 2: %d,%d\n",maxX,maxY);*/
             break;
       }
