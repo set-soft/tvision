@@ -20,9 +20,9 @@ Andris Pavenis.
 #define Uses_ctype
 #define Uses_fcntl
 #define Uses_sys_stat
-#define Uses_alloca
 #define Uses_filelength
 #define Uses_unistd
+#define Uses_AllocLocal
 #ifndef NO_STREAM
  #define Uses_fstream
 #endif
@@ -108,7 +108,7 @@ TFileViewer::~TFileViewer()
 void TFileViewer::draw()
 {
     const char *p;
-    char *s=(char *)alloca(size.x+1);
+    AllocLocalStr(s,size.x+1);
 
     ushort c =  getColor(0x0301);
     for( int i = 0; i < size.y; i++ )

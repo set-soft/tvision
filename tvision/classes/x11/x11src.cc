@@ -39,6 +39,7 @@
 #define Uses_stdlib
 #define Uses_string
 #define Uses_unistd   // TScreenX11::System
+#define Uses_AllocLocal
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TGKey    // For TGKeyX11
@@ -1372,8 +1373,8 @@ void TScreenX11::redrawBuf(int x, int y, unsigned w, unsigned off)
  int letra = 0;
  int color = 0;
  int last  = -1;
- unsigned char *tmp = (unsigned char *)alloca(w*sizeof(char));
- unsigned char *dst = tmp;
+ AllocLocalStr(tmp,w*sizeof(char));
+ uchar *dst = (uchar *)tmp;
  uchar *b=(uchar *)(screenBuffer+off);
 
  if (y>=maxY)
@@ -1390,15 +1391,15 @@ void TScreenX11::redrawBuf(int x, int y, unsigned w, unsigned off)
       {
        if (last>=0)
          {
-          writeLine(x,y,len,tmp,last);  // Print last same color block
-          dst=tmp; x+=len; len=0;
+          writeLine(x,y,len,(uchar *)tmp,last);  // Print last same color block
+          dst=(uchar *)tmp; x+=len; len=0;
          }
        last=color;
       }
     *dst++=letra; b+=2; len++;
    }
   
- writeLine(x,y,len,tmp,color);          // Print last block
+ writeLine(x,y,len,(uchar *)tmp,color);          // Print last block
 }
 
 TScreen *TV_XDriverCheck()

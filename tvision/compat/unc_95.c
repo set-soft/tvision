@@ -11,6 +11,10 @@
 #include <malloc.h>
 #include <string.h>
 
+#if (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
+ #define alloca __builtin_alloca
+#endif
+
 static HMODULE hLib;
 static API_RET_TYPE 
 (APIENTRY *pNetShareGetInfo) (

@@ -22,7 +22,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <time.h>
-#define Uses_alloca
+#define Uses_AllocLocal
 
 #define Uses_TRect
 #define Uses_TEvent
@@ -140,7 +140,7 @@ int dayOfWeek(int day, int month, int year)
 
 void TCalendarView::draw()
 {
-    char *str=(char *)alloca(size.x+1);
+    AllocLocalStr(str,size.x+1);
 
     unsigned current = 1 - dayOfWeek(1, month, year);
     unsigned  days = daysInMonth[month] + ((year % 4 == 0 && month == 2) ? 1 : 0);

@@ -27,9 +27,13 @@
 #include <io.h>
 
 #ifndef TVComp_GCC
-#ifndef alloca
-#define alloca _alloca
-#endif
+ #ifndef alloca
+  #define alloca _alloca
+ #endif
+#else
+ #if (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
+  #define alloca __builtin_alloca
+ #endif
 #endif
 
 #ifndef S_IFDIR

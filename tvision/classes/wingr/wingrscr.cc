@@ -15,7 +15,7 @@
 #ifdef TVCompf_Cygwin
  #define Uses_unistd
 #endif
-#define Uses_alloca
+#define Uses_AllocLocal
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
@@ -243,8 +243,6 @@ TScreenWinGr::~TScreenWinGr()
   ushort *src_right = src + len - 1;
 
   char * dst;
-  char * tmp;
-
 
   if (!len)
   { return; }
@@ -258,7 +256,7 @@ TScreenWinGr::~TScreenWinGr()
     { old_right--; src_right--; len--;     }}
 
 
-  tmp= (char *)alloca( len*sizeof( char ) ); /* write only middle changed characters */
+  AllocLocalStr(tmp,len); /* write only middle changed characters */
   dst= tmp; add= 0; last= -1;
 
   memcpy( old                /* Copy to screen buffer */     

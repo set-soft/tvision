@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.323  2002/09/16 15:55:20  set
+* Added: A new configuration option "DontMoveHiddenCursor". It disables the
+Braille Terminal helper in favor of speed.
+
 Revision 2.322  2002/09/16 15:34:18  set
 * Modified: The cursor behavior to help "Braille Terminals". Now the cursor
 is moved even when it isn't visible. This is complemented with this patch

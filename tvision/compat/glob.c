@@ -22,6 +22,7 @@
 #define Uses_glob
 #define Uses_unistd
 #define Uses_fnmatch
+#define Uses_alloca
 #include <compatlayer.h>
 
 typedef struct Save {

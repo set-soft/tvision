@@ -16,8 +16,8 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
 #define Uses_string
-#include <stdio.h>
-#define Uses_alloca
+#define Uses_stdio
+#define Uses_AllocLocal
 #define Uses_TKeys
 #define Uses_TKeys_Extended
 #define Uses_TView
@@ -1010,7 +1010,7 @@ void call50()
   int isScreen=((TGroup *)(_view))->buffer==TScreen::screenBuffer;
 
   // Remap characters if needed
-  char *aux=(char *)alloca(count*sizeof(ushort));
+  AllocLocalStr(aux,count*sizeof(ushort));
   if (isScreen && TVCodePage::OnTheFlyRemapNeeded())
     {
      memcpy(aux,toBlit,count*sizeof(ushort));
@@ -1222,10 +1222,9 @@ void TView::writeBuf(short x,short y,short w,short h,const void * Buffer)
 void TView::writeChar( short x, short y, char c, uchar color, short count )
 {
   ushort colo = (mapColor(color) << 8) | (uchar)c;
-  ushort *temp;
   int i=0;
   if (count<=0) return;
-  temp = (ushort *)alloca(count*sizeof(ushort));
+  AllocLocalUShort(temp,count*sizeof(ushort));
   for (i=0;i<count;i++) temp[i]=colo;
   WRITEVIEW(x,y,count,temp);
 }
@@ -1237,10 +1236,9 @@ void TView::writeLine( short x, short y, short w, short h, const void *Buffer )
 
 void TView::writeStr( short x, short y, const char *str, uchar color )
 {
-  ushort *temp;
   ushort count = strlen(str),i;
   if (!count) return;
-  temp = (ushort *)alloca(count*sizeof(ushort));
+  AllocLocalUShort(temp,count*sizeof(ushort));
   color = mapColor(color);
   for (i=0;i<count;i++) temp[i] = (color << 8) | (uchar)str[i];
   WRITEVIEW(x,y,count,temp);

@@ -22,12 +22,12 @@ exlude some particular files by configuration.
 #else
  #define Uses_unistd
 #endif
-#define Uses_alloca
 #define Uses_stdlib
 #define Uses_ctype
 #define Uses_HaveLFNs
 #define Uses_dirent
 #define Uses_getcwd
+#define Uses_AllocLocal
 
 #define Uses_TGKey
 #define Uses_MsgBox
@@ -218,10 +218,10 @@ void TFileList::readDirectory( const char *aWildCard )
   struct dirent *de;
   DirSearchRec *p;
   TFileCollection *fileList = new TFileCollection( 10, 10 );
-  char *wildcard = (char *)alloca(strlen(aWildCard)+1);
+  AllocLocalStr(wildcard,strlen(aWildCard)+1);
   strcpy(wildcard,aWildCard);
   char *slash = strrchr(wildcard,DIRSEPARATOR);
-  char *path;
+  char *path, pathAux[4];
   // SET: Added code to remove .. in the root directory
   int removeParent=0;
   
@@ -231,7 +231,7 @@ void TFileList::readDirectory( const char *aWildCard )
      path = wildcard;
      if (strlen(path) == 2 && path[1] == ':')
        {
-        path = (char *)alloca(4);
+        path = pathAux;
         strcpy(path,wildcard);
         strcat(path,"/");
        }
@@ -293,10 +293,10 @@ void TFileList::readDirectory( const char *aWildCard )
   int hasparent=0;
   DirSearchRec *p;
   TFileCollection *fileList = new TFileCollection( 10, 10 );
-  char *wildcard = (char *)alloca(strlen(aWildCard)+1);
+  AllocLocalStr(wildcard,strlen(aWildCard)+1);
   strcpy(wildcard,aWildCard);
   char *slash = strrchr(wildcard,DIRSEPARATOR);
-  char *path;
+  char *path, pathAux[4];
   // SET: Added code to remove .. in the root directory
   int removeParent=0;
   char dirpath[PATH_MAX];
@@ -307,7 +307,7 @@ void TFileList::readDirectory( const char *aWildCard )
      path = wildcard;
      if (strlen(path) == 2 && path[1] == ':')
        {
-        path = (char *)alloca(4);
+        path = pathAux;
         strcpy(path,wildcard);
         strcat(path,DIRSEPARATOR_);
        }
