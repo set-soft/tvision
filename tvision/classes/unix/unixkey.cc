@@ -267,9 +267,24 @@ void TGKeyUNIX::SetKbdMapping(int version)
          kbToName2[KEY_MOUSE & 0x7F]=kbMouse;
          kbExtraFlags2[KEY_MOUSE & 0x7F]=0;
          #endif
-         XtermMode=1;
+         XtermMode=2;
          break;
    }
+}
+
+int TGKeyUNIX::GetKbdMapping(int version)
+{
+ switch (version)
+   {
+    case unixXterm:
+         return XtermMode==1;
+    case unixNoXterm:
+         return !XtermMode;
+         break;
+    case unixEterm:
+         return XtermMode==2;
+   }
+ return 0;
 }
 
 // The intelligence is here
@@ -541,6 +556,7 @@ void TGKeyUNIX::Init()
  TGKey::getShiftState=GetShiftState;
  TGKey::fillTEvent   =FillTEvent;
  TGKey::SetKbdMapping=TGKeyUNIX::SetKbdMapping;
+ TGKey::GetKbdMapping=TGKeyUNIX::GetKbdMapping;
 }
 #else // TVOS_UNIX && !TVOSf_QNXRtP
 

@@ -899,6 +899,19 @@ void TGKeyLinux::SetKbdMapping(int version)
  Mode=version;
 }
 
+int TGKeyLinux::GetKbdMapping(int version)
+{
+ if (version==linuxDisableKeyPatch)
+   {
+    return dontPatchKeyboard;
+   }
+ else if (version==linuxEnableKeyPatch)
+   {
+    return !dontPatchKeyboard;
+   }
+ return 0;
+}
+
 void TGKeyLinux::Init(int map)
 {
  TGKey::Suspend       =TGKeyLinux::Suspend;
@@ -909,6 +922,7 @@ void TGKeyLinux::Init(int map)
  TGKey::getShiftState =GetShiftState;
  TGKey::fillTEvent    =FillTEvent;
  TGKey::SetKbdMapping =TGKeyLinux::SetKbdMapping;
+ TGKey::GetKbdMapping =TGKeyLinux::GetKbdMapping;
  if (map==KOI8)
    {
     TGKey::SetCodePage(TVCodePage::KOI8r);

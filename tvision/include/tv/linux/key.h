@@ -22,6 +22,7 @@ public:
  static unsigned GetShiftState();
  static void     FillTEvent(TEvent &e);
  static void     SetKbdMapping(int version);
+ static int      GetKbdMapping(int version);
 
  enum { Default, KOI8 };
 

@@ -61,6 +61,7 @@ void     (*TGKey::fillTEvent)(TEvent &e)              =defaultFillTEvent;
 uchar    (*TGKey::NonASCII2ASCII)(uchar val)          =defaultNonASCII2ASCII;
 int      (*TGKey::CompareASCII)(uchar val, uchar code)=defaultCompareASCII;
 void     (*TGKey::SetKbdMapping)(int version)         =defaultSetKbdMapping;
+int      (*TGKey::GetKbdMapping)(int version)         =defaultGetKbdMapping;
 void     (*TGKey::Suspend)()                          =defaultSuspend;
 void     (*TGKey::Resume)()                           =defaultResume;
 int      (*TGKey::SetCodePage)(int id)                =defaultSetCodePage;
@@ -78,6 +79,7 @@ void     TGKey::defaultResume() {}
 uchar    TGKey::defaultNonASCII2ASCII(uchar val) { return val; }
 int      TGKey::defaultCompareASCII(uchar val, uchar code) { return val==code; }
 void     TGKey::defaultSetKbdMapping(int version) { Mode=version; }
+int      TGKey::defaultGetKbdMapping(int version) { return Mode; }
 void     TGKey::defaultFillTEvent(TEvent &/*e*/) {};
 
 /*****************************************************************************
