@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.278  2002/08/29 20:44:42  set
+* Fixed: [Win32] various warnings and errors reported by BC++ 5.5 in the
+new driver. One of them was a real error (use of an unsigned value as
+signed). I didn't test functionallity, just compilation.
+
 Revision 2.277  2002/08/29 20:43:34  set
 * Added: The new WinGr driver to the DOS, Win32 BC++ and Win32 MSVC
 makefiles.
