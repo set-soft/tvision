@@ -13,6 +13,11 @@ SET: I introduced an important change: now buf is a pointer to a filebuf
 and not a filebuf. This is much more convenient to make the code
 compilable with gcc 3.x without breaking compatibility.
 
+SET: Added a filebuf wrapper to get access to protected members needed
+to open associate a filebuf with a C stream/file handle. Andris proposed
+this idea. This is needed for gcc 3.1 and we don't know how long this
+trick will be used.
+
  *
  *
  */
@@ -27,6 +32,23 @@ compilable with gcc 3.x without breaking compatibility.
 
 #if defined( Uses_fpbase ) && !defined( __fpbase )
 #define __fpbase
+
+#ifdef CLY_DefineSpecialFileBuf
+class CLY_filebuf: public std::filebuf
+{
+public:
+ CLY_filebuf() : std::filebuf() {};
+ CLY_filebuf(FILE *f, std::ios_base::openmode mode)
+   { open(f,mode); };
+ CLY_filebuf(int h, std::ios_base::openmode mode)
+   { open(h,mode); };
+
+ CLY_filebuf *open(FILE *f, std::ios_base::openmode);
+ CLY_filebuf *open(int h, std::ios_base::openmode);
+ std::filebuf *open(const char *file, std::ios_base::openmode mode)
+   { return std::filebuf::open(file,mode); };
+};
+#endif
 
 class fpbase : virtual public pstream
 {
@@ -49,7 +71,7 @@ public:
 
 private:
 
-    CLY_std(filebuf) *buf;
+    CLY_filebuf *buf;
 
 };
 

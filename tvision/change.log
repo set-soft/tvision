@@ -1,4 +1,8 @@
 $Log$
+Revision 2.131  2002/06/05 20:24:51  set
+* Fixed: The tutorial number 16 didn't initialize the data for one of the
+input line examples producing random garbage. Reported by Mike.
+.
 Revision 2.130  2002/06/05 20:16:48  set
 * Added: [QNX] New patch from Mike to enhance the keyboard handling.
 * Fixed: TInputLine used an archaic ^Y hardcoded symbol instead of kbCtY.
