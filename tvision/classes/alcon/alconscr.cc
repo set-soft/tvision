@@ -110,8 +110,7 @@ void TScreenAlcon::setCharacters(unsigned offset, ushort *values, unsigned count
 
 int TScreenAlcon::GetFontGeometry(unsigned &w, unsigned &h)
 {
-    w = 8;
-    h = 16;
+    AlCon_GetFontGeometry(&w, &h);
     return 1;
 }
 

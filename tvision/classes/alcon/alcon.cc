@@ -1,3 +1,4 @@
+#define DEBUGMODE
 // -*- mode:C++; tab-width: 3 -*-
 
 /*
@@ -168,6 +169,8 @@ void AlCon_CursorHome()
 
 void AlCon_GotoXY(int x, int y)
 {
+ allegro_message("Gotoxy %2d %2d\n", x, y);
+ ASSERT(x > 0 && y > 0);
  AlCon_ScareCursor();
  cursorX = x; cursorY = y;
  cursorPX = (x - 1) * _font_width;
@@ -461,7 +464,6 @@ void AlCon_UnDrawCursor(int *aFgCol)
 
 void AlCon_IntCursor()
 {
- ASSERT(_cursorFont);
  if (cursorEnabled)
    {
     int aFg,prevMode;
@@ -556,7 +558,7 @@ int AlCon_Init(int w, int h)
    }
   
    /* Load a binary font */
-   _AlCon_LoadCustomFont("rom-PC437.014");
+   //_AlCon_LoadCustomFont("rom-PC437.016");
   
    /* Create default cursor shape */
    _cursorData[0] =0;
@@ -790,3 +792,15 @@ static void _AlCon_LoadCustomFont(const char *filename)
    _screen_height = SCREEN_H / _font_height;
 }
 
+/**[txh]********************************************************************
+
+  Description: Fills in the width and height of a text cell.
+  
+***************************************************************************/
+
+void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h)
+{
+   ASSERT(w && h);
+   *w = _font_width;
+   *h = _font_height;
+}

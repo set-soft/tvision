@@ -58,6 +58,7 @@ extern void AlCon_GetCursorShape(int *from, int *to);
 extern void AlCon_HideCursor();
 extern void AlCon_ShowCursor();
 extern int AlCon_IsVisCursor();
+extern void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h);
 
 /* Initialization routines */
 extern int AlCon_Init(int w, int h);

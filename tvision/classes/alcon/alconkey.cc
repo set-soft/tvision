@@ -1,3 +1,4 @@
+#define DEBUGMODE
 // -*- mode:C++; tab-width: 4 -*-
 #include <tv/configtv.h>
 

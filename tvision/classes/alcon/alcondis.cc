@@ -1,3 +1,5 @@
+#define DEBUGMODE
+// -*- mode:C++; tab-width: 4 -*-
 #include <tv/configtv.h>
 
 #define Uses_TScreen
@@ -38,13 +40,16 @@ TDisplayAlcon::~TDisplayAlcon()
 
 void TDisplayAlcon::GetCursorPos(unsigned &x, unsigned &y)
 {
-    x = AlCon_WhereX();
-    y = AlCon_WhereY();
+    // AlCon returns vars in the range of 1 <= var <= inf.
+    x = AlCon_WhereX() - 1;
+    y = AlCon_WhereY() - 1;
 }
 
 void TDisplayAlcon::SetCursorPos(unsigned  x, unsigned  y)
 {
-    AlCon_GotoXY(x, y);
+    allegro_message("SetCursorPos: %d, %d\n", x, y);
+    // AlCon expects a range of 1 <= var <= inf.
+    AlCon_GotoXY(x + 1, y + 1);
 }
 
 void TDisplayAlcon::SetCursorShape(unsigned start, unsigned end)
