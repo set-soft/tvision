@@ -2,6 +2,8 @@
  Copyright (C) 2001      Salvador E. Tropea
  Covered by the GPL license.
 */
+#define Uses_stdlib
+#include <compatlayer.h>
 
 #if defined(TVOS_DOS) || defined(TVOS_Win32)
 char *CLY_GetShellName(void)
