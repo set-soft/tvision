@@ -26,21 +26,23 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 #include <stdio.h>
 #include <string.h>
 
-#include <sys/time.h>
-
 #include <unistd.h>
 #include <ctype.h>
-#ifdef __FreeBSD__
+#ifdef TVOSf_FreeBSD
 #include <ncurses.h>
 #else
 #include <curses.h>
 #endif
-#include <term.h>
 #include <stdlib.h>
+#include <term.h>
+
+// All of this is needed for the VT switching hook and keyboard patching
+#ifdef TVOSf_Linux
 #include <sys/ioctl.h>
 #include <sys/kd.h>
 #include <sys/vt.h>
 #include <signal.h>
+#endif
 
 #ifdef HAVE_KEYSYMS
 // X11R6 keysyms list
@@ -62,6 +64,8 @@ key, Shift+(Inset,End,Home,PgUp,PgDn,Delete,Arrows,etc.) and more.
 /* Linux IOCTL values found experimentally */
 const int kblNormal=0,kblShift=1,kblAltR=2,kblCtrl=4,kblAltL=8;
 
+#define IN_FD fileno(stdin)
+
 int use_real_keyboard_bios = 0;
 int convert_num_pad = 0;
 
@@ -72,12 +76,11 @@ extern int timer_value;
 
 #define META_MASK 0x8000
 
+#ifdef TVOSf_Linux
 /*
  * Gets information about modifier keys (Alt, Ctrl and Shift).  This can
  * be done only if the program runs on the system console.
  */
-
-#define IN_FD fileno(stdin)
 
 unsigned short getshiftstate(void)
 {
@@ -91,6 +94,15 @@ unsigned short getshiftstate(void)
    }
  return shift;
 }
+#else  // TVOSf_Linux
+// I don't know if other UNIX flavors have an equivalent IOCTL
+inline
+unsigned short getshiftstate(void)
+{
+ return 0;
+}
+#endif // TVOSf_Linux
+
 
 unsigned short gkey_shifts_flags;
 unsigned char gkey_raw_value;
@@ -231,7 +243,8 @@ keyEquiv XEquiv[] =
  /* End */
  {0,0}
 };
-#endif
+#endif // HAVE_KEYSYMS
+
 
 // xterm is a crappy terminal and does all in a way too different to the
 // standard.
@@ -295,14 +308,19 @@ void TGKey::SetKbdMapping(int version)
          define_key("\x1B[7~",KEY_F(58)); // Home
          define_key("\x1B[8~",KEY_F(59)); // End
          #endif
+         #ifdef KEY_MOUSE
+         // This exists in 1.9.9 but not in 1.8.6
          // 0631 == KEY_MOUSE
          kbToName2[KEY_MOUSE & 0x7F]=kbMouse;
          kbExtraFlags2[KEY_MOUSE & 0x7F]=0;
+         #endif
          XtermMode=1;
          break;
     case KBD_NO_XTERM_STYLE:
+         #ifdef KEY_MOUSE
          kbToName2[KEY_MOUSE & 0x7F]=kbF7;
          kbExtraFlags2[KEY_MOUSE & 0x7F]=kbShift;
+         #endif
          XtermMode=0;
          break;
     case KBD_ETERM_STYLE:
@@ -313,9 +331,11 @@ void TGKey::SetKbdMapping(int version)
          for (i=0; XEquiv[i].symbol; i++)
              kbX11Keys[XEquiv[i].symbol & 0xFF]=XEquiv[i].key;
          #endif
+         #ifdef KEY_MOUSE
          // 0631 == KEY_MOUSE
          kbToName2[KEY_MOUSE & 0x7F]=kbMouse;
          kbExtraFlags2[KEY_MOUSE & 0x7F]=0;
+         #endif
          XtermMode=1;
          break;
     default: // KBD_OLD_STYLE
@@ -337,12 +357,14 @@ unsigned short TGKey::gkey(void)
  // Xterm hacks:
  if (XtermMode)
    {
+    #ifdef KEY_MOUSE
     if (rawCode.full==KEY_MOUSE)
       {
        dbprintf("TGKey::gkey: Mouse event detected\r\n");
        Abstract=kbMouse;
-       return rawCode.full;;
+       return rawCode.full;
       }
+    #endif
     #ifdef HAVE_KEYSYMS
     if (rawCode.full==KEY_F(57))
       {
@@ -568,6 +590,7 @@ void TGKey::fillTEvent(TEvent &e)
    }
 }
 
+#ifdef TVOSf_Linux
 typedef struct
 {
   uchar change_table;
@@ -653,8 +676,6 @@ change_entry changes[] = {
 };
 
 #define change_size (sizeof(changes)/sizeof(change_entry))
-
-static struct termios saved_attributes;
 
 static int keyboard_patch_set = 0;
 static int keyboard_patch_available=0;
@@ -818,6 +839,7 @@ static void _patch_keyboard()
   keyboard_patch_set = 1;
 }
 
+static
 void patch_keyboard()
 {
   _patch_keyboard();
@@ -854,6 +876,16 @@ static void unpatch_keyboard()
   nocbreak();
 }
 
+#else  // TVOSf_Linux
+
+// I don't know if other UNIX flavors have a way to release these keys
+void patch_keyboard() {}
+void unpatch_keyboard() {}
+
+#endif // else TVOSf_Linux
+
+static struct termios saved_attributes;
+
 void resume_keyboard()
 {
   tcgetattr (STDIN_FILENO, &saved_attributes);
@@ -865,7 +897,6 @@ void suspend_keyboard()
   tcsetattr (STDIN_FILENO, TCSANOW, &saved_attributes);
   unpatch_keyboard();
 }
-
 
 ushort TGKey::AltSet=0;  // Default: Left and right key are different ones
 
