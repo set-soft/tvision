@@ -165,6 +165,7 @@ if ($OS eq 'UNIX')
    $ReplaceTags{'LIB_X11_SWITCH'}=@conf{'HAVE_X11'} eq 'yes' ? "-L".$conf{'X11LibPath'}." -lX11" : '';
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
    $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
+   $ReplaceTags{'LIB_NCURSES_SWITCH'}=($OSf eq 'QNXRtP') ? '-lncursesS' : '-lncurses';
    # QNX 6.2 beta 3 workaround
    $ReplaceTags{'QNX_LIB_SRCH'}=($OSf eq 'QNXRtP') ? '-L/lib' : '';
    $ReplaceTags{'make'}=$conf{'GNU_Make'};
