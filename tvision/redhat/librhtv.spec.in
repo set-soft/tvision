@@ -79,6 +79,8 @@ install -d -m 0755 $RPM_BUILD_ROOT/usr/include/rhtvision/cl
 install -m 0644 include/cl/*.h $RPM_BUILD_ROOT/usr/include/rhtvision/cl
 install -d -m 0755 $RPM_BUILD_ROOT/usr/lib
 install -m 0644 makes/librhtv.a $RPM_BUILD_ROOT/usr/lib
+install -d -m 0755 $RPM_BUILD_ROOT/usr/bin
+install -m 0755 rhtv-config $RPM_BUILD_ROOT/usr/bin
 rm -f $RPM_BUILD_ROOT/usr/lib/librhtv.so
 rm -f $RPM_BUILD_ROOT/usr/lib/librhtv.so.2
 rm -f $RPM_BUILD_ROOT/usr/lib/librhtv.so.%{version}
@@ -113,6 +115,7 @@ install -m 0644 doc/*.txt doc/*.html  $RPM_BUILD_ROOT/usr/share/doc/packages/lib
 /usr/include/%{incname}/cl/*.h
 /usr/lib/*.a
 /usr/lib/lib*.so
+/usr/bin/*
 /usr/share/doc/packages/librhtv/*
 
 
