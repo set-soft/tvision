@@ -72,7 +72,7 @@ TMenuBar *TEditorApp::initMenuBar( TRect r )
         *new TMenuItem( _("~C~lose"), cmClose, kbAltF3, hcNoContext, "Alt+F3" );
 
       /*TSubMenu& sub5 = *new TSubMenu( _("~O~ptions"), kbAltO )
-	+ *new TMenuItem( _("~M~acros"), cmMacros, kbNoKey );*/
+        + *new TMenuItem( _("~M~acros"), cmMacros, kbNoKey );*/
 
     r.b.y = r.a.y+1;
     return new TMenuBar( r, sub1 + sub2 + sub3 + sub4
@@ -85,6 +85,9 @@ TStatusLine *TEditorApp::initStatusLine( TRect r )
     r.a.y = r.b.y-1;
     return new TStatusLine( r,
         *new TStatusDef( 0, 0xFFFF ) +
+            // SET: F10 before the others so when the library maintains the
+            // cursor visible this option is pointed and the user have a
+            // hint about what to do.
             *new TStatusItem( _("~F10~ Menu"), kbF10, cmMenu ) +
             *new TStatusItem( _("~F2~ Save"), kbF2, cmSave ) +
             *new TStatusItem( _("~F3~ Open"), kbF3, cmOpen ) +

@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.116  2002/06/03 20:56:23  set
+* Added: Now TDeskTop moves the cursor to the bottom of the screen when
+an object lost the focus and we are in the "Braille friendly" mode. Until
+now the changes are good according to Tapio.
+
 Revision 2.115  2002/06/03 19:42:24  set
 * Fixed: [Linux] The Resume member needed a fflush before calling a child
 process (a shell for example).

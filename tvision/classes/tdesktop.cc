@@ -117,9 +117,6 @@ void TDeskTop::handleEvent(TEvent& event)
                 if (valid(cmReleasedFocus))
                     current->putInFrontOf( background );
                 break;
-            case cmReleasedFocus:
-                setCursor( 0 , 24 );
-                break;
             default:
                 return;
             }
