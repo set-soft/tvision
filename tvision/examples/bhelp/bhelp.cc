@@ -58,7 +58,7 @@ TBorlandHelpTopic::TBorlandHelpTopic(fpstream & s, char *comp)
 
   s.readBytes(data, datalength);
 
-  unsigned short noRefs;
+  ushort noRefs;
 
   s >> type;
   s >> refslength;
@@ -67,8 +67,8 @@ TBorlandHelpTopic::TBorlandHelpTopic(fpstream & s, char *comp)
   s >> noRefs;
   setNumCrossRefs(0);
   refslength -= 6;
-  unsigned short *refs = (unsigned short *) (new(unsigned char)[refslength]);
-  unsigned short *curref = refs;
+  ushort *refs = (ushort *)(new uchar[refslength]);
+  ushort *curref = refs;
 
   s.readBytes(refs, refslength);
 
@@ -86,7 +86,7 @@ TBorlandHelpTopic::TBorlandHelpTopic(fpstream & s, char *comp)
 
       case 0xe:                /* Rep */
       {
-        unsigned short RepCount;
+        ushort RepCount;
 
         k++;
         RepCount = ((data[k / 2] >> ((k & 1) * 4)) & 0xf) + 2;
