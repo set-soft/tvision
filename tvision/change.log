@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.289  2002/09/06 17:56:16  set
+* Fixed: TFileList used an ole methode to determine if the shift key was
+pressed. Reported by Ivan.
+
 Revision 2.288  2002/09/06 14:22:13  set
 * Added: Workaround for broken KOI8-R systems (looks that's the most common
 case) where the SFM and ACM doesn't use Unicode, or uses Unicode mixed with

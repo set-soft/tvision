@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to support mouse wheels.
 
  *
  *
@@ -27,6 +28,8 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #define cpScroller "\x06\x07"
 
+int TScroller::defaultWheelStep=5;
+
 TScroller::TScroller( const TRect& bounds,
                       TScrollBar *aHScrollBar,
                       TScrollBar *aVScrollBar) :
@@ -39,6 +42,7 @@ TScroller::TScroller( const TRect& bounds,
     delta.x = delta.y = limit.x = limit.y = 0;
     options |= ofSelectable;
     eventMask |= evBroadcast;
+    wheelStep = defaultWheelStep;
     // This class can be "Braille friendly"
     if (TScreen::getShowCursorEver())
        state |= sfCursorVis;
@@ -86,6 +90,20 @@ void TScroller::handleEvent(TEvent& event)
             event.message.infoPtr == vScrollBar )
       )
         scrollDraw();
+    else
+    if( vScrollBar && event.what == evMouseDown)
+        {
+         if( event.mouse.buttons==mbButton4 )
+             {
+              vScrollBar->setValue( vScrollBar->value - wheelStep );
+              clearEvent( event );
+             }
+         else if( event.mouse.buttons==mbButton5 )
+             {
+              vScrollBar->setValue( vScrollBar->value + wheelStep );
+              clearEvent( event );
+             }
+        }
 }
 
 void TScroller::scrollDraw()

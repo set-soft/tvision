@@ -46,6 +46,10 @@ public:
     void checkDraw();
     virtual void shutDown();
 
+    // How many lines we will scroll when the mouse wheel is used.
+    static int defaultWheelStep;
+    int wheelStep;
+
 protected:
 
     uchar drawLock;
