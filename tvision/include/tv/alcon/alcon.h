@@ -58,10 +58,9 @@ extern void AlCon_GetCursorShape(int *from, int *to);
 extern void AlCon_HideCursor();
 extern void AlCon_ShowCursor();
 extern int AlCon_IsVisCursor();
-extern void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h);
 
 /* Initialization routines */
-extern int AlCon_Init(int w, int h);
+extern int AlCon_Init(int w, int h, int fw=-1, int fh=-1, uchar *fdata=NULL);
 extern void AlCon_Exit();
 
 /* Keyboard input routines */
@@ -73,6 +72,15 @@ extern void AlCon_ClearKeyBuf();
 /* Mouse input routines */
 extern int AlCon_GetMouseButtons(void);
 extern void AlCon_GetMousePos(int *x, int *y, int *buttons);
+
+/* Fonts */
+extern void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h);
+extern void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h);
+
+/* Our default font */
+extern uchar AlCon_ShapeFont8x16[];
+
+extern void AlCon_Redraw();
 
 #ifndef AlCon_NO_KEYDEFS
 

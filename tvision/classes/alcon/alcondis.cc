@@ -13,7 +13,7 @@
 #define Uses_AlCon_conio
 #include <tv/alcon/alcon.h>
 
-#define PRINTF(FORMAT, ...)  printf("%s " FORMAT "\n", __PRETTY_FUNCTION__, ## __VA_ARGS__)
+#define PRINTF(FORMAT, args...)  printf("%s " FORMAT "\n", __PRETTY_FUNCTION__, ## args)
 
 
 void TDisplayAlcon::Init()

@@ -146,6 +146,13 @@ protected:
  
 protected:
  // Put support routines and variables here
+ // Size of the font.
+ static unsigned  fontW,fontWb,fontH,fontSz;
+ // The default font.
+ static TScreenFont256  font8x16;
+ static TScreenFont256 *defaultFont;
+ // Indicates if the current primary font is custom.
+ static uchar primaryFontChanged;
 };
 
 #endif // ALCONSCR_HEADER_INCLUDED
