@@ -1,7 +1,20 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2004-10-14 16:40
 #
+
+OBJFILES=\
+	./ascii$(ExOBJ) \
+	./calendar$(ExOBJ) \
+	./fileview$(ExOBJ) \
+	./gadgets$(ExOBJ) \
+	./mousedlg$(ExOBJ) \
+	./puzzle$(ExOBJ) \
+	./tvdemo1$(ExOBJ) \
+	./tvdemo2$(ExOBJ) \
+	./tvdemo3$(ExOBJ) 
+
+LIBRARIES=
 
 demo$(ExEXE):: \
 	./ascii$(ExOBJ) \
@@ -42,17 +55,4 @@ demo$(ExEXE):: \
 
 ./tvdemo3$(ExOBJ):: tvdemo3.cc  
 	$(RHIDE_COMPILE_CC)
-
-OBJFILES=\
-	./ascii$(ExOBJ) \
-	./calendar$(ExOBJ) \
-	./fileview$(ExOBJ) \
-	./gadgets$(ExOBJ) \
-	./mousedlg$(ExOBJ) \
-	./puzzle$(ExOBJ) \
-	./tvdemo1$(ExOBJ) \
-	./tvdemo2$(ExOBJ) \
-	./tvdemo3$(ExOBJ) 
-
-LIBRARIES=
 

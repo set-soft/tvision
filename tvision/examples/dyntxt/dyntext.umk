@@ -1,7 +1,13 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2004-10-14 16:40
 #
+
+OBJFILES=\
+	./dyntext$(ExOBJ) \
+	./testdyn$(ExOBJ) 
+
+LIBRARIES=
 
 dyntext$(ExEXE):: \
 	./dyntext$(ExOBJ) \
@@ -14,10 +20,4 @@ dyntext$(ExEXE):: \
 
 ./testdyn$(ExOBJ):: testdyn.cpp  
 	$(RHIDE_COMPILE_CC)
-
-OBJFILES=\
-	./dyntext$(ExOBJ) \
-	./testdyn$(ExOBJ) 
-
-LIBRARIES=
 

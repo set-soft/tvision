@@ -1,7 +1,12 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2004-10-14 16:40
 #
+
+OBJFILES=\
+	./terminal$(ExOBJ) 
+
+LIBRARIES=
 
 test$(ExEXE):: \
 	./terminal$(ExOBJ) \
@@ -10,9 +15,4 @@ test$(ExEXE):: \
 
 ./terminal$(ExOBJ):: terminal.cc  
 	$(RHIDE_COMPILE_CC)
-
-OBJFILES=\
-	./terminal$(ExOBJ) 
-
-LIBRARIES=
 

@@ -1,7 +1,14 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2004-10-14 16:40
 #
+
+OBJFILES=\
+	./main$(ExOBJ) \
+	./scrldlg$(ExOBJ) \
+	./scrlgrp$(ExOBJ) 
+
+LIBRARIES=
 
 test$(ExEXE):: \
 	./main$(ExOBJ) \
@@ -18,11 +25,4 @@ test$(ExEXE):: \
 
 ./scrlgrp$(ExOBJ):: scrlgrp.cpp  
 	$(RHIDE_COMPILE_CC)
-
-OBJFILES=\
-	./main$(ExOBJ) \
-	./scrldlg$(ExOBJ) \
-	./scrlgrp$(ExOBJ) 
-
-LIBRARIES=
 

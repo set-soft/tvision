@@ -1,7 +1,12 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2004-10-14 16:40
 #
+
+OBJFILES=\
+	./set-logo$(ExOBJ) 
+
+LIBRARIES=
 
 set-logo$(ExEXE):: \
 	./set-logo$(ExOBJ) \
@@ -10,9 +15,4 @@ set-logo$(ExEXE):: \
 
 ./set-logo$(ExOBJ):: set-logo.cc  
 	$(RHIDE_COMPILE_CC)
-
-OBJFILES=\
-	./set-logo$(ExOBJ) 
-
-LIBRARIES=
 

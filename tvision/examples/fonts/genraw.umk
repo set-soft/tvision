@@ -1,7 +1,12 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2004-10-14 16:40
 #
+
+OBJFILES=\
+	./genraw$(ExOBJ) 
+
+LIBRARIES=
 
 genraw$(ExEXE):: \
 	./genraw$(ExOBJ) \
@@ -10,9 +15,4 @@ genraw$(ExEXE):: \
 
 ./genraw$(ExOBJ):: genraw.cc  
 	$(RHIDE_COMPILE_CC)
-
-OBJFILES=\
-	./genraw$(ExOBJ) 
-
-LIBRARIES=
 

@@ -1,7 +1,24 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-30 10:39
+# 2004-10-14 16:40
 #
+
+OBJFILES=\
+	./nmcmbobx$(ExOBJ) \
+	./nmcmbovw$(ExOBJ) \
+	./nmcmbown$(ExOBJ) \
+	./nmsinput$(ExOBJ) \
+	./scombobx$(ExOBJ) \
+	./scombovw$(ExOBJ) \
+	./scombown$(ExOBJ) \
+	./ssinputl$(ExOBJ) \
+	./tcmbovwr$(ExOBJ) \
+	./tcmbowin$(ExOBJ) \
+	./tcombobx$(ExOBJ) \
+	./test$(ExOBJ) \
+	./tsinputl$(ExOBJ) 
+
+LIBRARIES=
 
 test$(ExEXE):: \
 	./nmcmbobx$(ExOBJ) \
@@ -58,21 +75,4 @@ test$(ExEXE):: \
 
 ./tsinputl$(ExOBJ):: tsinputl.cpp  
 	$(RHIDE_COMPILE_CC)
-
-OBJFILES=\
-	./nmcmbobx$(ExOBJ) \
-	./nmcmbovw$(ExOBJ) \
-	./nmcmbown$(ExOBJ) \
-	./nmsinput$(ExOBJ) \
-	./scombobx$(ExOBJ) \
-	./scombovw$(ExOBJ) \
-	./scombown$(ExOBJ) \
-	./ssinputl$(ExOBJ) \
-	./tcmbovwr$(ExOBJ) \
-	./tcmbowin$(ExOBJ) \
-	./tcombobx$(ExOBJ) \
-	./test$(ExOBJ) \
-	./tsinputl$(ExOBJ) 
-
-LIBRARIES=
 
