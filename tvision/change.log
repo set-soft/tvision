@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.517  2003/11/24 16:29:58  set
+* Modified: Synchronyzed the code for the update thread with my home CVS.
+
 Revision 2.516  2003/11/18 13:17:14  lmike
 * Removed QNX4 ifdefs from the main tv sources, all done via Uses_xxx now.
 * Added CLY version of snprintf for the QNX4.

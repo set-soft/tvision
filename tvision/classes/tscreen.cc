@@ -23,6 +23,7 @@ same used in original Turbo Vision for compatibility purposes.
 #define Uses_ctype
 #define Uses_TScreen
 #define Uses_TVConfigFile
+#define Uses_TGKey
 #include <tv.h>
 #include <tv/drivers.h>
 
@@ -297,6 +298,9 @@ TScreen::TScreen() :
  long val=0;
  if (optSearch("AvoidMoire",val))
     avoidMoire=val;
+ val=0;
+ if (optSearch("AltKeysSetting",val))
+    TGKey::SetAltSettings(val);
 }
 
 TScreen::~TScreen()
