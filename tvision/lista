@@ -669,11 +669,14 @@ linux/inclubin.txt
 linux/includbi.txt
 +linux/sacadeb
 Makefile.bcc
+Makefile.nmk
 Makefile.in
 makes/blink.c
 makes/common.bmk
 makes/common.imk
+makes/common.nmk
 makes/config.bcc
+makes/config.nmk
 makes/extrimk.cc
 makes/genimk.cc
 makes/includer.bmk

@@ -1,0 +1,67 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003-2004 by Salvador E. Tropea.
+# Covered by the GPL license.
+#
+# For MSVC. NOT TESTED PLEASE HELP ME TO FIX IT.
+# This file contains the definitions needed to compile and link the rules
+# found in .umk files.
+# The definitions are used by all the makefiles.
+#
+
+#
+# That configure the compilation and linking options.
+# Is equivalent to rhide.env.
+#
+!ifdef CONFIG_PATH
+# To avoid usig -I....
+!include $(CONFIG_PATH)/config.nmk
+!else
+!include config.nmk
+!endif
+
+# .path.cc=$(SRCDIRS)
+# .path.c=$(SRCDIRS);.
+# .path.s=$(SRCDIRS)
+
+# Turn off the implicit rule to generate .obj files from .c files.
+# If we don't do it make will use both rules.
+.c.obj:
+
+# These files changes the compilation process so they are important
+# dependencies.
+#MAKEFILE_DEPS=blink.exe Interferes with compile rule.
+MAKEFILE_DEPS=
+# Extensions used by Borland tools
+ExOBJ=.obj
+ExEXE=.exe
+ExLIB=.lib
+
+#RHIDE_AR=blink
+RHIDE_AR=link
+RHIDE_ARFLAGS=
+
+RHIDE_COMPILE_LINK=$(RHIDE_LD) $(LDFLAGS) /OUT:$(OUTFILE) $(OBJFILES) \
+	$(LIBRARIES) $(RHIDE_LIBDIRS) user32.lib $(RHIDE_LIBS)
+RHIDE_COMPILE_C=$(RHIDE_GCC) -c $(CFLAGS) $(INCLUDE_DIRS) -Fo$(OUTFILE) \
+	$(SOURCE_NAME)
+RHIDE_COMPILE_CC=$(RHIDE_GXX) -c $(CXXFLAGS) $(INCLUDE_DIRS) -Fo$(OUTFILE) \
+	$(SOURCE_NAME)
+#RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) $(OUTFILE) obj
+RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) /OUT:$(OUTFILE) \
+	$(ALL_PREREQ)
+# This is fake, the .S files are used only for DJGPP and they are protected
+# by preprocessor constructions. For this reason they can be used as C sources
+# to generate dummy .obj files.
+RHIDE_COMPILE_ASM_FORCE=$(RHIDE_GCC) -c $(CFLAGS) /TC $(INCLUDE_DIRS) -Fo$(OUTFILE) \
+	$(SOURCE_NAME)
+
+SOURCE_NAME=$**
+OUTFILE=$@
+ALL_PREREQ=$**
+
+#LIB_DIRS=$(RHIDE_OS_LIBS_PATH) -L.
+
+#blink.exe:: blink.c
+#	$(RHIDE_GCC) -e$(OUTFILE) $(ALL_PREREQ)
+

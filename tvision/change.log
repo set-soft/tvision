@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.586  2004/10/12 20:28:31  set
+* Added: [Install] Support for Solaris' native install tool. That's a
+really bad implementation installer.
+
 Revision 2.585  2004/10/08 21:13:58  set
 * Fixed: [Config][Solaris] dynamic lib creation when using native ld.
 * Fixed: [Config][Solaris and Darwin] the native snprintf function
