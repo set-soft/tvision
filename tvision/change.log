@@ -1,4 +1,17 @@
-$Log$
+$Log$.
+Revision 2.483  2003/06/23 14:12:02  set
+* Added: now is posible to indicate the installation prefix for the
+makefile even after configuring another value.
+* Modified: configure script to no longer remove the Makefile.
+* Modified: I heavily changed the readme.txt file to reflect current status
+I also moved some driver specific text to the doc directory.
+* Fixed: the TStaticText class when using the center char \3 needed an
+extra length.
+* Added: the script to create the RPMs now ensures the other scripts are
+executables.
+* Added: detailed compilation instructions in individual files for each
+target. They are adapted versions of the ones I provide with SETEdit.
+
 Revision 2.482  2003/06/18 19:58:51  set
 * Fixed: [DOS] When pasting from Windows clipboard and it was empty the
 routine didn't set the length to 0 returning an aleatory length.

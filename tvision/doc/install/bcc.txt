@@ -8,6 +8,7 @@ $Id$
 
 1. INTRODUCTION
 2. HOW TO COMPILE
+3. INSTALLATION
 
 
 
@@ -61,4 +62,9 @@ B) The old mechanism:
 See: winnt/readme.txt
 
 
+
+3. INSTALLATION
+
+  Currently this target needs manual installation. You can also use the files
+without installing just providing the paths to the compiler.
 
