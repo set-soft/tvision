@@ -37,6 +37,10 @@
 
 #include <tv.h>
 
+#ifdef TVOS_UNIX
+ #include <signal.h>
+#endif
+
 #define   PATTERN 177
 
 const int cmAbout   = 100;  // User selected menu item 'About'
