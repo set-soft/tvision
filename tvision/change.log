@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.531  2004/04/14 15:41:12  set
+* Fixed: Oops! the patch from the Unicode branch didn't apply propperly,
+now is fixed and the code compiles.
+
 Revision 2.530  2004/04/14 15:34:01  set
 * Modified: When clicking in an object: if it doesn't receive the focus we
 no longer pass the the mouse event to this object. I think it doesn't have
