@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 test$(ExEXE):: \
@@ -10,19 +10,13 @@ test$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./main$(ExOBJ):: main.cpp \
-	dlg.h \
-	$(MAKEFILE_DEPS) 
+./main$(ExOBJ):: main.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./scrldlg$(ExOBJ):: scrldlg.cpp \
-	dlg.h \
-	$(MAKEFILE_DEPS) 
+./scrldlg$(ExOBJ):: scrldlg.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./scrlgrp$(ExOBJ):: scrlgrp.cpp \
-	dlg.h \
-	$(MAKEFILE_DEPS) 
+./scrlgrp$(ExOBJ):: scrlgrp.cpp  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

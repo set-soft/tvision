@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 freedsgn$(ExEXE):: \
@@ -15,67 +15,28 @@ freedsgn$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./codebldr$(ExOBJ):: codebldr.cc \
-	consted.h \
-	dsgdata.h \
-	dsgobjs.h \
-	fdconsts.h \
-	propdlgs.h \
-	propedit.h \
-	$(MAKEFILE_DEPS) 
+./codebldr$(ExOBJ):: codebldr.cc  
 	$(RHIDE_COMPILE_CC)
 
-./consted$(ExOBJ):: consted.cc \
-	consted.h \
-	$(MAKEFILE_DEPS) 
+./consted$(ExOBJ):: consted.cc  
 	$(RHIDE_COMPILE_CC)
 
-./dsgobjs$(ExOBJ):: dsgobjs.cc \
-	dsgdata.h \
-	dsgobjs.h \
-	fdconsts.h \
-	propedit.h \
-	strmoper.h \
-	$(MAKEFILE_DEPS) 
+./dsgobjs$(ExOBJ):: dsgobjs.cc  
 	$(RHIDE_COMPILE_CC)
 
-./freedsgn$(ExOBJ):: freedsgn.cc \
-	consted.h \
-	dsgdata.h \
-	dsgobjs.h \
-	fdconsts.h \
-	propedit.h \
-	strmoper.h \
-	$(MAKEFILE_DEPS) 
+./freedsgn$(ExOBJ):: freedsgn.cc  
 	$(RHIDE_COMPILE_CC)
 
-./propdlgs$(ExOBJ):: propdlgs.cc \
-	consted.h \
-	propedit.h \
-	$(MAKEFILE_DEPS) 
+./propdlgs$(ExOBJ):: propdlgs.cc  
 	$(RHIDE_COMPILE_CC)
 
-./propedit$(ExOBJ):: propedit.cc \
-	consted.h \
-	dsgdata.h \
-	dsgobjs.h \
-	fdconsts.h \
-	propdlgs.h \
-	propedit.h \
-	$(MAKEFILE_DEPS) 
+./propedit$(ExOBJ):: propedit.cc  
 	$(RHIDE_COMPILE_CC)
 
-./strmoper$(ExOBJ):: strmoper.cc \
-	strmoper.h \
-	$(MAKEFILE_DEPS) 
+./strmoper$(ExOBJ):: strmoper.cc  
 	$(RHIDE_COMPILE_CC)
 
-./tappwnd$(ExOBJ):: tappwnd.cc \
-	dsgdata.h \
-	dsgobjs.h \
-	fdconsts.h \
-	propedit.h \
-	$(MAKEFILE_DEPS) 
+./tappwnd$(ExOBJ):: tappwnd.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

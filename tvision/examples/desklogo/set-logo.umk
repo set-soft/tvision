@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 set-logo$(ExEXE):: \
@@ -8,8 +8,7 @@ set-logo$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./set-logo$(ExOBJ):: set-logo.cc \
-	$(MAKEFILE_DEPS) 
+./set-logo$(ExOBJ):: set-logo.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

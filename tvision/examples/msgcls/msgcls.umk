@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 msgcls$(ExEXE):: \
@@ -9,13 +9,10 @@ msgcls$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./testdyn$(ExOBJ):: testdyn.cpp \
-	$(MAKEFILE_DEPS) 
+./testdyn$(ExOBJ):: testdyn.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./tlnmsg$(ExOBJ):: tlnmsg.cpp \
-	tlnmsg.h \
-	$(MAKEFILE_DEPS) 
+./tlnmsg$(ExOBJ):: tlnmsg.cpp  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

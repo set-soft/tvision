@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 tvguid03$(ExEXE):: \
@@ -8,8 +8,7 @@ tvguid03$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./tvguid03$(ExOBJ):: tvguid03.cc \
-	$(MAKEFILE_DEPS) 
+./tvguid03$(ExOBJ):: tvguid03.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

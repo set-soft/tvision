@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 demo$(ExEXE):: \
@@ -16,64 +16,31 @@ demo$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./ascii$(ExOBJ):: ascii.cc \
-	ascii.h \
-	$(MAKEFILE_DEPS) 
+./ascii$(ExOBJ):: ascii.cc  
 	$(RHIDE_COMPILE_CC)
 
-./calendar$(ExOBJ):: calendar.cc \
-	calendar.h \
-	$(MAKEFILE_DEPS) 
+./calendar$(ExOBJ):: calendar.cc  
 	$(RHIDE_COMPILE_CC)
 
-./fileview$(ExOBJ):: fileview.cc \
-	fileview.h \
-	tvcmds.h \
-	$(MAKEFILE_DEPS) 
+./fileview$(ExOBJ):: fileview.cc  
 	$(RHIDE_COMPILE_CC)
 
-./gadgets$(ExOBJ):: gadgets.cc \
-	gadgets.h \
-	$(MAKEFILE_DEPS) 
+./gadgets$(ExOBJ):: gadgets.cc  
 	$(RHIDE_COMPILE_CC)
 
-./mousedlg$(ExOBJ):: mousedlg.cc \
-	mousedlg.h \
-	$(MAKEFILE_DEPS) 
+./mousedlg$(ExOBJ):: mousedlg.cc  
 	$(RHIDE_COMPILE_CC)
 
-./puzzle$(ExOBJ):: puzzle.cc \
-	puzzle.h \
-	$(MAKEFILE_DEPS) 
+./puzzle$(ExOBJ):: puzzle.cc  
 	$(RHIDE_COMPILE_CC)
 
-./tvdemo1$(ExOBJ):: tvdemo1.cc \
-	demohelp.h \
-	fileview.h \
-	gadgets.h \
-	puzzle.h \
-	tvdemo.h \
-	$(MAKEFILE_DEPS) 
+./tvdemo1$(ExOBJ):: tvdemo1.cc  
 	$(RHIDE_COMPILE_CC)
 
-./tvdemo2$(ExOBJ):: tvdemo2.cc \
-	ascii.h \
-	calendar.h \
-	demohelp.h \
-	tvcmds.h \
-	tvdemo.h \
-	$(MAKEFILE_DEPS) 
+./tvdemo2$(ExOBJ):: tvdemo2.cc  
 	$(RHIDE_COMPILE_CC)
 
-./tvdemo3$(ExOBJ):: tvdemo3.cc \
-	calendar.h \
-	demohelp.h \
-	fileview.h \
-	gadgets.h \
-	mousedlg.h \
-	tvcmds.h \
-	tvdemo.h \
-	$(MAKEFILE_DEPS) 
+./tvdemo3$(ExOBJ):: tvdemo3.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

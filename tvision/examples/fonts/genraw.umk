@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 genraw$(ExEXE):: \
@@ -8,8 +8,7 @@ genraw$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./genraw$(ExOBJ):: genraw.cc \
-	$(MAKEFILE_DEPS) 
+./genraw$(ExOBJ):: genraw.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

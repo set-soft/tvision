@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 helpdemo$(ExEXE):: \
@@ -8,8 +8,7 @@ helpdemo$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./helpdemo$(ExOBJ):: helpdemo.cc \
-	$(MAKEFILE_DEPS) 
+./helpdemo$(ExOBJ):: helpdemo.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

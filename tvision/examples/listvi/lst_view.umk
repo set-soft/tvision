@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 listvi$(ExEXE):: \
@@ -9,14 +9,10 @@ listvi$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./listbox2$(ExOBJ):: listbox2.cpp \
-	lst_view.h \
-	$(MAKEFILE_DEPS) 
+./listbox2$(ExOBJ):: listbox2.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./lst_view$(ExOBJ):: lst_view.cpp \
-	lst_view.h \
-	$(MAKEFILE_DEPS) 
+./lst_view$(ExOBJ):: lst_view.cpp  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

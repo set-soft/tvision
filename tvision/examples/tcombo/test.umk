@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 test$(ExEXE):: \
@@ -20,70 +20,43 @@ test$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./nmcmbobx$(ExOBJ):: nmcmbobx.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./nmcmbobx$(ExOBJ):: nmcmbobx.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./nmcmbovw$(ExOBJ):: nmcmbovw.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./nmcmbovw$(ExOBJ):: nmcmbovw.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./nmcmbown$(ExOBJ):: nmcmbown.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./nmcmbown$(ExOBJ):: nmcmbown.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./nmsinput$(ExOBJ):: nmsinput.cpp \
-	tsinputl.h \
-	$(MAKEFILE_DEPS) 
+./nmsinput$(ExOBJ):: nmsinput.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./scombobx$(ExOBJ):: scombobx.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./scombobx$(ExOBJ):: scombobx.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./scombovw$(ExOBJ):: scombovw.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./scombovw$(ExOBJ):: scombovw.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./scombown$(ExOBJ):: scombown.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./scombown$(ExOBJ):: scombown.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./ssinputl$(ExOBJ):: ssinputl.cpp \
-	tsinputl.h \
-	$(MAKEFILE_DEPS) 
+./ssinputl$(ExOBJ):: ssinputl.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./tcmbovwr$(ExOBJ):: tcmbovwr.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./tcmbovwr$(ExOBJ):: tcmbovwr.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./tcmbowin$(ExOBJ):: tcmbowin.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./tcmbowin$(ExOBJ):: tcmbowin.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./tcombobx$(ExOBJ):: tcombobx.cpp \
-	tcombobx.h \
-	$(MAKEFILE_DEPS) 
+./tcombobx$(ExOBJ):: tcombobx.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./test$(ExOBJ):: test.cpp \
-	tcombobx.h \
-	tsinputl.h \
-	$(MAKEFILE_DEPS) 
+./test$(ExOBJ):: test.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./tsinputl$(ExOBJ):: tsinputl.cpp \
-	tsinputl.h \
-	$(MAKEFILE_DEPS) 
+./tsinputl$(ExOBJ):: tsinputl.cpp  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

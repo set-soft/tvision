@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 desklogo$(ExEXE):: \
@@ -8,8 +8,7 @@ desklogo$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./desklogo$(ExOBJ):: desklogo.cc \
-	$(MAKEFILE_DEPS) 
+./desklogo$(ExOBJ):: desklogo.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

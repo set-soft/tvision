@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 test$(ExEXE):: \
@@ -9,13 +9,10 @@ test$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./example$(ExOBJ):: example.cpp \
-	tprogbar.h \
-	$(MAKEFILE_DEPS) 
+./example$(ExOBJ):: example.cpp  
 	$(RHIDE_COMPILE_CC)
 
-./tprogbar$(ExOBJ):: tprogbar.cpp \
-	$(MAKEFILE_DEPS) 
+./tprogbar$(ExOBJ):: tprogbar.cpp  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\

@@ -1,6 +1,6 @@
 #!/usr/bin/make
 # Automatically generated from RHIDE projects, don't edit
-# 2003-06-02 11:20
+# 2003-06-02 11:57
 #
 
 tvhc$(ExEXE):: \
@@ -8,9 +8,7 @@ tvhc$(ExEXE):: \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_LINK)
 
-./tvhc$(ExOBJ):: tvhc.cc \
-	tvhc.h \
-	$(MAKEFILE_DEPS) 
+./tvhc$(ExOBJ):: tvhc.cc  
 	$(RHIDE_COMPILE_CC)
 
 OBJFILES=\
