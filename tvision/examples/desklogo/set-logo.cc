@@ -31,7 +31,7 @@
 
 #define   PATTERN 177
 
-const cmAbout   = 100;  // User selected menu item 'About'
+const int cmAbout   = 100;  // User selected menu item 'About'
 
 char *lines[]=
 {

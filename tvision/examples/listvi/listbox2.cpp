@@ -44,8 +44,8 @@ char *cityList[] = { "Boston MA.   ",
 char *numList[] = {"1","2","3","4","5","6","7","8","9","10","11","12","13",NULL};
 
 //  global data
-const cmAbout   = 100;  // User selected menu item 'About'
-const cmList    = 101;  // User selected menu item 'List'
+const int cmAbout   = 100;  // User selected menu item 'About'
+const int cmList    = 101;  // User selected menu item 'List'
 
 //*******************************************************
 class TApp : public TApplication {

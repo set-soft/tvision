@@ -24,8 +24,8 @@
 
 #include "dyntext.h"
 
-const cmAbout = 100;
-const cmTest  = 101;
+const int cmAbout = 100;
+const int cmTest  = 101;
 
 
 ////////////////////////////////////////////////////////////////////////
