@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.160  2002/06/19 17:10:12  set
+* Added: [Linux] support for russian keyboards when the encoding is KOI8.
+Alexey Godin gave me the information about the layout. I tested it using
+the koi8-r fonts and ru1 keyboard map in my system + a translation of the
+"File" menu and worked.
+
 Revision 2.159  2002/06/18 20:50:37  set
 * Added: TScroller and TScrollBar now cooperates with Braille Terminals.
 From suggestions by Tapio.
