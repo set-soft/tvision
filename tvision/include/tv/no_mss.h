@@ -5,7 +5,5 @@
   Needed to wrap uses of operators/functions defined as macros in MSS.
 */
 #ifdef MSS
-#define REINCLUDE_MSS
-#undef MSS
-#include <mss.h>
+#include <no_mss.h>
 #endif
