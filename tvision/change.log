@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.213  2004/10/19 14:57:14  set
+* Fixed: [Linux] The console driver failed to detect the code page used by
+the screen font (SFM). I think this was introduced by the 2003/05/21 patch.
+
 Revision 2.399.2.212  2004/10/18 14:51:07  set
 * Modified: [Compilation] The dependencies now include a relative path so
 makefiles doesn't need to define a "vpath". That's because nmake doesn't
