@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.399.2.17  2003/02/25 19:34:42  set
+* Modified: Well, Iván wanted templates ... now we have them. I recoded the
+TInputLine stuff adding an intermediate class (TInputLineBaseT<T,D>) it
+contains all the functions that are almost equal between TInputLine and
+TInputLineU16. The first type is the data type and the second is the kind
+of TDrawBuffer tu use.
+
 Revision 2.399.2.16  2003/02/21 18:54:15  set
 * Fixed: Oops! some test code I left in TInputLine.
 * Added: A new snapshot to the web page.
