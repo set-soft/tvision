@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.414  2003/04/10 21:34:40  set
+* Fixed: TVCodePage::FillGenericRemap must be ready to be called even
+before the code page module is initialized.
+
 Revision 2.413  2003/04/10 21:26:43  set
 * Updated: DOS project.
 * Fixed: [DOS] use of _() return value as char *.

@@ -5,6 +5,10 @@
 #if defined(TVOSf_QNXRtP) && !defined(QNXRTPKEY_HEADER_INCLUDED)
 #define QNXRTPKEY_HEADER_INCLUDED
 
+#define TVPH_KEY_SHIFT 0x00000001UL
+#define TVPH_KEY_CTRL  0x00000002UL
+#define TVPH_KEY_ALT   0x00000004UL
+
 struct _QNXRtPArtKeys
 {
    ushort rawkey;
@@ -41,6 +45,8 @@ protected:
       static QNXRtPArtKeys shifttranstable[];
       static QNXRtPArtKeys alttranstable[];
       static QNXRtPArtKeys ctrltranstable[];
+      static struct dlphoton phcon;
+      static bool inpterm;
 };
 
 #endif // QNXRTPKEY_HEADER_INCLUDED
