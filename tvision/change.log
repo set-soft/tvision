@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.210  2002/07/04 19:10:04  set
+* Removed: [DOS] old reference code for code page support.
+
 Revision 2.209  2002/07/04 19:09:16  set
 * Added: [DOS] Code page detection and setting.
 * Modified: [DOS] The clipboard code to be easier to understand.
