@@ -1,4 +1,11 @@
 $Log$
+Revision 1.173  2001/08/28 16:22:48  set
+* Added: A dummy libintl.a library. This is provided for people that have
+configured the library with international support but want to create one or
+more executables without it.
+* Added: An explanation of it to the readme.txt file and also some
+explanation about the impact of libiconv.a.
+.
 Revision 1.172  2001/08/28 14:26:32  set
 * Added: Support for gettext 0.10.37 and newer that needs libiconv. I tested
 it with 0.10.39 and libiconv 1.7. The detection was enhanced and the examples

@@ -15,7 +15,7 @@ void CLY_YieldProcessor(int micros)
 #ifdef TVOS_UNIX
 #include <unistd.h>
  // See if this system have the POSIX function
- #ifdef _POSIX_PRIORITY_SCHEDULING
+ #if 0 //def _POSIX_PRIORITY_SCHEDULING
  #include <sched.h>
 
  void CLY_YieldProcessor(int micros)
