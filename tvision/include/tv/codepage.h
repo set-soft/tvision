@@ -55,6 +55,7 @@ public:
  static void    RemapNString(uchar *n, uchar *o, ushort *map, int len);
  static void    RemapBufferGeneric(int sourID, int destID, uchar *buffer, unsigned len,
                                    unsigned ops);
+ static void    FillGenericRemap(int sourID, int destID, uchar *buffer, unsigned ops=0);
  static char    toUpper(char val)
   { return (char)toUpperTable[(uchar)val]; }
  static char    toLower(char val)
