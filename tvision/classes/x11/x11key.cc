@@ -67,6 +67,7 @@ KeySym   TGKeyX11::Key;
 unsigned TGKeyX11::kbFlags=0;
 uchar    TGKeyX11::KeyCodeByKeySym[256];
 unsigned TGKeyX11::Symbol;
+unsigned TGKeyX11::Unicode;
 unsigned TGKeyX11::Flags;
 uchar    TGKeyX11::Scan;
 uchar    TGKeyX11::sendQuit=0;
@@ -325,6 +326,7 @@ ushort TGKeyX11::GKey()
  getKeyEvent(1);
  kbWaiting=0;
 
+ Unicode=0xFFFF;
  if ((Key & 0xFF00)==0xFF00)
    {/* Special keys by keysym */
     Symbol=(unsigned char)bufferKb[0];
@@ -339,13 +341,17 @@ ushort TGKeyX11::GKey()
     else
       {
        if (Symbol>=32 && Symbol<128)
+         {
           name=KeyCodeByASCII[Symbol-32];
+          Unicode=Symbol;
+         }
        else
          {
           if (Symbol>=1 && Symbol<=26) // ^A to ^Z
              name=kbA+Symbol-1;
           else
             {
+             Unicode=Symbol;
              if (Symbol>26 && Symbol<32) // ^{ ^\ ^} ?? ^/
                 name=KeyCodeByASCII[Key-32];
              else
@@ -435,6 +441,7 @@ void TGKeyX11::FillTEvent(TEvent &e)
  e.keyDown.raw_scanCode=Scan;
  e.keyDown.keyCode=Abstract;
  e.keyDown.shiftState=kbFlags;
+ e.keyDown.charCode=Unicode; // Should I do the same as with Symbol?
  e.what=evKeyDown;
 }
 

@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.12  2003/02/19 13:50:42  set
+* Added: An example of how to hardcore the contents of the tvrc file in the
+executable to the UTF-8 example.
+
 Revision 2.399.2.11  2003/02/18 20:48:14  set
 * Added: [X11] a configuration option to select the X11 font to use. It
 should be used carefully because TV can't work with proportional fonts nor

@@ -48,6 +48,7 @@ protected:
 
  // Values used to fill the event
  static unsigned Symbol;
+ static unsigned Unicode;
  static unsigned Flags;
  static uchar    Scan;
 

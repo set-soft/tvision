@@ -54,6 +54,7 @@ public:
     int firstPos;
     int selStart;
     int selEnd;
+    int dataLen;
 
     static char rightArrow;
     static char leftArrow;
