@@ -659,7 +659,7 @@ CLY_vsnprintf(char *string, size_t length, const char * format, va_list args)
             break;
           case 'c': /* character */
             d = va_arg(args, int);
-            PUT_CHAR(d, &data);
+            PUT_CHAR((char)d, &data);
             state = 0;
             break;
           case 's':  /* string */
