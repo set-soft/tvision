@@ -37,7 +37,7 @@ clean: clean-debian debianbackup.tar
 # FIXME: ask upstream about adding the next files to his clean target:
 	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env \
 		Makefile compat/rhide.env examples/rhide.env include/tv/configtv.h linux/rhide.env \
-		linuxso/Makefile linuxso/compat.mak win32/rhide.env winnt/Makefile
+		linuxso/Makefile linuxso/compat.mak
 	rm -f build-stamp
 
 clean-debian:
