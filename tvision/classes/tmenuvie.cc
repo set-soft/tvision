@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Salvador E. Tropea to support i18n.
+Added TMenuItem::append by Salvador E. Tropea.
 
  *
  *
@@ -81,6 +82,21 @@ TMenuItem::~TMenuItem()
         delete(subMenu);
     else
         DeleteArray((char *)param);
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Appends the provided TMenuItem at the end of the chain.@*
+  Coded by SET. That's a mix between Dean Wakerley and TVTools ideas.
+  
+***************************************************************************/
+
+void TMenuItem::append( TMenuItem *aNext )
+{
+    TMenuItem *item = this;
+    for ( ; item->next; item = item->next );
+    item->next = aNext;
 }
 
 TMenu::~TMenu()

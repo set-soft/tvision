@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea. More operators and append. Also i18n support.
 
  *
  *
@@ -53,17 +54,18 @@ public:
         };
 };
 
-inline void TMenuItem::append( TMenuItem *aNext )
-{
-    next = aNext;
-}
-
 // SET: Sugested by Dean Wakerley <dean@wakerley.com> looks like
 // Borland deprecated it without reasons.
 inline TMenuItem& operator + ( TMenuItem& s, TMenuItem& i )
 {
     s.append(&i);
     return s;
+}
+
+// SET: From TVTools
+inline void operator += ( TMenuItem& i1, TMenuItem& i2 )                        
+{
+    i1 = i1 + i2;
 }
 
 inline TMenuItem &newLine()
