@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.153  2002/06/12 18:01:27  set
+* Fixed: [Linux] the Resume member ever used the generic GetCursorPos
+instead of the driver selected version.
+
 Revision 2.152  2002/06/12 17:41:07  set
 * Added: Code to the TVDemo examples that shows how to use the TVCodePage
 class. It remaps the system menu label and the calendar arrows.
