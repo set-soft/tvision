@@ -230,6 +230,28 @@ void TV_WindowSizeChanged(int sig)
 static struct termios old_term,new_term;
 #endif
 
+// SET: A couple of functions to disable the XON/XOFF control and restore it
+static tcflag_t originalIFlag;
+static
+void XonXoff_Disable(int file)
+{
+ struct termios term;
+ tcgetattr(file,&term);
+ originalIFlag=term.c_iflag;
+ term.c_iflag&= ~(IXOFF | IXON);
+ tcsetattr(file,TCSANOW,&term);
+}
+
+static
+void XonXoff_Restore(int file)
+{
+ struct termios term;
+ tcgetattr(file,&term);
+ term.c_iflag=originalIFlag;
+ tcsetattr(file,TCSANOW,&term);
+}
+
+
 // This routine was heavily modified, and I think it needs more work (SET)
 void startcurses()
 {
@@ -624,6 +646,8 @@ int getBlinkState();
 
 TScreen::TScreen()
 {
+  // Release ^Q and ^S from Xon/Xoff duties
+  XonXoff_Disable(fileno(stdin));
   screenMode = startupMode = getCrtMode();
   /*
    * ESC ] Ps ND string NP
@@ -823,6 +847,7 @@ TScreen::~TScreen()
     close(mono_mem_desc);
     mono_mem_desc = -1;
   }
+ XonXoff_Restore(fileno(stdin));
 }
 
 void TScreen::suspend()

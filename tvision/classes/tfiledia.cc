@@ -54,17 +54,24 @@ TFileDialog::TFileDialog( const char *aWildCard,
   // labels 1 line up
     char *tmp;
     options |= ofCentered;
+    // SET: Allow it to grow
+    growMode = gfGrowAll;
+    flags   |= wfGrow | wfZoom;
     strcpy( wildCard, aWildCard );
 
     fileName = new TFileInputLine( TRect( 3, 2, 31, 3 ), PATH_MAX );
     strcpy( fileName->data, wildCard );
+    fileName->growMode=gfGrowHiX;
     insert( fileName );
 
     insert( new TLabel( TRect( 2, 1, 3+cstrlen(inputName), 2 ),
                         inputName,
                         fileName
                       ) );
-    insert( new THistory( TRect( 31, 2, 34, 3 ), fileName, histId ) );
+    THistory *his=new THistory(TRect(31,2,34,3),fileName,histId);
+    // SET: This and more settings to make it grow nicely
+    his->growMode=gfGrowLoX | gfGrowHiX;
+    insert(his);
     
     int longNames=TV_HaveLFNs(); // SET
     TScrollBar *sb = longNames ?
@@ -72,16 +79,20 @@ TFileDialog::TFileDialog( const char *aWildCard,
                      new TScrollBar( TRect( 3, 15, 34, 16 ) );
     insert( sb );
     insert(fileList=new TFileList(TRect(3,5,34,longNames ? 16 : 15),sb));
+    fileList->growMode=gfGrowHiX | gfGrowHiY;
 
     tmp = _("~F~iles");
     insert( new TLabel( TRect( 2, 4, 3+cstrlen(tmp), 5 ), tmp, fileList ) );
 
     ushort opt = bfDefault;
     TRect r( 35, 2, 46, 4 );
-
+    
+    TButton *bt;
     if( (aOptions & fdOpenButton) != 0 )
         {
-        insert( new TButton( r, _("~O~pen"), cmFileOpen, opt ) );
+        bt=new TButton(r,_("~O~pen"),cmFileOpen,opt);
+        bt->growMode=gfGrowLoX | gfGrowHiX;
+        insert(bt);
         opt = bfNormal;
         r.a.y += 2;
         r.b.y += 2;
@@ -89,7 +100,9 @@ TFileDialog::TFileDialog( const char *aWildCard,
 
     if( (aOptions & fdOKButton) != 0 )
         {
-        insert( new TButton( r, _("~O~K"), cmFileOpen, opt ) );
+        bt=new TButton(r,_("~O~K"),cmFileOpen,opt);
+        bt->growMode=gfGrowLoX | gfGrowHiX;
+        insert(bt);
         opt = bfNormal;
         r.a.y += 2;
         r.b.y += 2;
@@ -97,7 +110,9 @@ TFileDialog::TFileDialog( const char *aWildCard,
 
     if( (aOptions & fdSelectButton) != 0 )
         {
-        insert( new TButton( r, _("~S~elect"), cmFileSelect, opt ) );
+        bt=new TButton(r,_("~S~elect"),cmFileSelect,opt);
+        bt->growMode=gfGrowLoX | gfGrowHiX;
+        insert(bt);
         opt = bfNormal;
         r.a.y += 2;
         r.b.y += 2;
@@ -105,7 +120,9 @@ TFileDialog::TFileDialog( const char *aWildCard,
 
     if( (aOptions & fdReplaceButton) != 0 )
         {
-        insert( new TButton( r, _("~R~eplace"), cmFileReplace, opt ) );
+        bt=new TButton(r,_("~R~eplace"),cmFileReplace,opt);
+        bt->growMode=gfGrowLoX | gfGrowHiX;
+        insert(bt);
         opt = bfNormal;
         r.a.y += 2;
         r.b.y += 2;
@@ -113,31 +130,48 @@ TFileDialog::TFileDialog( const char *aWildCard,
 
     if( (aOptions & fdClearButton) != 0 )
         {
-        insert( new TButton( r, _("~C~lear"), cmFileClear, opt ) );
+        bt=new TButton(r,_("~C~lear"),cmFileClear,opt);
+        bt->growMode=gfGrowLoX | gfGrowHiX;
+        insert(bt);
         opt = bfNormal;
         r.a.y += 2;
         r.b.y += 2;
         }
 
-    insert( new TButton( r, _("Cancel"), cmCancel, bfNormal ) );
+    bt=new TButton(r,_("Cancel"),cmCancel,bfNormal);
+    bt->growMode=gfGrowLoX | gfGrowHiX;
+    insert(bt);
     r.a.y += 2;
     r.b.y += 2;
 
     if( (aOptions & fdHelpButton) != 0 )
         {
-        insert( new TButton( r, _("~H~elp"), cmHelp, bfNormal ) );
+        bt=new TButton(r,_("~H~elp"),cmHelp,bfNormal);
+        bt->growMode=gfGrowLoX | gfGrowHiX;
+        insert(bt);
         opt = bfNormal;
         r.a.y += 2;
         r.b.y += 2;
         }
 
-    insert( new TFileInfoPane( TRect( 1, 16, 48, 19 ) ) );
+    TFileInfoPane *fip=new TFileInfoPane(TRect(1,16,48,19));
+    //fip->growMode=gfGrowHiX | gfGrowHiY;
+    fip->growMode=gfGrowHiX | gfGrowHiY | gfGrowLoY;
+    insert(fip);
 
     selectNext( False );
     if( (aOptions & fdNoLoadDir) == 0 )
         readDirectory();
     else
         setUpCurDir(); // SET: We must setup the current directory anyways
+}
+
+// SET: Avoid a size smaller than the starting one
+void TFileDialog::sizeLimits(TPoint& min, TPoint& max)
+{
+ TDialog::sizeLimits(min,max);
+ min.x=64-15;
+ min.y=21-1;
 }
 
 TFileDialog::~TFileDialog()
