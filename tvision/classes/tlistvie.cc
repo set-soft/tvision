@@ -187,7 +187,7 @@ void TListViewer::focusItem( ccIndex item )
             else
                 topItem = item - item % size.y - (size.y * (numCols-1));
     if (owner && (options & ofBeVerbose))
-       message(owner,evBroadcast,cmListItemFocused,this);
+       message(owner,evBroadcast,/*cmListItemFocused*/cmClusterPress,this);
 }
 
 void TListViewer::focusItemNum( ccIndex item )

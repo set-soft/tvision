@@ -190,6 +190,11 @@ const ushort
 
     cmListItemFocused   = 61,
 
+// SET: Moved here to know they exist
+
+    cmGrabDefault       = 62,
+    cmReleaseDefault    = 63,
+
 //  Event masks
 
     positionalEvents    = evMouse,
