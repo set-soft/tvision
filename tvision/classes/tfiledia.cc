@@ -123,11 +123,13 @@ TFileDialog::TFileDialog( const char *aWildCard,
     selectNext( False );
     if( (aOptions & fdNoLoadDir) == 0 )
         readDirectory();
+    else
+        setUpCurDir(); // SET: We must setup the current directory anyways
 }
 
 TFileDialog::~TFileDialog()
 {
-    delete (char *)directory;
+    delete[] directory;
 }
 
 void TFileDialog::shutDown()
@@ -214,6 +216,12 @@ void TFileDialog::handleEvent(TEvent& event)
 void TFileDialog::readDirectory()
 {
     fileList->readDirectory( wildCard );
+    setUpCurDir();
+}
+
+void TFileDialog::setUpCurDir()
+{
+    delete[] directory;
     char curDir[PATH_MAX];
     getCurDir( curDir );
     directory = newStr( curDir );
