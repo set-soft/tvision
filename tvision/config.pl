@@ -330,6 +330,11 @@ sub SeeCommandLine
       {
        $conf{'no-dynamic'}='yes';
       }
+    # For compatibility with autoconf:
+    # LinCS/tiger - ignore some autoconf generated params
+    elsif (($i=~'--cache-file=(.*)') || ($i=~'--srcdir=(.*)'))
+      {
+      }
     else
       {
        ShowHelp();

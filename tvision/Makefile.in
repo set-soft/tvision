@@ -46,3 +46,11 @@ install-config:
 install: @installers@ install-headers install-intl-dummy install-config
 
 @clean@
+
+#
+# For compatibility with automake:
+# needed to 'make dist' of tiger
+#
+distdir: clean
+	@cp -pR * $(distdir)
+
