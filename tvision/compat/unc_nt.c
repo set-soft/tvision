@@ -14,6 +14,10 @@
 #include <lmapibuf.h>
 #include <malloc.h>
 
+#if (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
+ #define alloca __builtin_alloca
+#endif
+
 static HMODULE hLib;
 static NET_API_STATUS NET_API_FUNCTION
 (*pNetShareGetInfo) (

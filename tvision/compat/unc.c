@@ -9,6 +9,10 @@
 #include <windows.h>
 #include <malloc.h>
 
+#if (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
+ #define alloca __builtin_alloca
+#endif
+
 int CLY_isUNC_helper_NT(const char* server, const char* share);
 int CLY_isUNC_helper_95(const char* server, const char* share);
 

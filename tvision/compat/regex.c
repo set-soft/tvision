@@ -192,6 +192,10 @@ init_syntax_once ()
    not functions -- `alloca'-allocated space disappears at the end of the
    function it is called in.  */
 
+#if (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
+ #define alloca __builtin_alloca
+#endif
+
 #ifdef REGEX_MALLOC
 
 #define REGEX_ALLOCATE malloc

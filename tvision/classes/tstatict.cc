@@ -14,7 +14,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 // they can inconditionally declare symbols like NULL
 #include <ctype.h>
 #define Uses_string
-#define Uses_alloca
+#define Uses_AllocLocal
 #define Uses_TStaticText
 #define Uses_TDrawBuffer
 #define Uses_opstream
@@ -42,7 +42,7 @@ void TStaticText::draw()
     int i, j, l, p, y;
     TDrawBuffer b;
     int maxLen = size.x*size.y;
-    char *s=(char *)alloca(maxLen+1);
+    AllocLocalStr(s,maxLen+1);
 
     color = getColor(1);
     getText(s, maxLen);

@@ -392,6 +392,9 @@ typedef unsigned long  ulong;
   #ifndef usleep
    #define usleep(microseconds) CLY_YieldProcessor(microseconds)
   #endif
+  #if defined(Uses_alloca) && (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
+   #define alloca __builtin_alloca
+  #endif
  #endif
 
  /* Win32/Cygwin -- OH! */
