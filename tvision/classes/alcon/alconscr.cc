@@ -72,6 +72,20 @@ TScreenAlcon::TScreenAlcon()
             AlCon_ForcedKeyboard[1] = lang[1];
     }
 
+    // Set extra cursor bits through config parameters.
+    #define READ_BIT(CONFIG_NAME, BIT_NAME) \
+    {                                       \
+        if (optSearch(CONFIG_NAME, aux))    \
+           if (aux)                         \
+             AlCon_CursorBits |= BIT_NAME;  \
+    }
+
+    READ_BIT("CursorHideNormal", ALCON_CURSOR_HIDE_NORMAL);
+    READ_BIT("CursorOnSquare", ALCON_CURSOR_ON_SQUARE);
+    READ_BIT("CursorOnCross", ALCON_CURSOR_ON_CROSS);
+
+    #undef READ_BIT
+
     uchar *fontData=NULL;
     int freeFontData=1;
     TScreenFont256 *secFont=NULL;

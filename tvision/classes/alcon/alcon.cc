@@ -76,13 +76,13 @@ static int cursorX, cursorY;
 static int cursorPX, cursorPY;
 
 /*
-   The variables _screen_width, _screen_height, _font_width and
-   _font_height are read only. They are modified ONLY when the font
-   is changed. The first two tell the number of text characters
-   that fit into the physical screen. The last two tell the number
-   of screen pixels a text cell has in Allegro. The font size is
-   initialised by default to a 8x16 font so the AlCon_Init function
-   can set a reasonable default screen size.
+   The variables AlCon_ScreenWidth, AlCon_ScreenHeight,
+   AlCon_FontWidth and AlCon_FontHeight are read only. They are
+   modified ONLY when the font is changed. The first two tell the
+   number of text characters that fit into the physical screen. The
+   last two tell the number of screen pixels a text cell has in
+   Allegro. The font size is initialised by default to a 8x16 font so
+   the AlCon_Init function can set a reasonable default screen size.
 */
 static int AlCon_ScreenWidth, AlCon_ScreenHeight;
 static int AlCon_FontWidth=8, AlCon_FontHeight=16;
@@ -98,6 +98,8 @@ static char AlCon_CursorShapeFrom, AlCon_CursorShapeTo;
 static int al_mouse_buttons = 0;
 static int al_mouse_wheel;
 
+/* Extra flags reserved for silly cursor effects */
+int AlCon_CursorBits = 0;
 char AlCon_ForcedKeyboard[3] = "";
 
 void AlCon_EnableSecFont()
@@ -575,7 +577,20 @@ void AlCon_IntCursor()
     AlCon_UnDrawCursor(&aFg);
     if (cursorInScreen)
       {
-       textout_ex(screen, &Alcon_CursorFont, "\x1", cursorPX,cursorPY, aFg, -1);
+       if (!(AlCon_CursorBits & ALCON_CURSOR_HIDE_NORMAL))
+         textout_ex(screen, &Alcon_CursorFont, "\x1", cursorPX,cursorPY, aFg, -1);
+
+       if (AlCon_CursorBits & ALCON_CURSOR_ON_SQUARE)
+         rect(screen, cursorPX, cursorPY, cursorPX + AlCon_FontWidth - 1,
+              cursorPY + AlCon_FontHeight - 1, aFg);
+
+       if (AlCon_CursorBits & ALCON_CURSOR_ON_CROSS)
+         {
+          line(screen, cursorPX, cursorPY, cursorPX + AlCon_FontWidth - 1,
+               cursorPY + AlCon_FontHeight - 1, aFg);
+          line(screen, cursorPX, cursorPY + AlCon_FontHeight - 1,
+               cursorPX + AlCon_FontWidth - 1, cursorPY, aFg);
+         }
       }
     unscare_mouse();
    }

@@ -92,6 +92,12 @@ extern uchar AlCon_ShapeFont8x16[];
 /* Externally forced keyboard mapping */
 extern char AlCon_ForcedKeyboard[3];
 
+/* Extra bits which can be set for strange cursor effects */
+extern int AlCon_CursorBits;
+#define ALCON_CURSOR_HIDE_NORMAL       0x0001
+#define ALCON_CURSOR_ON_SQUARE         0x0002
+#define ALCON_CURSOR_ON_CROSS          0x0004
+
 int AlCon_SetDisPaletteColors(int from, int number, AlCon_Color *colors);
 /* Only for readback */
 extern AlCon_Color AlCon_CurPalette[16];

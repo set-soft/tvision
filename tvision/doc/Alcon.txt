@@ -13,7 +13,6 @@ by Allegro, but at the moment it is being tested only under Linux
 1. INTRODUCTION
 2. FEATURES
 3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
-4. FONTS
 
 
 1. INTRODUCTION
@@ -57,6 +56,7 @@ by Allegro, but at the moment it is being tested only under Linux
    * Palette.
    * Most keyboard combinations, as long as Allegro's driver allows.
    * Mouse.
+   * Weird graphic cursor capabilities.
 
 
 3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
@@ -78,6 +78,9 @@ by Allegro, but at the moment it is being tested only under Linux
            {
                Priority=220
                KeyboardMapping="langcode"
+               CursorHideNormal=1
+               CursorOnSquare=10
+               CursorOnCross=15
            }
        }
 
@@ -93,3 +96,16 @@ by Allegro, but at the moment it is being tested only under Linux
    the iso name of the language. Note that the keyboard mapping
    datafile (keyboard.dat) has to be available somewhere on your
    system for this to have any effect at all.
+
+   CursorHideNormal is an integer variable. If it is different than
+   zero, the normal cursor won't be drawn ever.
+
+   CursorOnSquare is an integer variable. If it is different than
+   zero, a square will be drawn bordering the cell the cursor is at.
+
+   CursorOnCross is an integer variable. If it is different than
+   zero, a cross will be drawn through the cell the cursor is at.
+
+   Note: All the integer variables related to the cursor are
+   accumulative.  This means you can set many at the same time and
+   get their combined effect.
