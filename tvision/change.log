@@ -1,4 +1,8 @@
 $Log$
+Revision 2.121  2002/06/04 16:01:59  set
+* Fixed: demo file for QNX. When I moved includes to Uses_* forgot to
+include the config header. Reported by Mike.
+.
 Revision 2.120  2002/06/04 15:45:22  set
 * Updated: The list of files to convert when using the UNIX tarball.
 
