@@ -55,7 +55,7 @@
 
 /* We used to test for `BSTRING' here, but only GCC and Emacs define
    `BSTRING', as far as I know, and neither of them use this code.  */
-#if HAVE_STRING_H || STDC_HEADERS
+#if HAVE_STRING_H || STDC_HEADERS || defined(TVComp_MSC)
 #include <string.h>
 #ifndef bcmp
 #define bcmp(s1, s2, n) memcmp ((s1), (s2), (n))

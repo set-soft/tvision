@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.187  2002/06/28 20:06:30  set
+* Added: A new class called TVOSClipboard it gives access to the OS
+clipboard/s in a neutral way.
+* Added: [X11] code to use the XA_CLIPBOARD and XA_PRIMARY copy/paste
+mechanism through the new class. The first is clipboard 0 (recommended) and
+the second is the auxiliar mechanism that users should use with the middle
+mouse button.
+* Added: An example application that shows how to use the new class.
+
 Revision 2.186  2002/06/28 12:38:31  set
 * Added: A new capability flag to the drivers. It informs if a screen saver
 have any sense for this driver. Ivan remmembered it, a screen saver doesn't

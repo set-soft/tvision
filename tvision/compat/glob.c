@@ -15,7 +15,9 @@
 #include <malloc.h>
 #include <io.h>
 #include <ctype.h>
-#include <dir.h>
+#ifndef TVComp_MSC
+ #include <dir.h>
+#endif
 
 #define Uses_glob
 #define Uses_unistd
