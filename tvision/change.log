@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.5  2003/02/17 12:50:48  set
+* Added: A couple of inline members to X11 driver to make the code less
+complex and avoid repeated code.
+
 Revision 2.399.2.4  2003/02/17 12:48:21  set
 * Added: Unicode buffers support at low level. Achieved by the following
 changes. Still experimental and useless ;-)
