@@ -1,4 +1,7 @@
 $Log$
+Revision 2.606  2004/12/15 20:33:08  set
+* Fixed: Missing changes to cluster.h header in last patch.
+
 Revision 2.605  2004/12/13 15:49:34  set
 * Fixed: [WWW] URL to Sigala's doc. Patch by Thiago.
 * Fixed: [config] install was searched in the path without using the "Exe

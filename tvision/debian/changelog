@@ -1,3 +1,9 @@
+rhtvision (2.0.4-1) unstable; urgency=low
+
+  * New upstream version, this is unstable yet, beware!
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Thu, 23 Dec 2004 19:17:59 -0200
+
 rhtvision (2.0.3-3) unstable; urgency=low
 
   * Salvador says this is it!, this is the version that will be officially
