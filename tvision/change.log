@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.488  2003/07/28 02:53:52  terrible
+* Fixed: configset didn't wait for an ENTER because the read command
+required an argument. While I was there I did cosmetic changes.
+* Fixed: debian/README was mising in ./lista!
+* Fixed: clean the .lo files in addition to the .o ones!
+* Updated: Debian packaging to the 2.0.2-0.1 version!!!
+
 Revision 2.487  2003/07/16 14:00:57  set
 * Modified: The RPM scripts to support an environment variable to indicate
 where to create the RPMs. I needed it when using S.F. Compiler Farm and
