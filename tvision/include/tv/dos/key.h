@@ -47,6 +47,7 @@ protected:
  static KeyType  rawCode;
  static int      useBIOS;
  static int      translateKeyPad;
+ static int      greekMode;
  static const uchar kbWithASCII0[256];
  static const uchar kbWithASCIIE0[256];
  static const uchar kbByASCII[128];

@@ -51,6 +51,7 @@ char    TGKeyDOS::ascii;
 ushort  TGKeyDOS::sFlags;
 int     TGKeyDOS::useBIOS=0;
 int     TGKeyDOS::translateKeyPad=1;
+int     TGKeyDOS::greekMode=0;
 void  (*TGKeyDOS::GetRaw)(void)=GetRawDirect;
 
 const uchar TGKeyDOS::kbWithASCII0[256]=
@@ -266,14 +267,14 @@ key that generated it. Example: alpha to a.
 
 uchar TGKeyDOS::NonASCII2ASCII(uchar ascii)
 {
- if (Mode==dosGreek737 && ascii>=0x80)
+ if (greekMode && ascii>=0x80)
     return PC737[ascii-0x80];
  return ascii;
 }
 
 int TGKeyDOS::CompareASCII(uchar val, uchar code)
 {
- if (Mode!=dosUS)
+ if (greekMode)
    {
     if (val>=0x80)
        val=PC737[val-0x80];
@@ -470,6 +471,14 @@ void TGKeyDOS::SetKbdMapping(int version)
    {
     translateKeyPad=0;
    }
+ else if (version==dosUS)
+   {
+    greekMode=0;
+   }
+ else if (version==dosGreek737)
+   {
+    greekMode=1;
+   }
  Mode=version;
 }
 
@@ -490,6 +499,14 @@ int TGKeyDOS::GetKbdMapping(int version)
  else if (version==dosNormalKeypad)
    {
     return !translateKeyPad;
+   }
+ else if (version==dosUS)
+   {
+    return !greekMode;
+   }
+ else if (version==dosGreek737)
+   {
+    return greekMode;
    }
  return 0;
 }

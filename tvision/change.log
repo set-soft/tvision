@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.372  2002/12/09 13:03:29  set
+* Fixed: [DOS] Typos in untested code. Also reverted some keyboard
+variables just to compile the code, they should go away.
+
 Revision 2.371  2002/12/06 19:49:12  set
 * Fixed: [Win32] lack of unistd due to the new use of dup2. Patch by Igor
 Gnip.
