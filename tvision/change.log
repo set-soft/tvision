@@ -1,4 +1,12 @@
 $Log$
+Revision 1.74  1999/07/01 02:42:49  root (set)
+* Added: Support for the --report-as-keysyms options of Eterm 0.8.10. It
+makes the programs work very well under Eterm, example: in my editor now is
+posible to select text with shift and use strange keyboard combinations as
+Ctrl+Shift+Insert. With it the support for Eterm is just excellent, slow but
+very complet. (Note: I added this swithc to Eterm ;-) THANKs goes to mej
+that accepted the patch and commited it in the CVS tree).
+
 Revision 1.73  1999/06/30 23:29:42  set
 * Fixed: windowSizeChanged is from TDisplay, but was declared as TScreen
 member, gcc 2.96 warns about it as an ANSI C++ violation.
