@@ -12,4 +12,7 @@
 *linuxso/Makefile
 *linuxso/gkeyli.cc
 *linuxso/.cvsignore
-
+*include/curses.h
+*include/ncurses.h
+*include/unctrl.h
+*include/term.h
