@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.138.2.4  2004/04/27 20:45:53  set
+* Added: [config] Allegro to the libraries used during the dynamic library
+creation. Now looks like the generated librhtv.so is enough (no need to
+even request alleg_unsharable).
+
 Revision 2.399.2.138.2.3  2004/04/26 13:33:47  set
 * Added: [config] Code to get and separate the path and libraries needed
 for Allegro.

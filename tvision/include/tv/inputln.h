@@ -52,7 +52,7 @@ public:
  void SetValidator(TValidator *);
  virtual Boolean valid(ushort);
  virtual Boolean insertChar(unsigned val); // Added by SET
- virtual Boolean insertChar(TEvent &event)=0;
+ virtual Boolean insertCharEv(TEvent &event)=0;
  virtual void    assignPos(int index, unsigned val)=0;
  virtual Boolean pasteFromOSClipboard()=0;
  virtual void    copyToOSClipboard()=0;
@@ -172,7 +172,7 @@ public:
  TInputLine(const TRect& bounds, int aMaxLen) :
    TInputLineBaseT<char,TDrawBuffer>(bounds,aMaxLen) {};
 
- virtual Boolean insertChar(TEvent &event);
+ virtual Boolean insertCharEv(TEvent &event);
 
 #if !defined( NO_STREAM )
  virtual const char *streamableName() const
@@ -207,7 +207,7 @@ public:
  TInputLineU16(const TRect& bounds, int aMaxLen) :
    TInputLineBaseT<uint16,TDrawBufferU16>(bounds,aMaxLen) {};
 
- virtual Boolean insertChar(TEvent &event);
+ virtual Boolean insertCharEv(TEvent &event);
 
 #if !defined( NO_STREAM )
  virtual const char *streamableName() const

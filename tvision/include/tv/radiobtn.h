@@ -47,6 +47,7 @@ public:
     static char obutton[];
     static char check;
     static char ocheck;
+    void setEnableMask( uint32 *, TView **, int  ) {}
 
 private:
 

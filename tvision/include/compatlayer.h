@@ -97,6 +97,8 @@ typedef unsigned int   uint;
 typedef unsigned long  ulong;
 #endif /* CLY_DefineUTypes */
 
+#undef  NEW_HEADER
+#define NEW_HEADER      <new>
 
 #ifdef Uses_stdio
   #undef  Include_stdio
@@ -1597,6 +1599,13 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #if defined(TVOSf_QNXRtP)
   #include <strings.h> // QNX RtP requires this include for functions strcasecmp, etc.
  #endif // TVOSf_QNXRtP
+ #ifndef CLY_memcpy
+  #if CLY_SAFE_MEMCPY
+   #define CLY_memcpy(a,b,c) memcpy(a,b,c)
+  #else
+   #define CLY_memcpy(a,b,c) memmove(a,b,c)
+  #endif
+ #endif
 #endif
 
 #if defined(Include_limits) && !defined(Included_limits)

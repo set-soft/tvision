@@ -310,7 +310,7 @@ void TButton::press()
         }
     if (callBack) // SET: That's really useful
       {
-       int ret=callBack(command);
+       int ret=callBack(command,cbData);
        if (ret==btcbEndModal && owner)
           owner->endModal(command);
       }

@@ -262,7 +262,7 @@ Boolean TInputLineBase::insertChar(unsigned value)
  return True;
 }
 
-Boolean TInputLine::insertChar(TEvent &event)
+Boolean TInputLine::insertCharEv(TEvent &event)
 {
  if (event.keyDown.charScan.charCode>=' ')
    {
@@ -273,7 +273,7 @@ Boolean TInputLine::insertChar(TEvent &event)
  return False;
 }
 
-Boolean TInputLineU16::insertChar(TEvent &event)
+Boolean TInputLineU16::insertCharEv(TEvent &event)
 {
  TGKey::fillCharCode(event);
  //printf("insertChar de Unicode: U+%04X\n",event.keyDown.charCode);
@@ -442,7 +442,7 @@ void TInputLineBase::handleEvent(TEvent& event)
                case kbTab:
                     return;
                default:
-                    if (!insertChar(event))
+                    if (!insertCharEv(event))
                        return;
               }
             makeVisible();
