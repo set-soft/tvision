@@ -1,4 +1,13 @@
 $Log$
+Revision 1.130  2000/02/01 00:15:01  set
+* Added: [Win32] A directory for the demo obj files.
+* Added: [Win32] Workaround for a "feature" in Mingw32 980701-4 localtime
+function. It returns a NULL pointer if the date is somewhat big.
+* Added: [Win32] Get/SetWindowTitle() members to TDisplay.
+* Added: Now the demo sets the window title (only supported for DOS target
+running under W95+ and Win32 currently).
+* Fixed: [Win32] Some warning in compilation.
+.
 Revision 1.129  2000/02/01 00:03:12  root (set)
 * Fixed: [Linux] An old annoying "feature" that made the code report control
 (arrows, etc.) keys as ASCII valid values. I got it reported many times but
