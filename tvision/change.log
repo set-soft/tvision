@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.236  2002/08/12 15:37:11  set
+* Fixed: The font request call back naturally should use GetFont(), it
+returns a newly allocated memory block so is better to do all dynamic. It
+means DOS driver must free the requested font.
+
 Revision 2.235  2002/07/30 17:44:19  terrible
 * Updated: Debian packaging to 2.0.0-0.3.
 * Modified: my email changed from lubaldo to ibaldo.
