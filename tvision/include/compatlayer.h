@@ -9,8 +9,8 @@ definitions and includes (or defines) the needed stuff.@p
   strlwr and strupr are defined.@*
   stricmp and strnicmp are deprecated, use strcasecmp and strncasecmp
 instead.@*
-  Never use ios::bin, request Uses_IOS_BIN.
-  Never use filebuf::openprot, request Uses_FILEBUF_OPENPROT.
+  Never use ios::bin (CLY_IOSBin).
+  Never use filebuf::openprot (CLY_FBOpenProtDef).
   The O_TEXT and O_BINARY from fcntl needs Uses_fcntl.
   S_IS* from sys/stat needs Uses_sys_stat.
   Never use s/random, use s/rand which are ANSI/POSIX.
@@ -122,18 +122,6 @@ typedef unsigned long  ulong;
  #ifdef Uses_abort
   #define Include_stdlib
  #endif
- #ifdef Uses_IOS_BIN
-  #define IOS_BIN ios::bin
- #endif
- #ifdef Uses_FILEBUF_OPENPROT
-  #define FILEBUF_OPENPROT filebuf::openprot
- #endif
- // What streambuf members are accessible
- #ifdef Uses_PubStreamBuf
-  #define PubSetBuf  setbuf
-  #define PubSeekOff seekoff
-  #define PubSync    sync
- #endif
  #ifdef Uses_AllocLocal
   #define AllocLocalStr(s,l) char s[l]
   #define AllocLocalUShort(s,l) ushort s[l]
@@ -159,6 +147,38 @@ typedef unsigned long  ulong;
   #define Include_strstream
  #endif
 
+ // ISO C++ 1998 standard changed a lot of details in the standard C++
+ // library. GCC implemented it in version 3.0. BC++ implemented some
+ // stuff in versions like BC++ 5.5. So that's a real mess.
+ #if __GNUC__>=3
+  #define CLY_ISOCpp98 1
+  #define CLY_OpenModeT      std::ios::openmode
+  #define CLY_StreamPosT     std::streampos
+  #define CLY_StreamOffT     std::streamoff
+  #define CLY_IOSSeekDir     ios::seekdir
+  #define CLY_FBOpenProtDef  0
+  #define CLY_NewFBFromFD(f) new filebuf(fdopen(f,"r+"),ios::in|ios::out)
+  #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
+  #undef  CLY_HaveFBAttach
+  #define CLY_FBOpen(a,b,c)  open(a,b)
+  #define CLY_IOSBin         ios::binary
+  #define CLY_PubSeekOff     pubseekoff
+  #define CLY_PubSync        pubsync
+ #else
+  #define CLY_OpenModeT      int
+  #define CLY_StreamPosT     streampos
+  #define CLY_StreamOffT     streamoff
+  #define CLY_IOSSeekDir     ios::seek_dir
+  #define CLY_FBOpenProtDef  filebuf::openprot
+  #define CLY_NewFBFromFD(f) new filebuf(f)
+  #define CLY_PubSetBuf(a,b) setbuf(a,b)
+  #define CLY_HaveFBAttach   1
+  #define CLY_FBOpen(a,b,c)  open(a,b,c)
+  #define CLY_IOSBin         ios::bin
+  #define CLY_PubSeekOff     seekoff
+  #define CLY_PubSync        sync
+ #endif
+ 
  /* Use the internal bool type for Boolean */
  #undef Boolean
  #undef False
@@ -508,17 +528,6 @@ typedef unsigned long  ulong;
  #ifdef Uses_free
   #define Include_malloc
  #endif
- #ifdef Uses_IOS_BIN
-  #define IOS_BIN ios::binary
- #endif
- #ifdef Uses_FILEBUF_OPENPROT
-  #define FILEBUF_OPENPROT 0666
- #endif
- #ifdef Uses_PubStreamBuf
-  #define PubSetBuf  pubsetbuf
-  #define PubSeekOff pubseekoff
-  #define PubSync    pubsync
- #endif
  #define NEVER_RETURNS
  #define RETURN_WHEN_NEVER_RETURNS return 0
  #define __attribute__( value )
@@ -583,6 +592,19 @@ typedef unsigned long  ulong;
  #ifdef Uses_strstream
   #define Include_strstream
  #endif
+
+ #define CLY_OpenModeT      int
+ #define CLY_StreamPosT     streampos
+ #define CLY_StreamOffT     streamoff
+ #define CLY_IOSSeekDir     ios::seek_dir
+ #define CLY_FBOpenProtDef  0666
+ #define CLY_NewFBFromFD(f) new filebuf(f)
+ #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
+ #undef  CLY_HaveFBAttach
+ #define CLY_FBOpen(a,b,c)  open(a,b,c)
+ #define CLY_IOSBin         ios::binary
+ #define CLY_PubSeekOff     pubseekoff
+ #define CLY_PubSync        pubsync
 #endif
 
 
@@ -643,17 +665,6 @@ typedef unsigned long  ulong;
  #endif
  #ifdef Uses_getcurdir
   #define getcurdir CLY_getcurdir
- #endif
- #ifdef Uses_IOS_BIN
-  #define IOS_BIN ios::binary
- #endif
- #ifdef Uses_FILEBUF_OPENPROT
-  #define FILEBUF_OPENPROT filebuf::openprot
- #endif
- #ifdef Uses_PubStreamBuf
-  #define PubSetBuf  setbuf
-  #define PubSeekOff seekoff
-  #define PubSync    sync
  #endif
  #define NEVER_RETURNS
  #define RETURN_WHEN_NEVER_RETURNS return 0
@@ -725,8 +736,24 @@ typedef unsigned long  ulong;
  #ifdef Uses_strstream
   #define Include_strstrea
  #endif
+
+ #define CLY_OpenModeT      int
+ #define CLY_StreamPosT     streampos
+ #define CLY_StreamOffT     streamoff
+ #define CLY_IOSSeekDir     ios::seek_dir
+ #define CLY_FBOpenProtDef  filebuf::openprot
+ #define CLY_NewFBFromFD(f) new filebuf(f)
+ #define CLY_PubSetBuf(a,b) setbuf(a,b)
+ #define CLY_HaveFBAttach
+ #define CLY_FBOpen(a,b,c)  open(a,b,c)
+ #define CLY_IOSBin         ios::binary
+ #define CLY_PubSeekOff     seekoff
+ #define CLY_PubSync        sync
 #endif
 
+#ifdef Uses_IOS_BIN
+ #define IOS_BIN CLY_IOSBin
+#endif
 
 CFunc void CLY_YieldProcessor(int micros);
 CFunc void CLY_ReleaseCPU();
@@ -1000,6 +1027,10 @@ CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
 
 /* Returns the name of the shell command */
 CFunc char *CLY_GetShellName(void);
+
+#ifdef Uses_ifsFileLength
+extern long CLY_ifsFileLength(ifstream &f);
+#endif
 
 #ifdef TV_BIG_ENDIAN
 // Most RISC machines
