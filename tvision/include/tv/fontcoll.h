@@ -13,8 +13,11 @@
 struct TVBitmapFont
 {
  int first, last; // Currently unsupported
- int lines;
- uchar *fontFull; // 354 chars
+ int lines;       // Height
+ int width;       // Width in pixels
+ // --- Not in disk:
+ int wBytes;      // Width in bytes. To avoid computing it all the time
+ uchar *fontFull; // 587 chars
  uchar *font;     // 256 according to the code page
 };
 
@@ -25,9 +28,9 @@ public:
  ~TVFontCollection();
 
  virtual void freeItem(void *item);
- static void ReduceOne(uchar *dest, uchar *ori, int height, int num=256);
- static void EnlargeOne(uchar *dest, uchar *ori, int height, int num=256);
- uchar *GetFont(int height);
+ static void ReduceOne(uchar *dest, uchar *ori, int height, int wBytes, int num=256);
+ static void EnlargeOne(uchar *dest, uchar *ori, int height, int wBytes, int num=256);
+ uchar *GetFont(int width, int height);
  void   SetCodePage(int id);
  int    GetError() { return error; }
  const char *GetFileName() { return fileName; }
@@ -36,8 +39,6 @@ public:
 protected:
  static Boolean CheckForLines(void *item, void *arg);
  static void    CreateFont(void *item, void *arg);
- TVBitmapFont *firstThat(ccTestFunc Test, int height)
-   { return (TVBitmapFont *)(TNSCollection::firstThat(CheckForLines,(void *)&height)); };
  FILE *f;
  const static char Signature[];
  int   CheckSignature();

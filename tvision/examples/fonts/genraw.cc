@@ -18,12 +18,52 @@ sizes and encodings).
 ***************************************************************************/
 
 #define Uses_stdlib
+#define Uses_string
 #define Uses_TVCodePage
 #define Uses_TVFontCollection
 #include <tv.h>
 
 // This small test program creates raw fonts from the specified sft file
 // In Linux the generated fonts can be loaded using consolechars -f file
+// Note that some SFT files can contain fonts with more than 8 pixels of
+// width.
+
+void WriteRaw(uchar *data, int w, int h, const char *name)
+{
+ unsigned wSize=(w+7)/8;
+ FILE *f=fopen(name,"wb");
+ if (f)
+   {
+    printf("Writing %s\n",name);
+    fwrite(data,256*h*wSize,1,f);
+    fclose(f);
+   }
+}
+
+void WriteHeader(uchar *data, int w, int h, char *name)
+{
+ FILE *f=fopen(name,"wb");
+ int c,x,y;
+ int wSize=(w+7)/8;
+
+ if (f)
+   {
+    fprintf(f,"// Font %s size %d,%d\n",name,w,h);
+    char *dot=strchr(name,'.');
+    if (dot) *dot='_';
+    fprintf(f,"uchar *FontData_%s[]=\n{\n",name);
+    for (c=0; c<256; c++)
+       {
+        for (y=0; y<h; y++)
+            for (x=0; x<wSize; data++, x++)
+                fprintf(f,"0x%02X,",*data);
+        fprintf(f,"\n");
+       }
+    fprintf(f,"};\n");
+    fclose(f);
+   }
+}
+
 int main(int argc, char *argv[])
 {
  new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
@@ -46,23 +86,27 @@ int main(int argc, char *argv[])
     return 1;
    }
 
- FILE *F;
  char b[PATH_MAX];
- int i;
+ int w,h;
  uchar *data;
 
- for (i=13; i<18; i++)
+ for (w=8; w<11; w++)
     {
-     data=p->GetFont(i);
-     if (!data) continue;
-     sprintf(b,"rawfont.%03d",i);
-     F=fopen(b,"wb");
-     if (F)
-       {
-        printf("Writing %s\n",b);
-        fwrite(data,256*i,1,F);
-        fclose(F);
-       }
+     for (h=13; h<21; h++)
+        {
+         data=p->GetFont(w,h);
+         // Not all are available, you must check. In fact only a few are
+         // available
+         if (!data) continue;
+         sprintf(b,"raw%03d.%03d",w,h);
+         #if 0
+         WriteRaw(data,w,h,b);
+         #else
+         // Optional version to generated a C++ header
+         WriteHeader(data,w,h,b);
+         #endif
+         DeleteArray(data);
+        }
     }
  return 0;
 }

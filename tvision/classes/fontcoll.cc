@@ -21,8 +21,14 @@ contain fonts with all the supported symbols.
 
 //#define TEST
 
-const int SizeInDisk=sizeof(TVBitmapFont)-2*sizeof(unsigned char *);
+const int SizeInDisk1=3*sizeof(int);
+const int SizeInDisk2=SizeInDisk1+sizeof(int);
 const char TVFontCollection::Signature[]="SET's editor font\x1A";
+
+struct SizeFont
+{
+ int width,height;
+};
 
 static
 int isWordChar(int i)
@@ -52,14 +58,15 @@ void TVFontCollection::freeItem(void *item)
 
   Description:
   Internally used during searchs to look for a font that matchs a specified
-height.
+size.
   
 ***************************************************************************/
 
 Boolean TVFontCollection::CheckForLines(void *item, void *arg)
 {
  TVBitmapFont *p=(TVBitmapFont *)item;
- if (p && p->lines==*((int *)arg))
+ SizeFont *s=(SizeFont *)arg;
+ if (p && p->lines==s->height && p->width==s->width)
     return True;
  return False;
 }
@@ -73,24 +80,27 @@ Special care is taked for letters.
   
 ***************************************************************************/
 
-void TVFontCollection::ReduceOne(uchar *dest, uchar *ori, int num, int height)
+void TVFontCollection::ReduceOne(uchar *dest, uchar *ori, int height,
+                                 int wBytes, int num)
 {
  int i;
+ unsigned sizeDest=wBytes*height;
+ unsigned sizeOri=sizeDest+wBytes;
  // height is the dest size, ori is one more
 
  for (i=0; i<num; i++)
     {
      if (isWordChar(i) && ori[0])
        { // first pixel is used
-        memcpy(dest,ori,height);
+        memcpy(dest,ori,sizeDest);
        }
      else
        { // first free
-        memcpy(dest,ori+1,height);
+        memcpy(dest,ori+wBytes,sizeDest);
        }
 
-     ori+=height+1;
-     dest+=height;
+     ori+=sizeOri;
+     dest+=sizeDest;
     }
 }
 
@@ -103,18 +113,21 @@ The last line is filled with 0.
   
 ***************************************************************************/
 
-void TVFontCollection::EnlargeOne(uchar *dest, uchar *ori, int num, int height)
+void TVFontCollection::EnlargeOne(uchar *dest, uchar *ori, int height,
+                                  int wBytes, int num)
 {
  int i;
+ unsigned sizeDest=wBytes*height;
+ unsigned sizeOri=sizeDest-wBytes;
  // height is the dest size, ori is one less
 
  for (i=0; i<num; i++)
     {
-     memcpy(dest,ori,height);
-     dest[height]=0;
+     memcpy(dest,ori,sizeDest);
+     memset(dest+sizeOri,0,wBytes);
 
-     ori+=height-1;
-     dest+=height;
+     ori+=sizeOri;
+     dest+=sizeDest;
     }
 }
 
@@ -128,20 +141,23 @@ specified height.
   
 ***************************************************************************/
 
-uchar *TVFontCollection::GetFont(int height)
+uchar *TVFontCollection::GetFont(int width, int height)
 {
  int oneMore=0,oneLess=0;
+ SizeFont sz={width,height};
 
- TVBitmapFont *p=firstThat(CheckForLines,height);
+ TVBitmapFont *p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
  // If we can't find a font of the right size look for 1 more and one less
  if (!p)
    {
-    p=firstThat(CheckForLines,height+1);
+    sz.height++;
+    p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
     if (p)
        oneMore=1;
     else
       {
-       p=firstThat(CheckForLines,height-1);
+       sz.height-=2;
+       p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
        if (p)
           oneLess=1;
       }
@@ -150,12 +166,12 @@ uchar *TVFontCollection::GetFont(int height)
  if (!p)
     return NULL;
 
- unsigned size=256*height;
+ unsigned size=256*height*p->wBytes;
  uchar *fontShape=new uchar[size];
  if (oneMore)
-    ReduceOne(fontShape,p->font,height);
+    ReduceOne(fontShape,p->font,height,p->wBytes);
  else if (oneLess)
-    EnlargeOne(fontShape,p->font,height);
+    EnlargeOne(fontShape,p->font,height,p->wBytes);
  else
     memcpy(fontShape,p->font,size);
 
@@ -207,12 +223,14 @@ void TVFontCollection::CreateFont(void *item, void *arg)
  TVBitmapFont *f=(TVBitmapFont *)item;
  ushort *map=(ushort *)arg;
  DeleteArray(f->font);
- f->font=new uchar[256*f->lines];
+ unsigned size1=f->lines*f->wBytes;
+ unsigned size=256*size1;
+ f->font=new uchar[size];
  int i;
  uchar *dest=f->font;
- memset(f->font,0,256*f->lines);
- for (i=0; i<256; i++,dest+=f->lines)
-     memcpy(dest,&f->fontFull[map[i]*f->lines],f->lines);
+ memset(f->font,0,size);
+ for (i=0; i<256; i++,dest+=size1)
+     memcpy(dest,&f->fontFull[map[i]*size1],size1);
 
  #if 0
  // This code stores the generated font to disk, is used for debug
@@ -223,7 +241,7 @@ void TVFontCollection::CreateFont(void *item, void *arg)
  if (!t) t="/tmp";
  sprintf(b,"%s/font.%03d",t,f->lines);
  F=fopen(b,"wb");
- fwrite(f->font,256*f->lines,1,F);
+ fwrite(f->font,size,1,F);
  fclose(F);
  #endif
 }
@@ -295,8 +313,18 @@ TVFontCollection::TVFontCollection(const char *file, int cp) :
  for (i=0; i<numfonts; i++)
     {
      p=new TVBitmapFont;
-     fread(p,SizeInDisk,1,f);
-     size=(p->last-p->first+1)*p->lines;
+     if (version==1)
+       {
+        fread(p,SizeInDisk1,1,f);
+        p->width=8;
+        p->wBytes=1;
+       }
+     else
+       {
+        fread(p,SizeInDisk2,1,f);
+        p->wBytes=(p->width+7)/8;
+       }
+     size=(p->last-p->first+1)*p->lines*p->wBytes;
      fData=new uchar[size];
      fread(fData,size,1,f);
      p->fontFull=fData;

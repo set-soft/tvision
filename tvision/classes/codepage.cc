@@ -556,7 +556,7 @@ CodePage TVCodePage::ISO8879_1=
 
 ushort TVCodePage::LowCrazyCharsRemaped[] =
 { 439,247,440,441,  4,442,443,444,445,176,177,178,219,220,223,221,
-  222,446,447,242,243,448, 17, 16, 24, 25, 26, 27, 18, 29,447,227,
+  222,446,447,242,243,448, 17, 16, 24, 25, 26, 27, 18, 29,449/*447*/,227, // 449 in lat1.sfm
    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
    64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
@@ -570,7 +570,7 @@ CodePage TVCodePage::ISO8859_1_Lat1=
   885901,
  { 451,452,453,192,454,179,218,195,455,217,196,193,191,180,194,197,
    456,457,458,200,459,186,201,204,460,188,205,202,187,185,203,206,
-    32,173,155,156, 36,157,338, 21,345,336,166,174,170,341,335,341,
+   255,173,155,156, 36,157,338, 21,345,336,166,174,170,341,335,341,
    248,241,253,347,340,230, 20,249,344,346,167,175,172,171,343,168,
    275,263,289,287,142,143,146,128,276,144,290,280,277,265,291,281,
    323,165,278,268,292,288,153,334,320,279,271,293,154,272,333,225,
@@ -2284,27 +2284,27 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0x2423,   32 }, // Should be fixed
  { 0x2424,  446 },
  { 0x2500,  196 },
- { 0x2501,  205 }, // Linux lat1 says this
+ { 0x2501,  205 }, // (*1)
  { 0x2502,  179 },
- { 0x2503,  186 }, // Linux lat1 says this
+ { 0x2503,  186 }, // (*1)
  { 0x250c,  218 },
- { 0x250f,  201 }, // Linux lat1 says this
+ { 0x250f,  201 }, // (*1)
  { 0x2510,  191 },
- { 0x2513,  187 }, // Linux lat1 says this
+ { 0x2513,  187 }, // (*1)
  { 0x2514,  192 },
- { 0x2517,  200 }, // Linux lat1 says this
+ { 0x2517,  200 }, // (*1)
  { 0x2518,  217 },
- { 0x251b,  188 }, // Linux lat1 says this
+ { 0x251b,  188 }, // (*1)
  { 0x251c,  195 },
- { 0x2523,  204 }, // Linux lat1 says this
+ { 0x2523,  204 }, // (*1)
  { 0x2524,  180 },
- { 0x252b,  185 }, // Linux lat1 says this
+ { 0x252b,  185 }, // (*1)
  { 0x252c,  194 },
- { 0x2533,  203 }, // Linux lat1 says this
+ { 0x2533,  203 }, // (*1)
  { 0x2534,  193 },
- { 0x253b,  202 }, // Linux lat1 says this
+ { 0x253b,  202 }, // (*1)
  { 0x253c,  197 },
- { 0x254b,  206 }, // Linux lat1 says this
+ { 0x254b,  206 }, // (*1)
  { 0x2550,  205 },
  { 0x2551,  186 },
  { 0x2552,  213 },
@@ -2378,6 +2378,14 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0xf803,  456 },
  { 0xfffd,  439 }
 };
+
+// Notes:
+// (*1) Linux lat1 says this. I think this is wrong and in fact XFree86 10x20
+//      font author interprets Unicode tables as me.
+//      The 205 symbol is Unicode 0x2550, of course it can be used as a default
+//      for 0x2501. 0x2550 is double line and 0x2501 is one line that is the
+//      double in width. The same is for all the other cases.
+
 
 const int TVCodePage::providedUnicodes=sizeof(TVCodePage::InternalMap)/sizeof(stIntCodePairs);
 

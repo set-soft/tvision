@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.225  2002/07/22 19:18:40  set
+* Modified: The Uses_getopt now defines CLY_* names, so you must use
+CLY_getopt, etc. It avoids all kind of coliisions. QNX is an example. Looks
+like they have a getopt function but not getopt_long and our definition
+collides. Reported by Mike.
+
 Revision 2.224  2002/07/19 20:01:14  set
 * Added: [X11] Support for fonts with width > 8 pixels. For testing
 purposes I added a 12x24 font. The code can be compiled to use it.
