@@ -1,0 +1,2 @@
+compress  -f 'chmod +x %s'
+sacadeb   -f 'chmod +x %s'
