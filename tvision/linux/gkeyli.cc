@@ -147,8 +147,8 @@ unsigned char kbToName2[128] =
  0,0,0,0,0,0,0,0,                                   // 20-27
  0,0,0,0,0,0,0,0,                                   // 28-2F
  0,0,0,0,0,0,0,0,                                   // 30-37
- 0,0,0,0,0,0,0,0,                                   // 38-3F
- 0,kbEterm,kbHome,kbEnd,kbUp,kbDown,kbRight,kbLeft, // 40-47
+ 0,0,0,0,0,kbLeft,kbDown,kbRight,                   // 38-3F
+ kbUp,kbEterm,kbHome,kbEnd,kbUp,kbDown,kbRight,kbLeft, // 40-47
  0,0,kbDelete,kbInsert,0,0,0,0,                     // 48-4F
  0,0,kbPgDn,kbPgUp,0,0,0,0,                         // 50-57
  0,0,0,0,0,0,kb5,0,                                 // 58-5F
@@ -304,8 +304,12 @@ void TGKey::SetKbdMapping(int version)
          #ifdef HAVE_DEFINE_KEY
          // SET: Here is a temporal workaround for Eterm when the user uses
          // the xterm terminfo file (normal in Debian).
-         define_key("\x1B[7~",KEY_F(58)); // Home
-         define_key("\x1B[8~",KEY_F(59)); // End
+         define_key("\e[7~",KEY_F(58)); // Home
+         define_key("\e[8~",KEY_F(59)); // End
+         define_key("\eOx",KEY_F(56)); // Keypad Up
+         define_key("\eOv",KEY_F(55)); // Keypad Right
+         define_key("\eOw",KEY_F(54)); // Keypad Down
+         define_key("\eOt",KEY_F(53)); // Keypad Left
          #endif
          #ifdef KEY_MOUSE
          // This exists in 1.9.9 but not in 1.8.6
@@ -479,6 +483,7 @@ void TGKey::GetRaw(void)
     return;
    }
  rawCode.full=code;
+ //printf("0x%04X\r\n",code);
  sFlags=getshiftstate();
 }
 

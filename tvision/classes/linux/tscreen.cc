@@ -67,6 +67,7 @@ int timeout_wakeup,timer_value;
 #define LINUX_TERMINAL 0
 #define GENER_TERMINAL 1
 #define VCSA_TERMINAL  2
+#define XTERM_TERMINAL 3
 static int TerminalType;
 
 int vcsWfd=-1;          /* virtual console system descriptor */
@@ -121,7 +122,8 @@ void TScreen::fSendToTerminal(const char *value, ...)
  
 Boolean TScreen::codePageVariable()
 {
- return TerminalType==GENER_TERMINAL ? False : True;
+ return (TerminalType==GENER_TERMINAL ||
+         TerminalType==XTERM_TERMINAL) ? False : True;
 }
 
 /**[txh]********************************************************************
@@ -374,7 +376,7 @@ void startcurses()
   /* Configure curses */
   stdscr->_flags |= _ISPAD;
   // Make curses interpret the escape sequences
-  keypad(stdscr, TRUE);
+  keypad(stdscr,TRUE);
   // SET: remove the buffering and pass the values directly to us. The man
   // pages recomend using it for interactive applications. Looks like it
   // doesn't affect if the delay is 0 but I call it anyways
@@ -417,7 +419,7 @@ void startcurses()
        palette = PAL_HIGH;
        TScreen::screenMode = TScreen::smCO80;
        use_pc_chars = 0;
-       TerminalType=GENER_TERMINAL;
+       TerminalType=XTERM_TERMINAL;
       }
     else if (has_colors())
       { // Generic color terminal, that's more a guess than a real thing
@@ -444,6 +446,11 @@ void startcurses()
           // like in the VCSA case.
           TScreen::SendToTerminal("\e)K\xE");
           break;
+     case XTERM_TERMINAL:
+          // SET: I still wondering why I keep using ncurses. The f*ck|ng ncurses
+          // puts the keypad in an "application"(?) mode where numbers are never
+          // reported.
+          TScreen::SendToTerminal("\e>");
      case GENER_TERMINAL:
           // Select IBM PC chars?
           TScreen::SendToTerminal(enter_pc_charset_mode);
@@ -599,6 +606,7 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
  
      switch (TerminalType)
        {
+        case XTERM_TERMINAL:
         case GENER_TERMINAL:
              code=PC2curses[code];
              needAltSet=code & A_ALTCHARSET;
@@ -934,6 +942,7 @@ void TScreen::resume()
           // Use G1 charset, set G1 to the loaded video fonts, print control chars
           TScreen::SendToTerminal("\e)K\xE");
           break;
+     case XTERM_TERMINAL:
      case GENER_TERMINAL:
           // Select IBM PC chars
           TScreen::SendToTerminal("\e(U");
@@ -1242,6 +1251,7 @@ void RestoreScreen()
     switch (TerminalType)
       {
        case LINUX_TERMINAL:
+       case XTERM_TERMINAL:
        case GENER_TERMINAL:
             // Set color to gray over black
             mapColor(p,7); *p=0;
