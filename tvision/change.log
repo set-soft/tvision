@@ -1,4 +1,9 @@
 $Log$
+Revision 1.183  2001/09/03 20:20:28  set
+* Added: Now any TCluster (radio buttons, check boxes, etc.) that have a
+state sfDisabled is painted with a different color. I mapped it to color
+0x3E (previously reserved) and by default is dark gray over cyan.
+
 Revision 1.182  2001/09/01 22:37:28  set
 * Added: A new parameter for TV_System: pid_t *pidChild=0 if this parameter
 is passed and the OS supports it and we implemented it (read: only for

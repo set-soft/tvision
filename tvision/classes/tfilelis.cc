@@ -7,6 +7,9 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Salvador E. Tropea to exclude .. in parent dir and
+exlude some particular files by configuration.
+
  *
  *
  */
@@ -189,15 +192,31 @@ struct DirSearchRec : public TSearchRec
 /******** end of struct DirSearchRec ********/
 
 
+// SET: Helper routine to exclude some special files
+static
+int ExcludeSpecialName(const char *name)
+{
+ int len=strlen(name);
+ if ((TFileCollection::sortOptions & fcolHideEndTilde) && name[len-1]=='~')
+    return 1;
+ if ((TFileCollection::sortOptions & fcolHideEndBkp) && len>4 &&
+     strcasecmp(name+len-4,".bkp")==0)
+    return 1;
+ if ((TFileCollection::sortOptions & fcolHideStartDot) && name[0]=='.')
+    return 1;
+ return 0;
+}
+
 /******** void readDirectory( const char *aWildCard ) ********/
 #ifdef TVOSf_djgpp
-// this is really faster then the glob methode
+// DOS+DJGPP target
+// this is really faster than the glob methode
 void TFileList::readDirectory( const char *aWildCard )
 {
   DIR *dir;
   struct dirent *de;
   DirSearchRec *p;
-  TFileCollection *fileList = new TFileCollection( 5, 5 );
+  TFileCollection *fileList = new TFileCollection( 10, 10 );
   char *wildcard = (char *)alloca(strlen(aWildCard)+1);
   strcpy(wildcard,aWildCard);
   char *slash = strrchr(wildcard,DIRSEPARATOR);
@@ -206,68 +225,73 @@ void TFileList::readDirectory( const char *aWildCard )
   int removeParent=0;
   
   if (slash)
-  {
-    *slash = 0;
-    path = wildcard;
-    if (strlen(path) == 2 && path[1] == ':')
     {
-      path = (char *)alloca(4);
-      strcpy(path,wildcard);
-      strcat(path,"/");
+     *slash = 0;
+     path = wildcard;
+     if (strlen(path) == 2 && path[1] == ':')
+       {
+        path = (char *)alloca(4);
+        strcpy(path,wildcard);
+        strcat(path,"/");
+       }
+     slash++;
+     if (strlen(path) == 3 && path[1] == ':')
+        removeParent=1;
     }
-    slash++;
-    if (strlen(path) == 3 && path[1] == ':')
-       removeParent=1;
-  }
   else
-  {
-    slash = wildcard;
-    path = ".";
-    char *cwd=getcwd(0,PATH_MAX);
-    if (cwd)
-      {
-       if (strlen(cwd)==3 && cwd[1] == ':')
-          removeParent=1;
-       free(cwd);
-      }
-  }
+    {
+     slash = wildcard;
+     path = ".";
+     char *cwd=getcwd(0,PATH_MAX);
+     if (cwd)
+       {
+        if (strlen(cwd)==3 && cwd[1] == ':')
+           removeParent=1;
+        free(cwd);
+       }
+    }
   dir = opendir(path);
-  if (dir) while ((de = readdir(dir)))
-  {
-    struct ffblk &ff = dir->ff;
-    if (!(ff.ff_attrib & FA_DIREC) && fnmatch(slash,de->d_name,0)) continue;
-    if (strcmp(de->d_name,".") == 0) continue;
-    if (removeParent && strcmp(de->d_name,"..")==0) continue;
-    p = new DirSearchRec;
-    strcpy(p->name,de->d_name);
-    p->attr = ff.ff_attrib;
-    p->size = ff.ff_fsize;
-    p->time = ((unsigned long)(ff.ff_fdate)) << 16 | (unsigned short)ff.ff_ftime;
-    p->time = _file_time_stamp(p->time);
-    fileList->insert(p);
-  }
-  if (dir) closedir(dir);
+  if (dir)
+    {
+     while ((de = readdir(dir)))
+       {
+        struct ffblk &ff = dir->ff;
+        char *name=de->d_name;
+        if (!(ff.ff_attrib & FA_DIREC) && fnmatch(slash,name,0)) continue;
+        if (strcmp(name,".")==0) continue;
+        if (removeParent && strcmp(name,"..")==0) continue;
+        // SET: Special exclusions:
+        if (ExcludeSpecialName(name)) continue;
+        p = new DirSearchRec;
+        strcpy(p->name,name);
+        p->attr = ff.ff_attrib;
+        p->size = ff.ff_fsize;
+        p->time = ((unsigned long)(ff.ff_fdate)) << 16 | (unsigned short)ff.ff_ftime;
+        p->time = _file_time_stamp(p->time);
+        fileList->insert(p);
+       }
+     closedir(dir);
+    }
   newList(fileList);
   if (list()->getCount() > 0)
     message( owner, evBroadcast, cmFileFocused, list()->at(0) );
   else
-  {
-    static DirSearchRec noFile;
-    message( owner, evBroadcast, cmFileFocused, &noFile );
-  }
+    {
+     static DirSearchRec noFile;
+     message( owner, evBroadcast, cmFileFocused, &noFile );
+    }
 }
 
 #else
 #if defined(TVOS_Win32) && !defined(__TURBOC__)
-// MingW
+// Win32+MingW
 void TFileList::readDirectory( const char *aWildCard )
 {
   long dir;
   _finddata_t de;
-  _finddata_t pde;
   int hasparent=0;
   DirSearchRec *p;
-  TFileCollection *fileList = new TFileCollection( 5, 5 );
+  TFileCollection *fileList = new TFileCollection( 10, 10 );
   char *wildcard = (char *)alloca(strlen(aWildCard)+1);
   strcpy(wildcard,aWildCard);
   char *slash = strrchr(wildcard,DIRSEPARATOR);
@@ -277,80 +301,82 @@ void TFileList::readDirectory( const char *aWildCard )
   char dirpath[PATH_MAX];
   
   if (slash)
-  {
-    *slash = 0;
-    path = wildcard;
-    if (strlen(path) == 2 && path[1] == ':')
     {
-      path = (char *)alloca(4);
-      strcpy(path,wildcard);
-      strcat(path,DIRSEPARATOR_);
+     *slash = 0;
+     path = wildcard;
+     if (strlen(path) == 2 && path[1] == ':')
+       {
+        path = (char *)alloca(4);
+        strcpy(path,wildcard);
+        strcat(path,DIRSEPARATOR_);
+       }
+     strcpy(dirpath,path);
+     strcat(dirpath,DIRSEPARATOR_"*");
+     if (strlen(path) == 3 && path[1] == ':')
+        removeParent=1;
+     *slash = DIRSEPARATOR;
     }
-	strcpy(dirpath,path);
-	strcat(dirpath,DIRSEPARATOR_"*");
-    if (strlen(path) == 3 && path[1] == ':')
-       removeParent=1;
-    *slash = DIRSEPARATOR;
-  }
   else
-  {
-    slash = wildcard;
-    path = ".";
-    char *cwd=getcwd(0,PATH_MAX);
-    if (cwd)
-      {
-       if (strlen(cwd)==3 && cwd[1] == ':')
-          removeParent=1;
-       free(cwd);
-      }
-	strcpy(dirpath,path);
-	strcat(dirpath,DIRSEPARATOR_"*");
-  }
+    {
+     slash = wildcard;
+     path = ".";
+     char *cwd=getcwd(0,PATH_MAX);
+     if (cwd)
+       {
+        if (strlen(cwd)==3 && cwd[1] == ':')
+           removeParent=1;
+        free(cwd);
+       }
+     strcpy(dirpath,path);
+     strcat(dirpath,DIRSEPARATOR_"*");
+    }
   //find all directories
   dir = _findfirst( dirpath, &de ) ;
-  if (dir!=-1) do 
-  {
-    if (!(de.attrib & _A_SUBDIR)) continue;
-    if (de.name[0]=='.') {
-		if( de.name[1]=='.' ) {
-            pde = de;
-            hasparent=1;
-        }
-		continue;
-	}
-    p = new DirSearchRec;
-	p->readFf_blk( de );
-    fileList->insert(p);
-  } while (_findnext(dir,&de)==0);
-  if (dir!=-1) _findclose(dir);
+  if (dir!=-1)
+    {
+     do
+       {
+        if (!(de.attrib & _A_SUBDIR)) continue;
+        if (strcmp(de.name,".")==0) continue;
+        if (removeParent && strcmp(de.name,"..")==0) continue;
+        // SET: Special exclusions:
+        if (ExcludeSpecialName(de.name)) continue;
+        p = new DirSearchRec;
+        p->readFf_blk( de );
+        fileList->insert(p);
+       }
+     while (_findnext(dir,&de)==0);
+     _findclose(dir);
+    }
 
   //find all files
   dir = _findfirst( wildcard, &de ) ;
-  if (dir!=-1) do 
-  {
-    if (de.attrib & _A_SUBDIR) continue;
-    p = new DirSearchRec;
-	p->readFf_blk( de );
-    fileList->insert(p);
-  } while (_findnext(dir,&de)==0);
-  if (dir!=-1) _findclose(dir);
+  if (dir!=-1)
+    {
+     do
+       {
+        if (de.attrib & _A_SUBDIR) continue;
+        // SET: Special exclusions:
+        if (ExcludeSpecialName(de.name)) continue;
+        p = new DirSearchRec;
+        p->readFf_blk( de );
+        fileList->insert(p);
+       }
+     while (_findnext(dir,&de)==0);
+     _findclose(dir);
+    }
 
-  if (!removeParent && hasparent) {
-	p = new DirSearchRec;
-	p->readFf_blk( pde );
-    fileList->insert(p);
-  }
   newList(fileList);
   if (list()->getCount() > 0)
-    message( owner, evBroadcast, cmFileFocused, list()->at(0) );
+     message( owner, evBroadcast, cmFileFocused, list()->at(0) );
   else
-  {
-    static DirSearchRec noFile;
-    message( owner, evBroadcast, cmFileFocused, &noFile );
-  }
+    {
+     static DirSearchRec noFile;
+     message( owner, evBroadcast, cmFileFocused, &noFile );
+    }
 }
 #else
-// Linux and BC++ under NT
+// Linux and Win32+BC++
 void TFileList::readDirectory( const char *aWildCard )
 {
   /* SS: changed */
@@ -369,7 +395,7 @@ void TFileList::readDirectory( const char *aWildCard )
   if (!CLY_IsWild(path)) strcat(path, "*");
   CLY_fexpand( path );
   CLY_ExpandPath(path, dir, file);
-  TFileCollection *fileList = new TFileCollection( 5, 5 );
+  TFileCollection *fileList = new TFileCollection( 10, 10 );
 
   /* find all filenames that match our wildcards */
 
@@ -378,91 +404,89 @@ void TFileList::readDirectory( const char *aWildCard )
    * Rainer Keuchel <r_keuchel@smaug.netwave.de>
    * Date: 18 Jan 1997 22:52:12 +0000
    */
-#ifdef __linux__
-#define __gl_options GLOB_PERIOD
-#else
-#define __gl_options 0
-#endif
+  #ifdef __linux__
+  # define __gl_options GLOB_PERIOD
+  #else
+  # define __gl_options 0
+  #endif
   if (glob(path, __gl_options, NULL, &gl) == 0)
-  {
-    for (int i = 0; i < (int)gl.gl_pathc; i++)
     {
-      /* is this a regular file ? */
-  
-      if (stat(gl.gl_pathv[i], &s) == 0 && S_ISREG(s.st_mode))
-      {
-        if ((p = new DirSearchRec) == NULL) break;
-  
-        /* strip directory part */
-  
-        if ((np = strrchr(gl.gl_pathv[i], '/')) != NULL) np++;
-        else np = gl.gl_pathv[i];
-        p->readFf_blk(np, s);
-        fileList->insert( p );
-      }
+     for (int i = 0; i < (int)gl.gl_pathc; i++)
+        {
+         /* is this a regular file ? */
+         if (stat(gl.gl_pathv[i], &s) == 0 && S_ISREG(s.st_mode))
+           {
+            /* strip directory part */
+            if ((np = strrchr(gl.gl_pathv[i], '/')) != NULL)
+               np++;
+            else
+               np = gl.gl_pathv[i];
+            // SET: Special exclusions:
+            if (ExcludeSpecialName(np)) continue;
+            p = new DirSearchRec;
+            p->readFf_blk(np, s);
+            fileList->insert( p );
+           }
+        }
+     globfree(&gl);
     }
-    globfree(&gl);
-  }
   /* now read all directory names */
 
   sprintf(path, "%s.", dir);
   if ((dp = opendir(path)) != NULL)
-  {
-    while ((de = readdir(dp)) != NULL)
     {
-      /* we don't want these directories */
-
-      if (strcmp(de->d_name, ".") == 0 ||
-        strcmp(de->d_name, "..") == 0) continue;
-
-      /* is it a directory ? */
-
-      sprintf(path, "%s%s", dir, de->d_name);
-      if (stat(path, &s) == 0 && S_ISDIR(s.st_mode))
-      {
-        if ((p = new DirSearchRec) == NULL) break;
-        p->readFf_blk(de->d_name, s);
-        fileList->insert( p );
-      }
+     while ((de = readdir(dp)) != NULL)
+       {
+        /* we don't want these directories */
+        if (strcmp(de->d_name, ".") == 0 ||
+            strcmp(de->d_name, "..") == 0) continue;
+        /* is it a directory ? */
+        sprintf(path, "%s%s", dir, de->d_name);
+        if (stat(path, &s) == 0 && S_ISDIR(s.st_mode) &&
+            // SET: Special exclusions:
+            !ExcludeSpecialName(de->d_name))
+          {
+           p = new DirSearchRec;
+           p->readFf_blk(de->d_name, s);
+           fileList->insert( p );
+          }
+       }
+     closedir(dp);
     }
-    closedir(dp);
-  }
 
   if ( strlen( dir ) > 1 )
-  {
-    p = new DirSearchRec;
-    if ( p != 0 )
     {
-      sprintf(path, "%s..", dir);
-      if (stat(path, &s) == 0)
-      {
-        p->readFf_blk("..", s);
-      }
-      else
-      {
-        strcpy( p->name, ".." );
-        p->size = 0;
-        p->time = 0x210000uL;
-        p->attr = FA_DIREC;
-      }
-      fileList->insert( p );
+     p = new DirSearchRec;
+     if (p)
+       {
+        sprintf(path, "%s..", dir);
+        if (stat(path, &s)==0)
+           p->readFf_blk("..", s);
+        else
+          {
+           strcpy( p->name, ".." );
+           p->size = 0;
+           p->time = 0x210000uL;
+           p->attr = FA_DIREC;
+          }
+        fileList->insert( p );
+       }
     }
-  }
-#if 0 // I think this will never hapen
+  #if 0 // I think this will never hapen (new doesn't return 0)
   if ( p == 0 )
     messageBox( tooManyFiles, mfOKButton | mfWarning );
-#endif
+  #endif
   newList(fileList);
   if ( list()->getCount() > 0 )
-    message( owner, evBroadcast, cmFileFocused, list()->at(0) );
+     message( owner, evBroadcast, cmFileFocused, list()->at(0) );
   else
-  {
-    static DirSearchRec noFile;
-    message( owner, evBroadcast, cmFileFocused, &noFile );
-  }
+    {
+     static DirSearchRec noFile;
+     message( owner, evBroadcast, cmFileFocused, &noFile );
+    }
 }
-#endif
-#endif
+#endif // Linux and Win32+BC++
+#endif // !DOS+DJGPP
 /******** end of void readDirectory ********/
 
 #if !defined( NO_STREAM )
