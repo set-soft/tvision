@@ -481,7 +481,8 @@ int AlCon_IsVisCursor()
 
 void AlCon_Init(int w, int h)
 {
- char b[4096];
+ char font_buffer[4096];
+ bool font_buffer_loaded = false;
  FILE *f;
  int i;
 
@@ -500,8 +501,12 @@ void AlCon_Init(int w, int h)
     allegro_message("Unable to load font\n");
     exit(1);
    }
- fread(b,4096,1,f);
- fclose(f);
+ else
+   {
+    fread(font_buffer,4096,1,f);
+    fclose(f);
+    font_buffer_loaded = true;
+   }
 
  /* If we are in a graphic mode and we know the depth use it */
  if (desktop_color_depth())
@@ -533,7 +538,7 @@ void AlCon_Init(int w, int h)
      ascii_data[i]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+16);
      ascii_data[i]->w=8;
      ascii_data[i]->h=16;
-     memcpy(ascii_data[i]->dat,&b[i*16],16);
+     memcpy(ascii_data[i]->dat,&font_buffer[i*16],16);
     }
  /* Create default cursor shape */
  cursorData[0]=0;

@@ -44,6 +44,10 @@
 
 #include <tv.h>
 
+#define Uses_AlCon_conio
+#define AlCon_NO_KEYDEFS
+#include <tv/alcon/alcon.h>
+
 #include "tvdemo.h"
 #include "gadgets.h"
 #include "fileview.h"
@@ -71,14 +75,14 @@ __link(RCalcDisplay);
 //   opening.
 //
 
-int main(int argc, char **argv, char **envir)
+int main(int argc, char **argv) //, char **envir)
 {
     // The following is optional, but helps some low level drivers.
     // Don't do it if you experiment any side effect in the arguments or you
     // use these variables in a not so common way.
     // Note that the Linux console driver will alter argv to be able to change
     // what ps reports, you'll get the setWindowTitle argument.
-    TDisplay::setArgv(argc,argv,envir);
+    // TDisplay::setArgv(argc,argv,envir);
     
     // Uncommenting the next line the cursor won't be hided.
     // This is a test to get an application a little bit friendly for Braille
@@ -106,6 +110,7 @@ int main(int argc, char **argv, char **envir)
 
     return 0;
 }
+END_OF_MAIN()
 
 
 //
