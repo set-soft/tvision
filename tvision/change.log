@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.399.2.42  2003/04/21 15:45:32  set
+* Fixed: The snprintf replacement (coded by Caolan McNamara
+<caolan@skynet.ie>, thanks Caolan!) didn't return the expected value.
+According to modern implementations (like GNU one) it must return the
+number of characters we should write the buffer if it have enough space and
+not the ammount we wrote. I hope my changes are ok ;-)
+
 Revision 2.399.2.41  2003/04/21 15:43:10  set
 * Fixed: [DOS] the arguments of TScreen::setCharacter (ushort to uint).
 
