@@ -9,8 +9,32 @@
 consoles. The collection is created from a fonts files. Each item is a font
 of certain height. The collection can return interpolated and extrapolated
 fonts in a range of +/- one from the available fonts. The fonts file should
-contain fonts with all the supported symbols.
-  
+contain fonts with all the supported symbols.@p
+
+  SFT Files: This is currently platform dependent! It means SFT files should
+  be generated in the same platform they are used. It will be fixed in the
+  future.
+
+  17 bytes: SET's editor font
+   1 byte:  26 (DOS EOF)
+      int:  version (1 or 2)
+      int:  number of fonts contained.
+   2 bytes: size of name
+            the name, the length includes the EOS, but this isn't stored on
+            disk.
+
+  Here are the fonts, each one have this format:
+  version 1:
+  int: first symbol defined.
+  int: last symbol defined.
+  unsigned: height of the font.
+  The width is assumed to be 8 pixels (1 byte)
+
+  version 2, the same but adds:
+  unsigned: width of the font.
+
+  The fonts itself follows the internal code.
+
 ***************************************************************************/
 
 #define Uses_stdlib
