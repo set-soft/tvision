@@ -24,6 +24,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TPalette
+#define Uses_TScreen
 #include <tv.h>
 
 #define cpScrollBar  "\x04\x05\x05"
@@ -37,7 +38,7 @@ TScrollBar::TScrollBar( const TRect& bounds ) :
     arStep( 1 )
 {
     if( size.x == 1 )
-	{
+        {
         growMode = gfGrowLoX | gfGrowHiX | gfGrowHiY;
         memcpy( chars, vChars, sizeof(vChars) );
         }
@@ -56,18 +57,25 @@ void TScrollBar::draw()
 void TScrollBar::drawPos( int pos )
 {
     TDrawBuffer b;
+    char *aChars;
+
+    // SET: If we can't remap characters use the originals
+    if (TScreen::codePageVariable())
+       aChars=chars;
+    else
+       aChars=size.x==1 ? vChars : hChars;
 
     int s = getSize() - 1;
-    b.moveChar( 0, chars[0], getColor(2), 1 );
+    b.moveChar( 0, aChars[0], getColor(2), 1 );
     if( maxVal == minVal )
-        b.moveChar( 1, chars[4], getColor(1), s-1 );
+        b.moveChar( 1, aChars[4], getColor(1), s-1 );
     else
-	{
-	b.moveChar( 1, chars[2], getColor(1), s-1 );
-	b.moveChar( pos, chars[3], getColor(3), 1 );
-	}
+       {
+       b.moveChar( 1, aChars[2], getColor(1), s-1 );
+       b.moveChar( pos, aChars[3], getColor(3), 1 );
+       }
 
-    b.moveChar( s, chars[1], getColor(2), 1 );
+    b.moveChar( s, aChars[1], getColor(2), 1 );
     writeBuf( 0, 0, size.x, size.y, b );
 }
 
