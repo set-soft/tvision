@@ -8,6 +8,7 @@
 #define Uses_TStatusItem
 #define Uses_TStatusDef
 #define Uses_TDeskTop
+#define Uses_TVCodePage
 #include <tv.h>
 
 class TMyApp : public TApplication
@@ -44,6 +45,10 @@ TMenuBar *TMyApp::initMenuBar( TRect r )
 int main()
 {
  TMyApp myApp;
+ // Currently autodetection is broken, so I'm forcing it until I find a solution
+ TVCodePage::SetCodePage(TVCodePage::KOI8r);
+ myApp.redraw();
+
  myApp.run();
  return 0;
 }

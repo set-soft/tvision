@@ -139,6 +139,10 @@ classes/win32/win32dis.cc
 classes/win32/win32key.cc
 classes/win32/win32mouse.cc
 classes/win32/win32scr.cc
+classes/wingr/wingrdis.cc
+classes/wingr/wingrkey.cc
+classes/wingr/wingrmouse.cc
+classes/wingr/wingrscr.cc
 classes/winnt/winntdis.cc
 classes/winnt/winntkey.cc
 classes/winnt/winntmouse.cc
@@ -239,6 +243,7 @@ examples/cyrillic/linuxkoi8/rhide.env
 +examples/cyrillic/linuxkoi8/setlat1.sh
 examples/cyrillic/linuxkoi8/test.cc
 -examples/cyrillic/linuxkoi8/test.gpr
+examples/cyrillic/linuxkoi8/test.mak
 examples/demo/ascii.cc
 examples/demo/ascii.h
 examples/demo/calendar.cc
@@ -587,6 +592,9 @@ include/tv/win32/key.h
 include/tv/win32/mouse.h
 include/tv/win32/screen.h
 include/tv/win32/win32clip.h
+include/tv/wingr/key.h
+include/tv/wingr/mouse.h
+include/tv/wingr/screen.h
 include/tv/winnt/key.h
 include/tv/winnt/mouse.h
 include/tv/winnt/screen.h
