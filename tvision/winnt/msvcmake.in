@@ -1,6 +1,6 @@
 # Makefile for MS VC 5.0-6.0
 # Modified for use with MS NMAKE 
-# Run: nmake -f makefile.nmk all
+# Run: nmake -f Makefile.nmk all
 
 CFLAGS=-O2 -D_WIN32 /GR- /GX-
 CXXFLAGS=-O2 -I../include -D_WIN32 /GR- /GX-
@@ -51,15 +51,17 @@ OBJS=@TV_OBJS_MSVC@
    
 {$(SRC8)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
-   
+
+{$(SRC2)}.c{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 
 all:: libtv.lib
 
 libtv.lib : $(OBJS)
-	-rm -f libtv.lib
+	-del libtv.lib
 	lib /OUT:libtv.lib $(OBJS)
 
 clean:
-	rm -f $(OBJS)
-	rm -f $(TUTORIAL)
+	del -f $(OBJS)
+	del -f $(TUTORIAL)
 
