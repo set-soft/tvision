@@ -1,4 +1,9 @@
 $Log$
+Revision 1.16  1999/01/31 19:20:14  root
+* Adjusted the examples for Linux (some used dos.h).
+* Cleaned the /usr/... dependencies in the example gprs.
+* Trying to start a shared repository between DOS and Linux.
+.
 Revision 1.15  1999/01/29 04:26:02  set
 *** empty log message ***
 .
