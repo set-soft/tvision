@@ -1,7 +1,13 @@
 #!/usr/bin/perl
-$oldv='1.0.7';
-$newv='1.0.8';
-@files=('../readme.txt');
+require "../miscperl.pl";
+
+GetVersion('../');
+
+$r=cat('../include/tv.h');
+if ($r!~/$Version/)
+  {
+   die "Error! inconsistent version in tv.h\n";
+  }
 
 $doBinary=0;
 foreach $i (@ARGV)
@@ -30,29 +36,16 @@ else
    print "uptodate\n";
   }
 
-# Patch the version number
-$oldv2='v'.$oldv;
-$newv2='v'.$newv;
-foreach $i (@files)
-  {
-   print 'Processing '."$i";
-   $r=&cat($i);
-   if ($r =~ /$oldv2/)
-     {
-      $r =~ s/$oldv2/$newv2/g;
-      &replace($i,$r);
-      print " updated version\n";
-     }
-   else
-     {
-      print " is uptodate\n";
-     }
-  }
+# Patch the version number in the readme.txt
+print "Processing readme file\n";
+$r=cat('../readme.in');
+$r=~s/\@version\@/$Version/g;
+replace('../readme.txt',$r);
 
 # Generate the tar files
-$bindist="rhtvision-$newv.bin.i386.elf.static.linux.tar.gz";
-$binddist="rhtvision-$newv.bin.i386.elf.dynamic.linux.tar.gz";
-$srcdist="rhtvision-$newv.src.tar.gz";
+$bindist="rhtvision-$Version.bin.i386.elf.static.linux.tar.gz";
+$binddist="rhtvision-$Version.bin.i386.elf.dynamic.linux.tar.gz";
+$srcdist="rhtvision-$Version.src.tar.gz";
 chdir('../..');
 unlink($srcdist,$bindist,$binddist);
 system("tar -X tvision/linux/exclude.txt -zcvf $srcdist tvision");
@@ -63,7 +56,7 @@ system("tar -zcvf $binddist --exclude=*CVS `cat tvision/linux/includbi.txt`") if
 $lsm=
 "Begin3
 Title:          Turbo Vision (Robert Hoehne port)
-Version:        $newv
+Version:        $Version
 Entered-date:   !3
 Description:    Turbo Vision port to Linux. C++ Text UI. Not 100% Borland compatible.
 Keywords:       c++ cui tui framework interface tv tvision
@@ -94,28 +87,5 @@ $r='0'.$r if length($r)<7;
 $lsm =~ s/\!3/$r/g;
 replace('rhtvision.lsm',$lsm);
 replace('rhtvision.txt',$lsm);
-
-
-sub cat
-{
- local $/;
- my $b;
-
- open(FIL,$_[0]) || return 0;
- $b=<FIL>;
- close(FIL);
-
- $b;
-}
-
-
-sub replace
-{
- my $b=$_[1];
-
- open(FIL,">$_[0]") || return 0;
- print FIL ($b);
- close(FIL);
-}
 
 
