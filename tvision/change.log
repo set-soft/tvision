@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.476  2003/06/05 19:59:22  set
+* Fixed: When genimk fails it must delete the partially generated .imk and
+.umk to force a new generation after fixing the problems.
+
 Revision 2.475  2003/06/05 19:55:38  set
 * Fixed: Compilation problems with MSVC 7.0. Patch from Mike. Doubt:
 vsnprintf, may be the MSVC version should be lower or for all.

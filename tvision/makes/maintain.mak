@@ -52,130 +52,130 @@ genimk.exe: genimk.cc extrimk.exe
 librhtv.imk: librhtv.gpr ../compat/compat.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/bhelp/thelp.imk: $(EXDIR)/bhelp/thelp.gpr $(EXDEP)
+$(EXDIR)/bhelp/thelp.umk: $(EXDIR)/bhelp/thelp.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/clipboard/test.imk: $(EXDIR)/clipboard/test.gpr $(EXDEP)
+$(EXDIR)/clipboard/test.umk: $(EXDIR)/clipboard/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/cyrillic/linuxkoi8/test.imk: $(EXDIR)/cyrillic/linuxkoi8/test.gpr $(EXDEP)
+$(EXDIR)/cyrillic/linuxkoi8/test.umk: $(EXDIR)/cyrillic/linuxkoi8/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/cyrillic/x11koi8/test.imk: $(EXDIR)/cyrillic/x11koi8/test.gpr $(EXDEP)
+$(EXDIR)/cyrillic/x11koi8/test.umk: $(EXDIR)/cyrillic/x11koi8/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/demo/demo.imk: $(EXDIR)/demo/demo.gpr $(EXDEP)
+$(EXDIR)/demo/demo.umk: $(EXDIR)/demo/demo.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/desklogo/desklogo.imk: $(EXDIR)/desklogo/desklogo.gpr $(EXDEP)
+$(EXDIR)/desklogo/desklogo.umk: $(EXDIR)/desklogo/desklogo.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/desklogo/set-logo.imk: $(EXDIR)/desklogo/set-logo.gpr $(EXDEP)
+$(EXDIR)/desklogo/set-logo.umk: $(EXDIR)/desklogo/set-logo.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/desklogo/tv_logo.imk: $(EXDIR)/desklogo/tv_logo.gpr $(EXDEP)
+$(EXDIR)/desklogo/tv_logo.umk: $(EXDIR)/desklogo/tv_logo.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/dlgdsn/libtest.imk: $(EXDIR)/dlgdsn/libtest.gpr $(EXDEP)
+$(EXDIR)/dlgdsn/libtest.umk: $(EXDIR)/dlgdsn/libtest.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/dyntxt/dyntext.imk: $(EXDIR)/dyntxt/dyntext.gpr $(EXDEP)
+$(EXDIR)/dyntxt/dyntext.umk: $(EXDIR)/dyntxt/dyntext.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/fonts/genraw.imk: $(EXDIR)/fonts/genraw.gpr $(EXDEP)
+$(EXDIR)/fonts/genraw.umk: $(EXDIR)/fonts/genraw.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/fonts/test.imk: $(EXDIR)/fonts/test.gpr $(EXDEP)
+$(EXDIR)/fonts/test.umk: $(EXDIR)/fonts/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/helpdemo/helpdemo.imk: $(EXDIR)/helpdemo/helpdemo.gpr $(EXDEP)
+$(EXDIR)/helpdemo/helpdemo.umk: $(EXDIR)/helpdemo/helpdemo.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/i18n/test.imk: $(EXDIR)/i18n/test.gpr $(EXDEP)
+$(EXDIR)/i18n/test.umk: $(EXDIR)/i18n/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/inplis/implis.imk: $(EXDIR)/inplis/implis.gpr $(EXDEP)
+$(EXDIR)/inplis/implis.umk: $(EXDIR)/inplis/implis.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/listvi/lst_view.imk: $(EXDIR)/listvi/lst_view.gpr $(EXDEP)
+$(EXDIR)/listvi/lst_view.umk: $(EXDIR)/listvi/lst_view.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/msgcls/msgcls.imk: $(EXDIR)/msgcls/msgcls.gpr $(EXDEP)
+$(EXDIR)/msgcls/msgcls.umk: $(EXDIR)/msgcls/msgcls.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/progba/test.imk: $(EXDIR)/progba/test.gpr $(EXDEP)
+$(EXDIR)/progba/test.umk: $(EXDIR)/progba/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/sdlg/test.imk: $(EXDIR)/sdlg/test.gpr $(EXDEP)
+$(EXDIR)/sdlg/test.umk: $(EXDIR)/sdlg/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/sdlg2/test.imk: $(EXDIR)/sdlg2/test.gpr $(EXDEP)
+$(EXDIR)/sdlg2/test.umk: $(EXDIR)/sdlg2/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tcombo/test.imk: $(EXDIR)/tcombo/test.gpr $(EXDEP)
+$(EXDIR)/tcombo/test.umk: $(EXDIR)/tcombo/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/terminal/test.imk: $(EXDIR)/terminal/test.gpr $(EXDEP)
+$(EXDIR)/terminal/test.umk: $(EXDIR)/terminal/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tprogb/test.imk: $(EXDIR)/tprogb/test.gpr $(EXDEP)
+$(EXDIR)/tprogb/test.umk: $(EXDIR)/tprogb/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid01.imk: $(EXDIR)/tutorial/tvguid01.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid01.umk: $(EXDIR)/tutorial/tvguid01.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid02.imk: $(EXDIR)/tutorial/tvguid02.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid02.umk: $(EXDIR)/tutorial/tvguid02.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid03.imk: $(EXDIR)/tutorial/tvguid03.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid03.umk: $(EXDIR)/tutorial/tvguid03.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid04.imk: $(EXDIR)/tutorial/tvguid04.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid04.umk: $(EXDIR)/tutorial/tvguid04.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid05.imk: $(EXDIR)/tutorial/tvguid05.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid05.umk: $(EXDIR)/tutorial/tvguid05.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid06.imk: $(EXDIR)/tutorial/tvguid06.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid06.umk: $(EXDIR)/tutorial/tvguid06.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid07.imk: $(EXDIR)/tutorial/tvguid07.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid07.umk: $(EXDIR)/tutorial/tvguid07.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid08.imk: $(EXDIR)/tutorial/tvguid08.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid08.umk: $(EXDIR)/tutorial/tvguid08.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid09.imk: $(EXDIR)/tutorial/tvguid09.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid09.umk: $(EXDIR)/tutorial/tvguid09.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid10.imk: $(EXDIR)/tutorial/tvguid10.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid10.umk: $(EXDIR)/tutorial/tvguid10.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid11.imk: $(EXDIR)/tutorial/tvguid11.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid11.umk: $(EXDIR)/tutorial/tvguid11.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid12.imk: $(EXDIR)/tutorial/tvguid12.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid12.umk: $(EXDIR)/tutorial/tvguid12.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid13.imk: $(EXDIR)/tutorial/tvguid13.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid13.umk: $(EXDIR)/tutorial/tvguid13.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid14.imk: $(EXDIR)/tutorial/tvguid14.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid14.umk: $(EXDIR)/tutorial/tvguid14.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid15.imk: $(EXDIR)/tutorial/tvguid15.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid15.umk: $(EXDIR)/tutorial/tvguid15.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tutorial/tvguid16.imk: $(EXDIR)/tutorial/tvguid16.gpr $(EXDEP)
+$(EXDIR)/tutorial/tvguid16.umk: $(EXDIR)/tutorial/tvguid16.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tvedit/tvedit.imk: $(EXDIR)/tvedit/tvedit.gpr $(EXDEP)
+$(EXDIR)/tvedit/tvedit.umk: $(EXDIR)/tvedit/tvedit.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/tvhc/tvhc.imk: $(EXDIR)/tvhc/tvhc.gpr $(EXDEP)
+$(EXDIR)/tvhc/tvhc.umk: $(EXDIR)/tvhc/tvhc.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
-$(EXDIR)/videomode/test.imk: $(EXDIR)/videomode/test.gpr $(EXDEP)
+$(EXDIR)/videomode/test.umk: $(EXDIR)/videomode/test.gpr $(EXDEP)
 	@./genimk.exe $@ $^
 
 makes: extrimk.exe genimk.exe $(mkfs_files) $(imks_files)
