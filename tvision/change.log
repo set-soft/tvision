@@ -1,4 +1,13 @@
 $Log$
+Revision 1.234  2001/10/17 23:52:54  set
+* Fixed: [Linux] DECIMAL_POINT is GNU specific and not the right value to
+use like the glibc info says. The value RADIXCHAR is indicated like this:
+"The name `RADIXCHAR' is a deprecated alias still used in Unix98." so I
+used DECIMAL_POINT. But the same idiots moved DECIMAL_POINT to _GNU_SOURCE
+section because it *isn't* standard (glibc 2.2.x). So now I use RADIXCHAR.
+Now I wonder what idiot wrote "The Elegant and Fast Way X/Open's
+`nl_langinfo'." when this is poorly supported and have such a details.
+
 Revision 1.233  2001/10/17 23:28:18  set
 * Fixed: Not all of the configured values were transfered to the makefile.
 They were correctly put in the *.env files but not in the makefile. It
