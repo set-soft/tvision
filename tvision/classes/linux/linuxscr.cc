@@ -588,9 +588,9 @@ int TScreenLinux::InitOnce()
  // explain to the user how to run the application in the right way.
  if (!isatty(hOut))
    {
-    error=_("that's an interactive application, don't redirect stdout\r\n"
-            "If you want to collect information redirect stderr like this:\r\n\r\n"
-            "program 2> file\r\n");
+    error=_("that's an interactive application, don't redirect stdout. "
+            "If you want to collect information redirect stderr like this: "
+            "program 2> file");
     return 1;
    }
  #ifdef SEPARATED_HANDLE
@@ -804,14 +804,16 @@ TScreenLinux::TScreenLinux()
  // Initialize terminal
  if (InitOnce())
    {
-    fprintf(stderr,_("Error! %s\r\n"),error);
+    fprintf(stderr,_("Error! %s"),error);
+    fprintf(stderr,"\r\n");
     return;
    }
  // Initialize keyboard
  if (TGKeyLinux::InitOnce())
    {
     tcsetattr(hOut,TCSAFLUSH,&outTermiosOrig);
-    fprintf(stderr,_("Error! %s\r\n"),TGKeyLinux::error);
+    fprintf(stderr,_("Error! %s"),TGKeyLinux::error);
+    fprintf(stderr,"\r\n");
     return;
    }
  // Ok, if we are here this driver is usable.

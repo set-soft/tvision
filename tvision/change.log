@@ -1,4 +1,12 @@
-$Log$.
+$Log$
+Revision 2.424  2003/04/21 16:17:16  set
+* Added: Support for the new i18n API to TColorGroup and TColorItem.
+* Added: snprintf and fprintf members to TVIntl. They transparentlty
+translates and recodes the format string.
+* Modified: i18n makefile to stop generating *_iso* files.
+* Updated: spanish translations, also fixed a few russian translations, the
+obvious ones because of cformat changes ;-)
+
 Revision 2.423  2003/04/21 16:13:33  set
 * Added: Some comments about TV streams in the doc directory. They are
 really small but includes an ASCII graphic showing the hierarchy.

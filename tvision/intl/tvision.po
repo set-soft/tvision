@@ -108,7 +108,7 @@ msgstr ""
 msgid "Directory ~t~ree"
 msgstr ""
 
-#: classes/tchdirdi.cc:63 classes/tcolordi.cc:107 classes/tfiledia.cc:100
+#: classes/tchdirdi.cc:63 classes/tcolordi.cc:111 classes/tfiledia.cc:100
 #: msgbox.cc:42 msgbox.cc:219
 msgid "~O~K"
 msgstr ""
@@ -133,39 +133,39 @@ msgstr ""
 msgid "Invalid directory"
 msgstr ""
 
-#: classes/tcolordi.cc:44
+#: classes/tcolordi.cc:45
 msgid "Colors"
 msgstr ""
 
-#: classes/tcolordi.cc:57
+#: classes/tcolordi.cc:58
 msgid "~G~roup"
 msgstr ""
 
-#: classes/tcolordi.cc:66
+#: classes/tcolordi.cc:70
 msgid "~I~tem"
 msgstr ""
 
-#: classes/tcolordi.cc:73
+#: classes/tcolordi.cc:77
 msgid "~F~oreground"
 msgstr ""
 
-#: classes/tcolordi.cc:83
+#: classes/tcolordi.cc:87
 msgid "~B~ackground"
 msgstr ""
 
-#: classes/tcolordi.cc:89
+#: classes/tcolordi.cc:93
 msgid "Text "
 msgstr ""
 
-#: classes/tcolordi.cc:95
+#: classes/tcolordi.cc:99
 msgid "Color"
 msgstr ""
 
-#: classes/tcolordi.cc:105
+#: classes/tcolordi.cc:109
 msgid "~T~ry"
 msgstr ""
 
-#: classes/tcolordi.cc:109 classes/tfiledia.cc:106 classes/tvedit2.cc:72
+#: classes/tcolordi.cc:113 classes/tfiledia.cc:106 classes/tvedit2.cc:72
 #: classes/tvedit2.cc:104 msgbox.cc:43 msgbox.cc:223
 msgid "Cancel"
 msgstr ""
@@ -531,12 +531,11 @@ msgstr ""
 msgid "ioctl VT_SETMODE failed"
 msgstr ""
 
-#: classes/linux/linuxscr.cc:590 classes/unix/xtermscr.cc:100
+#: classes/linux/linuxscr.cc:590 classes/qnxrtp/qnxscr.cc:66
+#: classes/unix/unixscr.cc:569 classes/unix/xtermscr.cc:100
 msgid ""
-"that's an interactive application, don't redirect stdout\r\n"
-"If you want to collect information redirect stderr like this:\r\n"
-"\r\n"
-"program 2> file\r\n"
+"that's an interactive application, don't redirect stdout. If you want to "
+"collect information redirect stderr like this: program 2> file"
 msgstr ""
 
 #: classes/linux/linuxscr.cc:600
@@ -556,20 +555,11 @@ msgstr ""
 msgid "can't configure terminal mode"
 msgstr ""
 
-#: classes/linux/linuxscr.cc:806 classes/linux/linuxscr.cc:813
-#: classes/unix/xtermscr.cc:148 classes/unix/xtermscr.cc:155
+#: classes/linux/linuxscr.cc:806 classes/linux/linuxscr.cc:814
+#: classes/qnxrtp/qnxscr.cc:66 classes/unix/unixscr.cc:569
+#: classes/unix/xtermscr.cc:148 classes/unix/xtermscr.cc:156
 #, c-format
-msgid "Error! %s\r\n"
-msgstr ""
-
-#: classes/qnxrtp/qnxscr.cc:65 classes/unix/unixscr.cc:568
-msgid ""
-"\r\n"
-"Error! that's an interactive application, don't redirect stdout\r\n"
-"If you want to collect information redirect stderr like this:\r\n"
-"\r\n"
-"program 2> file\r\n"
-"\r\n"
+msgid "Error! %s"
 msgstr ""
 
 #: classes/x11/x11src.cc:2037

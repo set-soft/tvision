@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tvision 2.0.0\n"
-"PO-Revision-Date: 2003-04-18 11:11-0300\n"
+"PO-Revision-Date: 2003-04-19 11:11-0300\n"
 "Last-Translator: Salvador E. Tropea <set@ieee.org>\n"
 "Language-Team: Spanish <set@ieee.org>\n"
 "MIME-Version: 1.0\n"
@@ -123,7 +123,7 @@ msgstr "~N~ombre del directorio"
 msgid "Directory ~t~ree"
 msgstr "Arbol direc~t~orios"
 
-#: classes/tchdirdi.cc:63 classes/tcolordi.cc:107 classes/tfiledia.cc:100
+#: classes/tchdirdi.cc:63 classes/tcolordi.cc:111 classes/tfiledia.cc:100
 #: msgbox.cc:42 msgbox.cc:219
 msgid "~O~K"
 msgstr "~O~k"
@@ -148,39 +148,39 @@ msgstr "Discos"
 msgid "Invalid directory"
 msgstr "Directorio inválido"
 
-#: classes/tcolordi.cc:44
+#: classes/tcolordi.cc:45
 msgid "Colors"
 msgstr "Colores"
 
-#: classes/tcolordi.cc:57
+#: classes/tcolordi.cc:58
 msgid "~G~roup"
 msgstr "~G~rupo"
 
-#: classes/tcolordi.cc:66
+#: classes/tcolordi.cc:70
 msgid "~I~tem"
 msgstr "O~b~jeto"
 
-#: classes/tcolordi.cc:73
+#: classes/tcolordi.cc:77
 msgid "~F~oreground"
 msgstr "Prim. ~p~lano"
 
-#: classes/tcolordi.cc:83
+#: classes/tcolordi.cc:87
 msgid "~B~ackground"
 msgstr "~F~ondo"
 
-#: classes/tcolordi.cc:89
+#: classes/tcolordi.cc:93
 msgid "Text "
 msgstr "Texto "
 
-#: classes/tcolordi.cc:95
+#: classes/tcolordi.cc:99
 msgid "Color"
 msgstr "Color"
 
-#: classes/tcolordi.cc:105
+#: classes/tcolordi.cc:109
 msgid "~T~ry"
 msgstr "P~r~obar"
 
-#: classes/tcolordi.cc:109 classes/tfiledia.cc:106 classes/tvedit2.cc:72
+#: classes/tcolordi.cc:113 classes/tfiledia.cc:106 classes/tvedit2.cc:72
 #: classes/tvedit2.cc:104 msgbox.cc:43 msgbox.cc:223
 msgid "Cancel"
 msgstr "Cancela"
@@ -524,7 +524,8 @@ msgstr "¿Reemplazo aquí?"
 
 #: classes/linux/linuxkey.cc:96 classes/unix/xtermkey.cc:81
 msgid "that's an interactive application, don't redirect stdin"
-msgstr "esta es una aplicación interactiva, no redireccione la entrada estandar"
+msgstr ""
+"esta es una aplicación interactiva, no redireccione la entrada estandar"
 
 #: classes/linux/linuxkey.cc:117 classes/unix/xtermkey.cc:88
 msgid "failed to get the name of the current terminal used for input"
@@ -546,17 +547,15 @@ msgstr "no pude modificar los atributos de la terminal de entrada"
 msgid "ioctl VT_SETMODE failed"
 msgstr "la ioctl VT_SETMODE falló"
 
-#: classes/linux/linuxscr.cc:590 classes/unix/xtermscr.cc:100
+#: classes/linux/linuxscr.cc:590 classes/qnxrtp/qnxscr.cc:66
+#: classes/unix/unixscr.cc:569 classes/unix/xtermscr.cc:100
 msgid ""
-"that's an interactive application, don't redirect stdout\r\n"
-"If you want to collect information redirect stderr like this:\r\n"
-"\r\n"
-"program 2> file\r\n"
+"that's an interactive application, don't redirect stdout. If you want to "
+"collect information redirect stderr like this: program 2> file"
 msgstr ""
-"esta es una aplicación interactiva, no redireccione la salida.\r\n"
-"Si quiere colectar información redireccione la salida de error así:\r\n"
-"\r\n"
-"programa 2> archivo\r\n"
+"esta es una aplicación interactiva, no redireccione la salida. "
+"Si quiere colectar información redireccione la salida de error así: "
+"programa 2> archivo"
 
 #: classes/linux/linuxscr.cc:600
 msgid "failed to get the name of the current terminal used for output"
@@ -575,27 +574,12 @@ msgstr "no pude obtener información de la terminal de salida"
 msgid "can't configure terminal mode"
 msgstr "no pude configurar el modo de la terminal"
 
-#: classes/linux/linuxscr.cc:806 classes/linux/linuxscr.cc:813
-#: classes/unix/xtermscr.cc:148 classes/unix/xtermscr.cc:155
+#: classes/linux/linuxscr.cc:806 classes/linux/linuxscr.cc:814
+#: classes/qnxrtp/qnxscr.cc:66 classes/unix/unixscr.cc:569
+#: classes/unix/xtermscr.cc:148 classes/unix/xtermscr.cc:156
 #, c-format
-msgid "Error! %s\r\n"
-msgstr "¡Error! %s\r\n"
-
-#: classes/qnxrtp/qnxscr.cc:65 classes/unix/unixscr.cc:568
-msgid ""
-"\r\n"
-"Error! that's an interactive application, don't redirect stdout\r\n"
-"If you want to collect information redirect stderr like this:\r\n"
-"\r\n"
-"program 2> file\r\n"
-"\r\n"
-msgstr ""
-"\r\n"
-"¡Error! esta es una aplicación interactiva, no redireccione la salida.\r\n"
-"Si quiere colectar información redireccione la salida de error así:\r\n"
-"\r\n"
-"programa 2> archivo\r\n"
-"\r\n"
+msgid "Error! %s"
+msgstr "¡Error! %s"
 
 #: classes/x11/x11src.cc:2037
 msgid "No available selection"
@@ -650,6 +634,21 @@ msgstr "Confirmar"
 #: msgbox.cc:93
 msgid "Don't warn you next time"
 msgstr "No avisar la próxima vez"
+
+#~ msgid ""
+#~ "\r\n"
+#~ "Error! that's an interactive application, don't redirect stdout\r\n"
+#~ "If you want to collect information redirect stderr like this:\r\n"
+#~ "\r\n"
+#~ "program 2> file\r\n"
+#~ "\r\n"
+#~ msgstr ""
+#~ "\r\n"
+#~ "¡Error! esta es una aplicación interactiva, no redireccione la salida.\r\n"
+#~ "Si quiere colectar información redireccione la salida de error así:\r\n"
+#~ "\r\n"
+#~ "programa 2> archivo\r\n"
+#~ "\r\n"
 
 #~ msgid "~Alt-X~ Exit"
 #~ msgstr "~Alt-X~ Salir"
