@@ -26,6 +26,8 @@ files.
   All of these examples where easylly ported, read the porting.txt file to
 learn what incompatibilities I found while porting the examples.
 
+bhelp    - Implements a Borland's Help file viewer. With it you can read
+           BC++ and TC++ help files.
 clipboard- This is an example on how to write code using the TVOSClipboard
            class. It gives access to the OS clipboard in an OS independent
            way.

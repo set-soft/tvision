@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.384  2002/12/12 19:02:57  set
+* Modified: [DOS] Removed the old greek keyboard hack, the generic approach
+should work for all drivers.
+
 Revision 2.383  2002/12/12 19:01:39  set
 * Added: A generalized mechanism to interpret Alt+Non-ASCII. So now in a
 greek keyboard Alt+Chi is converted to Alt+X and in a russian keyboard
