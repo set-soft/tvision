@@ -29,6 +29,7 @@ Modified by Salvador E. Tropea to disable Alt+N stuff.
 #define Uses_TStatusItem
 #define Uses_TPalette
 #define Uses_TGKey
+#define Uses_TVOSClipboard
 #include <tv.h>
 
 #include <compatlayer.h>
@@ -85,6 +86,8 @@ TProgram::TProgram() :
 TProgram::~TProgram()
 {
     application = 0;
+    if (TVOSClipboard::destroy)
+       TVOSClipboard::destroy();
 }
 
 void TProgram::shutDown()
