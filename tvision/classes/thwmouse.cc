@@ -133,6 +133,11 @@ void THWMouse::forceEvent(int x, int y, int buttons)
 
 void THWMouse::getEvent(MouseEventType& me)
 {
+ if (!present())
+   {
+    me=TEventQueue::curMouse;
+    return;
+   }
  if (forced)
    {
     me=forcedME;
