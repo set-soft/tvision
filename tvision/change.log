@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.345  2002/10/07 15:19:01  set
+* Fixed: [Win32] X11 library path.
+
 Revision 2.344  2002/10/04 00:57:50  terrible
 * Updated: Debian packaging to version 2.0.0-1.
 
