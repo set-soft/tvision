@@ -1,4 +1,12 @@
-$Log$.
+$Log$
+Revision 2.399.2.223  2004/12/06 18:05:55  set
+* Fixed(?): XFree86 reports Ctrl+2 without any symbol (only ASCII).
+Reported by Sergio Núñez (snunez/esquemas/com).
+* Added: Detection of 64 bits pointers and macros to cast pointers into
+64 bits values. GCC 3.4.x doesn't allow to cast a pointer into an unsigned
+long long if the pointer is 32 bits wide.
+* Updated: Web page to reflect the release.
+* Modified: Version to 2.0.4
 
 --------- CVS tag r_2_0_3DOS and r_2_0_3nuDOS
 
