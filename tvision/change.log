@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.431  2003/04/25 19:43:36  set
+* Fixed: [X11] Under some situations after a resize the cursor disapear.
+Now I added an explicit enable.
+.
 Revision 2.430  2003/04/25 16:41:52  set
 * Fixed: The TSortedCollection trapped ENTER in some particular cases.
 * Fixed: X11 driver using Unicode translatio even when X11 didn't support

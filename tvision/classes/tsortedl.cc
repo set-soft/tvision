@@ -123,7 +123,10 @@ void TSortedListBox::handleEvent(TEvent& event)
                 {
                 searchPos++;
                 if( searchPos == 0 )
+                    {
                     shiftState = shiftKeys;
+                    oldPos = 0;
+                    }
                 curString[searchPos] = event.keyDown.charScan.charCode;
                 curString[searchPos+1] = EOS;
                 }
