@@ -220,6 +220,7 @@ djgpp/compress.pl
 +djgpp/distlist
 djgpp/obj/delete.me
 djgpp/tmp/delete.me
+doc/QNX.txt
 doc/X11.txt
 drivers2.cc
 dual.cc
@@ -652,7 +653,8 @@ names/nvalidat.cc
 names/nview.cc
 names/nwindow.cc
 newstr.cc
-qnxrtp/qnx6pkg/tvision-dev.qpg
+qnxrtp/tvision-dev.qpg
+qnxrtp/genpackage.sh
 readme.in
 readme.txt
 stream/sbackgro.cc

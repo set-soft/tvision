@@ -7,7 +7,7 @@
       <QPG:Build></QPG:Build>
       <QPG:FileSorting strip="yes"/>
       <QPG:Package targets="standart"/>
-      <QPG:Repository generate="yes"/>
+      <QPG:Repository generate="no"/>
       <QPG:FinalDir></QPG:FinalDir>
       <QPG:Cleanup></QPG:Cleanup>
    </QPG:Options>
@@ -18,16 +18,18 @@
       <QPG:Group></QPG:Group>
       <QPG:Team></QPG:Team>
       <QPG:Employee></QPG:Employee>
-      <QPG:EmailAddress></QPG:EmailAddress>
+      <QPG:EmailAddress>mike@malva.ua</QPG:EmailAddress>
    </QPG:Responsible>
 
    <QPG:Values>
       <QPG:Files>
-         <QPG:Add proc="x86" target="x86" permissions="0755" type="file" filetype="so" file="../linuxso/librhtv.so.2.0.0" install="/usr/lib/"/>
-         <QPG:Add proc="x86" target="x86" filetype="symlink" file="librhtv.so" install="/usr/lib/" linkto="librhtv.so.2.0.0"/>
-         <QPG:Add proc="x86" target="x86" filetype="symlink" file="librhtv.so.2" install="/usr/lib/" linkto="librhtv.so.2.0.0"/>
-         <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../linux/librhtv.a" install="/usr/lib/"/>
-         <QPG:Add proc="x86" target="x86" permissions="0644" type="tree" file="../include/" install="/usr/include/rhtvision/"/>
+         <QPG:Add proc="x86" target="x86" permissions="0755" component="dev" type="file" filetype="so" file="../linuxso/librhtv.so.2.0.0" install="/usr/lib/"/>
+         <QPG:Add proc="x86" target="x86" filetype="symlink" component="dev" file="librhtv.so" install="/usr/lib/" linkto="librhtv.so.2.0.0"/>
+         <QPG:Add proc="x86" target="x86" filetype="symlink" component="dev" file="librhtv.so.2" install="/usr/lib/" linkto="librhtv.so.2.0.0"/>
+         <QPG:Add proc="x86" target="x86" permissions="0644" component="dev" type="file" filetype="default" file="../linux/librhtv.a" install="/usr/lib/"/>
+         <QPG:Add proc="x86" target="x86" permissions="0644" component="dev" type="tree" file="../include/" install="/usr/include/rhtvision/">
+            <QPG:Rule argument="*/CVS/*" match="exclude"/>
+         </QPG:Add>
          <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../copying" install="/usr/doc/tvision-2.0.0/"/>
          <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../change.log" install="/usr/doc/tvision-2.0.0/"/>
          <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../borland.txt" install="/usr/doc/tvision-2.0.0/"/>
@@ -35,6 +37,7 @@
          <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../THANKS" install="/usr/doc/tvision-2.0.0/"/>
          <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../version.txt" install="/usr/doc/tvision-2.0.0/"/>
          <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../readme.txt" install="/usr/doc/tvision-2.0.0/"/>
+         <QPG:Add proc="x86" target="x86" permissions="0644" type="file" filetype="default" file="../examples/porting.txt" install="/usr/doc/tvision-2.0.0/"/>
       </QPG:Files>
 
       <QPG:PackageFilter>

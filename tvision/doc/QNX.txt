@@ -1,0 +1,6 @@
+Almost all characters are displayed, except for two characters with
+code 0x1B - ESC (small left arrow) - instead of this character symbol
+'-' is displayed and code 0x9B - 'cent' symbol - instead of this
+character 'c' is displayed.
+
+// Mike Gorchak.
