@@ -1,7 +1,21 @@
 #!/usr/bin/perl
-$oldv='1.0.5';
-$newv='1.0.6';
+$oldv='1.0.6';
+$newv='1.0.7';
 @files=('../readme.txt');
+
+$doBinary=0;
+foreach $i (@ARGV)
+  {
+   if ($i eq '--binary')
+     {
+      $doBinary=1;
+     }
+   else
+     {
+      print "Unknown command line option: $i\n";
+      print "Usage: compres.pl [--binary]\n\n";
+     }
+  }
 
 # Update the makefile if needed
 print 'makefile: ';
@@ -85,8 +99,11 @@ $srcdist="tv$nv".'s.zip';
 unlink($bindist,$srcdist);
 print "\nGenerating source distribution\n\n";
 system("zip -9 $srcdist \@$srcmft");
-print "\nGenerating binary distribution\n\n";
-system("zip -9 $bindist \@$binmft");
+if ($doBinary)
+  {
+   print "\nGenerating binary distribution\n\n";
+   system("zip -9 $bindist \@$binmft");
+  }
 
 chdir('contrib/tvision/djgpp');
 
