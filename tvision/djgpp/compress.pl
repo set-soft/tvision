@@ -61,6 +61,10 @@ foreach $i (@files)
      }
   }
 print "\n";
+# BC++ 5.5 Makefile
+chdir('..');
+`perl confignt.pl`;
+chdir('djgpp');
 # Patch the version number in the readme.txt
 print "Processing readme file\n";
 $r=cat('../readme.in');
