@@ -84,6 +84,7 @@ XIM       TScreenX11::xim;
 Atom      TScreenX11::theProtocols;
 ulong     TScreenX11::colorMap[16];
 XImage   *TScreenX11::ximgFont[256];    /* Our "font" is just a collection of images */
+XImage   *TScreenX11::ximgSecFont[256];
 XImage   *TScreenX11::cursorImage;
 int       TScreenX11::fg;
 int       TScreenX11::bg;
@@ -93,6 +94,9 @@ uchar     TScreenX11::curAttr;
 char     *TScreenX11::cursorData;
 volatile
 char      TScreenX11::cursorChange=0;
+XSizeHints *TScreenX11::sizeHints=NULL;
+XClassHint *TScreenX11::classHint=NULL;
+
 
 TScreenX11::~TScreenX11() {}
 
@@ -111,6 +115,15 @@ void TScreenX11::clearScreen()
    screenBuffer[c]=*((ushort *)space);
 }
 
+inline
+void TScreenX11::drawChar(unsigned x, unsigned y, uchar aChar, uchar aAttr)
+{
+ if (useSecondaryFont && (aAttr & 0x8))
+    XPutImage(disp,mainWin,gc,ximgSecFont[aChar],0,0,x,y,fontW,fontH);
+ else
+    XPutImage(disp,mainWin,gc,ximgFont[aChar],0,0,x,y,fontW,fontH);
+}
+
 void TScreenX11::setCharacter(unsigned offset, ushort value)
 {
  screenBuffer[offset]=value;
@@ -120,10 +133,12 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
  y=(offset/maxX)*fontH;
 
  uchar *theChar=(uchar *)(screenBuffer+offset);
- XSetBackground(disp,gc,colorMap[theChar[attrPos]>>4]);
- XSetForeground(disp,gc,colorMap[theChar[attrPos]&0xF]);
+ uchar newChar=theChar[charPos];
+ uchar newAttr=theChar[attrPos];
+ XSetBackground(disp,gc,colorMap[newAttr>>4]);
+ XSetForeground(disp,gc,colorMap[newAttr&0xF]);
  UnDrawCursor();
- XPutImage(disp,mainWin,gc,ximgFont[theChar[charPos]],0,0,x,y,fontW,fontH);
+ drawChar(x,y,newChar,newAttr);
  DrawCursor();
  XFlush(disp);
 }
@@ -152,7 +167,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
           XSetForeground(disp,gc,colorMap[newAttr&0xF]);
           oldAttr=newAttr;
          }
-       XPutImage(disp,mainWin,gc,ximgFont[newChar],0,0,x,y,fontW,fontH);
+       drawChar(x,y,newChar,newAttr);
       }
     x+=fontW; b+=2; sb+=2;
    }
@@ -471,8 +486,6 @@ void microAlarm(unsigned int usec)
 TScreenX11::TScreenX11()
 {
  int col;
- char *data;
- int i;
 
  maxX=80; maxY=25;
  fontW=8; fontH=16;
@@ -481,6 +494,12 @@ TScreenX11::TScreenX11()
  disp=XOpenDisplay("");
  /* If we fail just return */
  if (!disp)
+    return;
+ /* Allocate memory for these structures. Note that is safer to do it instead
+    of using a static structure because the number of fields can change. */
+ sizeHints=XAllocSizeHints();
+ classHint=XAllocClassHint();
+ if (!sizeHints || !classHint)
     return;
 
  /* Don't need special rights anymore */
@@ -501,6 +520,10 @@ TScreenX11::TScreenX11()
  TScreen::setWindowTitle=setWindowTitle;
  TScreen::getWindowTitle=getWindowTitle;
  TScreen::setDisPaletteColors=SetDisPaletteColors;
+ TScreen::getFontGeometry=GetFontGeometry;
+ TScreen::getFontGeometryRange=GetFontGeometryRange;
+ TScreen::setFont=SetFont;
+ TScreen::restoreFonts=RestoreFonts;
 
  TVX11Clipboard::Init();
  TGKeyX11::Init();
@@ -520,15 +543,7 @@ TScreenX11::TScreenX11()
  visual=DefaultVisual(disp,screen);
 
  /* Create what we'll use as font */
- for (i=0; i<256; i++)
-    {/* Load the shape */
-     data=(char *)malloc(fontH);
-     memcpy(data,DefaultFont+i*fontH,fontH);
-     /* Create a BitMap Image with this data */
-     ximgFont[i]=XCreateImage(disp,visual,1,XYBitmap,0,data,fontW,fontH,8,0);
-     /* Set the bit order */
-     ximgFont[i]->byte_order=ximgFont[i]->bitmap_bit_order=MSBFirst;
-    }
+ CreateXImageFont(0,DefaultFont,fontW,fontH);
  /* Set up the code page used for it */
  codePage=new TVCodePage(TVCodePage::ISOLatin1Linux);
 
@@ -560,23 +575,22 @@ TScreenX11::TScreenX11()
  char *s="Test";
  XStringListToTextProperty(&s,1,&name);*/
 
- XClassHint aClass;
- aClass.res_name="tvapp";   /* Take resources for tvapp */
- aClass.res_class="XTVApp"; /* X Turbo Vision Application */
+ classHint->res_name="tvapp";   /* Take resources for tvapp */
+ classHint->res_class="XTVApp"; /* X Turbo Vision Application */
 
- XSizeHints *shints=XAllocSizeHints();
- shints->flags=PResizeInc /* These are useless: |PBaseSize|PMinSize */;
+ sizeHints->flags=PResizeInc /* These are useless: |PBaseSize|PMinSize */;
  /* Fonts increments */
- shints->width_inc =fontW;
- shints->height_inc=fontH;
+ sizeHints->width_inc =fontW;
+ sizeHints->height_inc=fontH;
 
  XSetWMProperties(disp,mainWin,
-                  NULL,    /* Visible title, i.e. &name */
-                  NULL,    /* Icon title, i.e. &name */
-                  NULL,0,  /* Command line */
-                  shints,  /* Normal size hints, resize increments */
-                  NULL,    /* Window manager hints, nothing (i.e. icon) */
-                  &aClass);/* Resource name and class of window */
+                  NULL,       /* Visible title, i.e. &name */
+                  NULL,       /* Icon title, i.e. &name */
+                  NULL,0,     /* Command line */
+                  sizeHints,  /* Normal size hints, resize increments */
+                  NULL,       /* Window manager hints, nothing (i.e. icon) */
+                  classHint); /* Resource name and class of window */
+
  /* This is needed to release the memory used for the title
  XFree((char *)name.value);*/
 
@@ -643,9 +657,47 @@ TScreenX11::TScreenX11()
 
  // Setup the driver properties.
  // Our code page isn't fixed.
- // We can change the palette
+ // We can change the palette.
  // A redraw is needed after setting the palette. But currently is in the color setting.
- flags0=CanSetPalette | CanReadPalette | CodePageVar | CursorShapes /*| PalNeedsRedraw*/;
+ // We can set the fonts and even change their size.
+ flags0=CanSetPalette | CanReadPalette | CodePageVar | CursorShapes /*| PalNeedsRedraw*/ |
+        CanSetBFont | CanSetSBFont | CanSetFontSize;
+}
+
+void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h)
+{
+ char *data;
+ int i;
+ XImage **f=which ? ximgSecFont : ximgFont;
+ for (i=0; i<256; i++)
+    {/* Load the shape */
+     data=(char *)malloc(h);
+     memcpy(data,font+i*h,h);
+     /* Create a BitMap Image with this data */
+     f[i]=XCreateImage(disp,visual,1,XYBitmap,0,data,w,h,8,0);
+     /* Set the bit order */
+     f[i]->byte_order=f[i]->bitmap_bit_order=MSBFirst;
+    }
+ if (which)
+    useSecondaryFont=1;
+}
+
+void TScreenX11::DestroyXImageFont(int which)
+{
+ int i;
+
+ if (which)
+   {
+    if (useSecondaryFont)
+      {
+       for (i=0; i<256; i++)
+           XDestroyImage(ximgSecFont[i]);
+       useSecondaryFont=0;
+      }
+   }
+ else
+   for (i=0; i<256; i++)
+       XDestroyImage(ximgFont[i]);
 }
 
 int TScreenX11::setWindowTitle(const char *aName)
@@ -695,11 +747,16 @@ int TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
     memcpy(colorMap+from,newMap,sizeof(ulong)*i);
     // Force a redraw. This is not needed for 8 bpp.
     // Is just a dirty hack.
-    unsigned y,off;
-    for (y=0,off=0; y<(unsigned)maxY; y++,off+=maxX)
-        redrawBuf(0,y,maxX,off);
+    FullRedraw();
    }
  return i;
+}
+
+void TScreenX11::FullRedraw()
+{
+ unsigned y,off;
+ for (y=0,off=0; y<(unsigned)maxY; y++,off+=maxX)
+     redrawBuf(0,y,maxX,off);
 }
 
 /*****************************************************************************
@@ -718,12 +775,14 @@ void TScreenX11::UnDrawCursor()
     return;
  unsigned offset=cursorX+cursorY*maxX;
  uchar *theChar=(uchar *)(screenBuffer+offset);
- int bg=theChar[attrPos]>>4;
- int fg=theChar[attrPos] & 0xF;
+ uchar newChar=theChar[charPos];
+ uchar newAttr=theChar[attrPos];
+ int bg=newAttr>>4;
+ int fg=newAttr & 0xF;
 
  XSetBackground(disp,cursorGC,colorMap[bg]);
  XSetForeground(disp,cursorGC,colorMap[fg]);
- XPutImage(disp,mainWin,cursorGC,ximgFont[theChar[charPos]],0,0,cursorPX,cursorPY,fontW,fontH);
+ drawChar(cursorX,cursorY,newChar,newAttr);
  cursorInScreen=0;
  return;
 }
@@ -929,9 +988,10 @@ void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned col
 
  x*=fontW; y*=fontH;
  UnDrawCursor();
+ XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
  while (w--)
    {
-    XPutImage(disp,mainWin,gc,ximgFont[*str],0,0,x,y,fontW,fontH);
+    XPutImage(disp,mainWin,gc,f[*str],0,0,x,y,fontW,fontH);
     str++;
     x+=fontW;
    }
@@ -983,8 +1043,11 @@ TScreen *TV_XDriverCheck()
  return drv;
 }
 
-// This clipboard implementation is heavily based on the
-// X Windows Copy-Paste mini HOWTO by Stelios Xathakis, <axanth@tee.gr>
+/*****************************************************************************
+  X11 clipboard routines
+  This clipboard implementation is heavily based on the
+  X Windows Copy-Paste mini HOWTO by Stelios Xathakis, <axanth@tee.gr>
+*****************************************************************************/
 
 char *TVX11Clipboard::buffer=NULL;
 unsigned TVX11Clipboard::length=0;
@@ -1126,6 +1189,69 @@ void TVX11Clipboard::destroy()
     delete[] buffer;
     buffer=0;
    }
+}
+
+/*****************************************************************************
+  Fonts routines
+*****************************************************************************/
+
+int TScreenX11::GetFontGeometry(unsigned &w, unsigned &h)
+{
+ w=fontW;
+ h=fontH;
+ return 1;
+}
+
+int TScreenX11::GetFontGeometryRange(unsigned &wmin, unsigned &hmin,
+                                     unsigned &wmax, unsigned &hmax)
+{
+ wmin=wmax=hmin=8;
+ hmax=20;
+ return 1;
+}
+
+int TScreenX11::SetFont(int which, TScreenFont256 *font, int encoding)
+{
+ // Check if that's just a call to disable the secondary font
+ if (which && !font)
+   {
+    DestroyXImageFont(which);
+    return 1;
+   }
+
+ if (font->w!=8 || font->h<8 || font->h>20)
+    return 0;
+
+ if (font->w!=fontW || font->h!=fontH)
+   {
+    if (which) // The secondary font must be of the same size as the primary
+       return 0;
+    unsigned start=100*cShapeFrom/fontH;
+    unsigned end  =100*cShapeTo/fontH;
+    fontW=font->w;
+    fontH=font->h;
+    /* Change the cursor shape */
+    SetCursorShape(start,end);
+    /* Inform the WM about this change*/
+    sizeHints->width_inc =fontW;
+    sizeHints->height_inc=fontH;
+    XSetWMNormalHints(disp,mainWin,sizeHints);
+    /* Change the size */
+    XResizeWindow(disp,mainWin,maxX*fontW,maxY*fontH);
+   }
+ DestroyXImageFont(which);
+ CreateXImageFont(which,font->data,font->w,font->h);
+ if (encoding!=-1)
+    TVCodePage::SetCodePage(encoding);
+ FullRedraw();
+ return 1;
+}
+
+void TScreenX11::RestoreFonts()
+{
+ TScreenFont256 font={8,16,DefaultFont};
+ SetFont(0,&font,TVCodePage::ISOLatin1Linux);
+ disableSecondaryFont();
 }
 #else
 

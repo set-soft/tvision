@@ -37,6 +37,7 @@ ushort  *TScreen::screenBuffer=NULL;
 char     TScreen::suspended=1;
 char     TScreen::initialized=0;
 char     TScreen::initCalled=0;
+char     TScreen::useSecondaryFont=0;
 uint32   TScreen::flags0=0;
 TScreen *TScreen::driver=NULL;
 const char
@@ -63,6 +64,14 @@ void   (*TScreen::setCharacters)(unsigned offset, ushort *values, unsigned count
                                                 =TScreen::defaultSetCharacters;
 int    (*TScreen::System)(const char *command, pid_t *pidChild)
                                                 =TScreen::defaultSystem;
+int    (*TScreen::getFontGeometry)(unsigned &w, unsigned &h)
+                                                =TScreen::defaultGetFontGeometry;
+int    (*TScreen::getFontGeometryRange)(unsigned &wmin, unsigned &hmin,
+                                       unsigned &umax, unsigned &hmax)
+                                                =TScreen::defaultGetFontGeometryRange;
+int    (*TScreen::setFont)(int which, TScreenFont256 *font, int encoding)
+                                                =TScreen::defaultSetFont;
+void   (*TScreen::restoreFonts)()               =TScreen::defaultRestoreFonts;
 
 /*****************************************************************************
   Default behaviors for the members
@@ -129,6 +138,12 @@ int TScreen::defaultSystem(const char *command, pid_t *pidChild)
     *pidChild=0;
  return system(command);
 }
+
+int  TScreen::defaultGetFontGeometry(unsigned &, unsigned &) { return 0; }
+int  TScreen::defaultGetFontGeometryRange(unsigned &, unsigned &,
+                                          unsigned &, unsigned &) { return 0; }
+int  TScreen::defaultSetFont(int , TScreenFont256 *, int) { return 0; }
+void TScreen::defaultRestoreFonts() {}
 
 /*****************************************************************************
   Real members
@@ -293,4 +308,5 @@ Boolean TScreen::optSearch(const char *variable, long &val)
 {
  return TVMainConfigFile::Search(currentDriverShortName,variable,val);
 }
+
 

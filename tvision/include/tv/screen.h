@@ -31,10 +31,16 @@ public:
 };
 
 // Components are 0-255
-typedef struct
+struct TScreenColor
 {
  uchar R,G,B,Alpha;
-} TScreenColor;
+};
+
+struct TScreenFont256
+{
+ unsigned w,h;
+ uchar *data;
+};
 
 /**[txh]********************************************************************
 
@@ -242,24 +248,42 @@ public:
  // SET: executes the indicated command
  static int    (*System)(const char *command, pid_t *pidChild=0);
  // Palette handling, they call the TDisplay members
- static void   getPaletteColors(int from, int number, TScreenColor *colors);
- static void   setPaletteColors(int from, int number, TScreenColor *colors);
- static void   resetPalette(); // Sets the original palette
+ static void     getPaletteColors(int from, int number, TScreenColor *colors);
+ static void     setPaletteColors(int from, int number, TScreenColor *colors);
+ static void     resetPalette(); // Sets the original palette
+ // Font handling
+ // These funtions can fail and only drivers with CanSetFontSize should
+ // implement theme. The rest uses defaults that ever fails.
+ static int    (*getFontGeometry)(unsigned &w, unsigned &h);
+ static int    (*getFontGeometryRange)(unsigned &wmin, unsigned &hmin,
+                                       unsigned &umax, unsigned &hmax);
+ // The following are implemented only if CanSetBFont and/or CanSetSBFont
+ // are set.
+ static int      setPrimaryFont(TScreenFont256 *font, int encoding=-1)
+                   { return setFont(0,font,encoding); };
+ static int      setSecondaryFont(TScreenFont256 *font) { return setFont(1,font); };
+ static void   (*restoreFonts)();
+ // Helpers:
+ static int      disableSecondaryFont() { return setSecondaryFont(NULL); };
+ static Boolean  isSecondaryFontEnabled() { return useSecondaryFont ? True : False; };
  // It looks for a configuration variable that belongs to the current driver
- static Boolean optSearch(const char *variable, long &val);
+ static Boolean  optSearch(const char *variable, long &val);
 
  // SET: flags capabilities flags
  enum Capabilities1
  {
   CodePageVar=1,
-  CanSetPalette=2,  // We can change colors
-  CanReadPalette=4, // We have reliable information about the original colors.
-                    // If this value isn't present the user can set the palette,
-                    // but the original colors want be restored at exit. We will
-                    // try to let them as default for the used display.
-  PalNeedsRedraw=8, // Indicates we must redraw after changing the palette.
-  CursorShapes=16,  // When the cursor shape is usable.
-  UseScreenSaver=32 // Does screen saver have any sense for this driver?
+  CanSetPalette=2,   // We can change colors
+  CanReadPalette=4,  // We have reliable information about the original colors.
+                     // If this value isn't present the user can set the palette,
+                     // but the original colors want be restored at exit. We will
+                     // try to let them as default for the used display.
+  PalNeedsRedraw=8,  // Indicates we must redraw after changing the palette.
+  CursorShapes=16,   // When the cursor shape is usable.
+  UseScreenSaver=32, // Does screen saver have any sense for this driver?
+  CanSetBFont=64,    // We can set the primary bitmap font
+  CanSetSBFont=128,  // We can set the secondary bitmap font
+  CanSetFontSize=256 // We can set the width and height of the font
  };
 
  // Used internally to avoid nested calls to suspend/resume
@@ -269,17 +293,26 @@ public:
 
  // SET: It says if we should offer the user to select the code page
  // or the terminal have a fixed encoding and needs things as is.
- static Boolean codePageVariable() { return flags0 & CodePageVar ? True : False; };
- static Boolean canSetPalette()    { return flags0 & CanSetPalette ? True : False; };
+ static Boolean codePageVariable() { return flags0 & CodePageVar    ? True : False; };
+ static Boolean canSetPalette()    { return flags0 & CanSetPalette  ? True : False; };
  static Boolean canReadPalette()   { return flags0 & CanReadPalette ? True : False; };
  static Boolean palNeedsRedraw()   { return flags0 & PalNeedsRedraw ? True : False; };
- static Boolean cursorShapes()     { return flags0 & CursorShapes ? True : False; };
+ static Boolean cursorShapes()     { return flags0 & CursorShapes   ? True : False; };
  static Boolean useScreenSaver()   { return flags0 & UseScreenSaver ? True : False; };
+ static Boolean canSetBFont()      { return flags0 & CanSetBFont    ? True : False; };
+ static Boolean canSetSBFont()     { return flags0 & CanSetSBFont   ? True : False; };
+ static Boolean canSetFontSize()   { return flags0 & CanSetFontSize ? True : False; };
 
 protected:
  // SET: Capabilities flags
  static uint32 flags0;
  static const char *currentDriverShortName;
+ // Indicates if we must use the secondary font for the higher foreground
+ // colors.
+ static char      useSecondaryFont;
+
+ // That's the real function to set the fonts
+ static int  (*setFont)(int which, TScreenFont256 *font, int encoding=-1);
 
  // SET: Default behaviors:
  static void   defaultSetVideoMode(ushort mode);
@@ -292,6 +325,11 @@ protected:
  static void   defaultSetCharacter(unsigned offset, ushort value);
  static void   defaultSetCharacters(unsigned offset, ushort *values, unsigned count);
  static int    defaultSystem(const char *command, pid_t *pidChild);
+ static int    defaultGetFontGeometry(unsigned &w, unsigned &h);
+ static int    defaultGetFontGeometryRange(unsigned &wmin, unsigned &hmin,
+                                           unsigned &umax, unsigned &hmax);
+ static int    defaultSetFont(int which, TScreenFont256 *font, int encoding=-1);
+ static void   defaultRestoreFonts();
 
  // The following members are used to implement a tricky initialization
  // process.

@@ -44,6 +44,7 @@ dlgdsn   - That's a dialog design/code generator by Warlei Alves. I included
            some details.
 dyntxt   - Implements a StaticText with getData/setData member to make it
            "non-static".
+fonts    - Here you can see how to set and restore the fonts.
 inplis   - That's interesting. It implements a class with pairs label/data
            and allows the modification and browse of the data in a scrollabel
            list.
