@@ -1,4 +1,8 @@
 $Log$.
+--------------------------- 2.0.1 Release Candidate 1 ----------------------
+Revision 2.387  2002/12/16 13:30:05  set
+* Fixed: Extra .mak file in files list.
+
 Revision 2.386  2002/12/14 22:57:31  terrible
 * Updated: Debian packaging to version 2.0.1-0.2.
 
@@ -210,6 +214,7 @@ Revision 2.347  2002/10/08 20:40:23  set
 Revision 2.346  2002/10/07 20:02:37  set
 * Modified: Release details in the web pages.
 
+----------------------------- 2.0.0 Release ------------------------------
 Revision 2.345  2002/10/07 15:19:01  set
 * Fixed: [Win32] X11 library path.
 

@@ -42,6 +42,17 @@
   In XFree86:
   Mod4Mask is for the Windows key.
 */
+#if X_HAVE_UTF8_STRING
+ // XFree86 4.0.2 introduced a very nice function to retreive a key using
+ // Unicode.
+ #define XimLookupString  Xutf8LookupString
+ #define UTF8_2_Symbol(a) utf8_2_u16(a)
+ #define Unicode_2_CP(a)  Unicode2CP(a)
+#else
+ #define XimLookupString XmbLookupString
+ #define UTF8_2_Symbol(a) a[0]
+ #define Unicode_2_CP(a)  (a)
+#endif
 
 /*****************************************************************************
 
@@ -74,7 +85,7 @@ uint16 utf8_2_u16(const char *b)
     while (c & (0x80>>n))
       n++;
 
-    c&=(1<<(8-n))-1;
+    c&=?(1<<(8-n))-1;
 
     while (--n>0)
       {
@@ -114,7 +125,7 @@ int TGKeyX11::getKeyEvent(int block)
       {
        //printf("Key event 0x%04X Keysym: 0x%08X\n",event.xkey.state,XLookupKeysym(&event.xkey,3));
        // Ask for the UTF-8 character, better for future applications
-       lenKb=Xutf8LookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
+       lenKb=XimLookupString(TScreenX11::xic,&event.xkey,bufferKb,MaxKbLen,&Key,&status);
        bufferKb[lenKb]=0;
        //printf("Key event %d %s 0x%04X %d\n",lenKb,bufferKb,(unsigned)Key,bufferKb[0]);
        /* FIXME: how can I know the state before entering the application? */
@@ -322,7 +333,7 @@ ushort TGKeyX11::GKey()
    }
  else if (lenKb!=0)
    {/* A key by their ASCII */
-    Symbol=utf8_2_u16(bufferKb);
+    Symbol=UTF8_2_Symbol(bufferKb);
     if (Symbol==0 && Key==' ')
        name=kbSpace; // Why Ctrl+Space reports it? is my X?
     else
