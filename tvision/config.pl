@@ -310,6 +310,14 @@ elsif ($i=~'--real-prefix=(.*)')
       {
        $JustSpec=1;
       }
+    elsif ($i eq '--with-pthread')
+      {
+       $conf{'try-pthread'}='yes';
+      }
+    elsif ($i eq '--without-pthread')
+      {
+       $conf{'try-pthread'}='no';
+      }
     else
       {
        ShowHelp();
@@ -346,6 +354,8 @@ sub ShowHelp
  print "--without-mss   : compiles without MSS [default].\n";
  print "--with-ssc      : compiles using Simple Streams Compatibility.\n";
  print "--without-ssc   : compiles without SSC [default].\n";
+ print "--with-pthread  : uses pthread for X11 driver.\n";
+ print "--without-pthread: avoids pthread for X11 driver [default].\n";
  
  print "\nOthers:\n";
  print "--enable-maintainer-mode:\n";
@@ -820,6 +830,12 @@ sub LookForRecode
 sub LookForPThread
 {
  my $test;
+
+ if ($conf{'try-pthread'} ne 'yes')
+   {
+    $conf{'HAVE_LINUX_PTHREAD'}='no';
+    return;
+   }
 
  print 'Looking for pthread (LinuxThreads) library: ';
  if (@conf{'HAVE_LINUX_PTHREAD'})
