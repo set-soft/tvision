@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.358  2002/11/26 12:53:29  set
+* Changed version to 2.0.1 to make a maintainance release during the next
+weeks.
+* Modified: [WWW] version and history.
+
 Revision 2.357  2002/11/26 12:52:50  set
 * Added: The new X11 cyrillic example to the readme and the makefile.
 
