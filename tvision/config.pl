@@ -616,7 +616,7 @@ sub GenerateMakefile
  $rep.="\trm -f djgpp/obj/*.o\n";
  $rep.="\trm -f intl/dummy/*.o\n";
  $rep.="\trm -f intl/dummy/*.a\n";
- $rep.="\texamples/clean\n";
+ $rep.="\t-examples/clean\n";
  $text=~s/\@clean\@/$rep/g;
 
  replace('Makefile',$text);
