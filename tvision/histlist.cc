@@ -37,10 +37,14 @@ void *HistRec::operator new( size_t, HistRec *hr )
     return hr;
 }
 
-void *HistRec::operator new( size_t )
+#ifdef __GNUC__
+#define NEVER_RETURNS __attribute__((noreturn))
+#else
+#endif
+
+void NEVER_RETURNS *HistRec::operator new( size_t )
 {
     abort();
-    return 0;
 }
 
 inline HistRec::HistRec( uchar nId, const char *nStr ) :
