@@ -1,4 +1,12 @@
 $Log$
+Revision 1.182  2001/09/01 22:37:28  set
+* Added: A new parameter for TV_System: pid_t *pidChild=0 if this parameter
+is passed and the OS supports it and we implemented it (read: only for
+Linux right now ;-) system creates a child process and calls exec with the
+provided command. As a result the command starts to run in background. The
+pidChild pointer is filled with the pid of the child. Right now all is too
+POSIX and I hope I will be able to generalize it for other systems.
+
 Revision 1.181  2001/08/31 19:36:56  set
 * Modified: Now if the terminal have fixed encoding the scroll bars uses
 the original chars. That's because we can't trust in any redefined value.
