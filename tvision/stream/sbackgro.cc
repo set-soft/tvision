@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TStreamableClass
 #define Uses_TBackground
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RBackground( TBackground::name,
                               __DELTA(TBackground)
                             );
 
+#endif

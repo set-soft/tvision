@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TFileCollection
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -7,3 +9,4 @@ TStreamableClass RFileCollection( TFileCollection::name,
                                   __DELTA(TFileCollection)
                                 );
 
+#endif

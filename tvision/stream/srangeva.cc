@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TStreamableClass
 #define Uses_TRangeValidator
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RRangeValidator( TRangeValidator::name,
                          __DELTA(TRangeValidator)
                        );
 
+#endif

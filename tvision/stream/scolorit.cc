@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TColorItemList
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RColorItemList( TColorItemList::name,
                                  __DELTA(TColorItemList)
                                );
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TLabel
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RLabel( TLabel::name,
                          __DELTA(TLabel)
                        );
 
+#endif

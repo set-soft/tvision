@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TWindow
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -9,3 +11,4 @@ TStreamableClass RWindow( TWindow::name,
                           __DELTA(TWindow)
                         );
 
+#endif

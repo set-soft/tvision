@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TScrollBar
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RScrollBar( TScrollBar::name,
                               __DELTA(TScrollBar)
                            );
 
+#endif

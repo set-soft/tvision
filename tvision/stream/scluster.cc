@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TStreamableClass
 #define Uses_TCluster
 #include <tv.h>
@@ -9,3 +11,4 @@ TStreamableClass RCluster( TCluster::name,
                            __DELTA(TCluster)
                          );
 
+#endif

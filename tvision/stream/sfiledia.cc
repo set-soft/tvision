@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TFileDialog
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -10,3 +12,4 @@ TStreamableClass RFileDialog( TFileDialog::name,
                               __DELTA(TFileDialog)
                             );
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TListBox
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RListBox( TListBox::name,
                            __DELTA(TListBox)
                          );
 
+#endif
