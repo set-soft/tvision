@@ -171,7 +171,7 @@ TScreenDOS::TScreenDOS()
  char *ext=optSearch("ExtProgVideoMode");
  if (optSearch("VideoMode",aux))
    {// if frCB installed it will use the application font
-    setCtrMode(aux);
+    setCrtMode((ushort)aux);
    }
  else if (ext)
    {

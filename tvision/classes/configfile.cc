@@ -727,7 +727,7 @@ char *TVMainConfigFile::Search(const char *key)
 
 char *TVMainConfigFile::Search(const char *section, const char *variable)
 {
- if (!config || !section || !variable) return False;
+ if (!config || !section || !variable) return NULL;
  AllocLocalStr(b,strlen(section)+strlen(variable)+5);
  strcpy(b,"TV/");
  strcat(b,section);
