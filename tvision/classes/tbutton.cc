@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Added callback, code page stuff and various details by Salvador Eduardo Tropea.
+Added new class TButtonRef by Salvador Eduardo Tropea.
 
  *
  *
@@ -337,6 +338,30 @@ void *TButton::read( ipstream& is )
 TStreamable *TButton::build()
 {
     return new TButton( streamableInit );
+}
+
+
+/**[txh]********************************************************************
+
+  Description:
+  This class is just like TButton but the title of the button is a reference
+and not a copy of the one passed by the user. It allows changes from the
+application side to be reflected in the button with a simple redraw. That's
+*very* useful for remappings.
+  
+***************************************************************************/
+
+TButtonRef::TButtonRef(const TRect& bounds, const char *aTitle,
+                       ushort aCommand, ushort aFlags) :
+  TButton(bounds,aTitle,aCommand,aFlags)
+{
+ DeleteArray((char *)title);
+ title=aTitle;
+}
+
+TButtonRef::~TButtonRef()
+{
+ title=NULL;
 }
 
 #endif // NO_STREAM

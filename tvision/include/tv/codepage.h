@@ -65,7 +65,10 @@ public:
  static void    CreateCPFromUnicode(CodePage *cp, int id, const char *name,
                                     ushort *unicodes);
  static ccIndex AddCodePage(CodePage *cp);
- static void    GetCodePages(int &idScr, int &idApp);
+ static void    GetCodePages(int &idScr, int &idApp)
+                { idApp=curAppCP; idScr=curScrCP; }
+ static void    GetDefaultCodePages(int &idScr, int &idApp)
+                { idApp=defAppCP; idScr=defScrCP; }
 
  // Arbitrary names for the supported code pages
  // Just to avoid using the magics, look in codepage.cc for more information
@@ -92,10 +95,13 @@ protected:
  static void      FillTables(int id);
  static void      CreateOnTheFlyRemap(int idApp, int idScr);
  static void      CreateCodePagesCol();
+ static void      ChangeDefaultCodePages(int idScr, int idApp)
+                  { defAppCP=idApp; defScrCP=idScr; }
 
  static TVCodePageCol *CodePages;
  static ushort CPTable[257];
  static int    curAppCP,curScrCP;
+ static int    defAppCP,defScrCP;
  static uchar  toUpperTable[256];
  static uchar  toLowerTable[256];
  static uchar  AlphaTable[256];
@@ -160,6 +166,8 @@ protected:
  static ushort tbISOIR147[];
  static ushort tbISOIR146[];
  static uchar  High32FramesSwap[];
+
+ friend class TScreen;
 };
 
 #endif

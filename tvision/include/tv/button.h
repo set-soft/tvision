@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Added callback, code page stuff and various details by Salvador Eduardo Tropea.
+Added new class TButtonRef by Salvador Eduardo Tropea.
 
  *
  *
@@ -103,6 +104,19 @@ inline opstream& operator << ( opstream& os, TButton& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TButton* cl )
     { return os << (TStreamable *)cl; }
+
+// Note: you can't stream this class. Wait until I create relative code page
+// TViews for international buttons.
+class TButtonRef : public TButton
+{
+public:
+    TButtonRef( const TRect& bounds,
+                const char *aTitle,
+                ushort aCommand,
+                ushort aFlags
+              );
+    ~TButtonRef();
+};
 
 #endif  // Uses_TButton
 

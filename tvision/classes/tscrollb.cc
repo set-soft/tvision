@@ -63,9 +63,10 @@ void TScrollBar::drawPos( int pos )
     char *aChars;
 
     // SET: If we can't remap characters use the originals
-    if (TScreen::codePageVariable())
+    /*if (TScreen::codePageVariable())
        aChars=chars;
-    else
+    else*/
+       // Unless somebody really needs the old behavior I'll just use it.
        aChars=size.x==1 ? vChars : hChars;
 
     int s = getSize() - 1;

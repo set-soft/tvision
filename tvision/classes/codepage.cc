@@ -88,6 +88,9 @@ char           TVCodePage::NeedsOnTheFlyRemap=0;
 int            TVCodePage::curAppCP=437;
 //  We assume the screen is also CP 437, if it isn't true the driver will inform it.
 int            TVCodePage::curScrCP=437;
+// Default values suggested by the current driver
+int            TVCodePage::defAppCP=437;
+int            TVCodePage::defScrCP=437;
 // User provided function to call each time we change the code page.
 // This is called before sending a broadcast.
 void         (*TVCodePage::UserHook)(ushort *map)=NULL;
@@ -1246,7 +1249,9 @@ TVCodePage::TVCodePage(int idApp, int idScr)
     CreateCodePagesCol();
  FillTables(idApp);
  CreateOnTheFlyRemap(idApp,idScr);
+ defScrCP=idScr;
  curScrCP=idScr;
+ defAppCP=idApp;
  if (idApp!=curAppCP)
    {
     curAppCP=idApp;
@@ -1265,9 +1270,11 @@ void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
  NeedsOnTheFlyRemap=1;
 
  unsigned i;
- // Table to convert a value into an internal code
+ // Table to convert a value into an internal code.
+ // That's what we need.
  ushort *toCode=GetTranslate(idApp),*aux;
- // Table to convert an internal value into a 0-255 value
+ // Table to convert an internal value into a 0-255 value.
+ // That's what we have. If something is missing we will remap to a similar.
  uchar *fromCode=new uchar[maxSymbolDefined];
  memset(fromCode,0,maxSymbolDefined*sizeof(uchar));
  CodePage *destCP=CodePageOfID(idScr);
@@ -1301,7 +1308,7 @@ void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
         else
            val=Similar2[val-256];
        }
-     fromCode[toCode[i]]=val;
+     fromCode[toCode[i]]=fromCode[val];
     }
 
  for (i=0; i<256; i++)
@@ -1441,7 +1448,7 @@ check of range is done.
 int TVCodePage::IndexToID(ccIndex index)
 {
  if (!CodePages) return 0;
- CodePage *p=CodePageOfID(index);
+ CodePage *p=(CodePage *)(CodePages->at(index));
  return p->id;
 }
 
@@ -1628,7 +1635,7 @@ void TVCodePage::RemapBufferGeneric(int sourID, int destID, uchar *buffer, unsig
         else
            val=Similar2[val-256];
        }
-     fromCode[toCode[i]]=val;
+     fromCode[toCode[i]]=fromCode[val];
     }
 
  // Ok, now do it!
@@ -2454,9 +2461,4 @@ ccIndex TVCodePage::AddCodePage(CodePage *cp)
  return CodePages->insert(cp);
 }
 
-void TVCodePage::GetCodePages(int &idApp, int &idScr)
-{
- idApp=curAppCP;
- idScr=curScrCP;
-}
 
