@@ -157,6 +157,7 @@ sub LookForPrefix
  if ($prefix)
    {
     print "$prefix (cached/specified)\n";
+    LookIfFHS();
     return;
    }
  $prefix=@ENV{'prefix'};
@@ -168,6 +169,7 @@ sub LookForPrefix
    {
     print "$prefix (environment)\n";
     @conf{'prefix'}=$prefix;
+    LookIfFHS();
     return;
    }
  if ($OS eq 'linux')
@@ -187,8 +189,30 @@ sub LookForPrefix
    }
  @conf{'prefix'}=$prefix;
  print "$prefix\n";
+ LookIfFHS();
 }
 
+sub LookIfFHS
+{
+ if ($OS eq 'linux')
+   {
+    print 'Checking if this system follows the FHS: ';
+    if ($conf{'fhs'})
+      {
+       print "$conf{'fhs'} (cached/specified)\n";
+       return;
+      }
+    if (-d '/usr/share/doc')
+      {
+       $conf{'fhs'}='yes';
+      }
+    else
+      {
+       $conf{'fhs'}='no';
+      }
+    print "$conf{'fhs'}\n";
+   }
+}
 
 ###[txh]####################################################################
 #

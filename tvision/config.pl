@@ -71,26 +71,27 @@ sub SeeCommandLine
        ShowHelp();
        die "\n";
       }
-    else {
-    if ($i=~'--prefix=(.*)')
+    elsif ($i=~'--prefix=(.*)')
       {
        $conf{'prefix'}=$1;
       }
-    else {
-    if ($i eq '--no-intl')
+    elsif ($i eq '--no-intl')
       {
        $conf{'no-intl'}='yes';
       }
-    else
-#    if ($i=~'--cflags=(.*)')
+#    elsif ($i=~'--cflags=(.*)')
 #      {
 #       @conf{'CFLAGS'}=$1;
 #      }
-#    else
+    elsif ($i eq '--fhs')
+      {
+       $conf{'fhs'}='yes';
+      }
+    else
       {
        ShowHelp();
        die "Unknown option: $i\n";
-      }}}
+      }
    }
 }
 
@@ -100,6 +101,7 @@ sub ShowHelp
  print "--help         : displays this text.\n";
  print "--prefix=path  : defines the base directory for installation.\n";
  print "--no-intl      : don't use international support.\n";
+ print "--fhs          : force the FHS layout under UNIX.\n";
 }
 
 sub GiveAdvice
@@ -320,6 +322,8 @@ sub GenerateMakefile
  # Write install stuff
  $rep= "install -d -m 0755 \$(prefix)/include/rhtvision\n";
  $rep.="\tinstall -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
+ # This should be created if the target is a new directory
+ $rep.="\tinstall -d -m 0755 \$(libdir)\n";
  $rep.="\tinstall -m 0755 $makeDir/librhtv.a \$(libdir)\n";
  if ($OS eq 'linux')
    {
