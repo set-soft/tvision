@@ -1,4 +1,9 @@
 $Log$
+Revision 1.31  1999/04/01 01:28:52  set
+* Fixed: Now you can set a VESA video mode using void TDisplay::setCrtMode.
+It wasn't possible before because it ever used service 0, now if the mode is
+greater than 0x100 I use VBE.
+.
 Revision 1.30  1999/03/24 23:03:38  root
 * Incorporated the 1.0.3-6 Debian package diffs.
 * Fixed: Problem with dependencies of the .so library (by Ivan).

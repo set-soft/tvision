@@ -232,6 +232,9 @@ examples/tcombo/test.cpp
 -examples/tcombo/test.gpr
 examples/tcombo/tsinputl.cpp
 examples/tcombo/tsinputl.h
+examples/terminal/rhide.env
+examples/terminal/terminal.cc
+examples/terminal/test.gpr
 examples/tprogb/calc.cpp
 examples/tprogb/rhide.env
 -examples/tprogb/test.gpr
