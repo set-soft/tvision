@@ -283,11 +283,11 @@ GET_HOME=$(HOME)
 CLEAN_FILES=$(MAIN_TARGET) $(OBJFILES)
 RHIDE_GCC=gcc
 RHIDE_AS=$(RHIDE_GCC)
-RHIDE_GXX=$(RHIDE_GCC)
+RHIDE_GXX=gcc
 RHIDE_GPC=gpc
 RHIDE_FPC=ppc386
 RHIDE_AR=ar
-RHIDE_LD=$(RHIDE_GCC)
+RHIDE_LD=gcc
 RHIDE_G77=g77
 RHIDE_NASM=nasm
 RHIDE_LD_PASCAL=gpc
@@ -833,16 +833,22 @@ DEPS_12=fileview.cc ../include/compatlayer.h ../include/tv.h\
 obj/fileview.o:: $(DEPS_12)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_13=fontcoll.cc ../include/compatlayer.h ../include/tv.h\
-	../include/tv/codepage.h ../include/tv/configtv.h\
-	../include/tv/fontcoll.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/no_mss.h\
-	../include/tv/nscoll.h ../include/tv/object.h\
-	../include/tv/opstream.h ../include/tv/pstream.h\
-	../include/tv/stddlg.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/views.h\
-	../include/tv/yes_mss.h
+	../include/tv/codepage.h ../include/tv/collectn.h\
+	../include/tv/configtv.h ../include/tv/dialogs.h\
+	../include/tv/drawbuf.h ../include/tv/fontcoll.h\
+	../include/tv/intl.h ../include/tv/ipstream.h\
+	../include/tv/listbox.h ../include/tv/lstviewr.h\
+	../include/tv/no_mss.h ../include/tv/nscoll.h\
+	../include/tv/nssorcol.h ../include/tv/object.h\
+	../include/tv/objects.h ../include/tv/opstream.h\
+	../include/tv/point.h ../include/tv/pstream.h\
+	../include/tv/resource.h ../include/tv/sortcoll.h\
+	../include/tv/sortlibo.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/strncoll.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
+	../include/tv/views.h ../include/tv/yes_mss.h
 obj/fontcoll.o:: $(DEPS_13)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_14=fpbase.cc ../include/compatlayer.h ../include/tv.h\
