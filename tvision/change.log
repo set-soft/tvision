@@ -1,4 +1,13 @@
 $Log$
+Revision 1.93  1999/08/16 14:51:50  set
+* Added: As the VGA Save State BIOS call is amazingly buggy in a lot of video
+boards (Matrox in particular) I added a version of this service but made with
+low level in/out commands. Is relative complex to enable right now but will
+be easier in the future if I find it really solves the problems. Anders Blom
+<anders.blom@mbox322.swipnet.se> helped a lot testing it in your Matrox board
+and now also Nate Eldredge <nate@cartsys.com> is testing some of the
+routines.
+.
 Revision 1.92  1999/08/14 02:13:32  set
 * Applied 8 more patches from Laurynas Biveinis <lauras@softhome.net>:
 * Fixed: unnecesarry stack usage in drivers2.cc
