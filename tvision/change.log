@@ -1,4 +1,11 @@
 $Log$
+Revision 1.37  1999/04/27 22:34:24  set
+* Ported the TParamText class from TV 2.0. The old version seems to be from
+1.03 and wasn't portable, in fact it failed to even compile under Alpha
+Linux. I added some check to avoid a buffer overflow, something that the
+original library never did. I also adapted the getText member for our port
+that uses an extra parameter (again to avoid buffer overflows).
+.
 -----------------------------------------------------------------------------
 v1.0.5 released. Sources uploaded to DJ's server and my home page. Linux
 sources uploaded to my home page. Sources sent to www.linux.org.ar (DanX).

@@ -46,7 +46,7 @@ int timeout_wakeup,timer_value;
 int vcs_fd=-1;          /* virtual console system descriptor */
 int tty_fd=-1; /* tty descriptor */
 /* can I access the MDA ports ? */
-int port_access;
+int port_access=0;
 FILE *tty_file;
 unsigned short *mono_mem = NULL; /* mmapped mono video mem */
 int mono_mem_desc=-1;
@@ -408,6 +408,11 @@ void RestoreScreen();
 void ScreenUpdate();
 extern ushort user_mode;
 
+// SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't
+// think it have much sense in non-Intel PCs. In fact looks like it gives
+// some problems when compiling for Alpha (__alpha__).
+
+#ifdef __i386__
 #include <asm/io.h>
 
 static inline
@@ -423,6 +428,7 @@ void O(unsigned char i,unsigned char b)
   outb(i,0x3b4);
   outb(b,0x3b5);
 }
+#endif
 
 void TScreen::GetCursor(int &x,int &y)
 {
@@ -437,6 +443,7 @@ void TScreen::GetCursor(int &x,int &y)
 
 void TScreen::SetCursor(int x,int y)
 {
+ #ifdef __i386__
   if (dual_display || screenMode == 7)
   {
     unsigned short loc = y*80+x;
@@ -444,6 +451,7 @@ void TScreen::SetCursor(int x,int y)
     O(0x0f,loc & 0xff);
   }
   else
+ #endif
   {
     TDisplay::SetCursor(x,y);
   }
@@ -544,6 +552,7 @@ TScreen::TScreen()
     }
   }
 
+  #ifdef __i386__
   port_access = !ioperm(0x3b4, 7, 1);
   if (port_access)
   {
@@ -559,6 +568,7 @@ TScreen::TScreen()
       }
     }
   }
+  #endif
 
   
   /* Don't need special rights anymore */
@@ -710,6 +720,7 @@ void TScreen::setVideoMode( char *mode )
 
 void TScreen::setCursorType(ushort ct)
 {
+ #ifdef __i386__
   if (dual_display || screenMode == 7)
   {
     if (ct == 0x2000) // cursor off
@@ -724,11 +735,13 @@ void TScreen::setCursorType(ushort ct)
     }
   }
   else
+ #endif
     TDisplay::setCursorType(ct);
 }
 
 ushort TScreen::getCursorType()
 {
+ #ifdef __i386__
   if (dual_display || screenMode == 7)
   {
     unsigned short ct;
@@ -737,6 +750,7 @@ ushort TScreen::getCursorType()
     return ct;
   }
   else
+ #endif
     return TDisplay::getCursorType();
 }
 
