@@ -785,6 +785,16 @@ sub DetectOS
     $defaultCXX='qcc -Y_gpp';
     $supportDir='linux';
    }
+ elsif ($os=~/Darwin/)
+   {
+    $OS='UNIX';
+    $OSf='Darwin';
+    $Compf='';
+    $stdcxx='-lstdc++';
+    $defaultCXX='c++';
+    $supportDir='linux';
+    $conf{'GCC'}='cc';
+   }
  else
    {
     die('Unknown OS, you must do things by yourself');

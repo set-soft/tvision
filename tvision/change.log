@@ -1,7 +1,10 @@
 $Log$
+Revision 2.297  2002/09/11 16:46:24  terrible
+* Fixed: XOpenDisplay should receive NULL instead of "".
+
 Revision 2.296  2002/09/11 16:20:13  set
 * Fixed: TCommandSet handles 32 bits values but defined them as "unsigned
-long", they are 64 bits in PPC machines.
+long", they are 64 bits in Alpha machines.
 
 Revision 2.295  2002/09/11 15:04:59  set
 * Fixed: [Linux] TDisplayLinux::GetCursorShapeMDA undefined for non x86
