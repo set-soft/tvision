@@ -20,6 +20,11 @@ const unsigned fcolAlphabetical=0, fcolDirsFirst=1, fcolDirsLast=2,
                fcolTypeMask=0x1F;
 const unsigned fcolCaseInsensitive=0x20, fcolCaseSensitive=0, fcolCaseBit=5;
 const unsigned fcolParentLast=0x40, fcolParentFirst=0, fcolParentBit=6;
+const unsigned fcolDotsLast=0x80, fcolDotsFirst=0, fcolDotsBit=7;
+const unsigned fcolHideEndTilde=0x100; // *~
+const unsigned fcolHideEndBkp  =0x200; // *.bkp
+const unsigned fcolHideStartDot=0x400; // .*
+const unsigned fcolHideBit=8, fcolHideMask=0xF00;
 
 class TFileCollection: public TSortedCollection
 {

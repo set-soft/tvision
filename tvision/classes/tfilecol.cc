@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Added options to customize the file sorting by Salvador E. Tropea.
 
  *
  *
@@ -46,31 +47,39 @@ int TFileCollection::compare(void *key1, void *key2)
 {
  unsigned sort=sortOptions & fcolTypeMask;
  unsigned caseInSens=sortOptions & fcolCaseInsensitive;
+ const char *nKey1=getName(key1),*nKey2=getName(key2);
 
- if (!sort)
+ // .* files are also special
+ if ((sortOptions & fcolDotsLast) && nKey1[0]!=nKey2[0])
+   {
+    if (nKey1[0]=='.' && strcmp(nKey1,"..")!=0) return 1;
+    if (nKey2[0]=='.' && strcmp(nKey2,"..")!=0) return -1;
+   }
+
+ if (sort==fcolAlphabetical)
    {
     if (caseInSens)
-       return strcasecmp(getName(key1),getName(key2));
+       return strcasecmp(nKey1,nKey2);
     else
-       return strcmp(getName(key1),getName(key2));
+       return strcmp(nKey1,nKey2);
    }
 
  // If the names are equal don't swap
  if (caseInSens)
    {
-    if (strcasecmp(getName(key1),getName(key2))==0)
+    if (strcasecmp(nKey1,nKey2)==0)
        return 0;
    }
  else
    {
-    if (strcmp(getName(key1),getName(key2))==0)
+    if (strcmp(nKey1,nKey2)==0)
        return 0;
    }
 
  // .. is special
- if (strcmp(getName(key1),"..")==0)
+ if (strcmp(nKey1,"..")==0)
     return sortOptions & fcolParentLast ? 1 : -1;
- if (strcmp(getName(key2),"..")==0)
+ if (strcmp(nKey2,"..")==0)
     return sortOptions & fcolParentLast ? -1 : 1;
 
  // One is a directory, but not the other
@@ -81,8 +90,8 @@ int TFileCollection::compare(void *key1, void *key2)
 
  // Both of the same type
  if (caseInSens)
-    return strcasecmp(getName(key1),getName(key2));
- return strcmp(getName(key1),getName(key2));
+    return strcasecmp(nKey1,nKey2);
+ return strcmp(nKey1,nKey2);
 }
 
 
