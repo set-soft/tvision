@@ -623,6 +623,8 @@ typedef struct
 #define SCAN_BKSP 14
 #define SCAN_SPAC 57
 #define SCAN_TAB  15
+// As ^[ is usually Esc we must be sure it doesn't happend
+#define SCAN_LFBR 26
 
 change_entry changes[] = {
   { kblAltL,  SCAN_F1,   kblNormal, SCAN_F1,   0, 0},
@@ -674,6 +676,7 @@ change_entry changes[] = {
   { kblShift, SCAN_PGDN, kblNormal, SCAN_PGDN, 0, 0},
   { kblCtrl,  SCAN_BKSP, kblNormal, SCAN_BKSP, 0, 0},
   { kblCtrl,  SCAN_SPAC, kblNormal, SCAN_SPAC, 0, 0},
+  { kblCtrl,  SCAN_LFBR, kblNormal, SCAN_LFBR, 0, 0},
   { kblCtrl | kblShift,  SCAN_TAB, kblNormal, SCAN_TAB, 0, 0}
 };
 
