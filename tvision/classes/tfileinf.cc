@@ -74,29 +74,33 @@ void TFileInfoPane::draw()
       b.moveStr( 14, buf, color );
 
       time = localtime(&file_block.time);
-      b.moveStr( 25, _(months[time->tm_mon+1]), color );
-      sprintf(buf,"%02d",time->tm_mday);
-      b.moveStr( 29, buf, color );
-
-      b.putChar( 31, ',' );
-      sprintf(buf,"%d",time->tm_year+1900);
-      b.moveStr( 32, buf, color );
-
-      PM = Boolean(time->tm_hour >= 12 );
-      time->tm_hour %= 12;
-
-      if ( time->tm_hour == 0 )
-        time->tm_hour = 12;
-      sprintf(buf,"%02d",time->tm_hour);
-      b.moveStr( 38, buf, color );
-      b.putChar( 40, ':' );
-      sprintf(buf,"%02d",time->tm_min);
-      b.moveStr( 41, buf, color );
-
-      if ( PM )
-        b.moveStr( 43, pmText, color );
-      else
-        b.moveStr( 43, amText, color );
+      if (time)
+        {// SET: I don't know how many libc in the world behaves in this
+         // stupid way, but Mingw32 980701-4 does it for some crazy dates.
+         b.moveStr( 25, _(months[time->tm_mon+1]), color );
+         sprintf(buf,"%02d",time->tm_mday);
+         b.moveStr( 29, buf, color );
+   
+         b.putChar( 31, ',' );
+         sprintf(buf,"%d",time->tm_year+1900);
+         b.moveStr( 32, buf, color );
+   
+         PM = Boolean(time->tm_hour >= 12 );
+         time->tm_hour %= 12;
+   
+         if ( time->tm_hour == 0 )
+           time->tm_hour = 12;
+         sprintf(buf,"%02d",time->tm_hour);
+         b.moveStr( 38, buf, color );
+         b.putChar( 40, ':' );
+         sprintf(buf,"%02d",time->tm_min);
+         b.moveStr( 41, buf, color );
+   
+         if ( PM )
+           b.moveStr( 43, pmText, color );
+         else
+           b.moveStr( 43, amText, color );
+        }
     }
     writeLine(0, 2, size.x, 1, b );
     b.moveChar( 0, ' ', color, size. x);
