@@ -197,7 +197,7 @@ void  TInputLineBase::deleteSelect()
 {
  if (selStart<selEnd)
    {
-    memcpy(data+selStart*cellSize,data+selEnd*cellSize,(dataLen-selEnd+1)*cellSize);
+    CLY_memcpy(data+selStart*cellSize,data+selEnd*cellSize,(dataLen-selEnd+1)*cellSize);
     dataLen-=selEnd-selStart;
     curPos=selStart;
    }
