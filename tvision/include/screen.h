@@ -142,6 +142,15 @@ public:
     friend void TV_WindowSizeChanged(int sig);
 };
 
+#ifdef __DJGPP__
+// SET: DOS windows doesn't change resolution externally ;-)
+inline
+int TDisplay::CheckForWindowSize(void)
+{
+ return 0;
+}
+#endif
+
 #ifdef __linux__
 // SET: Added the following functionallity:
 // Linux specific stuff, enclose it in __linux__ section:
