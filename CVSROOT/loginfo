@@ -5,7 +5,7 @@
 # program that should expect log information on its standard input.
 #
 # If the repository name does not match any of the regular expressions in this
-# file, the "DEFAULT" line is used, if it is specified
+# file, the "DEFAULT" line is used, if it is specified.
 #
 # If the name ALL appears as a regular expression it is always used
 # in addition to the first matching regex or DEFAULT.
@@ -24,7 +24,7 @@
 #DEFAULT (echo ""; id; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
-#CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
-CVSROOT ls -la $CVSROOT/CVSROOT/
+CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
+#CVSROOT ls -la $CVSROOT/CVSROOT/
 DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} tvision-checkins@lists.sourceforge.net
 
