@@ -1,4 +1,30 @@
 $Log$
+Revision 1.178  2001/08/30 20:58:23  set
+* Modified: [Linux] A lot of low level details in the TScreen class:
+* Added: An internal variable TerminalType to hold the type of terminal, it
+can be:
+VCSA_TERMINAL   The Linux console with access to /dev/vcsa*.
+LINUX_TERMINAL  The Linux console without access to /dev/vcsa*
+GENER_TERMINAL  A generic terminal.
+* Modified: Now LINUX_TERMINAL sets the terminal to use G1 charset and sets
+the G1 charset to the screen font (user defined). It means that now TV
+applications that doesn't have access to /dev/vcsa* have access to all
+symbols anyways. I had to do some tricks to get some control characters
+printed. I used the UTF-8 mode that Linux have (unicode). So now the fonts
+loaded by the user will be used (I can see my accents correctly).
+* Fixed: The 127 and 128+27 codes are control characters and shouldn't be
+printed. It deformed the "ASCII" window.
+* Fixed: After suspend/resume the calls to endwin/doupdate messed up the
+selected charset. I think that's a bug in ncurses. It was noted when you
+suspended to a shell and resumed (frames damaged). Now the library ensures
+the right charset is selected after doupdate().
+* Modified: Now RestoreScreen() (called by suspend) clears the screen if
+the user screen can't be restored. That's good for calling a shell and is
+less confusing than just do nothing.
+* Modified: Now when using GENER_TERMINAL only the frames are remapped from
+PC437 letting some ISO Latin 1 accents alive. That's not perfect but is
+better than previous behavior. I have ideas about how to enhance it.
+
 Revision 1.177  2001/08/30 20:42:19  set
 * Added: Now the install target is separated in three parts:
 install-headers, install-static and install-dynamic. The install target
