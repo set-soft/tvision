@@ -14,6 +14,7 @@
 #include <tv/ttypes.h>
 #define Uses_intl_fprintf
 #include <tv/intl.h>
+#include <tv.h>
 
 #ifdef HAVE_INTL_SUPPORT
 
@@ -56,6 +57,7 @@ int  TVIntl::forcedCatalogEncoding=-1;
 int  TVIntl::catalogEncoding=885901;
 uchar TVIntl::recodeTable[256];
 void *TVIntl::previousCPCallBack=NULL;
+char  TVIntl::packageName[20];
 
 const char *TVIntl::defaultEncodingNames[]=
 {
@@ -91,6 +93,7 @@ void TVIntl::initialize()
           }
     previousCPCallBack=(void *)TVCodePage::SetCallBack(codePageCB);
     codePageCB(NULL);
+    CLY_snprintf(packageName,libPackageNameLen,"tvision%s",TV_VERSION);
    }
 }
 
@@ -124,7 +127,7 @@ const char *TVIntl::getText(const char *msgid)
 {
  const char *msgstr=LibGetTextLow(msgid);
  if (msgid==msgstr)
-    msgstr=dgettext("tvision",msgstr);
+    msgstr=dgettext(packageName,msgstr);
  return msgstr;
 }
 
