@@ -1,4 +1,9 @@
 $Log$
+Revision 2.397  2003/02/02 01:09:33  terrible
+* Updated: Debian packaging to version 2.0.1-1 "Columbia".
+
+----------------------------- 2.0.1 Release ------------------------------
+
 Revision 2.396  2003/01/24 12:37:58  set
 * Fixed: [X11] Some times when resizing a window we get an expose event for
 the new size before the application gets the resize notification. It can
@@ -33,6 +38,7 @@ Revision 2.391  2003/01/07 13:16:26  set
 out by Roman.
 
 --------------------------- 2.0.1 Release Candidate 2 ----------------------
+
 Revision 2.390  2002/12/27 12:42:13  set
 * Added: Workaround for problems with SuSE when including libintl.h
 (__THROW interferes with default prototypes). Reported by Grzegorz.
@@ -49,6 +55,7 @@ Revision 2.388  2002/12/17 14:23:26  set
 XFree86 4.0.2+ extension. Added conditionals for it (untested).
 
 --------------------------- 2.0.1 Release Candidate 1 ----------------------
+
 Revision 2.387  2002/12/16 13:30:05  set
 * Fixed: Extra .mak file in files list.
 
@@ -264,6 +271,7 @@ Revision 2.346  2002/10/07 20:02:37  set
 * Modified: Release details in the web pages.
 
 ----------------------------- 2.0.0 Release ------------------------------
+
 Revision 2.345  2002/10/07 15:19:01  set
 * Fixed: [Win32] X11 library path.
 
