@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.74  2002/05/16 21:04:53  set
+* Fixed: [X11] The code failed to track key-up events when other
+application had the focus becoming out of sync. Now I added code to sync
+the states. Works for XFree86 and Solaris.
+
 Revision 2.73  2002/05/16 18:54:15  set
 * Added: A batch of patches from Mike for QNX.
  * Configuration for libstdc++
