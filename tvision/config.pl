@@ -133,7 +133,20 @@ $MakeDefsRHIDE[2].=' m' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[2].=' '.$conf{'X11Lib'} if ($conf{'HAVE_X11'} eq 'yes');
 $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
-$MakeDefsRHIDE[2].=' alld' if @conf{'alcon'} eq 'yes';
+if (@conf{'alcon'} eq 'yes')
+  {
+   if ($OS eq 'UNIX')
+     {
+      # TODO: change this for the output of allegro-config.
+      #$MakeDefsRHIDE[2].=' -L/usr/local/lib -L/usr/X11R6/lib -Wl,-export-dynamic -lalleg-4.1.13 -lalleg_unsharable';
+      # No idea what to put here :-?
+      $MakeDefsRHIDE[2].=' alleg-4.1.13 alleg_unsharable';
+     }
+   else
+     {
+      $MakeDefsRHIDE[2].=' alld';
+     }
+  }
 $MakeDefsRHIDE[2].=' intl' if ((($OSf eq 'FreeBSD') || ($OSf eq 'QNXRtP')) && ($conf{'intl'} eq 'yes'));
 $MakeDefsRHIDE[2].=' pthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
 $MakeDefsRHIDE[2].=' termlib unix' if ($OSf eq 'QNX4');

@@ -344,7 +344,10 @@ int main(void)
 }
 ';
  $test=RunGCCTest($cc,'c',$test,'');
- if ($test =~ "OK\s?\n")
+ # This test doesn't seem to work under Linux.
+ #if ($test =~ "OK\s?\n")
+ # This test doesn't seem to work under W2000+Cygwin.
+ if ($test ne "OK\n")
    {
     CreateCache();
     die 'Not working gcc found';
@@ -1017,7 +1020,7 @@ sub CreateRHIDEenvs
 ";
     $text.="RHIDE_GCC=$GCC\n";
     $text.="RHIDE_GXX=$GXX\n";
-    if ($conf{'alcon'} eq 'yes')
+    if ($conf{'alcon'} eq 'yes' and $conf{'MinGW_under_cygwin'} eq 'yes')
       {
        $text.="RHIDE_LD=$GXX --subsystem,windows \n";
       }

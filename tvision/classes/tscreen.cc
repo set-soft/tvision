@@ -211,6 +211,9 @@ stDriver Drivers[]=
  #endif
 
  #ifdef TVOS_UNIX
+  #ifdef USING_ALCON
+   { TV_AlconDriverCheck, 110, "Alcon" },
+  #endif // USING_ALCON
   #ifdef HAVE_X11
    { TV_XDriverCheck, 100, "X11" },
   #endif // HAVE_X11
