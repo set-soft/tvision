@@ -55,7 +55,21 @@ public:
   { return AlphaTable[(uchar)val]; }
  static TVCodePageCallBack SetCallBack(TVCodePageCallBack map);
 
- enum { ISOLatin1Linux=885901 };
+ // Arbitrary names for the supported code pages
+ // Just to avoid using the magics, look in codepage.cc for more information
+ enum
+ {
+  PC437=437, PC737=737, PC775=775, PC850=850, PC852=852, PC855=855, PC857=857,
+  PC860=860, PC861=861, PC863=863, PC865=865, PC866=866, PC869=869, CP1250=1250,
+  CP1251=1251, CP1252=1252, CP1253=1253, CP1254=1254, CP1257=1257, MacCyr=10007,
+  ISOLatin1=88791, ISOLatin2=88792, ISOLatin3=88593, ISOLatin4=88594,
+  ISORussian=88595, ISOGreek=88597, ISO9=88599, ISOLatin1Linux=885901,
+  ISOLatin1uLinux=885911, ISO14=885914, ISOIceland=885915, KOI8r=100000,
+  KOI8_CRL_NMSU=100001, MacOSUkrainian=100072, OsnovnojVariantRussian=885951,
+  AlternativnyjVariantRU=885952, UcodeRussian=885953, Mazovia=1000000,
+  ISO5427=3604494, ECMACyr=17891342, ISOIR146=21364750, ISOIR147=21430286,
+  ISOIR153=22216718
+ };
 
 protected:
  static CodePage *CodePageOfID(int id);
@@ -70,7 +84,56 @@ protected:
  static uchar  AlphaTable[256];
  static uchar  Similar[];
  static ushort Similar2[];
- static TVCodePageCallBack UserHook;
+ static TVCodePageCallBack  UserHook;
+ // CodePage structures
+ static CodePage stPC437;
+ static CodePage stPC775;
+ static CodePage stPC850;
+ static CodePage stPC852;
+ static CodePage stPC857;
+ static CodePage stPC860;
+ static CodePage stPC861;
+ static CodePage stPC863;
+ static CodePage stPC865;
+ static CodePage ISO8879_1;
+ static CodePage ISO8859_1_Lat1;
+ static CodePage ISO8859_1u_Lat1;
+ static CodePage ISO8879_2;
+ static CodePage ISO8859_3;
+ static CodePage ISO8859_4;
+ static CodePage ISO8859_9;
+ static CodePage ISO8859_14;
+ static CodePage ISO8859_15;
+ static CodePage stPC1250;
+ static CodePage stPC1252;
+ static CodePage stPC1254;
+ static CodePage stPC1257;
+ static CodePage stMazovia;
+ static CodePage stPC855;
+ static CodePage stPC866;
+ static CodePage ISO8859_5;
+ static CodePage KOI_8r;
+ static CodePage KOI_8crl;
+ static CodePage PC1251;
+ static CodePage ISO_IR_111;
+ static CodePage ISO_IR_153;
+ static CodePage CP10007;
+ static CodePage CP100072;
+ static CodePage OVR;
+ static CodePage AVR;
+ static CodePage U_CodeR;
+ static CodePage KOI_7;
+ static CodePage ISO_IR_147;
+ static CodePage ISO_IR_146;
+ static CodePage stPC737;
+ static CodePage stPC869;
+ static CodePage stPC1253;
+ static CodePage ISO8859_7;
+ static ushort LowCrazyCharsRemaped[];
+ static ushort Low32CharsRemaped[];
+ static ushort tbKOI7[];
+ static ushort tbISOIR147[];
+ static ushort tbISOIR146[];
 };
 
 #endif

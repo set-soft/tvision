@@ -24,6 +24,7 @@ colors and restore them.
 #define Uses_TScreen
 #define Uses_string
 #define Uses_TGKey
+#define Uses_TVCodePage
 #include <tv.h>
 
 #include <termios.h>
@@ -54,6 +55,7 @@ char                  TDisplayLinux::tioclinuxOK=0;
 char                  TDisplayLinux::cMap[16]={0,4,2,6,1,5,3,7,8,12,10,14,9,13,11,15};
 unsigned              TDisplayLinux::oldCurX,
                       TDisplayLinux::oldCurY;
+int                   TDisplayLinux::installedCodePage=TVCodePage::PC437;
 
 // All the code is in TScreenLinux, but this is the right moment, by this
 // time TScreenLinux is suspended.

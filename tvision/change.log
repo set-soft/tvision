@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.148  2002/06/12 12:34:12  set
+* Added: A first step towards Linux console code page detection. Curently
+the code only works for full console access and differentiates between
+lat1, lat1u and koi8-r code pages.
+
 Revision 2.147  2002/06/11 19:10:32  set
 * Fixed: [XTerm] Window title set/get details.
 .
