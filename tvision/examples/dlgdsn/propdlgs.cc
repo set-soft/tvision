@@ -6,6 +6,8 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Modified by Salvador E. Tropea to compile without warnings.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -201,7 +203,7 @@ char * CharPtrStr(void * aItemPtr)
 
 // Properties editors
 
-TDialog * SelDialog(char * Title, TView * c)
+TDialog * SelDialog(const char * Title, TView * c)
 {
   int h = c->size.y;
   
@@ -387,7 +389,7 @@ public:
      TListBox(bounds, aNumCols, sb) { };
    void getText(char *dest, ccIndex item, short maxLen)
    {
-      if (strlen((char *)items->at(item)) > maxLen)
+      if (strlen((char *)items->at(item)) > (size_t)maxLen)
       {
          strncpy(dest, (char *)items->at(item), maxLen);
          dest[maxLen] = 0;
@@ -437,7 +439,6 @@ TItemsEditor::TItemsEditor():
 
 void TItemsEditor::setData(void * data)
 {
-   int i;
    TListBoxRec rec;
 
    cList = (TStringCollection *&)*data;
@@ -449,7 +450,6 @@ void TItemsEditor::setData(void * data)
 
 void TItemsEditor::handleEvent(TEvent& event)
 {
-   TDialog * dlg;
    char buf[50];
    char * c;
    TDialog::handleEvent(event);
@@ -475,7 +475,7 @@ void TItemsEditor::handleEvent(TEvent& event)
          clearEvent(event);
          break;
       case cmEdit:
-         if (cList->getCount == 0)
+         if (cList->getCount() == 0)
          {
             event.message.command = cmAdd;
             putEvent(event);

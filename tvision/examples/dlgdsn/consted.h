@@ -6,6 +6,8 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Modified by Salvador E. Tropea to compile without warnings.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -46,7 +48,7 @@ public:
    void sort(int mode);
    char * listName;
    int sortmode;
-   virtual void * readItem(ipstream&) { };
+   virtual void * readItem(ipstream&) {return 0;};
    virtual void writeItem(void *, opstream&) { };
 };
 

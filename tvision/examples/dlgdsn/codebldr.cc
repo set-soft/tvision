@@ -5,6 +5,9 @@
     May, 2000
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
+
+    Heavily modified by Salvador E. Tropea to compile without warnings.
+    Some warnings were in fact bugs.
     
  ***************************************************************************/
 
@@ -16,7 +19,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
+
+#include <string.h>
+#include <stdio.h>
 #include "dsgobjs.h"
 #include "propedit.h"
 #include "propdlgs.h"
@@ -31,7 +36,7 @@
 
 static char * blank = "";
 
-static scrollCount = 0;
+static int scrollCount = 0;
 
 typedef char * (*ccGetString)(ushort);
 
@@ -71,7 +76,6 @@ const char * getState(TDsgObj * aObj, char * ctrlName)
 const char * getFlags(TDsgObj * aObj, char * ctrlName)
 {
    if (aObj->viewType != vtDialog) return blank;
-   static char buf[255];
    ushort flags = ((TDDialogData *)aObj->attributes)->flags;
    if (flags != aObj->defaultData.flags)
       return buildStr(ctrlName, "flags",
@@ -126,16 +130,12 @@ const char * getCommand(TDsgObj * aObj)
 {
    int i;
    
-   switch(aObj->viewType)
-   {
-      case vtButton:
-        i = ((TDButtonData *)aObj->attributes)->command;
-        return (char *)CommandsList()->getId(i);
-        break;
-//    case vtMenuItem: break;
-//    case vtStatusItem: break;
-//    case vtHintItem: break;
-   }
+   if (aObj->viewType==vtButton)
+     {
+      i = ((TDButtonData *)aObj->attributes)->command;
+      return (char *)CommandsList()->getId(i);
+     }
+   return 0;
 }
 
 const char * getPointerName(TDsgObj * aObj)
@@ -164,10 +164,10 @@ const char * getTextParam(TDsgObj * aObj)
         {
            strcpy(buf, "");
 //         strs = (TCollection *)((TDClusterData *)aObj->attributes)->items;
-           strs = aObj->dsgGetData();
+           strs = (TStringCollection *)aObj->dsgGetData();
            for (i = 0; i < strs->getCount(); i++)
            {
-              sprintf(itemstr, "   TSItem(\x22%s\x22,", strs->at(i) );
+              sprintf(itemstr, "   TSItem(\x22%s\x22,", (char *)strs->at(i) );
               if (i == strs->getCount() - 1) strcat(itemstr, " 0 ");
                 else strcat(itemstr, "\n");
               strcat(buf, itemstr);
@@ -198,7 +198,7 @@ const char * getDlgViews(TDsgObj * aObj)
 {
    static char buf[32767]; // 32k must be enough
 
-   int i = 0, c = ObjectLinker()->getCount();
+   int c = ObjectLinker()->getCount();
    
    strcpy(buf, "");
    if (c == 0) return buf;
@@ -215,15 +215,15 @@ const char * getDlgVariables(TDsgObj * aObj)
    TDialog *dlg; */
    TViewData * vd;
    static char buf[1024];
-   bool hasLinks, hasOptions, hasValidators = false;
+   bool hasLinks = false, hasOptions = false, hasValidators = false;
 
-   int i = 0, c = ObjectLinker()->getCount();
+   int c = ObjectLinker()->getCount();
 
    strcpy(buf, "");
    if (c == 0) return buf;
    for(int i = 0; i < c; i++)
    {
-       dlink = ObjectLinker()->at(i);
+       dlink = (TDsgLink *)ObjectLinker()->at(i);
        if (dlink)
        {
           vd = (TViewData *)dlink->d->attributes;
@@ -237,8 +237,8 @@ const char * getDlgVariables(TDsgObj * aObj)
             (vd->dragMode != dlink->d->defaultData.dragMode) ||
             (vd->state != dlink->d->defaultData.state) ||
             (vd->helpCtx != 0) );
-//          hasValidators = (dlink->d->viewType == vtInput &&\
-            ((TDInputData *)dlink->d->attributes)->validatorType > 0);
+            /*hasValidators = (dlink->d->viewType == vtInput &&\
+            ((TDInputData *)dlink->d->attributes)->validatorType > 0);*/
        }
    }
    if (scrollCount > 1) strcat(buf, "   TScrollBar * sb1, * sb2;\n"); else
@@ -288,7 +288,8 @@ const char * ifScroll(TDsgObj * aObj)
          ((TDMemoData *)aObj->attributes)->vScroll);
       strcat(tmp, buildScroll(l));
    }
-   else return blank;
+   //else return blank;
+   return blank;
 }
 
 const char * ifLabel(TDsgObj * aObj)
@@ -314,8 +315,6 @@ void viewCreate(TDsgObj * aObj, const char * aConstructor, char * to)
 {
    static char buf[1023];
    char ctrlname[30];
-   TDsgObj * next = 0;
-   int i;
    
    strcpy(buf, "");
    
@@ -376,9 +375,8 @@ const char * buildCode(TDsgObj * aObj, char * buffer)
    char tmp[65535];
    char viewConstructor[1023];
    char hs[5], vs[5];
-   int hi, vi;
-   TDsgLink * dlink;
-   char * var;
+   char *hi, *vi;
+   const char * var;
    
    strcpy(hs, "NULL");
    strcpy(vs, "NULL");
@@ -387,7 +385,7 @@ const char * buildCode(TDsgObj * aObj, char * buffer)
 
    if (aObj->viewType == vtLabel ||
        aObj->viewType == vtVScroll ||
-       aObj->viewType == vtHScroll) return;
+       aObj->viewType == vtHScroll) return 0;
        
    if (aObj->viewType == vtDialog)
    {
@@ -403,7 +401,7 @@ const char * buildCode(TDsgObj * aObj, char * buffer)
 //- User -------------------------------------------------------------------
       case vtOther: break;
          sprintf(viewConstructor, "new %s( %s )",
-            &((TViewData *)aObj->attributes)->className,
+            ((TViewData *)aObj->attributes)->className,
             getRectStr( v->getBounds()) );
          viewCreate(aObj, viewConstructor, tmp);
       break;

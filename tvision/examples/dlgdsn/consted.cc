@@ -6,6 +6,9 @@
     Copyright (C) 2000 by Warlei Alves
     walves@usa.net
     
+    Heavily modified by Salvador E. Tropea to compile without warnings.
+    Some warnings were in fact bugs.
+    
  ***************************************************************************/
 
 /***************************************************************************
@@ -23,6 +26,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define Uses_TDialog
 #define Uses_TButton
@@ -133,7 +137,7 @@ void TConstCollection::change(int index, const char * Ident, int Value)
 
 void TConstCollection::add(const char * Ident, int Value, bool IsReadOnly)
 {
-   TConstData * item = calloc(1, sizeof(TConstData));
+   TConstData * item = (TConstData *)calloc(1, sizeof(TConstData));
    item->Id = newStr(Ident);
    item->Value = Value;
    item->Order = count;
@@ -184,21 +188,21 @@ void TConstCollection::freeItem(void * item)
    free(item);
 }
 
-static int compareOrder(void * key1, void * key2)
+static int compareOrder(const void * key1, const void * key2)
 {
    TConstData * v1 = (TConstData *&)*key1;
    TConstData * v2 = (TConstData *&)*key2;
    return (v1->Order > v2->Order) - (v1->Order < v2->Order);
 }
 
-static int compareId(void * key1, void * key2)
+static int compareId(const void * key1, const void * key2)
 {
    TConstData * v1 = (TConstData *&)*key1;
    TConstData * v2 = (TConstData *&)*key2;
    return strcmp(v1->Id, v2->Id);
 }
 
-static int compareValue(void * key1, void * key2)
+static int compareValue(const void * key1, const void * key2)
 {
    TConstData * v1 = (TConstData *&)*key1;
    TConstData * v2 = (TConstData *&)*key2;
@@ -282,7 +286,6 @@ void TConstEdit::handleEvent(TEvent& event)
 {
    ushort sort;
    int tmp;
-   char str[10];
    TDialog * dlg;
    
    struct {
@@ -328,7 +331,7 @@ void TConstEdit::handleEvent(TEvent& event)
          clearEvent(event);
          break;
       case cmEdit:
-         if (cList->getCount == 0)
+         if (cList->getCount() == 0)
          {
             event.message.command = cmAdd;
             putEvent(event);
@@ -373,7 +376,7 @@ void TConstEdit::handleEvent(TEvent& event)
             clearEvent(event);
             cList->pack();
             List->setRange(List->range - 1);
-            List->drawView;
+            List->drawView();
          }
          break;
       case cmCClear:
