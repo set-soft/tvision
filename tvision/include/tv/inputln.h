@@ -46,6 +46,7 @@ public:
     virtual void setState( ushort aState, Boolean enable );
     void SetValidator(TValidator *);
     virtual Boolean valid(ushort);
+    virtual Boolean insertChar(char value); // Added by SET
 
     char* data;
     int maxLen;
@@ -63,6 +64,7 @@ protected:
     virtual void resizeData() {}
     TValidator * validator;
     void deleteSelect();
+    void makeVisible(); // Added by SET
     Boolean canScroll( int delta );
 
 private:
