@@ -13,13 +13,8 @@
 
 //#define DEBUG
 #ifdef DEBUG
- // This needs iostream and looks like when we compile with gcc 3.x it ins't defined
- // at this point.
- #ifndef Included_iostream
-   #include IOSTREAM_HEADER
- #endif
  extern char *program_invocation_short_name;
- #define LOG(s) do {cerr << program_invocation_short_name << ": " << s << endl; fflush(stderr);} while(0)
+ #define LOG(s) do {CLY_std(cerr) << program_invocation_short_name << ": " << s << CLY_std(endl); fflush(stderr);} while(0)
 #else
  #define LOG(s) do {;} while(0)
 #endif
