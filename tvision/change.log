@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.272  2002/08/27 17:20:09  set
+* Added: [X11] An option to avoid adjusts in the window size when the WM
+doesn't follow our hints. Roman Valyushenko discovered problems using KDE
+3.1 alpha, it sends sizes that aren't fontW/fontH multiples and when we
+resize the window KDE gets confused. This option can be used to disable
+this behavior.
+
 Revision 2.271  2002/08/26 15:35:24  set
 * Modified: Moved a code page struct definition that was in the code to the
 header. It workarounds a bug in Borland's debugger reported by Pawel
