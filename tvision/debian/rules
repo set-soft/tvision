@@ -20,9 +20,7 @@ export DH_COMPAT=1
 
 build: build-stamp
 build-stamp:
-	dh_testversion 2.0.40
 	dh_testdir
-
 # Rename debian/rhtvision.postinst file if it exists:
 ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
@@ -35,20 +33,22 @@ endif
 clean: clean-debian
 # Upstream doesn't have a clean target yet.
 	rm -f linux/obj/*.o
+	rm -f compat/obj/*.o
 	rm -f linux/librhtv.a
 	rm -f linuxso/librhtv.so*
 	rm -f linuxso/Makefile
 	rm -f linuxso/gkeyli.cc
 	rm -f linuxso/instlib
+	rm -f linuxso/makemak.pl
 	rm -f linuxso/obj/*.o
+	rm -f linuxso/compat.mak
 	rm -f configure.cache
 	rm -f Makefile
 	rm -f build-stamp
-	
+
 clean-debian:
 	dh_testdir
 	dh_testroot
-
 # Rename rhtvision$(version).postinst file if it exists:
 ifneq ($(wildcard debian/rhtvision$(version).postinst),)
 	mv debian/rhtvision$(version).postinst debian/rhtvision.postinst

@@ -1,6 +1,10 @@
 RHTVision for DEBIAN
-----------------------
-
-I appreciate any suggestions and comments regarding this package.
+--------------------
+This is an UNOFFICIAL package and IS NOT PART OF THE OFFICIAL DEBIAN
+DISTRIBUTION.
+Send bug reports to me directly and NOT to the DEBIAN BUG TRACKING SYSTEM.
+The original files are available for download at Borland's site and are
+provided gratis. It still not clear if the sources can be redistributed
+freely and we didn't get any reply from Borland's legal department.
 
 Ivan Baldo <lubaldo@adinet.com.uy>, Wed, 17 Feb 1999 13:05:15 -0300

@@ -56,7 +56,6 @@ Source dependencies:
     - C/C++ compiling environment.
     - NCurses development.
     - GPM development.
-    - ZLIB development.
     - Debhelpers (try to use a recent version) and some other Debian
       development utilities.
     - GZip and other standard utilities.
