@@ -54,8 +54,10 @@ public:
 private:
 
     void readDirectory();
-
     Boolean checkDirectory( const char * );
+
+protected:
+    void setUpCurDir(); // SET
 
 #if !defined( NO_STREAM )
     virtual const char *streamableName() const
