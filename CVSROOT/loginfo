@@ -24,9 +24,9 @@
 #DEFAULT (echo ""; id; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
-CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
+#CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
 # CVSROOT ls -la $CVSROOT/CVSROOT/
-#CVSROOT mv /cvsroot/tvision/tvision/classes/linux/unixdis.cc,v /cvsroot/tvision/tvision/classes/unix ; mv /cvsroot/tvision/tvision/classes/linux/unixkey.cc,v /cvsroot/tvision/tvision/classes/unix ; mv /cvsroot/tvision/tvision/classes/linux/unixmouse.cc,v /cvsroot/tvision/tvision/classes/unix ; mv /cvsroot/tvision/tvision/classes/linux/unixscr.cc,v /cvsroot/tvision/tvision/classes/unix
+CVSROOT cp /cvsroot/tvision/tvision/examples/demo/help*.cc /cvsroot/tvision/tvision/classes; cp /cvsroot/tvision/tvision/examples/demo/help*.h /cvsroot/tvision/tvision/include/tv
 DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} tvision-checkins@lists.sourceforge.net
 #DEFAULT chmod +x /cvsroot/tvision/tvision/configure,v /cvsroot/tvision/tvision/configset,v
 #DEFAULT whoami; ls -la /cvsroot/tvision/tvision; ls -la /cvsroot/tvision
