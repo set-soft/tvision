@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.413  2003/04/10 21:26:43  set
+* Updated: DOS project.
+* Fixed: [DOS] use of _() return value as char *.
+
 Revision 2.412  2003/04/08 19:07:42  set
 * Added: Now added support to TButton and TWindow/TDialog.
 
