@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.294  2002/09/11 12:54:54  set
+* Added: isLower, isUpper and isAlNum to TVCodePage.
+
 Revision 2.293  2002/09/10 20:36:52  set
 * Fixed: The colors dialog used TEvent´s infoByte field, but it was loaded
 from an unsigned value. This is OK for little endian, but in big endian
