@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.101  2002/05/30 18:57:15  set
+* Fixed: [FreeBSD] when calling ldconfig we must specify to merge the data
+of the directory we installed the library. Suggested by miniEleph.
+
 Revision 2.100  2002/05/30 18:29:26  set
 * Fixed: Wilcard used by TVEdit *.* -> *
 * Fixed: Shell call used in TVEdit, now is system neutral. Both pointed out
