@@ -152,6 +152,9 @@ VideoMode        Integer Indicates which video mode should be used for the
                          screen. This is useful for DOS, but other drivers can
                          translate the most common DOS modes into a size and
                          try using the size.
+AvoidMoire       Integer Indicates the display produces annoying moire effects
+                         when drawing "dotted blocks". When enabled the
+                         classes tries to avoid using these chars.
 
 
 

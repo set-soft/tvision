@@ -29,6 +29,13 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #define cpScrollBar  "\x04\x05\x05"
 
+// Constants for the scroll bar components
+const int csbUp=0,
+          csbDown=1,
+          csbDark=2,
+          csbMark=3,
+          csbBright=4;
+
 TScrollBar::TScrollBar( const TRect& bounds ) :
     TView( bounds ),
     value( 0 ),
@@ -70,21 +77,25 @@ void TScrollBar::drawPos( int pos )
        aChars=size.x==1 ? vChars : hChars;
 
     int s = getSize() - 1;
-    b.moveChar( 0, aChars[0], getColor(2), 1 );
+    b.moveChar( 0, aChars[csbUp], getColor(2), 1 );
     if( maxVal == minVal )
-        b.moveChar( 1, aChars[4], getColor(1), s-1 );
+        {
+        char unFilled=TScreen::avoidMoire ? TView::noMoireUnFill : aChars[csbDark];
+        b.moveChar( 1, unFilled, getColor(1), s-1 );
+        }
     else
-       {
-       b.moveChar( 1, aChars[2], getColor(1), s-1 );
-       b.moveChar( pos, aChars[3], getColor(3), 1 );
-       if( state & sfFocused )
-         {
-         setCursor( pos , 0 );
-         resetCursor();
-         }
-       }
+        {
+        char filled  =TScreen::avoidMoire ? TView::noMoireFill   : aChars[csbBright];
+        b.moveChar( 1, filled, getColor(1), s-1 );
+        b.moveChar( pos, aChars[csbMark], getColor(3), 1 );
+        if( state & sfFocused )
+          {
+          setCursor( pos , 0 );
+          resetCursor();
+          }
+        }
 
-    b.moveChar( s, aChars[1], getColor(2), 1 );
+    b.moveChar( s, aChars[csbDown], getColor(2), 1 );
     writeBuf( 0, 0, size.x, size.y, b );
 }
 
