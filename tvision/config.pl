@@ -144,11 +144,11 @@ if ($OS ne 'Win32')
    $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2);
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
+   #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
-   ModifyMakefiles('win32/Makefile','compat/compat.mak');
+   ModifyMakefiles('win32/Makefile');
    # No the examples because they are needed by the current target
-   # 'examples/rhide.env'
+   # 'examples/rhide.env' nor the compat/compat.mak
    CreateRHIDEenvs('win32/rhide.env');
   }
 # Help BC++ target

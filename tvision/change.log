@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.109  2002/06/03 15:20:34  set
+* Modified: [QNX] A new patch from Mike for the keyboard tables.
+* Added/Fixed: Some small details in the demo code. Patches from Mike, but
+applied in a different way.
+
 Revision 2.108  2002/06/03 13:44:48  set
 * Added: [Win32] The "WinNT" driver. Now this is available and I also
 adapted things so the "Win32" driver is also available. It means that both:
