@@ -379,7 +379,7 @@ examples/tvhc/rhide.env
 examples/tvhc/tvhc.cc
 examples/tvhc/tvhc.gpr
 examples/tvhc/tvhc.h
-examples/xterm/XTerm.res
+examples/xterm/Xterm.res
 examples/xterm/menus.cfg
 examples/xterm/theme.cfg
 extra/doskeys/kextend.asm
