@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.64  2002/05/13 15:26:49  set
+* Fixed: X11 cursor, again.
+
 Revision 2.63  2002/05/13 13:25:18  set
 * Modified: [Win32] Reenabled code by Vadim that is supposed to compress
 the mouse queue. Needs more investigation.
