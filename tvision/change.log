@@ -1,4 +1,8 @@
 $Log$
+Revision 1.70  1999/06/25 01:29:06  root (set)
+* Ported: The TChdirDialog class to Linux. It was there but was a dummy. Now
+I can navigate the disk with it.
+
 Revision 1.69  1999/06/24 22:33:53  set
 * Modified: Now the File Dialog uses an horizontal scroll bar and 2 columns
 when only SFNs are available and a vertical scroll bar and 1 column when LFNs
