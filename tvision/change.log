@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.399.2.15  2003/02/21 18:28:34  set
+* Modified: In my new structure class I avoid computing the length of the
+data member over and over. This makes some old code to break because it
+accesses the data member directly. So I moved these data members to the
+protected section and added members to handle this member in a better way.
+
 Revision 2.399.2.14  2003/02/21 15:55:15  set
 * Added: Unicode 16 support to TInputLine, now is composed by three
 classes: TInputLineBase (abstract), TInputLine (8 bits) and TInputLineU16

@@ -507,9 +507,6 @@ void TInputLineBase::handleEvent(TEvent& event)
 void TInputLineBase::selectAll( Boolean enable )
 {
  selStart=0;
- // This is here just for compatibility purposes
- dataLen=strlen(data);
- 
  if (enable)
     curPos=selEnd=dataLen;
  else
