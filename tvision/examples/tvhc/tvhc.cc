@@ -7,7 +7,7 @@
 /* Modified: QNX RtP port by Mike Gorchak, 2000                          */
 /* Modified: 1) Headers mechanism and sign mismatch comparissons.        */
 /*           2) Adapted to use compatlayer (new ISO C++ 1998 and gcc 3.x)*/
-/*           by Salvador E. Tropea (SET) 2002                            */
+/*           by Salvador E. Tropea (SET) 2002-2003                       */
 /*                                                                       */
 /*-----------------------------------------------------------------------*/
 
@@ -88,6 +88,7 @@
 #define Uses_ctype
 #define Uses_limits
 #define Uses_stdlib
+#define Uses_fstream
 #define Uses_fpstream
 #define Uses_StrStream
 #define Uses_TSortedCollection
@@ -940,7 +941,7 @@ int main(int argc, char **argv)
     fpstream* helpStrm;
 
     char initialText[] = "Help Compiler  Version 1.0  Copyright (c) 1991"
-                         " Borland International.\nQNX RtP port by Mike Gorchak, 2000.\nAdapted to RHTV by SET, 2002.\n";
+                         " Borland International.\nQNX RtP port by Mike Gorchak, 2000.\nAdapted to RHTV by SET, 2002-2003.\n";
     char helpText[] =
        "\n  Syntax  tvhc <Help text>[.txt] [<Help file>[.hlp] [<Symbol file>[.h]]\n"
        "\n"
