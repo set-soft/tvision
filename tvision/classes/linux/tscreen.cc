@@ -267,6 +267,9 @@ void startcurses()
      fprintf(stderr,"Failed to open the %s terminal!\r\n"
                     "Please e-mail to salvador@inti.gov.ar giving details about your setup\r\n"
                     "and the output of the tty command\r\n",tty_name);
+     tty_file=fopen(tty_name,"wb");
+     if (tty_file)
+        fprintf(stderr,"Also tell me it works only for writing\r\n");
      exit(-1);
     }
   tty_fd=fileno(tty_file);
