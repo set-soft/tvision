@@ -120,6 +120,7 @@ void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
 void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal,
                            const char *fileName)
 {
+ *mode=statVal->st_mode; // Just to avoid unused warning
  *mode=GetFileAttributes(fileName);
 }
 

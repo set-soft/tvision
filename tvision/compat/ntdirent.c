@@ -92,7 +92,8 @@ DIR* opendir(const char* name)
     }
 
     /* alloc DIR structure */
-    if (!(dir = malloc(sizeof(DIR)))) {
+    dir = (DIR*)malloc(sizeof(DIR));
+    if (!dir) {
 	errno = ENOMEM;
 	return NULL;
     }
@@ -114,7 +115,7 @@ struct dirent* readdir(DIR* dir)
 {
     int	e;
     /* bad DIR pointer */
-    if (!dir || dir->_sig != _DIR_SIGNATURE) {
+    if (!dir || dir->_sig != (int)_DIR_SIGNATURE) {
 	errno = EBADF;
 	return NULL;
     }
@@ -141,7 +142,7 @@ struct dirent* readdir(DIR* dir)
 int closedir(DIR* dir)
 {
     /* bad DIR pointer */
-    if (!dir || dir->_sig != _DIR_SIGNATURE) {
+    if (!dir || dir->_sig != (int)_DIR_SIGNATURE) {
 	errno = EBADF;
 	return -1;
     }
