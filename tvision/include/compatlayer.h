@@ -135,6 +135,11 @@ typedef unsigned long  ulong;
 #undef GetStrStream
 #undef UsingNamespaceStd
 #undef CLY_HiddenDifferent
+#undef CLY_DummyTStreamRW
+
+/* Most C++ compilers doesn't need it, only MSVC seems to need *all* the
+   virtual members (even when not used) to link */
+#define CLY_DummyTStreamRW(cla)
 
 #ifdef TVComp_GCC
 /* GNU C is supported for various OSs: */
@@ -1166,6 +1171,9 @@ typedef unsigned long  ulong;
   #define Include_strstrea 1
  #endif
  #define UsingNamespaceStd
+ #undef  CLY_DummyTStreamRW
+ #define CLY_DummyTStreamRW(cla) void write(opstream &os) { cla::write(os); }; \
+                                 void *read(ipstream &is) { return cla::read(is); };
 #endif
 
 #ifdef Uses_IOS_BIN

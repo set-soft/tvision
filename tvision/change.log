@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.229  2002/07/22 19:35:06  set
+* Updated: fontcoll.cc dependencies.
+
 Revision 2.228  2002/07/22 19:34:17  set
 * Added: New methods to TListBox that allows setting a new list without
 destroying the one currently used.
