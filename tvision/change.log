@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.460  2003/05/23 13:18:21  set
+* Modified: To create the rhtv-config tool without .exe for UNIX systems.
+* Added: Options to know the C and C++ flags used to compile the library
+using rhtv-config.
+.
 Revision 2.459  2003/05/22 19:01:25  set
 * Fixed: When configuring the BC++ and MSVC makefile from DOS makefile it
 failed if it was done under UNIX and the file had \r\n. From a report by

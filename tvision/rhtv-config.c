@@ -15,6 +15,8 @@
 #define Uses_stdlib
 #include <compatlayer.h>
 
+#define VERSION "1.0.0"
+
 #if defined(TVOS_DOS) || defined(TVOS_Win32)
  // Currently only static linking is supported for DOS and Win32.
  #define ONLY_STATIC 1
@@ -115,6 +117,9 @@ void DirLibs(void)
 static
 void Usage(void)
 {
+ fputs("Turbo Vision configuration tool v" VERSION "\n",stderr);
+ fputs("Copyright (c) 2003 by Salvador E. Tropea.\n",stderr);
+ fputs("That's free software covered by the GPL license.\n",stderr);
  fprintf(stderr,"Usage: rhtv-config.exe OPTION\n");
  fprintf(stderr,"Available options: [Only one can be specified]\n");
  fprintf(stderr,"\t--stdinc\n");
@@ -124,6 +129,7 @@ void Usage(void)
  fprintf(stderr,"\t--dir-libs\n");
  fprintf(stderr,"\t--cflags\n");
  fprintf(stderr,"\t--cppflags\n");
+ fprintf(stderr,"\t--version\n");
 }
 
 static
@@ -169,6 +175,8 @@ int main(int argc, char *argv[])
     fputs(TVCONFIG_CFLAGS,stdout);
  else if (strcmp(op,"cppflags")==0)
     fputs(TVCONFIG_CXXFLAGS,stdout);
+ else if (strcmp(op,"version")==0)
+    fputs("Turbo Vision configuration tool v" VERSION,stdout);
  else
    {
     UnknowOp(op);
