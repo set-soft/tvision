@@ -3,4 +3,4 @@ install-stamp
 errormsg.txt
 configure.cache
 Makefile
-
+*.epr
