@@ -205,6 +205,15 @@ $MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
 $MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
 $MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
+if ($conf{'alcon'} eq 'yes')
+  {
+   $libs=$conf{'allegro-libs'};
+   $libs=~s/(\S+)/-l$1/g;
+   # Allegro is quite special, it have some static stuff and you must
+   # force ld to export all the symbols or the library won't be a
+   # dependency.
+   $MakeDefsRHIDE[6].=" -Wl,-export-dynamic $libs";
+  }
 $MakeDefsRHIDE[7]="LIB_VER=$Version";
 $MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
 

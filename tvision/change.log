@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.138.2.3  2004/04/26 13:33:47  set
+* Added: [config] Code to get and separate the path and libraries needed
+for Allegro.
+
 Revision 2.399.2.138.2.2  2004/04/20 15:21:56  set
 * Added: doc/Alcon.txt to document the details about Alcon driver.
 
