@@ -587,7 +587,7 @@ Curapaligue 2124
 
 Phone: (+5411) 4759-0013
 
-e-mail: salvador@inti.gov.ar, set@computer.org
+e-mail: salvador@inti.gov.ar, set@computer.org, set@ieee.org
 http:   www.geocities.com/SiliconValley/Vista/6552/
         www.geocities.com/set-soft/ (alias of the above mentioned)
 
