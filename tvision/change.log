@@ -1,4 +1,10 @@
 $Log$
+Revision 1.170  2001/08/17 00:15:44  set
+* Modified: The debian files. Mainly to reflect the new dependencies and
+warn users about doubts in Borland's license. From Ivan Baldo.
+* Fixed: [Linux] The dynamic library didn't recompile the compat library
+with -fPIC. Report and ideas by Ivan Baldo.
+
 Revision 1.169  2001/08/16 02:51:32  set
 * Fixed: The bug mentioned in the last check in. Now when looking for the
 parent's console we stop if any parent isn't attached to a terminal. It
