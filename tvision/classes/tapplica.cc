@@ -21,7 +21,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TApplication
 #include <tv.h>
 
-static TScreen *tsc = 0;
 static TEventQueue *teq = 0;
 
 #ifdef __DJGPP__
@@ -158,8 +157,6 @@ TApplication::TApplication() :
                   &TApplication::initDeskTop
                 )
 {
-    if (!tsc)
-       tsc = new TScreen();
     if (!teq)
       teq = new TEventQueue();
     initHistory();
@@ -169,8 +166,6 @@ TApplication::~TApplication()
 {
     doneHistory();
     delete teq;
-    delete tsc;
     teq = 0;
-    tsc = 0;
 }
 
