@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.154  2002/06/12 18:28:12  set
+* Modified: [Linux] GetCursorPos so if it gets a wrong escape sequence
+doesn't crash. From a report by Tapio.
+
 Revision 2.153  2002/06/12 18:01:27  set
 * Fixed: [Linux] the Resume member ever used the generic GetCursorPos
 instead of the driver selected version.
