@@ -220,6 +220,7 @@ ushort TGroup::execView( TView* p )
       }
 
     ushort retval = p->execute();
+    p->setState(sfActive, False);
 
     // Re-lock if needed
     lockFlag=oldLock;

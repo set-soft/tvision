@@ -486,7 +486,9 @@ void TView::handleEvent(TEvent& event)
         if(!(state & (sfSelected | sfDisabled)) && (options & ofSelectable) )
             {
             select();
-            if( !(options & ofFirstClick) )
+            if( !(state & sfSelected) || // SET: If we failed to get the focus forget
+                                         // about this mouse click.
+                !(options & ofFirstClick) )
                 clearEvent(event);
             }
         }
