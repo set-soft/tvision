@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified for i18n support by Salvador Eduardo Tropea.
 
  *
  *
@@ -47,7 +48,8 @@ TWindow::TWindow( const TRect& bounds,
     zoomRect( getBounds() ),
     number( aNumber ),
     palette( wpBlueWindow ),
-    title( newStr( aTitle ) )
+    title( newStr( aTitle ) ),
+    intlTitle( NULL )
 {
     state |= sfShadow;
     options |= ofSelectable | ofTopSelect;
@@ -62,6 +64,7 @@ TWindow::TWindow( const TRect& bounds,
 TWindow::~TWindow()
 {
     DeleteArray((char *)title);
+    TVIntl::freeSt(intlTitle);
 }
 
 void TWindow::close()
@@ -96,7 +99,7 @@ TPalette& TWindow::getPalette() const
 
 const char *TWindow::getTitle( short )
 {
-    return title;
+    return TVIntl::getText(title,intlTitle);
 }
 
 void TWindow::handleEvent( TEvent& event )
@@ -249,6 +252,7 @@ void *TWindow::read( ipstream& is )
     is >> flags >> zoomRect >> number >> palette;
     is >> frame;
     title = is.readString();
+    intlTitle = NULL;
     return this;
 }
 

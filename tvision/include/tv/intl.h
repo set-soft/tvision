@@ -35,7 +35,7 @@ public:
  static void        enableTranslations() { initialize(); };
  static void        disableTranslations() { translate=0; };
  // Returns a newly allocated string and translated (if enabled)
- static char       *getTextNew(const char *msgid);
+ static char       *getTextNew(const char *msgid, Boolean onlyIntl=False);
  static const char *getText(const char *msgid, stTVIntl *&cache);
  static void        freeSt(stTVIntl *&cache);
  static stTVIntl   *emptySt();
