@@ -1,4 +1,10 @@
 $Log$
+Revision 1.169  2001/08/16 02:51:32  set
+* Fixed: The bug mentioned in the last check in. Now when looking for the
+parent's console we stop if any parent isn't attached to a terminal. It
+works for my X because none of the X terminals I have are attached to a
+terminal, but we must see if that's enough.
+
 Revision 1.168  2001/08/16 01:55:48  set
 * Fixed: The terminal attributes saved in startcurses were not restored in
 stopcurses (but in the destructor) making assymetric the calls. Patch by
