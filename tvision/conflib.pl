@@ -1225,6 +1225,11 @@ sub LookForGNUar
     print "gar\n";
     return 'gar';
    }
+ if ($OSf eq 'Darwin')
+   {
+    print "ar\n";
+    return 'ar';
+   }
  print "Unable to find GNU ar on this system.\n";
  print "Please install it and be sure it's in your path.\n";
  print "Also use `ar' or `gar' name for the binary.\n";
