@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.350  2002/11/05 13:00:33  set
+* Added: Support for DBCS systems at compile level in codepage.cc code.
+More adjusts could be needed. Related to SF FR #633611 by Kirby Zhou
+(kirbyzhou).
+
 Revision 2.349  2002/10/15 19:57:41  set
 * Added: Roman to contributors lists.
 
