@@ -14,6 +14,14 @@ The small sections are:
 9.  How to submit a patch
 10. Contact information
 
+If you are looking for information about the Win32 target please look in the
+win32 directory.
+
+****** Important! for old users: the headers now have two levels. In ******
+****** the first level tv.h is located. The rest of the headers are  ******
+****** located in a subdirectory called tv. It shouldn't affect your ******
+****** program.                                                      ******
+
 ****** Important! for old users: the library generated is now called ******
 ****** librhtv.a this change in the name is to avoid confusion with  ******
 ****** other ports of the library.                                   ******

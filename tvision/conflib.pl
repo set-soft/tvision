@@ -117,9 +117,14 @@ sub RunGCCTest
  #print "Running: $command\n";
  $label=$command.":\n";
  `echo $label >> $ErrorLog`;
+
  if ($OS eq 'dos')
    {
     `redir -ea $ErrorLog $command`;
+   }
+ elsif ($OS eq 'win32')
+   {
+    `sh -c "$command 2>> $ErrorLog"`;
    }
  else
    {
@@ -183,9 +188,28 @@ sub LookForPrefix
       $prefix='/usr';
      }
    }
- else
+ elsif ($OS eq 'dos')
    {
     $prefix=@ENV{'DJDIR'};
+   }
+ else
+   {
+    if (`rm --help`=~/(.*)\/BIN\/RM.EXE/)
+      {
+       $prefix=$1;
+       if ($prefix=~/\/\/(\w)\/(.*)/)
+         {
+          $prefix="$1:/$2";
+         }
+       else
+         {
+          $prefix="c:/$prefix";
+         }
+      }
+    else
+      {
+       die "Some critical tools aren't installed please read the reame files";
+      }
    }
  @conf{'prefix'}=$prefix;
  print "$prefix\n";
@@ -440,7 +464,8 @@ sub FindCFLAGS
  if (!$ret)
    {
     $ret='-O2 -gstabs+3';
-    $ret.=' -pipe' unless ($OS eq 'dos');
+    $ret.=' -pipe' if ($OS eq 'linux');
+    $ret.=' -D_WIN32' if ($OS eq 'win32');
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
@@ -482,6 +507,7 @@ sub FindCXXFLAGS
    {
     $ret='-O2 -gstabs+3';
     $ret.=' -pipe' unless ($OS eq 'dos');
+    $ret.=' -D_WIN32' if ($OS eq 'win32');
    }
  print "$ret\n";
  $conf{'CXXFLAGS'}=$ret;
@@ -519,19 +545,23 @@ sub DetectOS
     $defaultCXX='gxx';
     $supportDir='djgpp';
    }
+ elsif ($os=~/[Ll]inux/)
+   {
+    $OS='linux';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='linux';
+   }
+ elsif ($os=~/CYGWIN/)
+   {
+    $OS='win32';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='win32';
+   }
  else
    {
-    if ($os=~/[Ll]inux/)
-      {
-       $OS='linux';
-       $stdcxx='-lstdc++';
-       $defaultCXX='g++';
-       $supportDir='linux';
-      }
-    else
-      {
-       die('Unknown OS, you must do things by yourself');
-      }
+    die('Unknown OS, you must do things by yourself');
    }
  print "$OS\n";
  $OS;
@@ -567,6 +597,37 @@ sub ModifyMakefiles
        #  {
        #   $text=~s/$rep[0]\n/$rep[1]\n/;
        #  }
+       replace($a,$text);
+      }
+   }
+ print "\n";
+}
+
+###[txh]####################################################################
+#
+# Prototype: ModifySimpleMakefiles(@list)
+# Description:
+#   Patches the listed makefiles to use the detected C compiler, C++
+# compiler and compilation flags.@*
+#
+####################################################################[txi]###
+
+sub ModifySimpleMakefiles
+{
+ my $a,$text,$rep;
+
+ print 'Configuring simple makefiles: ';
+ foreach $a (@_)
+   {
+    print "$a ";
+    $text=cat($a);
+    if ($text)
+      {
+       $text=~s/GCC=(.*)\n/GCC=$GCC\n/;
+       $text=~s/GXX=(.*)\n/GXX=$GXX\n/;
+       $text=~s/LD=(.*)\n/LD=$GXX\n/;
+       $text=~s/CFLAGS=(.*)\n/CFLAGS=$CFLAGS\n/;
+       $text=~s/CXXFLAGS=(.*)\n/CXXFLAGS=$CXXFLAGS\n/;
        replace($a,$text);
       }
    }

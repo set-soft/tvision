@@ -51,6 +51,7 @@ LookForIntlSupport();
 print "\n";
 GenerateMakefile();
 ModifyMakefiles('linux/Makefile','djgpp/makefile');
+ModifySimpleMakefiles('win32/Makefile');
 CreateRHIDEenvs('linux/rhide.env','djgpp/rhide.env','examples/config.env');
 CreateConfigH();
 
@@ -116,10 +117,14 @@ sub GiveAdvice
        print "  Starting with glibc 2.0 this is included in libc, perhaps your system\n";
        print "  just lacks the propper header file.\n";
       }
-    else
+    elsif ($OS eq 'dos')
       {
        print "  Install the gtxtNNNb.zip package from the v2gnu directory of djgpp's\n";
        print "  distribution. Read the readme file for more information.\n";
+      }
+    elsif ($OS eq 'win32')
+      {
+       print "  That's normal for Win32.\n";
       }
    }
 }
@@ -314,7 +319,9 @@ sub GenerateMakefile
  $text=~s/\@OS\@/$OS/g;
  $text=~s/\@prefix\@/@conf{'prefix'}/g;
 
- $makeDir=$OS eq 'linux' ? 'linux' : 'djgpp';
+ $makeDir='linux' if ($OS eq 'linux');
+ $makeDir='djgpp' if ($OS eq 'dos');
+ $makeDir='win32' if ($OS eq 'win32');
  # Write target rules:
  $rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
  $text=~s/\@target1_rule\@/$rep/g;
