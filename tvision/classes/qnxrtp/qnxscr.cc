@@ -1,5 +1,5 @@
 /* QNX RtP screen routines source.
-   Copyright (c) 2002 by Mike Gorchak
+   Copyright (c) 2002-2003 by Mike Gorchak
    Covered by the BSD license. */
 
 #include <tv/configtv.h>
@@ -24,6 +24,7 @@
 
 #include <termios.h>
 #include <tv/qnxrtp/screen.h>
+#include <tv/qnxrtp/mouse.h>
 #include <tv/qnxrtp/key.h>
 
 #include <term.h>
@@ -78,7 +79,11 @@ TScreenQNXRtP::TScreenQNXRtP()
    setegid(getgid());
 
    initialized=1;
-   if (dCB) dCB();
+
+   if (dCB)
+   {
+      dCB();
+   }
 
    TDisplayQNXRtP::Init();
 
@@ -95,7 +100,7 @@ TScreenQNXRtP::TScreenQNXRtP()
 
    TGKeyQNXRtP::Init();
 
-//   THWMouseQNXRtP::Init();
+   THWMouseQNXRtP::Init();
 
    // Added by SET:
    // Look for user settings
@@ -157,7 +162,7 @@ TScreenQNXRtP::~TScreenQNXRtP()
    if (screenBuffer)
    {
      DeleteArray(screenBuffer);
-     screenBuffer=0;
+     screenBuffer=NULL;
    }
 
    SpecialKeysRestore(fileno(stdin));
@@ -218,7 +223,7 @@ void TScreenQNXRtP::setVideoMode(ushort mode)
       }
       screenBuffer = new ushort[screenWidth*screenHeight];
    }
-   memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
+   memset(screenBuffer, 0, screenWidth*screenHeight*sizeof(ushort));
 }
 
 void TScreenQNXRtP::setVideoModeExt(char* mode)
@@ -238,12 +243,12 @@ void TScreenQNXRtP::setVideoModeExt(char* mode)
       }
       screenBuffer = new ushort[screenWidth*screenHeight];
    }
-   memset(screenBuffer,0,screenWidth*screenHeight*sizeof(ushort));
+   memset(screenBuffer, 0, screenWidth*screenHeight*sizeof(ushort));
 }
 
 void TScreenQNXRtP::getCharacters(unsigned offset, ushort* buf, unsigned count)
 {
-   memcpy(buf,screenBuffer+offset,count*sizeof(ushort));
+   memcpy(buf, screenBuffer+offset, count*sizeof(ushort));
 }
 
 ushort TScreenQNXRtP::getCharacter(unsigned dst)
@@ -564,7 +569,9 @@ void TScreenQNXRtP::writeBlock(int dst, int len, ushort *old, ushort *src)
 }
 
 #else
-// Here to generate the dependencies in RHIDE
-#include <tv/qnxrtp/screen.h>
-#include <tv/qnxrtp/key.h>
+
+   // Here to generate the dependencies in RHIDE
+   #include <tv/qnxrtp/screen.h>
+   #include <tv/qnxrtp/key.h>
+
 #endif // TVOS_UNIX && TVOSf_QNXRtP

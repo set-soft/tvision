@@ -1,5 +1,5 @@
 /* QNX RtP screen routines source.
-   Copyright (c) 2002 by Mike Gorchak
+   Copyright (c) 2002-2003 by Mike Gorchak
    Covered by the BSD license. */
 
 #include <tv/configtv.h>
@@ -164,6 +164,8 @@ inline void TDisplayQNXRtP::safeput(char* &p, char* cap)
 }
 
 #else
-// Here to generate the dependencies in RHIDE
-#include <tv/qnxrtp/screen.h>
+
+   // Here to generate the dependencies in RHIDE
+   #include <tv/qnxrtp/screen.h>
+
 #endif // TVOS_UNIX && TVOSf_QNXRtP
