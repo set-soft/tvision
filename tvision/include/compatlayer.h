@@ -30,6 +30,9 @@ and regex.
 
 ***************************************************************************/
 
+#ifndef CLY_CompatLayerIncluded
+#define CLY_CompatLayerIncluded
+
 #include <tv/configtv.h>
 
 /* MSS memory leak debugger */
@@ -165,6 +168,7 @@ typedef unsigned long  ulong;
  #define False false
  
  #ifdef TVCompf_MinGW
+  #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
@@ -277,6 +281,7 @@ typedef unsigned long  ulong;
  
  // Under DOS djgpp defines it
  #ifdef TVCompf_djgpp
+  #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
   #ifdef Uses_filelength
    #define Include_io
@@ -452,6 +457,7 @@ typedef unsigned long  ulong;
 
 // BC++ 5.5 for Win32 is supported
 #ifdef TVComp_BCPP
+ #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
  /* Simple Boolean type */
@@ -588,6 +594,7 @@ typedef unsigned long  ulong;
 #endif
 
 #ifdef TVComp_MSC
+ #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
  /* Simple Boolean type */
@@ -958,7 +965,6 @@ CFunc int  CLY_getcurdir(int drive, char *buffer);
 #include <strstrea.h>
 #endif
 
-
 #if defined(Uses_CLYFileAttrs) && !defined(Uses_CLYFileAttrsDef)
 #define Uses_CLYFileAttrsDef
 /* Equivalent to mode_t */
@@ -1019,3 +1025,24 @@ int CLY_HaveLFNs()
  return 1;
 }
 #endif
+
+// Is that an EOL char?
+// Ask for no
+#define CLY_IsntEOL(a) (a!='\r' && a!='\n')
+// Ask for yes
+#define CLY_IsEOL(a)   (a=='\r' || a=='\n')
+
+#ifdef CLY_UseCrLf
+ #define CLY_LenEOL     2
+ // This asks if the EOL is really usable for the OS
+ #define CLY_IsTrueEOL(a) (a=='\r' || a=='\n')
+ // String containing EOL
+ #define CLY_crlf "\r\n"
+#else
+ #define CLY_LenEOL     1
+ #define CLY_crlf "\n"
+ #define CLY_IsTrueEOL(a) (a=='\n')
+#endif
+
+#endif // CLY_CompatLayerIncluded
+
