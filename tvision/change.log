@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.16  2003/02/21 18:54:15  set
+* Fixed: Oops! some test code I left in TInputLine.
+* Added: A new snapshot to the web page.
+
 Revision 2.399.2.15  2003/02/21 18:28:34  set
 * Modified: In my new structure class I avoid computing the length of the
 data member over and over. This makes some old code to break because it

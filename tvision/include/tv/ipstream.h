@@ -46,6 +46,8 @@ public:
     char * readString( char *, unsigned );
     uint16 *readString16();
     uint16 *readString16( uint16 *buf, unsigned maxLen );
+    uint16 *readString( uint16 *buf, unsigned maxLen )
+            { return readString16(buf,maxLen); };
     /* Platform dependent: */
     ushort readShort();
     uint   readInt();

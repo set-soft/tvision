@@ -52,7 +52,13 @@ char hotKey( const char *s )
 
 // TODO: Also this
 inline
-unsigned strlen16(const uint16 *s)
+unsigned StrLen(const char *s)
+{
+ return strlen(s);
+}
+
+inline
+unsigned StrLen(const uint16 *s)
 {
  unsigned l;
  for (l=0; s[l]; l++);
@@ -75,21 +81,16 @@ TInputLineBase::TInputLineBase(const TRect& bounds, int aMaxLen) :
  options|=ofSelectable | ofFirstClick;
 }
 
-TInputLine::TInputLine(const TRect& bounds, int aMaxLen) :
-  TInputLineBase(bounds,aMaxLen)
-{
- data=new char[aMaxLen];
- *data=EOS;
- cellSize=1;
-}
+template class TInputLineBaseT<char,TDrawBuffer>;
+template class TInputLineBaseT<uint16,TDrawBufferU16>;
 
-TInputLineU16::TInputLineU16(const TRect& bounds, int aMaxLen) :
+template <typename T, typename D>
+TInputLineBaseT<T,D>::TInputLineBaseT(const TRect& bounds, int aMaxLen) :
   TInputLineBase(bounds,aMaxLen)
 {
- data16=new uint16[aMaxLen];
- data=(char *)data16;
- *data16=EOS;
- cellSize=2;
+ data=(char *)new T[aMaxLen];
+ *((T *)data)=EOS;
+ cellSize=sizeof(T);
 }
 
 void TInputLineBase::SetValidator(TValidator * aValidator)
@@ -124,50 +125,22 @@ uint32 TInputLineBase::dataSize()
  return (maxLen+1)*cellSize;
 }
 
-// Currently the code is mostly repeated, quite bad for maintainance.
-// But I don't have a clear idea of how to solve it, templates?
-void TInputLine::draw()
-{
- int l, r;
- TDrawBuffer b;
-
- uchar color=(state & sfFocused) ? getColor(2) : getColor(1);
- 
- b.moveChar(0,' ',color,size.x);
- b.moveStr(1,data+firstPos,color,size.x-2);
- 
- if (canScroll(1))
-    b.moveChar(size.x-1,rightArrow,getColor(4),1);
- if (canScroll(-1))
-    b.moveChar(0,leftArrow,getColor(4),1);
- if (state & sfSelected)
-   {
-    l=selStart-firstPos;
-    r=selEnd-firstPos;
-    l=max(0,l);
-    r=min(size.x-2,r);
-    if (l<r)
-       b.moveChar(l+1,0,getColor(3),r-l);
-   }
- writeLine(0,0,size.x,size.y,b);
- setCursor(curPos-firstPos+1,0);
-}
-
 // TODO: avoid hardcoded arrows
-void TInputLineU16::draw()
+template <typename T, typename D>
+void TInputLineBaseT<T,D>::draw()
 {
  int l, r;
- TDrawBufferU16 b;
+ D b;
  
  uchar color=(state & sfFocused) ? getColor(2) : getColor(1);
  
  b.moveChar(0,' ',color,size.x);
- b.moveStr(1,data16+firstPos,color,size.x-2);
+ b.moveStr(1,((T *)data)+firstPos,color,size.x-2);
  
  if (canScroll(1))
-    b.moveChar(size.x-1,0x25b6,(uchar)getColor(4),1);
+    b.moveChar(size.x-1,sizeof(T)==1 ? rightArrow : 0x25b6,(uchar)getColor(4),1);
  if (canScroll(-1))
-    b.moveChar(0,0x25c0,(uchar)getColor(4),1);
+    b.moveChar(0,sizeof(T)==1 ? leftArrow: 0x25c0,(uchar)getColor(4),1);
  if (state & sfSelected)
    {
     l=selStart-firstPos;
@@ -226,14 +199,10 @@ void  TInputLineBase::deleteSelect()
    }
 }
 
-void TInputLine::assignPos(int index, unsigned val)
+template <typename T, typename D>
+void TInputLineBaseT<T,D>::assignPos(int index, unsigned val)
 {
- data[index]=val;
-}
-
-void TInputLineU16::assignPos(int index, unsigned val)
-{
- data16[index]=val;
+ ((T *)data)[index]=val;
 }
 
 /**[txh]********************************************************************
@@ -337,10 +306,13 @@ void TInputLineBase::makeVisible()
  drawView();
 }
 
-Boolean TInputLine::pasteFromOSClipboard()
+// TODO: Get the clipboard in unicode format
+template <typename T, typename D>
+Boolean TInputLineBaseT<T,D>::pasteFromOSClipboard()
 {
+ if (sizeof(T)!=1) return False;
  unsigned size,i;
- char *p=TVOSClipboard::paste(1,size);
+ T *p=(T *)TVOSClipboard::paste(1,size);
  if (p)
    {
     for (i=0; i<size; i++)
@@ -355,38 +327,13 @@ Boolean TInputLine::pasteFromOSClipboard()
  return False;
 }
 
-void TInputLine::copyToOSClipboard()
+template <typename T, typename D>
+void TInputLineBaseT<T,D>::copyToOSClipboard()
 {
- TVOSClipboard::copy(1,data+selStart,selEnd-selStart);
-}
-
-// TODO: Get the clipboard in unicode format
-Boolean TInputLineU16::pasteFromOSClipboard()
-{
- #if 0
- unsigned size,i;
- uint16 *p=TVOSClipboard::paste(1,size);
- if (p)
-   {
-    for (i=0; i<size; i++)
-       {
-        insertChar(p[i]);
-        selStart=selEnd=0; // Reset the selection or we will delete the last insertion
-       }
-    DeleteArray(p);
-    makeVisible();
-    return True;
-   }
- #endif
- return False;
-}
-
-// TODO: Put to the clipboard in unicode format
-void TInputLineU16::copyToOSClipboard()
-{
- #if 0
- TVOSClipboard::copy(1,data16+selStart,selEnd-selStart);
- #endif
+ if (sizeof(T)==1)
+    TVOSClipboard::copy(1,data+selStart,selEnd-selStart);
+ // else if 2 ....
+ // TODO: Put to the clipboard in unicode format
 }
 
 void TInputLineBase::handleEvent(TEvent& event)
@@ -517,41 +464,25 @@ void TInputLineBase::selectAll( Boolean enable )
  drawView();
 }
 
-void TInputLine::setData(void *rec)
+template <typename T, typename D>
+void TInputLineBaseT<T,D>::setData(void *rec)
 {
- unsigned ds=dataSize()-1;
+ uint32 ds=dataSize()-sizeof(T);
  memcpy(data,rec,ds);
- data[ds]=EOS;
- dataLen =strlen(data);
+ *((T *)(data+ds))=EOS;
+ dataLen=StrLen((T *)data);
  selectAll(True);
 }
 
-void TInputLineU16::setData(void *rec)
+template <typename T, typename D>
+void TInputLineBaseT<T,D>::setDataFromStr(void *str)
 {
- uint32 ds=dataSize()-2;
- memcpy(data,rec,ds);
- *((uint16 *)(data+ds))=EOS;
- dataLen=strlen16(data16);
- selectAll(True);
-}
-
-void TInputLine::setDataFromStr(void *str)
-{
- unsigned ds=dataSize()-1, i;
- char *s=(char *)str;
+ unsigned ds=dataSize()/sizeof(T)-1, i;
+ T *s=(T *)str;
+ T *d=(T *)data;
  for (i=0; i<ds && *s; i++)
-     data[i]=s[i];
- data[i]=EOS;
- dataLen=i;
-}
-
-void TInputLineU16::setDataFromStr(void *str)
-{
- unsigned ds=(dataSize()-1)/2, i;
- uint16 *s=(uint16 *)str;
- for (i=0; i<ds && *s; i++)
-     data16[i]=s[i];
- data16[i]=EOS;
+     d[i]=s[i];
+ d[i]=EOS;
  dataLen=i;
 }
 
@@ -573,14 +504,10 @@ void TInputLineBase::write(opstream& os)
  os << validator;
 }
 
-void TInputLine::writeData(opstream& os)
+template <typename T, typename D>
+void TInputLineBaseT<T,D>::writeData(opstream& os)
 {
- os.writeString(data);
-}
-
-void TInputLineU16::writeData(opstream& os)
-{
- os.writeString16(data16);
+ os.writeString((T *)data);
 }
 
 void *TInputLineBase::read(ipstream& is)
@@ -594,20 +521,12 @@ void *TInputLineBase::read(ipstream& is)
  return this;
 }
 
-void *TInputLine::readData(ipstream& is)
+template <typename T, typename D>
+void *TInputLineBaseT<T,D>::readData(ipstream& is)
 {
- cellSize=1;
- data=new char[maxLen+1];
- is.readString(data,maxLen+1);
- return data;
-}
-
-void *TInputLineU16::readData(ipstream& is)
-{
- cellSize=2;
- data16=new uint16[maxLen+1];
- data=(char *)data16;
- is.readString16(data16,maxLen+1);
+ cellSize=sizeof(T);
+ data=(char *)new T[maxLen+1];
+ is.readString((T *)data,maxLen+1);
  return data;
 }
 
@@ -627,15 +546,6 @@ TInputLineBase::TInputLineBase(StreamableInit) :
 {
 }
 
-TInputLine::TInputLine(StreamableInit) :
-  TInputLineBase(streamableInit)
-{
-}
-
-TInputLineU16::TInputLineU16(StreamableInit) :
-  TInputLineBase(streamableInit)
-{
-}
 #endif // NO_STREAM
 
 Boolean TInputLineBase::valid(ushort )
