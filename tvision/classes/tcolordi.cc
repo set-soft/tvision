@@ -33,6 +33,9 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TPalette
+// For the "Try" button:
+#define Uses_TProgram
+#define Uses_TDeskTop
 #include <tv.h>
 
 int getBlinkState();
@@ -93,6 +96,8 @@ TColorDialog::TColorDialog( TPalette *aPalette, TColorGroup *aGroups ):
     if( aGroups != 0 && aGroups->items != 0 && pal)
         display->setColor( (uchar *)&pal->data[ aGroups->items->index ] );
 
+    insert( new TButton( TRect( 24 - 10*ib, 15, 34 - 10*ib, 17 ),
+                         _("~T~ry"), cmTryColors, bfNormal ) );
     insert( new TButton( TRect( 36 - 10*ib, 15, 46 - 10*ib, 17 ),
                          _("~O~K"), cmOK, bfDefault ) );
     insert( new TButton( TRect( 48 - 10*ib, 15, 58 - 10*ib, 17 ),
@@ -111,6 +116,14 @@ void TColorDialog::handleEvent( TEvent& event )
     TDialog::handleEvent( event );
     if( event.what==evBroadcast && event.message.command==cmNewColorIndex )
         display->setColor( (uchar *)&pal->data[event.message.infoByte] );
+    else
+    // SET: Added this button to test the colors without pressing OK.
+    if (event.what==evCommand && event.message.command==cmTryColors)
+      { // That's a new broadcast, I used it for the editor because the
+        // colors are cached.
+       message(TProgram::deskTop,evBroadcast,cmUpdateColorsChanged,0);
+       TProgram::application->Redraw();
+      }
 }
 
 uint32 TColorDialog::dataSize()
