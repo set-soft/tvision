@@ -120,10 +120,13 @@ TBackground *TDeskTop::initBackground( TRect r )
     return new TBackground( r, defaultBkgrnd );
 }
 
-short iSqr( short i )
+// SET: made static and used unsigned instead of short.
+// It calculates the square root truncating the decimals.
+static
+unsigned iSqr( unsigned i )
 {
-    short res1 = 2;
-    short res2 = i/res1;
+    unsigned res1 = 2;
+    unsigned res2 = i/res1;
     while( abs( res1 - res2 ) > 1 )
         {
         res1 = (res1 + res2)/2;
@@ -132,9 +135,9 @@ short iSqr( short i )
     return res1 < res2 ? res1 : res2;
 }
 
-void mostEqualDivisors(short n, short& x, short& y)
+void mostEqualDivisors(int n, int& x, int& y)
 {
-    short  i;
+    int i;
 
     i = iSqr( n );
     if( n % i != 0 )
@@ -147,7 +150,8 @@ void mostEqualDivisors(short n, short& x, short& y)
     y = i;
 }
 
-static short numCols, numRows, numTileable, leftOver, tileNum;
+// SET: All to ints, they are the best type for any compiler
+static int numCols, numRows, numTileable, leftOver, tileNum;
 
 void doCountTileable( TView* p, void * )
 {
@@ -160,12 +164,12 @@ int dividerLoc( int lo, int hi, int num, int pos)
     return int(long(hi-lo)*pos/long(num)+lo);
 }
 
-TRect calcTileRect( short pos, const TRect &r )
+TRect calcTileRect( int pos, const TRect &r )
 {
-    short x, y;
+    int x, y;
     TRect nRect;
 
-    short d = (numCols - leftOver) * numRows;
+    int d = (numCols - leftOver) * numRows;
     if( pos <  d )
         {
         x = pos / numRows;
@@ -207,7 +211,11 @@ void TDeskTop::tile( const TRect& r )
     forEach( doCountTileable, 0 );
     if( numTileable > 0 )
         {
-        mostEqualDivisors( numTileable, numCols, numRows );
+        // SET: This trick makes the partitions in the reverse order
+        if( getOptions() & dsktTileVertical )
+            mostEqualDivisors( numTileable, numRows, numCols );
+        else
+            mostEqualDivisors( numTileable, numCols, numRows );
         if( ( (r.b.x - r.a.x)/numCols ==  0 ) || 
             ( (r.b.y - r.a.y)/numRows ==  0) )
             tileError();

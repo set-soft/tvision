@@ -14,21 +14,20 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TDeskTop )  && !defined( __TDeskTop )
 #define __TDeskTop
 
+// SET: To set the tile partition priority
+const unsigned dsktTileVertical=1, dsktTileHorizontal=0;
+
 class TBackground;
 class TRect;
 class TEvent;
 
 class TDeskInit
 {
-
 public:
-
     TDeskInit( TBackground *(*cBackground)( TRect ) );
 
 protected:
-
     TBackground *(*createBackground)( TRect );
-
 };
 
 class TDeskTop : public TGroup, public virtual TDeskInit
@@ -45,12 +44,16 @@ public:
     virtual void tileError();
     virtual void shutDown();
     TBackground *getBackground(void) { return background; }
+    // SET: Added to setup the tileable options
+    unsigned getOptions() { return flagsOptions; }
+    void setOptions(unsigned aFlags) { flagsOptions=aFlags; }
 
     static const char defaultBkgrnd;
 
 protected:
 
     TBackground *background;
+    unsigned flagsOptions;
 
 private:
 
