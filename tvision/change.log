@@ -1,5 +1,4 @@
 $Log$
-
 Release 1.0.1
 
 * Some changes in the readmes and gpr files.
@@ -9,6 +8,10 @@ date: 1998/12/14 23:36:35;  author: set;
 Converted all the calls to ctype functions to macros. These macros avoids
 passing negative values.
 Added right dependencies in gpr and makefiles.
+
+Revision 1.1  1998/12/22 23:57:46  set
+Renamed readme.src to readme.txt.
+Added a small change.log, not yet definitive.
 
 Release 1.0.0
 
