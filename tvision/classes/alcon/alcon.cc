@@ -21,6 +21,7 @@
 
 // Forward declarations.
 static void AlCon_LoadCustomFont(const char *filename, uchar *fdata, unsigned fw, unsigned fh);
+static void AlCon_AllocateMemoryBuffer(void);
 
 // Globals internal to AlCon.
 static FONT *Alcon_CurrentFont=NULL;
@@ -731,8 +732,7 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
    AlCon_SetDisPaletteColors(0,16,pal ? pal : BIOSPalette);
   
    /* Allocate "screen" buffers */
-   chars = (unsigned char *)malloc(AlCon_ScreenWidth * AlCon_ScreenHeight);
-   attrs = (unsigned char *)malloc(AlCon_ScreenWidth * AlCon_ScreenHeight);
+   AlCon_AllocateMemoryBuffer();
   
    install_int(AlCon_IntCursor, 500);
   
@@ -773,6 +773,9 @@ int AlCon_Resize(unsigned sW, unsigned sH, int new_font_width,
 
    // Hide the mouse during the change. If we don't do it the cursor gets damaged.
    show_mouse(NULL);
+   int temp;
+   AlCon_UnDrawCursor(&temp);
+   
    // Be brave and try the new screen resolution.
    // TODO: Get rid of explicit driver. Maybe use configuration file?
    int ret = set_gfx_mode(GFX_AUTODETECT_WINDOWED,
@@ -783,6 +786,15 @@ int AlCon_Resize(unsigned sW, unsigned sH, int new_font_width,
      {
       AlCon_ScreenWidth=sW;
       AlCon_ScreenHeight=sH;
+      // Reallocate internal memory for text video.
+      AlCon_AllocateMemoryBuffer();
+      // Fix up cursor position, it may have ended up outside screen.
+      if (cursorX > AlCon_ScreenWidth || cursorY > AlCon_ScreenHeight)
+         AlCon_GotoXY(1, 1);
+      
+      // Clean up the screen, just in case...
+      clear_to_color(screen, 0);
+      
       show_mouse(screen);
       return 0;
      }
@@ -1327,3 +1339,26 @@ void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h)
    if (h)
       *h = AlCon_FontHeight;
 }
+
+/**[txh]********************************************************************
+
+  Description: Allocates for the chars and attrs global buffers
+  enough memory as specified by the variables AlCon_ScreenWidth
+  and AlCon_ScreenHeight. If these global variables already had
+  something allocated to them (ie: you are resizing the screen),
+  that memory is freed before the new allocation takes place.
+  
+***************************************************************************/
+
+static void AlCon_AllocateMemoryBuffer(void)
+{
+   if (chars) {
+      ASSERT(attrs);
+      free(chars);
+      free(attrs);
+   }
+   chars = (unsigned char *)malloc(AlCon_ScreenWidth * AlCon_ScreenHeight);
+   attrs = (unsigned char *)malloc(AlCon_ScreenWidth * AlCon_ScreenHeight);
+   ASSERT(chars && attrs);
+}
+
