@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.225  2004/12/10 15:15:33  set
+* Fixed: When configuring with --no-intl the TCluster class generated a
+SIGSEGV in the destructor. Reported by Julian B. Lethbridge.
+
 Revision 2.399.2.224  2004/12/07 14:41:17  set
 * Added: [config] --debug option to select debug switches.
 
