@@ -1,9 +1,12 @@
-$Log$.
+$Log$
+Revision 2.491  2003/07/30 14:18:20  set
+* Updated the web page to list the new packages.
+
 Revision 2.490  2003/07/29 13:22:33  set
 * Fixed: fileview.cc used destroy instead of CLY_destroy. Looks like some
 patch from my home CVS was missing. I also adapted all examples to use
 CLY_destroy. Reported by abx@abx.art.pl
-.
+
 Revision 2.489  2003/07/28 18:05:17  set
 * Fixed: The configure script to accept command line optins like:
 --cflags="..." without breaking the options. Reported by Ivan.
@@ -11,7 +14,7 @@ Revision 2.489  2003/07/28 18:05:17  set
 easier to have more than one TV installed and remove one without altering
 the other. Suggested by Ivan.
 * Modified: The OS clipboard code to return translated messages.
-.
+
 Revision 2.488  2003/07/28 02:53:52  terrible
 * Fixed: configset didn't wait for an ENTER because the read command
 required an argument. While I was there I did cosmetic changes.
