@@ -25,4 +25,9 @@ This doesn't exist, use event.mouse.doubleClick instead
 The files in this port are just included with #include <tv.h>
 * The compiler says the header can't be located.
 
+7) Standard headers and DJGPP v2.01
+Put all the standard (stdio, stdlib, string, unistd, time, mem, etc.) headers
+before the #include <tv.h>. Isn't supposed to be needed with djgpp v2.02.
+* Compiler complains about redefinitions of NULL.
+
 Salvador Eduardo Tropea (set-soft@usa.net)
