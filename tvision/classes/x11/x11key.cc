@@ -369,7 +369,7 @@ void TGKeyX11::FillTEvent(TEvent &e)
  e.keyDown.charScan.scanCode=Scan;
  e.keyDown.raw_scanCode=Scan;
  e.keyDown.keyCode=Abstract;
- e.keyDown.shiftState=Flags;
+ e.keyDown.shiftState=kbFlags;
  e.what=evKeyDown;
 }
 
