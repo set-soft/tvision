@@ -20,6 +20,8 @@ included by the rhide.env files located in each directory.
   All of these examples where easylly ported, read the porting.txt file to
 learn what incompatibilities I found while porting the examples.
 
+demo     - That's the Borland's demo adapted by Sergio Sigala, I did some
+           changes to compile it with this port.
 dyntxt   - Implements a StaticText with getData/setData member to make it
            "non-static".
 inplis   - That's interesting. It implements a class with pairs label/data

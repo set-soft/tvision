@@ -1,1 +1,1 @@
-rm */*.o */*.exe */*.gdt */*.bkp *.bkp
+rm */*.o */*.exe */*.gdt */*.bkp *.bkp */*.dst
