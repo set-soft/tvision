@@ -24,85 +24,85 @@ const ushort
 
 #if defined( Uses_TDialog )
 
-#include <dialog.h>
+#include <tv/dialog.h>
 
 #endif
 
 #if defined( Uses_TInputLine )
 
-#include <inputln.h>
+#include <tv/inputln.h>
 
 #endif
 
 #if defined( Uses_TButton )
 
-#include <button.h>
+#include <tv/button.h>
 
 #endif
 
 #if defined( Uses_TSItem )
 
-#include <sitem.h>
+#include <tv/sitem.h>
 
 #endif
 
 #if defined( Uses_TCluster )
 
-#include <cluster.h>
+#include <tv/cluster.h>
 
 #endif
 
 #if defined( Uses_TRadioButtons )
 
-#include <radiobtn.h>
+#include <tv/radiobtn.h>
 
 #endif
 
 #if defined( Uses_TCheckBoxes )
 
-#include <checkbox.h>
+#include <tv/checkbox.h>
 
 #endif
 
 #if defined( Uses_TListBox )
 
-#include <listbox.h>
+#include <tv/listbox.h>
 
 #endif
 
 #if defined( Uses_TStaticText )
 
-#include <sttctext.h>
+#include <tv/sttctext.h>
 
 #endif
 
 #if defined( Uses_TParamText )
 
-#include <parmtext.h>
+#include <tv/parmtext.h>
 
 #endif
 
 #if defined( Uses_TLabel )
 
-#include <label.h>
+#include <tv/label.h>
 
 #endif
 
 #if defined( Uses_THistoryViewer )
 
-#include <histvwer.h>
+#include <tv/histvwer.h>
 
 #endif
 
 #if defined( Uses_THistoryWindow )
 
-#include <histwind.h>
+#include <tv/histwind.h>
 
 #endif
 
 #if defined( Uses_THistory )
 
-#include <history.h>
+#include <tv/history.h>
 
 #endif
 

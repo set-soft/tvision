@@ -11,27 +11,21 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  */
 
-#if defined( Uses_TPoint )
+#if defined( Uses_TTextDevice )
 
-#include <point.h>
-
-#endif
-
-#if defined( Uses_TRect )
-
-#include <rect.h>
+#include <tv/textdev.h>
 
 #endif
 
-#if defined( Uses_TCollection )
+#if defined( Uses_TTerminal )
 
-#include <collectn.h>
+#include <tv/terminal.h>
 
 #endif
 
-#if defined( Uses_TSortedCollection )
+#if defined( Uses_otstream )
 
-#include <sortcoll.h>
+#include <tv/otstream.h>
 
 #endif
 

@@ -13,43 +13,43 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_TStringCollection )
 
-#include <strncoll.h>
+#include <tv/strncoll.h>
 
 #endif
 
 #if defined( Uses_TResourceItem )
 
-#include <resitem.h>
+#include <tv/resitem.h>
 
 #endif
 
 #if defined( Uses_TResourceCollection )
 
-#include <rescoll.h>
+#include <tv/rescoll.h>
 
 #endif
 
 #if defined( Uses_TResourceFile )
 
-#include <resfile.h>
+#include <tv/resfile.h>
 
 #endif
 
 #if defined( Uses_TStrIndexRec )
 
-#include <strinrec.h>
+#include <tv/strinrec.h>
 
 #endif
 
 #if defined( Uses_TStringList )
 
-#include <strilist.h>
+#include <tv/strilist.h>
 
 #endif
 
 #if defined( Uses_TStrListMaker )
 
-#include <strlistm.h>
+#include <tv/strlistm.h>
 
 #endif
 

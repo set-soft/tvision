@@ -99,7 +99,7 @@ extern "C" long __filelength(int);
 #define MAXLFNPATH 512
 #endif
 
-#include <intl.h>
+#include <tv/intl.h>
 #include <sys/types.h>
 
 #ifndef __DJGPP__

@@ -16,7 +16,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TEvent
 #define Uses_TScreen
 #include <tv.h>
-#include <gkey.h>
+#include <tv/gkey.h>
 
 TMouse *TEventQueue::mouse = NULL;
 // SET: egcs gets upset if we partially initialize structures and egcs

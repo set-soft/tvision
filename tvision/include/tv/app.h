@@ -13,27 +13,27 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_TBackground )
 
-#include <backgrnd.h>
+#include <tv/backgrnd.h>
 
 #endif
 
 
 #if defined( Uses_TDeskTop )
 
-#include <desktop.h>
+#include <tv/desktop.h>
 
 #endif
 
 
 #if defined( Uses_TProgram )
 
-#include <program.h>
+#include <tv/program.h>
 
 #endif
 
 #if defined( Uses_TApplication )
 
-#include <applictn.h>
+#include <tv/applictn.h>
 
 #endif
 

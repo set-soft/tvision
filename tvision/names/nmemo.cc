@@ -1,5 +1,5 @@
 #define Uses_n
-#include <ttypes.h>
-#include <tvutil.h>
+#include <tv/ttypes.h>
+#include <tv/tvutil.h>
 n(TMemo)
 

@@ -23,55 +23,55 @@ TStatusDef& operator + ( TStatusDef& s1, TStatusDef& s2 );
 
 #if defined( Uses_TMenuItem )
 
-#include <menuitem.h>
+#include <tv/menuitem.h>
 
 #endif
 
 #if defined( Uses_TSubMenu )
 
-#include <submenu.h>
+#include <tv/submenu.h>
 
 #endif
 
 #if defined( Uses_TMenu )
 
-#include <menu.h>
+#include <tv/menu.h>
 
 #endif
 
 #if defined( Uses_TMenuView )
 
-#include <menuview.h>
+#include <tv/menuview.h>
 
 #endif
 
 #if defined( Uses_TMenuBar )
 
-#include <menubar.h>
+#include <tv/menubar.h>
 
 #endif
 
 #if defined( Uses_TMenuBox )
 
-#include <menubox.h>
+#include <tv/menubox.h>
 
 #endif
 
 #if defined( Uses_TStatusItem )
 
-#include <statsitm.h>
+#include <tv/statsitm.h>
 
 #endif
 
 #if defined( Uses_TStatusDef )
 
-#include <statsdef.h>
+#include <tv/statsdef.h>
 
 #endif
 
 #if defined( Uses_TStatusLine )
 
-#include <statslin.h>
+#include <tv/statslin.h>
 
 #endif
 

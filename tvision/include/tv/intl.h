@@ -4,7 +4,7 @@
 #ifdef FORCE_INTL_SUPPORT
 #define HAVE_INTL_SUPPORT
 #else
-#include <configtv.h>
+#include <tv/configtv.h>
 # ifdef _WIN32
 # undef HAVE_INTL_SUPPORT
 # endif
