@@ -11,6 +11,7 @@ systems like OS/2 that provides DOS emulation.
 1. INTRODUCTION
 2. FEATURES
 3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
+4. NOTES ABOUT WINDOWS
 
 
 1. INTRODUCTION
@@ -46,9 +47,26 @@ plan to do it any time soon unless I get volunteers to help.
 own mode or use an external program.
 * Palette. The speed for it is high.
 * Window title set/restore when running on Win32 systems.
-* Most keyboard combinations. Some are lost if you use the BIOS strategy.
+* Most keyboard combinations. Some are lost if you use the BIOS strategy. [1]
 * Restore command.com screen.
 * Fonts. Primary and secondary.
+* Mouse. Full support for drivers compatible with MSMouse v6.0.
+
+  Notes about the screen:
+  Any text mode fully supported by BIOS and that is compatible with
+mode 3 (VGA color) is supported, VESA modes are supported too, if you have
+problems please report it. If you use a program that sets the video mode by
+tweaking the VGA registers it will also set the BIOS data area to reflect the
+new screen size or it won't work.
+  Additionally the library supports some build in modes: 82x25, 80x28, 80x30,
+90x30, 94x30, 80x34, 90x34, 94x34, 80x35, 80x40, 80x43 and 80x50.
+  Note: if you wonder why 82x25 that's a mode where the characters have 8
+pixels of width and is very good for fonts with strange layouts like
+ISO-Latin-1 (from Linux).
+  The hercules monochrome mode should be supported but I didn't test it for
+a long time so perhaps something is broken, please report your experience
+if you try it.
+
 
 
 3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
@@ -86,4 +104,68 @@ VGABIOSState  Integer  This is related to the SaveVGAState variable. When
                        VGA compatible at registers level (also the Windows
                        driver if you are using Windows). This uses very low
                        level stuff.
+FixKbdBuffer  Integer  When enabled we assume the start of the keyboard
+                       buffer is at offset 0x1E and the end at offset 0x3D.
+                       When disabled (default) the size is monitored all
+                       the time.
+
+
+4. NOTES ABOUT WINDOWS
+
+  I strongly recommend using the Win32 drivers for Win32 platforms specially
+if the application will run using Windows NT (note that Windows 2000 and XP
+are Windows NT 5.x). Windows NT 4.x have a bad DOS emulation and it looks
+like 5.x made it even worst.
+  Here are some notes I had in the main readme file about this topic:
+
+Windows 3.x:
+  I didn't test it for years so I don't know the current status.
+
+Windows 9x:
+  Keyboard:
+    Almost the same support as in plain DOS. The TSR works at least in
+   Windows '95. Some keys are used by the GUI so not all are available I
+   include a .pif example showing how to avoid W9x take control of Alt+Space
+   and other keys. The example is in extra/pifexamp.
+  Screen:
+    The support is similar to the one found in DOS, but I know some video
+   drivers have bugs in the VESA handling so perhaps it could make problems.
+   If you face such a problem please contact me, in the past I fixed VESA
+   problems with S3 boards thanks to the help of a user.
+    Usually isn't a good idea to run applications that change the video mode
+   inside a window, so if your program does it recommend not running in a
+   window to your users. One way to avoid it is using a .pif file, it will
+   prevent 98% of the people from "windowizing" the program. See the
+   extra/pifexamp example for it, it instructs W95 to run the program in full
+   screen and disable Alt+Enter, the example also gives up to 64Mb to the
+   application (the maximun W95 will give to a DOS task).
+  Mouse:
+    Full support.
+  Note: I think all of it applies to Windows 98, if you see any difference
+        please tell me.
+
+Windows NT:
+  This platform isn't fully supported by the DOS target. I think NT's support
+  for DOS applications is completly broken so I don't care about it. If you
+  have patches I'll receive it.
+
+
+
+-----------------------------------------------------------------------------
+Foot notes:
+
+
+[1] Note that the driver ever takes the keyboard keystrokes from BIOS, it
+can be using the BIOS interrupt or simply removing the key from the BIOS'
+buffer.
+  The last approach reports much more keys but not all, in particular:
+
+* Control + `1457890=;,./
+* Macro key (I have it in one of my keyboards)
+
+  To workaround it I created a small TSR (hacking another TSR and rewriting
+the code inside the ISR ;-). This TSR is included with the sources
+distribution in the extra/doskeys directory, you can distribute it with
+your program if you want, just don't remove my copyright.
+
 
