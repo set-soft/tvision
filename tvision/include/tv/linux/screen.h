@@ -110,6 +110,7 @@ public:
  virtual ~TScreenLinux();
 
  friend class TDisplayLinux;
+ friend class TGKeyLinux; // Suspend/ResumeFont on VT switch
 
 protected:
 
@@ -164,6 +165,8 @@ protected:
  static int  AllocateFontsMemory();
  static int  GetLinuxFont();
  static void ExpandFont(uchar *dest, TScreenFont256 *font);
+ static void SuspendFont();
+ static void ResumeFont();
  // Terminal state before starting
  static struct termios outTermiosOrig;
  // Our terminal state

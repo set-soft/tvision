@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.198  2002/07/01 19:08:31  set
+* Modified: Linux project and makefile and DOS files so DJGPP and Linux
+projects are more similar. Second step towards an unification.
+
 Revision 2.197  2002/07/01 15:58:20  set
 * Updated: [QNX] package file. From Mike.
 * Added: [QNX] small doc about the limitations. From Mike.

@@ -45,6 +45,7 @@
 #include <signal.h>
 
 #include <tv/linux/key.h>
+#include <tv/linux/screen.h>
 #include <tv/linux/log.h>
 
 int            TGKeyLinux::hIn=-1;
@@ -847,6 +848,7 @@ void TGKeyLinux::releaseVTHandler(int)
 {
  unPatchKeyMap();
  TMouse::suspend();
+ TScreenLinux::SuspendFont();
  ioctl(hIn,VT_RELDISP,1);
 }
 
@@ -856,6 +858,7 @@ void TGKeyLinux::acquireVTHandler(int)
  ioctl(hIn,VT_WAITACTIVE,ourVT);
  patchKeyMap();
  TMouse::resume();
+ TScreenLinux::ResumeFont();
 }
 
 void TGKeyLinux::doHookAndPatch()

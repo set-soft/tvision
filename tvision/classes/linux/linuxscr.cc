@@ -14,13 +14,14 @@ is explained.
   UseVCS=1
   UseMDA=1
   PatchKeys=1
+  UseSecondaryFont=0
 
 *****************************************************************************/
 /*
-ToDo: Font restore on suspend and memorize on resume. Also console switch.
-      What can I do with the limitation imposed to the colors when 512 chars
-      are used? should I disable secondary font? What if the user really have
-      512 characters?
+ToDo: What if the user really have 512 characters? in this case the console have
+      only 8 colors.
+
+ToDo: What if the fonts geometry changes on the fly? Or in a console switch?
 
 ToDo: Add support for the ISO codepages as used by Linux, not just the standard
 + my frames.
@@ -67,6 +68,9 @@ But this doesn't work at all, if you enable mouse reporting (\E[?9h or
 \E[?1000h) you get nothing. You'll get something when somebody calls
 set_selection code using mode 16. This is far from usable.
 
+When trying to use a secondary font:
+* The Linux kernel switchs to 8 colors mode. See comments in InitOnce().
+For this reason we don't enable it by default.
 */
 #include <tv/configtv.h>
 
@@ -585,7 +589,18 @@ int TScreenLinux::InitOnce()
  // We support fonts, but we can change their geometry at will.
  flags0=CanSetPalette | CodePageVar | CursorShapes | UseScreenSaver;
  if (canSetFonts)
-    flags0|=CanSetBFont | CanSetSBFont;
+   {
+    flags0|=CanSetBFont;
+    // When we use the secondary font Linux reduces the colors number to 8.
+    // This is good if the 512 chars are defining a big charset, but really
+    // bad if they are defining 2 different charsets. As we use it to define
+    // 2 charsets the impact is negative. So we enable it only if the user
+    // specifically asks for it.
+    long useSecondaryFont=0;
+    TScreen::optSearch("UseSecondaryFont",useSecondaryFont);
+    if (useSecondaryFont)
+       flags0|=CanSetSBFont;
+   }
 
  return 0;
 }
@@ -780,6 +795,8 @@ void TScreenLinux::Suspend()
  oldCol=oldBack=oldFore=-1;
  // Restore screen contents
  RestoreScreen();
+ // Restore the font
+ SuspendFont();
  // Restore the cursor shape
  setCursorType(startupCursor);
  // Restore cursor position, attributes and charset
@@ -844,6 +861,8 @@ void TScreenLinux::Resume()
  // Save cursor position, attributes and charset
  fputs("\E7",stdout);
  getCursorPos(oldCurX,oldCurY);
+ // Restore our fonts
+ ResumeFont();
  if (tioclinuxOK)
     // We know the default colors, we can just hope they are the currently used
     GetDisPaletteColors(0,16,OriginalPalette);
@@ -1299,10 +1318,10 @@ int TScreenLinux::GetLinuxFontGeometry()
  linuxFont.width=16;
 
  int ret=ioctl(hOut,KDFONTOP,&linuxFont);
- unsigned count=linuxFont.charcount;
+ /*unsigned count=linuxFont.charcount;
  linuxFont.charcount=0;
  ioctl(hOut,KDFONTOP,&linuxFont);
- linuxFont.charcount=count;
+ linuxFont.charcount=count;*/
 
  return ret>=0;
 }
@@ -1332,7 +1351,7 @@ void TScreenLinux::FreeFontsMemory()
 int TScreenLinux::AllocateFontsMemory()
 {
  unsigned bytes=32*((linuxFont.width+7)/8);
- linuxFont.data=(uchar *)malloc(bytes*linuxFont.charcount*2);
+ linuxFont.data=(uchar *)malloc(bytes*linuxFont.charcount);
  ourFont.data=(uchar *)malloc(bytes*512);
  return linuxFont.data && ourFont.data;
 }
@@ -1340,7 +1359,6 @@ int TScreenLinux::AllocateFontsMemory()
 int TScreenLinux::GetLinuxFont()
 {
  linuxFont.op=KD_FONT_OP_GET;
- memset(linuxFont.data,0xAA,8192);
  return ioctl(hOut,KDFONTOP,&linuxFont)>=0;
 }
 
@@ -1422,6 +1440,8 @@ int TScreenLinux::SetFont(int which, TScreenFont256 *font, int encoding)
 
 void TScreenLinux::RestoreFonts()
 {
+ if (!primaryFontSet && !secondaryFontSet)
+    return; // Protection
  linuxFont.op=KD_FONT_OP_SET;
  ioctl(hOut,KDFONTOP,&linuxFont);
  // We no longer have a font loaded
@@ -1429,6 +1449,35 @@ void TScreenLinux::RestoreFonts()
  TVCodePage::SetCodePage(origCPScr,origCPApp);
  secondaryFontSet=primaryFontSet=0;
 }
+
+void TScreenLinux::SuspendFont()
+{
+ if (primaryFontSet || secondaryFontSet)
+   {// Set the Linux fonts again
+    linuxFont.op=KD_FONT_OP_SET;
+    ioctl(hOut,KDFONTOP,&linuxFont);
+    // Free their memory, we will memorize them again in the resume
+    free(linuxFont.data);
+    linuxFont.data=NULL;
+   }
+}
+
+void TScreenLinux::ResumeFont()
+{
+ if (primaryFontSet || secondaryFontSet)
+   {// Get Linux fonts info
+    GetLinuxFontGeometry();
+    // Allocate memory for them
+    unsigned bytes=32*((linuxFont.width+7)/8);
+    linuxFont.data=(uchar *)malloc(bytes*linuxFont.charcount);
+    // Get them
+    GetLinuxFont();
+    // Now restore our fonts
+    ourFont.op=KD_FONT_OP_SET;
+    ioctl(hOut,KDFONTOP,&ourFont);
+   }
+}
+
 
 #else // TVOSf_Linux
 
