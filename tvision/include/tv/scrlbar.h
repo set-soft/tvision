@@ -41,7 +41,7 @@ public:
     virtual void scrollDraw();
     virtual int scrollStep( int part );
     void setParams( int32 aValue, int32 aMin, int32 aMax,
-		    int aPgStep, int aArStep );
+                    int aPgStep, int aArStep );
     void setRange( int32 aMin, int32 aMax );
     void setStep( int aPgStep, int aArStep );
     void setValue( int32 aValue );
@@ -69,7 +69,7 @@ private:
 
 #if !defined( NO_STREAM )
     virtual const char *streamableName() const
-	{ return name; }
+     { return name; }
 
 protected:
 

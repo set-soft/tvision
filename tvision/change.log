@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.219  2002/07/15 15:16:40  set
+* Modified: The TVCodePage semantics. Now is more clear. I hope it doesn't
+break the code ;-).
+
 Revision 2.218  2002/07/15 15:13:38  set
 * Added: A mechanism to allow applications to provide a new font when the
 one currently in use doesn't match a new video mode.
