@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.161  2002/06/19 18:43:35  set
+* Modified: [WWW] The QNX port is now finished, added as available target.
+
 Revision 2.160  2002/06/19 17:10:12  set
 * Added: [Linux] support for russian keyboards when the encoding is KOI8.
 Alexey Godin gave me the information about the layout. I tested it using
