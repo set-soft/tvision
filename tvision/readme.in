@@ -325,8 +325,9 @@ the demo worked ok.
   for Alpha).
 
 The Linux+Power PC and Linux+SPARC64 architectures are partially supported.
-The demo program compiles but there are some endian details that must be
-solved.
+The demo program compiles but I think there are some endian details that
+must be solved, I fixed the ones that were visible. Joel Soete reported some
+success using Linux+HPPA+gcc 3.0.
   The FreeBSD+x86 platform seems to work, but you must install the GNU
 tools like make (it can be named gmake) and in the remote system I tested I
 got monochrome output, perhaps is just a wrong xterm terminfo description.
