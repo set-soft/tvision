@@ -129,6 +129,9 @@ are just broken.
 // What a hell is that?!
 #define force_redraw 0
 
+#define ENTER_UTF8  "\e%G"
+#define EXIT_UTF8   "\e%@"
+
 struct termios TScreenLinux::outTermiosOrig;
 struct termios TScreenLinux::outTermiosNew;
 const char    *TScreenLinux::error=NULL;
@@ -151,7 +154,8 @@ struct console_font_op
                TScreenLinux::ourFont;
 int            TScreenLinux::origCPScr,
                TScreenLinux::origCPApp,
-               TScreenLinux::origCPInp;
+               TScreenLinux::origCPInp,
+               TScreenLinux::origUTF8Mode;
 
 // Information about known font maps
 struct stCodePageCk
@@ -577,6 +581,57 @@ int TScreenLinux::GuessCodePageFromLANG()
  return ret;
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Determines if the console is in UTF-8 or single char mode.
+  
+  Return: 1 UTF-8, 0 single char, -1 error.
+  
+***************************************************************************/
+
+int TScreenLinux::isInUTF8()
+{
+ unsigned y, x;
+
+ // The following test is from an idea in console-tools by
+ // Ricardas Cepas <rch@pub.osf.lt>. GPL.
+ setCursorPos(0,0);
+ // "\357\200\240" = U+F020 = `space' in Linux's straight-to-font zone
+ fputs("\357\200\240",fOut);
+ // Make sure it is printed
+ fflush(fOut);
+ getCursorPos(x,y);
+ // Get a single byte in UTF-8 and 3 bytes othewise
+ switch (x)
+   {
+    case 1: // UTF-8
+         x=1;
+         LOG("UTF-8 mode detected");
+         break;
+    case 3: // single-byte mode
+         x=0;
+         LOG("Single char mode detected");
+         break;
+    default: // error
+         LOG("Error, can't determine UTF-8 state, column: " << x);
+         return -1;
+   }
+  
+ return x;
+}
+
+void TScreenLinux::AvoidUTF8Mode()
+{
+ // Determine UTF-8 mode
+ origUTF8Mode=isInUTF8();
+ if (origUTF8Mode==-1)
+    LOG("Error determining UTF-8 mode");
+ // If necesary exit from it
+ if (origUTF8Mode==1)
+    fputs(EXIT_UTF8,fOut);
+}
+
 int TScreenLinux::InitOnce()
 {
  LOG("TScreenLinux::InitOnce");
@@ -855,6 +910,8 @@ TScreenLinux::TScreenLinux()
  // Now we can do it
  getCursorPos(oldCurX,oldCurY);
 
+ AvoidUTF8Mode();
+
  if (mode==lnxInitVCSrw || mode==lnxInitVCSwo)
    {// VCS access is assumed to be color
     palette=PAL_HIGH;
@@ -943,6 +1000,9 @@ void TScreenLinux::Suspend()
  else
     // Just reset to default palette (should be equivalent)
     fputs("\E]R",fOut);
+ // Restore UTF-8 mode
+ if (origUTF8Mode==1)
+    fputs(ENTER_UTF8,fOut);
  // Is that a Linux bug? Sometime \E8 works, others not.
  fputs("\E8",fOut);
  // Restore cursor position
@@ -994,6 +1054,7 @@ void TScreenLinux::Resume()
  // Save cursor position, attributes and charset
  fputs("\E7",fOut);
  getCursorPos(oldCurX,oldCurY);
+ AvoidUTF8Mode();
  // Restore our fonts
  ResumeFont();
  if (tioclinuxOK)
@@ -1264,8 +1325,6 @@ void TScreenLinux::writeBlock(int dst, int len, ushort *old, ushort *src)
        must pass unchanged to the screen
     */
     #define CTRL_ALWAYS 0x0800f501  /* Cannot be overridden by disp_ctrl */
-    #define ENTER_UTF8  "\e%G"
-    #define EXIT_UTF8   "\e%@"
     if (code<32 && ((CTRL_ALWAYS>>code) & 1))
       {/* This character can't be printed, we must use unicode */
        /* Enter UTF-8 and start constructing 0xF000 code */

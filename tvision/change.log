@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.452  2003/05/19 14:06:39  set
+* Added: Some test programs to detect problems with Linux console handling.
+I put them in the docs directory.
+
 Revision 2.451  2003/05/19 13:50:06  set
 * Fixed: [Win32] The configure script didn't define the STDINC directories
 (in fact I don't know what exactly to put there) and hence it was
