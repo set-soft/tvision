@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.48  2002/05/02 19:38:14  set
+* Fixed: Window resize for X11. I didn't notify it to TProgram and the
+window normalization was done before reallocating the screenBuffer.
+
 Revision 2.47  2002/05/02 19:37:15  set
 * Fixed: TDisplay::defaultGetWindowTitle(void) returned a static string,
 not newly allocated.

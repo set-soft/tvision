@@ -175,6 +175,7 @@ void TDisplayUNIX::SetCursorShape(unsigned start, unsigned end)
    }
  cursorStart=start;
  cursorEnd=end;
+ //fprintf(stderr,"SetCursorShape: %d,%d start>=end? %d\n",start,end,start>=end);
 }
 
 void TDisplayUNIX::GetCursorShape(unsigned &start, unsigned &end)
@@ -194,6 +195,7 @@ void TDisplayUNIX::GetCursorShape(unsigned &start, unsigned &end)
  // Currently we don't know the real state.
  start=cursorStart;
  end  =cursorEnd;
+ //fprintf(stderr,"GetCursorShape: %d,%d\n",start,end);
 }
 
 ushort TDisplayUNIX::GetRows()

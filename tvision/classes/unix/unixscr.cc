@@ -933,7 +933,7 @@ void TScreenUNIX::setCrtData()
     screenMode  =7;
     screenWidth =80;
     screenHeight=25;
-    cursorLines =getCursorType();
+    cursorLines =(ushort)(85 | (100<<8));
   }
   else
   {
@@ -941,16 +941,18 @@ void TScreenUNIX::setCrtData()
     screenWidth =getCols();
     screenHeight=getRows();
     hiResScreen =Boolean(screenHeight > 25);
-    cursorLines =getCursorType();
+    // After mode setting cursor is assumed to be visible and in "normal" state.
+    cursorLines =(ushort)(85 | (100<<8));
+    // Now hide the cursor
     setCursorType(0);
   }
 }
 
-void TScreenUNIX::setVideoMode( ushort mode )
+void TScreenUNIX::setVideoMode(ushort mode)
 {
   int oldWidth=screenWidth;
   int oldHeight=screenHeight;
-  setCrtMode( fixCrtMode( mode ) );
+  setCrtMode(fixCrtMode(mode));
   setCrtData();
   // allocating a zeroed screenBuffer, because this function
   // is called in most cases (in RHIDE) after a SIGWINCH
@@ -969,7 +971,7 @@ void TScreenUNIX::setVideoModeExt( char *mode )
 {
   int oldWidth=screenWidth;
   int oldHeight=screenHeight;
-  setCrtModeExt( mode );
+  setCrtModeExt(mode);
   setCrtData();
   // allocating a zeroed screenBuffer, because this function
   // is called in most cases (in RHIDE) after a SIGWINCH

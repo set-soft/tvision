@@ -15,7 +15,7 @@
 
 #include <tv/x11scr.h>
 
-//#include <stdio.h>
+#include <stdio.h>
 /*****************************************************************************
 
   TDisplayX11 display stuff, that's very easy because we control all the
@@ -65,10 +65,12 @@ void TDisplayX11::GetCursorShape(unsigned &start, unsigned &end)
 {
  start=100*cShapeFrom/fontH;
  end  =100*cShapeTo/fontH;
+ //fprintf(stderr,"GetCursorShape: %d,%d\n",start,end);
 }
 
 void TDisplayX11::SetCursorShape(unsigned start, unsigned end)
 {
+ //fprintf(stderr,"SetCursorShape: %d,%d start>=end? %d\n",start,end,start>=end);
  cShapeFrom=start*fontH/100;
  cShapeTo  =end*fontH/100;
  if ((unsigned)cShapeFrom>fontH) cShapeFrom=fontH;
