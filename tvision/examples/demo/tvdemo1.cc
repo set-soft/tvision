@@ -43,7 +43,7 @@
 /* SS: changed */
 
 //#ifdef __DPMI32__
-#define HELP_FILENAME "DEMOHELP.H32"
+#define HELP_FILENAME "demohelp.h32"
 //#else
 //#define HELP_FILENAME "DEMOHELP.H16"
 //#endif
