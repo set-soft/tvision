@@ -12,7 +12,7 @@
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && !defined(TVOSf_QNXRtP)
+#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && !defined(TVOSf_QNXRtP) && !defined(TVOSf_QNX4)
 
 #include <termios.h>
 #include <signal.h>
@@ -139,10 +139,10 @@ THWMouseXTerm::~THWMouseXTerm()
 {
 }
 #endif // HAVE_NCURSES
-#else // TVOS_UNIX && !TVOSf_QNXRtP
+#else // TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
 
 #include <tv/unix/screen.h>
 #include <tv/unix/mouse.h>
 
-#endif // else TVOS_UNIX && !TVOSf_QNXRtP
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
 

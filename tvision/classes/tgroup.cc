@@ -114,7 +114,7 @@ void TGroup::remove(TView* p)
 
 static int force_redraw = 0;
 
-void TGroup::Redraw()
+void TGroup::CLY_Redraw()
 {
   force_redraw++;
   redraw();

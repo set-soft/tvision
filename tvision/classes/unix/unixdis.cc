@@ -11,7 +11,7 @@
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(TVOSf_QNX4)
 
 #include <termios.h>
 #include <term.h>
@@ -122,13 +122,13 @@ int TDisplayUNIX::CheckForWindowSize(void)
  windowSizeChanged=0;
  return ret;
 }
-#else // TVOS_UNIX && !TVOSf_QNXRtP
+#else // TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
 
-#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(TVOSf_QNX4)
  #include <signal.h>
 #endif
 
 #include <tv/unix/screen.h>
 
-#endif // else TVOS_UNIX && !TVOSf_QNXRtP
+#endif // else TVOS_UNIX && !TVOSf_QNXRtP && !TVOSf_QNX4
 
