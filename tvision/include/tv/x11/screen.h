@@ -216,13 +216,48 @@ const int x11clipNoSelection=1,
 #define charPos 0
 #define attrPos 1
 
+#if !HAVE_LINUX_PTHREAD
+ #define USE_ALARM_FOR_THREAD 1
+#endif
+
+#ifdef USE_ALARM_FOR_THREAD
+// This code uses the high resolution Alarm mechanism to update the screen
+// Is under testing
+
+ #define SEMAPHORE_ON        TVX11UpdateThread::SemaphoreOn()
+ #define SEMAPHORE_OFF       TVX11UpdateThread::SemaphoreOff()
+ #define IS_SECOND_THREAD_ON TVX11UpdateThread::CheckSecondThread()
+ #define START_UPDATE_THREAD TVX11UpdateThread::StartUpdateThread()
+ #define STOP_UPDATE_THREAD  TVX11UpdateThread::StopUpdateThread()
+ #define THREAD_AFTER_FORK   TVX11UpdateThread::StopUpdateThread()
+ #define NO_EXEC_IN_THREAD   0
+ 
+class TVX11UpdateThread
+{
+public:
+ TVX11UpdateThread() {};
+ 
+ static void SemaphoreOn();
+ static void SemaphoreOff();
+ static int  CheckSecondThread();
+ static void StartUpdateThread();
+ static void StopUpdateThread();
+
+protected:
+ static void UpdateThread(int signum);
+ static void microAlarm(unsigned int usec);
+ static int running;
+ static int initialized;
+};
+#elif HAVE_LINUX_PTHREAD
 // Linux implementation of POSIX threads
-#if HAVE_LINUX_PTHREAD
-#define SEMAPHORE_ON        TVX11UpdateThread::SemaphoreOn()
-#define SEMAPHORE_OFF       TVX11UpdateThread::SemaphoreOff()
-#define IS_SECOND_THREAD_ON TVX11UpdateThread::CheckSecondThread()
-#define START_UPDATE_THREAD TVX11UpdateThread::StartUpdateThread()
-#define STOP_UPDATE_THREAD  TVX11UpdateThread::StopUpdateThread()
+ #define SEMAPHORE_ON        TVX11UpdateThread::SemaphoreOn()
+ #define SEMAPHORE_OFF       TVX11UpdateThread::SemaphoreOff()
+ #define IS_SECOND_THREAD_ON TVX11UpdateThread::CheckSecondThread()
+ #define START_UPDATE_THREAD TVX11UpdateThread::StartUpdateThread()
+ #define STOP_UPDATE_THREAD  TVX11UpdateThread::StopUpdateThread()
+ #define THREAD_AFTER_FORK   // What can I do?
+ #define NO_EXEC_IN_THREAD   1
 
 class TVX11UpdateThread
 {
@@ -248,6 +283,8 @@ protected:
  #define IS_SECOND_THREAD_ON 0
  #define START_UPDATE_THREAD
  #define STOP_UPDATE_THREAD
+ #define NO_EXEC_IN_THREAD   0
+ #define THREAD_AFTER_FORK
 #endif
 // End of Linux implementation of POSIX threads
 

@@ -73,9 +73,9 @@
 #include <locale.h>
 #include <signal.h>
 #include <sys/time.h>
-#include <pthread.h>
-#include <sys/stat.h> // esperimento en system
-#include <wait.h>
+#ifdef HAVE_LINUX_PTHREAD
+ #include <pthread.h>
+#endif
 
 #ifdef TVOSf_Solaris
  // At least in the Solaris 7 box I tested looks like ITIMER_REAL is broken
@@ -254,7 +254,7 @@ int TScreenX11::System(const char *command, pid_t *pidChild, int in, int out,
     if (err!=-1)
        dup2(err,STDERR_FILENO);
 
-    if (IS_SECOND_THREAD_ON)
+    if (NO_EXEC_IN_THREAD && IS_SECOND_THREAD_ON)
       {// That's very Linux specific:
        // For some (unknown) reason we can't use exec here. If we use exec then
        // the update thread dies and the "monitoring" thread becomes a Zombie.
@@ -2050,7 +2050,161 @@ void TScreenX11::Beep()
  SEMAPHORE_OFF;
 }
 
+/*****************************************************************************
 
+  Update thread stuff:
+
+  Problem: In X11 (and most GUI systems) the contents of the window aren't
+  stored/cached. So when a window is not visible (exposed is the X11 term) its
+  contents aren't stored anywhere. When the window (or a portion) becomes
+  exposed X11 sends an expose event. If the application isn't collecting
+  expose events, because is blocked waiting for a child completion or
+  performing a long computation, the exposed portion of the window is filled
+  with a black rectangle (this color is selected during TScreenX11 creation).
+   This is very bad for applications like RHIDE where the debugger is blocked
+  until the debuggee is stoped. It means that you most probably won't be able
+  to see RHIDE's window content while the debuggee is running. Even when it
+  isn't critical is ugly.
+   The idea is to periodically collect the expose events even when the process
+  is blocked.
+   I (SET) implemented it using two different approaches:
+
+  1) POSIX threads. They seems to be poorly implemented in Linux (i.e. glibc
+  2.2.5 and 2.3.1). This solution is elegant but unstable, at least for
+  SETEdit and RHIDE running in Debian GNU/Linux Woody and Sarge.
+  2) setitimer and SIGALRM. This is really simple and seems to be more stable.
+
+   I keep both so people can experiment with both, each approachs have its
+  advantes and disadvantages.
+
+*****************************************************************************/
+
+#if USE_ALARM_FOR_THREAD
+
+/*****************************************************************************
+
+  Update thread using the setitimer approach.
+
+  This approach uses the timer alarm (SIGALRM for Linux and SIGPROF for
+Solaris, looks like Solaris didn't implement it properly).
+  This mechanism is much more reliable than the POSIX thread mechanism, at
+least for Linux.
+  The use of a signal ensures:
+
+1) The main "thread" can't take the CPU while the signal is executing. And as
+the signal blocks itself by default it doesn't have to be reentrant.
+2) A child process doesn't inherits the timers so there is no risk to
+inherit problems.
+
+Advantages:
+1) The mutex implementation is trivial.
+2) We don't need pthread library.
+
+Disadvantages:
+1) The program can't use this alarm for itself.
+2) Implementations of the alarm mechanism should be POSIX compliant.
+    
+*****************************************************************************/
+
+// Used to print a mark every 250 updates
+#define TIC 0
+// Prints some debug info when the mechanism is dis/enabled
+#define DBG_ALM_STATE 1
+
+int     TVX11UpdateThread::running=0;
+int     TVX11UpdateThread::initialized=0;
+const int refreshTime=10000; // 10 ms
+static sig_atomic_t mutex;
+static int updates=0;
+
+void TVX11UpdateThread::UpdateThread(int signum)
+{
+ // Here TIMER_ALARM signal is blocked and the process can take the CPU
+ if (!mutex)
+   {// No mutex, we can do our work.
+    TScreenX11::ProcessGenericEvents();
+   }
+ if (TIC)
+   {
+    updates++;
+    if (updates>250)
+      {
+       printf("Tic (%d)\n",getpid());
+       updates=0;
+      }
+   }
+ if (running)
+   {// We still running, set the timer again
+    microAlarm(refreshTime);
+   }
+}
+
+void TVX11UpdateThread::StartUpdateThread()
+{
+ long aux;
+ if (TScreen::optSearch("UseUpdateThread",aux) && aux==1)
+   {
+    if (DBG_ALM_STATE)
+       printf("Using setitimer for the update stuff (PID=%d)\n",getpid());
+    mutex=0;
+    initialized=1;
+    running=1;
+    // Trap the alarm signal
+    struct sigaction s;
+    s.sa_handler=UpdateThread;
+    sigemptyset(&s.sa_mask);
+    s.sa_flags=SA_RESTART;
+    sigaction(TIMER_ALARM,&s,NULL);
+    // Set the alarm
+    microAlarm(refreshTime);
+   }
+}
+
+void TVX11UpdateThread::microAlarm(unsigned int usec)
+{
+ struct itimerval newV;
+ newV.it_interval.tv_usec=0;
+ newV.it_interval.tv_sec=0;
+ newV.it_value.tv_usec=(long int)usec;
+ newV.it_value.tv_sec=0;
+ setitimer(ITIMER_USED,&newV,0);
+}
+
+void TVX11UpdateThread::SemaphoreOn()
+{
+ mutex++;
+ // We will never collide with the signal because the signal is atomic from
+ // our point of view.
+}
+
+void TVX11UpdateThread::SemaphoreOff()
+{
+ --mutex;
+ if (mutex<0)
+    printf("Oh no!!! mutex<0\n");
+}
+
+int TVX11UpdateThread::CheckSecondThread()
+{
+ return (initialized && running);
+}
+
+void TVX11UpdateThread::StopUpdateThread()
+{
+ if (IS_SECOND_THREAD_ON)
+   {
+    if (DBG_ALM_STATE)
+       printf("Stopping update thread for PID=%d\n",getpid());
+    running=0;
+    // Un-Trap the alarm signal
+    struct sigaction s;
+    s.sa_handler=SIG_IGN;
+    sigemptyset(&s.sa_mask);
+    s.sa_flags=SA_RESTART;
+    sigaction(TIMER_ALARM,&s,NULL);
+   }
+}
+#elif HAVE_LINUX_PTHREAD
 /**************************************************************************
 
  Update thread stuff
@@ -2058,7 +2212,7 @@ void TScreenX11::Beep()
    This code is under test and for this reason must be enabled manually
  defining the UseUpdateThread configuration variable.
 
- Some important details: [glibc 2.2.5]
+ Some important details: [glibc 2.2.5 also 2.3.1]
 
  * Linux threads are implemented using processes (clone kernel syscall).
    I think that they will never be really POSIX compliant if this mechanism
@@ -2110,7 +2264,6 @@ void TScreenX11::Beep()
 **************************************************************************/
 
 // Linux implementation of POSIX threads
-#if HAVE_LINUX_PTHREAD
 
 // Here to avoid pulling the headers everywhere
 static pthread_t th;

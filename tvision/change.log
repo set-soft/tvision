@@ -1,4 +1,15 @@
-$Log$
+$Log$.
+Revision 2.494  2003/08/05 19:26:24  set
+* Added: [X11] a new option for this driver called UseUpdateThread. When
+enabled (and support is compiled) the driver uses a second thread to handle
+X11 expose events and make the cursor blink. In this way even when the
+application blocks the execution the window doesn't become "black" (lack
+of redraw). This is only supported for Linux and I'm using glibc's pthread
+library. I'm really sad to see how bad it works, I put a long list of
+problems I'm facing in the x11src.cc code. I hope all of this is just my
+fault because if they are pthread limitations then Linux have a really poor
+threads support. I'm looking for pthread replacements.
+
 Revision 2.493  2003/07/30 19:43:18  set
 * Fixed: [BC++] A warning about using unsigned mixed with signed in the
 demo example. Solution by ric <ric@mpcnet.com.br>.

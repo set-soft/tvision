@@ -136,7 +136,24 @@ DontResizeToCells      Don't resize the window to a cells multiple size if the W
                        fails to follow the hints. This helps to avoid problems found
                        in KDE 3.1 alpha.
 InternalBusyCursor     When enabled we use our own mouse cursor for it.
-UseUpdateThread        Only available for Linux.
+UseUpdateThread        When this option is enabled the driver updates the
+                       window content even if the TV application is blocking
+                       the CPU. That's very useful when the application
+                       blocks and the window becomes "exposed". If this isn't
+                       enabled X will fill the exposed area with black and
+                       the user won't see the window content until the
+                       application collects events.
+                       It is available using two mechanisms selected at
+                       compilation time:
+                       1) Using setitimer and signals:
+                       It seems to be stable but the TV application must
+                       avoid using setitimer and SIGALRM.
+                       I only tested it for Linux but I'm using concepts I
+                       successfuly used for Solaris in older versions of the
+                       driver.
+                       That's the default compilation option.
+                       2) Using POSIX threads (preemptive)                       
+                       Only available for Linux.
                        When enabled the driver uses a separated thread to
                        collect the "expose" events and update the screen.
                        That's good because even when the application is
