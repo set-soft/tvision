@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.380  2002/12/10 18:10:43  set
+* Modified: Allocated separated internal codes for cyrillic and greek
+letters that are identical to latin ones. This wastes memory but simplifies
+some stuff.
+* Added: [X11] Russian and Greek keyboards seems to work ok (my keyboard
+now is US+Japanese+Russian+Greek ;-). You just need to select the propper
+code page.
+
 Revision 2.379  2002/12/10 14:15:46  set
 * Fixed: [X11] The new code to handle input code page (return value).
 * Fixed: [X11] I relaxed the filter too much in the last patch ;-)
