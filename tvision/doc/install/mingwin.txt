@@ -10,14 +10,15 @@ $Id$
 1. INTRODUCTION
 
   MinGW needs the help of MSys and a Perl interpreter to compile this
-package. I tested it using MinGW 2.0.0, MSys 1.0.8 and the Siemens Perl port
-(SiePerl). This provides a good environment for compilation. You must ensure
-that MSys' make is used because MinGW 1.1 ships a make command that fails. I
-think newer versions doesn't have this problem.
-  IMPORTANT! the resulting application can't be run from the MSys console,
-use a DOS console or just start it as any Windows application.
-  You have to ensure that /bin/sh exists or at least create a symlink to bash
-there. If it isn't there you won't be able to run the shell scripts.
+package. I tested it using MinGW 2.0.0/3.1.0, MSys 1.0.8/1.0.10 and the
+Siemens Perl port (SiePerl). This provides a good environment for compilation.
+You must ensure that MSys' make is used because MinGW 1.1 ships a make
+command that fails. Newer versions doesn't have this problem.
+  IMPORTANT! the resulting application can't be run from the MSys console
+(rxvt), use a DOS console or just start it as any Windows application.
+  For old versions you have to ensure that /bin/sh exists or at least create
+a symlink to bash there. If it isn't there you won't be able to run the shell
+scripts.
   You can compile the library to run under Win32 platforms using various
 compilers, for this reason I explain the dis/advantages of using Cygwin for
 it.

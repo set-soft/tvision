@@ -86,7 +86,11 @@ TScreenWin32::TScreenWin32()
  if (optSearch("ScreenHeight",aux))
     maxY=aux;
  if (maxX!=saveScreenWidth || maxY!=saveScreenHeight)
+   {
     setCrtModeRes(maxX,maxY);
+    // Update cached values
+    GetConsoleScreenBufferInfo(hOut,&ConsoleInfo);
+   }
 
  cursorLines=getCursorType();
  screenWidth =GetCols();
