@@ -76,6 +76,7 @@ if (!$here && ($OS ne 'UNIX'))
   }
 # Path for the includes
 $MakeDefsRHIDE[1]='TVSRC=../../include '.$here.'/include '.@conf{'prefix'}.'/include/rhtvision';
+$MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
@@ -105,6 +106,7 @@ $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
+   $MakeDefsRHIDE[0].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
    $MakeDefsRHIDE[3]='TVOBJ=../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib';
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
@@ -227,6 +229,14 @@ sub SeeCommandLine
       {
        $conf{'mss'}='no';
       }
+    elsif ($i=~'--x-include=(.*)')
+      {
+       $conf{'X11IncludePath'}=$1;
+      }
+    elsif ($i=~'--x-lib=(.*)')
+      {
+       $conf{'X11LibPath'}=$1;
+      }
     else
       {
        ShowHelp();
@@ -238,18 +248,20 @@ sub SeeCommandLine
 sub ShowHelp
 {
  print "Available options:\n\n";
- print "--help         : displays this text.\n";
- print "--prefix=path  : defines the base directory for installation.\n";
- print "--no-intl      : don't use international support.\n";
- print "--force-dummy  : use the dummy intl library even when gettext is detected.\n";
- print "--fhs          : force the FHS layout under UNIX.\n";
- print "--no-fhs       : force to not use the FHS layout under UNIX.\n";
- print "--cflags=val   : normal C flags [default is env. CFLAGS].\n";
- print "--cxxflags=val : normal C++ flags [default is env. CXXFLAGS].\n";
- print "--X11lib=val   : Name of X11 library [default is X11].\n";
- print "--X11path=val  : Path for X11 library [default is /usr/X11R6/lib].\n";
- print "--with-mss     : compiles with MSS memory debugger.\n";
- print "--without-mss  : compiles without MSS [default].\n";
+ print "--help          : displays this text.\n";
+ print "--prefix=path   : defines the base directory for installation.\n";
+ print "--no-intl       : don't use international support.\n";
+ print "--force-dummy   : use the dummy intl library even when gettext is detected.\n";
+ print "--fhs           : force the FHS layout under UNIX.\n";
+ print "--no-fhs        : force to not use the FHS layout under UNIX.\n";
+ print "--cflags=val    : normal C flags [default is env. CFLAGS].\n";
+ print "--cxxflags=val  : normal C++ flags [default is env. CXXFLAGS].\n";
+ print "--X11lib=val    : Name of X11 library [default is X11].\n";
+ print "--X11path=val   : Path for X11 library [default is /usr/X11R6/lib].\n";
+ print "--with-mss      : compiles with MSS memory debugger.\n";
+ print "--without-mss   : compiles without MSS [default].\n";
+ print "--x-include=path: X11 include path [/usr/X11R6/lib].\n";
+ print "--x-lib=path    : X11 library path [/usr/X11R6/include].\n";
 }
 
 sub GiveAdvice
@@ -468,8 +480,9 @@ int main(void)
 }
 ';
  $conf{'X11LibPath'}='/usr/X11R6/lib' unless $conf{'X11LibPath'};
+ $conf{'X11IncludePath'}='/usr/X11R6/include' unless $conf{'X11IncludePath'};
  $conf{'X11Lib'}='X11' unless $conf{'X11Lib'};
- $test=RunGCCTest($GCC,'c',$test,"-L$conf{'X11LibPath'} -l$conf{'X11Lib'}");
+ $test=RunGCCTest($GCC,'c',$test,"-I$conf{'X11IncludePath'} -L$conf{'X11LibPath'} -l$conf{'X11Lib'}");
  if ($test=~/OK, (\d+)\.(\d+)/)
    {
     $conf{'HAVE_X11'}='yes';
