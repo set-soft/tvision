@@ -10,7 +10,7 @@ $MakeDefsRHIDE={};
 $ExtraModifyMakefiles={};
 # DOS, UNIX, Win32
 $OS='';
-# Linux, FreeBSD, Solaris, QNXRtP, QNX4, HP-UX
+# Linux, FreeBSD, NetBSD, Solaris, QNXRtP, QNX4
 $OSf='';
 # x86, Alpha, SPARC64, SPARC, PPC, HPPA, MIPS, Itanium, Unknown
 $CPU='';
@@ -834,6 +834,15 @@ sub DetectOS
     $supportDir='linux';
     $conf{'GCC'}='cc';
    }
+ elsif ($os=~/NetBSD/)
+   {
+    $OS='UNIX';
+    $OSf='NetBSD';
+    $Compf='';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='linux';
+   }
  else
    {
     die('Unknown OS, you must do things by yourself');
@@ -1272,6 +1281,8 @@ int main(void)
  printf("MIPS\n");
  #elif defined(__ia64__)
  printf("Itanium\n");
+ #elif defined(__amd64__)
+ printf("AMD64\n");
  #else
  printf("Unknown\n");
  #endif
