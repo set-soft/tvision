@@ -1,0 +1,74 @@
+Driver: XTerm
+Author: Salvador E. Tropea
+
+  This driver was designed for the XTerm included in XFree86 v4.x. Previous
+versions like the one included in XFree86 v3.3.6 are supported but then the
+provided script must be used. I don't have access to other implementations of
+XTerm if you have contact me.
+  Use this driver when you have X Window but you need to use a remote machine
+and the connection isn't fast enough to use the native X11 mode.
+  The Eterm is also supported by this driver, for details specific to Eterm
+please consult the documentation for the Eterm driver.
+  This driver is enabled when the environment variable TERM indicates the
+terminal is called xterm. Most Linux distributions have other terminal
+emulators that also reports xterm in the TERM variable. This is a pretty bad
+idea and most of these terminal emulators are much less functional than
+xterm. Even when people have the idea that XTerm is a simple and limited
+terminal emulator I think XTerm is one of the most complete. I personally
+like the aspect of Eterm, but XTerm is far more configurable.
+  The driver supports:
+
+* Window size.
+* Fonts size (set and restore).
+* Palette. XTerm is quite slow on it.
+* Window title set/restore.
+* Most keyboard combinations when using XTerm from XFree86 v4.x, for older
+versions use the provided script.
+* Restore shell screen (limited, you can't nest).
+
+  In order to get the maximum of key combinations you must start XTerm using
+a special script. This script defines some key combinations not supported by
+XTerm, makes old XTerm versions to report keys as the new one and changes the
+palette to be identical to the VGA BIOS palette (same used in Linux console
+for example).
+  Note this configuration is specially configured for TV applications and
+isn't the best for other tasks. I recommend to use at leat two connections to
+the remote machine, one for general tasks and another from an XTerm with this
+configuration to run TV applications.
+  One important thing about this script is that it defines the Alt+Key
+combinations as Meta+Key combinations, this is really important for keyboards
+without a Meta key. I personally have the left key that comes with a nasty
+symbols similar to a flag as Meta key.
+  The script is called XTerm.res and is located in the examples/xterm
+directory.
+  If you want to test this driver locally just export the DISPLAY variable
+with a null content like this (bash syntax):
+
+$ export DISPLAY=
+
+  This driver supports the following standard configuration variables:
+
+ScreenWidth     Columns of the window.
+ScreenHeight    Rows of the window.
+ScreenPalette   Color palette, that's a string containing the 16 RGB values.
+                "0,0,0,0,0,168,..."
+FontWidth       Width of the font in pixels.
+FontHeight      Height of the font in pixels.
+AppCP           Application encoding.
+ScrCP           Screen encoding, this should be 885901.
+InpCP           Input encoding.
+
+  Plus the special option:
+
+UseShellScreen  If that's different than 0 the shell screen is used for output
+                and not the secondary buffer. This option is mainly only
+                useful when the application will run as a child of other
+                application that's already using the secondary buffer. This
+                can be the case of a debugger.
+
+  Note that the font sizes are limited to a known set of sizes that
+correspond to the fonts included in XFree86:
+
+5x7, 5x8, 6x10, 6x12, 6x13, 7x13, 7x14, 8x13, 8x16, 9x15, 9x18, 10x20, 10x24
+
+  If you specify another size the closest will be used.
