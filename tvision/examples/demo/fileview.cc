@@ -72,12 +72,12 @@ void TFileViewer::draw()
             {
             char s[maxLineLength+1];
             p = (char *)( fileLines->at(delta.y+i) );
-            if( p == 0 || strlen(p) < delta.x )
+            if( p == 0 || (int)strlen(p) < delta.x )
                 s[0] = EOS;
             else
             {
                 strncpy( s, p+delta.x, size.x );
-                if( strlen( p + delta.x ) > size.x )
+                if( (int)strlen( p + delta.x ) > size.x )
                     s[size.x] = EOS;
                 }
             b.moveStr( 0, s, c );
