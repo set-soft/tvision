@@ -1,4 +1,9 @@
 $Log$
+Revision 1.100  1999/09/08 02:09:39  root
+* Added: A config header (configtv.h), configuration for the makefiles and
+RHIDE projects, unified the intl.h headers and made conditional using a
+configuration variable and other configuration enhancements.
+.
 Revision 1.99  1999/09/07 01:12:26  set
 * Added: First attempt for a UNIXified configure/make/make install mechanism.
 Not using autoconf yet, just some Perl scripts.

@@ -5,5 +5,6 @@ djgpp/sacadeb.bat
 djgpp/compress.bat
 extra/doskeys/kextend.asm
 extra/doskeys/kextend.txt
-
+configure.bat
+configset.bat
 

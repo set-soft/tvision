@@ -22,19 +22,32 @@ The small sections are:
 ----------------------------
 
   If you can't wait even a second and you are running Linux or have a very
-well equiped djgpp installation (Perl, shell utils, file utils, bash, etc.)
-you can just follow these steps:
+well equiped djgpp installation (Perl, shell utils, file utils, bash,
+make, etc.) you can just follow these steps:
 
 A) Run the configure script (./configure or configure).
+
+Examples:
+   linux:/usr/src/tvision# ./configure
+   c:\djgpp\contrib\tvision>configure
+
 B) If all is OK run "make".
 C) If all is OK just run "make install".
 
   With it you'll get the headers and library installed.
+  If the configure script makes a wrong guess about something and you want to
+run it again delete the configure.cache file to force a new fresh
+configuration.
+  If the installation prefix directory is wrongly guessed call the configure
+script passing --prefix=dir as argument.
+Example:
+  linux:/usr/src/tvision# ./configure --prefix=/usr/local
+
 
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.8.
+  That's the Turbo Vision distribution (TV for short) v1.0.8.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -70,32 +83,24 @@ files are examples.
 issues.
 </Clarification>
 
-  They were heavily patched to work with gcc. Some patch fixes bugs, others
+  They were heavily patched to work with gcc. Some patches fixes bugs, others
 changes the behavior of things limited to 16 bits values, the resulting
-TVision isn't 100% compatible with the original. See the examples/porting.txt
+TV isn't 100% compatible with the original. See the examples/porting.txt
 file for more information, I explain which differences I found while porting
-the examples there.
-  Most of the patches were made by Robert Hoehne. I contributed with various
-patches and modules mainly to extend the original functionality.
+the examples found there.
+  Up to release 1.0.1 most of the patches were made by Robert Hoehne. I
+contributed with various patches and modules mainly to extend the original
+functionality. For information about what changed before it just read the
+change.log file.
   The library is distributed under the GPL license, it seems to be OK because
 according to a FAQ in the Inprise web site the base library is Public
 Domain. The file copying contains the GPL license and the file copying.rh
 contains the RHIDE copyright.
 
   The purpose of this distribution is avoid downloading the whole RHIDE to
-use it. I'm doing the distribution because Robert doesn't have enough time
+use TV. I'm doing the distribution because Robert doesn't have enough time
 to do it. Additionally this distribution will make RHIDE's compilation much
 more simple for people don't familiarized with it.
-
-  Most of the notes applies only to the source distribution but there are a
-lot of important information for the binary too.
-
-  *** IMPORTANT *** Note: This information is about the DOS version but could
-be valid for the Linux version too:
-  the binary distribution was compiled with gcc 2.8.0 be careful if you have
-2.8.1, Artur Zaroda <zaroda@mimuw.edu.pl> reported problems with some of the
-examples compiled with 2.8.1 and linked with the binary distribution. All was
-solved after recompiling the library with 2.8.1. So don't forget it.
 
 
 
@@ -119,7 +124,7 @@ aren't 8+3 clean if you uncompress the files in plain DOS you'll get some
 warnings about files with the same name, so I removed these files from the
 DOS distribution in 1.0.6, now they are only in the Linux distribution. So
 if you want to try generating the .deb packages you *must* have the Linux
-distribution of the editor.
+distribution of the library.
   The compress and compress.bat files are used to create the distribution
 packages and are included.
 
@@ -129,6 +134,17 @@ packages and are included.
 3. Compilation and use:
 ----------------------
 
+  You can try the GNU's traditional mechanism for compilation: configure,
+make and finally make install, as explained in point 0. Start running
+configure script. If you want to do changes to the library you should read
+the rest of the chapter, but if you just want to compile and install the
+library the configure/make mechanism should be enough. If you are using DOS
+and have the last release of RHIDE and don't have all the GNU tools installed
+you could also need to do some stuff by hand, so continue reading. To use the
+configure script you'll need (at least): make, shell utils, file utils and
+perl; and perhaps even more tools.
+
+  Compilation 'by hand':
   To compile the library go to the directory for your system (djgpp or linux)
 and run rhide or make in this directory.
   All the .o files are stored in the obj directory it helps to delete or
@@ -143,6 +159,8 @@ to it. For example:
 TVISION=e:/dj/contrib/tvision
 Then $(TVISION)/include is the include directory and $(TVISION)/linux or
 $(TVISION)/djgpp is the library path.
+  *Note* In this way you don't need to install the library and you can make
+changes in the library without needing to reinstall all the time.
 
   I use gcc 2.8.0 under DOS so the library is by default compiled with
 -fno-exceptions and -fno-rtti so you should use these settings. If you
@@ -178,6 +196,8 @@ debug information.
 4. Linux dynamic libraries:
 --------------------------
 
+  The configure/make process generates it, but if you must do it by hand:
+
 From sources:
   To create the .so library go to the linuxso directory, run makemak.pl
 (yes, you'll need Perl for it, that's standard in Debian) and then edit and
@@ -189,15 +209,13 @@ From binary distribution:
   That's very experimental so be careful I don't know if the version numbers
 are OK and what will happend if you try to execute something created with
 the 1.0.1 library using the 1.0.2 library. If you have hints about this
-topic please contact me.
-  My tests shows that a small TVision example (examples/dyntxt) is only 14Kb
+topic please contact me. Note: as a precaution I'm changing the soname of the
+library with each release.
+  My tests shows that a small TV example (examples/dyntxt) is only 14Kb
 long when linked dynamically and without debug information. But you should
 know that dynamically linked executables are slower than static ones,
 specially when you call a lot of small and fast library functions, that's
 because the address resolution overhead.
-  I distribute the .so file with debug information but the installation
-script removes it in the installed copy. You can change the script or move
-the version with debug information to your libs directory.
 
 
 
@@ -206,30 +224,35 @@ the version with debug information to your libs directory.
 -------------------
 
 Linux:
-  In Linux you'll need ncurses (I use 3.4) and gpm (I use 1.3). If you are
-using libc5 you'll need gettext too (libintl) that isn't needed for glibc
-(I use 2.0.7).
-  The binary distribution was created with Debian 2.0 (glibc2, ncurses3, etc).
+  In Linux you'll need ncurses (I use 3.4 and 4.2) and gpm (I use 1.3 and
+1.17.8). If you are using libc5 you'll need gettext too (libintl) that isn't
+needed for glibc (I use 2.0.7 and 2.1.2).
+  Note that the configure script will check if you have the right libraries
+installed. I don't know if the script is too strict, let me know if you think
+it.
 
 DOS:
   You must install gettext, you can find it in the v2gnu directory in
 Simtelnet. Is called (for example) gtxt032b.zip. There are a bug in the
 headers of gtxt032b.zip, in the file libintl.h there are a line that says
-@INCLUDE_LOCALE_H@, you can safetly remove it. An alternative is rename
-nointl.h to libintl.h, but isn't well tested.
+@INCLUDE_LOCALE_H@, you can safetly remove it. An alternative is comment the
+line that says HAVE_INTL_SUPPORT in the configtv.h file. The configure script
+will detect if you have a working gettext installed and modify the configtv.h
+accordingly.
 
 Tools:
-Compiler: I tested with gcc 2.7.x and 2.8.x. I know some people uses egcs but
-I don't know if you need to change something or if the binary works.
+Compiler: I tested with gcc 2.7.x, 2.8.x, egcs 1.1.x and gcc 2.95.
 Binutils: I use binutils 2.8.1, newers should work.
 RHIDE: if you plan to use the project (.gpr) files you'll need the last
 version of RHIDE available. Any older version will crash when loading the
 projects.
-make: (only if you plan to use the makefiles) I use make 3.77 under DOS.
-Perl: (only if you need to run some special scripts) Any perl 5 should work,
-I use 5.004 currently.
-File utils: (I'm not sure but just in case) you need to have it installed if
-you are in DOS, Linux of course have it by default.
+make: (only if you plan to use the makefiles) I use make 3.77 under DOS and
+3.76.1 under Linux.
+Perl: (only if you need to run some special scripts, like the configure) Any
+perl 5 should work, I use 5.004 currently.
+File utils: (I'm not sure if that's needed if you don't use the configure
+script but just in case) you need to have it installed if you are in DOS,
+Linux of course have it by default.
 
 
 
@@ -238,7 +261,7 @@ you are in DOS, Linux of course have it by default.
 -----------
 
   I included a collection of 13 examples I got from the net and ported to
-this TVision. The examples are shipped only with the sources distribution.
+this TV. The examples are shipped only with the sources distribution.
 
 
 
@@ -429,7 +452,7 @@ Curapaligue 2124
 
 Phone: (+5411) 4759-0013
 
-e-mail: salvador@inti.gov.ar, set-soft@usa.net, set@computer.org
+e-mail: salvador@inti.gov.ar, set@computer.org
 http:   www.geocities.com/SiliconValley/Vista/6552/
 
 
