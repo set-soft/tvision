@@ -5,6 +5,14 @@
 #if defined(TVOSf_QNXRtP) && !defined(QNXRTPKEY_HEADER_INCLUDED)
 #define QNXRTPKEY_HEADER_INCLUDED
 
+struct _QNXRtPArtKeys
+{
+   ushort rawkey;
+   ushort transkey;
+};
+
+typedef struct _QNXRtPArtKeys QNXRtPArtKeys;
+
 class TGKeyQNXRtP: public TGKey
 {
    public:
@@ -29,6 +37,9 @@ protected:
       static ushort undecoded;
       static ushort hightranstable[0x0100];
       static ushort lowtranstable[0x0100];
+      static QNXRtPArtKeys shifttranstable[];
+      static QNXRtPArtKeys alttranstable[];
+      static QNXRtPArtKeys ctrltranstable[];
 };
 
 #endif // QNXRTPKEY_HEADER_INCLUDED

@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.129  2002/06/05 15:28:38  set
+* Fixed: [X11] Now when the WM sends a DELETE_WINDOW message (usually
+because the user used the close button) the TV application gets a cmQuit
+event.
+
 Revision 2.128  2002/06/05 14:26:45  set
 * Added: Thanks to JASC in the X11 code, I think he deserves it.
 

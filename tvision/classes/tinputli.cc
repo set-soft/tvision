@@ -25,8 +25,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TPalette
 #include <tv.h>
 
-const int CONTROL_Y = 25;
-
 char hotKey( const char *s )
 {
     const char *p;
@@ -238,9 +236,13 @@ void  TInputLine::handleEvent( TEvent& event )
                     case kbIns:
                         setState(sfCursorIns, Boolean(!(state & sfCursorIns)));
                         break;
+                    case kbCtrlY:
+                        *data = EOS;
+                        curPos = 0;
+                        break;
                     default:
                         if( event.keyDown.charScan.charCode >= ' ' )
-                            {
+                          {
                             if (validator)
                             {
                               char tmp[2];
@@ -280,14 +282,11 @@ void  TInputLine::handleEvent( TEvent& event )
                                     event.keyDown.charScan.charCode;
                               }
                             }
-                            }
-                        else if( event.keyDown.charScan.charCode == CONTROL_Y)
-                            {
-                            *data = EOS;
-                            curPos = 0;
-                            }
-                        else
-                            return;
+                          }
+                          else
+                          {
+                             return;
+                          }
                     }
                     selStart = 0;
                     selEnd = 0;
