@@ -135,10 +135,17 @@ void TDisplayLinux::GetCursorPos(unsigned &x, unsigned &y)
  char s[40];
 
  fputs("\E[6n",stdout);
+ *s=0;
  fgets(s,sizeof(s)-1,TGKeyLinux::fIn); // Response is \E[y;xR
- 
- y=atoi(s+2)-1;
- x=atoi(strchr(s,';')+1)-1;
+
+ if (sscanf(s,"\E[%d;%dR",&y,&x)==2)
+   {
+    x--; y--;
+   }
+ else
+   {
+    x=curX; y=curY;
+   }
 }
 
 void TDisplayLinux::SetCursorShape(unsigned start, unsigned end)
