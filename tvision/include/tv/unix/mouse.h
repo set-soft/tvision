@@ -1,8 +1,7 @@
 /* UNIX mouse handler routines header.
    Copyright by Salvador E. Tropea (SET) (2001-2002)
    Covered by the GPL license. */
-#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) &&\
-   !defined(UNIXMOUSE_INCLUDED)
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(UNIXMOUSE_INCLUDED)
 #define UNIXMOUSE_INCLUDED
 
 class THWMouseUNIX : public THWMouse
@@ -18,6 +17,7 @@ protected:
  static void Init();
 };
 
+#ifdef HAVE_NCURSES
 class THWMouseXTerm : public THWMouseUNIX
 {
 protected:
@@ -31,5 +31,6 @@ protected:
 
  friend class TScreenUNIX;
 };
+#endif
 
 #endif // UNIXMOUSE_INCLUDED

@@ -12,7 +12,7 @@
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
-#if defined(HAVE_NCURSES) && defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
+#if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
 #include <signal.h>
@@ -109,6 +109,7 @@ THWMouseUNIX::~THWMouseUNIX()
 {
 }
 
+#ifdef HAVE_NCURSES
 //---------------- XTerm version -----------------
 
 void THWMouseXTerm::Resume()
@@ -137,6 +138,7 @@ void THWMouseXTerm::Init()
 THWMouseXTerm::~THWMouseXTerm()
 {
 }
+#endif // HAVE_NCURSES
 #else // TVOS_UNIX && !TVOSf_QNXRtP
 
 #include <tv/unix/screen.h>

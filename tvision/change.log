@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.305  2002/09/12 21:03:42  set
+* Fixed: XTerm driver included an uneeded ncurses header.
+
 Revision 2.304  2002/09/12 21:00:03  set
 * Modified: The UNIX driver headers to be excluded if ncurses isn't
 available.
