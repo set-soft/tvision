@@ -18,8 +18,12 @@ SRC3 = ../names
 SRC4 = ../stream
 SRC5 = ../classes
 SRC6 = ../classes/dos
+SRC9 = ../classes/linux
+SRCA = ../classes/qnxrtp
+SRCB = ../classes/unix
 SRC7 = ../classes/win32
 SRC8 = ../classes/winnt
+SRCC = ../classes/x11
 #SRC7 = ./examples/tutorial
 #SRC3 = ./
 
@@ -50,6 +54,18 @@ OBJS=@TV_OBJS_MSVC@
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
    
 {$(SRC8)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRC9)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRCA)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRCB)}.cc{$(OBJDIR)}.o:
+	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
+
+{$(SRCC)}.cc{$(OBJDIR)}.o:
 	$(CXX) $(CXXFLAGS) -c $? -Fo$*.o
 
 {$(SRC2)}.c{$(OBJDIR)}.o:

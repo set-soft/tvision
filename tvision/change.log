@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.195  2002/07/01 15:33:40  set
+* Added: A new example that shows how to use help context values and the
+status line. Ported by Mike.
+
 Revision 2.194  2002/07/01 14:26:11  set
 * Fixed: [X11] cursor artifacts intoduced in last patches.
 
