@@ -415,4 +415,5 @@ glob(const char *_pattern, int _flags, int (*_errfunc)(const char *_epath, int _
 
   return 0;
 }
-#endif NEEDS_GLOB
+#endif // NEEDS_GLOB
+
