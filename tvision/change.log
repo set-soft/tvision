@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.93  2002/05/29 15:28:20  set
+* Fixed: [FreeBSD] According to miniEleph ldconfig gets mad if we install
+librhtv.so.<full version>, now for this target I install librhtv.so.<major>
+
 Revision 2.92  2002/05/29 13:03:32  set
 * Fixed: TVHC project didn't exclude system headers.
 * Updated: [DOS] project and makefile.
