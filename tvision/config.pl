@@ -66,7 +66,9 @@ elsif ($OS eq 'DOS')
   }
 elsif ($OS eq 'Win32')
   {
-   ModifySimpleMakefiles('win32/Makefile');
+   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
+   `cp djgpp/makefile win32/Makefile`;
+   ModifyMakefiles('win32/Makefile');
   }
 CreateConfigH();
 
@@ -345,12 +347,14 @@ sub GenerateMakefile
  $makeDir='djgpp' if ($OS eq 'DOS');
  $makeDir='win32' if ($OS eq 'Win32');
  # Write target rules:
- $rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
+ #$rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
+ $rep="static-lib:\n\t\$(MAKE) -C ".$makeDir;
  $text=~s/\@target1_rule\@/$rep/g;
  if ($OS eq 'UNIX')
    {
-    $rep="linuxso/librhtv.so.$Version";
-    $rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl --no-inst-message";
+    #$rep="linuxso/librhtv.so.$Version";
+    #$rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl --no-inst-message";
+    $rep="dynamic-lib:\n\tcd linuxso; ./makemak.pl --no-inst-message";
     $text=~s/\@target2_rule\@/$rep/g;
    }
  else

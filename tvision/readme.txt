@@ -12,10 +12,11 @@ The small sections are:
 7.  Targets supported, limitations
 8.  CPU usage
 9.  How to submit a patch
-10. Contact information
+10. Special thanks
+11. Contact information
 
 If you are looking for information about the Win32 target please look in the
-win32 directory. Windows NT/BC++ have a separated directory!
+win32 (MingW) directory and winnt directory (BC++).
 
 ****** Important! for old users: the headers now have two levels. In ******
 ****** the first level tv.h is located. The rest of the headers are  ******
@@ -50,6 +51,11 @@ configuration.
 script passing --prefix=dir as argument.
 Example:
   linux:/usr/src/tvision# ./configure --prefix=/usr/local
+  
+  Note: The configuration mechanism can be used for Win32+MingW but you must
+install some GNU tools.
+
+
 
 
 1. Introduction:
@@ -110,6 +116,14 @@ use TV. I'm doing the distribution because Robert doesn't have enough time
 to do it. Additionally this distribution will make RHIDE's compilation much
 more simple for people don't familiarized with it.
 
+  Recent news: Richard M. Stallman contacted me and put some doubts about the
+distribution of Borland's sources, he contacted somebody at Borland asking if
+TV was freesoftware and he got no as an answer. I think this reply was mainly
+because RMS asked without clarifying your point. To clarify it I contacted
+the person in charge of the Linux web section of Borland and he told me that
+he is redirecting these doubts to the right people inside Borland. Until now
+I didn't get a final answer.
+
 
 
 
@@ -135,7 +149,8 @@ if you want to try generating the .deb packages you *must* have the Linux
 distribution of the library.
   The compress and compress.bat files are used to create the distribution
 packages and are included.
-  Starting with 1.1.0 Win32 platforms are also supported.
+  Starting with 1.1.0 Win32 platforms are also supported using MingW and BC++
+5.5 compilers.
 
 
 
@@ -393,6 +408,9 @@ Windows 3.1: Currently I don't test under this platform, tell me if you have
              restrictions applies.
 
 Windows 9x:
+  * Important * A native Win32 port is available, see the win32 and winnt
+                directories. When using any of these two ports the platform
+                is fully supported.
   Keyboard:
     Almost the same as DOS so read the DOS section first. The TSR works at
    least in Windows '95. Some keys are used by the GUI so not all are
@@ -415,15 +433,18 @@ Windows 9x:
   Note: I think all of it applies to Windows 98, if you see any difference
         please tell me.
 
-Windows NT: This platform isn't supported, I know the mouse fails to work and
-            you should disable it. I think NT's support of DOS applications
-            is completly broken so I don't care about it. If you have patches
-            I'll receive it.
+Windows NT:
+  * Important * A native Win32 port is available, see the win32 and winnt
+                directories. When using any of these two ports the platform
+                is fully supported.
+  This platform isn't fully supported by the DOS target. I think NT's support
+  for DOS applications is completly broken so I don't care about it. If you
+  have patches I'll receive it.
 
 
 
 
-8.  CPU usage
+8.  CPU usage:
 -------------
 
   Since v1.0.8 the TProgram::idle() member releases the CPU to the OS. If for
@@ -451,8 +472,31 @@ mode (-u), this mode is the best for humans ;-)
 
 
 
-10. Contact information:
-----------------------
+10. Special thanks:
+------------------
+
+They goes to (no particular sorting):
+
+Robert Hoehne:
+He started this port and invested a lot of time on it. Lamentably he doesn't
+have time for it anymore. I respected all the Robert's copyright labels, even
+when a lot of them doesn't apply anymore.
+
+Vadim Beloborodov:
+He contributed the first win32 port supporting MingW and MSVC.
+
+Anatoli Soltan:
+He contributed the winnt port supporting BC++. Now it can be used for win32
+too.
+
+Laurynas Biveinis:
+He contributed a lot of patches.
+
+
+
+
+11. Contact information:
+-----------------------
 
 Salvador E. Tropea (SET)
 Curapaligue 2124
@@ -463,6 +507,7 @@ Phone: (+5411) 4759-0013
 
 e-mail: salvador@inti.gov.ar, set@computer.org
 http:   www.geocities.com/SiliconValley/Vista/6552/
+        www.geocities.com/set-soft/ (alias of the above mentioned)
 
 
 

@@ -129,6 +129,8 @@ compat/releasec.c
 compat/strlwr.c
 compat/strupr.c
 compat/unc.c
+compat/unc_95.c
+compat/unc_nt.c
 compat/validfilename.c
 compat/yieldpro.c
 compat/fileexists.c
@@ -611,6 +613,7 @@ snapshot.pl
 win32/Makefile
 win32/Makefile.ms
 win32/console.cc
+win32/demo.mak
 win32/demo.ms
 win32/gkey.cc
 win32/obj/delete.me
@@ -626,5 +629,6 @@ winnt/Makefile
 winnt/misc/codes.cpp
 winnt/misc/vk2kk.pl
 winnt/objs/delete.me
+winnt/readme.txt
 winnt/tvex.cc
 
