@@ -299,7 +299,8 @@ public:
  // SET: Set the video mode using sizes.
  static int    (*setVideoModeRes)(unsigned w, unsigned h, int fW=-1, int fH=-1);
  // SET: executes the indicated command
- static int    (*System)(const char *command, pid_t *pidChild=0);
+ static int    (*System)(const char *command, pid_t *pidChild=0, int in=-1,
+                         int out=-1, int err=-1);
  // Palette handling, they call the TDisplay members
  static void     getPaletteColors(int from, int number, TScreenColor *colors);
  static void     setPaletteColors(int from, int number, TScreenColor *colors);
@@ -397,7 +398,8 @@ protected:
  static void   defaultGetCharacters(unsigned offset, ushort *buf, unsigned count);
  static void   defaultSetCharacter(unsigned offset, ushort value);
  static void   defaultSetCharacters(unsigned offset, ushort *values, unsigned count);
- static int    defaultSystem(const char *command, pid_t *pidChild);
+ static int    defaultSystem(const char *command, pid_t *pidChild, int in, int out,
+                             int err);
  static int    defaultGetFontGeometry(unsigned &w, unsigned &h);
  static int    defaultGetFontGeometryRange(unsigned &wmin, unsigned &hmin,
                                            unsigned &umax, unsigned &hmax);

@@ -22,6 +22,11 @@ is explained.
 
 *****************************************************************************/
 /*
+ToDo: Find a way to enable SEPARATED_HANDLE without losing performance. How?
+      I know is possible, but not how, currently I must force the stream to
+      be unbuffered and the speed is 5 times inferior. Perhaps using an internal
+      buffer.
+
 ToDo: What if the user really have 512 characters? in this case the console have
       only 8 colors.
 
@@ -571,6 +576,7 @@ int TScreenLinux::GuessCodePageFromLANG()
  return ret;
 }
 
+#include <stdio_ext.h>
 int TScreenLinux::InitOnce()
 {
  LOG("TScreenLinux::InitOnce");
@@ -586,15 +592,42 @@ int TScreenLinux::InitOnce()
             "program 2> file\r\n");
     return 1;
    }
+ #ifdef SEPARATED_HANDLE
+ /* Testing a reopen */
+ char *ttyName=ttyname(hOut);
+ if (!ttyName)
+   {
+    error=_("failed to get the name of the current terminal used for output");
+    return 3;
+   }
+ fOut=fopen(ttyName,"w+b");
+ if (!fOut)
+   {
+    error=_("failed to open the output terminal");
+    return 4;
+   }
+ int fgs=fcntl(hOut,F_GETFL,0);
+ fcntl(fileno(fOut),F_SETFL,fgs);
 
  if (tcgetattr(hOut,&outTermiosOrig))
    {
     error=_("can't get output terminal information");
     return 2;
    }
+ hOut=fileno(fOut);
+ setvbuf(fOut,NULL,_IONBF,0);
+ #else
+ fOut=stdout;
+
+ if (tcgetattr(hOut,&outTermiosOrig))
+   {
+    error=_("can't get output terminal information");
+    return 2;
+   }
+ #endif
 
  // Save cursor position, attributes and charset
- fputs("\E7",stdout);
+ fputs("\E7",fOut);
  memcpy(&outTermiosNew,&outTermiosOrig,sizeof(outTermiosNew));
  outTermiosNew.c_oflag|=OPOST;
  if (tcsetattr(hOut,TCSAFLUSH,&outTermiosNew))
@@ -850,7 +883,7 @@ TScreenLinux::TScreenLinux()
  // How do I know the previous settings to restore them? I taked a look
  // at the Linux kernel and couldn't find a way to get disp_ctrl.
  if (!canWriteVCS())
-    fputs("\e)K\xE",stdout);
+    fputs("\e)K\xE",fOut);
  // This is our state, save it
  tcgetattr(hOut,&outTermiosNew);
  suspended=0;
@@ -879,20 +912,20 @@ void TScreenLinux::Suspend()
  // Restore cursor position, attributes and charset
  // Here I just guess the previous state was G0 + no display control :-(
  if (!canWriteVCS())
-    fputs("\e)0\xF",stdout);
+    fputs("\e)0\xF",fOut);
  // Reset the palette, lamentably we don't know the original state :-(
  if (tioclinuxOK)
     // Go back to default colors we memorized
     SetDisPaletteColors(0,16,OriginalPalette);
  else
     // Just reset to default palette (should be equivalent)
-    fputs("\E]R",stdout);
+    fputs("\E]R",fOut);
  // Is that a Linux bug? Sometime \E8 works, others not.
- fputs("\E8",stdout);
+ fputs("\E8",fOut);
  // Restore cursor position
  SetCursorPos(oldCurX,oldCurY);
  // Ensure the last command is executed
- fflush(stdout);
+ fflush(fOut);
  // Restore console mode
  tcsetattr(hOut,TCSAFLUSH,&outTermiosOrig);
  LOG("TScreenLinux Suspend");
@@ -936,7 +969,7 @@ void TScreenLinux::Resume()
  // Set our console mode
  tcsetattr(hOut,TCSAFLUSH,&outTermiosNew);
  // Save cursor position, attributes and charset
- fputs("\E7",stdout);
+ fputs("\E7",fOut);
  getCursorPos(oldCurX,oldCurY);
  // Restore our fonts
  ResumeFont();
@@ -953,7 +986,7 @@ void TScreenLinux::Resume()
  setCursorType(oldCursorLines);
  // Set the charset
  if (!canWriteVCS())
-    fputs("\e)K\xE",stdout);
+    fputs("\e)K\xE",fOut);
  LOG("TScreenLinux Resume");
 }
 
@@ -1042,9 +1075,9 @@ void TScreenLinux::RestoreScreen()
  else
    {// If we can't restore the screen just clear it
     // Set color to gray over black
-    fputs("\E[22;37;40m",stdout);
+    fputs("\E[22;37;40m",fOut);
     // Clear the screen to it
-    //fputs("\E[2J",stdout);
+    //fputs("\E[2J",fOut);
     setCharacters(0,userBuffer,userBufferSize);
    }
 }
@@ -1171,7 +1204,7 @@ void TScreenLinux::writeBlock(int dst, int len, ushort *old, ushort *src)
 {
  int col=-1;
 
- fprintf(stdout,"\E[%d;%dH",dst/TScreenLinux::screenWidth+1,dst%TScreenLinux::screenWidth+1);
+ fprintf(fOut,"\E[%d;%dH",dst/TScreenLinux::screenWidth+1,dst%TScreenLinux::screenWidth+1);
 
  while (len-->0)
    {
@@ -1185,12 +1218,12 @@ void TScreenLinux::writeBlock(int dst, int len, ushort *old, ushort *src)
        if (palette==PAL_MONO)
          {
           if (col==0x0f)
-             fputs("\E[0;1m",stdout); // Bold
+             fputs("\E[0;1m",fOut); // Bold
           else
             if (col==0x70)
-               fputs("\E[0;7m",stdout); // Reverse
+               fputs("\E[0;7m",fOut); // Reverse
             else
-               fputs("\E[0m",stdout); // Normal
+               fputs("\E[0m",fOut); // Normal
          }
        else
           mapColor(col);
@@ -1213,25 +1246,25 @@ void TScreenLinux::writeBlock(int dst, int len, ushort *old, ushort *src)
     if (code<32 && ((CTRL_ALWAYS>>code) & 1))
       {/* This character can't be printed, we must use unicode */
        /* Enter UTF-8 and start constructing 0xF000 code */
-       fputs(ENTER_UTF8 "\xEF\x80",stdout);
+       fputs(ENTER_UTF8 "\xEF\x80",fOut);
        /* Set the last 6 bits */
-       fputc(code | 0x80,stdout);
+       fputc(code | 0x80,fOut);
        /* Escape UTF-8 */
-       fputs(EXIT_UTF8,stdout);
+       fputs(EXIT_UTF8,fOut);
       }
     else if (code==128+27)
       {/* A specially evil code: Meta+ESC, it can't be printed */
        /* Just send Unicode 0xF09B to screen */
-       fputs(ENTER_UTF8 "\xEF\x82\x9B" EXIT_UTF8,stdout);
+       fputs(ENTER_UTF8 "\xEF\x82\x9B" EXIT_UTF8,fOut);
       }
     else
        /* The rest pass directly unchanged */
-       fputc(code,stdout);
+       fputc(code,fOut);
    }
  if (palette==PAL_MONO)
-    fputs("\E[0m",stdout); // Normal
+    fputs("\E[0m",fOut); // Normal
 
- fprintf(stdout,"\E[%d;%dH",curY+1,curX+1);
+ fprintf(fOut,"\E[%d;%dH",curY+1,curX+1);
 }
 
 /*
@@ -1255,13 +1288,13 @@ void TScreenLinux::mapColor(int col)
  #define SF set_a_foreground ? set_a_foreground : set_foreground
 
  if (fore!=oldFore && back!=oldBack)
-    fprintf(stdout,"\E[%d;%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7],40+map[back]);
+    fprintf(fOut,"\E[%d;%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7],40+map[back]);
  else
    {
     if (fore!=oldFore)
-       fprintf(stdout,"\E[%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7]);
+       fprintf(fOut,"\E[%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7]);
     else
-       fprintf(stdout,"\E[%dm",40+map[back]);
+       fprintf(fOut,"\E[%dm",40+map[back]);
    }
 
  oldFore = fore;
@@ -1272,10 +1305,20 @@ void TScreenLinux::mapColor(int col)
 }
 
 // SET: Call to an external program, optionally forking
-int TScreenLinux::System(const char *command, pid_t *pidChild)
+int TScreenLinux::System(const char *command, pid_t *pidChild, int in,
+                         int out, int err)
 {
  if (!pidChild)
+   {
+    // If the caller asks for redirection replace the requested handles
+    if (in!=-1)
+       dup2(in,STDIN_FILENO);
+    if (out!=-1)
+       dup2(out,STDOUT_FILENO);
+    if (err!=-1)
+       dup2(err,STDERR_FILENO);
     return system(command);
+   }
 
  pid_t cpid=fork();
  if (cpid==0)
@@ -1289,6 +1332,14 @@ int TScreenLinux::System(const char *command, pid_t *pidChild)
     if (setsid()==-1)
        _exit(127);
     char *argv[4];
+
+    // If the caller asks for redirection replace the requested handles
+    if (in!=-1)
+       dup2(in,STDIN_FILENO);
+    if (out!=-1)
+       dup2(out,STDOUT_FILENO);
+    if (err!=-1)
+       dup2(err,STDERR_FILENO);
    
     argv[0]=getenv("SHELL");
     if (!argv[0])

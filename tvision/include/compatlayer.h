@@ -1404,9 +1404,9 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_unistd) && !defined(Included_unistd)
  #define Included_unistd 1
  #include <unistd.h>
- #ifndef R_OK
-  #define R_OK 4
- #endif
+ // The following header defines things only if not defined so is best to
+ // ever include it
+ #include <cl/unistd.h>
 #endif
 
 #if defined(Include_process) && !defined(Included_process)

@@ -90,7 +90,8 @@ protected:
  // Default: static ushort GetCharacter(unsigned dst);
  static void   SetCharacter(unsigned offset,ushort value);
  static void   SetCharacters(unsigned dst,ushort *src,unsigned len);
- static int    System(const char *command, pid_t *pidChild);
+ static int    System(const char *command, pid_t *pidChild, int in, int out,
+                      int err);
 
  // Initialization code executed just once
  static int InitOnce();

@@ -72,6 +72,7 @@ protected:
  static int vcsWfd; // virtual console system descriptor
  static int vcsRfd; // Same for reading
  static int hOut;   // Handle for the console output
+ static FILE *fOut; // Stream for the console output
  // Original environment of the application, here we put the title
  static char *origEnvir;
  // New environment, a copy of the original
@@ -128,7 +129,8 @@ protected:
  static void   SetCharactersTerm(unsigned dst,ushort *src,unsigned len);
  static void   SetCharactersVCS(unsigned dst,ushort *src,unsigned len);
  static void   SetCharactersMDA(unsigned dst,ushort *src,unsigned len);
- static int    System(const char *command, pid_t *pidChild);
+ static int    System(const char *command, pid_t *pidChild, int in, int out,
+                      int err);
  static int    GetFontGeometry(unsigned &w, unsigned &h);
  static int    SetFont(int changeP, TScreenFont256 *fontP,
                        int changeS, TScreenFont256 *fontS,

@@ -597,10 +597,20 @@ void TScreenXTerm::mapColor(int col)
 }
 
 // SET: Call to an external program, optionally forking
-int TScreenXTerm::System(const char *command, pid_t *pidChild)
+int TScreenXTerm::System(const char *command, pid_t *pidChild, int in,
+                         int out, int err)
 {
  if (!pidChild)
+   {
+    // If the caller asks for redirection replace the requested handles
+    if (in!=-1)
+       dup2(in,STDIN_FILENO);
+    if (out!=-1)
+       dup2(out,STDOUT_FILENO);
+    if (err!=-1)
+       dup2(err,STDERR_FILENO);
     return system(command);
+   }
 
  pid_t cpid=fork();
  if (cpid==0)
@@ -615,6 +625,14 @@ int TScreenXTerm::System(const char *command, pid_t *pidChild)
        _exit(127);
     char *argv[4];
    
+    // If the caller asks for redirection replace the requested handles
+    if (in!=-1)
+       dup2(in,STDIN_FILENO);
+    if (out!=-1)
+       dup2(out,STDOUT_FILENO);
+    if (err!=-1)
+       dup2(err,STDERR_FILENO);
+
     argv[0]=getenv("SHELL");
     if (!argv[0])
        argv[0]="/bin/sh";

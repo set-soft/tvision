@@ -72,7 +72,7 @@ protected:
  // Default: static ushort getCharacter(unsigned dst);
  static void   setCharacter(unsigned offset, ushort value);
  static void   setCharacters(unsigned dst, ushort *src, unsigned len);
- static int    System(const char *command, pid_t *pidChild);
+ static int    System(const char *command, pid_t *pidChild, int in, int out, int err);
  static int    setWindowTitle(const char *aName);
  static const char *getWindowTitle(void);
  static int    SetDisPaletteColors(int from, int number, TScreenColor *colors);

@@ -90,7 +90,8 @@ protected:
  static ushort getCharacter(unsigned dst);
  static void   setCharacter(unsigned offset,ushort value);
  static void   setCharacters(unsigned dst,ushort *src,unsigned len);
- static int    System(const char *command, pid_t *pidChild);
+ static int    System(const char *command, pid_t *pidChild, int in, int out,
+                      int err);
 
  enum terminalType
  {

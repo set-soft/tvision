@@ -105,7 +105,8 @@ protected:
  static ushort getCharacter(unsigned dst);
  static void   setCharacter(unsigned offset,ushort value);
  static void   setCharacters(unsigned dst,ushort *src,unsigned len);
- static int    System(const char *command, pid_t *pidChild);
+ static int    System(const char *command, pid_t *pidChild, int in, int out,
+                      int err);
  static int    GetFontGeometry(unsigned &w, unsigned &h);
  static int    SetFont(int changeP, TScreenFont256 *fontP,
                        int changeS, TScreenFont256 *fontS,
