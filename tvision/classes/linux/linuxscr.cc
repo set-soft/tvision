@@ -13,7 +13,7 @@ Un mecanismo para deshabilitar el uso de vcs como opción
      for (char *d = env; *p != '\0'; p++)
        *d++ = uctolower(*p);
   }
-
+See ToDo in the mouse initialization.
 
 */
 #include <tv/configtv.h>
@@ -653,6 +653,7 @@ TScreenUNIX::TScreenUNIX()
   TScreen::System=System;
 
   TGKeyUNIX::Init();
+  /* ToDo: can be used the xterm trick for a terminal without gpm? */
   if (terminal && strncmp(terminal,"xterm",5)==0)
      THWMouseXTerm::Init();
   #ifdef HAVE_GPM

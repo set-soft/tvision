@@ -390,6 +390,8 @@ include/tv/app.h
 include/tv/applictn.h
 include/tv/colorsel.h
 include/tv/dialogs.h
+include/tv/dosmouse.h
+include/tv/dosscr.h
 include/tv/drawbuf.h
 include/tv/fileview.h
 include/tv/findrepl.h
@@ -528,7 +530,6 @@ linuxso/tmp/delete.me
 Makefile.in
 misc.cc
 miscperl.pl
-mouse.cc
 msgbox.cc
 names/nbackgro.cc
 names/nbutton.cc
@@ -640,7 +641,6 @@ stream/sstringc.cc
 stream/sstringl.cc
 stream/sview.cc
 stream/swindow.cc
-tweaked.c
 version.txt
 vesa.cc
 fromdos.pl
