@@ -7,7 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
-Modified by Salvador E. Tropea: added i18n support.
+Modified by Salvador E. Tropea: added i18n support. Horizontal scroll bar.
 
  *
  *
@@ -40,7 +40,7 @@ Modified by Salvador E. Tropea: added i18n support.
 
 TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     TWindowInit( &TChDirDialog::initFrame )
-    , TDialog( TRect( 16, 2, 64, 20 ), __("Change Directory") )
+    , TDialog( TRect( 16, 2, 64, 21 ), __("Change Directory") )
 {
     options |= ofCentered;
 
@@ -49,9 +49,15 @@ TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     insert( new T1Label( 2, 2, __("Directory ~n~ame"), dirInput ));
     insert( new THistory( TRect( 30, 3, 33, 4 ), dirInput, histId ) );
 
-    TScrollBar *sb = new TScrollBar( TRect( 32, 6, 33, 16 ) );
-    insert( sb );
-    dirList = new TDirListBox( TRect( 3, 6, 32, 16 ), sb );
+    TScrollBar *sbv = new TScrollBar( TRect( 32, 6, 33, 16 ) );
+    insert( sbv );
+    // SET: Looks like original authors never had deep directory structures ...
+    // So I added a horizontal scroll bar.
+    TScrollBar *sbh = new TScrollBar( TRect( 3, 16, 32, 17 ) );
+    sbh->setRange( 0, PATH_MAX );
+    sbh->setStep( 28, 1 );
+    insert( sbh );
+    dirList = new TDirListBox( TRect( 3, 6, 32, 16 ), sbv, sbh );
     insert( dirList );
     insert( new T1Label( 2, 5, __("Directory ~t~ree"), dirList ));
 
