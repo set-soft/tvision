@@ -33,6 +33,7 @@ protected:
               *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
  static void   ClearScreen(uchar w, uchar h);
+ static void   Beep();
 
  // Low level routines, doesn't use cached values
  static void   GetCursorPosLow(unsigned &x, unsigned &y);

@@ -173,6 +173,11 @@ int TDisplayWin32::SetWindowTitle(const char *name)
  return SetConsoleTitle(name);
 }
 
+void TDisplayWin32::Beep()
+{
+ MessageBeep(0xFFFFFFFF);
+}
+
 TDisplayWin32::~TDisplayWin32() {}
 
 void TDisplayWin32::Init()
@@ -188,6 +193,7 @@ void TDisplayWin32::Init()
  getWindowTitle=GetWindowTitle;
  setCrtMode=SetCrtMode;
  setCrtModeExt=SetCrtModeExt;
+ beep=Beep;
 }
 
 /* Not implemented

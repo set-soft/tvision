@@ -49,6 +49,8 @@ protected:
  static const char *GetWindowTitle(void);
  // Set the title for our window
  static int    SetWindowTitle(const char *name);
+ // Produce an audible indication
+ static void   Beep();
 
  // Variables for this driver
  // Here you define variables needed by your driver.
@@ -119,6 +121,28 @@ protected:
  // Calls an external program, if pidChild pointer is not null the routine
  // should try to do it in background and return the process ID.
  static int    System(const char *command, pid_t *pidChild);
+ // Sets the colors palette, currently upto 16 colors are supported
+ static int    SetDisPaletteColors(int from, int number, TScreenColor *colors);
+ // Finds the width and height of the font currently used
+ static int    GetFontGeometry(unsigned &w, unsigned &h);
+ // To know the smallest and biggest font sizes supported
+ static int    GetFontGeometryRange(unsigned &wmin, unsigned &hmin,
+                                    unsigned &umax, unsigned &hmax);
+ // It changes the screen fonts. Upto 2 fonts are supported and the driver
+ // must use the capabilities (see Capabilities1 enum) to indicate if the
+ // secondary font is supported.
+ static int    SetFont(int changeP, TScreenFont256 *fontP,
+                       int changeS, TScreenFont256 *fontS,
+                       int fontCP=-1, int appCP=-1);
+ // Restore the original fonts
+ static void   RestoreFonts();
+ // Sets a video mode indicating a size of the screen and font. The function
+ // must look for the closest mode and indicate if we set what the user
+ // requested or something different.
+ static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
+ // Show some sign to indicate we are temporally busy, it can be changing the
+ // mouse cursor.
+ static Boolean ShowBusyState(Boolean state);
  
 protected:
  // Put support routines and variables here

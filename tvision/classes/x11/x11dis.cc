@@ -116,6 +116,7 @@ int TDisplayX11::CheckForWindowSize(void)
    }
  return 0;
 }
+
 #else
 
 #include <tv/x11/screen.h>

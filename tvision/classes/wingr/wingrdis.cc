@@ -653,6 +653,12 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
   TDisplayWinGr::fonts= NULL; }
 
 /* ------------------------------------------------------------------------- */
+   void TDisplayWin32::Beep()
+/* ------------------------------------------------------------------------- */
+{  MessageBeep(0xFFFFFFFF); }
+
+
+/* ------------------------------------------------------------------------- */
    void TDisplayWinGr::Init()
 /* ------------------------------------------------------------------------- */
 { getRows=            GetRows;
@@ -667,6 +673,7 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
   getCursorShape=     GetCursorShape;
   setCursorShape=     SetCursorShape;
   checkForWindowSize= CheckForWindowSize;
+  beep=               Beep;
 
   TProgram::doNotReleaseCPU= true; }   // annoys windows loop, implemented here
 

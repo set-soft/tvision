@@ -1234,7 +1234,7 @@ CLY_CFunc int CLY_IsRelativePath(const char *path);
  #define relativePath(a) (CLY_IsRelativePath(a) ? True : False)
 #endif
 /* Utility function to generated a beep */
-CLY_CFunc void CLY_Beep(void);
+#define CLY_Beep() TScreen::beep()
 /* Used internally, just call filelength prior request */
 CLY_CFunc long CLY_filelength(int);
 /* Used internally, just call getcurdir prior request */

@@ -881,6 +881,7 @@ TScreenX11::TScreenX11()
  TScreen::setFont=SetFont;
  TScreen::restoreFonts=RestoreFonts;
  TScreen::setCrtModeRes=SetCrtModeRes;
+ TDisplay::beep=Beep;
 
  TVX11Clipboard::Init();
  TGKeyX11::Init();
@@ -1942,6 +1943,11 @@ Boolean TScreenX11::ShowBusyState(Boolean busyState)
     XDefineCursor(disp,mainWin,leftPtr);
  XFlush(disp); /* Show it right now */
  return defaultShowBusyState(busyState);
+}
+
+void TScreenX11::Beep()
+{
+ XBell(disp,50);
 }
 
 #else

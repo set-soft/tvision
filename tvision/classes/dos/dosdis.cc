@@ -733,6 +733,13 @@ void TDisplayDOS::GetDisPaletteColors(int from, int number, TScreenColor *colors
     getOnePaletteIndex(from++,colors++);
 }
 
+void TDisplayDOS::Beep()
+{
+ sound(1000);
+ delay(100);
+ nosound();
+}
+
 void TDisplayDOS::Init()
 {// Currently we assume it doesn't change.
  getPaletteMap(colorsMap);
@@ -756,6 +763,7 @@ void TDisplayDOS::Init()
  TDisplay::setWindowTitle=SetWindowTitle;
  TDisplay::setDisPaletteColors=SetDisPaletteColors;
  TDisplay::getDisPaletteColors=GetDisPaletteColors;
+ TDisplay::beep=Beep;
 }
 
 TDisplayDOS::~TDisplayDOS() {}
