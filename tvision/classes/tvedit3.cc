@@ -2,6 +2,7 @@
 /* Modified by Vadim Beloborodov to be used on WIN32 console */
 /* Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
    Andris Pavenis. */
+/* Modified by Salvador E. Tropea to use messageBox with formating. */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -118,7 +119,7 @@ function.
 
 ushort doEditDialogDefault( int dialog, va_list arg )
 {
-    CreateStrStream(os,buf,PATH_MAX+80);
+    char *s;
     switch( dialog )
         {
         case edOutOfMemory:
@@ -126,31 +127,31 @@ ushort doEditDialogDefault( int dialog, va_list arg )
                                mfError | mfOKButton );
         case edReadError:
             {
-            os << _("Error reading file ") << va_arg( arg, _charPtr )
-               << "." << CLY_std(ends);
+            s=va_arg( arg, _charPtr );
             va_end(arg);
-            return messageBox( GetStrStream(os,buf), mfError | mfOKButton );
+            return messageBox( mfError | mfOKButton,
+                               __("Error reading file %s."), s );
             }
         case edWriteError:
             {
-            os << _("Error writing file ") << va_arg( arg,_charPtr )
-               << "." << CLY_std(ends);
+            s=va_arg( arg, _charPtr );
             va_end( arg );
-            return messageBox( GetStrStream(os,buf), mfError | mfOKButton );
+            return messageBox( mfError | mfOKButton,
+                               __("Error writing file %s."), s );
             }
         case edCreateError:
             {
-            os << _("Error creating file ") << va_arg( arg, _charPtr )
-               << "." << CLY_std(ends);
+            s=va_arg( arg, _charPtr );
             va_end( arg );
-            return messageBox( GetStrStream(os,buf), mfError | mfOKButton );
+            return messageBox( mfError | mfOKButton,
+                               __("Error creating file %s."), s );
             }
         case edSaveModify:
             {
-            os << va_arg( arg, _charPtr )
-               << _(" has been modified. Save?") << CLY_std(ends);
+            s=va_arg( arg, _charPtr );
             va_end( arg );
-            return messageBox( GetStrStream(os,buf), mfInformation | mfYesNoCancel );
+            return messageBox( mfInformation | mfYesNoCancel,
+                               __("%s has been modified. Save?"), s );
             }
         case edSaveUntitled:
             return messageBox( __("Save untitled file?"),
@@ -178,7 +179,7 @@ ushort doEditDialogDefault( int dialog, va_list arg )
             }
 
         case edReplacePrompt:
-	  {
+          {
             //  Avoid placing the dialog on the same line as the cursor
             TRect r( 0, 1, 40, 8 );
             r.move( (TProgram::deskTop->size.x-r.b.x)/2, 0 );
@@ -190,9 +191,9 @@ ushort doEditDialogDefault( int dialog, va_list arg )
             va_end( arg );
             return messageBoxRect( r, __("Replace this occurence?"),
                                    mfYesNoCancel | mfInformation );
-	  }
+          }
         default:
-	    return cmCancel;
+            return cmCancel;
         }
 }
 
