@@ -1,8 +1,16 @@
-rhtvision (1.1.3-0.1) unstable; urgency=low
+rhtvision (1.1.3-1) unstable; urgency=low
 
-  * New version automatically modified by version update scripts
+  * New upstream version.
+  * Upstream added a "buildpackage" script, I don't see the point of
+    it but if it is of some use to Salvador or others, I will keep it.
+  * Modified the new debian/buildpackage script to check before trying
+    to do anything that it is being run from the right directory.
+  * Simplified the backup system by using a TAR archive instead of
+    copying and moving files around. Good idea from Salvador. At the
+    same time now timestamps are preserved so CVS checkins are faster.
+  * Uncommented out the binary-indep target, just in case.
 
- -- Salvador E. Tropea (SET) <salvador@inti.gov.ar>  Sat, 13 Oct 2001 20:31:07 -0300
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Sun, 14 Oct 2001 01:15:59 -0300
 
 rhtvision (1.1.2-1) unstable; urgency=low
 

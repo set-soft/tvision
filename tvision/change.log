@@ -1,4 +1,8 @@
 $Log$
+Revision 1.235  2001/10/18 00:10:06  set
+* Fixed: I forgot to update the linux/Makefile file from the project file.
+It prevented the code to compile for FreeBSD.
+
 Revision 1.234  2001/10/17 23:52:54  set
 * Fixed: [Linux] DECIMAL_POINT is GNU specific and not the right value to
 use like the glibc info says. The value RADIXCHAR is indicated like this:
