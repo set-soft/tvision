@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.228  2005/01/11 18:29:53  set
+* Fixed: [MinGW] The snprintf implementation is broken. That's obvious
+because MinGW uses M$ runtime. Now MinGW target uses the replacement.
+
 Revision 2.399.2.227  2004/12/27 14:38:24  terrible
 * [Updated] Debian packaging to version 2.0.4-1, it seems Salvador didn't
   run the version update script, so I made changes to Debian packaging

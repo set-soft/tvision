@@ -58,11 +58,6 @@ and regex.
  #define Uses_stdio
 #endif
 
-/* MSS memory leak debugger */
-#ifdef MSS
- #include <mss.h>
-#endif
-
 #ifdef __cplusplus
  #define CLY_CFunc extern "C"
 #else
@@ -2210,6 +2205,12 @@ int CLY_HaveLFNs()
 
 #undef CLY_LenEOL
 #undef CLY_crlf
+
+/* MSS memory leak debugger */
+#ifdef MSS
+ #include <mss.h>
+#endif
+
 #undef CLY_IsTrueEOL
 #ifdef CLY_UseCrLf
  #define CLY_LenEOL     2

@@ -9,7 +9,15 @@
 #define Uses_stdio
 #define Uses_snprintf
 #define Uses_limits
+#ifdef MSS
+ #define __MSS_USED__
+ #undef MSS
+#endif 
 #include <compatlayer.h>
+#ifdef __MSS_USED__
+ #define MSS
+ #undef __MSS_USED__
+#endif 
 #include <locale.h>
 #include <tv/ttypes.h>
 #define Uses_intl_fprintf
