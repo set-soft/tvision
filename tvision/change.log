@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.52  2003/04/25 16:20:26  set
+* Fixed: The TSortedCollection trapped ENTER in some particular cases.
+* Fixed: X11 driver using Unicode translatio even when X11 didn't support
+it.
+
 Revision 2.399.2.51  2003/04/22 15:44:48  set
 * Fixed: SSC stuff when using gcc 3.x. Tested on Cygwin using gcc 3.2. With
 SSC the time was reduced 65%! (about 3 times faster!). Even with it the
