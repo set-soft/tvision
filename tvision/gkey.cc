@@ -396,9 +396,9 @@ void TGKey::fillTEvent(TEvent &e)
  e.keyDown.shiftState=sFlags;
  e.what=evKeyDown;
 }
-#endif
 
 ushort TGKey::AltSet=2;      // Default: Both ALT are the same
+#endif
 
 const int CantDef=0x39;
 static const char altCodes[CantDef+1]=

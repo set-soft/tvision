@@ -71,12 +71,6 @@ static int timeout_esc = -1;
 #endif
 extern int timer_value;
 
-/*
- * This is the time limit in ms within Esc-key sequences are detected as
- * Alt-letter sequences.  Useful when we can't generate Alt-letter sequences
- * directly.
- */
-#define DELAY_ESCAPE		400
 #define META_MASK 0x8000
 
 /*
@@ -743,5 +737,6 @@ void suspend_keyboard()
 }
 
 
+ushort TGKey::AltSet=0;  // Default: Left and right key are different ones
 #endif // __linux__
 
