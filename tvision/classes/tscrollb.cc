@@ -47,6 +47,9 @@ TScrollBar::TScrollBar( const TRect& bounds ) :
         growMode = gfGrowLoY | gfGrowHiX | gfGrowHiY;
         memcpy( chars, hChars, sizeof(hChars) );
         }
+    // This class can be "Braille friendly"
+    if (TScreen::getShowCursorEver())
+       state |= sfCursorVis;
 }
 
 void TScrollBar::draw()
@@ -73,6 +76,11 @@ void TScrollBar::drawPos( int pos )
        {
        b.moveChar( 1, aChars[2], getColor(1), s-1 );
        b.moveChar( pos, aChars[3], getColor(3), 1 );
+       if( (state & sfFocused) && TScreen::getShowCursorEver() )
+         {
+         setCursor( pos , 0 );
+         resetCursor();
+         }
        }
 
     b.moveChar( s, aChars[1], getColor(2), 1 );
