@@ -1,4 +1,9 @@
 $Log$
+Revision 1.224  2001/10/13 23:30:24  set
+* Added: International dummy library to the Makefile. Suggested by
+Laurynas.
+* Merged: Changes for the Debian stuff from Ivan.
+
 Revision 1.223  2001/10/13 22:50:05  set
 * Removed autoconf example because it doesn't work anymore. Laurynas is
 working on a new version.
