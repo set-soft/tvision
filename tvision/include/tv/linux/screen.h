@@ -7,6 +7,9 @@
 // Modes you can pass to Init
 const int lnxInitVCSrw=0, lnxInitVCSwo=1, lnxInitSimple=2, lnxInitMDA=3;
 
+struct stCodePageCk;
+struct stCodePageLang;
+
 // virtual to avoid problems with multiple inheritance
 class TDisplayLinux : virtual public TDisplay
 {
@@ -79,6 +82,8 @@ protected:
  static char tioclinuxOK;
  // Color translation table
  static char cMap[16];
+ // The code page we detected or just guess is installed
+ static int  installedCodePage;
 };
 
 inline
@@ -147,6 +152,8 @@ protected:
  static void DeallocateResources();
  // Analyzes the console code page
  static int  AnalyzeCodePage();
+ // A guess about the code page using the language
+ static int  GuessCodePageFromLANG();
  // Terminal state before starting
  static struct termios outTermiosOrig;
  // Our terminal state
@@ -171,6 +178,10 @@ protected:
  static unsigned userBufferSize;
  // Current colors, for escape sequences
  static int oldCol, oldBack, oldFore;
+ // List of known code pages
+ static struct stCodePageCk   knownCodePages[];
+ // List of known languages and their code pages
+ static struct stCodePageLang langCodePages[];
 };
 
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't

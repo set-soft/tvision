@@ -318,7 +318,7 @@ Cyrillic ISO-IR-153         22216718
 *****************************************************************************/
 
 // PC437 doesn't need traslation, they are the first 256 chars.
-CodePage PC437=
+CodePage TVCodePage::stPC437=
 { "PC 437 ASCII ext.",
   437,
  { 128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,
@@ -333,7 +333,7 @@ CodePage PC437=
  "ƒ…ˆ‰Š‹Œ“•–—˜ ¡¢£á",0,0
 };
 
-CodePage PC737=
+CodePage TVCodePage::stPC737=
 { "PC 737 Greek",
   737,
  { 'A','B',226,560,'E','Z','H',233,'I','K',583,'M','N',561,'O',562,
@@ -348,7 +348,7 @@ CodePage PC737=
  "Ÿ",0,0
 };
 
-CodePage PC775=
+CodePage TVCodePage::stPC775=
 { "PC 775 DOS Baltic Rim",
   775,
  { 264,129,130,584,132,511,134,256,317,497,516,517,499,273,142,143,
@@ -364,7 +364,7 @@ CodePage PC775=
  "áæ",0,0
 };
 
-CodePage PC850=
+CodePage TVCodePage::stPC850=
 { "PC 850 Latin 1",
   850,
  { 128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,
@@ -379,7 +379,7 @@ CodePage PC850=
  "˜ÏÕáæ",0,0
 };
 
-CodePage PC852=
+CodePage TVCodePage::stPC852=
 { "PC 852 Latin 2",
   852,
  { 128,129,130,131,132,282,256,135,317,137,354,353,140,273,142,264,
@@ -395,7 +395,7 @@ CodePage PC852=
 };
 
 // PC855 Russian DOS code page
-CodePage PC855=
+CodePage TVCodePage::stPC855=
 { "PC 855 Russian 2",
   855,
  { 413,412,415,414,137,280,408,407,115, 83,105,281,139,416,106, 74,
@@ -410,7 +410,7 @@ CodePage PC855=
  "",0,0
 };
 
-CodePage PC857=
+CodePage TVCodePage::stPC857=
 { "PC 857 Turkish",
   857,
  { 128,129,130,131,132,133,134,135,136,137,138,139,140,337,142,143,
@@ -425,7 +425,7 @@ CodePage PC857=
  "Õáæçí",0,0
 };
 
-CodePage PC860=
+CodePage TVCodePage::stPC860=
 { "PC 860 Portuguese",
   860,
  { 128,129,130,131,284,133,263,135,136,290,138,265,140,141,287,289,
@@ -440,7 +440,7 @@ CodePage PC860=
  "á",0,0
 };
 
-CodePage PC861=
+CodePage TVCodePage::stPC861=
 { "PC 861 Icelandic",
   861,
  { 128,129,130,131,132,133,134,135,136,137,138,323,322,333,142,143,
@@ -455,7 +455,7 @@ CodePage PC861=
  "ƒ…ˆ‰Š“–àáâãåäæçèéêëíîŸ",0,0
 };
 
-CodePage PC863=
+CodePage TVCodePage::stPC863=
 { "PC 863 French",
   863,
  { 128,129,130,131,289,133, 20,135,136,137,138,139,140,342,275, 21,
@@ -470,7 +470,7 @@ CodePage PC863=
  "˜¢£á",0,0
 };
 
-CodePage PC865=
+CodePage TVCodePage::stPC865=
 { "PC 865 Nordic",
   865,
  { 128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,
@@ -485,7 +485,7 @@ CodePage PC865=
  "ƒ…ˆ‰Š‹Œ“•–—˜ ¡¢£¯á",0,0
 };
 
-CodePage PC869=
+CodePage TVCodePage::stPC869=
 { "PC 869 Greek 2",
   869,
  { 0x20,0x20,0x20,0x20,0x20,0x20,572,572,250,170,338, 96, 39,573,341,574,
@@ -500,7 +500,7 @@ CodePage PC869=
  "¡ü",0,0
 };
 
-CodePage ISO8879_1=
+CodePage TVCodePage::ISO8879_1=
 { "ISO 8859-1 Latin 1",
   88791,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -515,7 +515,7 @@ CodePage ISO8879_1=
  "µßÿ",0,0
 };
 
-static ushort LowCrazyCharsRemaped[] =
+ushort TVCodePage::LowCrazyCharsRemaped[] =
 { 439,247,440,441,  4,442,443,444,445,176,177,178,219,220,223,221,
   222,446,447,242,243,448, 17, 16, 24, 25, 26, 27, 18, 29,447,227,
    32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
@@ -526,7 +526,7 @@ static ushort LowCrazyCharsRemaped[] =
   112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,450 };
 
 
-CodePage ISO8859_1_Lat1=
+CodePage TVCodePage::ISO8859_1_Lat1=
 { "ISO Latin 1 (Linux)",
   885901,
  { 451,452,453,192,454,179,218,195,455,217,196,193,191,180,194,197,
@@ -542,7 +542,7 @@ CodePage ISO8859_1_Lat1=
  128,LowCrazyCharsRemaped
 };
 
-CodePage ISO8859_1u_Lat1=
+CodePage TVCodePage::ISO8859_1u_Lat1=
 { "ISO Latin 1u(Linux)",
   885911,
  { 275,263,289,287,142,143,146,128,276,144,290,280,277,265,291,281,
@@ -558,7 +558,7 @@ CodePage ISO8859_1u_Lat1=
  128,LowCrazyCharsRemaped
 };
 
-CodePage ISO8879_2=
+CodePage TVCodePage::ISO8879_2=
 { "ISO 8859-2 Latin 2",
   88792,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -573,7 +573,7 @@ CodePage ISO8879_2=
  "¤",0,0
 };
 
-CodePage ISO8859_3=
+CodePage TVCodePage::ISO8859_3=
 { "ISO 8859-3 Latin 3",
   88593,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -589,7 +589,7 @@ CodePage ISO8859_3=
  "ßµ",0,0
 };
 
-CodePage ISO8859_4=
+CodePage TVCodePage::ISO8859_4=
 { "ISO 8859-4 Latin 4",
   88594,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -606,7 +606,7 @@ CodePage ISO8859_4=
 };
 
 // PC866 Russian DOS code page
-CodePage PC866=
+CodePage TVCodePage::stPC866=
 { "PC 866 Russian",
   866,
  { 360,361, 66,362,363, 69,364, 51,365,366, 75,367, 77, 72, 79,368,
@@ -622,7 +622,7 @@ CodePage PC866=
 };
 
 // ISO 8859-5 Russian ISO layout
-CodePage ISO8859_5=
+CodePage TVCodePage::ISO8859_5=
 { "ISO 8859-5 Russian",
   88595,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -639,7 +639,7 @@ CodePage ISO8859_5=
 
 // KOD OBMENA INFORMATSIEY - 8bit RUSSKIY
 // ëïä ïâíåîá éîæïòíáôóéåù I think that's close to the original ;-)
-CodePage KOI_8r=
+CodePage TVCodePage::KOI_8r=
 { "KOI-8r (Russian)",
   100000,
  { 196,179,218,191,192,217,195,180,194,193,197,223,220,219,221,222,
@@ -655,7 +655,7 @@ CodePage KOI_8r=
 };
 
 // KOI8 with CRL/NMSU extensions for SerboCroat
-CodePage KOI_8crl=
+CodePage TVCodePage::KOI_8crl=
 { "KOI-8 with CRL/NMSU",
   100001,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188, // grf
@@ -671,7 +671,7 @@ CodePage KOI_8crl=
 };
 
 // ECMA-Cyrillic ISO-IR-111
-CodePage ISO_IR_111=
+CodePage TVCodePage::ISO_IR_111=
 { "ECMA-Cyr.ISO-IR-111",
   0x0111000E,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -687,7 +687,7 @@ CodePage ISO_IR_111=
 };
 
 // GOST_19768-74 ST_SEV_358-88 ISO-IR-153 /subset of ISO-8859-5/
-CodePage ISO_IR_153=
+CodePage TVCodePage::ISO_IR_153=
 { "Cyrillic ISO-IR-153",
   0x0153000E,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -704,7 +704,7 @@ CodePage ISO_IR_153=
 
 
 // Mac OS Cyrillic, cp10007
-CodePage CP10007=
+CodePage TVCodePage::CP10007=
 { "Mac Cyr. CP 10007",
   10007,
  { 360,361, 66,362,363, 69,364,409,365,366, 75,367, 77, 72, 79,368,
@@ -720,7 +720,7 @@ CodePage CP10007=
 };
 
 // Mac OS Ukrainian
-CodePage CP100072=
+CodePage TVCodePage::CP100072=
 { "Mac OS Ukrainian",
   100072,
  { 360,361, 66,362,363, 69,364,409,365,366, 75,367, 77, 72, 79,368,
@@ -736,7 +736,7 @@ CodePage CP100072=
 };
 
 // Osnovnoj Variant Russian
-CodePage OVR=
+CodePage TVCodePage::OVR=
 { "Osnovnoj Variant Russian",
   885951,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188, // grf
@@ -752,7 +752,7 @@ CodePage OVR=
 };
 
 // Alternativnyj Variant Russian
-CodePage AVR=
+CodePage TVCodePage::AVR=
 { "Alternativnyj Variant RU",
   885952,
  { 360,361, 66,362,363, 69,364,409,365,366, 75,367, 77, 72, 79,368,
@@ -768,7 +768,7 @@ CodePage AVR=
 };
 
 // U-code Russian /subset of ISO-8859-5 and GOST_19768-74/
-CodePage U_CodeR=
+CodePage TVCodePage::U_CodeR=
 { "U-code Russian",
   885953,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188, // grf
@@ -784,7 +784,7 @@ CodePage U_CodeR=
 };
 
 /***** 7 bits! ******/
-static ushort KOI7[] =
+ushort TVCodePage::tbKOI7[]=
 { 0,  1,  2,  3,  4,  5,  6,  7,
   8,  9, 10, 11, 12, 13, 14, 15,
  16, 17, 18, 19, 20, 21, 22, 23,
@@ -803,7 +803,7 @@ static ushort KOI7[] =
 377,376,409,373,378,374,372,127
 };
 
-CodePage KOI_7=
+CodePage TVCodePage::KOI_7=
 {
  "ISO 5427 ISO-IR-37 KOI-7",
  0x0037000E,
@@ -819,10 +819,10 @@ CodePage KOI_7=
  },
  "@`AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz[{\\|]}^~á¡â¢ã£ä¤å¥æ¦ç§è¨é©êªë«ì¬í­î®ï¯ðÐñÑòÒóÓôÔõÕöÖ÷×øØùÙúÚ",
  "_",
- 128,KOI7
+ 128,TVCodePage::tbKOI7
 };
 
-static ushort ISOIR147[] =
+ushort TVCodePage::tbISOIR147[]=
 {   0,  1,  2,  3,  4,  5,  6,  7,
   8,  9, 10, 11, 12, 13, 14, 15,
  16, 17, 18, 19, 20, 21, 22, 23,
@@ -840,7 +840,7 @@ static ushort ISOIR147[] =
 393,418,112, 99,394,395,382,420,
 428,115,386,399,415,424,398,127 };
 
-CodePage ISO_IR_147=
+CodePage TVCodePage::ISO_IR_147=
 {
  "JUS_I.B1.003-MAC ISO-IR-147",
  0x0147000E,
@@ -856,10 +856,10 @@ CodePage ISO_IR_147=
  },
  "`@aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ{[|\\}]~^á¡â¢ã£ä¤å¥æ¦ç§è¨é©êªë«ì¬í­î®ï¯ðÐñÑòÒóÓôÔõÕöÖ÷×øØùÙúÚ",
  "",
- 128,ISOIR147
+ 128,TVCodePage::tbISOIR147
 };
 
-static ushort ISOIR146[] =
+ushort TVCodePage::tbISOIR146[]=
 { 0,  1,  2,  3,  4,  5,  6,  7,
   8,  9, 10, 11, 12, 13, 14, 15,
  16, 17, 18, 19, 20, 21, 22, 23,
@@ -877,7 +877,7 @@ static ushort ISOIR146[] =
 393,418,112, 99,394,395,382,420,
 428,115,386,399,413,422,398,127 };
 
-CodePage ISO_IR_146=
+CodePage TVCodePage::ISO_IR_146=
 {
  "JUS_I.B1.003-SERB ISOIR146",
  0x0146000E,
@@ -893,15 +893,15 @@ CodePage ISO_IR_146=
  },
  "`@aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ{[|\\}]~^á¡â¢ã£ä¤å¥æ¦ç§è¨é©êªë«ì¬í­î®ï¯ðÐñÑòÒóÓôÔõÕöÖ÷×øØùÙúÚ",
  "",
- 128,ISOIR146
+ 128,TVCodePage::tbISOIR146
 };
 
-static ushort Low32CharsRemaped[] =
+ushort TVCodePage::Low32CharsRemaped[]=
 { 197,196,191,192,217,179,195,  7,194,193,218,219,178,177,176,180,
    16, 17, 18,220,222,221,254, 23, 24, 25, 26, 27,223, 29, 30, 31};
 
 // PC1250 Windows latin 2 code page
-CodePage PC1250=
+CodePage TVCodePage::stPC1250=
 { "CP 1250 Win Latin 2",
   1250,
  { 0x20,0x20, 44,0x20,429,430,431,432,0x20,433,304, 60,270,305,306,273,
@@ -914,11 +914,11 @@ CodePage PC1250=
    321,258,295,162,147,353,148,246,296,282,163,286,129,261,308,352 },
  "šŠœŒŸžŽ³£¹¥ºª¾¼¿¯àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞ",
  "µß",
- 32,Low32CharsRemaped
+ 32,TVCodePage::Low32CharsRemaped
 };
 
 // PC1251 Russian Windows code page
-CodePage PC1251=
+CodePage TVCodePage::PC1251=
 { "CP 1251 Win Russian",
   1251,
  { 412,414, 44,415,429,430,431,432,0x20,433,417, 60,419,423,421,427,
@@ -935,7 +935,7 @@ CodePage PC1251=
 };
 
 // PC1252 Windows latin 1 code page
-CodePage PC1252=
+CodePage TVCodePage::stPC1252=
 { "CP 1252 Win Latin 1",
   1252,
  { 0x20,0x20, 44,159,429,430,431,432, 94,433,304, 60,440,0x20,306,0x20,
@@ -952,7 +952,7 @@ CodePage PC1252=
 };
 
 // PC1253 Windows greek code page
-CodePage PC1253=
+CodePage TVCodePage::stPC1253=
 { "CP 1253 Win Greek",
   1253,
  { 0x20,0x20, 44,159,429,430,431,432,0x20,433,0x20, 60,0x20,0x20,0x20,0x20,
@@ -969,7 +969,7 @@ CodePage PC1253=
 };
 
 // PC1254 Windows
-CodePage PC1254=
+CodePage TVCodePage::stPC1254=
 { "CP 1254 Win Latin?",
   1254,
  { 0x20,0x20, 44,159,429,430,431,432, 94,433,304, 60,440,0x20,0x20,0x20,
@@ -986,7 +986,7 @@ CodePage PC1254=
 };
 
 // PC1257 Windows
-CodePage PC1257=
+CodePage TVCodePage::stPC1257=
 { "CP 1257 Win Latin?",
   1257,
  { 0x20,0x20, 44,0x20,429,430,431,432,0x20,433,0x20, 60,0x20,345,350,344,
@@ -1003,7 +1003,7 @@ CodePage PC1257=
  32,Low32CharsRemaped
 };
 
-CodePage ISO8859_7=
+CodePage TVCodePage::ISO8859_7=
 { "ISO 8859-7 Greek",
   88597,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -1019,7 +1019,7 @@ CodePage ISO8859_7=
 };
 
 // ISO 8859-9 (1989) Pure
-CodePage ISO8859_9=
+CodePage TVCodePage::ISO8859_9=
 { "ISO 8859-9",
   88599,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -1035,7 +1035,7 @@ CodePage ISO8859_9=
 };
 
 // ISO/IEC 8859-14:1998
-CodePage ISO8859_14=
+CodePage TVCodePage::ISO8859_14=
 { "ISO 8859-14",
   885914,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -1052,7 +1052,7 @@ CodePage ISO8859_14=
 };
 
 // ISO/IEC 8859-15:1998
-CodePage ISO8859_15=
+CodePage TVCodePage::ISO8859_15=
 { "ISO 8859-15 Icelan.",
   885915,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
@@ -1069,7 +1069,7 @@ CodePage ISO8859_15=
 
 // That's a special polish code page
 // This is PC437 changing: 134,141,143,144,145,146,149,152,156,158,160-167
-CodePage Mazovia=
+CodePage TVCodePage::stMazovia=
 { "Mazovia (polish)",
   1000000,
  { 128,129,130,131,132,133,311,135,136,137,138,139,140,256,142,313,
@@ -1093,15 +1093,15 @@ TVCodePage::TVCodePage(int id)
     #define a(v) CodePages->insert(&v)
     // Total: 43
     // Latin (23)
-    a(PC437);
-    a(PC775);
-    a(PC850);
-    a(PC852);
-    a(PC857);
-    a(PC860);
-    a(PC861);
-    a(PC863);
-    a(PC865);
+    a(stPC437);
+    a(stPC775);
+    a(stPC850);
+    a(stPC852);
+    a(stPC857);
+    a(stPC860);
+    a(stPC861);
+    a(stPC863);
+    a(stPC865);
     a(ISO8879_1);
     a(ISO8859_1_Lat1);
     a(ISO8859_1u_Lat1);
@@ -1111,14 +1111,14 @@ TVCodePage::TVCodePage(int id)
     a(ISO8859_9);
     a(ISO8859_14);
     a(ISO8859_15);
-    a(PC1250);
-    a(PC1252);
-    a(PC1254);
-    a(PC1257);
-    a(Mazovia);
+    a(stPC1250);
+    a(stPC1252);
+    a(stPC1254);
+    a(stPC1257);
+    a(stMazovia);
     // Russian (16)
-    a(PC855);
-    a(PC866);
+    a(stPC855);
+    a(stPC866);
     a(ISO8859_5);
     a(KOI_8r);
     a(KOI_8crl);
@@ -1134,9 +1134,9 @@ TVCodePage::TVCodePage(int id)
     a(ISO_IR_147);
     a(ISO_IR_146);
     // Greek (4)
-    a(PC737);
-    a(PC869);
-    a(PC1253);
+    a(stPC737);
+    a(stPC869);
+    a(stPC1253);
     a(ISO8859_7);
     #undef a
    }

@@ -7,6 +7,9 @@
 
 *****************************************************************************/
 /*
+ToDo: Add support for the ISO codepages as used by Linux, not just the standard
++ my frames.
+
 TODO: Cuando entra o setea el modo asegurarse que el cursor es lo que yo pienso.
 
 TODO:
@@ -84,6 +87,7 @@ set_selection code using mode 16. This is far from usable.
 #define Uses_TEvent
 #define Uses_TDrawBuffer
 #define Uses_TGKey
+#define Uses_TVCodePage
 #define Uses_string
 #define Uses_ctype
 #define Uses_iostream
@@ -124,6 +128,40 @@ unsigned       TScreenLinux::userBufferSize;
 int            TScreenLinux::oldCol=-1,
                TScreenLinux::oldBack=-1,
                TScreenLinux::oldFore=-1;
+
+// Information about known font maps
+struct stCodePageCk
+{
+ int codepage;
+ uint32 checksum;
+};
+
+struct stCodePageCk TScreenLinux::knownCodePages[]=
+{
+ { TVCodePage::ISOLatin1Linux,  0x6E30159A },
+ { TVCodePage::ISOLatin1uLinux, 0x2038159A },
+ { TVCodePage::KOI8r,           0x207E10FA },
+ { 0,                           0          }
+};
+
+// Information about known languages
+struct stCodePageLang
+{
+ const char *langs;
+ int codepage;
+};
+
+struct stCodePageLang TScreenLinux::langCodePages[]=
+{
+ { "ca,da,nl,et,fr,de,fi,is,it,no,pt,es,sv", TVCodePage::ISOLatin1Linux },
+ { "hr,cs,hu,pl,ro,sk,sl",                   TVCodePage::ISOLatin2      },
+ { "ru",                                     TVCodePage::ISORussian     },
+ { "el",                                     TVCodePage::ISOGreek       },
+ { "tr",                                     TVCodePage::ISO9           },
+ { NULL,                                     0                          }
+ //hebrew          iw_IL.ISO-8859-8
+ //lithuanian      lt_LT.ISO-8859-13
+};
 
 // Structure for TIOCLINUX service 2 set selection, very kernel
 // dependent.
@@ -196,7 +234,7 @@ void TScreenLinux::Init(int mode)
 
 
 // This is the code to debug the code page detection
-#ifdef DEBUG
+#ifdef DEBUG_CODEPAGE
 static int compareUni(const void *v1, const void *v2)
 {
  struct unipair *p1=(struct unipair *)v1;
@@ -275,7 +313,7 @@ int TScreenLinux::AnalyzeCodePage()
     return 0;
    }
  // Make a simplified version
- int i;
+ int i,ret=0;
  ushort UnicodeMap[256];
  memset(UnicodeMap,0xFF,256*sizeof(ushort));
  for (i=0; i<map.entry_ct; i++)
@@ -287,24 +325,47 @@ int TScreenLinux::AnalyzeCodePage()
     }
  // Compute a good check sum of it
  uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
- switch (cks)
+ // Find if we know about this one
+ for (i=0; knownCodePages[i].codepage && knownCodePages[i].checksum!=cks; i++);
+ if (knownCodePages[i].codepage)
    {
-    case 0x2038159A:
-         fputs("Code page: Latin 1u\n",stderr);
-         break;
-    case 0x6E30159A:
-         fputs("Code page: Latin 1\n",stderr);
-         break;
-    case 0x207E10FA:
-         fputs("Code page: KOI-8 R\n",stderr);
-         break;
-    default:
-         fprintf(stderr,"Unknown code page: 0x%08X\n",cks);
+    installedCodePage=knownCodePages[i].codepage;
+    LOG("Known code page detected: " << installedCodePage);
+    ret=1;
+   }
+ else
+   {
+    LOG("Unknown code page: " << cks);
    }
  delete[] map.entries;
- return 1;
+ return ret;
 }
 #endif
+
+int TScreenLinux::GuessCodePageFromLANG()
+{
+ char *lang=getenv("LANG");
+ if (!lang || strlen(lang)<2)
+    return 0;
+ int i,ret=0;
+ char b[3];
+ b[0]=tolower(lang[0]);
+ b[1]=tolower(lang[1]);
+ b[2]=0;
+
+ for (i=0; langCodePages[i].langs && !strstr(langCodePages[i].langs,b); i++);
+ if (langCodePages[i].langs)
+   {
+    installedCodePage=langCodePages[i].codepage;
+    LOG("Code page for a known language guess: " << installedCodePage);
+    ret=1;
+   }
+ else
+   {
+    LOG("Unknown language: " << b << " " << lang);
+   }
+ return ret;
+}
 
 int TScreenLinux::InitOnce()
 {
@@ -358,10 +419,9 @@ int TScreenLinux::InitOnce()
    }
 
  // Try to figure out which code page is loaded
- if (tioclinuxOK)
-   {
-    AnalyzeCodePage();
-   }
+ if (!tioclinuxOK || !AnalyzeCodePage())
+    GuessCodePageFromLANG();
+ codePage=new TVCodePage(installedCodePage);
 
  // Setup the driver properties.
  // Our code page isn't fixed.
