@@ -79,8 +79,9 @@ void TSortedListBox::handleEvent(TEvent& event)
     }
     if( event.what == evKeyDown )
         {
-        if( event.keyDown.charScan.charCode != 0 ||
-            event.keyDown.keyCode == kbBack)
+        if( event.keyDown.keyCode != kbEnter &&
+            ( event.keyDown.charScan.charCode != 0 ||
+              event.keyDown.keyCode == kbBack ) )
             {
             value = focused;
             if( value < range )
