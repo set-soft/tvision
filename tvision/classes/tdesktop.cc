@@ -22,6 +22,7 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 #define Uses_TBackground
 #define Uses_opstream
 #define Uses_ipstream
+#define Uses_TScreen
 #include <tv.h>
 
 TDeskInit::TDeskInit( TBackground *(*cBackground)( TRect ) ) :
@@ -98,6 +99,11 @@ void TDeskTop::cascade( const TRect &r )
 
 void TDeskTop::handleEvent(TEvent& event)
 {
+    if( (event.what == evBroadcast) && (event.message.command == cmReleasedFocus) &&
+        TScreen::getShowCursorEver() )
+        // SET: Move the cursor away, hopefully we will have a status bar.
+        // Helps Braille Terminals to know the object lost the focus.
+        TScreen::setCursorPos( 0 , TScreen::screenHeight - 1 );
     TGroup::handleEvent( event );
     if( event.what == evCommand )
         {
@@ -110,6 +116,9 @@ void TDeskTop::handleEvent(TEvent& event)
             case cmPrev:
                 if (valid(cmReleasedFocus))
                     current->putInFrontOf( background );
+                break;
+            case cmReleasedFocus:
+                setCursor( 0 , 24 );
                 break;
             default:
                 return;
