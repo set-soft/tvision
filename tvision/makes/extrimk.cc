@@ -790,7 +790,9 @@ void ProcessMakefile(const char *mak, stMak &mk, int level)
  time(&now);
  struct tm *brkT=localtime(&now);
  strftime(timeBuf,32,"%Y-%m-%d %H:%M",brkT);
- fprintf(stdout,"#!/usr/bin/make\n# Automatically generated from RHIDE projects, don't edit\n# %s\n#\n\n",timeBuf);
+ //fprintf(stdout,"#!/usr/bin/make\n# Automatically generated from RHIDE projects, don't edit\n# %s\n#\n\n",timeBuf);
+ // Don't know why I needed the time, so I'm disabling it.
+ fprintf(stdout,"#!/usr/bin/make\n# Automatically generated from RHIDE projects, don't edit\n#\n\n");
 
  // Write the body to a temporal
  char bNameT[12];

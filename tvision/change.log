@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.214  2004/10/19 18:05:08  set
+* Fixed: [Compilation] Missing ../compat path in extrimk.cc tool. Reported
+by Grzegorz.
+
 Revision 2.399.2.213  2004/10/19 14:57:14  set
 * Fixed: [Linux] The console driver failed to detect the code page used by
 the screen font (SFM). I think this was introduced by the 2003/05/21 patch.
