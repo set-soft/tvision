@@ -195,10 +195,25 @@ TScreenXTerm::TScreenXTerm()
  // How do I restore the original state?
  fputs("\E(B\E)0\xF",stdout);
 
- cursorLines=startupCursor=getCursorType();
- screenMode=startupMode=getCrtMode();
- startScreenWidth =screenWidth =getCols();
- startScreenHeight=screenHeight=getRows();
+ startupCursor=getCursorType();
+ startupMode  =getCrtMode();
+ startScreenWidth =getCols();
+ startScreenHeight=getRows();
+
+ // Look for defaults
+ unsigned maxX=startScreenWidth, maxY=startScreenHeight;
+ long aux;
+ if (optSearch("ScreenWidth",aux))
+    maxX=aux;
+ if (optSearch("ScreenHeight",aux))
+    maxY=aux;
+ if (maxX!=startScreenWidth || maxY!=startScreenHeight)
+    setCrtModeRes(maxX,maxY);
+
+ cursorLines=getCursorType();
+ screenMode =getCrtMode();
+ screenWidth =getCols();
+ screenHeight=getRows();
  LOG("Screen size: " << (int)screenWidth << "," << (int)screenHeight);
  screenBuffer=new ushort[screenWidth * screenHeight];
  SaveScreen();

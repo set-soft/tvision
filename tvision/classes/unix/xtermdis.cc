@@ -166,6 +166,7 @@ ushort TDisplayXTerm::GetColsIOCTL()
  winsize win;
 
  ioctl(hOut,TIOCGWINSZ,&win);
+ LOG("GetColsIOCTL() " << win.ws_col);
  return win.ws_col;
 }
 
@@ -304,6 +305,9 @@ int TDisplayXTerm::SetCrtModeXT(unsigned w, unsigned h, int fW, int fH)
       }
     fprintf(stdout,"\E]50;%dx%d\x7",fontW,fontH);
    }
+ // Ensure that's done before returning. I get wrong width from the IOCTL
+ // if I don't flush and ask quickly.
+ fflush(stdout);
  return fontOK ? 1 : 2;
 }
 

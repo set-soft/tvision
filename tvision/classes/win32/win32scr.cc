@@ -71,10 +71,25 @@ TScreenWin32::TScreenWin32()
 {
  if (!InitConsole()) return;
  flags0=CodePageVar | CursorShapes | CanSetVideoSize;
- screenMode=startupMode=getCrtMode();
- cursorLines=startupCursor=getCursorType();
- saveScreenWidth =screenWidth =GetCols();
- saveScreenHeight=screenHeight=GetRows();
+ startupMode=getCrtMode();
+ startupCursor=getCursorType();
+ saveScreenWidth =GetCols();
+ saveScreenHeight=GetRows();
+
+ unsigned maxX=saveScreenWidth, maxY=saveScreenHeight;
+ long aux;
+ if (optSearch("ScreenWidth",aux))
+    maxX=aux;
+ if (optSearch("ScreenHeight",aux))
+    maxY=aux;
+ if (maxX!=startScreenWidth || maxY!=startScreenHeight)
+    setCrtModeRes(maxX,maxY);
+
+ startupMode=getCrtMode();
+ cursorLines=getCursorType();
+ screenWidth =GetCols();
+ screenHeight=GetRows();
+
  screenBuffer=new ushort[screenHeight*screenWidth];
  ZeroMemory(screenBuffer,screenHeight*screenWidth*sizeof(ushort));
 

@@ -798,6 +798,13 @@ TScreenX11::TScreenX11()
  /* Initialize driver */
  initialized=1;
 
+ /* Look for defaults */
+ long aux;
+ if (optSearch("ScreenWidth",aux))
+    maxX=aux;
+ if (optSearch("ScreenHeight",aux))
+    maxY=aux;
+
  TDisplayX11::Init();
 
  TScreen::clearScreen=clearScreen;
