@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.282  2002/09/02 13:52:37  set
+* Fixed: Various code page and font details to avoid problems in case of
+fails.
+* Fixed: [X11] the default font shouldn't be replaced by the ones from the
+application and they must be freed.
+
 Revision 2.281  2002/09/02 13:51:48  set
 * Added: [DOS] BIOSKey configuration option.
 
