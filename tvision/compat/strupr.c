@@ -3,7 +3,7 @@
 #ifdef NEEDS_STRUPR
 #include <ctype.h>
 
-extern "C" char *strupr(char *_s)
+char *strupr(char *_s)
 {
  char *rv = _s;
  while (*_s)

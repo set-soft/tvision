@@ -1,4 +1,12 @@
 $Log$
+Revision 1.147  2000/05/12 02:28:35  set
+* Incorporated the WinNT port (using BC++ 5.5) from Anatoli Soltan
+<anatoli@iname.com>.
+* Separated most OS sensitive stuff to a sub-library called "Compat Layer".
+This will break some code, specially RHIDE, so I'm changing the middle
+version. This new library allows clean support of DOS/djgpp, Linux/gcc,
+Win32/MingW32 and WinNT/BC++ without too much conditionals.
+.
 Revision 1.146  2000/04/29 17:09:42  set
 * Added: Mixer stuff.
 .

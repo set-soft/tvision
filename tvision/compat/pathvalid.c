@@ -15,6 +15,7 @@
                                return CLY_DriveValid(dir[0])
 #define CheckDriveValid(a)  if (!unc && !CLY_DriveValid(dir[0]))\
                                return 0;
+#define DeclareUNCVar       int unc=0
 #endif
 // By default is a nop
 #ifndef CheckOnlyDrive
@@ -22,6 +23,9 @@
 #endif
 #ifndef CheckDriveValid
 #define CheckDriveValid(a)
+#endif
+#ifndef DeclareUNCVar
+#define DeclareUNCVar
 #endif
 
 // CheckUNC(path)
@@ -40,7 +44,7 @@ int CLY_PathValid(const char *path)
 {
  char dir[PATH_MAX];
  char name[PATH_MAX];
- int unc=0;
+ DeclareUNCVar;
 
  // Set UNC variable and return if that's an UNC path
  CheckUNC(path);

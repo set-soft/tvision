@@ -180,6 +180,7 @@ _fixpath(const char *in, char *out)
 #define Uses_unistd
 #define Uses_string
 #define Uses_limits
+#define Uses_getcurdir
 #include <compatlayer.h>
 
 inline static int
@@ -201,8 +202,7 @@ is_term(int c)
    4. Removing "." in the path
    5. Removing ".." entries in the path (and the directory above them)
  */
-extern "C" void
-_fixpath(const char *in, char *out)
+void _fixpath(const char *in, char *out)
 {
   const char    *ip = in;
   char          *op = out;
@@ -210,7 +210,7 @@ _fixpath(const char *in, char *out)
   /* Convert relative path to absolute */
   if (!is_slash(*ip))
   {
-    ::getcurdir(0,op);
+    getcurdir(0,op);
     op += strlen(op);
   }
 

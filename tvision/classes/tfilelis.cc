@@ -10,6 +10,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
  *
  *
  */
+#include <tv/configtv.h>
+ 
 #define Uses_string
 #include <stdio.h>
 #ifdef _MSC_VER
@@ -30,13 +32,15 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #define Uses_TStreamableClass
 #define Uses_sys_stat
 
-#if defined(__TURBOC__) || defined(__DJGPP__)
-#include <dir.h>
-#include <dirent.h>
-#define Uses_fnmatch
-#define Uses_glob
+#if defined(__TURBOC__) || defined(__DJGPP__) || defined(TVOS_UNIX)
+ #ifndef TVOS_UNIX
+  #include <dir.h>
+ #endif
+ #include <dirent.h>
+ #define Uses_fnmatch
+ #define Uses_glob
 #else
-#include <direct.h>
+ #include <direct.h>
 #endif
 
 #include <tv.h>

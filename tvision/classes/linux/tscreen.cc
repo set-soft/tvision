@@ -5,9 +5,9 @@
 #define Uses_TDrawBuffer
 #define Uses_TGKey
 #define Uses_string
+#define Uses_ctype
 #include <tv.h>
 
-#include <ctype.h>
 #include <fcntl.h>
 #include <iostream.h>
 #include <signal.h>
@@ -617,10 +617,10 @@ extern ushort user_mode;
 //   Also make it only for Linux until I know how to do it for FreeBSD.
 
 #if defined(__i386__) && defined(TVOSf_Linux)
-#define 386LowLevel
+#define h386LowLevel
 #endif
 
-#ifdef 386LowLevel
+#ifdef h386LowLevel
 #include <asm/io.h>
 
 static inline
@@ -651,7 +651,7 @@ void TScreen::GetCursor(int &x,int &y)
 
 void TScreen::SetCursor(int x,int y)
 {
- #ifdef 386LowLevel
+ #ifdef h386LowLevel
   if (dual_display || screenMode == 7)
   {
     unsigned short loc = y*80+x;
@@ -777,7 +777,7 @@ TScreen::TScreen()
   if (canOnlyWriteVCS)
      TDisplay::SetCursor(0,0);
 
-  #ifdef 386LowLevel
+  #ifdef h386LowLevel
   port_access = !ioperm(0x3b4, 7, 1);
   if (port_access)
   {
@@ -962,7 +962,7 @@ void TScreen::setVideoMode( char *mode )
 
 void TScreen::setCursorType(ushort ct)
 {
- #ifdef 386LowLevel
+ #ifdef h386LowLevel
   if (dual_display || screenMode == 7)
   {
     if (ct == 0x2000) // cursor off
@@ -983,7 +983,7 @@ void TScreen::setCursorType(ushort ct)
 
 ushort TScreen::getCursorType()
 {
- #ifdef 386LowLevel
+ #ifdef h386LowLevel
   if (dual_display || screenMode == 7)
   {
     unsigned short ct;

@@ -7,7 +7,7 @@
 
 #include <cl/needs.h>
 
-#if defined(TVOSf_djgpp) || defined(TVOSf_NT)
+#if defined(TVOSf_djgpp) || defined(TVOSf_NT) || defined(TVOS_UNIX)
 #define Uses_fixpath
 #define Uses_string
 #define Uses_limits

@@ -206,6 +206,9 @@ and regex.
  
  // Under Linux defines it
  #ifdef __linux__
+  #define FA_ARCH   0x01
+  #define FA_DIREC  0x02
+  #define FA_RDONLY 0x04
   #ifdef Uses_string
    CFunc char *strlwr(char *s);
    CFunc char *strupr(char *s);
@@ -243,10 +246,17 @@ and regex.
   #ifdef Uses_mkstemp
    #define Include_stdio
   #endif
+  #ifdef Uses_CLYFileAttrs
+   // Is that a bug? shouldn't be sys/stat.h enough?
+   #define Include_sys_types
+  #endif
  #endif
  
  // Generic UNIX system
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux)
+  #define FA_ARCH   0x01
+  #define FA_DIREC  0x02
+  #define FA_RDONLY 0x04
   #ifdef Uses_string
    CFunc char *strlwr(char *s);
    CFunc char *strupr(char *s);
@@ -577,6 +587,10 @@ CFunc void CLY_Beep(void);
 CFunc long CLY_filelength(int);
 /* Used internally, just call getcurdir prior request */
 CFunc int  CLY_getcurdir(int drive, char *buffer);
+
+#ifdef Include_sys_types
+ #include <sys/types.h>
+#endif
 
 #ifdef Include_string
 #include <string.h>

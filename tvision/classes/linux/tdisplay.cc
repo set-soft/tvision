@@ -2,6 +2,7 @@
 /* Copyright (C) 1999-2000 Salvador Eduardo Tropea */
 #define Uses_TDisplay
 #define Uses_TScreen
+#define Uses_string
 #include <tv.h>
 
 static ushort Equipment;
@@ -9,7 +10,6 @@ static uchar CrtInfo;
 static uchar CrtRows;
 
 #include <stdlib.h>
-#define Uses_string
 #include <unistd.h>
 #include <term.h>
 #include <sys/ioctl.h>

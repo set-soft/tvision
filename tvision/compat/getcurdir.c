@@ -18,7 +18,7 @@
 #include <dir.h>
 #include <string.h>
 
-int getcurdir(int drive, char *buffer)
+int CLY_getcurdir(int drive, char *buffer)
 {
   if (!drive) getwd(buffer);
   else
@@ -40,7 +40,7 @@ int getcurdir(int drive, char *buffer)
 #define Uses_string
 #include <compatlayer.h>
 
-int getcurdir(int drive, char *buffer)
+int CLY_getcurdir(int drive, char *buffer)
 {
   _getdcwd(drive, buffer,PATH_MAX);
   strcpy(buffer,buffer+3);
@@ -52,7 +52,7 @@ int getcurdir(int drive, char *buffer)
 // Linux version
 #include <unistd.h>
 
-int getcurdir(int , char *buffer)
+int CLY_getcurdir(int drive, char *buffer)
 {
   getcwd(buffer, PATH_MAX);
   return 0;
