@@ -759,19 +759,43 @@ int TScreenDOS::Load8x10Font(int which, int modeRecalculate)
   Description:
   Used after setting a video mode to load the user font or the BIOS font.
 The force parameter indicates if we must load the BIOS font or if the font
-was already loaded.
+was already loaded.@p
+  If a font was set the application this function tries to reuse it. If the
+font doesn't match the size used by the video mode calls a call back
+requesting a new font. If the routine fails to get a propper font the BIOS
+font is restored.
   
 ***************************************************************************/
 
 void TScreenDOS::SelectFont(unsigned height, Boolean Force)
 {
+ int fontWasLoaded=primaryFontSet || secondaryFontSet;
+
  if (primaryFontSet && !fontsSuspended)
    {
     if (height==appFonts[0].h)
-       SetFontBIOS(0,charLines,appFonts[0].data,0);
+       SetFontBIOS(0,height,appFonts[0].data,0);
     else
-       if (Force)
-          SelectRomFont(height,0,0);
+      {
+       int fontOk=0;
+       // The one provided by the application isn't suitable
+       if (frCB)
+         {// Try asking the application to provide a new one
+          TScreenFont256 *font=frCB(0,8,height);
+          if (font)
+            {
+             SetFontBIOS(0,height,font->data,0);
+             MemorizeFont(0,font);
+             fontOk=1;
+            }
+         }
+       if (!fontOk)
+         {
+          if (Force)
+             SelectRomFont(height,0,0);
+          primaryFontSet=0;
+         }
+      }
    }
  else
    {
@@ -779,8 +803,35 @@ void TScreenDOS::SelectFont(unsigned height, Boolean Force)
        SelectRomFont(height,0,0);
    }
 
- if (!fontsSuspended && secondaryFontSet && height==appFonts[1].h)
-    SetFontBIOS(1,charLines,appFonts[1].data,0);
+ if (!fontsSuspended && secondaryFontSet)
+   {
+    if (height==appFonts[1].h)
+       SetFontBIOS(1,height,appFonts[1].data,0);
+    else
+      {
+       int fontOk=0;
+       // The one provided by the application isn't suitable
+       if (frCB)
+         {// Try asking the application to provide a new one
+          TScreenFont256 *font=frCB(1,8,height);
+          if (font)
+            {
+             SetFontBIOS(1,height,font->data,0);
+             MemorizeFont(1,font);
+             fontOk=1;
+            }
+         }
+       if (!fontOk)
+         {
+          DisableDualFont();
+          secondaryFontSet=0;
+         }
+      }
+   }
+
+ if (fontWasLoaded && !(primaryFontSet || secondaryFontSet))
+    // Restore the original encoding if we forced ROM fonts
+    TVCodePage::SetCodePage(origCPScr,origCPApp);
 }
 
 

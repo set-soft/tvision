@@ -28,6 +28,10 @@ struct TScreenFont256
  uchar *data;
 };
 
+// Type for the callback called when the driver needs a new font.
+typedef TScreenFont256 *(*TVScreenFontRequestCallBack)(int which, unsigned w,
+                         unsigned height);
+
 /**[txh]********************************************************************
 
   Description:
@@ -249,6 +253,8 @@ public:
                    { return setFont(0,font,encoding); };
  static int      setSecondaryFont(TScreenFont256 *font) { return setFont(1,font); };
  static void   (*restoreFonts)();
+ static TVScreenFontRequestCallBack
+                 setFontRequestCallBack(TVScreenFontRequestCallBack cb);
  // Helpers:
  static int      disableSecondaryFont() { return setSecondaryFont(NULL); };
  static Boolean  isSecondaryFontEnabled() { return useSecondaryFont ? True : False; };
@@ -296,6 +302,8 @@ protected:
  // Indicates if we must use the secondary font for the higher foreground
  // colors.
  static char      useSecondaryFont;
+ // Font Request Call Back
+ static TVScreenFontRequestCallBack frCB;
 
  // That's the real function to set the fonts
  static int  (*setFont)(int which, TScreenFont256 *font, int encoding=-1);

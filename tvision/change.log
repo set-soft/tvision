@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.217  2002/07/15 15:09:47  set
+* Modified: Removed the TFont class. Now this functionallity is in TScreen.
+May be I'll add more things to make it as flexible as this class.
+* Added: [DOS] Font restore on suspend and resume. Also after a change in
+video mode.
+* Added: Shell example to the font's example, it is good for testing the
+fonts suspend/resume behavior. Also added a video mode change when
+compiling for DOS. Also good for testing.
+
 Revision 2.216  2002/07/11 19:11:35  set
 * Fixed: [MSVC] more compatlayer issues, added pclose and pipe, commented
 utime macro, etc. From SETEdit compilation errors sent by WintiX.
