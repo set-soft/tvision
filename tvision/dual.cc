@@ -28,11 +28,11 @@ int dual_display_supported()
 
 void SetDualDisplay()
 {
-  if (dual_display) return;
+  if (TDisplay::dual_display) return;
   if (!dual_display_supported()) return;
   TEventQueue::suspend();
   TScreen::suspend();
-  dual_display = 1;
+  TDisplay::dual_display = 1;
   TScreen::resume();
   TEventQueue::resume();
 }
@@ -40,10 +40,10 @@ void SetDualDisplay()
 
 void SetNormalDisplay()
 {
-  if (!dual_display) return;
+  if (!TDisplay::dual_display) return;
   TEventQueue::suspend();
   TScreen::suspend();
-  dual_display = 0;
+  TDisplay::dual_display = 0;
   TScreen::resume();
   TEventQueue::resume();
 }
