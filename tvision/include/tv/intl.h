@@ -35,6 +35,8 @@ public:
  static const char *bindTextDomain(const char *domainname, const char *dirname);
  // Translate the message
  static const char *getText(const char *msgid);
+ // What we think is a good way to initialize the domain
+ static int         autoInit(const char *package, const char *localeDir=NULL);
 
  // Special (and tricky members)
  // Set the encoding for the catalog

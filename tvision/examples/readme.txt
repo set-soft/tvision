@@ -56,6 +56,7 @@ fonts    - Here you can see how to set and restore the fonts.
            to generate raw font files.
 helpdemo - Shows how to use help context values and how to display context
            sensitive help in the status line.
+i18n     - Internationalization for messages. Example using spanish.
 inplis   - That's interesting. It implements a class with pairs label/data
            and allows the modification and browse of the data in a scrollabel
            list.

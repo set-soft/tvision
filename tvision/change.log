@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.47  2003/04/21 16:35:22  set
+* Fixed(?): Use of \r in i18n messages. This is a really bad limitation.
+
 Revision 2.399.2.46  2003/04/21 16:18:52  set
 * Modified: Enlarged the colors dialog lists to let more space for
 translated colors and also added an horizontal scroll bar to the items
