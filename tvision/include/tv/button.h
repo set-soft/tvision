@@ -36,7 +36,7 @@ struct TEvent;
 class TDrawBuffer;
 
 // SET: callback function and return values
-typedef int (*TButtonCallBack)(unsigned command);
+typedef int (*TButtonCallBack)(unsigned command, void *data);
 const int btcbGoOn=0, btcbEndModal=1;
 
 class TButton : public TView
@@ -58,7 +58,8 @@ public:
     void makeDefault( Boolean enable );
     virtual void press();
     virtual void setState( ushort aState, Boolean enable );
-    void setCallBack(TButtonCallBack cb) { callBack=cb; };
+    void setCallBack(TButtonCallBack cb, void *aData=NULL)
+         { callBack=cb; cbData=aData; };
     const char *getText() { return TVIntl::getText(title,intlTitle); };
 
     const char *title;
@@ -74,6 +75,7 @@ protected:
     uchar flags;
     Boolean amDefault;
     TButtonCallBack callBack;
+    void *cbData; // SET: Callback data
 
 private:
 
