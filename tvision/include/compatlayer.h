@@ -169,7 +169,7 @@ typedef unsigned long  ulong;
   #define CLY_StreamOffT     std::streamoff
   #define CLY_IOSSeekDir     std::ios::seekdir
   #define CLY_FBOpenProtDef  0
-  #define CLY_NewFBFromFD(f) new filebuf(fdopen(f,"r+"),ios::in|ios::out)
+  #define CLY_NewFBFromFD(f) new filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
   #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
   #undef  CLY_HaveFBAttach
   #define CLY_FBOpen(a,b,c)  open(a,b)
