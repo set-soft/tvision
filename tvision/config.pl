@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2003 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2004 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -100,11 +100,13 @@ if ($Compf eq 'MinGW')
   }
 $realPrefix=@conf{'real-prefix'};
 $realPrefix=@conf{'prefix'} unless $realPrefix;
-# Path for the includes
+# Path for the includes, used for examples
 $MakeDefsRHIDE[1]='TVSRC=../../include ';
 $MakeDefsRHIDE[1].=$here.'/include ' unless $conf{'libs-here'} eq 'no';
 $MakeDefsRHIDE[1].=$realPrefix.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
+# Extra path for the includes, used for the library
+$MakeDefsRHIDE[9]='EXTRA_INCLUDE_DIRS=';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
@@ -140,7 +142,9 @@ if ($OS eq 'UNIX')
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
    if (@conf{'HAVE_X11'} eq 'yes')
      {
-      $MakeDefsRHIDE[0].=$conf{'X11IncludePath'} ? ' '.$conf{'X11IncludePath'} : ' /usr/X11R6/include';
+      $aux=$conf{'X11IncludePath'} ? ' '.$conf{'X11IncludePath'} : ' /usr/X11R6/include';
+      $MakeDefsRHIDE[0].=$aux;
+      $MakeDefsRHIDE[9].=$conf{'EXTRA_INCLUDE_DIRS'}.$aux;
      }
    $MakeDefsRHIDE[3]='TVOBJ='.$LDExtraDirs.' ';
    # QNX 6.2 beta 3 workaround
@@ -338,6 +342,10 @@ elsif ($i=~'--real-prefix=(.*)')
       {
        $conf{'HAVE_UNSAFE_MEMCPY'}='no';
       }
+    elsif ($i=~'--include=(.*)')
+      {
+       $conf{'EXTRA_INCLUDE_DIRS'}.=" $1";
+      }
     # For compatibility with autoconf:
     # LinCS/tiger - ignore some autoconf generated params
     elsif (($i=~'--cache-file=(.*)') || ($i=~'--srcdir=(.*)') || ($i=~'--enable-ltdl-convenience'))
@@ -362,6 +370,7 @@ sub ShowHelp
  print "--x-include=path: X11 include path [/usr/X11R6/lib].\n";
  print "--x-lib=path    : X11 library path [/usr/X11R6/include].\n";
  print "--X11lib=val    : Name of X11 libraries [default is X11 Xmu].\n";
+ print "--include=path  : Add this path for includes. Repeat for each dir.\n";
  print "--no-libs-here  : Don't use the sources path for libs.\n";
  
  print "\nIntallation:\n";

@@ -13,7 +13,7 @@ vpath %.c $(vpath_src)
 vpath %.s $(vpath_src)
 vpath %.cc $(vpath_src)
 vpath %.o $(vpath_obj)
-vpath %.h $(INCLUDE_DIRS)
+vpath %.h $(INCLUDE_DIR)
 
 # These files changes the compilation process so they are important
 # dependencies.

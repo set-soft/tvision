@@ -22,7 +22,6 @@ vpath_obj=obj
 INCLUDE_DIR=../include
 CLASSES_DIR=../classes
 EXTRA_SRC_DIR=..
-INCLUDE_DIRS=$(INCLUDE_DIR)
 
 ##########################################################################################
 #
@@ -35,6 +34,8 @@ INCLUDE_DIRS=$(INCLUDE_DIR)
 # It also includes rhide.env.
 #
 include common.imk
+
+INCLUDE_DIRS=$(INCLUDE_DIR) $(EXTRA_INCLUDE_DIRS)
 
 #
 # All the RHIDE data should come from here.

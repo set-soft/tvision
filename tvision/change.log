@@ -1,26 +1,29 @@
-$Log$.
+$Log$
+Revision 2.568  2004/09/17 19:13:47  set
+* Fixed: [NetBSD] libintl isn't part of libc.
+
 Revision 2.567  2004/09/17 19:02:36  set
 * Fixed: [MSVC] Missing return value in tdirlist.cc:
 ListDirectory( char *path, char *end ). Introduced by last TDirListBox
 patches in the MSVC specific section.
-.
+
 Revision 2.566  2004/09/17 14:50:02  set
 * Fixed: [DOS][gcc] gcc 3.4.1 warnings in vgastate.c code. Reported by
 Nicola Asuni.
-.
+
 Revision 2.565  2004/09/17 14:49:19  set
 * Fixed: [Examples] [dlgdsn] The getFileName function returned a pointer to
 a local buffer. Now it returns a newly allocated string. Reported by Nicola
 Asuni.
-.
+
 Revision 2.564  2004/09/16 21:04:05  set
 * Added: [Config] AMD64 and NetBSD detection. Code seems to compile for
 both. It doesn't mean they are supported.
-.
+
 Revision 2.563  2004/08/30 13:13:44  set
 * Fixed: [MSVC] MSVC 6.0 also failed to compile the WinGr driver, so we are
 just disabling it for MSVC.
-.
+
 Revision 2.562  2004/08/26 20:23:53  set
 * Modified: [MSVC] At least MSVC 6.0 (version 12.00) have a erong
 implementation of vsnprintf. As I already had too much problems with this
