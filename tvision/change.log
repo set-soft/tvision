@@ -1,4 +1,7 @@
 $Log$
+Revision 1.59  1999/06/05 22:38:19  root (set)
+* Applied patches for Debian package v1.0.5-2. (from Ivan).
+
 Revision 1.58  1999/06/05 02:18:59  set
 * Modified: The destroy0 macro to be possible your use in cases like:
 if (...) destroy0(...); Suggested by Laurynas Biveinis <lauras@softhome.net>.
