@@ -1,4 +1,15 @@
-$Log$
+$Log$.
+Revision 2.316  2002/09/16 14:31:19  set
+* Fixed: [X11] When resizing the font I informed to the WM about the new
+cell size but I forgot to inform about the new minimal size. At least
+Enlightenment took it in a very funny way: computed the minimal size + the
+delta multiplied by the new cell size. It generated a negotiation between
+the application and the WM to converge in a wrong size.
+* Added: [X11] Information about the base size. At least E uses it to
+inform the window size in cells. If we don't set it the size reported is
+the current size minus the minimal size (40x5 for 80x25).
+* Added: More documentation to the X11 driver doc.
+
 Revision 2.315  2002/09/16 14:30:33  set
 * Added: [XTerm] A new configuration option called "UseShellScreen". It
 could help if someday we compile an RHIDE with TV 2.0.0 and want to use it
