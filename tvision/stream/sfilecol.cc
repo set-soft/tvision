@@ -10,3 +10,4 @@ TStreamableClass RFileCollection( TFileCollection::name,
                                 );
 
 #endif
+

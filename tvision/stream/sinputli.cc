@@ -11,3 +11,4 @@ TStreamableClass RInputLine( TInputLine::name,
                            );
 
 #endif
+

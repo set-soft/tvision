@@ -11,3 +11,4 @@ TStreamableClass RMemo( TMemo::name,
                       );
 
 #endif
+

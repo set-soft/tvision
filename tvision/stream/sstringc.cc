@@ -10,3 +10,4 @@ TStreamableClass RStringCollection( TStringCollection::name,
                                   );
 
 #endif
+

@@ -11,3 +11,4 @@ TStreamableClass RIndicator( TIndicator::name,
                            );
 
 #endif
+

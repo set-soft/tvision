@@ -11,3 +11,4 @@ TStreamableClass RScrollBar( TScrollBar::name,
                            );
 
 #endif
+

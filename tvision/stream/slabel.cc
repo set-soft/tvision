@@ -11,3 +11,4 @@ TStreamableClass RLabel( TLabel::name,
                        );
 
 #endif
+

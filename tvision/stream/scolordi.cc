@@ -19,3 +19,4 @@ TStreamableClass RColorDialog( TColorDialog::name,
                              );
 
 #endif
+

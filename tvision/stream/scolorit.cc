@@ -11,3 +11,4 @@ TStreamableClass RColorItemList( TColorItemList::name,
                                );
 
 #endif
+

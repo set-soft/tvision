@@ -13,3 +13,4 @@ TStreamableClass RFileDialog( TFileDialog::name,
                             );
 
 #endif
+

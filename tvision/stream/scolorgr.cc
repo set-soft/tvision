@@ -11,3 +11,4 @@ TStreamableClass RColorGroupList( TColorGroupList::name,
                                 );
 
 #endif
+

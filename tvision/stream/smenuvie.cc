@@ -11,3 +11,4 @@ TStreamableClass RMenuView( TMenuView::name,
                           );
 
 #endif
+

@@ -10,3 +10,4 @@ TStreamableClass RDirCollection( TDirCollection::name,
                                );
 
 #endif
+

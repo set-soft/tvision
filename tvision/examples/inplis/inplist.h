@@ -66,3 +66,4 @@ class TInputDialog : public TDialog
     TScrollBar *vScrollBar;
     TInputBox  *inputBox;
 };
+

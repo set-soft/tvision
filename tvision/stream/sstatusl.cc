@@ -11,3 +11,4 @@ TStreamableClass RStatusLine( TStatusLine::name,
                             );
 
 #endif
+

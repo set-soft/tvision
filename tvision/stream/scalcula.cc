@@ -13,3 +13,4 @@ TStreamableClass RCalculator( TCalculator::name,
                             );
 
 #endif
+

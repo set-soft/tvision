@@ -10,3 +10,4 @@ TStreamableClass RFileInfoPane( TFileInfoPane::name,
                               );
 
 #endif
+

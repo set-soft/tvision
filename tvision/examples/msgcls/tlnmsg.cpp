@@ -288,3 +288,4 @@ void postInfo(int line, const char * text)
    data.text = text;
    message(wPtr, evBroadcast, cmInsInfoBox, (void *) &data);
 }
+
