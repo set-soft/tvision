@@ -29,5 +29,5 @@
 
 ifpstream * openFile(const char * FileName, char * Signature);
 ofpstream * initFile(const char * FileName, char * current, char * Signature);
-const char * getFileName(const char * aTitle, const char * ext, int Mode);
+char * getFileName(const char * aTitle, const char * ext, int Mode);
 

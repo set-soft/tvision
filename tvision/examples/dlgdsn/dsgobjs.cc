@@ -972,7 +972,7 @@ void * TDDialog::dsgGetData() { return (void *)title; }
 
 Boolean TDDialog::Save(int aCommand)
 {
-   const char * f;
+   char * f;
    int cmd = aCommand;
    if (modified)
    {
@@ -984,8 +984,8 @@ Boolean TDDialog::Save(int aCommand)
          f = getFileName(_("Save dialog"), "*.fdg", 1);
          if (f)
          {
-            if (fileName) delete[] fileName;
-            fileName = newStr(f);
+            delete[] fileName;
+            fileName = f;
             return True;
          }
       }

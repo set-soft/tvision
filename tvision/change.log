@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.185  2004/08/30 13:13:06  set
+* Fixed: [MSVC] MSVC 6.0 also failed to compile the WinGr driver, so we are
+just disabling it for MSVC.
+
 Revision 2.399.2.184  2004/08/26 20:18:38  set
 * Modified: [MSVC] At least MSVC 6.0 (version 12.00) have a erong
 implementation of vsnprintf. As I already had too much problems with this
