@@ -21,6 +21,7 @@ H”hne.
 #ifdef TVCompf_djgpp
  #include <conio.h>
 #endif
+#define Uses_string
 #define Uses_stdlib
 #define Uses_stdio
 #define Uses_TEvent
