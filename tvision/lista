@@ -234,6 +234,17 @@ doc/I18n.txt
 doc/Linux.txt
 doc/QNX.txt
 doc/Streams.txt
+doc/troubleshooting/Linux/1/code.cc
+doc/troubleshooting/Linux/1/readme.txt
+doc/troubleshooting/Linux/1/test-utf8.txt
+doc/troubleshooting/Linux/1/test.txt
+doc/troubleshooting/Linux/1/utf8.cc
+doc/troubleshooting/Linux/2/readme.txt
+doc/troubleshooting/Linux/3/readme.txt
+doc/troubleshooting/Linux/4/readme.txt
+doc/troubleshooting/Linux/4/test.cc
+doc/troubleshooting/Linux/readme.txt
+doc/troubleshooting/readme.txt
 doc/TVReference.html
 doc/Win32.txt
 doc/WinGr.txt
