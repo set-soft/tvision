@@ -39,15 +39,15 @@ LDFLAGS   = $(DYNRTLDFLAGS) -WC
 
 .SUFFIXES: .cc .c .obj
 
-TV_OBJS_ =  +calcdisp.obj +calculat.obj +codepage.obj +configfile.obj +dosdis.obj\
-+doskey.obj +dosmouse.obj +dosscr.obj +drivers2.obj +dual.obj +fileview.obj +fontcoll.obj\
-+fpbase.obj +fpstream.obj +beep.obj +drivevalid.obj +expandpath.obj +fexpand.obj\
-+fileattrs.obj +fileexists.obj +filelength.obj +fixpath.obj +fnmatch.obj +getcurdir.obj\
-+getline.obj +getopt.obj +getopt1.obj +getshell.obj +glob.obj +globfree.obj +iffilelen.obj\
-+isdir.obj +isrelpath.obj +iswild.obj +itoa.obj +mkstemp.obj +nl_langinfo.obj\
-+ntdirent.obj +pathvalid.obj +regex.obj +releasec.obj +snprintf.obj +ssc_streams.obj\
-+strlwr.obj +strupr.obj +ticks.obj +unc.obj +unc_95.obj +unc_nt.obj +validfilename.obj\
-+yieldpro.obj +help.obj +helpbase.obj +histlist.obj +ifpstrea.obj +iopstrea.obj\
+TV_OBJS_ =  +beep.obj +drivevalid.obj +expandpath.obj +fexpand.obj +fileattrs.obj\
++fileexists.obj +filelength.obj +fixpath.obj +fnmatch.obj +getcurdir.obj +getline.obj\
++getopt.obj +getopt1.obj +getshell.obj +glob.obj +globfree.obj +iffilelen.obj +isdir.obj\
++isrelpath.obj +iswild.obj +itoa.obj +mkstemp.obj +nl_langinfo.obj +ntdirent.obj\
++pathvalid.obj +regex.obj +releasec.obj +snprintf.obj +ssc_streams.obj +strlwr.obj\
++strupr.obj +ticks.obj +unc.obj +unc_95.obj +unc_nt.obj +validfilename.obj +yieldpro.obj\
++calcdisp.obj +calculat.obj +codepage.obj +configfile.obj +dosdis.obj +doskey.obj\
++dosmouse.obj +dosscr.obj +drivers2.obj +dual.obj +fileview.obj +fontcoll.obj +fpbase.obj\
++fpstream.obj +help.obj +helpbase.obj +histlist.obj +ifpstrea.obj +iopstrea.obj\
 +ipstream.obj +linuxdis.obj +linuxkey.obj +linuxmouse.obj +linuxscr.obj +misc.obj\
 +msgbox.obj +nbackgro.obj +nbutton.obj +ncalcdis.obj +ncalcula.obj +nchdirdi.obj\
 +ncheckbo.obj +nclrdisp.obj +ncluster.obj +ncollect.obj +ncolordi.obj +ncolorgr.obj\
