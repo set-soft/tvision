@@ -37,7 +37,7 @@ protected:
  // Cursor position in pixels
  static int       cursorPX, cursorPY;
  // Size of the font
- static unsigned  fontW,fontH;
+ static unsigned  fontW,fontWb,fontH;
  // Cursor shape in absolute values (0-fontH)
  static char      cShapeFrom,cShapeTo;
  // Flag to indicate that the size of the window changed
