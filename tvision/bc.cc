@@ -4,6 +4,7 @@
 #if defined( DJGPP )
 #include <dpmi.h>
 #include <dir.h>
+#include <fcntl.h> // _use_lfn
 #endif
 #include <string.h>
 #include <limits.h>
@@ -143,7 +144,14 @@ Boolean pathValid( const char *path )
 Boolean validFileName( const char *fileName )
 {
 #ifdef __DJGPP__
-  static const char * const illegalChars = ";,=+<>|\"[]/";
+  static const char * const illegalChars1 = ";,=+<>|\"[]/";
+  static const char * const illegalChars2 = "<>|/\"";
+  static const char * illegalChars;
+  // SET: Added a check for LFNs, in LFN drives ;,[]=+ are valid
+  if (_use_lfn(fileName))
+     illegalChars=illegalChars2;
+  else
+     illegalChars=illegalChars1;
 #else
   static const char * const illegalChars = "<>|/\"";
 #endif
