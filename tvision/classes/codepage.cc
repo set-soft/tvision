@@ -1610,7 +1610,12 @@ TVCodePage::~TVCodePage()
 /**[txh]********************************************************************
 
   Description:
-  Converts a code page id into an index in the code page collection.
+  Converts a code page id into an index in the code page collection.@*
+  Important note: We should always default to 437 because:@*
+1) That's the original encoding used by TV applications.@*
+2) Some asiatic encodings, like code page 936 (simplified chinese, maybe
+also 950 [traditional chinese], 932 [japanese Shift-JIS] and 949 [korean]),
+behaves like 437 when we write to the video buffer.@*
 
   Return: The index of the code page with this id. If error the index for
 PC 437 code page is returned.
@@ -1621,14 +1626,16 @@ ccIndex TVCodePage::IDToIndex(int id)
 {
  if (!CodePages) return 0;
  ccIndex c=CodePages->getCount();
- ccIndex i;
+ ccIndex i, i437=0;
  for (i=0; i<c; i++)
    {
     CodePage *p=(CodePage *)(CodePages->at(i));
     if (p->id==id)
        return i;
+    if (p->id==PC437)
+       i437=i;
    }
- return 0;
+ return i437;
 }
 
 /**[txh]********************************************************************

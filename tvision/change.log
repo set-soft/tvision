@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.597  2004/10/29 15:21:30  set
+* Fixed: [Compilation][MSVC] Typo in mlink.cc and wrong reference to
+../compat/obj in common.nmk. Both patches from Grzegorz. With this the
+unified mechanism works.
+
 Revision 2.596  2004/10/28 20:44:25  set
 * Added: [DOCs][MSVC] MSVC 7.1 as supported compiler. Mike verified it and
 this version is different than 7.0, enough to mention it.
