@@ -692,7 +692,10 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
       allegro_message("Can't initialize graphics mode\n%s\n",allegro_error);
       return 2;
    }
-  
+   // Set the size of the font and screen.
+   AlCon_ScreenWidth =w;
+   AlCon_ScreenHeight=h;
+
    /* Load a binary font. Hack to get the font/screen properties set. */
    ASSERT(fdata);
    AlCon_LoadCustomFont(0,fdata,AlCon_FontWidth,AlCon_FontHeight);
@@ -731,7 +734,8 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
   
 ***************************************************************************/
 
-int AlCon_Resize(int new_font_width, int new_font_height)
+int AlCon_Resize(unsigned sW, unsigned sH, int new_font_width,
+                 int new_font_height)
 {
    ASSERT(screen && "Did you really initialise me properly?");
    ASSERT(new_font_width > 0);
@@ -744,21 +748,28 @@ int AlCon_Resize(int new_font_width, int new_font_height)
    const int old_h = SCREEN_H;
    const int old_card = gfx_driver->id;
 
+   // Hide the mouse during the change. If we don't do it the cursor gets damaged.
+   show_mouse(NULL);
    // Be brave and try the new screen resolution.
    // TODO: Get rid of explicit driver. Maybe use configuration file?
    int ret = set_gfx_mode(GFX_AUTODETECT_WINDOWED,
-      AlCon_ScreenWidth * new_font_width, AlCon_ScreenHeight * new_font_height,
-      AlCon_ScreenWidth * new_font_width, AlCon_ScreenHeight * new_font_height);
+      sW * new_font_width, sH * new_font_height,
+      sW * new_font_width, sH * new_font_height);
 
    if (ret == 0)
+     {
+      AlCon_ScreenWidth=sW;
+      AlCon_ScreenHeight=sH;
+      show_mouse(screen);
       return 0;
+     }
 
    // Oops, try to fix our mistake.
    ret = set_gfx_mode(old_card, old_w, old_h, old_w, old_h);
    if (ret != 0)
       return -1;  // Bail out completely.
-   else
-      return 1;   // At least we kept our head safe...
+   show_mouse(screen);
+   return 1;   // At least we kept our head safe...
 }
 
 /**[txh]********************************************************************
@@ -1216,10 +1227,6 @@ void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h)
  Alcon_PrimaryFont.height  =
  Alcon_SecondaryFont.height=
  Alcon_CursorFont.height   =AlCon_FontHeight;
-
- // Set the size of the font and screen.
- AlCon_ScreenWidth =SCREEN_W/AlCon_FontWidth;
- AlCon_ScreenHeight=SCREEN_H/AlCon_FontHeight;
 
  if (sizeChanged)
     Alcon_CreateNewCursor();

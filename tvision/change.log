@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.138.2.9  2004/10/25 21:19:08  set
+* Added: [AlCon] Support for fonts of width!=8.
+
 Revision 2.399.2.138.2.8  2004/10/22 14:55:51  set
 * Added: [AlCon] Palette support.
 

@@ -1,7 +1,7 @@
 // -*- mode:C++; tab-width: 4 -*-
 #include <tv/configtv.h>
 
-//#define Uses_stdio // DEBUG
+#define Uses_stdio // DEBUG
 
 #define Uses_TScreen
 #define Uses_TEvent
@@ -132,10 +132,10 @@ TScreenAlcon::TScreenAlcon()
     TScreen::setDisPaletteColors=SetDisPaletteColors;
     // Fonts stuff
     TScreen::getFontGeometry=GetFontGeometry;
-    // The following can be enabled when SetFont implements a "resize"
-    //TScreen::getFontGeometryRange=GetFontGeometryRange;
+    TScreen::getFontGeometryRange=GetFontGeometryRange;
     TScreen::setFont_p=SetFont;
     TScreen::restoreFonts=RestoreFonts;
+    TScreen::setCrtModeRes_p=SetCrtModeRes;
     initialized=1;
 
     TGKeyAlcon::Init();
@@ -146,19 +146,15 @@ TScreenAlcon::TScreenAlcon()
     startupCursor = cursorLines;
     startupMode = screenMode;
 
-    // TODO: Obviously this is for testing here...
-    DoResize(8, 16);
-
     // Create memory buffer for screen. We want a buffer (even though
     // AlCon is buffered) because otherwise TVision will use simple
     // memcpy calls to "paint" the screen. We don't want this, because
     // Allegro has to be told when to update the screen. So it's a
     // buffer on top of Allegro's buffer so that Allegro get's called.
     // Wicked. But works.
-    screenBuffer = new uint16[screenWidth * screenHeight];
+    screenBuffer=new uint16[screenWidth*screenHeight];
     
     flags0|=CanSetPalette | CanReadPalette | CanSetBFont | CanSetSBFont |
-            // TODO: ¡¡Mentira!! es sólo para probar ;-), falta implementar el resize.
             CanSetVideoSize;
 }
 
@@ -279,7 +275,7 @@ int TScreenAlcon::SetFont(int changeP, TScreenFont256 *fontP,
  // Size missmatch
  if (wP!=wS || hP!=hS) return 0;
  // This driver currently doesn't support changing the font size on the fly
- if (wP!=fontW || hP!=fontH) return 0;
+ //if (wP!=fontW || hP!=fontH) return 0;
  // Check if the size is in the range
  if (wP<foWmin || wP>foWmax || hP<foHmin || hP>foHmax)
     return 0;
@@ -320,7 +316,12 @@ int TScreenAlcon::SetFont(int changeP, TScreenFont256 *fontP,
     else
        TVCodePage::SetCodePage(appCP,fontCP,-1);
    }
+ if (wP!=fontW || hP!=fontH)
+   {
+    DoResize(wP,hP);
+   }
  AlCon_Redraw();
+
  return 1;
 }
 
@@ -347,32 +348,108 @@ int TScreenAlcon::SetDisPaletteColors(int from, int number, TScreenColor *colors
 
 void TScreenAlcon::DoResize(unsigned w, unsigned h)
 {
- ASSERT(w > 0);
- ASSERT(h > 0);
+ ASSERT(w>0);
+ ASSERT(h>0);
  
-#if SOMEBODY_UNDERSTANDS
+ int ret=AlCon_Resize(screenWidth,screenHeight,w,h);
+ if (ret!=0)
+   {
+    PRINTF("Ayeeee! A monkey with three heads! %d\n", ret);
+    exit(ret);
+   }
  if (w!=fontW || h!=fontH)
    {
-    unsigned start=100*cShapeFrom/fontH;
-    unsigned end  =100*cShapeTo/fontH;
+    int cShapeFrom, cShapeTo;
+    AlCon_GetCursorShape(&cShapeFrom,&cShapeTo);
+    double start=cShapeFrom/(double)fontH;
+    double end  =cShapeTo/(double)fontH;
     fontW=w;
     fontWb=(w+7)/8;
     fontH=h;
     fontSz=fontWb*h;
     
     /* Change the cursor shape */
-    AlCon_SetCursorShape(start,end);
+    cShapeFrom=int(start*fontH+0.5);
+    cShapeTo  =int(end*fontH+0.5);
+    if ((unsigned)cShapeFrom>=fontH) cShapeFrom=fontH-1;
+    if ((unsigned)cShapeTo>=fontH)   cShapeTo=fontH-1;
+    AlCon_SetCursorShape(cShapeFrom,cShapeTo);
    }
-#endif
 
- // SET, obviamente estos +1 son de prueba para ver que funciona.
- int ret = AlCon_Resize(w + 1, h + 1);
- if (ret != 0)
-   {
-    PRINTF("Ayeeee! A monkey with three heads! %d\n", ret);
-    exit(ret);
-   }
  /* Compute cursor position and draw it */
-// AlCon_GotoXY(cursorX,cursorY);
+ AlCon_GotoXY(AlCon_WhereX(),AlCon_WhereY());
+}
+
+int TScreenAlcon::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
+{
+ if (fW==-1) fW=fontW;
+ if (fH==-1) fH=fontH;
+ if (w==screenWidth && h==screenHeight &&
+     fontW==(unsigned)fW && fontH==(unsigned)fH) return 0;
+
+ unsigned nW=fontW, nH=fontH;
+ TScreenFont256 *nFont=NULL,*nsFont=NULL;
+ int releaseFont=0, releaseSFont=0, resetFont=0;
+
+ // Solve the fonts, don't change them yet.
+ if ((unsigned)fW!=fontW || (unsigned)fH!=fontH)
+   {
+    if (primaryFontChanged)
+      {// The application set a font, ask for this new one
+       if (frCB && (nFont=frCB(0,fW,fH)))
+          releaseFont=1;
+       else
+         {// No replacement available, revert to our font.
+          resetFont=1;
+          nFont=&font8x16;
+         }
+      }
+    else
+      {
+       if (fW==8 && fH==16)
+          resetFont=1, nFont=&font8x16;
+       else if (frCB && (nFont=frCB(0,fW,fH)))
+          releaseFont=1;
+       else
+          resetFont=1, nFont=&font8x16;
+      }
+    nW=nFont->w;
+    nH=nFont->h;
+    if ((nW!=fontW || nH!=fontH) && useSecondaryFont)
+      {
+       if (frCB && (nsFont=frCB(1,nW,nH)))
+          releaseSFont=1;
+      }
+   }
+
+
+ AlCon_DisableAsync();
+ if (nFont)
+   {
+    AlCon_SetFont(0,nFont->data,nW,nH);
+    if (resetFont)
+       primaryFontChanged=0;
+    if (releaseFont)
+      {
+       DeleteArray(nFont->data);
+       delete nFont;
+      }
+   }
+ if (useSecondaryFont)
+   {
+    if (nsFont)
+       AlCon_SetFont(1,nsFont->data,nW,nH);
+   }
+ // Should I check the size?
+ screenWidth=w; screenHeight=h;
+
+ delete[] screenBuffer;
+ screenBuffer=new uint16[screenWidth*screenHeight];
+ memset(screenBuffer,0,screenWidth*screenHeight*sizeof(uint16));
+ AlCon_EnableAsync();
+
+ DoResize(nW,nH);
+
+ return (nW==(unsigned)fW && nH==(unsigned)fH) ? 1 : 2;
 }
 
