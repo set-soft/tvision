@@ -31,7 +31,7 @@ and regex.
 ***************************************************************************/
 
 #ifndef CLY_CompatLayerIncluded
-#define CLY_CompatLayerIncluded
+//#define CLY_CompatLayerIncluded
 
 #include <tv/configtv.h>
 

@@ -1,4 +1,8 @@
 $Log$
+Revision 1.242.2.2  2001/11/25 15:45:57  set
+* Fixed: Desklogo examples to work with anything different than 80x25 and a
+lack of a redraw in tv_logo. Reported by Cesar Rabak <csrabak@uol.com.br>.
+
 Revision 1.242.2.1  2001/11/25 15:03:51  set
 * Merged Ivan patches for package 1.1.3-3
 
