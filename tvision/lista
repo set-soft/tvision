@@ -358,9 +358,11 @@ include/window.h
 linux/exclude.txt
 linux/gkeyli.cc
 linux/inclubin.txt
+linux/includbi.txt
 -linux/libtv.gpr
 linux/Makefile
 +linux/sacadeb
++linuxso/makemak.pl
 misc.cc
 mouse.cc
 msgbox.cc

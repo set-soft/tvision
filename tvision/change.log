@@ -1,7 +1,14 @@
 $Log$
+Revision 1.7  1999/01/13 00:35:35  root
+Added a linuxso directory to create the dynamically linked version of the
+library.
+
+Revision 1.7  1999/01/10 16:25:41  set
+Fixed the demohelp.h32 name (to be lowercase).
+
 Revision 1.6  1999/01/10 16:04:05  root
 Added demo to the Linux distribution.
-
+.
 Revision 1.6  1999/01/10 00:47:21  set
 Added the Borland's TVision demo. I taked it from the Sigala's port.
 
