@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.41  2002/04/22 18:11:04  set
+* Fixed: The configuration script configured the examples for Win32 in all
+platforms.
+* Added: Some copyrights to the new base classes.
+* Added: Code to debug cursor problems.
+* Fixed: Cursor under X11. The target still buggy but is the most finished.
+
 Revision 2.40  2002/02/21 01:07:39  set
 * Fixed: Some details to allow compiling under Linux. The code now
 compiles.
