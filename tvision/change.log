@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.495  2003/08/05 19:32:22  set
+* Added: [X11] Another approach for the update thread using setitimer and
+SIGALRM, seems to be more reliable.
+.
 Revision 2.494  2003/08/05 19:26:24  set
 * Added: [X11] a new option for this driver called UseUpdateThread. When
 enabled (and support is compiled) the driver uses a second thread to handle

@@ -210,7 +210,10 @@ const int x11clipNoSelection=1,
 
           x11clipErrors=5;
 
-#define aMouseEvent (ButtonPressMask | ButtonReleaseMask | ButtonMotionMask)
+#define aMouseEvent (ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | \
+                     PointerMotionMask | PointerMotionHintMask |\
+                     Button1MotionMask | Button2MotionMask | Button3MotionMask |\
+                     Button4MotionMask | Button5MotionMask)
 #define aKeyEvent   (KeyPressMask | KeyReleaseMask)
 
 #define charPos 0
