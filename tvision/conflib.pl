@@ -890,7 +890,7 @@ sub ExtractItemsMak
  $path=$1;
  print "Extracting from $makefile\n";
  $mak=cat($makefile);
- if ($mak=~ /PROJECT_ITEMS=(((.+)\\\n)+(.+)\n)/)
+ if ($mak=~ /PROJECT_ITEMS=(((.+)\\\n)*(.+)\n)/)
    {
     @items=split(/[\\\s]+/,$1);
     foreach $file (@items)

@@ -1,0 +1,9 @@
+That's a list of things to do in the project:
+
+* Fix problems when compiling the library with -DNO_STREAM. Laurynas
+Biveinis <lauras@softhome.net> contributed some fixes. More work is needed.
+* Add some mode where graphic modes aren't restored. Restoring graphic modes
+is dangerous in machines with buggy Windows video drivers. Reference report:
+0001.txt.
+
+

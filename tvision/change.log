@@ -1,4 +1,19 @@
 $Log$
+Revision 1.159  2000/09/24 14:53:46  set
+* Added: Endianess detection to the configure mechanism. It defines
+TV_BIG_ENDIAN for big endian machines.
+* Modified: Solved collisions between gettext and conio.h.
+* Added: New members to ipstream and opstream, they are intended to write
+architecture independent values to disk. This started with a patch from
+Jose Angel Sanchez Caso (JASC).
+* Added: Names for platform independent types in ttypes.h. Currently they are
+defined correctly only for x86 (gcc, MSVC and Borland).
+* Fixed: Unconditional inclusion of gpm in UNIX, this is not good.
+* Added: Big endian support in teditorf.cc by JASC.
+* Fixed: __linux__ conditionals made generic UNIX.
+* Merged some fixes to compile with -DNO_STREAM from Laurynas Biveinis
+<lauras@softhome.net>, more work is needed to complete it.
+
 Revision 1.158  2000/08/10 23:58:26  root (set)
 * Fixed: The glibc 2.1.3 outb check to be done by configure script. Hey!
 these guys have 2 errors: (1) they should provide a way to avoid collisions
