@@ -661,6 +661,7 @@ win32/gkey.cc
 win32/obj/delete.me
 win32/obj_demo/delete.me
 win32/readme.txt
+win32/rhide.env
 winnt/bccmake.in
 winnt/gkeyw32.cc
 winnt/include/msvc/dir.h
