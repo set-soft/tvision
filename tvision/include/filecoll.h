@@ -16,6 +16,11 @@ Modified by Robert H”hne to be used for RHIDE.
 
 class TSearchRec;
 
+const unsigned fcolAlphabetical=0, fcolDirsFirst=1, fcolDirsLast=2,
+               fcolTypeMask=0x1F;
+const unsigned fcolCaseInsensitive=0x20, fcolCaseSensitive=0;
+const unsigned fcolParentLast=0x40, fcolParentFirst=0;
+
 class TFileCollection: public TSortedCollection
 {
 
@@ -36,6 +41,8 @@ public:
 
     TSearchRec *firstThat( ccTestFunc Test, void *arg );
     TSearchRec *lastThat( ccTestFunc Test, void *arg );
+
+    static unsigned sortOptions;
 
 private:
 
