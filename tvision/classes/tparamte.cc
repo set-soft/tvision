@@ -71,7 +71,7 @@ void TParamText::setText( char *fmt, ... )
     #ifdef SAFE_CODE
     // Slow but we can check the overflow
     va_start( ap, fmt );
-    int len=CLY_vsnprintf(str, (size_t)tparamTextMaxLen, fmt, ap);
+    CLY_vsnprintf(str, (size_t)tparamTextMaxLen, fmt, ap);
     va_end( ap );
     str[tparamTextMaxLen-1]=0;
     #else
