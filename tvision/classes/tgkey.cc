@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Keyboard module, Copyright 2001-2002 by Salvador E. Tropea
+  Keyboard module, Copyright 2001-2003 by Salvador E. Tropea
   Description:
   This is the base class for keyboard input.
   Most members are pointers to functions defined by each platform dependent
@@ -27,6 +27,7 @@ have such a class.
 char   TGKey::suspended=1;
 ushort TGKey::AltSet=0;    // Default: Left and right key are different ones
 int    TGKey::Mode=0;
+int    TGKey::inputMode=TGKey::codepage;
 char  *TGKey::KeyNames[]=
 {
 "Unknown",
@@ -67,6 +68,7 @@ void     (*TGKey::Suspend)()                          =defaultSuspend;
 void     (*TGKey::Resume)()                           =defaultResume;
 int      (*TGKey::SetCodePage)(int id)                =defaultSetCodePage;
 int      (*TGKey::AltInternat2ASCII)(TEvent &event)   =defaultAltInternat2ASCII;
+void     (*TGKey::fillCharCode)(TEvent &e)            =defaultFillCharCode;
 
 
 /*****************************************************************************
@@ -364,3 +366,17 @@ int TGKey::Generic_AltInternat2ASCII(TEvent &e)
    }
  return 0;
 }
+
+/**[txh]********************************************************************
+
+  Description:
+  Used by objects that needs the TEvent.keyDown.charCode filled.
+  
+***************************************************************************/
+
+void TGKey::defaultFillCharCode(TEvent &e)
+{
+ if (e.keyDown.charCode!=0xFFFFFFFF && e.keyDown.charScan.charCode)
+    e.keyDown.charCode=TVCodePage::convertInpCP_2_U16(e.keyDown.charScan.charCode);
+}
+

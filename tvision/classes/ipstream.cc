@@ -9,7 +9,8 @@
  * SET: Moved the standard headers here because according to DJ
  * they can inconditionally declare symbols like NULL.
  * Reworked code for endian stuff (readShort, readInt, readLong, read8,
- * read16, read32 and read64)
+ * read16, read32 and read64).
+ * Added 16 bit strings read members.
  *
  * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
  * Andris Pavenis and Christoph Bauer.
@@ -159,10 +160,9 @@ void ipstream::readBytes( void *data, size_t sz )
 
 char *ipstream::readString()
 {
-    uchar _len = readByte();
-    if( _len == 0xFF )
+    int len = readByte();
+    if( len == 0xFF )
         return 0;
-    int len = _len;
     if( len == 0xfe )
         // SET: Read a fixed ammount of bytes in all platforms
         len = read32();
@@ -182,6 +182,39 @@ char *ipstream::readString( char *buf, unsigned maxLen )
     {
       strncpy(buf, tmp, maxLen-1);
       buf[maxLen-1] = 0;
+      delete [] tmp;
+    }
+    else
+      *buf = 0;
+    return buf;
+}
+
+uint16 *ipstream::readString16()
+{
+    int len = readByte();
+    if( len == 0xFF )
+        return 0;
+    if( len == 0xfe )
+        len = read32();
+    uint16 *buf = new uint16[len+1];
+    if( buf == 0 )
+        return 0;
+    readBytes( buf, len*2 );
+    buf[len] = EOS;
+    return buf;
+}
+
+uint16 *ipstream::readString16( uint16 *buf, unsigned maxLen )
+{
+    assert( buf != 0 );
+    uint16 *tmp = readString16();
+    if (tmp)
+    {
+      maxLen--;
+      unsigned i;
+      for (i=0; tmp[i] && i<maxLen; i++)
+          buf[i] = tmp[i];
+      buf[maxLen] = 0;
       delete [] tmp;
     }
     else

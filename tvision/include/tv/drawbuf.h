@@ -41,14 +41,14 @@ class TDrawBuffer : public TDrawBufferBase
 public:
  TDrawBuffer() { type=codepage; }
 
-  void moveChar( unsigned indent, char c, unsigned attr, unsigned count );
-  void moveStr( unsigned indent, const char *str, unsigned attrs );
-  void moveCStr( unsigned indent, const char *str, unsigned attrs );
-  void moveBuf( unsigned indent, const void *source,
-                unsigned attr, unsigned count );
+  void moveChar(unsigned indent, char c, unsigned attr, unsigned count);
+  void moveStr(unsigned indent, const char *str, unsigned attrs, int maxLen=-1);
+  void moveCStr(unsigned indent, const char *str, unsigned attrs );
+  void moveBuf(unsigned indent, const void *source,
+               unsigned attr, unsigned count );
 
-  void putAttribute( unsigned indent, unsigned attr );
-  void putChar( unsigned indent, unsigned c );
+  void putAttribute(unsigned indent, unsigned attr);
+  void putChar(unsigned indent, unsigned c);
 
   virtual void *getBuffer();
 
@@ -61,12 +61,12 @@ protected:
 
 inline void TDrawBuffer::putAttribute( unsigned indent, unsigned attr )
 {
-    hiByte(data[indent]) = (uchar)attr;
+ hiByte(data[indent])=(uchar)attr;
 }
 
 inline void TDrawBuffer::putChar( unsigned indent, unsigned c )
 {
-    loByte(data[indent]) = (uchar)c;
+ loByte(data[indent])=(uchar)c;
 }
 
 // This is a more advanced class to handle 16 bits Unicode encodings plus
@@ -78,11 +78,11 @@ class TDrawBufferU16 : public TDrawBufferBase
 public:
  TDrawBufferU16() { type=unicode16; }
 
- void moveChar( unsigned indent, unsigned c, unsigned attr, unsigned count );
- void moveStr( unsigned indent, const uint16 *str, unsigned attrs );
- void moveCStr( unsigned indent, const uint16 *str, uint32 attrs );
- void moveBuf( unsigned indent, const void *source,
-               unsigned attr, unsigned count );
+ void moveChar(unsigned indent, unsigned c, unsigned attr, unsigned count);
+ void moveStr(unsigned indent, const uint16 *str, unsigned attrs, int maxLen=-1);
+ void moveCStr(unsigned indent, const uint16 *str, uint32 attrs);
+ void moveBuf(unsigned indent, const void *source,
+              unsigned attr, unsigned count);
 
  void putAttribute( unsigned indent, unsigned attr );
  void putChar( unsigned indent, unsigned c );
@@ -97,12 +97,12 @@ protected:
 
 inline void TDrawBufferU16::putAttribute( unsigned indent, unsigned attr )
 {
-    data[indent*2+1] = (uint16)attr;
+ data[indent*2+1]=(uint16)attr;
 }
 
 inline void TDrawBufferU16::putChar( unsigned indent, unsigned c )
 {
-    data[indent*2] = (uint16)c;
+ data[indent*2]=(uint16)c;
 }
 
 #endif  // Uses_TDrawBuffer

@@ -44,6 +44,8 @@ public:
     void  readBytes( void *, size_t );
     char * readString();
     char * readString( char *, unsigned );
+    uint16 *readString16();
+    uint16 *readString16( uint16 *buf, unsigned maxLen );
     /* Platform dependent: */
     ushort readShort();
     uint   readInt();

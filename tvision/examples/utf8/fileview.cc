@@ -73,7 +73,7 @@ struct DialogData
 {
     ushort checkBoxData;
     ushort radioButtonData;
-    char inputLineData[128];
+    uint16 inputLineData[128];
     char inputLineRangeData[34];
 };
 
@@ -120,6 +120,17 @@ uint16 *strUTF8_2_U16(const char *b, ssize_t len)
  return ret;
 }
 
+static
+uint16 *strUTF8_2_U16(uint16 *dest, const char *b)
+{
+ int retLen=0;
+ while (*b)
+    dest[retLen++]=charUTF8_2_U16(b);
+ dest[retLen]=0;
+ retLen++;
+ return dest;
+}
+
 void readFile( const char *fileName )
 {
  FILE *f=fopen( fileName, "rt" );
@@ -152,6 +163,8 @@ void deleteFile()
         delete lines[i];
 }
 
+class TDemoWindow;
+
 class TMyApp : public TApplication
 {
 
@@ -163,10 +176,14 @@ public:
     virtual void handleEvent( TEvent& event);
     void myNewWindow();
     void newDialog();
+
+    TDemoWindow *window;
 };
 
 
 static short winNumber = 0;             // initialize window number
+class TInterior;
+
 
 class TDemoWindow : public TWindow      // define a new window class
 {
@@ -175,6 +192,7 @@ public:
 
    TDemoWindow( const TRect& r, const char *aTitle, short aNumber );
     void makeInterior();
+    TInterior *interior;
 
 };
 
@@ -235,7 +253,8 @@ void TDemoWindow::makeInterior()
         standardScrollBar( sbHorizontal |  sbHandleKeyboard );
     TRect r = getClipRect();    // get exposed view bounds
     r.grow( -1, -1 );           // shrink to fit inside window frame
-    insert( new TInterior( r, hScrollBar, vScrollBar ));
+    interior = new TInterior( r, hScrollBar, vScrollBar );
+    insert( interior );
 }
 
 TMyApp::TMyApp() :
@@ -247,7 +266,8 @@ TMyApp::TMyApp() :
     demoDialogData = new DialogData;
     demoDialogData->checkBoxData = 1;
     demoDialogData->radioButtonData = 2;
-    strcpy( demoDialogData->inputLineData, "Phone Mum!" );
+    //strcpy( demoDialogData->inputLineData, "Phone Mum!" );
+    strUTF8_2_U16(demoDialogData->inputLineData, "Phone Mum!");
     sprintf( demoDialogData->inputLineRangeData, "%d", 16 );
 }
 
@@ -319,7 +339,7 @@ void TMyApp::myNewWindow()
     /* SS: micro change here */
 
     r.move( rand() % 53, rand() % 16 ); // randomly move around screen
-    TDemoWindow *window = new TDemoWindow ( r, "Demo Window", ++winNumber);
+    window = new TDemoWindow ( r, "Demo Window", ++winNumber);
     deskTop->insert(window);    // put window into desktop and draw it
 }
 
@@ -358,7 +378,7 @@ void TMyApp::newDialog()
         pd->insert( new TLabel( TRect( 21, 2, 33, 3), "Consistency", b ));
 
         // add input line
-        b = new TInputLine( TRect( 3, 8, 37, 9 ), 128 );
+        b = new TInputLineU16( TRect( 3, 8, 37, 9 ), 128 );
         pd->insert( b );
         pd->insert( new TLabel( TRect( 2, 7, 24, 8 ),
                 "Delivery Instructions", b ));
@@ -387,8 +407,15 @@ void TMyApp::newDialog()
             char *end;
             pd->getData( demoDialogData );
             // this is a message box with arguments like printf
+            if (lineCount)
+              {
+               delete[] lines[0];
+               lines[0]=new uint16[128];
+               memcpy(lines[0],demoDialogData->inputLineData,256);
+               window->interior->draw();
+              }
             messageBox( mfInformation|mfOKButton, "Deliver: %s value %ld",
-                        demoDialogData->inputLineData,
+                        (char *)demoDialogData->inputLineData,
                         strtol(demoDialogData->inputLineRangeData,&end,0) );
             }
         }

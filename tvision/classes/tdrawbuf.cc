@@ -4,7 +4,7 @@
  *      Copyright (c) 1994 by Borland International
  *      All Rights Reserved.
  *
- *
+ * Totally reworked for Unicode by Salvador E. Tropea Copyright (c) 2003
  *
  */
 
@@ -297,20 +297,27 @@ copies until the EOS is found or the buffer is filled.@p
   Modified to avoid writes passing the end of the buffer. Optimized for
 32 bits. Translated to asm just for fun, I think is a little bit faster.
 SET.
+  The optional maxLen argument can be used to limit how many characters
+should be copied from the string.
 
 ***************************************************************************/
 
-void TDrawBuffer::moveStr( unsigned indent, const char *str, unsigned attr )
+void TDrawBuffer::moveStr(unsigned indent, const char *str, unsigned attr,
+                          int maxLen)
 {
 #if !defined(TVCPU_x86) || !defined(TVComp_GCC)
 //$todo: implement it in asm
-  ushort *dest = data+indent;
-  ushort *end = data+maxViewWidth;
-  while (*str && dest<end)
-  {
-    ((uchar*)dest)[0] = *(str++);
-    ((uchar*)dest++)[1] = attr;
-  }
+ ushort *dest=data+indent;
+ ushort *end;
+ if (maxLen>=0 && maxLen<maxViewWidth)
+    end=data+maxLen;
+ else
+    end=data+maxViewWidth;
+ while (*str && dest<end)
+   {
+    ((uchar*)dest)[0]  =*(str++);
+    ((uchar*)dest++)[1]=attr;
+   }
 #else
   asm("                                           \n\
    // EDI = &data[indent]                         \n\
@@ -348,16 +355,21 @@ void TDrawBuffer::moveStr( unsigned indent, const char *str, unsigned attr )
 #endif
 }
 
-void TDrawBufferU16::moveStr( unsigned indent, const uint16 *str, unsigned attr )
+void TDrawBufferU16::moveStr(unsigned indent, const uint16 *str, unsigned attr,
+                             int maxLen)
 {
-  uint16 *dest = data+indent*2;
-  uint16 *end  = data+maxViewWidth*2;
-  while (*str && dest<end)
-  {
-    dest[0] = *(str++);
-    dest[1] = attr;
-    dest += 2;
-  }
+ uint16 *dest=data+indent*2;
+ uint16 *end;
+ if (maxLen>=0 && maxLen<maxViewWidth)
+    end=data+maxLen*2;
+ else
+    end=data+maxViewWidth*2;
+ while (*str && dest<end)
+   {
+    dest[0]=*(str++);
+    dest[1]=attr;
+    dest+=2;
+   }
 }
 
 void *TDrawBuffer::getBuffer()

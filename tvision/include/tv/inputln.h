@@ -28,64 +28,129 @@ class TRect;
 struct TEvent;
 class TValidator;
 
-class TInputLine : public TView
+class TInputLineBase : public TView
 {
-
 public:
+ TInputLineBase(const TRect& bounds, int aMaxLen);
+ ~TInputLineBase();
 
-    TInputLine( const TRect& bounds, int aMaxLen );
-    ~TInputLine();
+ virtual uint32 dataSize();
+ virtual void getData(void *rec);
+ virtual TPalette& getPalette() const;
+ virtual void handleEvent(TEvent& event);
+ void selectAll(Boolean enable);
+ virtual void setState(ushort aState, Boolean enable);
+ void SetValidator(TValidator *);
+ virtual Boolean valid(ushort);
+ virtual Boolean insertChar(unsigned val); // Added by SET
+ virtual Boolean insertChar(TEvent &event)=0;
+ virtual void    assignPos(int index, unsigned val)=0;
+ virtual Boolean pasteFromOSClipboard()=0;
+ virtual void    copyToOSClipboard()=0;
 
-    virtual uint32 dataSize();
-    virtual void draw();
-    virtual void getData( void *rec );
-    virtual TPalette& getPalette() const;
-    virtual void handleEvent( TEvent& event );
-    void selectAll( Boolean enable );
-    virtual void setData( void *rec );
-    virtual void setState( ushort aState, Boolean enable );
-    void SetValidator(TValidator *);
-    virtual Boolean valid(ushort);
-    virtual Boolean insertChar(char value); // Added by SET
+ char *data;
+ int maxLen;
+ int curPos;
+ int firstPos;
+ int selStart;
+ int selEnd;
+ int dataLen;
+ int cellSize;
 
-    char* data;
-    int maxLen;
-    int curPos;
-    int firstPos;
-    int selStart;
-    int selEnd;
-    int dataLen;
-
-    static char rightArrow;
-    static char leftArrow;
-    static char orightArrow;
-    static char oleftArrow;
+ static char rightArrow;
+ static char leftArrow;
+ static char orightArrow;
+ static char oleftArrow;
 
 protected:
-    virtual void resizeData() {}
-    TValidator * validator;
-    void deleteSelect();
-    void makeVisible(); // Added by SET
-    Boolean canScroll( int delta );
+ virtual void resizeData() {}
+ TValidator * validator;
+ void deleteSelect();
+ void makeVisible(); // Added by SET
+ Boolean canScroll( int delta );
+
+ // Inline helpers to make the code cleaner
+ int insertModeOn();
+ int lineIsFull();
+ int posIsEnd();
 
 private:
-    int mouseDelta( TEvent& event );
-    int mousePos( TEvent& event );
+ int mouseDelta( TEvent& event );
+ int mousePos( TEvent& event );
 
 #if !defined( NO_STREAM )
-    virtual const char *streamableName() const
-        { return name; }
+ //virtual const char *streamableName() const
+ //    { return name; }
 
 protected:
 
-    TInputLine( StreamableInit );
-    virtual void write( opstream& );
-    virtual void *read( ipstream& );
+ TInputLineBase(StreamableInit);
+ virtual void write(opstream&);
+ virtual void *read(ipstream&);
+ virtual void writeData(opstream&)=0;
+ virtual void *readData(ipstream&)=0;
 
 public:
 
-    static const char * const name;
-    static TStreamable *build();
+ //static const char * const name;
+ //static TStreamable *build();
+#endif // NO_STREAM
+};
+
+#if !defined( NO_STREAM )
+inline ipstream& operator >> ( ipstream& is, TInputLineBase& cl )
+    { return is >> (TStreamable&)cl; }
+inline ipstream& operator >> ( ipstream& is, TInputLineBase*& cl )
+    { return is >> (void *&)cl; }
+
+inline opstream& operator << ( opstream& os, TInputLineBase& cl )
+    { return os << (TStreamable&)cl; }
+inline opstream& operator << ( opstream& os, TInputLineBase* cl )
+    { return os << (TStreamable *)cl; }
+#endif // NO_STREAM
+
+inline
+int TInputLineBase::insertModeOn()
+{
+ return (state & sfCursorIns)==0;
+}
+
+inline
+int TInputLineBase::lineIsFull()
+{
+ return dataLen>=maxLen;
+}
+
+inline
+int TInputLineBase::posIsEnd()
+{
+ return curPos>=dataLen;
+}
+
+class TInputLine : public TInputLineBase
+{
+public:
+ TInputLine(const TRect& bounds, int aMaxLen);
+
+ virtual void    draw();
+ virtual void    setData(void *rec);
+ virtual void    assignPos(int index, unsigned val);
+ virtual Boolean pasteFromOSClipboard();
+ virtual void    copyToOSClipboard();
+ virtual Boolean insertChar(TEvent &event);
+
+#if !defined( NO_STREAM )
+ virtual const char *streamableName() const
+     { return name; }
+
+protected:
+ TInputLine(StreamableInit);
+ virtual void writeData(opstream&);
+ virtual void *readData(ipstream&);
+
+public:
+ static const char * const name;
+ static TStreamable *build();
 #endif // NO_STREAM
 };
 
@@ -98,6 +163,51 @@ inline ipstream& operator >> ( ipstream& is, TInputLine*& cl )
 inline opstream& operator << ( opstream& os, TInputLine& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TInputLine* cl )
+    { return os << (TStreamable *)cl; }
+#endif // NO_STREAM
+
+
+
+
+
+class TInputLineU16 : public TInputLineBase
+{
+public:
+ TInputLineU16(const TRect& bounds, int aMaxLen);
+
+ virtual void    draw();
+ virtual void    setData(void *rec);
+ virtual void    assignPos(int index, unsigned val);
+ virtual Boolean pasteFromOSClipboard();
+ virtual void    copyToOSClipboard();
+ virtual Boolean insertChar(TEvent &event);
+
+ uint16 *data16;
+ 
+#if !defined( NO_STREAM )
+ virtual const char *streamableName() const
+     { return name; }
+
+protected:
+ TInputLineU16(StreamableInit);
+ virtual void writeData(opstream&);
+ virtual void *readData(ipstream&);
+ 
+public:
+ static const char * const name;
+ static TStreamable *build();
+#endif // NO_STREAM
+};
+
+#if !defined( NO_STREAM )
+inline ipstream& operator >> ( ipstream& is, TInputLineU16& cl )
+    { return is >> (TStreamable&)cl; }
+inline ipstream& operator >> ( ipstream& is, TInputLineU16*& cl )
+    { return is >> (void *&)cl; }
+
+inline opstream& operator << ( opstream& os, TInputLineU16& cl )
+    { return os << (TStreamable&)cl; }
+inline opstream& operator << ( opstream& os, TInputLineU16* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 

@@ -94,6 +94,8 @@ public:
  static void   *convertStrCP_2_U16(void *dest, const void *orig, unsigned len);
  static char    convertU16_2_CP(uint16 val);
  static uint16  convertCP_2_U16(char val);
+ static char    convertU16_2_InpCP(uint16 val);
+ static uint16  convertInpCP_2_U16(char val);
 
  // Arbitrary names for the supported code pages
  // Just to avoid using the magics, look in codepage.cc for more information
@@ -149,6 +151,8 @@ protected:
  static TVCodePageCallBack  UserHook;
  static uint16 appToUnicode[256];
  static TVPartitionTree556 *unicodeToApp;
+ static uint16 inpToUnicode[256];
+ static TVPartitionTree556 *unicodeToInp;
  // CodePage structures
  static CodePage stPC437;
  static CodePage stPC775;

@@ -30,6 +30,15 @@
 #define Uses_TPWrittenObjects
 #include <tv.h>
 
+inline
+unsigned strlen16(const uint16 *s)
+{
+ unsigned l;
+ for (l=0; s[l]; l++);
+ return l;
+}
+
+
 opstream::opstream()
 {
     objs = new TPWrittenObjects();
@@ -169,6 +178,26 @@ void opstream::writeString( const char *str )
       writeByte( (uchar)len );
     }
     writeBytes( str, len );
+}
+
+void opstream::writeString16( const uint16 *str )
+{
+    if( str == 0 )
+        {
+        writeByte( 0xFF );
+        return;
+        }
+    int len = strlen16( str );
+    if (len > 0xfd)
+    {
+      writeByte( 0xfe );
+      write32(len);
+    }
+    else
+    {
+      writeByte( (uchar)len );
+    }
+    writeBytes( str, len*2 );
 }
 
 /* Operators moved to headers by JASC */
