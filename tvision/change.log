@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.399.2.138.2.1  2004/04/19 20:27:19  set
+* Added: Backported some stuff from the trunk. Needed to compile setedit.
+* Added: The skeleton for "LookForAllegro" in the config.
+* Fixed: Lack of stdio include for debug in mouse code.
+* Added: A helper for the END_OF_MAIN() stuff, not sure if definitive.
+
 Revision 2.399.2.138  2003/12/02 14:47:14  set
 * Added: A first try to support the last MSVC compiler from information
 provided by Grzegorz, it includes:

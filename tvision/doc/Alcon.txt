@@ -1,0 +1,31 @@
+Driver: Alcon
+Author: Grzegorz Adam Hankiewicz, Salvador E. Tropea
+Status: Not complete
+Revision: $Revision$
+
+  This is the driver used for various platforms using the Allegro (a game
+programming library).
+
+X. SPECIAL NOTES
+
+
+X. SPECIAL NOTES
+
+  To enable this driver you must install allegro (http://alleg.sf.net/). Then
+you must configure TV using the --with-alcon option.
+  You must also mark the end of the main function using the END_OF_MAIN()
+macro, like this:
+
+#define Uses_TProgram
+#include <tv.h>
+
+int main(int argc, char *argv[])
+{
+...
+}
+END_OF_MAIN();
+
+  That's needed for Allegro's internal machinery.
+  In order to have the END_OF_MAIN declaration you have to request TProgram
+class, but that's usually requested by all sources declaring main.
+
