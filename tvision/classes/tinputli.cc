@@ -32,7 +32,7 @@ char hotKey( const char *s )
     char *p;
 
     if( (p = strchr( s, '~' )) != 0 )
-        return toupper(p[1]);
+        return uctoupper(p[1]);
     else
         return 0;
 }

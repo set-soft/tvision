@@ -376,7 +376,7 @@ TScreen::TScreen()
   {
      LOG("environment variable TVOPT=" << p);
      for (char *d = env; *p != '\0'; p++)
-       *d++ = tolower(*p);
+       *d++ = uctolower(*p);
   }
   
   /* acquire screen size */

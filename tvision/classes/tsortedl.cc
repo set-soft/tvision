@@ -122,7 +122,7 @@ void TSortedListBox::handleEvent(TEvent& event)
             else
                 searchPos = oldPos;
             if( searchPos != oldPos ||
-                isalpha( event.keyDown.charScan.charCode )
+                ucisalpha( event.keyDown.charScan.charCode )
               )
                 clearEvent(event);
             }

@@ -340,14 +340,14 @@ ushort TMenuView::execute()
 
 TMenuItem *TMenuView::findItem( char ch )
 {
-    ch = toupper(ch);
+    ch = uctoupper(ch);
     TMenuItem *p = menu->items;
     while( p != 0 )
         {
         if( p->name != 0 && !p->disabled )
             {
             char *loc = strchr( p->name, '~' );
-            if( loc != 0 && (uchar)ch == toupper( (uchar)loc[1] ) )
+            if( loc != 0 && (uchar)ch == uctoupper( loc[1] ) )
                 return p;
             }
         p =  p->next;

@@ -106,7 +106,7 @@ Boolean driveValid( char drive )
 #ifdef __DJGPP__
   __dpmi_regs r;
   r.x.ax = 0x1C00;
-  r.x.dx = toupper(drive) - 'A' + 1;
+  r.x.dx = uctoupper(drive) - 'A' + 1;
   __dpmi_int(0x21,&r);
   if (r.h.al != 0xFF) return True;
 #endif
