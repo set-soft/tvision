@@ -131,8 +131,9 @@ const char *TVIntl::getText(const char *msgid)
 void TVIntl::recodeStr(char *str, int len)
 {
  int i;
+ uchar *s=(uchar *)str;
  for (i=0; i<len; i++)
-     str[i]=recodeTable[(uchar)str[i]];
+     s[i]=s[i]>127 ? recodeTable[s[i]] : s[i];
 }
 
 char *TVIntl::getTextNew(const char *msgid, Boolean onlyIntl)
