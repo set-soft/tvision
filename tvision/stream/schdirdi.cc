@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TChDirDialog
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -10,3 +12,4 @@ TStreamableClass RChDirDialog( TChDirDialog::name,
                                __DELTA(TChDirDialog)
                              );
 
+#endif

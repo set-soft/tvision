@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TStaticText
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RStaticText( TStaticText::name,
                               __DELTA(TStaticText)
                             );
 
+#endif

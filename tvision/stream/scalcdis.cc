@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TCalcDisplay
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RCalcDisplay( TCalcDisplay::name,
                                __DELTA(TCalcDisplay)
                              );
 
+#endif

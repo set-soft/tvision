@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TMenuView
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RMenuView( TMenuView::name,
                             __DELTA(TMenuView)
                           );
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TStreamableClass
 #define Uses_TEditWindow
 #include <tv.h>
@@ -9,3 +11,4 @@ TStreamableClass REditWindow( TEditWindow::name,
                               __DELTA(TEditWindow)
                             );
 
+#endif

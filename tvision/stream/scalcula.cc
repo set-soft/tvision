@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TCalculator
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -10,3 +12,4 @@ TStreamableClass RCalculator( TCalculator::name,
                               __DELTA(TCalculator)
                             );
 
+#endif

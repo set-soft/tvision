@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TStatusLine
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RStatusLine( TStatusLine::name,
                               __DELTA(TStatusLine)
                             );
 
+#endif

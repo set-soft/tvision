@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TButton
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RButton( TButton::name,
                           __DELTA(TButton)
                         );
 
+#endif

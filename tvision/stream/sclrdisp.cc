@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TColorDisplay
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RColorDisplay( TColorDisplay::name,
                                 __DELTA(TColorDisplay)
                               );
 
+#endif

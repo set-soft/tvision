@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TInputLine
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RInputLine( TInputLine::name,
                              __DELTA(TInputLine)
                            );
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_THistory
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -9,3 +11,4 @@ TStreamableClass RHistory( THistory::name,
                            __DELTA(THistory)
                          );
 
+#endif

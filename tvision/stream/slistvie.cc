@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TListViewer
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -9,3 +11,4 @@ TStreamableClass RListViewer( TListViewer::name,
                               __DELTA(TListViewer)
                             );
 
+#endif
