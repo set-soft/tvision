@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.401  2003/03/18 16:27:55  set
+* Fixed: Some TEditorApp messages include a file name but the
+doEditDialogDefault function used an 80 bytes buffer. Reported by Mike.
+.
 Revision 2.400  2003/03/18 16:03:17  set
 * Fixed: QNX details, patch from Mike.
 
