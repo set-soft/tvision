@@ -55,6 +55,10 @@ extern char *program_invocation_short_name;
 
 static int use_pc_chars = 1;
 int timeout_wakeup,timer_value;
+#define LINUX_TERMINAL 0
+#define GENER_TERMINAL 1
+#define VCSA_TERMINAL  2
+static int TerminalType;
 
 int vcsWfd=-1;          /* virtual console system descriptor */
 int vcsRfd=-1;          /* SET: Same for reading */
@@ -153,6 +157,11 @@ void InitPCCharsMapping(int use_pc_chars)
     }
  if (use_pc_chars)
     return;
+ for (i=128; i<256; i++)
+     PC2curses[i]=i;
+ // Special characters we can't print
+ PC2curses[127]='?';
+ PC2curses[128+27]='?';
  // Patch the curses available values from terminfo
  PC2curses[0xDA]=ACS_ULCORNER; // Ú
  PC2curses[0xC9]=ACS_ULCORNER; // É We don't have doubles in curses
@@ -352,16 +361,13 @@ void startcurses()
   /* set getch() in non-blocking mode */
   timeout(0);
 
-  /* Ensure we are using the right set of characters */
-  if (!canWriteVCS)
-     TScreen::SendToTerminal(enter_pc_charset_mode);
-
   /* Select the palette and characters handling according to the terminal */
   if (canWriteVCS)
     {
      palette = PAL_HIGH;
      TScreen::screenMode = TScreen::smCO80;
      use_pc_chars = 1;
+     TerminalType=VCSA_TERMINAL;
     }
   else
    {
@@ -371,6 +377,7 @@ void startcurses()
        palette = PAL_MONO;
        TScreen::screenMode = TScreen::smMono;
        use_pc_chars = 0;
+       TerminalType=GENER_TERMINAL;
       }
     else if (!strcmp(terminal,"console") ||
              !strcmp(terminal,"linux"))
@@ -378,6 +385,7 @@ void startcurses()
        palette = PAL_HIGH;
        TScreen::screenMode = TScreen::smCO80;
        use_pc_chars = 1;
+       TerminalType=LINUX_TERMINAL;
        LOG("Using high palette");
       }
     else if (xterm && has_colors())
@@ -387,6 +395,7 @@ void startcurses()
        palette = PAL_HIGH;
        TScreen::screenMode = TScreen::smCO80;
        use_pc_chars = 0;
+       TerminalType=GENER_TERMINAL;
       }
     else if (has_colors())
       { // Generic color terminal, that's more a guess than a real thing
@@ -394,15 +403,30 @@ void startcurses()
        TScreen::screenMode = TScreen::smCO80;
        use_pc_chars = 0;
        LOG("Using color palette (" << max_colors << "-8 colors)");
+       TerminalType=GENER_TERMINAL;
       }
     else
       { // No colors available
        palette = PAL_MONO;
        TScreen::screenMode = TScreen::smMono;
        use_pc_chars = 0;
+       TerminalType=GENER_TERMINAL;
       }
    }
 
+  switch (TerminalType)
+    {
+     case LINUX_TERMINAL:
+          // SET: Use G1 charset, set G1 to the loaded video fonts, print control chars.
+          // It means the kernel will send what we write directly to screen, just
+          // like in the VCSA case.
+          TScreen::SendToTerminal("\e)K\xE");
+          break;
+     case GENER_TERMINAL:
+          // Select IBM PC chars?
+          TScreen::SendToTerminal(enter_pc_charset_mode);
+          break;
+    }
   #ifdef SAVE_TERMIOS
   /* Save the terminal attributes so we can restore them later. */
   /* for our screen */
@@ -498,14 +522,14 @@ static void mapColor(char *&p, int col)
      // SET: The value to reset the bold is 22 and not 21
      case PAL_HIGH:
           if (fore!=old_fore && back!=old_back)
-             sprintf(p,"\x1B[%d;%d;%dm",fore>7 ? 1 : 22,
+             sprintf(p,"\e[%d;%d;%dm",fore>7 ? 1 : 22,
                      30+map[fore & 7],40+map[back]);
           else
            {
             if (fore!=old_fore)
-               sprintf(p,"\033[%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7]);
+               sprintf(p,"\e[%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7]);
             else
-               sprintf(p,"\033[%dm",40+map[back]);
+               sprintf(p,"\e[%dm",40+map[back]);
            }
           p+=strlen(p);
           break;
@@ -568,24 +592,61 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
       }
     }
 
-    if (!use_pc_chars || code < ' ')
+    switch (TerminalType)
       {
-       code=PC2curses[code];
-       //code=pctoascii[code];
-       needAltSet=code & A_ALTCHARSET;
-       if (needAltSet && !altSet)
-         {
-          altSet=1;
-          safeput(p,enter_alt_charset_mode);
-         }
-       else
-         if (!needAltSet && altSet)
-           {
-            altSet=0;
-            safeput(p,exit_alt_charset_mode);
-           }
+       case GENER_TERMINAL:
+            //if (!use_pc_chars || code < ' ') Now is always
+              {
+               code=PC2curses[code];
+               needAltSet=code & A_ALTCHARSET;
+               if (needAltSet && !altSet)
+                 {
+                  altSet=1;
+                  safeput(p,enter_alt_charset_mode);
+                 }
+               else
+                 if (!needAltSet && altSet)
+                   {
+                    altSet=0;
+                    safeput(p,exit_alt_charset_mode);
+                   }
+              }
+            *p++=code;
+            break;
+       case LINUX_TERMINAL:
+            /* SET: The following uses information I got from Linux kernel.
+               The file drivers/char/console.c have all the parsing of the
+               escape sequences. I put more information at the end of this
+               file.
+               Some characters are ever interpreted as control codes, here
+               I use a bitmap for them taked directly from the kernel.
+               The kernel code also sugest to use UTF-8 to print those
+               codes.
+               Note that Unicode 0xF000 | character means that character
+               must pass unchanged to the screen
+            */
+            #define CTRL_ALWAYS 0x0800f501  /* Cannot be overridden by disp_ctrl */
+            #define ENTER_UTF8  "\e%G"
+            #define EXIT_UTF8   "\e%@"
+            if (code<32 && ((CTRL_ALWAYS>>code) & 1))
+              {/* This character can't be printed, we must use unicode */
+               /* Enter UTF-8 and start constructing 0xF000 code */
+               safeput(p,ENTER_UTF8 "\xEF\x80");
+               /* Set the last 6 bits */
+               *p++=code | 0x80;
+               /* Escape UTF-8 */
+               safeput(p,EXIT_UTF8);
+              }
+            else if (code==128+27)
+              {/* A specially evil code: Meta+ESC, it can't be printed */
+               /* Just send Unicode 0xF09B to screen */
+               safeput(p,ENTER_UTF8 "\xEF\x82\x9B" EXIT_UTF8);
+              }
+            else
+               /* The rest pass directly unchanged */
+               *p++=code;
+            break;
       }
-    *p++ = code;
     C_();
   }
   if (altSet)
@@ -867,7 +928,23 @@ void TScreen::resume()
   // SET: To go back from a temporal ncurses stop we must use just doupdate
   // or refresh. (see suspend).
   doupdate();
-  //InitPCCharsMapping(use_pc_chars);
+  /* SET: For some bizarre reason when we suspend/resume the charset is altered.
+     After it we can't display the frames. I can't understand why it happends.
+     It looks like for some reason ncurses is using the IBM PC charset but when
+     we use endwin()/doupdate() forgets to set it.
+     The following escape sequence does the job:
+  */
+  switch (TerminalType)
+    {
+     case LINUX_TERMINAL:
+          // Use G1 charset, set G1 to the loaded video fonts, print control chars
+          TScreen::SendToTerminal("\e)K\xE");
+          break;
+     case GENER_TERMINAL:
+          // Select IBM PC chars
+          TScreen::SendToTerminal("\e(U");
+          break;
+    }
 }
 
 TScreen::~TScreen()
@@ -1165,6 +1242,22 @@ void RestoreScreen()
     TScreen::setCharacter(0,user_buffer,user_buffer_size);
     TScreen::SetCursor(user_cursor_x,user_cursor_y);
    }
+ else
+   {
+    char b[256],*p=b;
+    switch (TerminalType)
+      {
+       case LINUX_TERMINAL:
+       case GENER_TERMINAL:
+            // Set color to gray over black
+            mapColor(p,7); *p=0;
+            TScreen::SendToTerminal(b);
+            // Clear the screen to it
+            TScreen::SendToTerminal(clear_screen);
+            //TScreen::SendToTerminal("\e[2J"); Linux
+            break;
+      }
+   }
 }
 
 void SaveScreen()
@@ -1183,3 +1276,81 @@ void SaveScreenReleaseMemory(void)
  free(user_buffer);
 }
 
+/*****************************************************************************
+SET:
+  Here is some information about the Linux console. I got it from the kernel
+sources, they says that's VT102:
+
+\e(n
+Sets the G0 character set. The terminal have 2 character sets, that's the
+commonly used. The n value can be:
+0 Graphics (DEC ISO 2022)
+B Latin 1  (ISO 8859-1)
+U IBM PC
+K User
+
+\e)n
+It sets what character set is used for G1. That's the alternative charset.
+
+\xF
+Select the G0 charset, don't display control characters. After it all printed
+values are in G0 charset.
+
+\xE
+Select the G1 charset, display control characters. After it all printed
+values are in G1 charset. Usually it selects the graphics chars.
+
+\e[10m
+Selects G0 or G1 (depending of the last selection done by \xF or \xE), don't
+display control characters, don't force the bit 7 to 1.
+
+\e[11m
+Selects IBM PC, display control characters, don't force the bit 7 to 1.
+
+\e[12m
+Selects IBM PC, display control characters, force the bit 7 to 1.
+
+Description of the available charsets for Linux:
+1) Graphics (0):
+ This is latin 1 charset with some changes in the range 32-126. This charset
+is called VT100. Here are the codes that differ from ASCII:
+ 43(+): Right arrow                    109(m): simple lower left corner
+ 44(,): Left arrow                     110(n): simple intersection
+ 45(-): Up arrow                       111(o): first line filled
+ 46(.): Down arrow                     112(p): 1/4 of height line filled
+ 48(0): Filled block                   113(q): 1/2 of height line filled
+ 95(_): Non break space                114(r): 3/4 of height line filled
+ 96(`): Diamond                        115(s): last line filled
+ 97(a): 50% filled.                    116(t): simple vertical with right int.
+ 98(b): HT                             117(u): simple vertical with left int.
+ 99(c): FF                             118(v): simple horiz. with upper int.
+100(d): CR                             119(w): simple horiz. with lower int.
+101(e): LF                             120(x): simple vertical
+102(f): Degree                         121(y): <=
+103(g): +/-                            122(z): >=
+104(h): 25% filled.                    123({): pi
+105(i): VT                             124(|): /=
+106(j): simple lower right corner      125(}): pounds
+107(k): simple upper right corner      126(~): middle point
+108(l): simple upper left corner
+
+2) Latin 1 (B):
+ That's pure ISO 8859-1 mapping. It means 128-159 have undefined shapes.
+
+3) IBM PC (U):
+ That's PC 437 code page. Some characters are undefined if the currently
+loaded fonts doesn't have it.
+
+4) User defined (K):
+  That's just "send to screen this code". So it depends on the loaded fonts.
+
+ Note that 0-31 and 127 are considered control characters and will be printed
+only if this is enabled. Some characters aren't printed even if that's
+enabled, that's because if they are printed you can't use the terminal
+(imagine disabling ESC ;-).
+ Also: 128+27 will never be printed.
+
+ In Eterm only Graphics (VT100) and Latin 1 are supported.
+ In xterm a simple program have troubles to print anything above 127.
+    
+*****************************************************************************/
