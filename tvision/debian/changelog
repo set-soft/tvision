@@ -1,8 +1,58 @@
-rhtvision (1.0.6-1) unstable; urgency=low
+rhtvision (1.0.8-2) unstable; urgency=low
 
-  * Upstream release.
+  * Upstream sent newer compilation scripts (bugfixes, enhancements).
+  * Modified and bugfixed debian/maintainer.notes.
+  * Now shared library package Conflicts: rhtvision1. This is to force
+    the people who installed the previously broken library to uninstall
+    that library and its programs and upgrade everything. Sorry.
+  * Now rm -f linuxso/librhtv.so on clean.
 
- -- SET <salvador@inti.gov.ar>  Tue,  8 Jun 1999 21:29:00 -0300
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Tue, 21 Sep 1999 12:50:24 -0300
+
+rhtvision (1.0.8-1) unstable; urgency=low
+
+  * New upstream version:
+    - Various bugfixes.
+    - Various improvements.
+    - Building system changed!
+    - Soname changes with every version (since every version is binary
+      incompatible).
+  * Now the -dev package depends on libstdc++-dev.
+  * Architecture is now i386 and alpha.
+  * Changed the name of the package from rhtvision to rhtvision1.0.8.
+    This name will change for every version of the library, since
+    every version is binary incompatible with the others.
+  * Improved and updated debian/maintainer.notes, please read it.
+  * Not include debugging version of the static library anymore.
+    If someone needs this, then tell me and I will include it again.
+  * Now requires debhelper 2.0.40 or greater (FHS related).
+  * Added DH_COMPAT=1 to debian/rules.
+  * Don't use .dirs files anymore.
+  * Don't use .files files anymore.
+  * Don't use .docs files anymore.
+  * Various changes to debian/rules file.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Wed,  8 Sep 1999 15:33:29 -0300
+
+rhtvision (1.0.7-1) unstable; urgency=low
+
+  * rhtvision1-dev now goes in the devel section instead of the libs
+    one.
+  * New upstream version:
+    - Enhancements to the menu bar.
+    - Now runs on the Alpha processors.
+    - Bugfixes.
+    - Works better under xterm.
+    - Shorter ESC delay.
+    - Enhancements to the documentation.
+    - Runs better when you have write only permission for the vcsa's.
+    - Disabled CTRL+Z because it is dangerous.
+    - Other minor enhancements.
+  * Added source dependencies to debian/maintainer.notes.
+  * Modified #!/bin/sh to #!/bin/sh -e for better error detection.
+  * Policy 3.0.0 compliant (FHS move).
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Mon, 26 Jul 1999 17:19:36 -0300
 
 rhtvision (1.0.5-2) unstable; urgency=low
 

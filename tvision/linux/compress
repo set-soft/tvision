@@ -42,6 +42,12 @@ $r=cat('../readme.in');
 $r=~s/\@version\@/$Version/g;
 replace('../readme.txt',$r);
 
+# Patch Debian control file
+print "Processing debian/control file\n";
+$r=cat('../debian/control.in');
+$r=~s/\@version\@/$Version/g;
+replace('../debian/control',$r);
+
 # Generate the tar files
 $bindist="rhtvision-$Version.bin.i386.elf.static.linux.tar.gz";
 $binddist="rhtvision-$Version.bin.i386.elf.dynamic.linux.tar.gz";

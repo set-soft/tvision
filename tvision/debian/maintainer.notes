@@ -1,22 +1,21 @@
-How to unpack the files:
-You have to have the debianized source installed on a directory called
-"rhtvision-version" (where the "version" part is a Debian style version).
-Then, if the package is not a native Debian package or has some changes from
-the native package, then put the original upstream version in a directory
-called "rhtvision-version.orig". You can have the original upstream version
-in a file called "rhtvision-version.orig.tar.gz" instead if you want.
-Make sure that the debian/rules file is executable (chmod 755 debian/rules).
-
+How to unpack and prepare the files:
+  Make sure that the debian/rules file is executable (chmod 755 debian/rules).
+  In the file called version.txt in the root directory where you unpacked the
+library, is the version number. If the debian/changelog file has a different
+version number in the topmost change, then add a new change by running
+dch -v 1.0.8-0.1 -p "unofficial personal package" (replacing 1.0.8 by the
+current version number. Then modify the versions in the debian/control file to
+match those of the library.
 
 How to make the .deb, .tar.gz, .dsc and .changes files:
-   cd rhtvision-version
+   cd rhtvision-directory
    dpkg-buildpackage
 or
-   dpkg-buildpackage -sa (for including the upstream .tar.gz).
+   dpkg-buildpackage -sa (for including the upstream .tar.gz in the upload).
 
-Optionally, you can add the -vVERSION switch wich indicates that the changes
+Optionally, you can add the -vVERSION switch which indicates that the changes
 listed in the .changes file are from version "VERSION" wich it is a version
-listed in the changelog file up to the end of the changelog file.
+listed in the debian changelog file up to the end of the changelog file.
 
 
 How to make the .deb, .tar.gz, .dsc and .changes files (and other things)
@@ -50,3 +49,14 @@ Other notes:
    - There is a clean-debian target on the debian/rules file, it only cleans
      Debian specific files and not upstream build files.
 
+
+Source dependencies:
+    - Perl
+    - Make
+    - C/C++ compiling environment.
+    - NCurses development.
+    - GPM development.
+    - ZLIB development.
+    - Debhelpers (try to use a recent version) and some other Debian
+      development utilities.
+    - GZip and other standard utilities.

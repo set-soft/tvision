@@ -1,4 +1,9 @@
 $Log$
+Revision 1.105  1999/09/17 03:38:30  root (set)
+* Added: Support for the FHS in the configure script (not used for the
+library).
+* Fixed: Some details of the configure process for Linux.
+
 Revision 1.104  1999/09/16 02:26:54  set
 * Modified: Now the file open dialog have space for 2 more filenames.
 .
