@@ -1,4 +1,10 @@
 $Log$
+.
+Revision 2.524  2003/12/09 16:04:38  set
+* Added: A new argument to the optional TListBox constructor and a new
+member to TListView. They allow to create TListBox-es that centers the
+focused item when setData is used. Suggested by gradha.
+
 Revision 2.523  2003/12/04 19:44:59  set
 * Fixed: MinGW seems to lack the ioctl.h header. Compatlayer must avoid
 to try to include it.
