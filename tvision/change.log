@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.195  2004/09/24 18:02:42  set
+* Fixed: [RPMs] The development RPM must contain the rhtv-config tool.
+Reported by ogi, closes SF bug #974062
+
 Revision 2.399.2.194  2004/09/22 21:21:46  set
 * Fixed: [RPM] problems when the compress script didn't have execute
 attributes.
