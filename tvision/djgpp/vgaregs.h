@@ -128,13 +128,14 @@ void WaitVRT()
 extern inline
 uchar ReadCRT(uchar index)
 {
+ int dummy;
  uchar a asm("%eax");
  a=index;
  asm volatile ("
      outb %%al,%%dx
      incl %%edx
      inb  %%dx,%%al
-     " : "a=" (a) : "a" (a), "d" (CRTController) : "%edx");
+     " : "=a" (a), "=d" (dummy) : "a" (a), "d" (CRTController));
  return a;
 }
 
@@ -142,61 +143,66 @@ uchar ReadCRT(uchar index)
 extern inline
 uchar ReadGRA(uchar index)
 {
+ int dummy;
  uchar a asm("%eax");
  a=index;
  asm volatile ("
      outb %%al,%%dx
      incl %%edx
      inb  %%dx,%%al
-     " : "a=" (a) : "a" (a), "d" (GraphicsController) : "%edx");
+     " : "=a" (a), "=d" (dummy) : "a" (a), "d" (GraphicsController));
  return a;
 }
 
 extern inline
 uchar ReadSEQ(uchar index)
 {
+ int dummy;
  uchar a asm("%eax");
  a=index;
  asm volatile ("
      outb %%al,%%dx
      incl %%edx
      inb  %%dx,%%al
-     " : "a=" (a) : "a" (a), "d" (Sequencer) : "%edx");
+     " : "=a" (a), "=d" (dummy)  : "a" (a), "d" (Sequencer));
  return a;
 }
 
 extern inline
 void WriteCRT(uchar index, uchar value)
 {
+ int dummy;
  asm volatile ("
-     movb %0,%%ah
+     movb %1,%%ah
      outw %%ax,%%dx
-     " : : "qi" (value), "a" (index), "d" (CRTController) : "%eax");
+     " : "=a" (dummy) : "qi" (value), "a" (index), "d" (CRTController));
 }
 
 extern inline
 void WriteGRA(uchar index, uchar value)
 {
+ int dummy;
  asm volatile ("
-     movb %0,%%ah
+     movb %1,%%ah
      outw %%ax,%%dx
-     " : : "qi" (value), "a" (index), "d" (GraphicsController) : "%eax");
+     " : "=a" (dummy) : "qi" (value), "a" (index), "d" (GraphicsController));
 }
 
 extern inline
 void WriteSEQ(uchar index, uchar value)
 {
+ int dummy;
  asm volatile ("
-     movb %0,%%ah
+     movb %1,%%ah
      outw %%ax,%%dx
-     " : : "qi" (value), "a" (index), "d" (Sequencer) : "%eax");
+     " : "=a" (dummy) : "qi" (value), "a" (index), "d" (Sequencer));
 }
 
 
 extern inline
 void WaitVRT()
 {
- asm("
+ asm volatile("
  1:
      inb   %%dx,%%al
      testb $8,%%al
@@ -266,28 +272,32 @@ void WriteEDAC(int index, int val)
 extern inline
 void RPF_SetPalRange(unsigned char *_pal_ptr, int color, int cant)
 {
-__asm__("
+ int dummy1,dummy2,dummy3,dummy4;
+__asm__ __volatile__("
      outb %%al,%%dx
      incl %%edx
      cli
      rep
      outsb
      sti"
-: : "c" (cant*3), "S" (_pal_ptr), "a" (color), "d" (0x3C8)
-: "%eax", "%ecx", "%edx", "%esi");
+: "=a" (dummy1), "=d" (dummy2), "=S" (dummy3), "=c" (dummy4)
+: "c" (cant*3), "S" (_pal_ptr), "a" (color), "d" (0x3C8)
+);
 }
 
 extern inline
 void RPF_GetPalRange(unsigned char *_pal_ptr, int color, int cant)
 {
-__asm__("
+ int dummy1,dummy2,dummy3,dummy4;
+__asm__ __volatile__("
      outb %%al,%%dx
      addl $2,%%edx
      cli
      rep
      insb
      sti"
-: : "c" (cant*3), "D" (_pal_ptr), "a" (color), "d" (0x3C7)
-: "%eax", "%ecx", "%edx", "%edi");
+: "=a" (dummy1), "=d" (dummy2), "=D" (dummy3), "=c" (dummy4)
+: "c" (cant*3), "D" (_pal_ptr), "a" (color), "d" (0x3C7)
+);
 }
 

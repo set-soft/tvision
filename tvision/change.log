@@ -1,4 +1,10 @@
 $Log$
+Revision 1.108  1999/09/24 00:55:36  set
+* Fixed: A bug introduced by us to the TFileList class in the vertical scroll
+bar (wrong page step). I added a new member to TListViewer to fix it, is
+called setNumCols(int aNumCols) and it also updates scroll bars (not just the
+number of columns). Reported by Sean <sproctor@enter.net>.
+.
 Revision 1.107  1999/09/24 00:28:24  set
 * Added: Better handling of some situations in TScreen, patch from Robert:
 "I made now a patch for tscreen.cc to use at firts the infromation
