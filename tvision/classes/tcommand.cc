@@ -58,16 +58,24 @@ unsigned long masks[32] =
     0x80000000
 };
 
-static
+const unsigned long fullMask=0xFFFFFFFF;
+
+static inline
 int loc( int cmd )
 {
     return cmd / 32;
 }
 
-static
+static inline
 unsigned long mask( int cmd )
 {
     return masks[ cmd & 0x1F ];
+}
+
+static inline
+unsigned long rest( int cmd )
+{
+    return cmd & 0x1F;
 }
 
 TCommandSet::TCommandSet()
@@ -125,6 +133,92 @@ void TCommandSet::enableCmd( int cmd )
 {
   if (cmd < MAX_COMMANDS)
     cmds[ loc( cmd ) ] |= mask( cmd );
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Enable a range of contiguous commands. As an example: my editor have more
+than 128 commands, it means just 4 longs and not 128 calls! SET.@p
+  Start is included but not end.
+
+***************************************************************************/
+
+void TCommandSet::enableCmd( int cmdStart, int cmdEnd )
+{
+  if (cmdEnd<MAX_COMMANDS && cmdEnd>cmdStart)
+    {
+     int pStart=loc(cmdStart);
+     unsigned long rStart=mask(cmdStart);
+     int pEnd=loc(cmdEnd);
+     unsigned long rEnd=mask(cmdEnd);
+     unsigned long i;
+     int j;
+
+     // Both in the same word
+     if (pStart==pEnd)
+       {
+        for (i=rStart; i!=rEnd; i<<=1)
+            cmds[pStart]|=i;
+        return;
+       }
+     // Not all of the pStart must be set
+     if (rStart!=1)
+       {
+        for (i=rStart; i; i<<=1)
+            cmds[pStart]|=i;
+        pStart++;
+       }
+     // Set the words in the middle
+     for (j=pStart; j<pEnd; j++)
+         cmds[j]=fullMask;
+     // The bits in the last position
+     for (i=1; i<rEnd; i<<=1)
+         cmds[pEnd]|=i;
+    }
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Disable a range of contiguous commands. As an example: my editor have more
+than 128 commands, it means just 4 longs and not 128 calls! SET.@p
+  Start is included but not end.
+
+***************************************************************************/
+
+void TCommandSet::disableCmd( int cmdStart, int cmdEnd )
+{
+  if (cmdEnd<MAX_COMMANDS && cmdEnd>cmdStart)
+    {
+     int pStart=loc(cmdStart);
+     unsigned long rStart=mask(cmdStart);
+     int pEnd=loc(cmdEnd);
+     unsigned long rEnd=mask(cmdEnd);
+     unsigned long i;
+     int j;
+
+     // Both in the same word
+     if (pStart==pEnd)
+       {
+        for (i=rStart; i!=rEnd; i<<=1)
+            cmds[pStart]&=~i;
+        return;
+       }
+     // Not all of the pStart must be set
+     if (rStart!=1)
+       {
+        for (i=rStart; i; i<<=1)
+            cmds[pStart]&=~i;
+        pStart++;
+       }
+     // Set the words in the middle
+     for (j=pStart; j<pEnd; j++)
+         cmds[j]=0;
+     // The bits in the last position
+     for (i=1; i<rEnd; i<<=1)
+         cmds[pEnd]&=~i;
+    }
 }
 
 TCommandSet& TCommandSet::operator &= ( const TCommandSet& tc )
