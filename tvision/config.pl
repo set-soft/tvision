@@ -1,14 +1,16 @@
 #!/usr/bin/perl
+# Copyright (C) 1996,1997,1998,1999 by Salvador E. Tropea (SET),
+# see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
 #
 
 require "miscperl.pl";
+require "conflib.pl";
 
 GetCache();
 GetVersion('');
 
-$ErrorLog='errormsg.txt';
 # I never tested with an older version, you can try reducing it.
 $GPMVersionNeeded='1.13';
 # I never tested with an older version, you can try reducing it.
@@ -16,14 +18,18 @@ $NCursesVersionNeeded='1.9.9';
 # Adds some nice stuff to define key sequences.
 $NCursesVersionRecomended='4.2';
 $DJGPPVersionNeeded='2.0.2';
+unlink $ErrorLog;
 
 SeeCommandLine();
 
 print "Configuring Turbo Vision v$Version library\n\n";
 # Determine the OS
 $OS=DetectOS();
+LookForPrefix();
 # Determine C flags
 $CFLAGS=FindCFLAGS();
+# Determine C++ flags
+$CXXFLAGS=FindCXXFLAGS();
 # Test for a working gcc
 $GCC=CheckGCC();
 # Check if gcc can compile C++
@@ -41,7 +47,6 @@ if ($OS eq 'linux')
    LookForKeysyms();
   }
 LookForIntlSupport();
-LookForPrefix();
 
 print "\n";
 GenerateMakefile();
@@ -69,12 +74,12 @@ sub SeeCommandLine
     else {
     if ($i=~'--prefix=(.*)')
       {
-       @conf{'prefix'}=$1;
+       $conf{'prefix'}=$1;
       }
     else {
     if ($i eq '--no-intl')
       {
-       @conf{'no-intl'}='yes';
+       $conf{'no-intl'}='yes';
       }
     else
 #    if ($i=~'--cflags=(.*)')
@@ -115,189 +120,6 @@ sub GiveAdvice
        print "  distribution. Read the readme file for more information.\n";
       }
    }
-}
-
-sub DetectOS
-{
- my $os,$OS;
- $os=`uname`;
- print 'Determining OS: ';
- 
- if ($os=~/MS\-DOS/)
-   {
-    $OS='dos';
-    $stdcxx='-lstdcxx';
-    $defaultCXX='gxx';
-   }
- else
-   {
-    if ($os=~/[Ll]inux/)
-      {
-       $OS='linux';
-       $stdcxx='-lstdc++';
-       $defaultCXX='g++';
-      }
-    else
-      {
-       die('Unknown OS, you must do things by yourself');
-      }
-   }
- print "$OS\n";
- $OS;
-}
-
-sub FindCFLAGS
-{
- my $ret;
-
- print 'Determining the C compilation flags: ';
- $ret=@conf{'CFLAGS'};
- if ($ret)
-   {
-    print "$ret (cached)\n";
-    return $ret;
-   }
- $ret=@ENV{'CFLAGS'};
- if (!$ret)
-   {
-    $ret='-O2 -gstabs+3';
-    $ret.=' -pipe' unless ($OS eq 'dos');
-   }
- print "$ret\n";
- $conf{'CFLAGS'}=$ret;
- $ret;
-}
-
-sub LookForDJGPP
-{
- my $vNeed=$_[0];
- my $test;
-
- print 'Checking DJGPP version: ';
- $test=@conf{'djgpp'};
- if ($test)
-   {
-    print "$test (cached) OK\n";
-    return;
-   }
- $test='
-#include <stdio.h>
-int main(void)
-{
- printf("%d.0.%d",DJGPP,DJGPP_MINOR);
- return 0;
-}';
- $test=RunGCCTest($GCC,'c',$test,'');
- if (!CompareVersion($test,$vNeed))
-   {
-    print "\nWrong DJGPP version, please use $vNeed or newer\n";
-    print "Look in $ErrorLog for potential compile errors of the test\n";
-    CreateCache();
-    die "Wrong version\n";
-   }
- print "$test OK\n";
- $conf{'djgpp'}=$test;
-}
-
-sub CheckGCC
-{
- my $cc,$test;
-
- print 'Looking for a working gcc: ';
- $cc=@conf{'GCC'};
- if ($cc)
-   {
-    print "$cc (cached) OK\n";
-    return $cc;
-   }
- $cc=$ENV{'CC'};
- if (!length($cc))
-   {
-    $cc='gcc';
-   }
- print "$cc ";
- $test='#include <stdio.h>
-int main(void)
-{
- printf("OK\n");
- return 0;
-}
-';
- $test=RunGCCTest($cc,'c',$test,'');
- if ($test ne "OK\n")
-   {
-    CreateCache();
-    die 'Not working gcc found';
-   }
- print "OK\n";
- $conf{'GCC'}=$cc;
- $cc;
-}
-
-sub CheckGCCcanXX
-{
- my $cc=$_[0],$ret,$test;
-
- print "$cc can compile C++ code: ";
- $test='#include <iostream.h>
-int main(void)
-{
- cout << "OK" << endl;
- return 0;
-}';
- $test=RunGCCTest($cc,'cc',$test,$stdcxx);
- if ($test eq "OK\n")
-   {
-    print "yes\n";
-    $ret=1;
-   }
- else
-   {
-    print "no\n";
-    $ret=0;
-   }
- $ret;
-}
-
-
-sub CheckGXX()
-{
- if (@conf{'GXX'})
-   {
-    print "C++ compiler: @conf{'GXX'} (cached) OK\n";
-    return @conf{'GXX'};
-   }
- if (CheckGCCcanXX($GCC))
-   {
-    $GXX=$GCC;
-   }
- else
-   {
-    # Test for a working g++
-    $GXX=CheckGXX();
-   }
- $conf{'GXX'}=$GXX;
-}
-
-sub CheckGXXReal()
-{
- my $test;
-
- print 'Looking for the C++ compiler: ';
- $test='#include <iostream.h>
-int main(void)
-{
- cout << "OK" << endl;
- return 0;
-}';
- $test=RunGCCTest($defaultCXX,'cc',$test,$stdcxx);
- if ($test ne "OK\n")
-   {
-    CreateCache();
-    die('can not find it');
-   }
- print "$defaultCXX\n";
- $defaultCXX;
 }
 
 sub LookForIntlSupport
@@ -463,118 +285,6 @@ int main(void)
    }
 }
 
-sub LookForPrefix
-{
- my $test,$prefix;
-
- print 'Looking for prefix: ';
- $prefix=@conf{'prefix'};
- if ($prefix)
-   {
-    print "$prefix (cached/specified)\n";
-    return;
-   }
- if ($OS eq 'linux')
-   {
-    if (`which make`=~/(.*)\/bin\/make/)
-      {
-       $prefix=$1;
-      }
-    else
-     {
-      $prefix='/usr';
-     }
-   }
- else
-   {
-    $prefix=@ENV{'DJDIR'};
-   }
- @conf{'prefix'}=$prefix;
- print "$prefix\n";
-}
-
-sub RunGCCTest
-{
- my ($cc,$ext,$test,$switchs)=@_;
- my $file='test.'.$ext,$command,$label;
-
- replace($file,$test);
- $command="$cc -o test.exe $CFLAGS $file $switchs";
- #print "Running: $command\n";
- $label=$command.":\n";
- `echo $label >> $ErrorLog`;
- if ($OS eq 'dos')
-   {
-    `redir -ea $ErrorLog $command`;
-   }
- else
-   {
-    `$command 2>> $ErrorLog`;
-   }
- $test=`./test.exe`;
- unlink('test.o',$file,'test.exe');
- $test;
-}
-
-
-sub CompareVersion
-{
- my ($actual,$needed)=@_;
- my $vact,$vneed;
-
- $actual=~/(\d+)\.(\d+)(\.(\d+))?/;
- $vact=$1*1000000+$2*1000+$4;
- $needed=~/(\d+)\.(\d+)(\.(\d+))?/;
- $vneed=$1*1000000+$2*1000+$4;
- #print "$vact v.s. $vneed\n";
- $vact>=$vneed;
-}
-
-sub GetCache
-{
- my $val;
-
- #%conf={};
- if (open(FIL,'<configure.cache'))
-   {
-    while ($val=<FIL>)
-      {
-       if ($val=~/(.*) => (.*)\n/)
-         {
-          @conf{$1}=$2;
-          #print "$1 => $2\n";
-         }
-       else
-         {
-          #print "No toma: ($val)";
-         }
-      }
-    close(FIL);
-   }
-}
-
-sub CreateCache
-{
- my $i,$ff=1;
-
- if (open(FIL,'>configure.cache'))
-   {
-    foreach $i (%conf)
-      {
-       if ($ff)
-         {
-          print FIL ("$i => @conf{$i}\n");
-          $ff=0;
-         }
-       else
-         {
-          $ff=1;
-         }
-      }
-    close(FIL);
-   }
-}
-
 sub GenerateMakefile
 {
  my $text,$rep,$makeDir;
@@ -627,106 +337,18 @@ sub GenerateMakefile
  replace('Makefile',$text);
 }
 
-#
-# It fixes the Makefiles generated from the .gpr files
-#
-sub ModifyMakefiles
-{
- my $a,$text;
-
- print 'Configuring makefiles: ';
- foreach $a (@_)
-   {
-    print "$a ";
-    $text=cat($a);
-    if ($text)
-      {
-       $text=~s/RHIDE_GCC=(.*)\n/RHIDE_GCC=$GCC\n/;
-       $text=~s/RHIDE_GXX=(.*)\n/RHIDE_GXX=$GXX\n/;
-       $text=~s/RHIDE_LD=(.*)\n/RHIDE_LD=$GXX\n/;
-       $text=~s/RHIDE_OS_CFLAGS=(.*)\n/RHIDE_OS_CFLAGS=$CFLAGS\n/;
-       $text=~s/RHIDE_OS_CXXFLAGS=(.*)\n/RHIDE_OS_CXXFLAGS=$CFLAGS\n/;
-       replace($a,$text);
-      }
-   }
- print "\n";
-}
-
-#
-# It creates the needed rhide.env files to configure RHIDE in case the user
-# wants to use RHIDE after configuring.
-#
-sub CreateRHIDEenvs
-{
- my $a,$text;
-
- print 'Configuring RHIDE: ';
- foreach $a (@_)
-   {
-    print "$a ";
-    $text ="#\n# Automatically generated by configure script\n#\n\n";
-    $text.="RHIDE_GCC=$GCC\n" unless ($GCC eq 'gcc');
-    $text.="RHIDE_GXX=$GXX\n" unless ($GXX eq 'gcc');
-    $text.="RHIDE_LD=$GXX\n"  unless ($GXX eq 'gcc');
-    $text.="RHIDE_OS_CFLAGS=$CFLAGS\n";
-    $text.="RHIDE_OS_CXXFLAGS=$CFLAGS\n";
-
-    if ($text)
-      {
-       replace($a,$text);
-      }
-    else
-      {
-       unlink $a;
-      }
-   }
- print "\n";
-}
-
 sub CreateConfigH
 {
  my $text="/* Generated automatically by the configure script */";
 
  print "Generating configuration header\n";
 
- $text.="\n\n/* ncurses 4.2 or better have define_key */\n";
- $text.='/*' unless (@conf{'HAVE_DEFINE_KEY'});
- $text.="#define HAVE_DEFINE_KEY";
- $text.='*/' unless (@conf{'HAVE_DEFINE_KEY'});
-
- $text.="\n\n/* The X11 keysyms are there */\n";
- $text.='/*' unless (@conf{'HAVE_KEYSYMS'} eq 'yes');
- $text.="#define HAVE_KEYSYMS";
- $text.='*/' unless (@conf{'HAVE_KEYSYMS'} eq 'yes');
-
- $text.="\n\n/* International support with gettext */\n";
- $text.='/*' unless (@conf{'intl'} eq 'yes');
- $text.="#define HAVE_INTL_SUPPORT";
- $text.='*/' unless (@conf{'intl'} eq 'yes');
-
+ $text.=ConfigIncDef('HAVE_DEFINE_KEY','ncurses 4.2 or better have define_key');
+ $text.=ConfigIncDefYes('HAVE_KEYSYMS','The X11 keysyms are there');
+ $conf{'HAVE_INTL_SUPPORT'}=@conf{'intl'};
+ $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
  $text.="\n";
 
  replace('include/configtv.h',$text);
-}
-
-sub cat
-{
- local $/;
- my $b;
-
- open(FIL,$_[0]) || return 0;
- $b=<FIL>;
- close(FIL);
-
- $b;
-}
-
-sub replace
-{
- my $b=$_[1];
-
- open(FIL,">$_[0]") || return 0;
- print FIL ($b);
- close(FIL);
 }
 

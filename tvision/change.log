@@ -1,5 +1,11 @@
 $Log$
-Revision 1.101  1999/09/09 02:25:16  root
+Revision 1.102  1999/09/12 00:38:24  set
+* Removed the compilation options from the .gpr files because that's
+configured by the configure mechanism now.
+* Added an option to makemak.pl to avoid displaying the installation options.
+That's to avoid confusion when the script is called from the makefile.
+
+Revision 1.101  1999/09/09 02:25:16  root (set)
 * Added: More details to the configure mechanism, including CFLAGS setting,
 a script to set my default values, corrections in the readme.txt, etc.
 
