@@ -8,6 +8,7 @@
 
     Heavily modified by Salvador E. Tropea to compile without warnings.
     Some warnings were in fact bugs.
+    For gcc 2.95.x and then 3.0.1.
     
  ***************************************************************************/
 
@@ -502,7 +503,7 @@ const char * buildCode(TDsgObj * aObj, char * buffer)
    {
       strcat(buffer, tmp);
       return buffer;
-   } else return tmp;
+   } else return newStr(tmp);
 }
 #undef _buildscroll_
 #undef _commomget_

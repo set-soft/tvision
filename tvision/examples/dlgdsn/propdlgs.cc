@@ -7,6 +7,7 @@
     walves@usa.net
     
     Modified by Salvador E. Tropea to compile without warnings.
+    For gcc 2.95.x and then 3.0.1.
     
  ***************************************************************************/
 
@@ -441,7 +442,7 @@ void TItemsEditor::setData(void * data)
 {
    TListBoxRec rec;
 
-   cList = (TStringCollection *&)*data;
+   cList = (TStringCollection *)data;
    rec.items = cList;
    rec.selection = 0;
    List->setData(&rec);

@@ -7,6 +7,7 @@
     walves@usa.net
     
     Modified by Salvador E. Tropea to compile without warnings.
+    For gcc 2.95.x and then 3.0.1.
     
  ***************************************************************************/
 
@@ -44,7 +45,6 @@ bool fileExists(const char * FileName)
 char * getFileName(char * aTitle, const char * ext, int Mode)
 {
    TFileDialog *d = 0;
-   char * param;
    int cmd = cmCancel;
    
    if (Mode == 0)
@@ -70,8 +70,6 @@ ifpstream * openFile(const char * FileName, char * Signature)
    if (!fileExists(FileName)) return 0;
    ifpstream * rst = new ifpstream( FileName, ios::in|ios::binary );
    char buf[50];
-   char c;
-   int i;
    if (rst)
    {
       rst->readBytes(&buf, strlen(Signature) + 1);

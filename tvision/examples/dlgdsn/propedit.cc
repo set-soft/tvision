@@ -8,6 +8,7 @@
     
     Heavily modified by Salvador E. Tropea to compile without warnings.
     Some warnings were in fact bugs.
+    For gcc 2.95.x and then 3.0.1.
     
  ***************************************************************************/
 
@@ -127,8 +128,8 @@ int execDialog(TDialog * dialog, void *data)
 // Sorter func by tabulation order
 static int byTabOrder(const void * key1, const void * key2)
 {
-   TDsgObj * d1  = (TDsgObj *)((TDsgLink *&)*key1)->d;
-   TDsgObj * d2  = (TDsgObj *)((TDsgLink *&)*key2)->d;
+   TDsgObj * d1  = (TDsgObj *)((TDsgLink *)key1)->d;
+   TDsgObj * d2  = (TDsgObj *)((TDsgLink *)key2)->d;
    
    bool d1CanTab = d1->tabStop();
    bool d2CanTab = d2->tabStop();
@@ -753,7 +754,7 @@ void TObjEditView::editItem(const TStructMap * map)
 #define _do_(editor) chg = (execDialog(editor(), ldata) == cmOK); break;
 #define _constsel_(list, editor)                                             \
           rec.items = list();                                                \
-          rec.selection = list()->getIndex((ushort &)*ldata);                \
+          rec.selection = list()->getIndex((ushort)(int)ldata);              \
           chg = (execDialog(editor(), &rec) == cmOK);                        \
           if (chg) memcpy(ldata, &rec.selection, sizeof(ushort)); break;
 
@@ -790,10 +791,10 @@ void TObjEditView::editItem(const TStructMap * map)
        case etIntegerEditor:
           calcPlace(place, separator, map->index, dataMap);
           if (vtCurrent == vtListBox && map->index == 14)
-               i = (short &)*ldata; else i = (int &)*ldata;
+               i = (short)(int)ldata; else i = (int)ldata;
           chg = IntegerEditor(i, place, owner);
           if (vtCurrent == vtListBox && map->index == 14)
-             (short &)*ldata = i; else (int &)*ldata = i;
+             ldata = (void *)i; else ldata = (void *)i;
           if (chg) message(owner, evMessage, cmValueChanged, 0);
        break;
        case etOptionsEditor: _do_(OptionsEditor);
@@ -823,7 +824,7 @@ void TObjEditView::editItem(const TStructMap * map)
           if (chg) message(owner, evMessage, cmValueChanged, 0);
        break;
        case etCharPtrEditor:
-          c = (char *&)*ldata;
+          c = (char *)ldata;
           strcpy(m.buffer, c);
           c = (char *)m.buffer;
           v = c;
@@ -866,7 +867,7 @@ void TObjEditView::editItem(const TStructMap * map)
                       }
                       c++;
                   }
-                  (void *&)*ldata=newStr(m.buffer);
+                  ldata=(void *)newStr(m.buffer);
               }
               message(owner, evMessage, cmValueChanged, 0);
           }
