@@ -2150,7 +2150,7 @@ int     TVX11UpdateThread::initialized=0;
 const int refreshTime=10000; // 10 ms
 static sig_atomic_t mutex;
 static int updates=0;
-static int safeToUnHook;
+static volatile int safeToUnHook;
 
 void TVX11UpdateThread::UpdateThread(int signum)
 {
