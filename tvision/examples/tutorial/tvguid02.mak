@@ -256,22 +256,22 @@ RHIDE_GCC=gcc
 RHIDE_GXX=gcc
 RHIDE_LD=gcc
 RHIDE_AR=ar
-RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_OS_CFLAGS=-O2 -gstabs+3 -pipe
+RHIDE_OS_CXXFLAGS=-O2 -gstabs+3 -pipe
 RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
 TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision 
 RHIDE_OS_LIBS=ncurses m gpm X11 Xmu
-TVOBJ=../../linux /usr/src/tvision-head/linux /usr/lib /usr/X11R6/lib 
+TVOBJ=/usr/lib ../../linuxso /usr/src/tvision-head/linuxso ../../linux /usr/src/tvision-head/linux /usr/X11R6/lib 
 RHIDE_GCC=gcc
 RHIDE_GXX=gcc
 RHIDE_LD=gcc
 RHIDE_AR=ar
-RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_OS_CFLAGS=-O2 -gstabs+3 -pipe
+RHIDE_OS_CXXFLAGS=-O2 -gstabs+3 -pipe
 RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
 TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision 
 RHIDE_OS_LIBS=ncurses m gpm X11 Xmu
-TVOBJ=../../linux /usr/src/tvision-head/linux /usr/lib /usr/X11R6/lib 
+TVOBJ=/usr/lib ../../linuxso /usr/src/tvision-head/linuxso ../../linux /usr/src/tvision-head/linux /usr/X11R6/lib 
 %.o: %.c
 	$(RHIDE_COMPILE.c.o)
 %.o: %.i

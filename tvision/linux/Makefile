@@ -487,22 +487,24 @@ RHIDE_GCC=gcc
 RHIDE_GXX=gcc
 RHIDE_LD=gcc
 RHIDE_AR=ar
-RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_ARFLAGS=rcs
+RHIDE_OS_CFLAGS=-O2 -gstabs+3 -pipe
+RHIDE_OS_CXXFLAGS=-O2 -gstabs+3 -pipe
 RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
 TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision 
 RHIDE_OS_LIBS=ncurses m gpm X11 Xmu
-TVOBJ=../../linux /usr/src/tvision-head/linux /usr/lib /usr/X11R6/lib 
+TVOBJ=/usr/lib ../../linuxso /usr/src/tvision-head/linuxso ../../linux /usr/src/tvision-head/linux /usr/X11R6/lib 
 RHIDE_GCC=gcc
 RHIDE_GXX=gcc
 RHIDE_LD=gcc
 RHIDE_AR=ar
-RHIDE_OS_CFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
-RHIDE_OS_CXXFLAGS=-O2 -Wall -Werror -gstabs+3 -pipe
+RHIDE_ARFLAGS=rcs
+RHIDE_OS_CFLAGS=-O2 -gstabs+3 -pipe
+RHIDE_OS_CXXFLAGS=-O2 -gstabs+3 -pipe
 RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/X11R6/include
 TVSRC=../../include /usr/src/tvision-head/include /usr/include/rhtvision 
 RHIDE_OS_LIBS=ncurses m gpm X11 Xmu
-TVOBJ=../../linux /usr/src/tvision-head/linux /usr/lib /usr/X11R6/lib 
+TVOBJ=/usr/lib ../../linuxso /usr/src/tvision-head/linuxso ../../linux /usr/src/tvision-head/linux /usr/X11R6/lib 
 %.o: %.c
 	$(RHIDE_COMPILE.c.o)
 %.o: %.i
@@ -769,10 +771,11 @@ DEPS_7=doskey.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/event.h ../include/tv/gkey.h ../include/tv/intl.h\
 	../include/tv/ipstream.h ../include/tv/objects.h\
 	../include/tv/opstream.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/system.h ../include/tv/tobjstrm.h\
-	../include/tv/ttypes.h ../include/tv/tvconfig.h\
-	../include/tv/tvutil.h ../include/tv/views.h
+	../include/tv/pstream.h ../include/tv/screen.h\
+	../include/tv/stddlg.h ../include/tv/system.h\
+	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
+	../include/tv/tvconfig.h ../include/tv/tvutil.h\
+	../include/tv/views.h
 obj/doskey.o:: $(DEPS_7)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_8=dosmouse.cc ../include/compatlayer.h ../include/tv.h\
@@ -1036,13 +1039,13 @@ DEPS_27=msgbox.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/msgbox.h ../include/tv/object.h\
 	../include/tv/objects.h ../include/tv/opstream.h\
 	../include/tv/point.h ../include/tv/program.h\
-	../include/tv/pstream.h ../include/tv/rect.h ../include/tv/sitem.h\
-	../include/tv/stddlg.h ../include/tv/streambl.h\
-	../include/tv/sttctext.h ../include/tv/system.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/view.h ../include/tv/views.h\
-	../include/tv/window.h
+	../include/tv/pstream.h ../include/tv/rect.h ../include/tv/screen.h\
+	../include/tv/sitem.h ../include/tv/stddlg.h\
+	../include/tv/streambl.h ../include/tv/sttctext.h\
+	../include/tv/system.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h ../include/tv/view.h\
+	../include/tv/views.h ../include/tv/window.h
 obj/msgbox.o:: $(DEPS_27)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_28=nbackgro.cc ../include/compatlayer.h ../include/tv/configtv.h\
@@ -2535,13 +2538,14 @@ DEPS_172=tfilelis.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/collectn.h ../include/tv/configtv.h\
 	../include/tv/dialogs.h ../include/tv/drawbuf.h\
 	../include/tv/event.h ../include/tv/filecoll.h\
-	../include/tv/filelist.h ../include/tv/group.h ../include/tv/intl.h\
-	../include/tv/ipstream.h ../include/tv/listbox.h\
-	../include/tv/lstviewr.h ../include/tv/msgbox.h\
-	../include/tv/no_mss.h ../include/tv/nscoll.h\
-	../include/tv/nssorcol.h ../include/tv/object.h\
-	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/point.h ../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/filelist.h ../include/tv/gkey.h ../include/tv/group.h\
+	../include/tv/intl.h ../include/tv/ipstream.h\
+	../include/tv/listbox.h ../include/tv/lstviewr.h\
+	../include/tv/msgbox.h ../include/tv/no_mss.h\
+	../include/tv/nscoll.h ../include/tv/nssorcol.h\
+	../include/tv/object.h ../include/tv/objects.h\
+	../include/tv/opstream.h ../include/tv/point.h\
+	../include/tv/pstream.h ../include/tv/rect.h\
 	../include/tv/searchrc.h ../include/tv/sortcoll.h\
 	../include/tv/sortlibo.h ../include/tv/stddlg.h\
 	../include/tv/streambl.h ../include/tv/strmblcl.h\
@@ -2682,14 +2686,14 @@ DEPS_182=tinputli.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/inputln.h ../include/tv/intl.h\
 	../include/tv/ipstream.h ../include/tv/object.h\
 	../include/tv/objects.h ../include/tv/opstream.h\
-	../include/tv/palette.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/stddlg.h\
-	../include/tv/streambl.h ../include/tv/strmblcl.h\
-	../include/tv/system.h ../include/tv/tkeys.h\
-	../include/tv/tobjstrm.h ../include/tv/ttypes.h\
-	../include/tv/tvconfig.h ../include/tv/tvobjs.h\
-	../include/tv/tvutil.h ../include/tv/validate.h\
-	../include/tv/view.h ../include/tv/views.h
+	../include/tv/osclipboard.h ../include/tv/palette.h\
+	../include/tv/point.h ../include/tv/pstream.h\
+	../include/tv/stddlg.h ../include/tv/streambl.h\
+	../include/tv/strmblcl.h ../include/tv/system.h\
+	../include/tv/tkeys.h ../include/tv/tobjstrm.h\
+	../include/tv/ttypes.h ../include/tv/tvconfig.h\
+	../include/tv/tvobjs.h ../include/tv/tvutil.h\
+	../include/tv/validate.h ../include/tv/view.h ../include/tv/views.h
 obj/tinputli.o:: $(DEPS_182)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_183=tlabel.cc ../include/compatlayer.h ../include/tv.h\
