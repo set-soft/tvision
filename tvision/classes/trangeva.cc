@@ -48,10 +48,10 @@ TRangeValidator::TRangeValidator(long aMin,long aMax) :
 void TRangeValidator::Error()
 {
   if (Min >= 0)
-    messageBox(mfError|mfOKButton,_("Value not in the range %lu to %lu"),
+    messageBox(mfError|mfOKButton,__("Value not in the range %lu to %lu"),
                (unsigned long)Min,(unsigned long)Max);
   else
-    messageBox(mfError|mfOKButton,_("Value not in the range %li to %li"),
+    messageBox(mfError|mfOKButton,__("Value not in the range %li to %li"),
                Min,Max);
   // SET: Replaced %U and %D because MSVC lacks it
 }

@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea.
 
  *
  *
@@ -49,6 +50,8 @@ const ushort
     mfOKButton     = 0x0400,       // Put an OK button into the dialog
     mfCancelButton = 0x0800,       // Put a Cancel button into the dialog
 
+// Special flag: Avoid translating this message, is already translated.
+    mfDontTranslate = 0x4000,
 // Special flag: For the "Don't show it next time" field
     mfDontShowAgain = 0x8000,
 

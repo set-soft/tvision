@@ -25,7 +25,7 @@ should be replaced by a CLY_* function.
 and regex.
   Added itoa for faster and safe integer to string conversion.
 
-  Copyright (c) 2000-2001 by Salvador E. Tropea
+  Copyright (c) 2000-2003 by Salvador E. Tropea
   Covered by the GPL license.
 
 ***************************************************************************/
@@ -83,6 +83,11 @@ typedef unsigned long  ulong;
   #define Include_stdio 1
 #endif
 
+#ifdef Uses_stdarg
+  #undef  Include_stdarg
+  #define Include_stdarg 1
+#endif
+
 #ifdef Uses_CLYFileAttrs
  /* For mode_t */
  #undef  Uses_sys_stat
@@ -136,6 +141,10 @@ typedef unsigned long  ulong;
 #undef UsingNamespaceStd
 #undef CLY_HiddenDifferent
 #undef CLY_DummyTStreamRW
+#undef CLY_Have_snprintf
+
+/* Assume it as default */
+#define CLY_Have_snprintf 1
 
 /* Most C++ compilers doesn't need it, only MSVC seems to need *all* the
    virtual members (even when not used) to link */
@@ -476,6 +485,7 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
   #endif
+  #undef CLY_Have_snprintf
  #endif
  
  /* Under DOS djgpp defines it */
@@ -555,6 +565,7 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
   #endif
+  #undef CLY_Have_snprintf
  #endif
 
  /* Common to all UNIX systems */
@@ -1187,6 +1198,18 @@ typedef unsigned long  ulong;
  #define IOS_BIN CLY_IOSBin
 #endif
 
+#ifdef Uses_snprintf
+ #ifdef CLY_Have_snprintf
+  #undef  Include_stdio
+  #define Include_stdio 1
+  #define CLY_snprintf  snprintf
+  #define CLY_vsnprintf vsnprintf
+ #else
+  #undef  Include_stdarg
+  #define Include_stdarg 1
+ #endif
+#endif
+
 CLY_CFunc void CLY_YieldProcessor(int micros);
 CLY_CFunc void CLY_ReleaseCPU();
 /* Return the number of ticks (on MSDOS 1 tick is 1/18 sec),
@@ -1552,6 +1575,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #include <utime.h>
 #endif
 
+#if defined(Include_stdarg) && !defined(Included_stdarg)
+ #define Included_stdarg 1
+ #include <stdarg.h>
+#endif
+
 #if defined(Include_sys_utime) && !defined(Included_sys_utime)
  #define Included_sys_utime 1
  #include <sys/utime.h>
@@ -1627,6 +1655,12 @@ CLY_CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
 
 /* Returns the name of the shell command */
 CLY_CFunc char *CLY_GetShellName(void);
+
+/* v/snprintf functions */
+#if defined(Uses_snprintf) && !defined(CLY_Have_snprintf)
+CLY_CFunc int CLY_vsnprintf(char *string, size_t length, const char * format, va_list args);
+CLY_CFunc int CLY_snprintf(char *string, size_t length, const char * format, ...);
+#endif
 
 #ifdef Uses_ifsFileLength
 extern long CLY_ifsFileLength(CLY_std(ifstream) &f);

@@ -37,13 +37,13 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/fileexists.o $(OBJDIR)/filelength.o $(OBJDIR)/fixpath.o $(OBJDIR)/fnmatch.o $(OBJDIR)/getcurdir.o $(OBJDIR)/getline.o\
 	$(OBJDIR)/getopt.o $(OBJDIR)/getopt1.o $(OBJDIR)/getshell.o $(OBJDIR)/glob.o $(OBJDIR)/globfree.o $(OBJDIR)/iffilelen.o $(OBJDIR)/isdir.o\
 	$(OBJDIR)/isrelpath.o $(OBJDIR)/iswild.o $(OBJDIR)/itoa.o $(OBJDIR)/mkstemp.o $(OBJDIR)/nl_langinfo.o $(OBJDIR)/ntdirent.o\
-	$(OBJDIR)/pathvalid.o $(OBJDIR)/regex.o $(OBJDIR)/releasec.o $(OBJDIR)/strlwr.o $(OBJDIR)/strupr.o $(OBJDIR)/ticks.o $(OBJDIR)/unc.o\
-	$(OBJDIR)/unc_95.o $(OBJDIR)/unc_nt.o $(OBJDIR)/validfilename.o $(OBJDIR)/yieldpro.o $(OBJDIR)/calcdisp.o $(OBJDIR)/calculat.o\
-	$(OBJDIR)/codepage.o $(OBJDIR)/configfile.o $(OBJDIR)/dosdis.o $(OBJDIR)/doskey.o $(OBJDIR)/dosmouse.o $(OBJDIR)/dosscr.o\
-	$(OBJDIR)/drivers2.o $(OBJDIR)/dual.o $(OBJDIR)/fileview.o $(OBJDIR)/fontcoll.o $(OBJDIR)/fpbase.o $(OBJDIR)/fpstream.o\
-	$(OBJDIR)/help.o $(OBJDIR)/helpbase.o $(OBJDIR)/histlist.o $(OBJDIR)/ifpstrea.o $(OBJDIR)/iopstrea.o $(OBJDIR)/ipstream.o\
-	$(OBJDIR)/linuxdis.o $(OBJDIR)/linuxkey.o $(OBJDIR)/linuxmouse.o $(OBJDIR)/linuxscr.o $(OBJDIR)/misc.o $(OBJDIR)/msgbox.o\
-	$(OBJDIR)/nbackgro.o $(OBJDIR)/nbutton.o $(OBJDIR)/ncalcdis.o $(OBJDIR)/ncalcula.o $(OBJDIR)/nchdirdi.o\
+	$(OBJDIR)/pathvalid.o $(OBJDIR)/regex.o $(OBJDIR)/releasec.o $(OBJDIR)/snprintf.o $(OBJDIR)/strlwr.o $(OBJDIR)/strupr.o $(OBJDIR)/ticks.o\
+	$(OBJDIR)/unc.o $(OBJDIR)/unc_95.o $(OBJDIR)/unc_nt.o $(OBJDIR)/validfilename.o $(OBJDIR)/yieldpro.o $(OBJDIR)/calcdisp.o\
+	$(OBJDIR)/calculat.o $(OBJDIR)/codepage.o $(OBJDIR)/configfile.o $(OBJDIR)/dosdis.o $(OBJDIR)/doskey.o $(OBJDIR)/dosmouse.o\
+	$(OBJDIR)/dosscr.o $(OBJDIR)/drivers2.o $(OBJDIR)/dual.o $(OBJDIR)/fileview.o $(OBJDIR)/fontcoll.o $(OBJDIR)/fpbase.o\
+	$(OBJDIR)/fpstream.o $(OBJDIR)/help.o $(OBJDIR)/helpbase.o $(OBJDIR)/histlist.o $(OBJDIR)/ifpstrea.o $(OBJDIR)/iopstrea.o\
+	$(OBJDIR)/ipstream.o $(OBJDIR)/linuxdis.o $(OBJDIR)/linuxkey.o $(OBJDIR)/linuxmouse.o $(OBJDIR)/linuxscr.o $(OBJDIR)/misc.o\
+	$(OBJDIR)/msgbox.o $(OBJDIR)/nbackgro.o $(OBJDIR)/nbutton.o $(OBJDIR)/ncalcdis.o $(OBJDIR)/ncalcula.o $(OBJDIR)/nchdirdi.o\
 	$(OBJDIR)/ncheckbo.o $(OBJDIR)/nclrdisp.o $(OBJDIR)/ncluster.o $(OBJDIR)/ncollect.o $(OBJDIR)/ncolordi.o\
 	$(OBJDIR)/ncolorgr.o $(OBJDIR)/ncolorit.o $(OBJDIR)/ncolorse.o $(OBJDIR)/ndesktop.o $(OBJDIR)/ndialog.o\
 	$(OBJDIR)/ndircoll.o $(OBJDIR)/ndirlist.o $(OBJDIR)/neditor.o $(OBJDIR)/neditwi.o $(OBJDIR)/newstr.o $(OBJDIR)/nfilecol.o\
@@ -79,13 +79,13 @@ OBJS= $(OBJDIR)/beep.o $(OBJDIR)/drivevalid.o $(OBJDIR)/expandpath.o $(OBJDIR)/f
 	$(OBJDIR)/tsortedl.o $(OBJDIR)/tstatict.o $(OBJDIR)/tstatusd.o $(OBJDIR)/tstatusl.o $(OBJDIR)/tstrinde.o\
 	$(OBJDIR)/tstringc.o $(OBJDIR)/tstringl.o $(OBJDIR)/tstrlist.o $(OBJDIR)/tstrmcla.o $(OBJDIR)/tstrmtyp.o\
 	$(OBJDIR)/tsubmenu.o $(OBJDIR)/ttermina.o $(OBJDIR)/ttextdev.o $(OBJDIR)/tvalidat.o $(OBJDIR)/tvedit1.o $(OBJDIR)/tvedit2.o\
-	$(OBJDIR)/tvedit3.o $(OBJDIR)/tview.o $(OBJDIR)/tvtext1.o $(OBJDIR)/tvtext2.o $(OBJDIR)/twindow.o $(OBJDIR)/unixdis.o\
-	$(OBJDIR)/unixkey.o $(OBJDIR)/unixmouse.o $(OBJDIR)/unixscr.o   \
-	 $(OBJDIR)/win32clip.o $(OBJDIR)/win32dis.o $(OBJDIR)/win32key.o $(OBJDIR)/win32mouse.o\
-	$(OBJDIR)/win32scr.o $(OBJDIR)/wingrdis.o $(OBJDIR)/wingrkey.o $(OBJDIR)/wingrmouse.o $(OBJDIR)/wingrscr.o\
-	$(OBJDIR)/winntdis.o $(OBJDIR)/winntkey.o $(OBJDIR)/winntmouse.o $(OBJDIR)/winntscr.o $(OBJDIR)/x11dis.o $(OBJDIR)/x11key.o\
-	$(OBJDIR)/x11mouse.o $(OBJDIR)/x11src.o $(OBJDIR)/xtermdis.o $(OBJDIR)/xtermkey.o $(OBJDIR)/xtermmouse.o\
-	$(OBJDIR)/xtermscr.o
+	$(OBJDIR)/tvedit3.o $(OBJDIR)/tview.o $(OBJDIR)/tvintl.o $(OBJDIR)/tvtext1.o $(OBJDIR)/tvtext2.o $(OBJDIR)/twindow.o\
+	$(OBJDIR)/unixdis.o $(OBJDIR)/unixkey.o $(OBJDIR)/unixmouse.o $(OBJDIR)/unixscr.o  \
+	  $(OBJDIR)/win32clip.o $(OBJDIR)/win32dis.o $(OBJDIR)/win32key.o\
+	$(OBJDIR)/win32mouse.o $(OBJDIR)/win32scr.o $(OBJDIR)/wingrdis.o $(OBJDIR)/wingrkey.o $(OBJDIR)/wingrmouse.o\
+	$(OBJDIR)/wingrscr.o $(OBJDIR)/winntdis.o $(OBJDIR)/winntkey.o $(OBJDIR)/winntmouse.o $(OBJDIR)/winntscr.o\
+	$(OBJDIR)/x11dis.o $(OBJDIR)/x11key.o $(OBJDIR)/x11mouse.o $(OBJDIR)/x11src.o $(OBJDIR)/xtermdis.o $(OBJDIR)/xtermkey.o\
+	$(OBJDIR)/xtermmouse.o $(OBJDIR)/xtermscr.o
 
 tvex: libtv.lib
 	$(CXX) $(CXXFLAGS) tvex.cc -link libtv.lib user32.lib gdi32.lib
