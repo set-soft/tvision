@@ -1,4 +1,13 @@
-#: classes/calcdisp.cc:101 msgbox.cc:52
+msgid ""
+msgstr ""
+"Last-Translator: Roman Valyushenko <smhs@mail.ru>\n"
+"PO-Revision-Date: 2002-12-04 22:46+0200\n"
+"Language-Team: Russian (русский)\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: classes/calcdisp.cc:103 msgbox.cc:53
 msgid "Error"
 msgstr "Ошибка"
 
@@ -7,87 +16,171 @@ msgstr "Ошибка"
 msgid "Pocket Calculator"
 msgstr "Карманный калькулятор"
 
-#: classes/opstream.cc:210
+#: classes/configfile.cc:45
+msgid "Can't open file"
+msgstr "Невозможно открыть файл"
+
+#. -1
+#: classes/configfile.cc:46
+msgid "Comment inside section name"
+msgstr "Комментарий внутри имени секции"
+
+#. -2
+#: classes/configfile.cc:47
+msgid "Unterminated section name"
+msgstr "Не терменированное имя секции"
+
+#. -3
+#: classes/configfile.cc:48
+msgid "Empty section name"
+msgstr "Пустое имя секции"
+
+#. -4
+#: classes/configfile.cc:49
+msgid "Syntax error"
+msgstr "Синтаксическая ошибка"
+
+#. -5
+#: classes/configfile.cc:50
+msgid "Missing open section {"
+msgstr "Секция не имеет открывающей скобки { "
+
+#. -6
+#: classes/configfile.cc:51
+msgid "Missing close section }"
+msgstr "Секция не имеет закрывающей скобки { "
+
+#. -7
+#: classes/configfile.cc:52
+msgid "Missing equal sign"
+msgstr "Нет знака \"равно\""
+
+#. -8
+#: classes/configfile.cc:53
+msgid "Missing value after equal"
+msgstr "Нет значения после знака \"равно\""
+
+#. -9
+#: classes/configfile.cc:54
+msgid "Unterminated string"
+msgstr "Не терминированная строка"
+
+#. -10
+#: classes/configfile.cc:55
+msgid "Non branch in base"
+msgstr "Нет ветки в основе"
+
+#. -11
+#: classes/configfile.cc:56
+msgid "Trying to overwrite a value with a section"
+msgstr "Попытка перезаписать занчение секцией "
+
+#. -12
+#: classes/configfile.cc:57
+msgid "Trying to overwrite a section with a value"
+msgstr "Попытка перезаписать секцию значением "
+
+#: classes/dos/dosscr.cc:371
+msgid "Windows not present"
+msgstr "M$ Windows ОС не обнаружена"
+
+#: classes/dos/dosscr.cc:372
+msgid "Clipboard in use by other application"
+msgstr "Буфер используется другим приложением"
+
+#: classes/dos/dosscr.cc:373
+msgid "Clipboard too big for the transfer buffer"
+msgstr "Буфер не может уместить данное количество информации"
+
+#: classes/dos/dosscr.cc:374
+msgid "Not enough memory"
+msgstr "Не хватает памяти "
+
+#: classes/dos/dosscr.cc:375
+msgid "Windows reports error"
+msgstr "Windows сообщает ошибку"
+
+#: classes/opstream.cc:213
 #, c-format
 msgid "type not registered: %s\n"
 msgstr "тип не зарегистрирован: %s\n"
 
-#: classes/tchdirdi.cc:44
+#: classes/tchdirdi.cc:40
 msgid "Change Directory"
-msgstr "Сменить Директорию"
+msgstr "Сменить директорию"
 
-#: classes/tchdirdi.cc:52
+#: classes/tchdirdi.cc:48
 msgid "Directory ~n~ame"
 msgstr "Имя директории"
 
-#: classes/tchdirdi.cc:60
+#: classes/tchdirdi.cc:56
 msgid "Directory ~t~ree"
 msgstr "Дерево директорий"
 
-#: classes/tchdirdi.cc:63 classes/tcolordi.cc:102 msgbox.cc:37 msgbox.cc:194
+#: classes/tchdirdi.cc:59 classes/tcolordi.cc:101 msgbox.cc:38 msgbox.cc:197
 msgid "~O~K"
-msgstr "O~K"
+msgstr "~O~K"
+
+#: classes/tchdirdi.cc:61
+msgid "~C~hdir"
+msgstr "Сменить"
+
+#: classes/tchdirdi.cc:63
+msgid "~R~evert"
+msgstr "Восстановить"
 
 #: classes/tchdirdi.cc:65
-msgid "~C~hdir"
-msgstr "C~hdir"
-
-#: classes/tchdirdi.cc:67
-msgid "~R~evert"
-msgstr "Возвратить"
-
-#: classes/tchdirdi.cc:69
 msgid "Help"
 msgstr "Помощь"
 
-#: classes/tchdirdi.cc:121 classes/tdirlist.cc:389
+#: classes/tchdirdi.cc:117 classes/tdirlist.cc:392
 msgid "Drives"
-msgstr "Дисководы"
+msgstr "Диски"
 
-#: classes/tchdirdi.cc:189
+#: classes/tchdirdi.cc:185
 msgid "Invalid directory"
-msgstr "Неправильная директория"
+msgstr "Недопустимая директория"
 
-#: classes/tcolordi.cc:44
+#: classes/tcolordi.cc:43
 msgid "Colors"
 msgstr "Цвета"
 
-#: classes/tcolordi.cc:56
+#: classes/tcolordi.cc:55
 msgid "~G~roup"
 msgstr "~Г~руппа"
 
-#: classes/tcolordi.cc:64
+#: classes/tcolordi.cc:63
 msgid "~I~tem"
-msgstr "~П~ункт"
+msgstr "Пункт"
 
-#: classes/tcolordi.cc:70
+#: classes/tcolordi.cc:69
 msgid "~F~oreground"
-msgstr "Передний план"
+msgstr "Цвет текста"
 
-#: classes/tcolordi.cc:79
+#: classes/tcolordi.cc:78
 msgid "~B~ackground"
-msgstr "Фон"
+msgstr "Цвет фона"
 
-#: classes/tcolordi.cc:84
+#: classes/tcolordi.cc:83
 msgid "Text "
 msgstr "Текст "
 
-#: classes/tcolordi.cc:90
+#: classes/tcolordi.cc:89
 msgid "Color"
 msgstr "Цвет"
 
-#: classes/tcolordi.cc:100
+#: classes/tcolordi.cc:99
 msgid "~T~ry"
-msgstr "Испробовать"
+msgstr "~Т~ест"
 
-#: classes/tcolordi.cc:104 classes/tfiledia.cc:105 classes/tvedit2.cc:71
-#: classes/tvedit2.cc:103 msgbox.cc:38 msgbox.cc:198
+#: classes/tcolordi.cc:103 classes/tfiledia.cc:105 classes/tvedit2.cc:72
+#: classes/tvedit2.cc:104 msgbox.cc:39 msgbox.cc:201
 msgid "Cancel"
 msgstr "Отмена"
 
 #: classes/teditwin.cc:124
 msgid "Clipboard"
-msgstr "Буффер"
+msgstr "Буфер обмена"
 
 #: classes/teditwin.cc:125
 msgid "Untitled"
@@ -95,7 +188,7 @@ msgstr "Без имени"
 
 #: classes/tfiledia.cc:85
 msgid "~F~iles"
-msgstr "~Ф~айлы"
+msgstr "Файлы"
 
 #: classes/tfiledia.cc:105
 msgid "Done"
@@ -107,11 +200,11 @@ msgstr "Помощь"
 
 #: classes/tfiledia.cc:250
 msgid "Invalid drive or directory"
-msgstr "Неправильный диск или директория"
+msgstr "Недопустимый диск или директория"
 
 #: classes/tfiledia.cc:300
 msgid "Invalid file name."
-msgstr "Неправильное имя файла."
+msgstr "Недопустимое имя файла."
 
 #: classes/tfileinf.cc:38
 msgid "Jan"
@@ -163,9 +256,9 @@ msgstr "Дек"
 
 #: classes/tfilterv.cc:61
 msgid "Invalid character in input"
-msgstr "Неправильный символ при вводе"
+msgstr "Недопустимый символ при вводе"
 
-#: classes/tlistvie.cc:172
+#: classes/tlistvie.cc:168
 msgid "<empty>"
 msgstr "<пусто>"
 
@@ -185,266 +278,351 @@ msgstr "Подчеркнуть"
 msgid "Inverse"
 msgstr "Инверсия"
 
-#: classes/tprogram.cc:305
+#: classes/tprogram.cc:308
 msgid "~Alt-X~ Exit"
 msgstr "~Alt-X~ Выход"
 
-#: classes/trangeva.cc:43
+#: classes/trangeva.cc:51
 #, c-format
 msgid "Value not in the range %lu to %lu"
 msgstr "Значение не входит в интервал от %lu до %lu"
 
-#: classes/trangeva.cc:46
+#: classes/trangeva.cc:54
 #, c-format
 msgid "Value not in the range %li to %li"
 msgstr "Значение не входит в интервал от %li до %li"
 
-#: classes/tvedit1.cc:97
-msgid "Type EXIT to return..."
-msgstr "Введите EXIT для возврата..."
-
-#: classes/tvedit2.cc:53
+#: classes/tvedit2.cc:54
 msgid "Find"
-msgstr "Поиск"
+msgstr "Найти"
 
-#: classes/tvedit2.cc:60 classes/tvedit2.cc:86
+#: classes/tvedit2.cc:61 classes/tvedit2.cc:87
 msgid "~T~ext to find"
-msgstr "~Ч~то искать"
-
-#: classes/tvedit2.cc:65 classes/tvedit2.cc:95
-msgid "~C~ase sensitive"
-msgstr "~Р~егистр имеет значение"
+msgstr "Что искать"
 
 #: classes/tvedit2.cc:66 classes/tvedit2.cc:96
-msgid "~W~hole words only"
-msgstr "~Ц~елые слова только"
+msgid "~C~ase sensitive"
+msgstr "Учитывать регистр"
 
-#: classes/tvedit2.cc:69 classes/tvedit2.cc:101
+#: classes/tvedit2.cc:67 classes/tvedit2.cc:97
+msgid "~W~hole words only"
+msgstr "Целые слова только"
+
+#: classes/tvedit2.cc:70 classes/tvedit2.cc:102
 msgid "O~K~"
 msgstr "O~K~"
 
-#: classes/tvedit2.cc:79
+#: classes/tvedit2.cc:80
 msgid "Replace"
 msgstr "Заменить"
 
-#: classes/tvedit2.cc:91
+#: classes/tvedit2.cc:92
 msgid "~N~ew text"
-msgstr "~Н~овый текст"
-
-#: classes/tvedit2.cc:97
-msgid "~P~rompt on replace"
-msgstr "~С~прашивать при замене"
+msgstr "Новый текст"
 
 #: classes/tvedit2.cc:98
+msgid "~P~rompt on replace"
+msgstr "Спрашивать при замене"
+
+#: classes/tvedit2.cc:99
 msgid "~R~eplace all"
-msgstr "~З~аменить все"
+msgstr "Заменить все"
+
+#: classes/tvedit3.cc:40
+msgid "~F~ile"
+msgstr "Файл"
+
+#: classes/tvedit3.cc:41
+msgid "~O~pen"
+msgstr "Открыть"
+
+#: classes/tvedit3.cc:42
+msgid "~N~ew"
+msgstr "Новый"
 
 #: classes/tvedit3.cc:43
-msgid "~F~ile"
-msgstr "~Ф~айл"
+msgid "~S~ave"
+msgstr "Сохранить"
 
 #: classes/tvedit3.cc:44
-msgid "~O~pen"
-msgstr "~О~ткрыть"
-
-#: classes/tvedit3.cc:45
-msgid "~N~ew"
-msgstr "~Н~овый"
+msgid "S~a~ve as..."
+msgstr "Сохранить как..."
 
 #: classes/tvedit3.cc:46
-msgid "~S~ave"
-msgstr "~С~охранить"
+msgid "~C~hange dir..."
+msgstr "Сменить директорию..."
 
 #: classes/tvedit3.cc:47
-msgid "S~a~ve as..."
-msgstr "С~о~хранить как..."
+msgid "S~h~ell"
+msgstr "S~h~ell"
 
-#: classes/tvedit3.cc:49
-msgid "~C~hange dir..."
-msgstr "См~е~нить директорию..."
+#: classes/tvedit3.cc:48
+msgid "E~x~it"
+msgstr "Выход"
 
 #: classes/tvedit3.cc:50
-msgid "~D~OS shell"
-msgstr "~К~омм. строка DOS"
+msgid "~E~dit"
+msgstr "Правка"
 
 #: classes/tvedit3.cc:51
-msgid "E~x~it"
-msgstr "~В~ыход"
+msgid "~U~ndo"
+msgstr "Отменить действие"
 
 #: classes/tvedit3.cc:53
-msgid "~E~dit"
-msgstr "~Р~едактировать"
+msgid "Cu~t~"
+msgstr "Вырезать"
 
 #: classes/tvedit3.cc:54
-msgid "~U~ndo"
-msgstr "~О~тменить посл. оп."
+msgid "~C~opy"
+msgstr "Копировать"
+
+#: classes/tvedit3.cc:55
+msgid "~P~aste"
+msgstr "Вставить"
 
 #: classes/tvedit3.cc:56
-msgid "Cu~t~"
-msgstr "В~ы~резать"
-
-#: classes/tvedit3.cc:57
-msgid "~C~opy"
-msgstr "Ко~п~ировать"
+msgid "~S~how clipboard"
+msgstr "Показать содержимое буфера"
 
 #: classes/tvedit3.cc:58
-msgid "~P~aste"
-msgstr "Вс~т~авить"
+msgid "~C~lear"
+msgstr "Очистить"
 
-#: classes/tvedit3.cc:59
-msgid "~S~how clipboard"
-msgstr "~П~оказать буффер"
+#: classes/tvedit3.cc:60
+msgid "~S~earch"
+msgstr "Поиск"
 
 #: classes/tvedit3.cc:61
-msgid "~C~lear"
-msgstr "О~ч~истить"
+msgid "~F~ind..."
+msgstr "Найти"
+
+#: classes/tvedit3.cc:62
+msgid "~R~eplace..."
+msgstr "Заменить"
 
 #: classes/tvedit3.cc:63
-msgid "~S~earch"
-msgstr "По~и~ск"
-
-#: classes/tvedit3.cc:64
-msgid "~F~ind..."
-msgstr "~Н~айти..."
+msgid "~S~earch again"
+msgstr "Найти сново"
 
 #: classes/tvedit3.cc:65
-msgid "~R~eplace..."
-msgstr "~З~аменить..."
+msgid "~W~indows"
+msgstr "Окна"
 
 #: classes/tvedit3.cc:66
-msgid "~S~earch again"
-msgstr "Найти сно~в~о"
+msgid "~S~ize/move"
+msgstr "Изменить размер/положение"
+
+#: classes/tvedit3.cc:67
+msgid "~Z~oom"
+msgstr "Распахнуть"
 
 #: classes/tvedit3.cc:68
-msgid "~W~indows"
-msgstr "О~к~на"
+msgid "~T~ile"
+msgstr "Разместить окна плиткой"
 
 #: classes/tvedit3.cc:69
-msgid "~S~ize/move"
-msgstr "~Р~азмер/позиция"
+msgid "C~a~scade"
+msgstr "Каскад"
 
 #: classes/tvedit3.cc:70
-msgid "~Z~oom"
-msgstr "Распахн~у~ть"
-
-#: classes/tvedit3.cc:71
-msgid "~T~ile"
-msgstr "Разложить"
-
-#: classes/tvedit3.cc:72
-msgid "C~a~scade"
-msgstr "Каска~д~"
-
-#: classes/tvedit3.cc:73
 msgid "~N~ext"
 msgstr "Следующее"
 
-#: classes/tvedit3.cc:74
+#: classes/tvedit3.cc:71
 msgid "~P~revious"
-msgstr "~П~редыдущее"
+msgstr "Предыдущее"
 
-#: classes/tvedit3.cc:75
+#: classes/tvedit3.cc:72
 msgid "~C~lose"
 msgstr "Закрыть"
 
+#. SET: F10 before the others so when the library maintains the
+#. cursor visible this option is pointed and the user have a
+#. hint about what to do.
 #: classes/tvedit3.cc:91
-msgid "~F2~ Save"
-msgstr "~F2~ Сохранить"
-
-#: classes/tvedit3.cc:92
-msgid "~F3~ Open"
-msgstr "~F3~ Открыть"
-
-#: classes/tvedit3.cc:93
-msgid "~Alt+F3~ Close"
-msgstr "~Alt+F3~ Закрыть"
-
-#: classes/tvedit3.cc:94
-msgid "~F5~ Zoom"
-msgstr "~F5~ Распахнуть"
-
-#: classes/tvedit3.cc:95
-msgid "~F6~ Next"
-msgstr "~F6~ Следующее"
-
-#: classes/tvedit3.cc:96
 msgid "~F10~ Menu"
 msgstr "~F10~ Меню"
 
+#: classes/tvedit3.cc:92
+msgid "~F2~ Save"
+msgstr "~F2~ Сохранить"
+
+#: classes/tvedit3.cc:93
+msgid "~F3~ Open"
+msgstr "~F3~ Открыть"
+
+#: classes/tvedit3.cc:94
+msgid "~Alt+F3~ Close"
+msgstr "~Alt+F3~ Закрыть"
+
+#: classes/tvedit3.cc:95
+msgid "~F5~ Zoom"
+msgstr "~F5~ Распахнуть"
+
+#: classes/tvedit3.cc:96
+msgid "~F6~ Next"
+msgstr "~F6~ Следующее"
+
 #: classes/tvedit3.cc:104
 msgid "Not enough memory for this operation."
-msgstr "Не хватает памяти для выполнения этой операции."
+msgstr "Не хватает памяти для выполнения данной операции."
 
-#: classes/tvedit3.cc:126
+#: classes/tvedit3.cc:125
 msgid "Not enough memory for this operation"
-msgstr "Не хватает памяти для выполнения этой операции"
+msgstr "Не хватает памяти для выполнения данной операции"
 
-#: classes/tvedit3.cc:130
+#: classes/tvedit3.cc:129
 msgid "Error reading file "
 msgstr "Ошибка при чтении файла "
 
-#: classes/tvedit3.cc:137
+#: classes/tvedit3.cc:136
 msgid "Error writing file "
-msgstr "Ошибка при записи файла "
+msgstr "Ошибка при записи в файл "
 
-#: classes/tvedit3.cc:144
+#: classes/tvedit3.cc:143
 msgid "Error creating file "
 msgstr "Ошибка при создании файла "
 
-#: classes/tvedit3.cc:152
+#: classes/tvedit3.cc:151
 msgid " has been modified. Save?"
 msgstr " был изменен. Сохранить?"
 
-#: classes/tvedit3.cc:157
+#: classes/tvedit3.cc:156
 msgid "Save untitled file?"
 msgstr "Сохранить файл \"без имени\"?"
 
-#: classes/tvedit3.cc:162
+#: classes/tvedit3.cc:161
 msgid "Save file as"
 msgstr "Сохранить файл как"
 
-#: classes/tvedit3.cc:163 fileview.cc:213
+#: classes/tvedit3.cc:162 fileview.cc:217
 msgid "~N~ame"
 msgstr "Имя"
 
-#: classes/tvedit3.cc:174
+#: classes/tvedit3.cc:173
 msgid "Search string not found."
-msgstr "Запрашиваемая строка не найдена."
+msgstr "Строка не найдена."
 
-#: classes/tvedit3.cc:192
+#: classes/tvedit3.cc:191
 msgid "Replace this occurence?"
-msgstr "Заменить это совпадение?"
+msgstr "Заменить найденную строку?"
 
-#: fileview.cc:147
+#: classes/linux/linuxkey.cc:95 classes/unix/xtermkey.cc:81
+msgid "that's an interactive application, don't redirect stdin"
+msgstr "это интерактивное приложение, не перенаправляйте стандартный ввод (stdin)"
+
+#: classes/linux/linuxkey.cc:116 classes/unix/xtermkey.cc:88
+msgid "failed to get the name of the current terminal used for input"
+msgstr "не удалось получить имя текущего терминала, используемого для ввода"
+
+#: classes/linux/linuxkey.cc:122 classes/unix/xtermkey.cc:94
+msgid "failed to open the input terminal"
+msgstr "не удалось открыть терминал ввода"
+
+#: classes/linux/linuxkey.cc:129 classes/unix/xtermkey.cc:101
+msgid "can't get input terminal attributes"
+msgstr "не удалось получить атрибуты терминала ввода"
+
+#: classes/linux/linuxkey.cc:142 classes/unix/xtermkey.cc:120
+msgid "can't set input terminal attributes"
+msgstr "не удалось изменить атрибуты терминала ввода"
+
+#: classes/linux/linuxkey.cc:820
+msgid "ioctl VT_SETMODE failed"
+msgstr "ioctl VT_SETMODE выполнить не удалось"
+
+#: classes/linux/linuxscr.cc:584 classes/unix/xtermscr.cc:101
+msgid ""
+"that's an interactive application, don't redirect stdout\r\n"
+"If you want to collect information redirect stderr like this:\r\n"
+"\r\n"
+"program 2> file\r\n"
+msgstr ""
+"это интерактивное приложение, не перенаправляйте стандартный вывод (stdout)\r\n"
+"Если вы хотите сохранить информацию, перенаправьте stderr вот так:\r\n"
+"\r\n"
+"program 2> file\r\n"
+
+#: classes/linux/linuxscr.cc:592 classes/unix/xtermscr.cc:109
+msgid "can't get output terminal information"
+msgstr "не удалось получить информацию о терминале вывода"
+
+#: classes/linux/linuxscr.cc:602 classes/unix/xtermscr.cc:119
+msgid "can't configure terminal mode"
+msgstr "не удается настроить режим терминала"
+
+#: classes/linux/linuxscr.cc:767 classes/linux/linuxscr.cc:774
+#: classes/unix/xtermscr.cc:149 classes/unix/xtermscr.cc:156
+#, c-format
+msgid "Error! %s\r\n"
+msgstr "Ошибка! %s\r\n"
+
+#: classes/qnxrtp/qnxscr.cc:65 classes/unix/unixscr.cc:568
+msgid ""
+"\r\n"
+"Error! that's an interactive application, don't redirect stdout\r\n"
+"If you want to collect information redirect stderr like this:\r\n"
+"\r\n"
+"program 2> file\r\n"
+"\r\n"
+msgstr ""
+"\r\n"
+"Ошибка! Это интерактивное приложение, не перенаправляйте стандартный вывод (stdout).\r\n"
+"Если вы хотите сохранить информацию, перенаправьте stderr вот так:\r\n"
+"\r\n"
+"program 2> file\r\n"
+"\r\n"
+
+#: classes/x11/x11src.cc:1420
+msgid "No available selection"
+msgstr "No available selection"
+
+#: classes/x11/x11src.cc:1421
+msgid "Unsupported data type"
+msgstr "Данный тип данных не поддерживается"
+
+#: classes/x11/x11src.cc:1422
+msgid "No data"
+msgstr "Нет данных"
+
+#: classes/x11/x11src.cc:1423
+msgid "X11 error"
+msgstr "Ошибка X11"
+
+#: classes/x11/x11src.cc:1424
+msgid "Another application holds the clipboard"
+msgstr "Другое приложение блокирует буфер обмена"
+
+#: fileview.cc:151
 #, c-format
 msgid "Could not open '%s' for reading"
-msgstr "Невозможно открыть '%s' для чтения"
+msgstr "Невозможно открыть'%s' для чтения"
 
-#: fileview.cc:212
+#: fileview.cc:216
 msgid "Save to file"
 msgstr "Сохранить в файл"
 
-#: msgbox.cc:35
-msgid "~Y~es"
-msgstr "~Д~а"
-
 #: msgbox.cc:36
-msgid "~N~o"
-msgstr "~Н~ет"
+msgid "~Y~es"
+msgstr "Да"
 
-#: msgbox.cc:51
+#: msgbox.cc:37
+msgid "~N~o"
+msgstr "Нет"
+
+#: msgbox.cc:52
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: msgbox.cc:53
+#: msgbox.cc:54
 msgid "Information"
 msgstr "Информация"
 
-#: msgbox.cc:54
+#: msgbox.cc:55
 msgid "Confirm"
-msgstr "Подтвердить"
+msgstr "Подтверждение"
 
-#: msgbox.cc:82
+#: msgbox.cc:83
 msgid "Don't warn you next time"
-msgstr "Не предупреждать в следующий раз"
+msgstr "Не придупреждать в следующий раз"
 
