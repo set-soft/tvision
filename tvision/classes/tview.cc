@@ -10,6 +10,9 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
          Rewrote call50() to support on the fly remapping and avoid using
          setCharacter.
+Modified reworked the core drawing stuff (resetCursor(), exposed() and
+         writeView()) to make the code easy to understand and maintain
+         by Salvador E. Tropea (SET).
  *
  *
  */
@@ -831,52 +834,6 @@ uchar TView::mapColor( uchar color )
     return color;
 }
 
-#if 0
-void TView::resetCursor()
-{
-  int ax,cx,dx;
-  TView *self=this,*view;
-  if ((~state) & (sfVisible /*| sfCursorVis*/ | sfFocused)) goto lab4;
-  if (TScreen::getDontMoveHiddenCursor() && ((~state) & sfCursorVis)) goto lab4;
-  ax = cursor.y;
-  dx = cursor.x;
-lab1:
-  if ( (ax<0) || (ax>=self->size.y) ) goto lab4;
-  if ( (dx<0) || (dx>=self->size.x) ) goto lab4;
-  ax += self->origin.y;
-  dx += self->origin.x;
-  if (!self->owner) goto lab5;
-  view = self->owner->last;
-lab2:
-  view = view->next;
-  if (view == self)
-  {
-    self = view->owner;
-    goto lab1;
-  }
-  if (!(view->state & sfVisible)) goto lab2;
-  if (ax<view->origin.y) goto lab2;
-  if (ax>=view->origin.y+view->size.y) goto lab2;
-  if (dx<view->origin.x) goto lab2;
-  if (dx>=view->origin.x+view->size.x) goto lab2;
-lab4:
-  // Cursor disabled
-  TScreen::setCursorType(0);
-  return;
-
-lab5:
-  TScreen::setCursorPos(dx,ax);
-  if (state & sfCursorVis)
-    {
-     cx=TScreen::cursorLines;
-     if (state & sfCursorIns)
-        cx=100*256;
-     TScreen::setCursorType(cx);
-    }
-  else
-     TScreen::setCursorType(0);
-}
-#else
 /**[txh]********************************************************************
 
   Description: 
@@ -949,102 +906,7 @@ void TView::resetCursor()
  TScreen::setCursorType(0);
  return;
 }
-#endif
 
-#define VIEW ((TGroup *)(view))
-
-#if 0
-enum call_lab {lab_11,lab_20};
-
-Boolean call(call_lab LAB,TView * &view,int &ax,int &bx,int &cx,int &si)
-{
-  TView *retttarget,*rettview;
-  int rettax,rettcx,rettsi;
-  Boolean flag;
-  switch (LAB)
-  {
-    case lab_11 : goto lab11;
-    case lab_20 : goto lab20;
-  }
-  return False;
-lab10:
-  view = view->owner;
-  if (VIEW->buffer) return True;
-lab11:
-  target = view;
-  ax += view->origin.y;
-  si = view->origin.x;
-  bx += si;
-  cx += si;
-  view = view->owner;
-  if (!view) return True;
-  if (ax<VIEW->clip.a.y) return False;
-  if (ax>=VIEW->clip.b.y) return False;
-  if (bx<VIEW->clip.a.x) bx = VIEW->clip.a.x;
-  if (cx>VIEW->clip.b.x) cx = VIEW->clip.b.x;
-  if (bx>=cx) return False;
-  view = VIEW->last;
-lab20:
-  view = view->next;
-  if (view == target) goto lab10;
-  if (!(view->state & sfVisible)) goto lab20;
-  si = view->origin.y;
-  if (ax<si) goto lab20;
-  si += view->size.y;
-  if (ax>=si) goto lab20;
-  si = view->origin.x;
-  if (bx<si) goto lab22;
-  si += view->size.x;
-  if (bx>=si) goto lab20;
-  bx = si;
-  if (bx<cx) goto lab20;
-  return False;
-lab22:
-  if (cx<=si) goto lab20;
-  si += view->size.x;
-  if (cx>si) goto lab23;
-  cx = view->origin.x;
-  goto lab20;
-lab23:
-  retttarget = target;
-  rettview = view;
-  rettsi = si;
-  rettcx = cx;
-  rettax = ax;
-  cx = view->origin.x;
-  flag = call(lab_20,view,ax,bx,cx,si);
-  ax = rettax;
-  cx = rettcx;
-  bx = rettsi;
-  view = rettview;
-  target = retttarget;
-  if (!flag) goto lab20;
-  return True;
-}
-
-Boolean TView::exposed()
-{
-  int ax,bx,cx,si;
-  int rettax;
-  Boolean flag;
-  TView *view = this;
-  if (!(state & sfExposed)) return False;
-  ax = 0;
-  if (size.x<ax || size.y<ax) return False;
-lab1:
-  bx = 0;
-  cx = view->size.x;
-  rettax = ax;
-  flag = call(lab_11,view,ax,bx,cx,si);
-  ax = rettax;
-  if (flag) return True;
-  view = this;
-  ax++;
-  if (ax<view->size.y) goto lab1;
-  return False;
-}
-
-#else
 static Boolean lineExposed(TView *view, int Line, int x1, int x2, TView *target=NULL);
 
 /**[txh]********************************************************************
@@ -1163,7 +1025,6 @@ Boolean TView::exposed()
 
   return False;
 }
-#endif
 
 static
 void blitBuffer(TView *view, int line, int xStart, int xEnd, int offset,
@@ -1232,138 +1093,171 @@ void blitBuffer(TView *view, int line, int xStart, int xEnd, int offset,
 #endif
 
 static
-void _call(int LAB, int x_pos_start, int y_pos, int x_pos_end,
-           const void *_Buffer, TView *_view, int offset,
-           int in_shadow, TView *target)
+void WriteView(int xStart, int line, int xEnd, const void *buffer,
+               TView *view, int offset, int inShadow, TView *target)
 {
-  int x;
+  int x,y,skipInit=0;
 
-  switch (LAB)
-  {
-    case 00 : goto lab00;
-    case 20 : goto lab20;
-  }
-  return;
-lab00:
-  offset = x_pos_start;
-  x_pos_end += x_pos_start;
-  in_shadow = 0;
-  if (y_pos < 0 || y_pos >= _view->size.y) return;
-  x_pos_start = max(x_pos_start,0);
-  x_pos_end = min(x_pos_end,_view->size.x);
-  if (x_pos_start >= x_pos_end) return;
-lab10:
-  if ( !( _view->state & sfVisible) ) return;
-  if (!_view->owner) return;
-  target = _view;
-  y_pos += _view->origin.y;
-  x = _view->origin.x;
-  x_pos_start += x;
-  x_pos_end += x;
-  offset += x;
-  if (y_pos < _view->owner->clip.a.y) return;
-  if (y_pos >= _view->owner->clip.b.y) return;
-  x_pos_start = max(x_pos_start,_view->owner->clip.a.x);
-  x_pos_end = min(x_pos_end,_view->owner->clip.b.x);
-  if (x_pos_start >= x_pos_end) return;
-  _view = _view->owner->last;
-lab20:
+  if (!target)
+    {// Initial call so initialize
+     // Check line is valid
+     if (line<0 || line>=view->size.y) return;
+     // Validate x range
+     if (xStart<0) xStart=0;
+     if (xEnd>view->size.x) xEnd=view->size.x;
+     if (xStart>=xEnd) return;
+     // Initialize values
+     offset=xStart;
+     inShadow=0;
+     skipInit=0;
+    }
+  else
+     skipInit=1;
+
   do
-  {
-    _view = _view->next;
-    if (_view == target) break;
-    if (!(_view->state & sfVisible)) continue;
     {
-      int y = _view->origin.y;
-      if (y_pos < y) continue;
-      y += _view->size.y;
-      if (y_pos < y) goto lab23;
-      if (!(_view->state & sfShadow)) continue;
-      y += shadowSize.y;
-      if (y_pos >= y) continue;
-    }
-    x = _view->origin.x;
-    x += shadowSize.x;
-    if (x_pos_start >= x) goto lab22;
-    if (x_pos_end <= x) continue;
-    _call(20,x_pos_start,y_pos,x,_Buffer,_view,offset,in_shadow,target);
-    x_pos_start = x;
-  lab22:
-    x += _view->size.x;
-    goto lab26;
-  lab23:
-    x = _view->origin.x;
-    if (x_pos_start < x)
-    {
-      if (x_pos_end <= x) continue;
-      _call(20,x_pos_start,y_pos,x,_Buffer,_view,offset,in_shadow,target);
-      x_pos_start = x;
-    }
-    x += _view->size.x;
-    if (x_pos_start < x)
-    {
-      if (x_pos_end <= x) return;
-      x_pos_start = x;
-    }
-    if (!(_view->state & sfShadow)) continue;
-    if (y_pos < _view->origin.y+shadowSize.y) continue;
-    x += shadowSize.x;
-  lab26:
-    if (x_pos_start >= x) continue;
-    in_shadow++;
-    if (x_pos_end <= x) continue;
-    _call(20,x_pos_start,y_pos,x,_Buffer,_view,offset,in_shadow,target);
-    x_pos_start = x;
-    in_shadow--;
-  } while (1);
+     if (skipInit)
+        skipInit=0;
+     else
+       {// Pass to the owner or init if that's the first call
+        if (!(view->state & sfVisible) ||
+            !view->owner) return;
+      
+        // Make coordinates relative to the owner
+        line+=view->origin.y;
+        x=view->origin.x;
+        xStart+=x;
+        xEnd  +=x;
+        offset+=x;
+      
+        // Apply clipping, and check if the coordinate gets outside
+        TRect &clip=view->owner->clip;
+        if (line<clip.a.y || line>=clip.b.y) return;
+        if (xStart<clip.a.x)
+           xStart=clip.a.x;
+        if (xEnd>clip.b.x)
+           xEnd=clip.b.x;
+        if (xStart>=xEnd) return;
+       
+        target=view;
+        view=view->owner->last;
+       }
 
-  _view = _view->owner;
-  if (!((TGroup *)(_view))->buffer)
-  {
-    if (((TGroup *)(_view))->lockFlag) return;
-    goto lab10;
-  }
-  if ((((TGroup *)(_view))->buffer) != TScreen::screenBuffer)
-  {
-    blitBuffer(_view,y_pos,x_pos_start,x_pos_end,offset,((const ushort *)_Buffer),in_shadow);
-    if (((TGroup *)(_view))->lockFlag) return;
-    goto lab10;
-  }
-  if (y_pos!=TEventQueue::curMouse.where.y ||
-      x_pos_start>TEventQueue::curMouse.where.x ||
-      x_pos_end<=TEventQueue::curMouse.where.x)
-  // the mouse is not in the draw area
-  {
-    TMouse::resetDrawCounter();
-    blitBuffer(_view,y_pos,x_pos_start,x_pos_end,offset,((const ushort *)_Buffer),in_shadow);
-    if (TMouse::getDrawCounter()==0)
-    {
-      // there was no mouse event
-      if (((TGroup *)(_view))->lockFlag) return;
-      goto lab10;
+     do
+       {
+        view=view->next;
+        // We are visible go to the owner
+        if (view==target) break;
+        // Honor the sfVisible bit
+        if (!(view->state & sfVisible)) continue;
+
+        // Check the y range
+        y=view->origin.y;
+        if (line<y) continue;
+        y+=view->size.y;
+        if (line>=y)
+          {// The line is outside, now check for the shadow
+           if (!(view->state & sfShadow)) continue;
+           y+=shadowSize.y;
+           if (line>=y) continue;
+           // We are in the shadow line
+           x=view->origin.x;
+           x+=shadowSize.x;
+           if (xStart<x)
+             {
+              if (xEnd<=x) continue;
+              // We are under a shadow. Do the part that isn't under.
+              WriteView(xStart,line,x,buffer,view,offset,inShadow,target);
+              // Now the rest
+              xStart=x;
+             }
+           x+=view->size.x;
+          }
+        else
+          {// The line is inside, check the X range
+           x=view->origin.x;
+           if (xStart<x)
+             {
+              if (xEnd<=x) continue;
+              // Do the xStart to view->origin.x part
+              WriteView(xStart,line,x,buffer,view,offset,inShadow,target);
+              // Now the rest
+              xStart=x;
+             }
+           x+=view->size.x;
+           if (xStart<x)
+             {
+              if (xEnd<=x) return;
+              // Overlapped, reduce the size
+              xStart=x;
+             }
+           if (!(view->state & sfShadow)) continue;
+           // Now add the shadow
+           if (line<view->origin.y+shadowSize.y) continue;
+           x+=shadowSize.x;
+          }
+        // This part deals with the part that can be under the shadow
+        if (xStart>=x) continue; // No in shadow
+        inShadow++;
+        if (xEnd<=x) continue;   // Full in shadow
+        // Partially under a shadow, do the shadow part
+        WriteView(xStart,line,x,buffer,view,offset,inShadow,target);
+        // and now the rest.
+        xStart=x;
+        inShadow--;
+       }
+     while (1);
+
+     // We get here if we found a portion that can be exposed and need to
+     // check in the owner.
+     TGroup *owner=view->owner;
+     view=owner;
+     // If the owner is unbuffered ...
+     if (!owner->buffer)
+       { // and locked avoid drawing
+        if (owner->lockFlag) return;
+        // else go deeper
+        continue;
+       }
+     // If the owner's buffer isn't the screen do the blit
+     if (owner->buffer!=TScreen::screenBuffer)
+       {
+        blitBuffer(view,line,xStart,xEnd,offset,((const ushort *)buffer),inShadow);
+        // If locked stop here
+        if (owner->lockFlag) return;
+        continue;
+       }
+     // We are here because the owner is buffered and attached to the screen
+     if (line!=TEventQueue::curMouse.where.y ||
+         xStart>TEventQueue::curMouse.where.x ||
+         xEnd<=TEventQueue::curMouse.where.x)
+       {// The mouse is not in the draw area
+        TMouse::resetDrawCounter();
+        blitBuffer(view,line,xStart,xEnd,offset,((const ushort *)buffer),inShadow);
+        if (TMouse::getDrawCounter()==0)
+          {// There was no mouse event
+           if (owner->lockFlag) return;
+           continue;
+          }
+       }
+     // The mouse is in the draw area or an event has occoured during
+     // the above drawing
+     HideMouse();
+     blitBuffer(view,line,xStart,xEnd,offset,((const ushort *)buffer),inShadow);
+     ShowMouse();
+     if (owner->lockFlag) return;
     }
-  }
-  // the mouse is in the draw area or an event has occoured during
-  // the above drawing
-  HideMouse();
-  blitBuffer(_view,y_pos,x_pos_start,x_pos_end,offset,((const ushort *)_Buffer),in_shadow);
-  ShowMouse();
-  if (((TGroup *)(_view))->lockFlag) return;
-  goto lab10;
+  while (1);
 }
 
-#define WRITEVIEW(b,a,c,B)\
-do\
-{\
-  _call(00,b,a,c,B,this,0,0,0);\
-} while (0)
+#define writeView(b,a,c,B) WriteView(b,a,b+c,B,this,0,0,0)
 
 void TView::writeBuf(short x,short y,short w,short h,const void * Buffer)
 {
   int i=0;
   while (h--)
   {
-    WRITEVIEW(x,y++,w,((ushort *)(Buffer))+w*i);
+    writeView(x,y++,w,((ushort *)(Buffer))+w*i);
     i++;
   }
 }
@@ -1375,12 +1269,12 @@ void TView::writeChar( short x, short y, char c, uchar color, short count )
   if (count<=0) return;
   AllocLocalUShort(temp,count*sizeof(ushort));
   for (i=0;i<count;i++) temp[i]=colo;
-  WRITEVIEW(x,y,count,temp);
+  writeView(x,y,count,temp);
 }
 
 void TView::writeLine( short x, short y, short w, short h, const void *Buffer )
 {
-  while (h--) WRITEVIEW(x,y++,w,((ushort *)(Buffer)));
+  while (h--) writeView(x,y++,w,((ushort *)(Buffer)));
 }
 
 void TView::writeStr( short x, short y, const char *str, uchar color )
@@ -1390,6 +1284,6 @@ void TView::writeStr( short x, short y, const char *str, uchar color )
   AllocLocalUShort(temp,count*sizeof(ushort));
   color = mapColor(color);
   for (i=0;i<count;i++) temp[i] = (color << 8) | (uchar)str[i];
-  WRITEVIEW(x,y,count,temp);
+  writeView(x,y,count,temp);
 }
 
