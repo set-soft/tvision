@@ -382,6 +382,15 @@ ushort         TVCodePage::Similar2[]=
 // The ammount of defined symbols: [0 ... maxSymbolDefined-1]
 const unsigned maxSymbolDefined=587+1;
 
+// Helper to sort Unicode tables or search in sorted Unicode tables
+static
+int compare(const void *v1, const void *v2)
+{
+ stIntCodePairs *p1=(stIntCodePairs *)v1;
+ stIntCodePairs *p2=(stIntCodePairs *)v2;
+ return (p1->unicode>p2->unicode)-(p1->unicode<p2->unicode);
+}
+
 // This is what usually call: TNoCaseNoOwnerStringCollection, but isn't
 // available in TV, yet
 class TVCodePageCol : public TStringCollection
@@ -1669,6 +1678,28 @@ ushort *TVCodePage::GetTranslate(int id)
 /**[txh]********************************************************************
 
   Description:
+  Fills a table with pairs Unicode/code in CP. The table is sorted and the
+user must provide an array with at least 256 elements to fill.
+  
+***************************************************************************/
+
+void TVCodePage::GetUnicodesForCP(int id, stIntCodePairs *unicodes)
+{
+ ushort *internals=GetTranslate(id);
+ int i;
+ for (i=0; i<256; i++)
+    {
+     unicodes[i].unicode=UnicodeForInternalCode(internals[i]);
+     unicodes[i].code=i;
+    }
+ qsort(unicodes,256,sizeof(stIntCodePairs),compare);
+ /*for (i=0; i<256; i++)
+     printf("U+%04X => %d (0x%02X)\n",unicodes[i].unicode,unicodes[i].code,unicodes[i].code);*/
+}
+
+/**[txh]********************************************************************
+
+  Description:
   Used to get a TStringCollection listing all the available code pages.
 Useful to make the user choose one. This is a read-only value, don't modify
 it.
@@ -2581,7 +2612,7 @@ const int TVCodePage::providedUnicodes=sizeof(TVCodePage::InternalMap)/sizeof(st
 
   Description:
   Finds which unicode is represented by the specified internal code.
-Currently that's an slow search because isn't very.
+Currently that's an slow search because isn't used very much.
   
   Return: The first unicode found.
   
@@ -2594,14 +2625,6 @@ uint16 TVCodePage::UnicodeForInternalCode(uint16 value)
      if (InternalMap[i].code==value)
         return InternalMap[i].unicode;
  return 0;
-}
-
-static
-int compare(const void *v1, const void *v2)
-{
- stIntCodePairs *p1=(stIntCodePairs *)v1;
- stIntCodePairs *p2=(stIntCodePairs *)v2;
- return (p1->unicode>p2->unicode)-(p1->unicode<p2->unicode);
 }
 
 /**[txh]********************************************************************

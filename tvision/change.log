@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.376  2002/12/09 14:45:34  set
+* Added: [Linux] A configuration variable to indicate the console fails to
+implement the cursor shape escape sequences. It seems to happend with some
+frame buffers, as reported by Martijn. The variable is called
+BrokenCursorShape.
+
 Revision 2.375  2002/12/09 13:14:00  set
 * Modified: [Win32] unistd requested unconditionally, is needed for all the
 Win32 targets.

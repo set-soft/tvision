@@ -27,6 +27,7 @@ public:
  static unsigned GetShiftState();
  static void     FillTEvent(TEvent &e);
  //static void     SetKbdMapping(int version);
+ static int      SetCodePage(int id);
 
  // Setup the pointers to point our members
  static void     Init();
@@ -34,6 +35,8 @@ public:
 protected:
  // Specific for this driver
  static int      getKeyEvent(int block);
+ // Search the unicode in the current input CP
+ static unsigned Unicode2CP(uint16 unicode);
 
  static int      lenKb,kbWaiting;
  static char     bufferKb[MaxKbLen+1];
@@ -50,6 +53,9 @@ protected:
 
  // This is used to translate the WM close to a cmQuit event
  static uchar    sendQuit;
+ // Input code page unicodes
+ static stIntCodePairs
+                *inputCP;
 
  friend class TScreenX11;
 };
