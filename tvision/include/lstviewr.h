@@ -61,6 +61,8 @@ public:
 protected:
     // SET: extra options ored by default to all objects of this class.
     static unsigned extraOptions;
+    // SET: neede to change the scroll bars too.
+    void setNumCols(int aNumCols);
 
 #if !defined( NO_STREAM )
 private:

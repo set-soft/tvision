@@ -34,40 +34,46 @@ Modified by Robert H”hne to be used for RHIDE.
 unsigned TListViewer::extraOptions=ofBeVerbose;
 
 TListViewer::TListViewer( const TRect& bounds,
-			  ushort aNumCols,
-			  TScrollBar *aHScrollBar,
+                          ushort aNumCols,
+                          TScrollBar *aHScrollBar,
                           TScrollBar *aVScrollBar) :
     TView( bounds ),
-    numCols( aNumCols ),
     topItem( 0 ),
     focused( 0 ),
     range( 0 ),
     handleSpace(True)
 {
-    short arStep, pgStep;
-
     options |= ofFirstClick | ofSelectable | extraOptions;
     eventMask |= evBroadcast;
-    if( aVScrollBar != 0 )
-        {
-        if( numCols == 1 )
-            {
-            pgStep = size.y - 1;
-            arStep = 1;
-            }
-        else
-            {
-            pgStep = size.y * numCols;
-            arStep = size.y;
-            }
-        aVScrollBar->setStep( pgStep, arStep );
-        }
-
-    if( aHScrollBar != 0 )
-        aHScrollBar->setStep( size.x / numCols, 1 );
 
     hScrollBar = aHScrollBar;
     vScrollBar = aVScrollBar;
+    setNumCols(aNumCols);
+}
+
+// SET: Moved here to allow changes from sub-classes
+void TListViewer::setNumCols(int aNumCols)
+{
+ int arStep,pgStep;
+
+ numCols=aNumCols;
+ // Compute the scroll bar changes.
+ if (vScrollBar!=0)
+   {
+    if (numCols==1)
+      {
+       pgStep=size.y-1;
+       arStep=1;
+      }
+    else
+      {
+       pgStep=size.y*numCols;
+       arStep=size.y;
+      }
+    vScrollBar->setStep(pgStep,arStep);
+   }
+ if (hScrollBar)
+    hScrollBar->setStep(size.x/numCols,1);
 }
 
 void TListViewer::changeBounds( const TRect& bounds )
