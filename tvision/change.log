@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 1.242.2.23  2002/04/22 17:59:34  set
+* Fixed: The file collection didn't support duplicates, but when it was
+configured to be no case sensitive in an OS that is case sensitive some
+names could look like duplicates and be omitted. Reported by David A.
+Capello <dacap@users.sourceforge.net>.
+
 Revision 1.242.2.22  2002/04/15 14:13:41  set
 * Fixed: [Linux] TScreen's stopcurses() didn't make the tty_file variable
 invalid and hence some functions used it after closing the stream. Patch
