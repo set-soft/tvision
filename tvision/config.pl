@@ -12,7 +12,7 @@ GetCache();
 GetVersion('');
 
 # I never tested with an older version, you can try reducing it.
-$GPMVersionNeeded='1.13';
+$GPMVersionNeeded='1.10';
 # I never tested with an older version, you can try reducing it.
 $NCursesVersionNeeded='1.9.9';
 # Adds some nice stuff to define key sequences.
