@@ -345,6 +345,7 @@ examples/fonts/genraw.cc
 examples/fonts/rhide.env
 examples/fonts/test.cc
 -examples/fonts/test.gpr
+examples/gen_mkf.pl
 examples/helpdemo/helpdemo.cc
 -examples/helpdemo/helpdemo.gpr
 examples/helpdemo/rhide.env

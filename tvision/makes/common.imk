@@ -1,6 +1,6 @@
 #!/usr/bin/make
 #
-# Copyright (c) 2003 by Salvador E. Tropea.
+# Copyright (c) 2003-2004 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
 
@@ -18,10 +18,13 @@ vpath %.h $(INCLUDE_DIR)
 # These files changes the compilation process so they are important
 # dependencies.
 ifdef MAINTAINER_MODE
-MAKEFILE_DEPS=rhide.env common.imk
+MAKEFILE_DEPS=rhide.env $(COMMON_IMK)
+ExIMK=.imk
 else
 MAKEFILE_DEPS=
+ExIMK=.umk
 endif
+
 # Extensions used by GNU tools
 ifdef DYNAMIC_LIB
 ExOBJ=.lo
