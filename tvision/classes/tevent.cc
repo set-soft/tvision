@@ -52,28 +52,31 @@ static int TEventQueue_suspended = 1;
 void TEventQueue::resume()
 {
     if (!TEventQueue_suspended) return;
+    // SET: We resumed, no matters if mouse fails or not
+    TEventQueue_suspended = 0;
     TGKey::resume();
     mouseEvents = False;
-    if (!mouse)
-      mouse = new TMouse();
-    if( mouse->present()   == False )
+    if( !mouse )
+        mouse = new TMouse();
+    if( mouse->present() == False )
         mouse->resume();
-    if( mouse->present()   == False )
+    if( mouse->present() == False )
         return;
     mouse->getEvent( curMouse );
     lastMouse = curMouse;
     
     mouseEvents = True;
     mouse->setRange( TScreen::getCols()-1,   TScreen::getRows()-1 );
-    TEventQueue_suspended = 0;
 }
 
 void TEventQueue::suspend()
 {
-  if (TEventQueue_suspended) return;
-    if (mouse->present()   == True) mouse->suspend();
-/* I think here is the right place for clearing the
-   buffer */
+  if (TEventQueue_suspended)
+     return;
+  if (mouse->present())
+     mouse->suspend();
+  /* RH: I think here is the right place for clearing the
+     buffer */
   TGKey::clear();
   TGKey::suspend();
   TEventQueue_suspended = 1;

@@ -1,4 +1,15 @@
-$Log$.
+$Log$
+Revision 2.141  2002/06/11 12:15:07  set
+* Added: [XTerm] Alt+numbers to the Xterm example script.
+* Fixed: The screen.h doesn't have any relation with the original header
+from Borland, put it clear.
+* Fixed: [XTerm] the palette mechanism, now works and is faster.
+* Modified: [XTerm] the new XTerm uses ugly colors, forced PC BIOS colors
+because they are the colors used by Linux console, Eterm, X11 driver, DOS
+and Win32 versions.
+* Added: [XTerm] now the button shadows and color samples (reverse space)
+are closer to the original shapes.
+
 Revision 2.140  2002/06/10 20:59:42  set
 * Added: TVCodePage class. That's the first version of the codepage
 remapping routines.

@@ -194,7 +194,13 @@ int TGKeyLinux::InitOnce()
 void TGKeyLinux::Suspend()
 {
  doUnHookAndUnPatch();
- fcntl(hIn,F_SETFL,oldInFlags);
+ // Now we use a new opened file handle for input.
+ // As these flags are the flags for the file handle (not the terminal itself)
+ // we don't need to restore the originals.
+ // Why don't do it anyways? because the TScreen::resume is called before and
+ // it needs to get the cursor position using escape sequences without waiting
+ // for an EOL.
+ //fcntl(hIn,F_SETFL,oldInFlags);
  tcsetattr(hIn,TCSAFLUSH,&inTermiosOrig);
  LOG("TGKeyLinux::Suspend");
 }
@@ -212,6 +218,8 @@ void TGKeyLinux::Resume()
  oldInFlags=fcntl(hIn,F_GETFL,0);
  // Set our state
  tcsetattr(hIn,TCSAFLUSH,&inTermiosNew);
+ // The following shouldn't be needed, I'll let it here unless I discover
+ // some side effect.
  fcntl(hIn,F_SETFL,newInFlags);
  // The user could do some action to alter the keyboard mapping tables
  if (canPatchKeyboard)
