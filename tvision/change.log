@@ -1,4 +1,11 @@
 $Log$
+Revision 1.164  2001/08/12 20:56:34  set
+* Added: A check in TCluster::draw to avoid buffer overflows. I don't know if
+it is really needed but a user asked for it and is better to double check
+this nasty details. Sent by Warlei Alves.
+* Added: A Dialog Editor created by Warlei Alves, he can't follow this
+project so now it will be part of the examples directory.
+.
 Revision 1.163  2001/08/12 19:41:05  set
 * Fixed: A problem only found in RHIDE. Programs should never call
 TScreen::resume() directly but TApplication::resume() instead. RHIDE abuses
