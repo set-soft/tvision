@@ -211,6 +211,7 @@ debian/files_to_backup
 debian/info.ex
 debian/maintainer.notes
 debian/rhtvision.postinst
+debian/rhtvision.postrm
 +debian/rules
 debian/shlibs.local.ex
 debian/watch.ex

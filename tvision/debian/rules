@@ -19,9 +19,10 @@ export DH_COMPAT=1
 build: build-stamp
 build-stamp: debianbackup.tar
 	dh_testdir
-# Rename debian/rhtvision.postinst file if it exists:
+# Rename debian/rhtvision.postinst file if it exists (and others):
 ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
+	mv debian/rhtvision.postrm debian/rhtvision$(version).postrm
 endif
 	./configure --prefix=$(destdir) --fhs
 	$(MAKE) CPPFLAGS="-D_REENTRANT"   
@@ -47,9 +48,10 @@ clean: clean-debian debianbackup.tar
 clean-debian:
 	dh_testdir
 	dh_testroot
-# Rename rhtvision$(version).postinst file if it exists:
+# Rename rhtvision$(version).postinst file if it exists (and others):
 ifneq ($(wildcard debian/rhtvision$(version).postinst),)
 	mv debian/rhtvision$(version).postinst debian/rhtvision.postinst
+	mv debian/rhtvision$(version).postrm debian/rhtvision.postrm
 endif
 	dh_clean
 

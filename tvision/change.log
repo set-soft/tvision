@@ -1,4 +1,8 @@
 $Log$
+Revision 2.286  2002/09/04 20:25:23  set
+* Modified: The messageBox now temporally disables the "busy indicator".
+* Fixed: [X11] The busy indicator didn't flush the X commands.
+
 Revision 2.285  2002/09/04 15:30:22  set
 * Fixed: TInputLine must let pass kbEnter and kbTab no matters what ASCII
 they contain. Currently when the input code page doesn't match the
@@ -282,7 +286,7 @@ the application wasn't suspended. It produced problems when
 suspending/resuming to a shell.
 * Added: [Win32/WinNT] Example on how to change the video mode to tvex.cc.
 
-Revision 2.241  2002/08/12 15:44:09  set
+Revision 2.241  2002/08/12 15:44:08  set
 * Fixed: Extra stdio include in TProgram, used for debug.
 * Fixed: The fonts example to remove debug tests.
 

@@ -1,3 +1,14 @@
+rhtvision (2.0.0-0.4) unstable; urgency=low
+
+  * New alpha from CVS dated 5 Sep 2002.
+  * Removed the add-log-mailing-address Emacs directive from the changelog
+    since the policy now prohibits it (detected by lintian).
+  * Implemented safe calls to ldconfig (detected by lintian), added file
+    debian/rhtvision.postrm for that (and remembered to update debian/rules
+    and lista).
+  
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Thu,  5 Sep 2002 17:43:19 -0300
+
 rhtvision (2.0.0-0.3) unstable; urgency=low
 
   * New alpha from CVS dated 25 jul 2002 (hey! that's my birthday!!!).
@@ -327,5 +338,4 @@ rhtvision (1.0.3-1) unstable; urgency=low
 
 Local variables:
 mode: debian-changelog
-add-log-mailing-address: "ibaldo@adinet.com.uy"
 End:
