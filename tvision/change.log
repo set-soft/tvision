@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.371  2002/12/06 19:49:12  set
+* Fixed: [Win32] lack of unistd due to the new use of dup2. Patch by Igor
+Gnip.
+* Fixed: The examples/Makefile to clean in sub-sub directories. Patch by
+Igor Gnip.
+
 Revision 2.370  2002/12/06 16:12:12  set
 * Fixed: [Win32] typo in WinGr driver.
 

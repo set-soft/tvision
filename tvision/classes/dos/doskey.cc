@@ -473,7 +473,7 @@ void TGKeyDOS::SetKbdMapping(int version)
  Mode=version;
 }
 
-void TGKeyDOS::GetKbdMapping(int version)
+int TGKeyDOS::GetKbdMapping(int version)
 {
  if (version==dosUseBIOS)
    {
