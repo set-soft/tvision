@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.399.2.136  2003/11/24 16:31:54  set
+* Added: A new configuration option: AltKeysSetting. It controls the how
+alt keys are interpreted. From a talk with Frank Liu.
+.
 Revision 2.399.2.135  2003/11/18 14:41:21  lmike
 * Removed QNX4 ifdefs from the main tv sources, all done via Uses_xxx now.
 * Added CLY version of snprintf for the QNX4.
