@@ -7,6 +7,7 @@
 // ***********************************************************************
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #define Uses_TListViewer
 #define Uses_TListBox
 #define Uses_TEvent
@@ -159,7 +160,8 @@ void TListViewDialog::handleEvent(TEvent &event) {
 	}
 	// Let TDialog handler do it's thing with any remaining events.
 	TDialog::handleEvent(event);
-	itoa(listBox->focused, itemNumber->data, 10);
+	//itoa(listBox->focused, itemNumber->data, 10);
+   sprintf(itemNumber->data,"%d",listBox->focused);
 	itemNumber->draw();
 } // end of MyDialogBox::eventHandler()
 
