@@ -7,6 +7,7 @@
  * All Rights Reserved.
  *
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified by Salvador E. Tropea <set@ieee.org>, <set@users.sourceforge.net>
  */
  
 // SET: moved the standard headers before tv.h. Adapted to compat layer.
@@ -17,22 +18,8 @@
 #define Uses_filelength
 
 #define Uses_TStreamableClass
-#define Uses_TPoint
-#define Uses_TStreamable
-#define Uses_TObject
-#define Uses_ipstream
-#define Uses_opstream
-#define Uses_fpstream
-#define Uses_TRect
+#define Uses_THelpFile
 #include <tv.h>
-
-#if !defined( __HELP_H )
-#include "helpbase.h"
-#endif  // __HELP_H
-
-#if !defined( __UTIL_H )
-#include "util.h"
-#endif  // __UTIL_H
 
 TCrossRefHandler crossRefHandler = notAssigned;
 

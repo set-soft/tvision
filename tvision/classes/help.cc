@@ -7,37 +7,20 @@
  * All Rights Reserved.
  *
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified by Salvador E. Tropea <set@ieee.org>, <set@users.sourceforge.net>
  */
  
 // SET: moved the standard headers before tv.h
-#include <ctype.h>
-#include <limits.h>
+#define Uses_limits
+#define Uses_ctype
 #define Uses_string
-#include <sys/stat.h>
+#define Uses_sys_stat
 
-#define Uses_TStreamableClass
-#define Uses_TPoint
-#define Uses_TStreamable
-#define Uses_ipstream
-#define Uses_opstream
-#define Uses_fpstream
-#define Uses_TRect
-#define Uses_TScrollBar
-#define Uses_TScroller
 #define Uses_TDrawBuffer
-#define Uses_TEvent
-#define Uses_TWindow
 #define Uses_TKeys
 #define Uses_TPalette
+#define Uses_THelpWindow
 #include <tv.h>
-
-#if !defined( __HELP_H )
-#include "help.h"
-#endif  // __HELP_H
-
-#if !defined( __UTIL_H )
-#include "util.h"
-#endif  // __UTIL_H
 
 // THelpViewer
 

@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea
 
  *
  *
@@ -64,6 +65,32 @@ Modified by Robert H”hne to be used for RHIDE.
 #define INCL_TVEDIT_H
 #endif
 // SET: End of the TEditor classes
+
+// SET: Start of the THelp* classes
+#ifdef Uses_THelpViewer
+ #define Uses_THelpWindow
+#endif
+
+#ifdef Uses_THelpWindow
+ #define Uses_THelpFile
+ #define Uses_TWindow
+ #define Uses_TScroller
+ #define Uses_TScrollBar
+ #define Uses_TEvent
+ #define INCLUDE_HELP_H
+#endif
+
+#ifdef Uses_THelpFile
+ #define Uses_TStreamable
+ #define Uses_ipstream
+ #define Uses_opstream
+ #define Uses_fpstream
+ #define Uses_TObject
+ #define Uses_TPoint
+ #define Uses_TRect
+ #define INCLUDE_HELPBASE_H
+#endif
+// SET: End of the THelp* classes
 
 #if defined( Uses_TGKey )
 #define INCLUDE_GKEY_H
@@ -690,6 +717,16 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( INCLUDE_FILEVIEW_H )
 #include <tv/fileview.h>
 #endif
+
+// SET: Start of the THelp* classes incorporated in 2.0
+#ifdef INCLUDE_HELPBASE_H
+ #include <tv/helpbase.h>
+#endif
+
+#ifdef INCLUDE_HELP_H
+ #include <tv/help.h>
+#endif
+// SET: End of the THelp* classes
 
 // SET: Start of the TEditor classes re-incorporated in 1.0.4
 #ifdef INCL_EDITORS_H

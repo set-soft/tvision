@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.88  2002/05/28 15:53:32  set
+* Fixed: [DOS] The config.pl file used djgpp/makefile and the file is in
+fact named djgpp/Makefile. This isn't a problem for DOS/Windows, but is
+a problem when using UNIX to copy the file. Pointed out by Mike.
+
 Revision 2.87  2002/05/28 15:46:34  set
 * Updated: The TV site and included a copy in the CVS/distribution.
 

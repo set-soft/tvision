@@ -7,25 +7,11 @@
  * All Rights Reserved.
  *
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified by Salvador E. Tropea <set@ieee.org>, <set@users.sourceforge.net>
  */
 
-#if !defined( __HELP_H )
-#define __HELP_H
-
-#define Uses_TStreamable
-#define Uses_ipstream
-#define Uses_opstream
-#define Uses_fpstream
-#define Uses_TObject
-#define Uses_TPoint
-#define Uses_TRect
-#define Uses_TEvent
-#define Uses_TScroller
-#define Uses_TScrollBar
-#define Uses_TWindow
-#include <tv.h>
-
-#include <helpbase.h>
+#if defined(Uses_THelpWindow) && !defined(THelpWindow_Included)
+#define THelpWindow_Included
 
 // THelpViewer
 
@@ -67,4 +53,5 @@ extern void notAssigned( opstream& s, int value );
 
 extern TCrossRefHandler crossRefHandler;
 
-#endif  // __HELP_H
+#endif // Uses_THelpWindow && !THelpWindow_Included
+

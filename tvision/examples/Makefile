@@ -1,4 +1,4 @@
-# Copyright (C) 2001 by Salvador E. Tropea (SET),
+# Copyright (C) 2001-2002 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # This file is mostly used to clean the examples directories, but can be
@@ -16,7 +16,7 @@ examples=demo/demo desklogo/desklogo desklogo/set-logo \
 	tutorial/tvguid08 tutorial/tvguid09 tutorial/tvguid10 \
 	tutorial/tvguid11 tutorial/tvguid12 tutorial/tvguid13 \
 	tutorial/tvguid14 tutorial/tvguid15 tutorial/tvguid16 \
-	tvedit/tvedit
+	tvedit/tvedit tvhc/tvhc
 
 all: $(addsuffix .exe,$(examples))
 
@@ -83,6 +83,8 @@ tutorial/tvguid15.exe: tutorial/tvguid15.gpr
 tutorial/tvguid16.exe: tutorial/tvguid16.gpr
 
 tvedit/tvedit.exe: tvedit/tvedit.gpr
+
+tvhc/tvhc.exe: tvhc/tvhc.gpr
 
 %.exe: %.gpr
 	$(MAKE) -C $(dir $<) -f $(addsuffix .mak,$(basename $(notdir $<)))

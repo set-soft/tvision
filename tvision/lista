@@ -19,6 +19,8 @@ classes/dos/vgastate.h
 classes/fpbase.cc
 classes/fpstream.cc
 classes/ifpstrea.cc
+classes/help.cc
+classes/helpbase.cc
 classes/iopstrea.cc
 classes/ipstream.cc
 classes/ofpstrea.cc
@@ -231,10 +233,6 @@ examples/demo/fileview.cc
 examples/demo/fileview.h
 examples/demo/gadgets.cc
 examples/demo/gadgets.h
-examples/demo/help.cc
-examples/demo/help.h
-examples/demo/helpbase.cc
-examples/demo/helpbase.h
 examples/demo/mousedlg.cc
 examples/demo/mousedlg.h
 examples/demo/puzzle.cc
@@ -376,6 +374,11 @@ examples/tutorial/tvguid16.gpr
 examples/tvedit/tvedit.cc
 examples/tvedit/tvedit.gpr
 examples/tvedit/rhide.env
+examples/tvhc/demohelp.txt
+examples/tvhc/rhide.env
+examples/tvhc/tvhc.cc
+examples/tvhc/tvhc.gpr
+examples/tvhc/tvhc.h
 examples/xterm/XTerm.res
 examples/xterm/menus.cfg
 examples/xterm/theme.cfg
@@ -419,6 +422,8 @@ include/tv/drawbuf.h
 include/tv/fileview.h
 include/tv/findrepl.h
 include/tv/gkey.h
+include/tv/help.h
+include/tv/helpbase.h
 include/tv/indicato.h
 include/tv/intl.h
 include/tv/menus.h

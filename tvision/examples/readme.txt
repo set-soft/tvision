@@ -1,6 +1,6 @@
 Hi!
 
-  Here you'll find some Turbo Vision example and widgets. Perhaps I'll
+  Here you'll find some Turbo Vision examples and widgets. Perhaps I'll
 incorporate some of them in the library in the future, but only if I get
 feedback.
   The examples were collected from the net and I think they can distributed
@@ -70,5 +70,13 @@ tutorial - It contains a very simple example application made in 16 steps to
            were needed, I just changed #include <tvision/tv.h> by
            #include <th.h> that's the common use. I added some extra
            comments.
+tvedit   - Shows how to create a simple text editor.
+tvhc     - Turbo Vision Help Compiler. This is a compiler for the original
+           help format. This format is binary and I don't recommend using it.
+           You can find a better help system in InfView included in the
+           SETEdit project.
+xterm    - Shows how to start a XTerm configured to report most key
+           combinations. I also included an Eterm 0.9.x theme with the same
+           purpose.
 
 Salvador Eduardo Tropea (salvador@inti.gov.ar)

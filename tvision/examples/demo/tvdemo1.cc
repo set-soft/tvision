@@ -35,6 +35,7 @@
 #define Uses_TDeskTop
 #define Uses_TScreen
 #define Uses_IOS_BIN
+#define Uses_THelpWindow
 #include <tv.h>
 
 #include "tvdemo.h"
@@ -42,7 +43,6 @@
 #include "fileview.h"
 #include "puzzle.h"
 #include "demohelp.h"
-#include <help.h>
 
 UsingNamespaceStd
 
