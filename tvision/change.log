@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.267  2002/08/23 14:46:34  set
+* Added: [X11] min. size hints. KDE and E 0.16.5 supports it. Patch by
+Roman Valyushenko <smhs@mail.ru>.
+* Fixed: [X11] mouse coordinates from X can be negative, we use unsigneds
+and hence they appear like huge positives. Patch from Roman Valyushenko.
+* Added: [X11] the cursor disapears when the window lose the focus. It can
+be disabled using the HideCursorWhenNoFocus configuration variable. Patch
+from Roman with some modifications for the configuration from me.
+
 Revision 2.266  2002/08/23 12:30:55  set
 * Fixed: [XTerm] an extra declaration for UserStartPallete, how this got
 there? Reported by Roman Valyushenko <smhs@mail.ru>

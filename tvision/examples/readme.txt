@@ -29,6 +29,9 @@ learn what incompatibilities I found while porting the examples.
 clipboard- This is an example on how to write code using the TVOSClipboard
            class. It gives access to the OS clipboard in an OS independent
            way.
+cyrillic - A test for the cyrillic support. Currently only for Linux console
+           driver and KOI8-R. If you are interested in more support and can
+           help just contact me.
 demo     - That's the Borland's demo adapted by Sergio Sigala, I did some
            changes to compile it with this port.
 desklogo - An example of how to change the desktop appearance. Contributed by
