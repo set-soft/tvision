@@ -70,7 +70,7 @@ unsigned                   TScreenWin32::saveScreenWidth,
 TScreenWin32::TScreenWin32()
 {
  if (!InitConsole()) return;
- flags0=CodePageVar | CursorShapes;
+ flags0=CodePageVar | CursorShapes | CanSetVideoSize;
  screenMode=startupMode=getCrtMode();
  cursorLines=startupCursor=getCursorType();
  saveScreenWidth =screenWidth =GetCols();

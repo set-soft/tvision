@@ -133,7 +133,7 @@ TScreenDOS::TScreenDOS()
  codePage=new TVCodePage(dosCodePage,dosCodePage);
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
-        CanSetBFont | CanSetSBFont;
+        CanSetBFont | CanSetSBFont  | CanSetVideoSize;
  user_mode=screenMode=startupMode=getCrtMode();
  SaveScreen();
  setCrtData();
@@ -862,7 +862,7 @@ void TScreenDOS::SelectFont(unsigned height, Boolean Force)
        if (!fontOk)
          {
           if (Force)
-             SelectRomFont(height,0,0);
+             SelectRomFont(height,0,1);
           primaryFontSet=0;
          }
       }
@@ -870,7 +870,7 @@ void TScreenDOS::SelectFont(unsigned height, Boolean Force)
  else
    {
     if (Force)
-       SelectRomFont(height,0,0);
+       SelectRomFont(height,0,1);
    }
 
  if (!fontsSuspended && secondaryFontSet)

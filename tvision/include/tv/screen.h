@@ -305,17 +305,18 @@ public:
  enum Capabilities1
  {
   CodePageVar=1,
-  CanSetPalette=2,   // We can change colors
-  CanReadPalette=4,  // We have reliable information about the original colors.
-                     // If this value isn't present the user can set the palette,
-                     // but the original colors want be restored at exit. We will
-                     // try to let them as default for the used display.
-  PalNeedsRedraw=8,  // Indicates we must redraw after changing the palette.
-  CursorShapes=16,   // When the cursor shape is usable.
-  UseScreenSaver=32, // Does screen saver have any sense for this driver?
-  CanSetBFont=64,    // We can set the primary bitmap font
-  CanSetSBFont=128,  // We can set the secondary bitmap font
-  CanSetFontSize=256 // We can set the width and height of the font
+  CanSetPalette=2,    // We can change colors
+  CanReadPalette=4,   // We have reliable information about the original colors.
+                      // If this value isn't present the user can set the palette,
+                      // but the original colors want be restored at exit. We will
+                      // try to let them as default for the used display.
+  PalNeedsRedraw=8,   // Indicates we must redraw after changing the palette.
+  CursorShapes=16,    // When the cursor shape is usable.
+  UseScreenSaver=32,  // Does screen saver have any sense for this driver?
+  CanSetBFont=64,     // We can set the primary bitmap font
+  CanSetSBFont=128,   // We can set the secondary bitmap font
+  CanSetFontSize=256, // We can set the width and height of the font
+  CanSetVideoSize=512 // We can set the video size (window size or video mode)
  };
 
  // Used internally to avoid nested calls to suspend/resume
@@ -325,15 +326,16 @@ public:
 
  // SET: It says if we should offer the user to select the code page
  // or the terminal have a fixed encoding and needs things as is.
- static Boolean codePageVariable() { return flags0 & CodePageVar    ? True : False; };
- static Boolean canSetPalette()    { return flags0 & CanSetPalette  ? True : False; };
- static Boolean canReadPalette()   { return flags0 & CanReadPalette ? True : False; };
- static Boolean palNeedsRedraw()   { return flags0 & PalNeedsRedraw ? True : False; };
- static Boolean cursorShapes()     { return flags0 & CursorShapes   ? True : False; };
- static Boolean useScreenSaver()   { return flags0 & UseScreenSaver ? True : False; };
- static Boolean canSetBFont()      { return flags0 & CanSetBFont    ? True : False; };
- static Boolean canSetSBFont()     { return flags0 & CanSetSBFont   ? True : False; };
- static Boolean canSetFontSize()   { return flags0 & CanSetFontSize ? True : False; };
+ static Boolean codePageVariable() { return flags0 & CodePageVar     ? True : False; };
+ static Boolean canSetPalette()    { return flags0 & CanSetPalette   ? True : False; };
+ static Boolean canReadPalette()   { return flags0 & CanReadPalette  ? True : False; };
+ static Boolean palNeedsRedraw()   { return flags0 & PalNeedsRedraw  ? True : False; };
+ static Boolean cursorShapes()     { return flags0 & CursorShapes    ? True : False; };
+ static Boolean useScreenSaver()   { return flags0 & UseScreenSaver  ? True : False; };
+ static Boolean canSetBFont()      { return flags0 & CanSetBFont     ? True : False; };
+ static Boolean canSetSBFont()     { return flags0 & CanSetSBFont    ? True : False; };
+ static Boolean canSetFontSize()   { return flags0 & CanSetFontSize  ? True : False; };
+ static Boolean canSetVideoSize()  { return flags0 & CanSetVideoSize ? True : False; };
 
 protected:
  // SET: Capabilities flags

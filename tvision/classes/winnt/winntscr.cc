@@ -150,7 +150,7 @@ int TScreenWinNT::InitOnce()
 TScreenWinNT::TScreenWinNT()
 {
  if (!InitOnce()) return;
- flags0=CodePageVar | CursorShapes;
+ flags0=CodePageVar | CursorShapes | CanSetVideoSize;
  screenMode=startupMode=getCrtMode();
  #ifdef USE_NEW_BUFFER
  // Just remmember the current window size

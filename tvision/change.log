@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.243  2002/08/12 15:53:29  set
+* Fixed: The names of CP 1254 and 1257 from Win32 API.
+* Fixed: [Win32/WinNT] Use of True/False instead of TRUE/FALSE (cosmetic).
+* Added: [Win32/WinNT] Support for code pages. But not all the code pages
+are supported by TV.
+* Fixed: [Win32/WinNT] Cursor problems related to the new code.
+* Added: [Win32/WinNT] More comments about problems I found. Also added the
+list of code pages that Win32 API reference says we can find and which are
+supported by TV.
+
 Revision 2.242  2002/08/12 15:49:19  set
 * Fixed: [Win32/WinNT] The mouse didn't resume. (Missing mouse after
 returning from a shell)
