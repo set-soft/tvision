@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.439  2003/05/12 12:49:50  set
+* Fixed: The TVIntl recode shouldn't recode values in the ASCII range. Not
+at least for the supported code pages.
+
 Revision 2.438  2003/05/12 12:46:13  set
 * Modified: tv.h to generate dependencies more similar to the Unicode
 branch.
