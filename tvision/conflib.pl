@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2002 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2003 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # Common configuration routines.
@@ -720,6 +720,15 @@ sub DetectOS
 {
  my ($os,$OS);
  $os=`uname`;
+ if (!$os)
+   {
+    print "\n";
+    print "* -------------------------------------- *\n";
+    print " Please install the `uname' command.\n";
+    print " DJGPP users: That's part of shell utils.\n";
+    print "* -------------------------------------- *\n\n";
+    die;
+   }
  print 'Determining OS: ';
 
  $OSpr=0;
