@@ -101,7 +101,8 @@ if ($OSUSesIntl)
      }
   }
 $MakeDefsRHIDE[2].=' iconv' if (@conf{'iconv'} eq 'yes') && !$UseDummyIntl;
-$MakeDefsRHIDE[2].=' '.$conf{'NameCurses'}.' m' if ($OS eq 'UNIX');
+$MakeDefsRHIDE[2].=' '.$conf{'NameCurses'} if ($conf{'ncurses'} ne 'no') && ($OS eq 'UNIX');
+$MakeDefsRHIDE[2].=' m' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[2].=' '.$conf{'X11Lib'} if ($conf{'HAVE_X11'} eq 'yes');
 $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
@@ -168,6 +169,7 @@ if ($OS eq 'UNIX')
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
    $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
    $ReplaceTags{'LIB_NCURSES_SWITCH'}=($OSf eq 'QNXRtP') ? '-lncursesS' : '-lncurses';
+   $ReplaceTags{'LIB_NCURSES_SWITCH'}='' if ($conf{'ncurses'} eq 'no');
    # QNX 6.2 beta 3 workaround
    $ReplaceTags{'QNX_LIB_SRCH'}=($OSf eq 'QNXRtP') ? '-L/lib' : '';
    $ReplaceTags{'make'}=$conf{'GNU_Make'};
@@ -637,35 +639,18 @@ int main(void)
    {# Try again with -lcurses, In Solaris ncurses is installed this way
     $result=RunGCCTest($GCC,'c',$test,'-lcurses');
     if (!length($result))
-      {# Try with curses.h
-       $test='
-#include <stdio.h>
-#include <curses.h>
-void dummy() {initscr();}
-int main(void)
-{
- printf("Ok\n");
- return 0;
-}
-';
-       $result=RunGCCTest($GCC,'c',$test,'-lcurses');
-       if (!length($result))
-         {
-          print "\nError: ncurses library not found, please install ncurses $vNeed or newer\n";
-          print "Look in $ErrorLog for potential compile errors of the test\n";
-          CreateCache();
-          die "Missing library\n";
-         }
+      {
+       print "no, disabling UNIX driver\n";
+       $conf{'ncurses'}='no';
+       return;
       }
     $conf{'NameCurses'}='curses';
    }
  if (!CompareVersion($result,$vNeed))
    {
-    print "$result, too old\n";
-    print "Please upgrade your ncurses library to version $vNeed or newer.\n";
-    print "You can try with $result forcing the configure scripts.\n";
-    CreateCache();
-    die "Old library\n";
+    print "$result, too old, disabling UNIX driver\n";
+    $conf{'ncurses'}='no';
+    return;
    }
  print "$result OK\n";
  @conf{'ncurses'}=$result;
@@ -829,6 +814,8 @@ sub CreateConfigH
 
  print 'Generating configuration header: ';
 
+ $conf{'HAVE_NCURSES'}=($conf{'ncurses'} ne 'no') && ($OS eq 'UNIX') ? 'yes' : 'no';
+ $text.=ConfigIncDefYes('HAVE_NCURSES','ncurses library');
  $text.=ConfigIncDef('HAVE_DEFINE_KEY','ncurses 4.2 or better have define_key (In Linux)');
  $text.=ConfigIncDefYes('HAVE_KEYSYMS','The X11 keysyms are there');
  $text.=ConfigIncDefYes('HAVE_X11','X11 library and headers');

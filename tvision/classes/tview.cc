@@ -835,7 +835,7 @@ void TView::resetCursor()
 {
   int ax,cx,dx;
   TView *self=this,*view;
-  if ((~state) & (sfVisible | sfCursorVis | sfFocused)) goto lab4;
+  if ((~state) & (sfVisible /*| sfCursorVis*/ | sfFocused)) goto lab4;
   ax = cursor.y;
   dx = cursor.x;
 lab1:
@@ -864,10 +864,15 @@ lab4:
 
 lab5:
   TScreen::setCursorPos(dx,ax);
-  cx=TScreen::cursorLines;
-  if (state & sfCursorIns)
-     cx=100*256;
-  TScreen::setCursorType(cx);
+  if (state & sfCursorVis)
+    {
+     cx=TScreen::cursorLines;
+     if (state & sfCursorIns)
+        cx=100*256;
+     TScreen::setCursorType(cx);
+    }
+  else
+     TScreen::setCursorType(0);
 }
 
 #define VIEW ((TGroup *)(view))

@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.302  2002/09/12 19:34:15  set
+* Added: Spanish translations for most of the TV messages.
+
 Revision 2.301  2002/09/12 18:10:32  set
 * Added: A correct "default code page" mechanism to DOS, Linux, QNX, UNIX,
 Win32, WinNT, X11 and XTerm. WinGr needs more things and this isn't
