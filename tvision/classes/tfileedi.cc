@@ -318,6 +318,8 @@ Boolean TFileEditor::valid( ushort command )
     return True;
 }
 
+#ifndef NO_STREAM
+
 void TFileEditor::write( opstream& os )
 {
     TEditor::write( os );
@@ -351,6 +353,8 @@ TStreamable *TFileEditor::build()
 TFileEditor::TFileEditor( StreamableInit ) : TEditor( streamableInit )
 {
 }
+
+#endif
 
 // SET: Changed to lower case because it looks much better when using LFNs
 const char *TFileEditor::backupExt = ".bak";

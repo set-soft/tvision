@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TCheckBoxes
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RCheckBoxes( TCheckBoxes::name,
                               __DELTA(TCheckBoxes)
                             );
 
+#endif

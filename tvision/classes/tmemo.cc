@@ -68,6 +68,8 @@ void TMemo::handleEvent( TEvent& event )
         TEditor::handleEvent(event);
 }
 
+#ifndef NO_STREAM
+
 void TMemo::write( opstream& os )
 {
     TEditor::write( os );
@@ -100,3 +102,4 @@ TMemo::TMemo( StreamableInit ) : TEditor( streamableInit )
 {
 }
 
+#endif // #ifndef NO_STREAM

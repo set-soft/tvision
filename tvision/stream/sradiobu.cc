@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TRadioButtons
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RRadioButtons( TRadioButtons::name,
                                 __DELTA(TRadioButtons)
                               );
 
+#endif

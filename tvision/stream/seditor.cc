@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TStreamableClass
 #define Uses_TEditor
 #include <tv.h>
@@ -10,3 +12,4 @@ TStreamableClass REditor( TEditor::name,
                           __DELTA(TEditor)
                         );
 
+#endif

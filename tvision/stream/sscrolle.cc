@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TScroller
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RScroller( TScroller::name,
                              __DELTA(TScroller)
                           );
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TDialog
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -9,3 +11,4 @@ TStreamableClass RDialog( TDialog::name,
                           __DELTA(TDialog)
                         );
 
+#endif

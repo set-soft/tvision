@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TColorDialog
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -16,3 +18,4 @@ TStreamableClass RColorDialog( TColorDialog::name,
                                __DELTA(TColorDialog)
                              );
 
+#endif

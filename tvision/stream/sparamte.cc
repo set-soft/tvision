@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TParamText
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -9,3 +11,4 @@ TStreamableClass RParamText( TParamText::name,
                               __DELTA(TParamText)
                             );
 
+#endif

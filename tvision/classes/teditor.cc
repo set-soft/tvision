@@ -1151,6 +1151,8 @@ Boolean TEditor::valid( ushort )
   return isValid;
 }
 
+#ifndef NO_STREAM
+
 void TEditor::write( opstream& os )
 {
     TView::write( os );
@@ -1192,6 +1194,8 @@ TStreamable *TEditor::build()
 TEditor::TEditor( StreamableInit ) : TView( streamableInit )
 {
 }
+
+#endif
 
 // SET: The following routines were assembler in the original TVision, Robert
 // did just a quick hack.

@@ -86,7 +86,7 @@ void TParamText::setText( char *fmt, ... )
     drawView();
 }
 
-#if !defined(NO_STREAMABLE)
+#if !defined(NO_STREAM)
 
 TStreamable *TParamText::build()
 {

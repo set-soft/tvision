@@ -1,3 +1,5 @@
+#ifndef NO_STREAM
+
 #define Uses_TGroup
 #define Uses_TStreamableClass
 #include <tv.h>
@@ -8,3 +10,4 @@ TStreamableClass RGroup( TGroup::name,
                          __DELTA(TGroup)
                        );
 
+#endif
