@@ -117,7 +117,7 @@ msgstr "~И~мя директории"
 msgid "Directory ~t~ree"
 msgstr "~Д~ерево директорий"
 
-#: classes/tchdirdi.cc:63 classes/tcolordi.cc:107 classes/tfiledia.cc:100
+#: classes/tchdirdi.cc:63 classes/tcolordi.cc:111 classes/tfiledia.cc:100
 #: msgbox.cc:42 msgbox.cc:219
 msgid "~O~K"
 msgstr "~O~K"
@@ -142,39 +142,39 @@ msgstr "Диски"
 msgid "Invalid directory"
 msgstr "Недопустимая директория"
 
-#: classes/tcolordi.cc:44
+#: classes/tcolordi.cc:45
 msgid "Colors"
 msgstr "Цвета"
 
-#: classes/tcolordi.cc:57
+#: classes/tcolordi.cc:58
 msgid "~G~roup"
 msgstr "~Г~руппа"
 
-#: classes/tcolordi.cc:66
+#: classes/tcolordi.cc:70
 msgid "~I~tem"
 msgstr "~П~ункт"
 
-#: classes/tcolordi.cc:73
+#: classes/tcolordi.cc:77
 msgid "~F~oreground"
 msgstr "Цвет т~е~кста"
 
-#: classes/tcolordi.cc:83
+#: classes/tcolordi.cc:87
 msgid "~B~ackground"
 msgstr "Цвет ~ф~она"
 
-#: classes/tcolordi.cc:89
+#: classes/tcolordi.cc:93
 msgid "Text "
 msgstr "Текст "
 
-#: classes/tcolordi.cc:95
+#: classes/tcolordi.cc:99
 msgid "Color"
 msgstr "Цвет"
 
-#: classes/tcolordi.cc:105
+#: classes/tcolordi.cc:109
 msgid "~T~ry"
 msgstr "~Т~ест"
 
-#: classes/tcolordi.cc:109 classes/tfiledia.cc:106 classes/tvedit2.cc:72
+#: classes/tcolordi.cc:113 classes/tfiledia.cc:106 classes/tvedit2.cc:72
 #: classes/tvedit2.cc:104 msgbox.cc:43 msgbox.cc:223
 msgid "Cancel"
 msgstr "Отмена"
@@ -543,18 +543,16 @@ msgstr "не удалось изменить атрибуты терминала ввода"
 msgid "ioctl VT_SETMODE failed"
 msgstr "ioctl VT_SETMODE выполнить не удалось"
 
-#: classes/linux/linuxscr.cc:590 classes/unix/xtermscr.cc:100
+#: classes/linux/linuxscr.cc:590 classes/qnxrtp/qnxscr.cc:66
+#: classes/unix/unixscr.cc:569 classes/unix/xtermscr.cc:100
+#, fuzzy
 msgid ""
-"that's an interactive application, don't redirect stdout\r\n"
-"If you want to collect information redirect stderr like this:\r\n"
-"\r\n"
-"program 2> file\r\n"
+"that's an interactive application, don't redirect stdout. If you want to "
+"collect information redirect stderr like this: program 2> file"
 msgstr ""
-"это интерактивное приложение, не перенаправляйте стандартный вывод (stdout)"
-"\r\n"
-"Если вы хотите сохранить информацию, перенаправьте stderr вот так:\r\n"
-"\r\n"
-"program 2> file\r\n"
+"это интерактивное приложение, не перенаправляйте стандартный вывод (stdout) "
+"Если вы хотите сохранить информацию, перенаправьте stderr вот так: "
+"program 2> file"
 
 #: classes/linux/linuxscr.cc:600
 #, fuzzy
@@ -575,28 +573,12 @@ msgstr "не удалось получить информацию о терминале вывода"
 msgid "can't configure terminal mode"
 msgstr "не удается настроить режим терминала"
 
-#: classes/linux/linuxscr.cc:806 classes/linux/linuxscr.cc:813
-#: classes/unix/xtermscr.cc:148 classes/unix/xtermscr.cc:155
+#: classes/linux/linuxscr.cc:806 classes/linux/linuxscr.cc:814
+#: classes/qnxrtp/qnxscr.cc:66 classes/unix/unixscr.cc:569
+#: classes/unix/xtermscr.cc:148 classes/unix/xtermscr.cc:156
 #, c-format
-msgid "Error! %s\r\n"
-msgstr "Ошибка! %s\r\n"
-
-#: classes/qnxrtp/qnxscr.cc:65 classes/unix/unixscr.cc:568
-msgid ""
-"\r\n"
-"Error! that's an interactive application, don't redirect stdout\r\n"
-"If you want to collect information redirect stderr like this:\r\n"
-"\r\n"
-"program 2> file\r\n"
-"\r\n"
-msgstr ""
-"\r\n"
-"Ошибка! Это интерактивное приложение, не перенаправляйте стандартный вывод "
-"(stdout).\r\n"
-"Если вы хотите сохранить информацию, перенаправьте stderr вот так:\r\n"
-"\r\n"
-"program 2> file\r\n"
-"\r\n"
+msgid "Error! %s"
+msgstr "Ошибка! %s"
 
 #: classes/x11/x11src.cc:2037
 msgid "No available selection"
@@ -652,6 +634,22 @@ msgstr "Подтверждение"
 #: msgbox.cc:93
 msgid "Don't warn you next time"
 msgstr "Не придупреждать в следующий раз"
+
+#~ msgid ""
+#~ "\r\n"
+#~ "Error! that's an interactive application, don't redirect stdout\r\n"
+#~ "If you want to collect information redirect stderr like this:\r\n"
+#~ "\r\n"
+#~ "program 2> file\r\n"
+#~ "\r\n"
+#~ msgstr ""
+#~ "\r\n"
+#~ "Ошибка! Это интерактивное приложение, не перенаправляйте стандартный "
+#~ "вывод (stdout).\r\n"
+#~ "Если вы хотите сохранить информацию, перенаправьте stderr вот так:\r\n"
+#~ "\r\n"
+#~ "program 2> file\r\n"
+#~ "\r\n"
 
 #~ msgid "~Alt-X~ Exit"
 #~ msgstr "~Alt-Ы~ Выход"

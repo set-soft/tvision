@@ -565,9 +565,11 @@ TScreenUNIX::TScreenUNIX()
   // explain to the user how to run the application in the right way.
   if (!isatty(fileno(stdout)))
     {
-     fprintf(stderr,_("\r\nError! that's an interactive application, don't redirect stdout\r\n"
-                      "If you want to collect information redirect stderr like this:\r\n\r\n"
-                      "program 2> file\r\n\r\n"));
+     fprintf(stderr,"\r\n");
+     fprintf(stderr,_("Error! %s"),_("that's an interactive application, don't redirect stdout. "
+             "If you want to collect information redirect stderr like this: "
+             "program 2> file"));
+     fprintf(stderr,"\r\n");
      return;
     }
   // SET: open it as a different file because we don't want to mix both
