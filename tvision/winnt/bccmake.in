@@ -1,0 +1,83 @@
+# Makefile for building Turbo Vision library for Win32
+
+# Borland C++
+CC       = bcc32
+CXX      = $(CC)
+INC      = -I.\include -I..\include
+CDEBUGFLAGS = -O2 -6 -T -DNDEBUG
+#CDEBUGFLAGS = -v -vi -y -6 -Od
+# SET: I disabled the condition always true warning. BC++ should be more
+#      cleaver about it, code like this: if (1) ... isn't wrong and is
+#      obviously on purpose. GCC reports it for things like
+#      if ((unsigned)a<0) which is always false and looks like an error ;-)
+# Note: SAA disabled Asigned a value that is never used because BC++ is very
+#       annoying about assigning a default value for a variable that is
+#       assigned latter.
+CFLAGS   = -D_BCPP -w-aus -w-ccc -a8 -WR -WC -X -q $(CDEBUGFLAGS)
+# SET: I disabled the member x hides virtual member y because I don't
+#      understand why it is reported if you know please explain me.
+CXXFLAGS = -P -RT- -w-hid $(CFLAGS)
+LFLAGS   = -WR -WC
+
+# Microsoft Visual C++
+# NOTE: does not work yet
+#CXX      = cl
+#INC      = -I.\include\msvc -I.\include -I..\include
+#CXXFLAGS = -c -TP -D_MSVC -MDd
+
+.SUFFIXES: .cc .c .obj
+
+TV_OBJS_ = @TV_OBJS_BCC@
+OBJS = $(TV_OBJS_:+=objs\)
+
+all: rhtv.lib tvex.exe
+
+rhtv.lib: $(OBJS)
+	del $@
+	tlib /E /P256 $@ @&&!
++$(**: = &^
++)
+!
+
+tvex.exe: objs\tvex.obj rhtv.lib
+	$(CC) $(LFLAGS) -etvex.exe objs\tvex.obj rhtv.lib
+	
+{.}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes\WinNT}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+
+{..\classes\WinNT}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+	
+{..\names}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+	
+{..\stream}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+	
+{..}.cc{objs}.obj:
+	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<
+	
+{..}.c{objs}.obj:
+	$(CC) -c $(CFLAGS) $(INC) -nobjs $<
+	
+{..\compat}.c{objs}.obj:
+	$(CC) -c $(CFLAGS) $(INC) -nobjs $<
+	
+objs\tscreen.obj: ..\classes\WinNT\tscreen.cc
+objs\tdsiplay.obj: ..\classes\WinNT\tdsiplay.cc
+objs\tfont.obj: ..\classes\WinNT\tfont.cc
+objs\thwmouse.obj: ..\classes\WinNT\thwmouse.cc
+
+clean:
+	-del objs\*.obj
+	-del *.obj
+	-del *.exe
+	-del *.tds
+	-del *.lib
+	
