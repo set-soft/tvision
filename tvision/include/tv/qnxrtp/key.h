@@ -5,23 +5,30 @@
 #if defined(TVOSf_QNXRtP) && !defined(QNXRTPKEY_HEADER_INCLUDED)
 #define QNXRTPKEY_HEADER_INCLUDED
 
-// A class to encapsulate the globals, all is static!
 class TGKeyQNXRtP: public TGKey
 {
-public:
- TGKeyQNXRtP() {};
+   public:
+      TGKeyQNXRtP() {};
 
- static void     Suspend();
- static void     Resume();
- static int      KbHit();
- static void     Clear();
- static ushort   GKey();
- static unsigned GetShiftState();
- static void     FillTEvent(TEvent &e);
- static void     SetKbdMapping(int version);
- static void     Init();
+      static void     Suspend();
+      static void     Resume();
+      static int      KbHit();
+      static void     Clear();
+      static ushort   GKey();
+      static unsigned GetShiftState();
+      static void     FillTEvent(TEvent &e);
+      static void     SetKbdMapping(int version);
+      static void     Init();
 
 protected:
+      static ushort GetRaw();
+
+protected:
+      static struct termios saved_attributes;
+      static ushort sFlags;
+      static ushort undecoded;
+      static ushort hightranstable[0x0100];
+      static ushort lowtranstable[0x0100];
 };
 
 #endif // QNXRTPKEY_HEADER_INCLUDED

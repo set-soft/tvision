@@ -19,10 +19,24 @@ class TDisplayQNXRtP: virtual public TDisplay
       static ushort GetRows();
       static ushort GetCols();
       static void   SetCrtMode(ushort mode);
-      static void   SetCrtModeExt(char *mode);
+      static void   SetCrtModeExt(char* mode);
       static int    CheckForWindowSize(void);
-      static const char *GetWindowTitle(void);
-      static int    SetWindowTitle(const char *name);
+      static const char* GetWindowTitle(void);
+      static int    SetWindowTitle(const char* name);
+
+   protected:
+      static inline void safeput(char* &p, char* cap);
+
+   protected:
+      static int cur_x;
+      static int cur_y;
+      static int tty_fd;
+      static int cursorStart;
+      static int cursorEnd;
+
+      static ushort mode;
+
+      static volatile sig_atomic_t windowSizeChanged;
 };
 
 class TScreenQNXRtP: public TDisplayQNXRtP, public TScreen
@@ -42,14 +56,33 @@ class TScreenQNXRtP: public TDisplayQNXRtP, public TScreen
       static void   setCrtData();
       static void   clearScreen();
       static void   setVideoMode(ushort mode);
-      static void   setVideoModeExt(char *mode);
-      static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
+      static void   setVideoModeExt(char* mode);
+      static void   getCharacters(unsigned offset,ushort* buf, unsigned count);
       static ushort getCharacter(unsigned dst);
       static void   setCharacter(unsigned offset, ushort value);
-      static void   setCharacters(unsigned dst, ushort *src, unsigned len);
-      static int    System(const char *command, pid_t *pidChild);
+      static void   setCharacters(unsigned dst, ushort* src, unsigned len);
+      static int    System(const char* command, pid_t* pidChild);
+
+   protected:
+      static void SpecialKeysDisable(int fd);
+      static void SpecialKeysRestore(int fd);
+      static void StartNCurses();
+      static void SetGTables();
+      static void RestoreGTables();
+      static void sigWindowSizeChanged(int sig);
+      static void SendToTerminal(const char* const value);
+      static void RestoreScreen();
+      static void mapColor(char* &p, int col);
+      static void writeBlock(int dst, int len, ushort* old, ushort* src);
  
    protected:
+      static struct termios old_term;
+      static struct termios new_term;
+      static cc_t oldKeys[5];
+      static int old_col;
+      static int old_fore;
+      static int old_back;
+      static int force_redraw;
 };
 
 #endif // QNXRTPSCR_HEADER_INCLUDED

@@ -1,8 +1,17 @@
 $Log$
+Revision 2.84  2002/05/27 14:05:27  set
+* Added: Mouse support to the XTerm driver and put in the list of drivers.
+Also fixed a lot of details in this driver. This new XTerm driver restores
+the screen, supports shift/ctrl/alt+special keys and interactive mouse.
+* Added: An example on how to start an old xterm (from X 3.x) to get all
+the keys.
+* Added: An example theme fro Eterm 0.9.x to get all the key combinations.
+It configures Eterm as xterm from X 4.x.
+
 Revision 2.83  2002/05/27 12:26:30  set
 * Fixed: [UNIX] The makemak.pl script created a link to a no longer
 existant linux/gkeyli.cc file. Pointed out by Mike.
-.
+
 Revision 2.82  2002/05/24 20:13:29  set
 * Added: The first test classes for the XTerm driver. They aren't tested
 yet but I think they will work much better than the ncurses version.
