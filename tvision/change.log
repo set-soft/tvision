@@ -1,4 +1,12 @@
 $Log$
+Revision 1.56  1999/06/05 00:40:35  set
+* Fixed: Some key bindings in TEditor class (Enter and Backspace for example).
+* Modified: Now the doEditDialog function provided in tvedit3.cc can be used
+for quick applications because I defined a new version:
+ushort doEditDialogDefault( int dialog, va_list arg )
+So you can set TEditor to your own function, handle only some cases and call
+doEditDialogDefault for the rest. I used it for the installer of the editor.
+.
 Revision 1.55  1999/05/29 00:52:23  root (set)
 * Removed some Debian files no longer needed (Ivan).
 
