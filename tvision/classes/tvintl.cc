@@ -8,7 +8,9 @@
 #define Uses_stdarg
 #define Uses_stdio
 #define Uses_snprintf
+#define Uses_limits
 #include <compatlayer.h>
+#include <locale.h>
 #include <tv/ttypes.h>
 #define Uses_intl_fprintf
 #include <tv/intl.h>
@@ -24,6 +26,7 @@ extern "C" {
 char *textdomain(const char *domainname);
 char *bindtextdomain(const char *domainname, const char *dirname);
 char *gettext(const char *msgid);
+char *dgettext(const char *domain, const char *msgid);
 char *gettext__(const char *msgid);
 char *__gettext(const char *msgid);
 }
@@ -33,17 +36,17 @@ char *__gettext(const char *msgid);
 #ifndef __DJGPP__
 # if !defined(__GLIBC__) || __GLIBC__<2
    // By default use gettext
-#  define LibGetText gettext
+#  define LibGetTextLow gettext
 # else
 #  if (__GLIBC__==2 && __GLIBC_MINOR__>0) || __GLIBC__>2
-#   define LibGetText gettext
+#   define LibGetTextLow gettext
 #  else
     // exception: glibc 2.0 needs __gettext
-#   define LibGetText __gettext
+#   define LibGetTextLow __gettext
 #  endif
 # endif
 #else
-# define LibGetText gettext__
+# define LibGetTextLow gettext__
 #endif
 
 char TVIntl::translate=0;
@@ -101,7 +104,7 @@ void TVIntl::codePageCB(ushort *map)
     if (needsRecode)
        TVCodePage::FillGenericRemap(cpCatalog,curAppCP,recodeTable);
    }
- if (map)
+ if (map && previousCPCallBack)
     ((TVCodePageCallBack)previousCPCallBack)(map);
 }
 
@@ -119,7 +122,10 @@ const char *TVIntl::bindTextDomain(const char *domainname, const char *dirname)
 
 const char *TVIntl::getText(const char *msgid)
 {
- return (const char *)LibGetText(msgid);
+ const char *msgstr=LibGetTextLow(msgid);
+ if (msgid==msgstr)
+    msgstr=dgettext("tvision",msgstr);
+ return msgstr;
 }
 
 void TVIntl::recodeStr(char *str, int len)
@@ -134,7 +140,7 @@ char *TVIntl::getTextNew(const char *msgid, Boolean onlyIntl)
  if (!msgid) return NULL;
  const char *source;
  if (translate)
-    source=(const char *)LibGetText(msgid);
+    source=getText(msgid);
  else
     source=msgid;
  if (onlyIntl && source==msgid)
@@ -215,6 +221,42 @@ int TVIntl::fprintf(FILE *f, const char *fmt, ...)
  DeleteArray(intlFmt);
  return l;
 }
+
+#if defined(TVOS_DOS) || (defined(TVOS_Win32) && !defined(TVCompf_Cygwin))
+ #define NoHomeOrientedOS
+#endif
+
+int TVIntl::autoInit(const char *package, const char *localeDir)
+{
+ char localedir[PATH_MAX];
+ setlocale(LC_ALL, "");
+ if (!localeDir)
+    localeDir=getenv("LOCALEDIR");
+
+ if (!localeDir)
+   {
+    #ifdef NoHomeOrientedOS
+    // if LOCALEDIR doesn't exists use %DJDIR%/share/locale
+    localeDir=getenv("DJDIR");
+    if (localeDir)
+      {
+       strcpy(localedir,localeDir);
+       strcat(localedir,"/share/locale");
+      }
+    else
+       return 0;
+    #else
+    strcpy(localedir,"/usr/share/locale");
+    #endif
+   }
+ else
+    strcpy(localedir,localeDir);
+
+ bindTextDomain(package,localedir);
+ textDomain(package);
+ return 1;
+}
+
 #else
 int TVIntl::snprintf(char *dest, size_t sz, const char *fmt, ...)
 {

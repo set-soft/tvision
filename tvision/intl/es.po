@@ -635,6 +635,10 @@ msgstr "Confirmar"
 msgid "Don't warn you next time"
 msgstr "No avisar la próxima vez"
 
+#: classes/tprogram.cc:308
+msgid "~Alt-X~ Exit"
+msgstr "~Alt-X~ Salir"
+
 #~ msgid ""
 #~ "\r\n"
 #~ "Error! that's an interactive application, don't redirect stdout\r\n"
