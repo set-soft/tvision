@@ -16,6 +16,7 @@ needed.
 #include <tv/configtv.h>
 
 #ifdef TVOS_Win32
+#define Uses_stdio
 #define Uses_TDisplay
 #define Uses_TScreen
 #include <tv.h>
@@ -78,6 +79,8 @@ void TDisplayWin32::SetCursorShape(unsigned start, unsigned end)
    {
     ConsoleCursorInfo.bVisible=True;
     ConsoleCursorInfo.dwSize=end-start;
+    if (ConsoleCursorInfo.dwSize>=100)
+       ConsoleCursorInfo.dwSize=99;
    }
  SetConsoleCursorInfo(hOut,&ConsoleCursorInfo);
 }
@@ -116,6 +119,16 @@ int TDisplayWin32::CheckForWindowSize(void)
     GetConsoleScreenBufferInfo(hOut,&ConsoleInfo);
 
  return SizeChanged;
+}
+
+void TDisplayWin32::SetCrtMode(ushort)
+{
+ SetCursorShape(0x58,0x64);
+}
+
+void TDisplayWin32::SetCrtModeExt(char *)
+{
+ SetCursorShape(0x58,0x64);
 }
 
 /**[txh]********************************************************************
@@ -170,6 +183,8 @@ void TDisplayWin32::Init()
  checkForWindowSize=CheckForWindowSize;
  setWindowTitle=SetWindowTitle;
  getWindowTitle=GetWindowTitle;
+ setCrtMode=SetCrtMode;
+ setCrtModeExt=SetCrtModeExt;
 }
 
 /* Not implemented

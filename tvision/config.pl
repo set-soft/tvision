@@ -93,7 +93,7 @@ if ($OSUSesIntl)
      }
    else
      {# Use the dummy unless the user requested not to use it
-      if ((@conf{'intl-force-dummy'} eq 'yes') && (@conf{'no-intl'} ne 'yes'))
+      if ((@conf{'intl-force-dummy'} eq 'yes') || (@conf{'no-intl'} ne 'yes'))
         {
          $MakeDefsRHIDE[2].=' tvfintl';
          $UseDummyIntl=1;
@@ -134,7 +134,7 @@ elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
+   #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile','compat/compat.mak');
    CreateRHIDEenvs('examples/rhide.env','win32/rhide.env');
@@ -711,7 +711,9 @@ sub GenerateMakefile
    {
     $text=~s/\@target2_rule\@//g;
    }
- $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy";
+ $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy\n";
+ $rep.="\tcp intl/dummy/libtvfintl.a $makeDir";
+ $rep.="\tln -s intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
  $text=~s/\@intl_dummy_rule\@/$rep/g;
 
  # Write install stuff
