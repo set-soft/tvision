@@ -1,0 +1,79 @@
+  This file contains an example of how to write the autoconf/automake macros
+for Turbo Vision library:
+
+From - Mon Feb 14 14:00:20 2000
+Return-path: <lauras@softhome.net>
+Envelope-to: salvador@inti.gov.ar
+Delivery-date: Mon, 14 Feb 2000 12:35:29 -0300
+Date: Mon, 14 Feb 2000 17:36:05 +0200
+From: Laurynas Biveinis <lauras@softhome.net>
+To: salvador <salvador@inti.gov.ar>
+Subject: Turbo Vision & GNU Autoconf
+
+Hello,
+
+I started using autoconf/automake with my tvision
+applications. So I've written few autoconf macros
+which should be useful for everyone using tv with
+autoconf.
+The first macro is AC_CXX_OPT, it simply checks
+if C++ compiler accepts given option. I use it
+for adding -fno-rtti -fno-exceptions.
+The real job is set in the second macro,
+AC_LIB_TVISION, which finds how to link in the
+library (using '-ltv' or -'lrhtv') and defines
+HAVE_TVISION.
+If those macros look OK, I suggest you to include
+them in TV distribution.
+
+Chau,
+Laurynas Biveinis
+----------
+dnl Written by Laurynas Biveinis
+dnl GNU Autoconf macro AC_CXX_OPT(option)
+dnl Checks if C++ compiler supports specified option.
+dnl If yes - adds that option to CXXFLAGS.
+
+AC_DEFUN(AC_CXX_OPT,
+[
+   AC_REQUIRE([AC_PROG_CXX])
+   AC_REQUIRE([AC_LANG_CPLUSPLUS])
+   AC_MSG_CHECKING([if C++ compiler supports $1 option])
+   old_cxxflags=$CXXFLAGS
+   CXXFLAGS="$1 $CXXFLAGS"
+   AC_TRY_COMPILE([ ], [ ], test_opt=yes)
+   if test -z test_opt; then
+      CXXFLAGS=$old_cxxflags
+      AC_MSG_RESULT(no)
+   else
+      AC_MSG_RESULT(yes)
+fi
+])
+
+dnl GNU Autoconf macro AC_LIB_TVISION
+dnl Checks for Turbo Vision library. If it is available - adds it
+dnl to LIBS variable and defines HAVE_TVISION.
+
+AC_DEFUN(AC_LIB_TVISION, 
+[
+   AC_REQUIRE([AC_PROG_CXX])
+   AC_REQUIRE([AC_LANG_CPLUSPLUS])
+   AC_MSG_CHECKING([for Turbo Vision library])
+   ac_lb_save_LIBS="$LIBS"
+   LIBS="-lrhtv $LIBS"
+   AC_TRY_LINK([void win_ver(void);], [win_ver();], AC_DEFINE(HAVE_TVISION) tvlib=RHTV)
+   if test -z $tvlib; then
+      LIBS=$ac_lb_save_LIBS
+      LIBS="-ltv $LIBS"
+      AC_TRY_LINK([void win_ver(void);], [win_ver();], AC_DEFINE(HAVE_TVISION) tvlib=TV)
+      if test -z $tvlib; then
+         LIBS=$ac_lb_save_LIBS
+         AC_MSG_WARN(not found)
+      else
+         AC_MSG_RESULT([old version 1.0.3- found])
+      fi
+   else
+      AC_MSG_RESULT(v1.0.4+ found)
+   fi
+])
+
