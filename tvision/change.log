@@ -1,4 +1,10 @@
 $Log$
+Revision 1.166  2001/08/14 15:20:47  set
+* Added: Makefiles for all the examples. They are created/updated when the
+package is created and updated by the configure script to be adapted to the
+target system. Documented.
+* Fixed: Various compilation errors in the examples.
+.
 Revision 1.165  2001/08/13 23:31:28  set
 * Added: The Dialog Editor to the distribution and mentioned in the readme.
 * Added: A .po file containing all the messages that can be internationalized

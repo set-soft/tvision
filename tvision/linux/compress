@@ -53,6 +53,23 @@ else
   {
    print "(2) uptodate\n";
   }
+@files=glob('../examples/*/*.gpr');
+foreach $i (@files)
+  {
+   $r=$i;
+   $r=~s/\.gpr/\.mak/;
+   print "$r: ";
+   if (!(-e $r) || (-M $r > -M $i))
+     {
+      system("gpr2mak $i");
+      print "updated\n";
+     }
+   else
+     {
+      print "uptodate\n";
+     }
+  }
+print "\n";
 
 # Patch the version number in the readme.txt
 print "Processing readme file\n";
