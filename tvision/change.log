@@ -1,4 +1,12 @@
 $Log$.
+Revision 2.399.2.6  2003/02/17 12:59:01  set
+* Added: The first Unicode example. It loads an UTF-8 encoded file and
+displays it using a class derived from TScroller. The code is based on the
+7th step of the tutorial. The program is really simple and most of the
+needed changes were to make the program load UTF-8 text and convert it into
+Unicode 16. To test it I created a file with spanish acents, cyrillics and
+greek.
+
 Revision 2.399.2.5  2003/02/17 12:50:48  set
 * Added: A couple of inline members to X11 driver to make the code less
 complex and avoid repeated code.
@@ -14,7 +22,7 @@ a font. Currently used by X11 driver (is a hack) to create an Unicode font.
 used by the display. Currently codepage and unicode16 are supported.
 * Modified: TGroup to properly handle and draw from buffers that now can be
 of two different sizes.
-* Modified: Some default TScreen memebers to work with both types of
+* Modified: Some default TScreen members to work with both types of
 encodings.
 * Modified: TView to support both kind of encodings as input and output. If
 needed TView does the proper translations. I tested the code using Unicode

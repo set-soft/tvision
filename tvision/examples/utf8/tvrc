@@ -1,0 +1,8 @@
+[TV]
+{
+ [X11]
+ {
+  Unicode16=1
+  UnicodeFont="boxround.sft"
+ }
+}
