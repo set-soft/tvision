@@ -1025,7 +1025,7 @@ Boolean TDDialog::saveToFile(const char * FileName)
         ofpstream& s = *S;
         s << viewType;
         s.writeBytes(attributes, vtAttrSize[viewType]);
-        s << GridState ? (char)1 : (char)0;
+        s << (GridState ? (char)1 : (char)0);
         s << LabelCount  << InputCount   << MemoCount
           << StaticCount << ButtonCount  << ListBoxCount << RadioCount
           << CheckCount  << VScrollCount << HScrollCount << UserCount;
