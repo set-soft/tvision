@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.573  2004/09/22 21:26:40  set
+* Fixed: [RPM] problems when the compress script didn't have execute
+attributes.
+
 Revision 2.572  2004/09/22 19:37:40  set
 * Added: [MSVC] Now UNCs are also supported (previously only BC++ code had
 it). Arnold helped to enable it using MSVC 6.0.
