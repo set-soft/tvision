@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.2  2003/02/13 18:05:20  set
+* Modified: Cleaned the drawing mechanism in TView. Now the code is much
+more easy to understand and there is no nasty gotos.
+
 Revision 2.399.2.1  2003/02/13 18:03:45  set
 * Added: Members for Unicode of 16 bits to TDrawBuffer. Completly
 experimental and untested.
