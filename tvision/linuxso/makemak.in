@@ -17,6 +17,10 @@ $destination='/usr/lib';
 $intver=$Version;
 $extver=$VersionMajor;
 unlink('tcedit.dst',glob('*.bkp'));
+
+#
+# Fix the makefile
+#
 $f=&cat('../linux/Makefile');
 &replaceVar($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
 &replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
@@ -29,7 +33,25 @@ $f=&cat('../linux/Makefile');
 &replaceVar($f,'-Wall','');
 &replaceVar($f,'-Werror','');
 #&replaceVar($f,'-gstabs3','');
+# Change the compat make by one here
+&replaceVar($f,'\$\(MAKE\) -C \.\.\/compat\/','$(MAKE)');
+# Make references to .o files from compat to the local obj dir
+$f=~s/\.\.\/compat\///g;
 &replace('Makefile',$f);
+
+#
+# Fix the compat.mak file
+#
+$f=&cat('../compat/compat.mak');
+&replaceVar($f,'vpath_src=\$\(RHIDE_STDINC\)','vpath_src=$(RHIDE_STDINC) ../compat');
+&replaceVar($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
+&replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
+&replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
+&replaceVar($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');
+&replaceVar($f,'-Wall','');
+&replaceVar($f,'-Werror','');
+&replace('compat.mak',$f);
+
 system('ln -s ../linux/gkeyli.cc gkeyli.cc') unless (-s 'gkeyli.cc');
 system("make");
 # Create the links so the library can be used from here

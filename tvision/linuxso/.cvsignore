@@ -2,3 +2,4 @@
 Makefile
 instlib
 gkeyli.cc
+compat.mak
