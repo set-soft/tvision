@@ -89,7 +89,7 @@ void *TMemo::read( ipstream& is )
         setBufLen( length );
         }
     else
-        is.seekg( is.tellg() + long(length) );
+        is.seekg( is.tellg() + CLY_StreamPosT(length) );
     return this;
 }
 
