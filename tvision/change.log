@@ -1,4 +1,7 @@
 $Log$
+Revision 2.67  2002/05/14 20:52:31  set
+* Added: [X11] get/set window title.
+
 Revision 2.66  2002/05/14 20:17:30  set
 * Modified: Now x11 headers are in the include/tv/x11 directory. Reported
 by miniEleph.

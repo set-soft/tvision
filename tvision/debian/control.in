@@ -8,7 +8,7 @@ Standards-Version: 3.5.2.0
 Package: rhtvision@version@-dev
 Architecture: any
 Section: devel
-Depends: rhtvision@version@, libc6-dev, libstdc++-dev, libgpmg1-dev, libncurses5-dev
+Depends: rhtvision@version@, libc6-dev, libstdc++-dev, libgpmg1-dev, libncurses5-dev, xlibs-dev
 Provides: rhtvision-dev
 Conflicts: rhtvision-dev
 Replaces: rhtvision-dev

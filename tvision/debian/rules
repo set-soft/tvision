@@ -34,8 +34,10 @@ clean: clean-debian debianbackup.tar
 # Restore upstream provided regenerated files:
 	test -e debianbackup.tar && tar -xf debianbackup.tar
 	rm -f debianbackup.tar
-# FIXME: ask upstream about adding the next 3 files to his clean target:
-	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env
+# FIXME: ask upstream about adding the next files to his clean target:
+	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env \
+		Makefile compat/rhide.env examples/rhide.env include/tv/configtv.h linux/rhide.env \
+		linuxso/Makefile linuxso/compat.mak win32/rhide.env winnt/Makefile
 	rm -f build-stamp
 
 clean-debian:
@@ -69,9 +71,9 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs -p $(package)$(version) extra/eterm/ borland.txt copying copying.rh readme.txt
-	dh_installdocs -p $(package)$(version)-dev examples/ borland.txt copying copying.rh readme.txt
-	find $(destdir) -iname '.cvsignore' -exec rm '{}' \;
-#	dh_installexamples
+	dh_installdocs -p $(package)$(version)-dev borland.txt copying copying.rh readme.txt
+	dh_installexamples -p $(package)$(version)-dev examples/*
+	find $(destdir) \( -name '.cvsignore' -o -name 'CVS' -prune \) -exec rm -rf '{}' \;
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installinit

@@ -154,6 +154,7 @@ if ($OS ne 'Win32')
 # UNIX dynamic library
 if ($OS eq 'UNIX')
   {
+   $ReplaceTags{'LIB_X11_SWITCH'}=@conf{'HAVE_X11'} eq 'yes' ? "-L".$conf{'X11LibPath'}." -lX11" : '';
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
    $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
    $ReplaceTags{'make'}=$conf{'GNU_Make'};
