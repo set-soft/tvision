@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.581  2004/10/05 00:19:29  set
+* Added/Fixed: [DOS] The default keyboard code assumed the start and end of
+the BIOS circular buffer. Now it reads these values from the BIOS data
+area. Egon Eckert contributed a patch for it. But I applied it with major
+changes. The most important is that it can be reverted from the config
+files. I'm doing it to include this patch in the 2.0.3 release.
+
 Revision 2.580  2004/10/04 21:33:34  set
 * Fixed: [Comnpilation][SuSE] SuSE 9.0 defines TEMP_FAILURE_RETRY using
 errno, but errno.h isn't automatically included. So I added a workaround
