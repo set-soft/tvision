@@ -3,7 +3,6 @@
  Covered by the GPL license.
 */
 #define Uses_stdlib
-#define CLY_DoNotDefineUTypes
 #include <compatlayer.h>
 
 #if defined(TVOS_DOS) || defined(TVOS_Win32)
