@@ -4,6 +4,6 @@ tvision/borland.txt
 tvision/djgpp/libtv.a
 tvision/include/*.h
 tvision/djgpp/sacadeb.bat
-tvision/djgpp/tmp
-tvision/djgpp/obj
+tvision/djgpp/tmp/delete.me
+tvision/djgpp/obj/delete.me
 tvision/change.log
