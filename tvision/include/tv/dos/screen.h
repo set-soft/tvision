@@ -10,6 +10,7 @@
 #if defined(TVCompf_djgpp) && !defined(DOS_SCREEN_HEADER_INCLUDED)
 #define DOS_SCREEN_HEADER_INCLUDED
 class THWMouseDOS;
+class TVDOSClipboard;
 
 // virtual to avoid problems with multiple inheritance
 class TDisplayDOS : virtual public TDisplay
@@ -41,7 +42,7 @@ protected:
 
  // Function members for this driver
  // Calls the BIOS 0x10 interrupt (Video service)
- static void videoInt();
+ static void videoInt() { __dpmi_int(0x10,&rDisplay); };
  // Finds the number of lines per char
  static int  getCharLines();
  // Special videoInt to workaround a bug in NT's TXProII driver
@@ -64,6 +65,7 @@ protected:
  // Low level BIOS calls to get/set one palette index
  static void setOnePaletteIndex(int index, TScreenColor *col);
  static void getOnePaletteIndex(int index, TScreenColor *col);
+ static int  dosInt() { return __dpmi_int(0x21,&rDisplay); };
 
  // Data members for this driver
  static __dpmi_regs rDisplay;
@@ -74,6 +76,8 @@ protected:
  // The following map indicates which palette index is associated with
  // each palette index.
  static char        colorsMap[17];
+
+ friend class TVDOSClipboard;
 };
 
 
@@ -114,10 +118,11 @@ protected:
  static int   copy(int id, const char *buffer, unsigned len);
  static char *paste(int id, unsigned &length);
 
- // Members fo this class
+ // Members for this class
  static int   Init();
  static int   AllocateDOSMem(unsigned long size, unsigned long *BaseAddress);
  static void  FreeDOSMem(unsigned long Address);
+ static int   MultiplexInt() { return __dpmi_int(0x2F,&TDisplayDOS::rDisplay); };
 
  static const
         char *dosNameError[];
@@ -128,7 +133,7 @@ protected:
 };
 
 #ifdef TSCREEN_DEFINE_REGISTERS
-#define r (rDisplay)
+#define r (TDisplayDOS::rDisplay)
 #define AL (r.h.al)
 #define BL (r.h.bl)
 #define CL (r.h.cl)

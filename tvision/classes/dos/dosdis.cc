@@ -251,11 +251,6 @@ ushort TDisplayDOS::GetCrtMode()
  Helper routines
 *****************************************************************************/
 
-void TDisplayDOS::videoInt()
-{
- __dpmi_int(0x10,&r);
-}
-
 void TDisplayDOS::setVideoModeInt()
 {
  // Windows NT workaround, looks like is something that happends in my
