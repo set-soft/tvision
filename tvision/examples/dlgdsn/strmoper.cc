@@ -89,7 +89,7 @@ ofpstream * initFile(char * FileName, char * current, char * Signature)
    if ( fileExists(FileName) &&
       ( current == 0 || strcmp(FileName, current) != 0 ) )
    {
-      if ( messageBox(_("The file already exists. Overwrite it?"),
+      if ( messageBox(__("The file already exists. Overwrite it?"),
                     mfYesNoCancel) != cmYes ) return 0;
    }
    ofpstream * rst = new ofpstream( FileName, ios::in|ios::binary );

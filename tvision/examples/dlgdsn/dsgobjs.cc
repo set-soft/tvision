@@ -977,7 +977,7 @@ Boolean TDDialog::Save(int aCommand)
    if (modified)
    {
       if (cmd != cmYes)
-        cmd = messageBox(_("The current dialog was modified. Save it?"),
+        cmd = messageBox(__("The current dialog was modified. Save it?"),
               mfYesNoCancel | mfWarning);
       if ( cmd == cmYes && (fileName == 0 || strlen(fileName) == 0) )
       {
