@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.137  2002/06/07 18:13:40  set
+* Modified: [X11] Now after a draw the cursor becomes visible inmediatly.
+This is slower but increases the cursor visibility. Ivan reported problems.
+
 Revision 2.136  2002/06/07 15:46:21  set
 * Added: A first attempt to create a MSVC compatible makefile. WintiX
 <wintix@bk.ru> sent me the file and I added it to the configuration
