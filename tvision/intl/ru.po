@@ -637,7 +637,7 @@ msgstr "Не придупреждать в следующий раз"
 
 #: classes/tprogram.cc:308
 msgid "~Alt-X~ Exit"
-msgstr ""
+msgstr "~Alt-Ы~ Выход"
 
 #~ msgid ""
 #~ "\r\n"
@@ -654,9 +654,6 @@ msgstr ""
 #~ "\r\n"
 #~ "program 2> file\r\n"
 #~ "\r\n"
-
-#~ msgid "~Alt-X~ Exit"
-#~ msgstr "~Alt-Ы~ Выход"
 
 #~ msgid "Not enough memory for this operation"
 #~ msgstr "Не хватает памяти для выполнения данной операции"
