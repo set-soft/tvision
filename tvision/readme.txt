@@ -15,7 +15,7 @@ The small sections are:
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.4.
+  That's the Turbo Vision distribution (TVision for short) v1.0.3.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -58,8 +58,8 @@ file for more information, I explain which differences I found while porting
 the examples there.
   Most of the patches were made by Robert Hoehne. I contributed with various
 patches and modules mainly to extend the original functionality.
-  The library is distributed under the GPL license, it seems to be OK because
-according to a FAQ in the Inprise web site the base library is Public
+  The library is distributed under the GPL license even when I seems to be OK
+because according to a FAQ in the Inprise web site the base library is Public
 Domain. The file copying contains the GPL license and the file copying.rh
 contains the RHIDE copyright.
 
@@ -72,7 +72,7 @@ more simple for people don't familiarized with it.
 lot of important information for the binary too.
 
   *** IMPORTANT *** Note: This information is about the DOS version but could
-be valid for the Linux version too:
+be valid for the Linux version too.
   the binary distribution was compiled with gcc 2.8.0 be careful if you have
 2.8.1, Artur Zaroda <zaroda@mimuw.edu.pl> reported problems with some of the
 examples compiled with 2.8.1 and linked with the binary distribution. All was
@@ -85,7 +85,6 @@ solved after recompiling the library with 2.8.1. So don't forget it.
 --------------------------
 
   As you are reading it you already unpacked it but here are some notes:
-(I usually read the readmes without unpacking)
   The files that must be in DOS format are listed in lista.dos, the rest are
 binary or can be UNIX files because djgpp tools handles these UNIX files very
 well.
@@ -96,7 +95,7 @@ you want to use it under DOS just unpack the files and run the fromunix.pl
 Perl script. The reverse is valid: the DOS package can be used under Linux
 running the fromdos.pl Perl script.
   The compress and compress.bat files are used to create the distribution
-packages and are included.
+package and are included.
 
 
 
@@ -110,7 +109,7 @@ and run rhide or make in this directory.
 compress these files if you want to save disk space and you won't be
 modifying the sources all the time.
 
-  To use the library add the include directory in your includes path and the
+  To use the library add the include directory in your library path and the
 directory where the library was created to your libraries path (or just move
 the library to the lib directory). I recommend using an environment variable
 pointing to the base directory where the files are located and add the rest
@@ -133,7 +132,7 @@ clarify it: code compiled with -fno-exceptions and -fno-rtti doesn't have the
 hooks needed for C++ exceptions in the classes so you can't link this code
 with code compiled with gcc 2.8.x if this code wasn't compiled with
 -fno-exceptions and -fno-rtti. Why we use it? (1) We don't use C++ exceptions
-mechanism (2) It adds unnecesary code and data (3) libraries compiled with
+mechanism (2) It add unnecesary code and data (3) libraries compiled with
 these hooks using 2.8.x can't be linked with objects from 2.7.x.
   So, if you use gcc 2.8.x or newer compiler and want to use the precompiled
 library you must compile your code with -fno-exceptions and -fno-rtti.
@@ -163,7 +162,7 @@ From binary distribution:
 
   That's very experimental so be careful I don't know if the version numbers
 are OK and what will happend if you try to execute something created with
-the 1.0.4 library using the 1.0.4 library. If you have hints about this
+the 1.0.3 library using the 1.0.4 library. If you have hints about this
 topic please contact me.
   My tests shows that a small TVision example (examples/dyntxt) is only 14Kb
 long when linked dynamically and without debug information. But you should
@@ -236,8 +235,6 @@ Salvador E. Tropea (SET)
 Curapaligue 2124
 3 de Febrero, Caseros
 (1678) Bs.As. Argentina
-
-Phone: (+5411) 4759-0013
 
 e-mail: salvador@inti.gov.ar, set-soft@usa.net, set@computer.org
 http:   www.geocities.com/SiliconValley/Vista/6552/
