@@ -854,19 +854,15 @@ lab2:
   if (dx<view->origin.x) goto lab2;
   if (dx>=view->origin.x+view->size.x) goto lab2;
 lab4:
-  cx = 0x2000;
-  goto lab6;
+  // Cursor disabled
+  TScreen::setCursorType(0);
+  return;
+
 lab5:
-  TScreen::SetCursor(dx,ax);
-  cx = TScreen::cursorLines;
-  if (!(state & sfCursorIns)) goto lab6;
-#if defined(TVComp_BCPP)
-  cx = 100;
-#else
-  cx &= 0x00ff;
-  if (!cx) cx = 7;
-#endif
-lab6:
+  TScreen::setCursorPos(dx,ax);
+  cx=TScreen::cursorLines;
+  if (state & sfCursorIns)
+     cx=100*256;
   TScreen::setCursorType(cx);
 }
 
@@ -1025,7 +1021,7 @@ void call50()
       movedata(_my_ds(),(int) (((const ushort *)_Buffer) +skip_offset),
                _dos_ds,_buffer,count*2);
 #else
-      TScreen::setCharacter(buf_offset,(ushort *)_Buffer+skip_offset,count);
+      TScreen::setCharacters(buf_offset,(ushort *)_Buffer+skip_offset,count);
 #endif
     }
     else

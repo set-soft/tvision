@@ -1,4 +1,10 @@
 $Log$
+Revision 2.10  2001/11/25 00:31:40  set
+* Modified: TProgram because I changed the names of some members in TScreen
+(all extensions not found in BTV) and to avoid using the magic "dual"
+variable. That's temporally part of TDisplay but just to compile, it must
+be solved in another way not yet fully defined.
+
 Revision 2.9  2001/11/25 00:29:02  set
 * Modified: TEventQueue::resume to avoid calling magic Linux functions, now
 TGKey have a suspend/resume for it.
