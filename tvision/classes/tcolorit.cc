@@ -33,7 +33,7 @@ TColorItem::TColorItem( const char *nm, uchar idx, TColorItem *nxt )
 
 TColorItem::~TColorItem()
 {
-    delete (char *)name;
+    DeleteArray(name);
 }
 
 TColorItem& operator + ( TColorItem& i1, TColorItem& i2 )

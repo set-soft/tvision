@@ -33,7 +33,7 @@ TColorGroup::TColorGroup( const char *nm, TColorItem *itm, TColorGroup *nxt )
 
 TColorGroup::~TColorGroup()
 { 
-    delete (char *)name;
+    DeleteArray(name);
 }
 
 TColorGroup& operator + ( TColorGroup& g, TColorItem& i )
