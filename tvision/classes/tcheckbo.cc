@@ -27,6 +27,7 @@ Boolean TCheckBoxes::mark(int item)
 void TCheckBoxes::press(int item)
 {
     value = value^(1 << item);
+    TCluster::press(item);
 }
 
 #if !defined( NO_STREAM )

@@ -31,12 +31,17 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #define cpCluster "\x10\x11\x12\x12"
 
+// SET: To report the movedTo and press as broadcasts, set it to 0 if you
+// don't like it.
+unsigned TCluster::extraOptions=ofBeVerbose;
+
 TCluster::TCluster( const TRect& bounds, TSItem *aStrings ) :
     TView(bounds),
     value( 0 ),
     sel( 0 )
 {
-    options |= ofSelectable | ofFirstClick | ofPreProcess | ofPostProcess;
+    options |= ofSelectable | ofFirstClick | ofPreProcess | ofPostProcess |
+               extraOptions;
     int i = 0;
     TSItem *p;
     for( p = aStrings; p != 0; p = p->next )
@@ -262,12 +267,16 @@ Boolean TCluster::mark( int )
     return False;
 }
 
-void TCluster::movedTo( int )
+void TCluster::movedTo( int item )
 {
+ if (owner)
+    message(owner,evBroadcast,cmClusterMovedTo,&item);
 }
 
-void TCluster::press( int )
+void TCluster::press( int item )
 {
+ if (owner)
+    message(owner,evBroadcast,cmClusterPress,&item);
 }
 
 int TCluster::column( int item )
