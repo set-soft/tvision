@@ -248,7 +248,6 @@ examples/bhelp/bhelp.h
 examples/bhelp/rhide.env
 examples/bhelp/thelp.cc
 -examples/bhelp/thelp.gpr
-examples/bhelp/thelp.mak
 examples/clipboard/test.cc
 examples/clipboard/test.gpr
 examples/clipboard/rhide.env

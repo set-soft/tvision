@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.386  2002/12/14 22:57:31  terrible
+* Updated: Debian packaging to version 2.0.1-0.2.
+
 Revision 2.385  2002/12/13 18:11:40  set
 * Added: A new example: A Borland's Help file browser. It can display TC++
 and BC++ help files. Contributed by Jan Van Buggenhout <Chipzz@ULYSSIS.Org>
