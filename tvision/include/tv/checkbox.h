@@ -33,7 +33,8 @@ class TCheckBoxes : public TCluster
 
 public:
 
-    TCheckBoxes( const TRect& bounds, TSItem *aStrings);
+    TCheckBoxes( const TRect& bounds, TSItem *aStrings) :
+      TCluster( bounds, aStrings ) {};
 
     virtual void draw();
     
@@ -101,11 +102,6 @@ inline opstream& operator << ( opstream& os, TCheckBoxes32& cl )
 inline opstream& operator << ( opstream& os, TCheckBoxes32* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
-
-inline TCheckBoxes::TCheckBoxes( const TRect& bounds, TSItem *aStrings) :
-    TCluster( bounds, aStrings )
-{
-}
 
 #endif  // Uses_TCheckBoxes
 

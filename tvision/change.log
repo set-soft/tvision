@@ -1,4 +1,9 @@
 $Log$
+Revision 1.141  2000/04/12 23:36:37  set
+* Added: A "non-inline" version of the functions defined in the djgpp's
+vgaregs.h file. They are needed to compile the DOS version without
+optimization. The problem was reported by Laurynas.
+.
 Revision 1.140  2000/04/12 23:13:48  set
 * Added: An example of autoconf/automake macro for the library. Contributed
 by Laurynas.

@@ -34,7 +34,8 @@ class TRadioButtons : public TCluster
 
 public:
 
-    TRadioButtons( const TRect& bounds, TSItem *aStrings );
+    TRadioButtons( const TRect& bounds, TSItem *aStrings ) :
+      TCluster( bounds, aStrings ) {};
 
     virtual void draw();
     virtual Boolean mark( int item );
@@ -102,11 +103,6 @@ inline opstream& operator << ( opstream& os, TRadioButtons32& cl )
 inline opstream& operator << ( opstream& os, TRadioButtons32* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
-
-inline TRadioButtons::TRadioButtons( const TRect& bounds, TSItem *aStrings ) :
-    TCluster( bounds, aStrings )
-{
-}
 
 #endif  // Uses_TRadioButtons
 
