@@ -172,6 +172,9 @@ void TListViewer::focusItem( ccIndex item )
     focused = item;
     if( vScrollBar != 0 )
         vScrollBar->setValue( item );
+    else
+        drawView();
+
     if( item < topItem )
         if( numCols == 1 )
             topItem = item;
@@ -370,17 +373,19 @@ void TListViewer::selectItem( ccIndex )
 void TListViewer::setRange( ccIndex aRange )
 {
     range = aRange;
+    if (focused > aRange)
+       focused = 0;
     if( vScrollBar != 0 )
         {
-        if( focused > aRange )
-            focused = 0;
         vScrollBar->setParams( focused,
                                0,
                                aRange - 1,
                                vScrollBar->pgStep,
                                vScrollBar->arStep
                              );
-        }
+        } 
+    else
+        drawView();
 }
 
 void TListViewer::setState( ushort aState, Boolean enable)

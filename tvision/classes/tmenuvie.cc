@@ -325,6 +325,8 @@ ushort TMenuView::execute()
             action =  doReturn;
             clearEvent(e);
             }
+        else
+            result = 0;
         } while( action != doReturn );
 
     if( e.what != evNothing &&
@@ -386,6 +388,7 @@ TPalette& TMenuView::getPalette() const
 
 Boolean TMenuView::updateMenu( TMenu *menu )
 {
+    if (!menu) return False;
     Boolean res = False;
     for( TMenuItem *p = menu->items; p != 0; p = p->next )
         {
