@@ -268,24 +268,24 @@ Boolean TInputLineBase::insertChar(unsigned value)
  return True;
 }
 
-Boolean TInputLine::insertChar(TEvent &event)
+Boolean TInputLine::insertCharEv(TEvent &event)
 {
  if (event.keyDown.charScan.charCode>=' ')
    {
-    if (!TInputLineBase::insertChar(event.keyDown.charScan.charCode))
+    if (!insertChar(event.keyDown.charScan.charCode))
        clearEvent(event);
     return True;
    }
  return False;
 }
 
-Boolean TInputLineU16::insertChar(TEvent &event)
+Boolean TInputLineU16::insertCharEv(TEvent &event)
 {
  TGKey::fillCharCode(event);
  //printf("insertChar de Unicode: U+%04X\n",event.keyDown.charCode);
  if (event.keyDown.charCode>=' ' && event.keyDown.charCode<0xFF00)
    {
-    if (!TInputLineBase::insertChar(event.keyDown.charCode))
+    if (!insertChar(event.keyDown.charCode))
        clearEvent(event);
     return True;
    }
@@ -323,7 +323,7 @@ Boolean TInputLineBaseT<T,D>::pasteFromOSClipboard()
    {
     for (i=0; i<size; i++)
        {
-        TInputLineBase::insertChar(p[i]);
+        insertChar(p[i]);
         selStart=selEnd=0; // Reset the selection or we will delete the last insertion
        }
     DeleteArray(p);
@@ -448,7 +448,7 @@ void TInputLineBase::handleEvent(TEvent& event)
                case kbTab:
                     return;
                default:
-                    if (!insertChar(event))
+                    if (!insertCharEv(event))
                        return;
               }
             makeVisible();
