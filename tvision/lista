@@ -812,6 +812,8 @@ stream/sstringc.cc
 stream/sstringl.cc
 stream/sview.cc
 stream/swindow.cc
++update.bat
++update
 version.txt
 fromdos.pl
 fromunix.pl
