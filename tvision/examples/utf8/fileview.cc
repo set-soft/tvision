@@ -113,7 +113,7 @@ void readFile( const char *fileName )
     ssize_t ret;
     while (lineCount<maxLines && !feof(f))
       {
-       ret=getline(&line,&sz,f);
+       ret=CLY_getline(&line,&sz,f);
        if (ret!=-1)
          {
           if (line[ret-1]=='\n')
