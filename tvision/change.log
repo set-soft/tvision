@@ -1,4 +1,8 @@
 $Log$
+Revision 1.226  2001/10/16 23:53:18  set
+* Fixed: A couple of formating errors in the ASCII table and Calendar of the
+demo example. Patch from Waldemar Schultz <schultz@mathematik.tu-muenchen.de>
+.
 Revision 1.225  2001/10/13 23:53:49  set
 * Fixed: The clean target didn't ignore errors from the examples/clean
 script.
