@@ -434,7 +434,6 @@ void TScreenLinux::Suspend()
  // Here I just guess the previous state was G0 + no display control :-(
  if (!canWriteVCS())
     fputs("\e)0\xF",stdout);
- fputs("\E8",stdout);
  // Reset the palette, lamentably we don't know the original state :-(
  if (tioclinuxOK)
     // Go back to default colors we memorized
@@ -442,6 +441,9 @@ void TScreenLinux::Suspend()
  else
     // Just reset to default palette (should be equivalent)
     fputs("\E]R",stdout);
+ fputs("\E8",stdout);
+ // Ensure the last command is executed
+ fflush(stdout);
  // Restore console mode
  tcsetattr(hOut,TCSAFLUSH,&outTermiosOrig);
  LOG("TScreenLinux Suspend");
