@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.238  2002/08/12 15:39:02  set
+* Added: Some documentation about the SFT format in fontcoll.cc.
+
 Revision 2.237  2002/08/12 15:38:10  set
 * Added: Some preliminary support for SFT files containing just a range
 of the supported symbols.

@@ -150,8 +150,10 @@ void TVFontCollection::EnlargeOne(uchar *dest, uchar *ori, int height,
 
  for (i=0; i<num; i++)
     {
-     memcpy(dest,ori,sizeDest);
-     memset(dest+sizeOri,0,wBytes);
+     memcpy(dest,ori,sizeOri);
+     //memset(dest+sizeOri,0,wBytes);
+     // Copy the last line
+     memcpy(dest+sizeOri,dest+sizeOri-wBytes,wBytes);
 
      ori+=sizeOri;
      dest+=sizeDest;
@@ -403,31 +405,6 @@ TVFontCollection::TVFontCollection(const char *file, int cp) :
 /**[txh]********************************************************************
 
   Description:
-  Converts the width and height into a string. The buffer should be enough
-to hold the printed version of these values.
-  
-***************************************************************************/
-
-void TVFontCollection::Size2Str(char *buffer, unsigned w, unsigned h)
-{
- sprintf(buffer,"%d x %d",w,h);
-}
-
-/**[txh]********************************************************************
-
-  Description:
-  Extracts the width and height from a string.
-  
-***************************************************************************/
-
-void TVFontCollection::Str2Size(const char *buffer, unsigned &w, unsigned &h)
-{
- sscanf(buffer,"%d x %d",&w,&h);
-}
-
-/**[txh]********************************************************************
-
-  Description:
   Constructs a string collection of fonts files that provides shapes inside
 the specified range. The fonts are searched in the specified directory. If
 you specify NULL as directory then the search is done in the current
@@ -445,7 +422,6 @@ TVBitmapFontDescCol *TVFontCollection::CreateListOfFonts(const char *dir,
                      unsigned wmin, unsigned wmax, unsigned hmin, unsigned hmax)
 {
  char *FullName=new char[PATH_MAX];
- char buffer[64];
  TVBitmapFontDescCol *col=new TVBitmapFontDescCol();
 
  if (!dir)
@@ -456,6 +432,7 @@ TVBitmapFontDescCol *TVFontCollection::CreateListOfFonts(const char *dir,
  int numfonts;
  unsigned size;
  TVBitmapFont stF;
+ TVBitmapFontSize sizeSt;
  if (d)
    {
     while ((de=readdir(d))!=0)
@@ -488,11 +465,16 @@ TVBitmapFontDescCol *TVFontCollection::CreateListOfFonts(const char *dir,
                               d=new TVBitmapFontDesc;
                               d->name=name;
                               d->file=newStr(FullName);
-                              d->sizes=new TStringCollection(3,2);
+                              d->sizes=new TVBitmapFontSizeCol();
                              }
-                           Size2Str(buffer,stF.width,stF.lines+j);
-                           if (!d->sizes->search(buffer,pos))
-                              d->sizes->insert(newStr(buffer));
+                           sizeSt.w=stF.width; sizeSt.h=stF.lines+j;
+                           if (!d->sizes->search(&sizeSt,pos))
+                             {
+                              TVBitmapFontSize *p=new TVBitmapFontSize;
+                              p->w=stF.width;
+                              p->h=stF.lines+j;
+                              d->sizes->insert(p);
+                             }
                           }
                        }
                     fseek(f,size,SEEK_CUR);
@@ -535,6 +517,27 @@ void TVBitmapFontDescLBox::getText(char *dest, ccIndex item, short maxChars)
 {
  TVBitmapFontDesc *p=(TVBitmapFontDesc *)items->at(item);
  strncpy(dest,p->name,maxChars);
+ dest[maxChars]=0;
+}
+
+int TVBitmapFontSizeCol::compare(void *key1, void *key2)
+{
+ TVBitmapFontSize *v1=(TVBitmapFontSize *)key1;
+ TVBitmapFontSize *v2=(TVBitmapFontSize *)key2;
+ if (v1->w>v2->w) return 1;
+ if (v1->w<v2->w) return -1;
+ return (v1->h>v2->h)-(v1->h<v2->h);
+}
+
+void TVBitmapFontSizeLBox::getText(char *dest, ccIndex item, short maxChars)
+{
+ TVBitmapFontSize *p=(TVBitmapFontSize *)items->at(item);
+ // Limit the value to know we won't exceed the buffer
+ unsigned w=p->w; if (w>999) w=999; if (w<0) w=0;
+ unsigned h=p->h; if (h>999) h=999; if (h<0) h=0;
+ char b[12];
+ sprintf(b,"%3d x %-3d",w,h);
+ strncpy(dest,b,maxChars);
  dest[maxChars]=0;
 }
 

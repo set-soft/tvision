@@ -65,7 +65,7 @@
  #define TIMER_ALARM SIGALRM
 #endif
 
-const unsigned foWmin=6, foHmin=8, foWmax=20, foHmax=32;
+const unsigned foWmin=5, foHmin=7, foWmax=20, foHmax=32;
 const int cursorDelay=300000;
 
 /*****************************************************************************
