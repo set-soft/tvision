@@ -218,3 +218,15 @@ void TScreen::resume()
  Resume();
 }
 
+void TScreen::getPaletteColors(int from, int number, TScreenColor *colors)
+{
+ while (number-- && from<16)
+    *(colors++)=ActualPalette[from++];
+}
+
+void TScreen::setPaletteColors(int from, int number, TScreenColor *colors)
+{
+ memcpy(ActualPalette+from,colors+from,number*sizeof(TScreenColor));
+ setDisPaletteColors(from,number,colors);
+}
+

@@ -49,6 +49,9 @@ protected:
  static int    CheckForWindowSize(void);
  static const char *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);
+ 
+ static void   SetDisPaletteColors(int from, int number, TScreenColor *colors);
+ static void   GetDisPaletteColors(int from, int number, TScreenColor *colors);
 
  // Functions and members specific for this driver
  // Helpers to make the code easy to read
@@ -70,6 +73,10 @@ protected:
  static char *newEnvir;
  // How much space we have
  static int maxLenTit;
+ // Can we use TIOCLINUX? Initialized but TScreen, but also used here
+ static char tioclinuxOK;
+ // Color translation table
+ static char cMap[16];
 };
 
 inline
@@ -160,8 +167,6 @@ protected:
  static unsigned userBufferSize;
  // Current colors, for escape sequences
  static int oldCol, oldBack, oldFore;
- // Can we use TIOCLINUX?
- static char tioclinuxOK;
 };
 
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't

@@ -5,6 +5,14 @@
   Copyright (c) 1999-2002 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
+  Known problems:
+* Linux palette handling is quite poor, you can set the 16 colors used by your
+VT, you can set the 16 colors used in all the consoles (at the same time and
+making them the defaults) and you can get the 16 default colors. But you can't
+know the 16 colors used by the current VT. Currently I assume the console is
+using the same colors as the rest of the consoles. So I read the default
+colors and restore them.
+
 *****************************************************************************/
 #include <tv/configtv.h>
 
@@ -20,6 +28,8 @@
 #include <termios.h>
 #include <term.h>
 #include <sys/ioctl.h>
+// GIO_CMAP ioctl
+#include <linux/kd.h>
 
 #include <tv/linux/screen.h>
 #include <tv/linux/log.h>
@@ -37,6 +47,8 @@ int                   TDisplayLinux::hOut=-1;   // Handle for the console output
 char                 *TDisplayLinux::origEnvir=NULL;
 char                 *TDisplayLinux::newEnvir=NULL;
 int                   TDisplayLinux::maxLenTit=0;
+char                  TDisplayLinux::tioclinuxOK=0;
+char                  TDisplayLinux::cMap[16]={0,4,2,6,1,5,3,7,8,12,10,14,9,13,11,15};
 
 // All the code is in TScreenLinux, but this is the right moment, by this
 // time TScreenLinux is suspended.
@@ -77,6 +89,8 @@ void TDisplayLinux::Init(int mode)
     getCols=defaultGetCols;
     setCrtMode=defaultSetCrtMode;
     setCrtModeExt=defaultSetCrtModeExt;
+    getDisPaletteColors=defaultGetDisPaletteColors;
+    setDisPaletteColors=defaultSetDisPaletteColors;
    }
  else
    {
@@ -86,6 +100,8 @@ void TDisplayLinux::Init(int mode)
     getCols=GetCols;
     setCrtMode=SetCrtMode;
     setCrtModeExt=SetCrtModeExt;
+    getDisPaletteColors=tioclinuxOK ? GetDisPaletteColors : defaultGetDisPaletteColors;
+    setDisPaletteColors=SetDisPaletteColors;
    }
  checkForWindowSize=CheckForWindowSize;
  getWindowTitle=GetWindowTitle;
@@ -237,6 +253,36 @@ int TDisplayLinux::SetWindowTitle(const char *name)
     strcpy(origEnvir,name);
 
  return 1;
+}
+
+void TDisplayLinux::SetDisPaletteColors(int from, int number, TScreenColor *colors)
+{
+ while (number-- && from<16)
+   {
+    fprintf(stdout,"\E]P%1.1X%2.2X%2.2X%2.2X",cMap[from++],colors->R,colors->G,colors->B);
+    colors++;
+   }
+}
+
+void TDisplayLinux::GetDisPaletteColors(int from, int number, TScreenColor *colors)
+{
+ uchar vtColors[16*3];
+ // Get default VT colors map
+ int ret=ioctl(hOut,GIO_CMAP,vtColors),index;
+ if (ret==0)
+   {
+    while (number-- && from<16)
+      {
+       index=cMap[from++]*3;
+       colors->R=vtColors[index];
+       colors->G=vtColors[index+1];
+       colors->B=vtColors[index+2];
+       colors++;
+      }
+   }
+ else
+   // Shouldn't happend
+   defaultGetDisPaletteColors(from,number,colors);
 }
 
 /*****************************************************************************

@@ -115,7 +115,6 @@ struct termios TScreenLinux::outTermiosOrig;
 struct termios TScreenLinux::outTermiosNew;
 char          *TScreenLinux::error=NULL;
 char           TScreenLinux::secondaryAvailable=0;
-char           TScreenLinux::tioclinuxOK=0;
 int            TScreenLinux::mdaMemH=-1;
 ushort        *TScreenLinux::mdaMem=NULL;
 int            TScreenLinux::palette;
@@ -230,6 +229,25 @@ int TScreenLinux::InitOnce()
  tioclinuxOK=(ioctl(hOut,TIOCLINUX,&arg)!=-1);
  if (tioclinuxOK)
     LOG("Linux Console IOCTL working");
+
+ if (tioclinuxOK)
+   {// We know the default colors, we can just hope they are the currently used
+    GetDisPaletteColors(0,16,OriginalPalette);
+    memcpy(ActualPalette,OriginalPalette,sizeof(ActualPalette));
+   }
+ else
+   {// We don't know what palette is used so we can just setup our own palette
+    // Get the PC BIOS palette
+    defaultGetDisPaletteColors(0,16,ActualPalette);
+    // Now set it
+    SetDisPaletteColors(0,16,ActualPalette);
+   }
+
+ // Setup the driver properties.
+ // Our code page isn't fixed.
+ // We can change the palette (but can't restore it perfectly)
+ flags0=CanSetPalette | CodePageVar;
+
  return 0;
 }
 
@@ -417,6 +435,13 @@ void TScreenLinux::Suspend()
  if (!canWriteVCS())
     fputs("\e)0\xF",stdout);
  fputs("\E8",stdout);
+ // Reset the palette, lamentably we don't know the original state :-(
+ if (tioclinuxOK)
+    // Go back to default colors we memorized
+    SetDisPaletteColors(0,16,OriginalPalette);
+ else
+    // Just reset to default palette (should be equivalent)
+    fputs("\E]R",stdout);
  // Restore console mode
  tcsetattr(hOut,TCSAFLUSH,&outTermiosOrig);
  LOG("TScreenLinux Suspend");
@@ -461,6 +486,10 @@ void TScreenLinux::Resume()
  tcsetattr(hOut,TCSAFLUSH,&outTermiosNew);
  // Save cursor position, attributes and charset
  fputs("\E7",stdout);
+ if (tioclinuxOK)
+    // We know the default colors, we can just hope they are the currently used
+    GetDisPaletteColors(0,16,OriginalPalette);
+ SetDisPaletteColors(0,16,ActualPalette);
  // When we set the video mode the cursor is hidded
  ushort oldCursorLines=cursorLines;
  // Check for video size change and save some state

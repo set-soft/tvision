@@ -40,9 +40,15 @@ const char *(*TDisplay::getWindowTitle)(void)     =TDisplay::defaultGetWindowTit
 int         (*TDisplay::setWindowTitle)(const char *name)
                                                   =TDisplay::defaultSetWindowTitle;
 int         (*TDisplay::getBlinkState)()          =TDisplay::defaultGetBlinkState;
+void        (*TDisplay::getDisPaletteColors)(int from, int number, TScreenColor *colors)
+                                                  =TDisplay::defaultGetDisPaletteColors;
+void        (*TDisplay::setDisPaletteColors)(int from, int number, TScreenColor *colors)
+                                                  =TDisplay::defaultSetDisPaletteColors;
 int           TDisplay::argc                      =0;
 char        **TDisplay::argv                      =NULL;
 char        **TDisplay::environ                   =NULL;
+TScreenColor  TDisplay::OriginalPalette[16];
+TScreenColor  TDisplay::ActualPalette[16];
 
 /*****************************************************************************
 
@@ -254,4 +260,39 @@ int TFont::SelectFont(int , int, int, int, int )
  return 1;
 }
 
+/*****************************************************************************
 
+  These should set/get the palette values at low level. The TScreen driver
+must indicate if they work. The dummies help to know the PC BIOS palette.
+
+*****************************************************************************/
+
+TScreenColor TDisplay::PC_BIOSPalette[16]=
+{
+ { 0x00, 0x00, 0x00 },
+ { 0x00, 0x00, 0xA8 },
+ { 0x00, 0xA8, 0x00 },
+ { 0x00, 0xA8, 0xA8 },
+ { 0xA8, 0x00, 0x00 },
+ { 0xA8, 0x00, 0xA8 },
+ { 0xA8, 0x54, 0x00 },
+ { 0xA8, 0xA8, 0xA8 },
+ { 0x54, 0x54, 0x54 },
+ { 0x54, 0x54, 0xFC },
+ { 0x54, 0xFC, 0x54 },
+ { 0x54, 0xFC, 0xFC },
+ { 0xFC, 0x54, 0x54 },
+ { 0xFC, 0x54, 0xFC },
+ { 0xFC, 0xFC, 0x54 },
+ { 0xFC, 0xFC, 0xFC }
+};
+
+void TDisplay::defaultGetDisPaletteColors(int from, int number, TScreenColor *colors)
+{
+ while (number-- && from<16)
+    *(colors++)=PC_BIOSPalette[from++];
+}
+
+void TDisplay::defaultSetDisPaletteColors(int , int , TScreenColor *)
+{
+}
