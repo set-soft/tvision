@@ -23,12 +23,13 @@ ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
 endif
 	./configure --prefix=$(destdir) --fhs
-#	cat Makefile | grep -v 'ldconfig' > Makefile
-	$(MAKE)
+	$(MAKE) CPPFLAGS="-D_REENTRANT"   
 	touch build-stamp
 
 
 clean: clean-debian debianbackup.tar
+# If we don't configure there is no guarantee that we have a Makefile:
+	./configure --prefix=$(destdir) --fhs
 	$(MAKE) clean
 # Restore upstream provided regenerated files:
 	test -e debianbackup.tar && tar -xf debianbackup.tar
