@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.214  2002/07/08 15:41:08  set
+* Added: [MSVC] A lot of translations to MSVC library names. Most of the
+POSIX low level stuff (open, close, etc.) exists in MSVC but the names are
+changed to _*, may be Microsoft thinks that POSIX is polluting the ANSI
+namespace ;-). From output sent by WintiX.
+
 Revision 2.213  2002/07/05 20:28:18  set
 * Added: [MSVC] More compatlayer entries for __inline__, utime and opendir.
 
