@@ -779,7 +779,7 @@ typedef unsigned long  ulong;
 
 
 
-/* BC++ 5.5 for Win32 is supported */
+/* BC++ 5.5 and 5.6 for Win32 are supported */
 #ifdef TVComp_BCPP
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
@@ -865,6 +865,8 @@ typedef unsigned long  ulong;
  #define RETURN_WHEN_NEVER_RETURNS return 0
  #undef  __attribute__
  #define __attribute__( value )
+ #undef  __inline__
+ #define __inline__ inline
  #define DeleteArray(a) delete[] a
  #define PATHSEPARATOR ';'
  #define PATHSEPARATOR_ ";"
