@@ -1,4 +1,8 @@
 $Log$
+Revision 1.109  1999/09/24 02:08:05  set
+* Fixed: Compilation problems in vgastate.h when using gcc 2.95. First
+reported by Laurynas. Then by other user I don't have info right now.
+.
 Revision 1.108  1999/09/24 00:55:36  set
 * Fixed: A bug introduced by us to the TFileList class in the vertical scroll
 bar (wrong page step). I added a new member to TListViewer to fix it, is
