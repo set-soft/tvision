@@ -420,15 +420,8 @@ TVMainConfigFile::TVMainConfigFile()
          {
           name=TestForFileIn("/etc");
           if (!name)
-            {// ToDo change by /dev/env...
-             char *djgpp=getenv("DJGPP");
-             if (djgpp)
-               {
-                AllocLocalStr(b,strlen(djgpp)+5);
-                strcpy(b,djgpp);
-                strcat(b,"/etc");
-                name=TestForFileIn(b);
-               }
+            {// DJGPP trick
+             name=TestForFileIn("/dev/env/DJDIR/etc");
             }
          }
       }
