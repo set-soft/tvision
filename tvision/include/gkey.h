@@ -39,7 +39,8 @@ kbNumeral=82,kbDolar=83,kbPercent=84,kbAmper=85,kbOpenPar=86,
 kbClosePar=87,kbDoubleDot=88,kbLessThan=89,kbGreaterThan=90,
 kbQuestion=91,kbA_Roba=92,kbOr=93,kbUnderLine=94,kbOpenCurly=95,
 kbCloseCurly=96,kbTilde=97,kbMacro=98,kbWinLeft=99,kbWinRight=100,
-kbWinSel=101
+kbWinSel=101,
+kbMouse=102
 ;
 #endif
 

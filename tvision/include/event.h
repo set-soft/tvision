@@ -42,6 +42,9 @@ protected:
     static void resume();
     static void inhibit();
 
+public:
+    static void forceEvent(int x, int y, int buttons);
+
 protected:
 
     static uchar buttonCount;

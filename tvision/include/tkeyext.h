@@ -22,7 +22,7 @@ const ushort
       kbLessThan=0x0059,kbGreaterThan=0x005a,kbQuestion=0x005b,
       kbA_Roba=0x005c,kbOr=0x005d,kbUnderLine=0x005e,kbOpenCurly=0x005f,
       kbCloseCurly=0x0060,kbTilde=0x0061,kbMacro=0x0062,kbWinLeft=0x0063,
-      kbWinRight=0x0064,kbWinSel=0x0065;
+      kbWinRight=0x0064,kbWinSel=0x0065,kbMouse=0x0066;
 
 const ushort
       kbShUnknown=0x0080,kbShA=0x0081,kbShB=0x0082,kbShC=0x0083,kbShD=0x0084,

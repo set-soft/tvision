@@ -17,6 +17,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/mman.h>
+#include <stdarg.h>
 #ifdef __GLIBC__
 #include <sys/perm.h>
 #endif
@@ -31,12 +32,13 @@ int dual_display = 0;
 #include <term.h>
 #include <sys/ioctl.h>
 
+//#define DEBUG
 #ifdef DEBUG
 #ifdef __linux__
 extern char *program_invocation_short_name;
-#define LOG(s) cerr << program_invocation_short_name << ": " << s << "\n"
+#define LOG(s) cerr << program_invocation_short_name << ": " << s << "\r\n"
 #else
-#define LOG(s) cerr << __FILE__": " << s << "\n"
+#define LOG(s) cerr << __FILE__": " << s << "\r\n"
 #endif
 #else
 #define LOG(s)
@@ -48,18 +50,61 @@ int vcs_fd=-1;          /* virtual console system descriptor */
 int tty_fd=-1; /* tty descriptor */
 /* can I access the MDA ports ? */
 int port_access=0;
-FILE *tty_file;
+FILE *tty_file=0;
 unsigned short *mono_mem = NULL; /* mmapped mono video mem */
 int mono_mem_desc=-1;
 #ifndef __SAVECURSOR_OK
 extern int cur_x,cur_y;
 #endif
 
-enum { PAL_MONO, PAL_LOW, PAL_HIGH };
+enum { PAL_MONO, PAL_LOW, PAL_HIGH, PAL_LOW2 };
 static int palette;
 static int force_redraw = 0;
 
-#define DELAY_SIGALRM 100
+//#define DELAY_SIGALRM 100 garbage ;-)
+
+#if 0 // Not needed right now, but I keep it, SET
+/**[txh]********************************************************************
+
+  Description:
+  Sends the string to the terminal using printf like arguments. Is just a
+replacement for fprintf(tty_file,...) but ensures tty_file was initialized
+and does a flush to be sure the characters are flushed to the device.
+(SET)
+
+***************************************************************************/
+
+void TScreen::fSendToTerminal(const char *value, ...)
+{
+ if (!tty_file || !value)
+    return;
+    
+ va_list ap;
+     
+ va_start(ap,value);
+ vfprintf(tty_file,value,ap);
+ va_end(ap);
+ fflush(tty_file);
+}
+#endif
+
+/**[txh]********************************************************************
+
+  Description:
+  Sends the string to the terminal. Is just a replacement for
+fputs(tty_file,...) but ensures tty_file was initialized and does a flush to
+be sure the characters are flushed to the device. (SET)
+
+***************************************************************************/
+
+void TScreen::SendToTerminal(const char *value)
+{
+ if (!tty_file || !value)
+    return;
+    
+ fputs(value,tty_file);
+ fflush(tty_file);
+}
 
 /* lookup table to translate characters from pc set to standard ascii */
 
@@ -134,7 +179,8 @@ void InitPCCharsMapping(int use_pc_chars)
  PC2curses[0xBA]=ACS_VLINE;    // º
  PC2curses[0xC5]=ACS_PLUS;
  PC2curses[0x04]=ACS_DIAMOND;
- PC2curses[0xB1]=ACS_CKBOARD;
+ PC2curses[0xB1]=ACS_CKBOARD; // 50%
+ PC2curses[0xB2]=ACS_CKBOARD; // 80%
  PC2curses[0xFE]=ACS_BULLET;
  PC2curses[0x11]=ACS_LARROW;
  PC2curses[0x10]=ACS_RARROW;
@@ -144,7 +190,8 @@ void InitPCCharsMapping(int use_pc_chars)
  // the DEC graphic chars have only one "gray" character (ACS_CKBOARD)
  PC2curses[0xB0]=ACS_CKBOARD;//ACS_BOARD;
  // The block isn't available in DEC graphics.
- PC2curses[0xDB]=' ';//ACS_BLOCK;
+ //PC2curses[0xDB]=' ';//ACS_BLOCK;
+ PC2curses[0xDB]=ACS_BLOCK;
  PC2curses[0xDC]=' ';
  PC2curses[0xDD]=' ';
  PC2curses[0xDF]=' ';
@@ -152,7 +199,7 @@ void InitPCCharsMapping(int use_pc_chars)
  // because in some way I managed to break it in Eterm while testing so I
  // think other users could do the same. Explicitly requesting it for G1
  // is the best.
- write(tty_fd,"\x1B)0",3); // Choose DEC characters for G1 set (ISO2022)
+ TScreen::SendToTerminal("\x1B)0"); // Choose DEC characters for G1 set (ISO2022)
 }
 
 inline int range(int test, int min, int max)
@@ -165,16 +212,26 @@ inline void safeput(char *&p, char *cap)
   if (cap != NULL) while (*cap != '\0') *p++ = *cap++;
 }
 
-static struct termios old_term,new_term;
+void TV_WindowSizeChanged(int sig)
+{
+ // Set a flag because we don't know if we can do it right now
+ TScreen::windowSizeChanged=1;
+ signal(sig,TV_WindowSizeChanged);
+}
 
+static struct termios old_term,new_term;
 
 void startcurses()
 {
+  int xterm=0;
+
   char *terminal = getenv("TERM");
   /* Save the terminal attributes so we can restore them later. */
   /* for the user screen */
   tcgetattr (STDOUT_FILENO, &old_term);
 
+  /* The following chunck of code is to have a valid tty for output, even
+     if stdout is redirected */
   char *tty = ttyname(fileno(stdout));
   char *ttyi = ttyname(fileno(stdin));
   if (ttyi || tty)
@@ -195,75 +252,122 @@ void startcurses()
     exit(-1);
   }
   tty_fd = fileno(tty_file);
-  if (!newterm(terminal,stdin,tty_file))
-  {
-    fprintf(stderr,"Not connected to a terminal (newterm for %s)\n",terminal);
-    exit(-1);
-  }
+
+  // old buggy code: if (!newterm(terminal,stdin,tty_file))
+  // SET: according to man newterm that's the right order! It was a really
+  // hard bug, and produced all kind of wierd behavior (arrow keys failing,
+  // endwin not restoring screen, etc.
+  if (!newterm(terminal,tty_file,stdin))
+    {
+     fprintf(stderr,"Not connected to a terminal (newterm for %s)\n",terminal);
+     exit(-1);
+    }
+
+  // SET: If we are under xterm* initialize some special stuff:
   if (strncmp(terminal,"xterm",5)==0)
+    { // Special keyboard treatment
      TGKey::SetKbdMapping(KBD_XTERM_STYLE);
+     xterm=1;
+    }
+
+  /* Configure curses */
   stdscr->_flags |= _ISPAD;
-#if 1
+  // Make curses interpret the escape sequences
   keypad(stdscr, TRUE);
-#endif
-#if 0
+  // SET: remove the buffering and pass the values directly to us. The man
+  // pages recomend using it for interactive applications. Looks like it
+  // doesn't affect if the delay is 0 but I call it anyways
   cbreak();
   noecho();
-#endif
-  timeout(0);   /* set getch() in non-blocking mode */
-#if 1
+  /* set getch() in non-blocking mode */
+  timeout(0);
+
+  /* Ensure we are using the right set of characters */
   if (vcs_fd < 0)
-  {
-    char buf[256], *p = buf;
-    safeput(p,enter_pc_charset_mode);
-    write(tty_fd, buf, p - buf);
-  }
-#endif
+     TScreen::SendToTerminal(enter_pc_charset_mode);
+
+  /* Select the palette and characters handling according to the terminal */
   if (vcs_fd >= 0)
-  {
-    palette = PAL_HIGH;
-    TScreen::screenMode = TScreen::smCO80;
-    use_pc_chars = 1;
-  }
-  else
-  {
-    if (!terminal)
     {
-      palette = PAL_MONO;
-      TScreen::screenMode = TScreen::smMono;
-      use_pc_chars = 0;
+     palette = PAL_HIGH;
+     TScreen::screenMode = TScreen::smCO80;
+     use_pc_chars = 1;
     }
+  else
+   {
+    // Unknown terminal, use monochrome
+    if (!terminal)
+      {
+       palette = PAL_MONO;
+       TScreen::screenMode = TScreen::smMono;
+       use_pc_chars = 0;
+      }
     else if (!strcmp(terminal,"console") ||
              !strcmp(terminal,"linux"))
-
-    {
-      palette = PAL_HIGH;
-      TScreen::screenMode = TScreen::smCO80;
-      use_pc_chars = 1;
-    }
+      { // Special case where we know the values and that 17 colors are available
+       palette = PAL_HIGH;
+       TScreen::screenMode = TScreen::smCO80;
+       use_pc_chars = 1;
+       LOG("Using high palette");
+      }
+    else if (xterm && has_colors())
+      { // SET: Here we know the escape sequences and as a plus the bold
+        // attribute can be used for another 8 foreground colors
+       //palette = PAL_LOW2; Alternative code
+       palette = PAL_HIGH;
+       TScreen::screenMode = TScreen::smCO80;
+       use_pc_chars = 0;
+      }
     else if (has_colors())
-    {
-      palette = PAL_HIGH;
-      TScreen::screenMode = TScreen::smCO80;
-      use_pc_chars = 0;
-    }
+      { // Generic color terminal, that's more a guess than a real thing
+       palette = PAL_LOW;
+       TScreen::screenMode = TScreen::smCO80;
+       use_pc_chars = 0;
+       LOG("Using low palette (8-8 colors)");
+      }
     else
-    {
-      palette = PAL_MONO;
-      TScreen::screenMode = TScreen::smMono;
-      use_pc_chars = 0;
-    }
-  }
+      { // No colors available
+       palette = PAL_MONO;
+       TScreen::screenMode = TScreen::smMono;
+       use_pc_chars = 0;
+      }
+   }
+
   /* Save the terminal attributes so we can restore them later. */
   /* for our screen */
   tcgetattr (tty_fd, &new_term);
+
+  // SET: Generate a map to convert special chars into curses values
   InitPCCharsMapping(use_pc_chars);
+  // SET: Hook the signal generated when the size of the window changes
+  signal(SIGWINCH,TV_WindowSizeChanged);
+  // SET: There is no reason to have 1s of delay for ESC in an interactive
+  // program. Now the code supports Alt+Key in xterms so constructing an
+  // escape sequence by hand isn't need at all. I also tested in Linux
+  // console and I was able to simulate Alt+F pressing ESC-F so 100ms is
+  // enough.
+  ESCDELAY=100;
 }
 
 void stopcurses()
 {
-  endwin();
-  fclose(tty_file);
+ // SET: Enhanced the cleanup
+ // 1) Undo this nasty trick or curses will fail to do the rest:
+ stdscr->_flags &= ~_ISPAD;
+ // 2) Now reset the attributes, there is no "default color", is an atribute
+ // I know the name of only some attributes: 0=normal (what we need),
+ // 1=bold, 4=underline, 5=blink, 7=inverse and I think they are 9:
+ TScreen::SendToTerminal(tparm(set_attributes,0,0,0,0,0,0,0,0,0));
+ // 3) Clear the screen
+ clear();
+ refresh();
+ // 4) Set usable settings (like new line mode)
+ resetterm();
+ // 5) Enable the echo or the user won't see anything
+ echo();
+ // Now we can finally end
+ endwin();
+ fclose(tty_file);
 }
 
 /*
@@ -284,29 +388,45 @@ static void mapColor(char *&p, int col)
   old_col = col;
   back = (col >> 4) & 7;
   fore = col & 15;
-  if (palette == PAL_LOW)
-  {
-    fore &= 7;
-
-    if (fore == back) fore = (fore + 1) & 7;    /* kludge */
-//    if (fore != old_fore)
-    safeput(p, tparm(set_foreground,map[fore]));
-//    if (back != old_back)
-    safeput(p, tparm(set_background,map[back]));
-  }
-  else
-  {
-    if (fore != old_fore && back != old_back)
-      sprintf(p,"\033[%d;%d;%dm",fore>7?1:21,30+map[fore%8],40+map[back]);
-    else
+  switch (palette)
     {
-      if (fore != old_fore)
-        sprintf(p,"\033[%d;%dm",fore>7?1:21,30+map[fore%8]);
-      else
-        sprintf(p,"\033[%dm",40+map[back]);
+     // SET: That's a guess because we don't know how the colors are mapped
+     // It works for xterm*
+     case PAL_LOW:
+          fore&=7;
+          if (fore==back)
+             fore=(fore+1) & 7;    /* kludge */
+          if (back!=old_back)
+             safeput(p,tparm(set_background,back));
+          if (fore!=old_fore)
+             safeput(p,tparm(set_foreground,fore));
+          break;
+     /* SET: That's an alternative code for PAL_HIGH
+     case PAL_LOW2:
+          if (fore!=old_fore || back!=old_back)
+            {
+             if (fore>7)
+                sprintf(p,"\x1B[%d;%d;1m",map[(fore & 7)]+30,map[back]+40);
+             else // Reset attributes and then do the rest
+                sprintf(p,"\x1B[0;%d;%dm",map[fore]+30,map[back]+40);
+             p+=strlen(p);
+            }
+          break;*/
+     // SET: The value to reset the bold is 22 and not 21
+     case PAL_HIGH:
+          if (fore!=old_fore && back!=old_back)
+             sprintf(p,"\x1B[%d;%d;%dm",fore>7 ? 1 : 22,
+                     30+map[fore & 7],40+map[back]);
+          else
+           {
+            if (fore!=old_fore)
+               sprintf(p,"\033[%d;%dm",fore>7 ? 1 : 22,30+map[fore & 7]);
+            else
+               sprintf(p,"\033[%dm",40+map[back]);
+           }
+          p+=strlen(p);
+          break;
     }
-    p += strlen(p);
-  }
   old_fore = fore;
   old_back = back;
 }
@@ -352,7 +472,7 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
     if (col == -1 || col != newcol) /* change color ? */
     {
       col = newcol;
-      if (palette == PAL_HIGH || palette == PAL_LOW)
+      if (palette > PAL_MONO)
         mapColor(p, col);
       else if (palette == PAL_MONO)
       {
@@ -403,6 +523,7 @@ Boolean TScreen::hiResScreen = False;
 Boolean TScreen::checkSnow = True;
 ushort *TScreen::screenBuffer = 0;
 ushort TScreen::cursorLines = 0;
+volatile sig_atomic_t TScreen::windowSizeChanged=0;
 
 int TScreen_suspended = 1;
 
@@ -614,6 +735,9 @@ void TScreen::resume()
   /* for our screen */
   tcsetattr (tty_fd, TCSANOW, &new_term);
   TScreen_suspended = 0;
+  // SET: To go back from a temporal ncurses stop we must use just doupdate
+  // or refresh. (see suspend).
+  doupdate();
 }
 
 TScreen::~TScreen()
@@ -654,6 +778,10 @@ void TScreen::suspend()
   setCursorType(0x0607); // make the cursor visible
   if (!dual_display)
   {
+    // SET: According to "man initscr" we must do endwin() to temporally stop
+    // the ncurses engine, I tried it using tty mode (xterm) and vcs mode and
+    // seems to work.
+    endwin();
     /* Restore the terminal attributes. */
     /* for the user screen */
     tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
@@ -847,5 +975,27 @@ void TScreen::setCharacter(unsigned dst,ushort *src,unsigned len)
   }
 }
 
+/*****************************************************************************
+
+ Blink stuff.
+
+*****************************************************************************/
+
+int blink_use_bios = 1;
+int save_text_palette = 0;
+
+void setIntenseState()
+{
+}
+
+void setBlinkState()
+{
+}
+
+int getBlinkState()
+{ // SET: 1 means blink enabled and hence only 8 colors (was a bug)
+  // Report it according to the mode (vcs v.s. tty)
+  return vcs_fd==-1 ? 1 : 0;
+}
 #endif // __linux__
 
