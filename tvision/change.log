@@ -1,4 +1,8 @@
 $Log$
+Revision 1.148  2000/05/12 23:13:05  root (set)
+* Fixed: Some details in the compat layer library to compile under Linux
+(first compilation issues ;-)
+
 Revision 1.147  2000/05/12 02:28:35  set
 * Incorporated the WinNT port (using BC++ 5.5) from Anatoli Soltan
 <anatoli@iname.com>.
