@@ -206,7 +206,6 @@ debian/diversions.ex
 debian/files_to_backup
 debian/info.ex
 debian/maintainer.notes
-debian/manpage.1.ex
 debian/rhtvision.postinst
 +debian/rules
 debian/shlibs.local.ex

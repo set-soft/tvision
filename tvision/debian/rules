@@ -15,6 +15,7 @@ destdir=debian/tmp/usr
 # This is the debhelper compatibility version to use:
 export DH_COMPAT=1
 
+# Compile the beast!:
 build: build-stamp
 build-stamp: debianbackup.tar
 	dh_testdir
@@ -27,6 +28,7 @@ endif
 	touch build-stamp
 
 
+# Clean everything as if nothing happened :) :
 clean: clean-debian debianbackup.tar
 # If we don't configure there is no guarantee that we have a Makefile:
 	./configure --prefix=$(destdir) --fhs
@@ -40,6 +42,8 @@ clean: clean-debian debianbackup.tar
 		linuxso/Makefile linuxso/compat.mak
 	rm -f build-stamp
 
+# Use the following target when you just want for example to rebuild the
+# package without recompiling the sources:
 clean-debian:
 	dh_testdir
 	dh_testroot
@@ -49,13 +53,14 @@ ifneq ($(wildcard debian/rhtvision$(version).postinst),)
 endif
 	dh_clean
 
-
+# Let's backup modified files to restore them later!:
 debianbackup.tar:
 	dh_testdir
 # Backup upstream provided regenerated files:
 	tar -cf debianbackup.tar --files-from=debian/files_to_backup
 
 
+# Copy needed files to the temporary directories for the packages:
 install: build
 	dh_testdir
 	dh_testroot
@@ -67,13 +72,15 @@ install: build
 	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version)
 
 
+# Build the packages for a specific architecture:
 binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs -p $(package)$(version) extra/eterm/ borland.txt copying copying.rh readme.txt
 	dh_installdocs -p $(package)$(version)-dev borland.txt copying copying.rh readme.txt
 	dh_installexamples -p $(package)$(version)-dev examples/*
-	find $(destdir) \( -name '.cvsignore' -o -name 'CVS' -prune \) -exec rm -rf '{}' \;
+	find $(destdir) debian/$(package)$(version) \
+        \( -name '.cvsignore' -o -name 'CVS' -prune \) -exec rm -rf '{}' \;
 #	dh_installmenu
 #	dh_installemacsen
 #	dh_installinit
@@ -93,14 +100,15 @@ binary-arch: build install
 	dh_builddeb
 
 
-## Build architecture-independent files here.
+# Build architecture-independent files here.
 binary-indep: build install
 #This package doesn't have architecture-independent files for the moment...
 
-
-source diff:                                                                  
+source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
+# Build all the packages:
 binary: binary-indep binary-arch
+
 .PHONY: build clean binary-indep binary-arch binary clean-debian
 
