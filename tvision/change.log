@@ -1,4 +1,10 @@
 $Log$
+Revision 1.103  1999/09/12 19:47:54  set
+* Moved a lot of code from the config.pl script to conflib.pl to share it
+with the editor.
+* Fixed: some small details in the configuration mechanism. Tested under DOS
+and works OK.
+.
 Revision 1.102  1999/09/12 00:38:24  set
 * Removed the compilation options from the .gpr files because that's
 configured by the configure mechanism now.

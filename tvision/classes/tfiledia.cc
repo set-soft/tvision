@@ -48,35 +48,36 @@ TFileDialog::TFileDialog( const char *aWildCard,
                           uchar histId
                         ) :
     TWindowInit( &TFileDialog::initFrame ),
-    TDialog( TRect( 15, 1, 64, 20 ), aTitle ),
+    TDialog( TRect( 15, 1, 64, 21 ), aTitle ),
     directory( 0 )
-{
+{ // SET: Enlarged the window 1 line and added 1 line to the list moving
+  // labels 1 line up
     char *tmp;
     options |= ofCentered;
     strcpy( wildCard, aWildCard );
 
-    fileName = new TFileInputLine( TRect( 3, 3, 31, 4 ), PATH_MAX );
+    fileName = new TFileInputLine( TRect( 3, 2, 31, 3 ), PATH_MAX );
     strcpy( fileName->data, wildCard );
     insert( fileName );
 
-    insert( new TLabel( TRect( 2, 2, 3+cstrlen(inputName), 3 ),
+    insert( new TLabel( TRect( 2, 1, 3+cstrlen(inputName), 2 ),
                         inputName,
                         fileName
                       ) );
-    insert( new THistory( TRect( 31, 3, 34, 4 ), fileName, histId ) );
+    insert( new THistory( TRect( 31, 2, 34, 3 ), fileName, histId ) );
     
     int longNames=TV_HaveLFNs(); // SET
     TScrollBar *sb = longNames ?
-                     new TScrollBar( TRect( 34, 6, 35, 15 ) ) :
-                     new TScrollBar( TRect( 3, 14, 34, 15 ) );
+                     new TScrollBar( TRect( 34, 5, 35, 16 ) ) :
+                     new TScrollBar( TRect( 3, 15, 34, 16 ) );
     insert( sb );
-    insert(fileList=new TFileList(TRect(3,6,34,longNames ? 15 : 14),sb));
+    insert(fileList=new TFileList(TRect(3,5,34,longNames ? 16 : 15),sb));
 
     tmp = _("~F~iles");
-    insert( new TLabel( TRect( 2, 5, 3+cstrlen(tmp), 6 ), tmp, fileList ) );
+    insert( new TLabel( TRect( 2, 4, 3+cstrlen(tmp), 5 ), tmp, fileList ) );
 
     ushort opt = bfDefault;
-    TRect r( 35, 3, 46, 5 );
+    TRect r( 35, 2, 46, 4 );
 
     if( (aOptions & fdOpenButton) != 0 )
         {
@@ -130,7 +131,7 @@ TFileDialog::TFileDialog( const char *aWildCard,
         r.b.y += 2;
         }
 
-    insert( new TFileInfoPane( TRect( 1, 15, 48, 18 ) ) );
+    insert( new TFileInfoPane( TRect( 1, 16, 48, 19 ) ) );
 
     selectNext( False );
     if( (aOptions & fdNoLoadDir) == 0 )
