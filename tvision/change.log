@@ -1,4 +1,12 @@
-$Log$.
+$Log$
+Revision 2.337  2002/09/23 15:56:37  set
+3 Patches and/ot Reports from Igor Gnip <gnipi@europeonline.com>:
+* Fixed: Removed unused variable in classes/tfilelis.cc.
+* Fixed: Changed NAME_MAX by PATH_MAX in examples/tvhc/tvhc.cc, it is
+defined for all targets.
+* Fixed: Changed the use of sleep in examples/msgcls/testdyn.cpp to use the
+CLY_YieldProcessor function.
+
 Revision 2.336  2002/09/23 14:11:35  set
 * Fixed: Disabled TButtons with default flag ignored the disable state.
 Patch from Hartmut Welpmann <hartmut.welpmann@gmx.de>, originally done by

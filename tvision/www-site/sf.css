@@ -14,3 +14,5 @@ DIV.s4   { text-align: center; font-size: xx-large; font-weight: bold }
 DIV.s3   { text-align: center; font-size: large; font-weight: bold }
 DIV.sm1  { font-size: small }
 TD.com   { color: black; background: #A0A0FF}
+table.cent { margin-left: auto; margin-right: auto; }
+
