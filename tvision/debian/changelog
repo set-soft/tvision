@@ -1,3 +1,9 @@
+rhtvision (1.1.1-1) unstable; urgency=low
+
+  * New version automatically modified by version update scripts
+
+ -- Salvador E. Tropea (SET) <salvador@inti.gov.ar>  Sun, 16 Sep 2001 16:10:03 -0300
+
 rhtvision (1.1.0-1) unstable; urgency=low
 
   * New upstream version! Rejoice.
