@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.131  2003/11/05 16:09:47  set
+* Added: Another batch of patches from Mike to support QNX4.
+* Added: Uses_signal to compatlayer.
+
 Revision 2.399.2.130  2003/11/03 21:27:28  set
 * Added: First steps toward QNX 4 support. Contributed by Mike Gorchak and
 Frank Liu.
