@@ -400,6 +400,7 @@ typedef unsigned long  ulong;
 
  // Common to all UNIX systems
  #ifdef TVOS_UNIX
+  // Filesystem
   #define CLY_Have_UGID 1
   #define FA_ARCH   0x01
   #define FA_DIREC  0x02
@@ -409,13 +410,16 @@ typedef unsigned long  ulong;
   #define DIRSEPARATOR '/'
   #define DIRSEPARATOR_ "/"
   #define CLY_IsValidDirSep(a) (a=='/')
- #endif
-
- // Linux (glibc)
- #ifdef TVOSf_Linux
+  #ifdef Uses_HaveLFNs
+   #define OS_HaveLFNs
+  #endif
+  // Non standard
   #ifdef Uses_string
    CFunc char *strlwr(char *s);
    CFunc char *strupr(char *s);
+  #endif
+  #ifdef Uses_itoa
+   CFunc char *itoa(int value, char *string, int radix);
   #endif
   #ifdef Uses_filelength
    #define filelength CLY_filelength
@@ -423,9 +427,7 @@ typedef unsigned long  ulong;
   #ifdef Uses_fixpath
    CFunc void _fixpath(const char *in, char *out);
   #endif
-  #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
-  #endif
+  // POSIX
   #ifdef Uses_glob
    #define Include_glob
   #endif
@@ -436,30 +438,32 @@ typedef unsigned long  ulong;
    #define Include_sys_types
    #define Include_regex
   #endif
-  #ifdef Uses_getopt
-   #define Include_getopt
-  #endif
   #ifdef Uses_utime
    #define Include_utime
   #endif
   #ifdef Uses_mkstemp
    #define Include_stdio
   #endif
-  #ifdef Uses_CLYFileAttrs
-   // Is that a bug? shouldn't be sys/stat.h enough?
-   #define Include_sys_types
-  #endif
   #ifdef Uses_getcwd
    #define Include_unistd
   #endif
-  #ifdef Uses_itoa
-   CFunc char *itoa(int value, char *string, int radix);
-  #endif
+  // Headers
   #ifdef Uses_direct
    #define Include_direct
   #endif
   #ifdef Uses_dir
    #define Include_dir
+  #endif
+ #endif
+
+ // Linux (glibc)
+ #ifdef TVOSf_Linux
+  #ifdef Uses_getopt
+   #define Include_getopt
+  #endif
+  #ifdef Uses_CLYFileAttrs
+   // Is that a bug? shouldn't be sys/stat.h enough?
+   #define Include_sys_types
   #endif
   #ifdef Uses_nl_langinfo
    #define Include_langinfo
@@ -468,100 +472,18 @@ typedef unsigned long  ulong;
 
  // Solaris using gcc but not glibc
  #ifdef TVOSf_Solaris
-  #ifdef Uses_string
-   CFunc char *strlwr(char *s);
-   CFunc char *strupr(char *s);
-  #endif
-  #ifdef Uses_filelength
-   #define filelength CLY_filelength
-  #endif
-  #ifdef Uses_fixpath
-   CFunc void _fixpath(const char *in, char *out);
-  #endif
-  #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
-  #endif
-  #ifdef Uses_glob
-   #define Include_glob
-  #endif
-  #ifdef Uses_fnmatch
-   #define Include_fnmatch
-  #endif
-  #ifdef Uses_regex
-   #define Include_sys_types
-   #define Include_regex
-  #endif
   #ifdef Uses_getopt
    #define Include_cl_getopt
   #endif
-  #ifdef Uses_utime
-   #define Include_utime
-  #endif
-  #ifdef Uses_mkstemp
-   #define Include_stdio
-  #endif
-  #ifdef Uses_getcwd
-   #define Include_unistd
-  #endif
-  #ifdef Uses_itoa
-   CFunc char *itoa(int value, char *string, int radix);
-  #endif
-  #ifdef Uses_direct
-   #define Include_direct
-  #endif
-  #ifdef Uses_dir
-   #define Include_dir
-  #endif
   #ifdef Uses_nl_langinfo
-   #define Uses_CLY_nl_langinfo
+   #define Include_langinfo
   #endif
  #endif
 
  // Generic UNIX system
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris)
-  #ifdef Uses_string
-   CFunc char *strlwr(char *s);
-   CFunc char *strupr(char *s);
-  #endif
-  #ifdef Uses_filelength
-   #define filelength CLY_filelength
-  #endif
-  #ifdef Uses_fixpath
-   CFunc void _fixpath(const char *in, char *out);
-  #endif
-  #ifdef Uses_HaveLFNs
-   #define OS_HaveLFNs
-  #endif
-  #ifdef Uses_glob
-   #define Include_glob
-  #endif
-  #ifdef Uses_fnmatch
-   #define Include_fnmatch
-  #endif
-  #ifdef Uses_regex
-   #define Include_sys_types
-   #define Include_regex
-  #endif
   #ifdef Uses_getopt
-   #define Include_getopt
-  #endif
-  #ifdef Uses_utime
-   #define Include_utime
-  #endif
-  #ifdef Uses_mkstemp
-   #define Include_stdio
-  #endif
-  #ifdef Uses_getcwd
-   #define Include_unistd
-  #endif
-  #ifdef Uses_itoa
-   CFunc char *itoa(int value, char *string, int radix);
-  #endif
-  #ifdef Uses_direct
-   #define Include_direct
-  #endif
-  #ifdef Uses_dir
-   #define Include_dir
+   #define Include_cl_getopt
   #endif
   #ifdef Uses_nl_langinfo
    #define Uses_CLY_nl_langinfo

@@ -1,4 +1,7 @@
 $Log$
+Revision 2.19  2001/11/28 23:41:26  set
+* Added: getopt when Solaris is detected.
+
 Revision 2.18  2001/11/25 19:07:33  set
 * Added: TEditorApp dependency (TApplication) to the tv.h.
 
