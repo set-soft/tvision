@@ -34,6 +34,7 @@ protected:
  // Variables for this driver
  // Input/output handles
  static HANDLE hOut,hIn;
+ static HANDLE hStdOut;
  // Console information
  static CONSOLE_SCREEN_BUFFER_INFO ConsoleInfo;
  // Cursor information
@@ -70,17 +71,16 @@ protected:
  static void   setCharacter(unsigned offset, ushort value);
  static void   setCharacters(unsigned dst, ushort *src, unsigned len);
  static int    System(const char *command, pid_t *pidChild);
+ static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
+ static int    SetVideoModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
 
  // Support functions
- static void   SaveScreen();
- static void   SaveScreenReleaseMemory();
- static void   RestoreScreen();
- static void   InitConsole();
+ static int    InitConsole();
  static void   DoneConsole();
  static DWORD WINAPI HandleEvents(void* p);
+ static BOOL  WINAPI ConsoleEventHandler(DWORD dwCtrlType);
 
  // Support variables
- static CHAR_INFO *buffer;
  static CONSOLE_SCREEN_BUFFER_INFO info;
  // Flag to stop the events thread
  static int ExitEventThread;
@@ -88,6 +88,7 @@ protected:
  static HANDLE EventThreadHandle;
  static DWORD oldConsoleMode, newConsoleMode;
  static unsigned xCurStart, yCurStart;
+ static unsigned saveScreenWidth, saveScreenHeight;
 };
 
 #endif // WIN32SCR_HEADER_INCLUDED

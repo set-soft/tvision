@@ -30,8 +30,9 @@ needed.
 
 const int mxTitleSize=256;
 
-HANDLE                     TDisplayWin32::hOut=NULL;
-HANDLE                     TDisplayWin32::hIn =NULL;
+HANDLE                     TDisplayWin32::hOut=INVALID_HANDLE_VALUE;
+HANDLE                     TDisplayWin32::hIn =INVALID_HANDLE_VALUE;
+HANDLE                     TDisplayWin32::hStdOut=INVALID_HANDLE_VALUE;
 CONSOLE_SCREEN_BUFFER_INFO TDisplayWin32::ConsoleInfo;
 CONSOLE_CURSOR_INFO        TDisplayWin32::ConsoleCursorInfo;
 CRITICAL_SECTION           TDisplayWin32::lockWindowSizeChanged;

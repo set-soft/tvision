@@ -20,6 +20,8 @@ int main()
  TEditorApp *myApp=new TEditorApp();
  if (myApp)
    {
+    // It works if we are windowed and the screen is large enough:
+    // myApp->setScreenMode(90,30);
     myApp->run();
     delete myApp;
    }

@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.241  2002/08/12 15:44:09  set
+* Fixed: Extra stdio include in TProgram, used for debug.
+* Fixed: The fonts example to remove debug tests.
+
 Revision 2.240  2002/08/12 15:42:33  set
 * Added: A new member to TDisplay: setCrtModeRes. It allows setting the
 video mode specifying the resolution instead of a magic mode number.

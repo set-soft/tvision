@@ -533,8 +533,8 @@ void TVBitmapFontSizeLBox::getText(char *dest, ccIndex item, short maxChars)
 {
  TVBitmapFontSize *p=(TVBitmapFontSize *)items->at(item);
  // Limit the value to know we won't exceed the buffer
- unsigned w=p->w; if (w>999) w=999; if (w<0) w=0;
- unsigned h=p->h; if (h>999) h=999; if (h<0) h=0;
+ unsigned w=p->w; if (w>999) w=999;
+ unsigned h=p->h; if (h>999) h=999;
  char b[12];
  sprintf(b,"%3d x %-3d",w,h);
  strncpy(dest,b,maxChars);

@@ -26,6 +26,9 @@ some routines and adapted it to the new architecture.
 
 HANDLE   TDisplayWinNT::hIn =INVALID_HANDLE_VALUE;
 HANDLE   TDisplayWinNT::hOut=INVALID_HANDLE_VALUE;
+#ifdef USE_NEW_BUFFER
+HANDLE   TDisplayWinNT::hStdOut=INVALID_HANDLE_VALUE;
+#endif
 unsigned TDisplayWinNT::currentCursorX,
          TDisplayWinNT::currentCursorY,
          TDisplayWinNT::curStart,
@@ -35,13 +38,19 @@ void TDisplayWinNT::SetCursorPos(unsigned x, unsigned y)
 {
  if (x!=currentCursorX || y!=currentCursorY)
    {
-    COORD coord;
-    coord.X=(SHORT)x;
-    coord.Y=(SHORT)y;
-    SetConsoleCursorPosition(hOut,coord);
+    SetCursorPosLow(x,y);
     currentCursorX=x;
     currentCursorY=y;
    }
+}
+
+// by SET
+void TDisplayWinNT::SetCursorPosLow(unsigned x, unsigned y)
+{
+ COORD coord;
+ coord.X=(SHORT)x;
+ coord.Y=(SHORT)y;
+ SetConsoleCursorPosition(hOut,coord);
 }
 
 void TDisplayWinNT::GetCursorPos(unsigned &x, unsigned &y)
@@ -90,14 +99,20 @@ void TDisplayWinNT::SetCursorShape(unsigned start, unsigned end)
 
  if (start!=curStart || end!=curEnd)
    {
-    CONSOLE_CURSOR_INFO inf;
-    inf.bVisible=start>=end ? False : True;
-    inf.dwSize=inf.bVisible ? end-start : 1;
-    if (inf.dwSize>99) inf.dwSize=99;
-    SetConsoleCursorInfo(hOut,&inf);
+    SetCursorShapeLow(start,end);
     curStart=start;
     curEnd=end;
    }
+}
+
+// by SET
+void TDisplayWinNT::SetCursorShapeLow(unsigned start, unsigned end)
+{
+ CONSOLE_CURSOR_INFO inf;
+ inf.bVisible=start>=end ? False : True;
+ inf.dwSize=inf.bVisible ? end-start : 1;
+ if (inf.dwSize>99) inf.dwSize=99;
+ SetConsoleCursorInfo(hOut,&inf);
 }
 
 void TDisplayWinNT::ClearScreen(uchar screenWidth, uchar screenHeight)

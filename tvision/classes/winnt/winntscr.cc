@@ -8,10 +8,26 @@
   The original implementation was done by Anatoli, I removed some code,
 added some routines and adapted it to the new architecture.
 
-  ToDo: The save/restore mechanism have many flaws, I fixed some, but not
-  all.
   ToDo: Set UseScreenSaver when we are in full screen.
-  
+
+  Notes:
+  1) I saw a problem in W98SE, it looks like a bug in Windows: If I
+suspend to a shell and the resume doing window size changes at exit the
+screen seems to be partially restored. But if you force windows to redraw
+it (minimize/maximize for example) things gets right. This is problem only
+affects the cursor when using USE_NEW_BUFFER.
+  2) The USE_NEW_BUFFER mode is something I (SET) found in the Win32 API
+docs that's much cleaver than saving/restoring the screen contents. When
+defined I just create a new screen buffer and use it. To restore the screen
+you just need to set the original STDOUT handle as the active. It makes the
+code easier and exposes less Windows problems (bugs?). The only bizarre
+thing I observe is "invisible cursor", but this is just Windows forgets to
+update, as soon as the window needs a redraw the cursor gets visible again.
+  3) Anatoli left commented:
+ hIn=CreateFile("CONIN$", GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+ hOut=CreateFile("CONOUT$", GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+I think they aren't useful but I left it here in case I need this example.
+
 ***************************************************************************/
 #include <tv/configtv.h>
 
@@ -32,17 +48,32 @@ added some routines and adapted it to the new architecture.
 #include <tv/winnt/mouse.h>
 #include <tv/winnt/key.h>
 
+//#define DEBUG
+#ifdef DEBUG
+ #define DBPr1(a)     fputs(a,stderr)
+ #define DBPr2(a,b)   fprintf(stderr,a,b)
+ #define DBPr3(a,b,c) fprintf(stderr,a,b,c)
+#else
+ #define DBPr1(a)
+ #define DBPr2(a,b)
+ #define DBPr3(a,b,c)
+#endif
+
 #define TV_CONSOLE_MODE (ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT)
 
+#ifndef USE_NEW_BUFFER
 ushort  *TScreenWinNT::saveScreenBuf;
 unsigned TScreenWinNT::saveScreenSize;
 unsigned TScreenWinNT::saveScreenCursorStart,
          TScreenWinNT::saveScreenCursorEnd;
-unsigned TScreenWinNT::saveScreenWidth,
-         TScreenWinNT::saveScreenHeight;
 unsigned TScreenWinNT::saveScreenCursorX,
          TScreenWinNT::saveScreenCursorY;
+#else
+ #define SaveScreenReleaseMemory()
+#endif
 DWORD    TScreenWinNT::saveScreenConsoleMode;
+unsigned TScreenWinNT::saveScreenWidth,
+         TScreenWinNT::saveScreenHeight;
 
 // Buffer used to arrange the data as needed by Win32 API
 CHAR      *TScreenWinNT::outBuf;
@@ -63,16 +94,31 @@ void TScreenWinNT::ensureOutBufCapacity(unsigned count)
    }
 }
 
-void TScreenWinNT::InitOnce()
+int TScreenWinNT::InitOnce()
 {
  // SET: On Win32 this value is symbolic, just a number that can't be a
  // malloced pointer, the screenBuffer isn't used to access the screen.
  screenBuffer=(ushort *)-1;
 
- //hIn=CreateFile("CONIN$", GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
- //hOut=CreateFile("CONOUT$", GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
  hIn=GetStdHandle(STD_INPUT_HANDLE);
+ #ifdef USE_NEW_BUFFER
+ hStdOut=GetStdHandle(STD_OUTPUT_HANDLE);
+ // Create a new buffer, it have their own content and cursor
+ hOut=CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE,
+                                0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
+ if (hStdOut==INVALID_HANDLE_VALUE || hOut==INVALID_HANDLE_VALUE)
+    return 0; // Something went wrong
+ // Make the new one the active
+ if (!SetConsoleActiveScreenBuffer(hOut))
+    return 0;
+ //hCurrentOut=hOut;
+ // Console mode
+ GetConsoleMode(hIn,&saveScreenConsoleMode);
+ SetConsoleCtrlHandler(ConsoleEventHandler,TRUE);
+ SetConsoleMode(hIn,TV_CONSOLE_MODE);
+ #else
  hOut=GetStdHandle(STD_OUTPUT_HANDLE);
+ #endif
 
  TDisplayWinNT::Init();
 
@@ -83,6 +129,7 @@ void TScreenWinNT::InitOnce()
  TScreen::System=System;
  TScreen::Resume=Resume;
  TScreen::Suspend=Suspend;
+ setCrtModeRes=SetCrtModeRes;
 
  TVWin32Clipboard::Init();
  TGKeyWinNT::Init();
@@ -91,22 +138,31 @@ void TScreenWinNT::InitOnce()
  // Cache these values
  GetCursorShapeLow(curStart,curEnd);
  GetCursorPosLow(currentCursorX,currentCursorY);
+
+ return 1;
 }
 
 
 TScreenWinNT::TScreenWinNT()
 {
- InitOnce();
+ if (!InitOnce()) return;
  flags0=CodePageVar | CursorShapes;
  screenMode=startupMode=getCrtMode();
+ #ifdef USE_NEW_BUFFER
+ // Just remmember the current window size
+ saveScreenWidth =GetCols();
+ saveScreenHeight=GetRows();
+ #else
  Resume();
+ #endif
 
  initialized=1;
+ suspended=0;
 }
 
 TScreenWinNT::~TScreenWinNT()
 {
- Suspend();
+ suspend(); // High level suspend to avoid a double call
  SaveScreenReleaseMemory();
  free(outBufCI);
  outBufCI=0;
@@ -117,22 +173,64 @@ TScreenWinNT::~TScreenWinNT()
 
 void TScreenWinNT::Resume()
 {
+ #ifdef USE_NEW_BUFFER
+ GetConsoleMode(hIn,&saveScreenConsoleMode);
+ // First switch to our handle
+ SetConsoleActiveScreenBuffer(hOut);
+ // Now we can save the current window size
+ saveScreenWidth =GetCols();
+ saveScreenHeight=GetRows();
+ //hCurrentOut=hOut; Not useful
+ // Restore our window size
+ SetCrtModeRes(screenWidth,screenHeight);
+ #else
+ // Save:
+ // Cursor shape
+ GetCursorShapeLow(saveScreenCursorStart,saveScreenCursorEnd);
+ // Cursor position
+ GetCursorPosLow(saveScreenCursorX,saveScreenCursorY);
+ // Console mode
+ GetConsoleMode(hIn,&saveScreenConsoleMode);
+ // Screen content
  SaveScreen();
- // Set our values
- SetCursorPos(currentCursorX,currentCursorY);
- SetCursorShape(curStart,curEnd);
- // In case resolution changed?
+
+ // Restore:
+ // Window size
+ SetCrtModeRes(screenWidth,screenHeight);
+ // Cursor position
+ SetCursorPosLow(currentCursorX,currentCursorY);
+ // Cursor shape
+ SetCursorShapeLow(curStart,curEnd);
+ #endif
+ // In case the size changed and we failed to restore it
  setCrtData();
-  
+ // Console mode
  SetConsoleCtrlHandler(ConsoleEventHandler,TRUE);
  SetConsoleMode(hIn,TV_CONSOLE_MODE);
 }
 
 void TScreenWinNT::Suspend()
 {
+ #ifdef USE_NEW_BUFFER
+ // Restore window size (using our handle!)
+ SetCrtModeRes(saveScreenWidth,saveScreenHeight);
+ // Switch to the original handle
+ SetConsoleActiveScreenBuffer(hStdOut);
+ #else
+ // Restore:
+ // Window size
+ SetCrtModeRes(saveScreenWidth,saveScreenHeight);
+ // If size changed the content
+ RestoreScreen();
+ // Cursor shape
+ SetCursorShape(saveScreenCursorStart,saveScreenCursorEnd);
+ // Cursor position
+ SetCursorPosLow(saveScreenCursorX,saveScreenCursorY);
+ //FlushConsoleInputBuffer(hIn);
+ #endif
+ // Console mode
  SetConsoleCtrlHandler(ConsoleEventHandler,FALSE);
  SetConsoleMode(hIn,saveScreenConsoleMode);
- RestoreScreen();
 }
 
 ushort TScreenWinNT::GetCharacter(unsigned offset)
@@ -202,6 +300,7 @@ void TScreenWinNT::SetCharacters(unsigned offset, ushort *values, unsigned count
  WriteConsoleOutput(hOut,outBufCI,dwBufferSize,dwBufferCoord,&rcWriteRegion);
 }
 
+#ifndef USE_NEW_BUFFER
 void TScreenWinNT::SaveScreen()
 {
  unsigned rows=GetRows();
@@ -221,29 +320,27 @@ void TScreenWinNT::SaveScreen()
      GetCharacters(ofs,saveScreenBuf+ofs,cols);
  screenWidth=screenWidthSave;
  screenHeight=screenHeightSave;
- 
- GetCursorShapeLow(saveScreenCursorStart,saveScreenCursorEnd);
  saveScreenWidth=(uchar)cols;
  saveScreenHeight=(uchar)rows;
- GetCursorPosLow(saveScreenCursorX,saveScreenCursorY);
- GetConsoleMode(hIn,&saveScreenConsoleMode);
+
+ /*FILE *f=fopen("screen.dat","wb");
+ fwrite(saveScreenBuf,saveScreenSize,sizeof(ushort),f);
+ fclose(f);*/
 }
 
 void TScreenWinNT::RestoreScreen()
 {
+ // Needed to make SetCharacters work OK
+ unsigned actualW=screenWidth, actualH=screenHeight;
+ screenWidth=saveScreenWidth;  screenHeight=saveScreenHeight;
+
  unsigned rows=saveScreenHeight, row, ofs;
  unsigned cols=saveScreenWidth;
  
  for (row=0, ofs=0; row<rows; row++, ofs+=cols)
      SetCharacters(ofs,saveScreenBuf+ofs,cols);
 
- unsigned x=currentCursorX, y=currentCursorY;
- SetCursorPos(saveScreenCursorX,saveScreenCursorY);
- currentCursorX=x; y=currentCursorY=y;
-
- unsigned s=curStart, e=curEnd;
- SetCursorShape(saveScreenCursorStart,saveScreenCursorEnd);
- curStart=s; curEnd=e;
+ screenWidth=actualW; screenHeight=actualH;
 }
 
 void TScreenWinNT::SaveScreenReleaseMemory()
@@ -252,6 +349,7 @@ void TScreenWinNT::SaveScreenReleaseMemory()
  saveScreenBuf=NULL;
  saveScreenSize=0;
 }
+#endif
 
 void TScreenWinNT::YieldProcessor(int micros)
 {
@@ -292,6 +390,63 @@ TScreen *TV_WinNTDriverCheck()
    }
  return drv;
 }
+
+/**[txh]********************************************************************
+
+  Description:
+  Change the window size to the desired value. The font size is ignored
+because it can't be controlled by the application, the Win32 API reference
+I have says: "A screen buffer can be any size, limited only by available
+memory. The dimensions of a screen buffer's window cannot exceed the
+corresponding dimensions of either the screen buffer or the maximum window
+that can fit on the screen based on the current font size (controlled
+exclusively by the user).".@*
+  It only works if we are windowed and this will prevent from going full
+screen unless Windows knows an equivalent text mode.
+  
+  Return: 0 no change, 1 full change, 2 approx. change. by SET
+  
+***************************************************************************/
+
+int TScreenWinNT::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
+{
+ CONSOLE_SCREEN_BUFFER_INFO info;
+ // Find current size
+ if (!GetConsoleScreenBufferInfo(hCurrentOut,&info)) return 0;
+ // Is the same used?
+ if (info.dwSize.X==(int)w && info.dwSize.Y==(int)h)
+   {
+    DBPr3("Already using %d,%d size\n",w,h);
+    return 0;
+   }
+ // Find the max. size, depends on the font and screen size.
+ COORD max=GetLargestConsoleWindowSize(hCurrentOut);
+ COORD newSize={w,h};
+ if (newSize.X>max.X) newSize.X=max.X;
+ if (newSize.Y>max.Y) newSize.Y=max.Y;
+ // The buffer must be large enough to hold both modes (current and new)
+ COORD newBufSize=newSize;
+ if (info.dwMaximumWindowSize.X>newBufSize.X)
+    newBufSize.X=info.dwMaximumWindowSize.X;
+ if (info.dwMaximumWindowSize.Y>newBufSize.Y)
+    newBufSize.Y=info.dwMaximumWindowSize.Y;
+ // Enlarge the buffer size. It fails if not windowed.
+ if (!SetConsoleScreenBufferSize(hCurrentOut,newBufSize)) return 0;
+ // Resize the window.
+ SMALL_RECT r={0,0,newSize.X-1,newSize.Y-1};
+ if (!SetConsoleWindowInfo(hCurrentOut,TRUE,&r))
+   {// Revert buffer size
+    newSize.X=info.dwMaximumWindowSize.X;
+    newSize.Y=info.dwMaximumWindowSize.Y;
+    SetConsoleScreenBufferSize(hCurrentOut,newSize);
+    return 0;
+   }
+ // Now we can shrink the buffer to the needed size
+ SetConsoleScreenBufferSize(hCurrentOut,newSize);
+ // Ok! we did it.
+ return fW!=-1 || fH!=-1 || newSize.X!=(int)w || newSize.Y!=(int)h ? 2 : 1;
+}
+
 #else
 
 #include <tv/winnt/screen.h>
