@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.542  2004/05/31 14:52:59  set
+* Fixed: The F3 shortcut of menu item "File|Open" wasn't explicit in the
+TEditorApp. Patch by David D. (ddoubrava/volny/cz)
+* Added: [MSVC] Uses_glob to the MSC section of tfilelist.cc. Looks like
+it's needed. Patch by David D. (ddoubrava/volny/cz)
+
 Revision 2.541  2004/05/28 20:53:38  set
 * Updated: Library version in the readme.txt and Debian control file.
 .
