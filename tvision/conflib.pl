@@ -135,7 +135,11 @@ sub RunGCCTest
     `$command 2>> $ErrorLog`;
    }
  $test=`./test.exe`;
- unlink('test.o',$file,'test.exe');
+ #print "$command: $test";
+ # Does anybody know why I can't delete the exe here?
+ # In Linux it makes the variable $test to change!
+ #unlink('test.o',$file,'test.exe');
+ unlink('test.o',$file);
  $test;
 }
 

@@ -1,4 +1,13 @@
 $Log$
+Revision 1.160  2000/12/09 21:17:06  set
+* Applied changes from Anatoli to the WinNT port. They enhances the
+configuration process and fixes some problems and typos. Read-only temporals
+was fixed.
+* Reverted the if ( !key ) return False; added to TNSSortedCollection::search
+because it generated a nasty bug in the editor.
+* Updated the winnt/readme.txt to reflect the current steps.
+* Added a TODO file.
+.
 Revision 1.159  2000/09/24 14:53:46  set
 * Added: Endianess detection to the configure mechanism. It defines
 TV_BIG_ENDIAN for big endian machines.
