@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.458  2003/05/21 20:57:38  set
+* Fixed: Some pointer casts to use long as data type instead of int. This
+is needed for 64 bits targets. The demo compile and seems to be functional
+for Itanium processors.
+
 Revision 2.457  2003/05/21 17:42:44  set
 * Fixed: [Linux] The debug log mechanism to compile with gcc 3.x.
 
