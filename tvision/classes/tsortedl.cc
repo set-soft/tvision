@@ -10,15 +10,17 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <ctype.h>
+#include <limits.h>
+#include <string.h>
 
 #define Uses_TKeys
 #define Uses_TEvent
 #define Uses_TSortedListBox
 #define Uses_TSortedCollection
 #include <tv.h>
-#include <ctype.h>
-#include <limits.h>
-#include <string.h>
 
 #ifdef __TURBOC__
 char &shiftKeys = *(char *)MK_FP( 0x40, 0x17 );

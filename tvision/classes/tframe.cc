@@ -10,6 +10,11 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define Uses_TFrame
 #define Uses_TDrawBuffer
@@ -20,10 +25,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStreamableClass
 #define Uses_TPalette
 #include <tv.h>
-
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 #define cpFrame "\x01\x01\x02\x02\x03"
 

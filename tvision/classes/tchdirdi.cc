@@ -10,6 +10,11 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <ctype.h>
+#include <string.h>
+#include <unistd.h>
 
 #define Uses_MsgBox
 #define Uses_TChDirDialog
@@ -28,10 +33,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_ipstream
 #define Uses_TStreamableClass
 #include <tv.h>
-
-#include <ctype.h>
-#include <string.h>
-#include <unistd.h>
 
 TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     TDialog( TRect( 16, 2, 64, 20 ), _("Change Directory") )

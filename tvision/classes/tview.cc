@@ -10,6 +10,10 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
+#include <stdio.h>
 
 #define Uses_TKeys
 #define Uses_TKeys_Extended
@@ -27,8 +31,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv.h>
 
 #include <limits.h>
-#include <string.h>
-#include <stdio.h>
 #if 0 // def __DJGPP__
 #include <dos.h>
 #include <go32.h>

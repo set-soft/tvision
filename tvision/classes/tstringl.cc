@@ -10,13 +10,14 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TStringList
 #define Uses_TStrIndexRec
 #define Uses_ipstream
 #include <tv.h>
-
-#include <string.h>
 
 TStringList::~TStringList()
 {

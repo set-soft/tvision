@@ -10,10 +10,12 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <stdio.h>
 
 #define Uses_TParamText
 #include <tv.h>
-#include <stdio.h>
 
 TParamText::TParamText( const TRect& bounds,
                         const char *aText,

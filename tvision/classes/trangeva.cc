@@ -10,15 +10,17 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
+#include <limits.h>
+#include <stdio.h>
 
 #define Uses_ipstream
 #define Uses_opstream
 #define Uses_TRangeValidator
 #define Uses_MsgBox
 #include <tv.h>
-#include <string.h>
-#include <limits.h>
-#include <stdio.h>
 
 TRangeValidator::TRangeValidator() : TFilterValidator("0123456789-+")
 {

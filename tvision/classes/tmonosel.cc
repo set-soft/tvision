@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TKeys
 #define Uses_TMonoSelector
@@ -21,8 +24,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #include <tv.h>
-
-#include <string.h>
 
 const uchar monoColors[] = { 0x07, 0x0F, 0x01, 0x70, 0x09 };
 

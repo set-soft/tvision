@@ -10,14 +10,16 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
+#include <limits.h>
+#include <stdio.h>
 
 #define Uses_ipstream
 #define Uses_opstream
 #define Uses_TValidator
 #include <tv.h>
-#include <string.h>
-#include <limits.h>
-#include <stdio.h>
 
 TValidator::TValidator() : Status(0), Options(0), Owner(NULL)
 {

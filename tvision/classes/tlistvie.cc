@@ -10,6 +10,9 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <string.h>
 
 #define Uses_TKeys
 #define Uses_TListViewer
@@ -23,8 +26,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStreamableClass
 #define Uses_TPalette
 #include <tv.h>
-
-#include <string.h>
 
 #define cpListViewer "\x1A\x1A\x1B\x1C\x1D"
 

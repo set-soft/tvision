@@ -10,6 +10,10 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
+// SET: Moved the standard headers here because according to DJ
+// they can inconditionally declare symbols like NULL
+#include <ctype.h>
+#include <string.h>
 
 #define Uses_TKeys
 #define Uses_THistoryViewer
@@ -17,9 +21,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TEvent
 #define Uses_TPalette
 #include <tv.h>
-
-#include <ctype.h>
-#include <string.h>
 
 #define cpHistoryViewer "\x06\x06\x07\x06\x06"
 
