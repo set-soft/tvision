@@ -1,4 +1,29 @@
 $Log$
+Revision 1.46  1999/05/15 23:51:09  root (set)
+* Good news for xterm funs:
+* Fixed: A bug in the startcurses() that made xterm report the wrong codes
+for arrow keys and other keys.
+* Fixed: A bug and a lack of some stuff during the exit that left the
+terminal in a wrong state after exit (including not restoring the screen)
+* Added: Support for mouse, isn't as good as gpm because you can't track the
+position in real time, but you can resize and move windows anyways.
+* Fixed: A bug in the bold reset code, it made a funny effect: when starting
+the desktop was with normal fonts, but with the use all were becoming bold.
+* Fixed: xterm (and others) doesn't have 16 backgrounds and the color dialog
+was trying to show 16.
+* Fixed: Now the "User screen" works when the program is in a terminal.
+* Added: A temporal workaround to support Eterm when the user have TERM=xterm
+(the default in Debian, bug mess Home and End). You need ncurses 4.2 for that.
+* Discovered: A thing that was floating in my mind: why mc interfers? simply:
+mc runs the childs in ttypN consoles, so you are in a terminal when starting
+the editor from mc.
+* Modified: Now the ESC delay is 100ms and not 1s.
+* Fixed: The DEC character mapping for the scroll bar that is full and the
+block used for the color selector. They aren't pretty but at least you can
+understand what they mean.
+* Added: Handling for SIGWINCH, so now TV applications are resized if the
+xterm window is resized.
+
 Revision 1.45  1999/05/13 03:05:03  root (set)
 * Added: Support for xterm way of reporting ALT+key (key | 0x80). Now the
 startcurses() routine sets the "XtermMode" when the TERM is xterm*. It makes
