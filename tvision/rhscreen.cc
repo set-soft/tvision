@@ -14,6 +14,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//#define DEBUG
+#define TOSTDERR
+#ifndef DEBUG
+#define dbprintf(a...)
+#else
+# ifdef TOSTDERR
+#  define dbprintf(a...) fprintf(stderr,a)
+# else
+#  define dbprintf(a...) printf(a)
+# endif
+#endif
+
 extern ushort user_mode;
 int blink_use_bios = 0;
 
@@ -150,15 +162,18 @@ void rh_SaveVideo(int cols,int rows)
   }
   if (rh_vesa_supported && (vesa_mode = rh_is_vesa_mode()))
   {
+    dbprintf("Saving VESA mode %d\n",vesa_mode);
     rh_save_vesa();
   }
   else
   if ((vga_mode = rh_is_vga_mode()))
   {
+    dbprintf("Saving VGA mode %d\n",vga_mode);
     rh_save_vga();
   }
   else
   {
+    dbprintf("Saving text mode\n");
     screensize = cols*rows*2;
     TDisplay::GetCursor(user_cursor_x,user_cursor_y);
     user_cursor = TScreen::getCursorType();
@@ -192,14 +207,17 @@ void rh_RestoreVideo()
   if (vesa_mode)
   {
     rh_restore_vesa();
+    dbprintf("Restoring VESA mode\n");
   }
   else
   if (vga_mode)
   {
     rh_restore_vga();
+    dbprintf("Restoring VGA mode\n");
   }
   else
   {
+    dbprintf("Restoring text mode\n");
     if (user_mode != 7)
       rh_restore_vga_state();
     TFont::UseDefaultFontsNextTime=1;
