@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.168  2002/06/24 15:00:29  set
+* Fixed: A couple of errors in new classes exposed when compiling for
+djgpp.
+
 Revision 2.167  2002/06/24 14:59:25  set
 * Added: "Priority" variable to the configuration section of each driver.
 So now you can change the importance of each driver. The section names of
