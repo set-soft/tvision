@@ -1,4 +1,10 @@
 $Log$
+Revision 1.209  2001/09/25 23:18:41  set
+* Modified: [UNIX] Now if the user is the superuser (uid 0 is ok?) the
+library uses the owner mask to report R.O. status. This is not quite true,
+the root can write on it but if the volume is R.O. I think that's the best
+clue we have.
+
 Revision 1.208  2001/09/25 23:08:01  set
 * Added: [Linux] Support for /dev/vc/NN devices in the keyboard routines.
 Thanks to Andris, he have a system that uses it.
@@ -7,6 +13,7 @@ Revision 1.207  2001/09/25 02:17:04  set
 * Fixed: Problems in TEditor class when handling UNIX files.
 * Fixed: A bug introduced by JASC while adapting teditorf.cc to work for
 big endian platforms. It rendered TEditor buffers as only spaces ;-)
+Reported by Owen Rudge <owen@osplus.co.uk>.
 * Fixed: Tons of warnings, some of them bugs that made impossible to
 compile the Dialog Design program.
 * Fixed: One of the desklogo examples was supposed to show the use of ^Z
