@@ -17,13 +17,15 @@ else
   }
 
 # Patch the version number
+$oldv2='v'.$oldv;
+$newv2='v'.$newv;
 foreach $i (@files)
   {
    print 'Processing '."$i";
    $r=&cat($i);
-   if ($r =~ /$oldv/)
+   if ($r =~ /$oldv2/)
      {
-      $r =~ s/$oldv/$newv/g;
+      $r =~ s/$oldv2/$newv2/g;
       &replace($i,$r);
       print " updated version\n";
      }
