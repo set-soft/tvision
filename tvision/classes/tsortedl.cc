@@ -83,7 +83,8 @@ void TSortedListBox::handleEvent(TEvent& event)
     }
     if( event.what == evKeyDown )
         {
-        if( event.keyDown.charScan.charCode != 0 )
+        if( event.keyDown.charScan.charCode != 0 ||
+            event.keyDown.keyCode == kbBack)
             {
             value = focused;
             if( value < range )
@@ -102,11 +103,24 @@ void TSortedListBox::handleEvent(TEvent& event)
                 }
             else if( (event.keyDown.charScan.charCode == '.') )
                 {
-                char *loc = strchr( curString, '.' );
-                if( loc == 0 )
-                    searchPos = USHRT_MAX;
+                char *loc = strchr( curString+
+                                    (searchPos==USHRT_MAX ? 0 : searchPos), '.' );
+                if( loc )
+                  {
+                   searchPos = ushort(loc - curString);
+                   if (oldPos == USHRT_MAX)
+                      oldPos = 0;
+                  }
                 else
-                    searchPos = ushort(loc - curString);
+                  {
+                   if (searchPos == USHRT_MAX)
+                     {
+                      searchPos++;
+                      curString[searchPos] = '.';
+                      curString[searchPos+1] = EOS;
+                      oldPos = 0;
+                     }
+                  }
                 }
             else
                 {
