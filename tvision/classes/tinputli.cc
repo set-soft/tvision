@@ -6,12 +6,15 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea (added insertChar, middle button paste and
+other stuff).
 
  *
  *
  */
 // SET: Moved the standard headers here because according to DJ
 // they can inconditionally declare symbols like NULL
+// Added insertChar member.
 #define Uses_ctype
 #define Uses_string
 #define Uses_TKeys
@@ -23,6 +26,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStreamableClass
 #define Uses_TValidator
 #define Uses_TPalette
+#define Uses_TVOSClipboard
 #include <tv.h>
 
 char hotKey( const char *s )
@@ -155,16 +159,107 @@ void  TInputLine::deleteSelect()
         }
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Inserts a character at the cursor position. If the text is currently
+selected it's removed. If a validator is defined it's called. This basic
+input line have a fixed size and will refuse to insert the character if
+there is not enough space, but the virtual resizeData() is called giving
+a chance to create variable size input lines.@*
+  I (SET) moved it to allow insertions from sources other than the keyboard
+emulating it's behavior.
+  
+  Return: False if the validator canceled the character, otherwise True.
+  
+***************************************************************************/
+
+Boolean TInputLine::insertChar(char value)
+{
+    if (validator)
+    {
+      char tmp[2];
+      tmp[0] = value;
+      tmp[1] = 0;
+      if (validator->IsValidInput(tmp,False) == False)
+         return False;
+    }
+    if( (state & sfCursorIns) == 0 )
+    {
+        deleteSelect();
+    }
+    int32 l = strlen(data);
+    if (((l == maxLen) && ((state & sfCursorIns) == 0)) ||
+        ((state & sfCursorIns) && curPos == maxLen))
+      resizeData();
+    {
+      if( (state & sfCursorIns) == 0 )
+      {
+        if (l < maxLen)
+          memmove( data + curPos + 1, data + curPos,
+                   strlen(data+curPos)+1 );
+      }
+      else if (l == curPos)
+      {
+        data[curPos+1] = 0;
+      }
+      if ((((state & sfCursorIns) == 0) && (l < maxLen)) ||
+          ((state & sfCursorIns) && (curPos < maxLen)))
+      {
+        if( firstPos > curPos )
+            firstPos = curPos;
+        data[curPos++] = value;
+      }
+    }
+    return True;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Used internally to ensure the cursor is at a visible position, unselect
+the text and force a draw.
+  
+***************************************************************************/
+
+void TInputLine::makeVisible()
+{
+    selStart = 0;
+    selEnd = 0;
+    if( firstPos > curPos )
+        firstPos = curPos;
+    int i = curPos - size.x + 2;
+    if( firstPos < i )
+        firstPos = i;
+    drawView();
+}
+
 void  TInputLine::handleEvent( TEvent& event )
 {
     TView::handleEvent(event);
 
-    int delta, anchor, i;
+    int delta, anchor;
     if( (state & sfSelected) != 0 )
         switch( event.what )
             {
             case  evMouseDown:
-                if( canScroll(delta = mouseDelta(event)) )
+                if( event.mouse.buttons == mbMiddleButton &&
+                    TVOSClipboard::isAvailable() > 1 )
+                   {
+                   unsigned size,i;
+                   char *p=TVOSClipboard::paste(1,size);
+                   if( p )
+                     {
+                     for (i=0; i<size; i++)
+                        {
+                        insertChar( p[i] );
+                        selStart = selEnd = 0; // Reset the selection or we will delete the last insertion
+                        }
+                     DeleteArray( p );
+                     makeVisible();
+                     }
+                   }
+                else if( canScroll(delta = mouseDelta(event)) )
                     do  {
                         if( canScroll(delta) )
                             {
@@ -172,7 +267,7 @@ void  TInputLine::handleEvent( TEvent& event )
                             drawView();
                             }
                         } while( mouseEvent( event, evMouseAuto ) );
-                else if (event.mouse.doubleClick)
+                else if( event.mouse.doubleClick )
                         selectAll(True);
                 else
                     {
@@ -243,59 +338,18 @@ void  TInputLine::handleEvent( TEvent& event )
                     default:
                         if( event.keyDown.charScan.charCode >= ' ' )
                           {
-                            if (validator)
+                          if( !insertChar( event.keyDown.charScan.charCode ) )
                             {
-                              char tmp[2];
-                              tmp[0] = event.keyDown.charScan.charCode;
-                              tmp[1] = 0;
-                              if (validator->IsValidInput(tmp,False) == False)
-                              {
-                                clearEvent(event);
-                                break;
-                              }
-                            }
-                            if( (state & sfCursorIns) == 0 )
-                            {
-                                deleteSelect();
-                            }
-                            int32 l = strlen(data);
-                            if (((l == maxLen) && ((state & sfCursorIns) == 0)) ||
-                                ((state & sfCursorIns) && curPos == maxLen))
-                              resizeData();
-                            {
-                              if( (state & sfCursorIns) == 0 )
-                              {
-                                if (l < maxLen)
-                                  memmove( data + curPos + 1, data + curPos,
-                                           strlen(data+curPos)+1 );
-                              }
-                              else if (l == curPos)
-                              {
-                                data[curPos+1] = 0;
-                              }
-                              if ((((state & sfCursorIns) == 0) && (l < maxLen)) ||
-                                  ((state & sfCursorIns) && (curPos < maxLen)))
-                              {
-                                if( firstPos > curPos )
-                                    firstPos = curPos;
-                                data[curPos++] =
-                                    event.keyDown.charScan.charCode;
-                              }
+                            clearEvent(event);
+                            break;
                             }
                           }
-                          else
+                        else
                           {
                              return;
                           }
                     }
-                    selStart = 0;
-                    selEnd = 0;
-                    if( firstPos > curPos )
-                        firstPos = curPos;
-                    i = curPos - size.x + 2;
-                    if( firstPos < i )
-                        firstPos = i;
-                    drawView();
+                    makeVisible();
                     clearEvent( event );
                     break;
             }

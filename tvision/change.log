@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.283  2002/09/03 13:44:24  set
+* Fixed: TVConfigFile::AddString added integers, I found it when the editor
+failed to set the palette as a string ;-)
+
 Revision 2.282  2002/09/02 13:52:37  set
 * Fixed: Various code page and font details to avoid problems in case of
 fails.
