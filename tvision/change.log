@@ -1,4 +1,8 @@
 $Log$
+Revision 1.73  1999/06/30 23:29:42  set
+* Fixed: windowSizeChanged is from TDisplay, but was declared as TScreen
+member, gcc 2.96 warns about it as an ANSI C++ violation.
+.
 Revision 1.72  1999/06/27 20:40:47  root (set)
 * Added: More information in Linux TScreen module for cases where the
 library fails to open the terminal for output. It seems to happend in some
