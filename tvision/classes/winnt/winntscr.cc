@@ -141,7 +141,7 @@ int TScreenWinNT::InitOnce()
  GetCursorPosLow(currentCursorX,currentCursorY);
 
  UINT cp=GetConsoleOutputCP();
- codePage=new TVCodePage(cp,cp);
+ codePage=new TVCodePage(cp,cp,GetConsoleCP());
 
  return 1;
 }

@@ -21,6 +21,7 @@ Mouse reporting not disabled at exit!!!
 #define Uses_string
 #define Uses_ctype
 #define Uses_iostream
+#define Uses_TVCodePage
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -657,6 +658,11 @@ TScreenUNIX::TScreenUNIX()
   for (i=0;i<len;i++)
       screenBuffer[i] = 0x0720;
 
+  // That's the most common case and I don't know anout any reliable way to
+  // find a better default.
+  codePage=new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
+                          TVCodePage::ISOLatin1Linux);
+                         
   startcurses();
   setVideoMode(screenMode);
   suspended = 0;

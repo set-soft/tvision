@@ -128,7 +128,7 @@ int TScreenWin32::InitConsole()
  EventThreadHandle=CreateThread(NULL,0,HandleEvents,NULL,0,&EventThreadID);
 
  UINT cp=GetConsoleOutputCP();
- codePage=new TVCodePage(cp,cp);
+ codePage=new TVCodePage(cp,cp,GetConsoleCP());
 
  return 1;
 }

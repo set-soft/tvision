@@ -66,7 +66,8 @@ uchar TScreenDOS::primaryFontSet=0,
       TScreenDOS::secondaryFontSet=0,
       TScreenDOS::fontsSuspended=0;
 int   TScreenDOS::origCPScr,
-      TScreenDOS::origCPApp;
+      TScreenDOS::origCPApp,
+      TScreenDOS::origCPInp;
 int   TScreenDOS::fontSeg=-1;
 TScreenFont256 TScreenDOS::appFonts[2]={{0,0,NULL},{0,0,NULL}};
 
@@ -130,7 +131,7 @@ TScreenDOS::TScreenDOS()
     dosInt();
     dosCodePage=BX;
    }
- codePage=new TVCodePage(dosCodePage,dosCodePage);
+ codePage=new TVCodePage(dosCodePage,dosCodePage,dosCodePage);
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
         CanSetBFont | CanSetSBFont  | CanSetVideoSize;
@@ -615,7 +616,7 @@ int TScreenDOS::SetFont(int changeP, TScreenFont256 *fontP,
        if (appCP==-1)
           TVCodePage::SetScreenCodePage(fontCP);
        else
-          TVCodePage::SetCodePage(appCP,fontCP);
+          TVCodePage::SetCodePage(appCP,fontCP,-1);
       }
    return 1;
    }
@@ -646,7 +647,7 @@ int TScreenDOS::SetFont(int changeP, TScreenFont256 *fontP,
  if (changeP)
    {
     if (!primaryFontSet)
-       TVCodePage::GetCodePages(origCPApp,origCPScr);
+       TVCodePage::GetCodePages(origCPApp,origCPScr,origCPInp);
     if (fontP)
       {
        SetFontBIOS(0,charLines,fontP->data,0);
@@ -677,7 +678,7 @@ int TScreenDOS::SetFont(int changeP, TScreenFont256 *fontP,
     if (appCP==-1)
        TVCodePage::SetScreenCodePage(fontCP);
     else
-       TVCodePage::SetCodePage(appCP,fontCP);
+       TVCodePage::SetCodePage(appCP,fontCP,-1);
    }
  return 1;
 }
@@ -903,7 +904,7 @@ void TScreenDOS::SelectFont(unsigned height, Boolean Force)
 
  if (fontWasLoaded && !(primaryFontSet || secondaryFontSet))
     // Restore the original encoding if we forced ROM fonts
-    TVCodePage::SetCodePage(origCPApp,origCPScr);
+    TVCodePage::SetCodePage(origCPApp,origCPScr,origCPInp);
 }
 
 

@@ -33,6 +33,15 @@ are used for the remap. The curAppCP holds the ID of this map.@p
 8-bits Screen like the Linux kernel does. We recode the application using
 the ACM and if ACM!=SFM we use a simple table that makes: 8-bits -> 8-bits
 Screen and if it isn't needed we just send the code to the screen.@p
+  I added a new code page to this: the input code page. In Linux systems
+the input is supposed to be encoded in the ACM code page. In Windows systems
+they can be different and they are asked with different calls. It can be
+useful if you want to use an encoding different than the currently used by
+the OS. You can change the screen encoding and load an appropriate font for
+it, then you change the application code page and you can properly see
+documents encoded in the target code page. But in order to edit them you
+need to translate the codes that come from keyboard to the target code page.
+That's a good use for the input code page.
   
 ***************************************************************************/
 
@@ -83,14 +92,20 @@ uchar          TVCodePage::AlphaTable[256];
 // in a better place.
 uchar          TVCodePage::OnTheFlyMap[256];
 char           TVCodePage::NeedsOnTheFlyRemap=0;
+// This is a translation for the codes from keyboard.
+uchar          TVCodePage::OnTheFlyInpMap[256];
+char           TVCodePage::NeedsOnTheFlyInpRemap=0;
 // Current code pages
 //  The source code is encoded in CP 437
 int            TVCodePage::curAppCP=437;
 //  We assume the screen is also CP 437, if it isn't true the driver will inform it.
 int            TVCodePage::curScrCP=437;
+// What we get from the keyboard
+int            TVCodePage::curInpCP=437;
 // Default values suggested by the current driver
 int            TVCodePage::defAppCP=437;
 int            TVCodePage::defScrCP=437;
+int            TVCodePage::defInpCP=437;
 // User provided function to call each time we change the code page.
 // This is called before sending a broadcast.
 void         (*TVCodePage::UserHook)(ushort *map)=NULL;
@@ -1243,14 +1258,15 @@ void TVCodePage::CreateCodePagesCol()
  #undef a
 }
 
-TVCodePage::TVCodePage(int idApp, int idScr)
+TVCodePage::TVCodePage(int idApp, int idScr, int idInp)
 {
  if (!CodePages)
     CreateCodePagesCol();
  FillTables(idApp);
  CreateOnTheFlyRemap(idApp,idScr);
- defScrCP=idScr;
- curScrCP=idScr;
+ curScrCP=defScrCP=idScr;
+ CreateOnTheFlyInpRemap(idInp,idApp);
+ curInpCP=defInpCP=idInp;
  defAppCP=idApp;
  if (idApp!=curAppCP)
    {
@@ -1259,25 +1275,18 @@ TVCodePage::TVCodePage(int idApp, int idScr)
    }
 }
 
-void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
-{
- // Create on-the-fly remap table if needed
- if (idApp==idScr)
-   {
-    NeedsOnTheFlyRemap=0;
-    return;
-   }
- NeedsOnTheFlyRemap=1;
 
+void TVCodePage::CreateRemap(int idSource, int idDest, uchar *table)
+{
  unsigned i;
  // Table to convert a value into an internal code.
  // That's what we need.
- ushort *toCode=GetTranslate(idApp),*aux;
+ ushort *toCode=GetTranslate(idSource),*aux;
  // Table to convert an internal value into a 0-255 value.
  // That's what we have. If something is missing we will remap to a similar.
  uchar *fromCode=new uchar[maxSymbolDefined];
  memset(fromCode,0,maxSymbolDefined*sizeof(uchar));
- CodePage *destCP=CodePageOfID(idScr);
+ CodePage *destCP=CodePageOfID(idDest);
  aux=destCP->Font;
  for (i=0; i<128; i++)
      if (aux[i]<maxSymbolDefined) // extra check, just in case I forgot to update the constant
@@ -1312,17 +1321,40 @@ void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
     }
 
  for (i=0; i<256; i++)
-     OnTheFlyMap[i]=fromCode[toCode[i]];
+     table[i]=fromCode[toCode[i]];
 
- delete[] fromCode;
+ DeleteArray(fromCode);
+}
 
- /* To debug the reampping table:
+void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
+{
+ // Create on-the-fly remap table if needed
+ if (idApp==idScr)
+   {
+    NeedsOnTheFlyRemap=0;
+    return;
+   }
+ NeedsOnTheFlyRemap=1;
+ CreateRemap(idApp,idScr,OnTheFlyMap);
+
+ /* To debug the remapping table:
  fputs("Usando remapeo:\n",stderr);
  for (i=0; i<256; i++)
     {
      fprintf(stderr,"0x%02X,",OnTheFlyMap[i]);
      if (!((i+1)&0xF)) fputc('\n',stderr);
     }*/
+}
+
+void TVCodePage::CreateOnTheFlyInpRemap(int idInp, int idApp)
+{
+ if (idInp==idApp)
+   {
+    NeedsOnTheFlyInpRemap=0;
+    return;
+   }
+ NeedsOnTheFlyInpRemap=1;
+ CreateRemap(idInp,idApp,OnTheFlyInpMap);
 }
 
 /**[txh]********************************************************************
@@ -1335,15 +1367,21 @@ is used to remap the application, only if it changed.
   
 ***************************************************************************/
 
-void TVCodePage::SetCodePage(int idApp, int idScr)
+void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
 {
+ //fprintf(stderr,"idApp %d idScr %d idInp %d\n",idApp,idScr,idInp);
  if (idApp==-1)
     idApp=curAppCP;
  if (idScr==-1)
     idScr=curScrCP;
+ if (idInp==-1)
+    idInp=curInpCP;
  if (curAppCP!=idApp || curScrCP!=idScr)
     CreateOnTheFlyRemap(idApp,idScr);
+ if (curAppCP!=idApp || curInpCP!=idInp)
+    CreateOnTheFlyInpRemap(idInp,idApp);
  curScrCP=idScr;
+ curInpCP=idInp;
  if (curAppCP!=idApp)
    {
     curAppCP=idApp;

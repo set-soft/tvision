@@ -35,15 +35,16 @@ const unsigned rbgDontRemapLow32=1, rbgOnlySelected=2;
 class TVCodePage
 {
 public:
- TVCodePage(int idApp, int idScr);
+ TVCodePage(int idApp, int idScr, int idInp);
  ~TVCodePage();
  static ccIndex IDToIndex(int id);
  static int     IndexToID(ccIndex index);
  static ushort *GetTranslate(int id);
- static void    SetCodePage(int idApp, int idScr);
+ static void    SetCodePage(int idApp, int idScr, int idInp);
  // Helpers to call SetCodePage
- static void    SetCodePage(int idCP) { SetCodePage(idCP,idCP); };
- static void    SetScreenCodePage(int idCP) { SetCodePage(curAppCP,idCP); };
+ static void    SetCodePage(int idCP) { SetCodePage(idCP,idCP,idCP); };
+ static void    SetScreenCodePage(int idCP) { SetCodePage(curAppCP,idCP,curInpCP); };
+ static void    SetInputCodePage(int idCP) { SetCodePage(curAppCP,curScrCP,idCP); };
  static TStringCollection
                *GetList(void);
  static uchar   RemapChar(uchar c, ushort *map);
@@ -62,13 +63,15 @@ public:
 
  static Boolean OnTheFlyRemapNeeded() { return NeedsOnTheFlyRemap ? True : False; }
  static uchar   OnTheFlyRemap(uchar val) { return OnTheFlyMap[val]; }
+ static Boolean OnTheFlyRemapInpNeeded() { return NeedsOnTheFlyInpRemap ? True : False; }
+ static uchar   OnTheFlyInpRemap(uchar val) { return OnTheFlyInpMap[val]; }
  static void    CreateCPFromUnicode(CodePage *cp, int id, const char *name,
                                     ushort *unicodes);
  static ccIndex AddCodePage(CodePage *cp);
- static void    GetCodePages(int &idScr, int &idApp)
-                { idApp=curAppCP; idScr=curScrCP; }
- static void    GetDefaultCodePages(int &idScr, int &idApp)
-                { idApp=defAppCP; idScr=defScrCP; }
+ static void    GetCodePages(int &idScr, int &idApp, int &idInp)
+                { idApp=curAppCP; idScr=curScrCP; idInp=curInpCP; }
+ static void    GetDefaultCodePages(int &idScr, int &idApp, int &idInp)
+                { idApp=defAppCP; idScr=defScrCP; idInp=defInpCP; }
  static int     LookSimilarInRange(int code, int last);
 
  // Arbitrary names for the supported code pages
@@ -95,14 +98,16 @@ protected:
  static void      RemapTVStrings(ushort *map);
  static void      FillTables(int id);
  static void      CreateOnTheFlyRemap(int idApp, int idScr);
+ static void      CreateOnTheFlyInpRemap(int idInp, int idApp);
+ static void      CreateRemap(int idSource, int idDest, uchar *table);
  static void      CreateCodePagesCol();
  static void      ChangeDefaultCodePages(int idScr, int idApp)
                   { defAppCP=idApp; defScrCP=idScr; }
 
  static TVCodePageCol *CodePages;
  static ushort CPTable[257];
- static int    curAppCP,curScrCP;
- static int    defAppCP,defScrCP;
+ static int    curAppCP,curScrCP,curInpCP;
+ static int    defAppCP,defScrCP,defInpCP;
  static uchar  toUpperTable[256];
  static uchar  toLowerTable[256];
  static uchar  AlphaTable[256];
@@ -110,6 +115,8 @@ protected:
  static ushort Similar2[];
  static char   NeedsOnTheFlyRemap;
  static uchar  OnTheFlyMap[256];
+ static char   NeedsOnTheFlyInpRemap;
+ static uchar  OnTheFlyInpMap[256];
  static TVCodePageCallBack  UserHook;
  static stIntCodePairs      InternalMap[];
  static const int           providedUnicodes;

@@ -127,7 +127,7 @@ protected:
  static void   SelectFont(unsigned height, Boolean Force=False);
  static uchar  primaryFontSet,secondaryFontSet;
  static uchar  fontsSuspended;
- static int    origCPScr, origCPApp;
+ static int    origCPScr, origCPApp, origCPInp;
  static int    fontSeg;           // segment of DOS buffer for 8x10 font
  static TScreenFont256 appFonts[2];
 
