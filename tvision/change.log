@@ -1,4 +1,11 @@
 $Log$
+Revision 1.51  1999/05/21 14:10:02  root (set)
+* Fixed: When I removed some code in TScreen I made stdout the output of the
+library, but then redirecting the stdout from the program and printing sent
+undesired escape sequences to the redirected file. For this reason I open the
+tty with other file handle. *NHP* (Never Hit Public, it means only I used a
+version with this bug).
+
 Revision 1.50  1999/05/20 22:57:25  root (set)
 * Fixed: Now Uses_TStrListMaker defines Uses_TStringList. Patch by Laurynas
 Biveinis <lauras@softhome.net>.
