@@ -25,21 +25,15 @@ endif
 # Backup upstream provided regenerated files (if no previous backups exists):
 	for file in $$(cat debian/files_to_backup) ; do test -e "$$file" && cp "$$file" "$$file.bkpdeb" ; done ; exit 0
 	./configure --prefix=$(destdir) --fhs
+	cat Makefile | grep -v 'ldconfig' > Makefile
 	$(MAKE)
 	touch build-stamp
 
 
 clean: clean-debian
+	$(MAKE) clean
 # Restore upstream provided regenerated files (if backup exists):
 	for file in $$(cat debian/files_to_backup) ; do test -e "$$file.bkpdeb" && mv "$$file.bkpdeb" "$$file" ; done ; exit 0
-# Upstream doesn't have a clean target yet:
-	rm -f linux/obj/*.o
-	rm -f compat/obj/*.o
-	rm -f linux/librhtv.a
-	rm -f linuxso/librhtv.so*
-	rm -f linuxso/gkeyli.cc
-	rm -f linuxso/makemak.pl
-	rm -f linuxso/obj/*.o
 	rm -f configure.cache
 	rm -f build-stamp
 
@@ -71,7 +65,7 @@ binary-arch: build install
 	dh_testroot
 	dh_installdocs -p $(package)$(version) extra/eterm/ borland.txt copying copying.rh readme.txt
 	dh_installdocs -p $(package)$(version)-dev examples/ borland.txt copying copying.rh readme.txt
-	find $(destdir) -iname '.cvsignore' -exec rm '{}' \;
+	find $(destdir) \( -iname '.cvsignore' -or -iname '*.bkpdeb' \) -exec rm '{}' \;
 #	dh_installexamples
 #	dh_installmenu
 #	dh_installemacsen
@@ -101,5 +95,5 @@ source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary
+.PHONY: build clean binary-indep binary-arch binary clean-debian
 

@@ -11,6 +11,7 @@ Section: devel
 Depends: rhtvision@version@, libc6-dev, libstdc++-dev, libgpmg1-dev, libncurses5-dev
 Provides: rhtvision-dev
 Conflicts: rhtvision-dev
+Replaces: rhtvision-dev
 Description: Development files for the RHTVision library - a TUI interface.
  This is the statically linked library and header files for the development
  of applications using the RHTVision library. You need to install this package
