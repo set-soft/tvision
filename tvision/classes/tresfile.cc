@@ -99,6 +99,7 @@ TResourceFile::TResourceFile( fpstream *aStream ) : TObject()
         indexPos =  sizeof(long) * 3;
         index = new TResourceCollection(0, 8);
     }
+    delete header;
 }
 
 TResourceFile::~TResourceFile()
