@@ -57,6 +57,14 @@ inline void TMenuItem::append( TMenuItem *aNext )
     next = aNext;
 }
 
+// SET: Sugested by Dean Wakerley <dean@wakerley.com> looks like
+// Borland deprecated it without reasons.
+inline TMenuItem& operator + ( TMenuItem& s, TMenuItem& i )
+{
+    s.append(&i);
+    return s;
+}
+
 inline TMenuItem &newLine()
 {
     return *new TMenuItem( 0, 0, 0, hcNoContext, 0, 0 );

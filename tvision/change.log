@@ -1,4 +1,9 @@
 $Log$
+Revision 1.186  2001/09/04 18:05:42  set
+* Fixed: It was impossible to use CFLAGS options that contained
+option=value because it confused patchenv.pl failing to configure the
+makefiles. Reported by Norberto Alfredo Bensa <nbensa@hotmail.com>
+
 Revision 1.185  2001/09/04 03:46:22  set
 * Added: The TColorSelector mark wasn't available to remap to other code
 page (fixed code 8). Now is TColorSelector::mark.
