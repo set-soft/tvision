@@ -712,7 +712,8 @@ TScreenLinux::TScreenLinux()
  TDisplayLinux::Init(mode);
  Init(mode);
 
- TGKeyLinux::Init();
+ TGKeyLinux::Init(installedSFM==TVCodePage::KOI8r ? TGKeyLinux::KOI8 :
+                  TGKeyLinux::Default);
  #ifdef HAVE_GPM
  THWMouseGPM::Init();
  #endif

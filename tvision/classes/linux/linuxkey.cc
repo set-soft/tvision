@@ -609,6 +609,7 @@ void TGKeyLinux::FillTEvent(TEvent &e)
  GKey();
  e.keyDown.charScan.charCode=lastModifiers & kblAltL ? 0 : ascii;
  e.keyDown.charScan.scanCode=ascii;
+ e.keyDown.charScan.charCode=ascii; // Needed for GetAltChar
  e.keyDown.raw_scanCode=ascii;
  e.keyDown.keyCode=lastKeyCode;
  e.keyDown.shiftState=lastModifiers;
@@ -886,16 +887,42 @@ void TGKeyLinux::SetKbdMapping(int version)
  Mode=version;
 }
 
-void TGKeyLinux::Init()
+void TGKeyLinux::Init(int map)
 {
- TGKey::Suspend      =TGKeyLinux::Suspend;
- TGKey::Resume       =TGKeyLinux::Resume;
- TGKey::kbhit        =KbHit;
- TGKey::clear        =Clear;
- TGKey::gkey         =GKey;
- TGKey::getShiftState=GetShiftState;
- TGKey::fillTEvent   =FillTEvent;
- TGKey::SetKbdMapping=TGKeyLinux::SetKbdMapping;
+ TGKey::Suspend       =TGKeyLinux::Suspend;
+ TGKey::Resume        =TGKeyLinux::Resume;
+ TGKey::kbhit         =KbHit;
+ TGKey::clear         =Clear;
+ TGKey::gkey          =GKey;
+ TGKey::getShiftState =GetShiftState;
+ TGKey::fillTEvent    =FillTEvent;
+ TGKey::SetKbdMapping =TGKeyLinux::SetKbdMapping;
+ if (map==KOI8)
+   {
+    TGKey::NonASCII2ASCII=KOI8_NonASCII2ASCII;
+    TGKey::CompareASCII=KOI8_CompareASCII;
+    LOG("Using KOI8 keyboard table");
+   }
+}
+
+char TGKeyLinux::KOI8Layout[64]=
+{
+ '.','f',',','w','L','t','a','u','[','b','q','r','K','v','y','j', // 192 ...
+ 'g','z','h','c','n','e',';','d','m','s','p','i','\'','o','x','}',
+ '>','F','<','W','l','T','A','U','{','B','Q','R','k','V','Y','J',
+ 'G','Z','H','C','N','E',':','D','M','S','P','I','"','O','X',']'
+};
+
+uchar TGKeyLinux::KOI8_NonASCII2ASCII(uchar val)
+{
+ return val>=192 ? KOI8Layout[val-192] : val;
+}
+
+int TGKeyLinux::KOI8_CompareASCII(uchar val, uchar code)
+{
+ if (val>=0xC0)  val=KOI8Layout[val-0xC0];
+ if (code>=0xC0) code=KOI8Layout[code-0xC0];
+ return val==code;
 }
 
 #endif // TVOSf_Linux

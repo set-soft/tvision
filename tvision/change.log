@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.159  2002/06/18 20:50:37  set
+* Added: TScroller and TScrollBar now cooperates with Braille Terminals.
+From suggestions by Tapio.
+
 Revision 2.158  2002/06/18 20:28:23  set
 * Added: [Linux] A comment about LANG variable. Sent by Alexey Godin.
 
