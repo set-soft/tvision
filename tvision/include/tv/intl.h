@@ -1,5 +1,5 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1999-2000 by Salvador Eduardo Tropea */
+/* Copyright (C) 1999-2001 by Salvador Eduardo Tropea */
 
 #ifdef FORCE_INTL_SUPPORT
 #define HAVE_INTL_SUPPORT 1
@@ -9,29 +9,36 @@
 
 #ifdef HAVE_INTL_SUPPORT
 
-#include <libintl.h>
+#ifdef TVCompf_djgpp
+ // Avoid collisions with conio
+ #undef gettext
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#ifdef __DJGPP__
-/* We never use gettext from intl directly. Instead we use gettext__ */
-#undef gettext
-char *gettext__(const char *);
-#else
-# if !defined(__GLIBC__) || __GLIBC__ < 2
-# define gettext__ gettext
-# else
-# if (__GLIBC__==2 && __GLIBC_MINOR__>0) || __GLIBC__>2
-# define gettext__ gettext
-# else
-# define gettext__ __gettext
-# endif
-# endif
-#endif
-
+// We know the prototypes and it helps with the dummy
+char *textdomain(const char *domainname);
+char *bindtextdomain(const char *domainname, const char *dirname);
+char *gettext(const char *msgid);
+char *gettext__(const char *msgid);
 #ifdef __cplusplus
 }
+#endif
+//#include <libintl.h>
+
+// Must use __DJGPP__ here
+#ifndef __DJGPP__
+# if !defined(__GLIBC__) || __GLIBC__<2
+   // By default use gettext
+#  define gettext__ gettext
+# else
+#  if (__GLIBC__==2 && __GLIBC_MINOR__>0) || __GLIBC__>2
+#   define gettext__ gettext
+#  else
+    // exception: glibc 2.0 needs __gettext
+#   define gettext__ __gettext
+#  endif
+# endif
 #endif
 
 #if !defined( GETTEXT )
