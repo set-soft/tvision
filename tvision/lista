@@ -617,7 +617,7 @@ include/tv/x11/mouse.h
 include/tv/x11/screen.h
 include/tv/yes_mss.h
 include/tv/window.h
-intl/dtou.pl
+intl/utod.pl
 intl/dummy/intldummy.c
 intl/dummy/Makefile
 intl/es.po

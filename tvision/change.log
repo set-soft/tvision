@@ -1,4 +1,15 @@
-$Log$
+$Log$.
+Revision 2.362  2002/11/28 17:53:41  set
+* Fixed: [X11] Squash! finally killed the f*cking bug. It was the mother of
+race conditions. The strange thing is how useless was efence to detect it.
+The problem was that for a small portion of time the TProgram::buffer
+pointer was out-of sync with TScreen::screenBuffer. It was between the
+realloc (note it could reuse the memory and add more randomness) and the
+momment where TProgram detected the resize. A draw to the TProgram space
+confused the buffer and tried to use it corrupting memory. Now the X11
+driver just signals the window changed and wait until TProgram asks for
+it before changing anything.
+
 Revision 2.361  2002/11/27 20:52:32  set
 * Fixed: [X11] When the window manager forces the window size during
 initialization a race appears between the path to reach the point where
