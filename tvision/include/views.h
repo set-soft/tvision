@@ -182,6 +182,15 @@ const ushort
     cmClusterMovedTo    = 58,
     cmClusterPress      = 59,
 
+// SET: Here is a broadcast for TListViewer objects. It sends a broadcast
+// when an item is focused.
+
+    cmListItemFocused   = 60,
+
+    // From TButton::press()
+    cmRecordHistory     = 61,
+
+
 //  Event masks
 
     positionalEvents    = evMouse,

@@ -54,6 +54,14 @@ public:
     static uchar columnSeparator;
     static uchar ocolumnSeparator;
 
+    // SET: see tlistvie.cc for more information
+    unsigned getExtraOptions() { return extraOptions; }
+    void setExtraOptions(unsigned ops) { extraOptions=ops; }
+
+protected:
+    // SET: extra options ored by default to all objects of this class.
+    static unsigned extraOptions;
+
 #if !defined( NO_STREAM )
 private:
 
