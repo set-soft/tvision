@@ -44,7 +44,23 @@ else
   {
    print "(2) uptodate\n";
   }
-
+@files=glob('../examples/*/*.gpr');
+foreach $i (@files)
+  {
+   $r=$i;
+   $r=~s/\.gpr/\.mak/;
+   print "$r: ";
+   if (!(-e $r) || (-M $r > -M $i))
+     {
+      system("gpr2mak $i");
+      print "updated\n";
+     }
+   else
+     {
+      print "uptodate\n";
+     }
+  }
+print "\n";
 # Patch the version number in the readme.txt
 print "Processing readme file\n";
 $r=cat('../readme.in');
@@ -77,7 +93,12 @@ foreach $i (@files)
      }
    $r.='contrib/tvision/'.$i;
   }
-$r.="$srcmft\n$srcver\n";
+@files=glob('contrib/tvision/examples/*/*.mak');
+$r.=join("\n",@files);
+$r.="\n$srcmft\n$srcver\n";
+@files=split(/\n/,$r);
+@files=sort(@files);
+$r=join("\n",@files);
 replace($srcmft,$r);
 
 open(FIL,'contrib/tvision/djgpp/distlist') || die "Can't open distrib list";

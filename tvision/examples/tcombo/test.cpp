@@ -43,7 +43,7 @@ class TMyApp : public TApplication {
       void newDialog();
 };
 
-static short winNumber = 0;          // initialize window number
+//static short winNumber = 0;          // initialize window number
 
 
 TMyApp::TMyApp() : TProgInit(&TMyApp::initStatusLine,

@@ -84,6 +84,6 @@ void *DynamicText::read( ipstream& is )
   return this;
 }
 
-const char * const near DynamicText::name = "DynamicText";
+const char * const DynamicText::name = "DynamicText";
 TStreamableClass RDynamicText( DynamicText::name,
   DynamicText::build,  __DELTA(DynamicText) );

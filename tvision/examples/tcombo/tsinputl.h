@@ -46,7 +46,7 @@ class TStaticInputLine : public TInputLine {
       virtual void *read(ipstream&);
 
    public:
-      static const char * const near name;
+      static const char * const name;
       static TStreamable *build();
 };
 

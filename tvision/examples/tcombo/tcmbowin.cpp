@@ -36,7 +36,6 @@ TComboWindow::TComboWindow(const TRect& bounds, TCollection *aList) :
 {
    TRect r;
    TScrollBar  *sb;
-   TComboViewer *cv;
 
    setState(sfShadow, False);
    flags = 0;

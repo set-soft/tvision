@@ -187,8 +187,8 @@ dual.cc
 examples/autoconf/example.txt
 +examples/clean.bat
 +examples/clean
-examples/common.env
-examples/config.env
+examples/patchenv.pl
+examples/rhide.env
 examples/demo/ascii.cc
 examples/demo/ascii.h
 examples/demo/calendar.cc
@@ -653,4 +653,3 @@ winnt/misc/vk2kk.pl
 winnt/objs/delete.me
 winnt/readme.txt
 winnt/tvex.cc
-

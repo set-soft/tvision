@@ -19,5 +19,5 @@
 #define Uses_TComboViewer
 #include "tcombobx.h"
 
-const char * const near TComboViewer::name = "TComboViewer";
+const char * const TComboViewer::name = "TComboViewer";
 

@@ -19,5 +19,5 @@
 #define Uses_TStaticInputLine
 #include "tsinputl.h"
 
-const char * const near TStaticInputLine::name = "TStaticInputLine";
+const char * const TStaticInputLine::name = "TStaticInputLine";
 

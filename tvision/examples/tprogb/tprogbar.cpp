@@ -74,9 +74,7 @@ void TProgressBar::handleEvent(TEvent& event)
 void TProgressBar::draw()
 {
     char color = getColor(1);
-    int i;
     TDrawBuffer nbuf;
-    char Buf[DISPLAYLEN+1];
 
 	 nbuf.moveChar(0,' ',color,size.x);
 
@@ -101,6 +99,7 @@ void TProgressBar::calcPercent ( )
 {
 	 unsigned int percent;
 	 unsigned int width;
+    unsigned i;
  
     // calculate the new percentage
     percent = (int) ( ( (double)curIter / (double)maxIter ) * (double)100 );
@@ -121,14 +120,14 @@ void TProgressBar::calcPercent ( )
             // update the bar string
 				if ( oldWidth < curWidth )
             {
-                for ( int i = oldWidth; i < curWidth; i++ )
+                for ( i = oldWidth; i < curWidth; i++ )
                 {
                     bar[i] = percChar;
                 }
             }
             else
             {
-                for ( int i = curWidth; i < oldWidth; i++ )
+                for ( i = curWidth; i < oldWidth; i++ )
 					 {
                     bar[i] = backChar;
                 }
@@ -174,9 +173,6 @@ void TProgressBar::setMaxIter ( unsigned long newMax )
 // set a new current iteration & update display
 void TProgressBar::setCurIter ( unsigned long newCur )
 {
-    unsigned int percent;
-    unsigned int width;
- 
     curIter = newCur;
  
     calcPercent();

@@ -285,8 +285,9 @@ Linux of course have it by default.
 6. Examples:
 -----------
 
-  I included a collection of 13 examples I got from the net and ported to
-this TV. The examples are shipped only with the sources distribution.
+  I included a collection of over than 13 examples I got from the net and
+ported to this TV. The examples are shipped only with the sources
+distribution. See the examples directory for more information.
 
 
 

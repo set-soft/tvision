@@ -54,20 +54,35 @@ LookForEndianess();
 
 print "\n";
 GenerateMakefile();
+#
+# For the examples
+#
+$here=`pwd`;
+chop($here);
+# Path for the includes
+$MakeDefsRHIDE[1]='TVSRC='.$here.'/include '.@conf{'prefix'}.'/include/rhtvision ../../include';
+# Libraries needed
+$MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
+$MakeDefsRHIDE[2].='intl ' unless ($OS ne 'DOS') && (@conf{'intl'} eq 'no');
+$MakeDefsRHIDE[2].='ncurses m ' if ($OS eq 'UNIX');
+$MakeDefsRHIDE[2].='gpm ' if @conf{'HAVE_GPM'} eq 'yes';
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
+   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/linux '.@conf{'prefix'}.'/lib ../../linux';
    ModifyMakefiles('linux/Makefile');
-   CreateRHIDEenvs('linux/rhide.env','examples/config.env','compat/rhide.env');
+   CreateRHIDEenvs('linux/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'DOS')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
+   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/djgpp '.@conf{'prefix'}.'/lib ../../djgpp';
    ModifyMakefiles('djgpp/makefile');
-   CreateRHIDEenvs('djgpp/rhide.env','examples/config.env','compat/rhide.env');
+   CreateRHIDEenvs('djgpp/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'Win32')
   {
+   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/win32 '.@conf{'prefix'}.'/lib ../../win32';
    $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile');
@@ -92,10 +107,19 @@ CreateConfigH();
 #$a='';
 `perl confignt.pl`;
 
-$ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
-ReplaceText('linuxso/makemak.in','linuxso/makemak.pl');
-chmod(0755,'linuxso/makemak.pl');
-
+if ($OS eq 'UNIX')
+  {
+   $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
+   ReplaceText('linuxso/makemak.in','linuxso/makemak.pl');
+   chmod(0755,'linuxso/makemak.pl');
+  }
+#
+# Adjust .mak files
+#
+print "Makefiles for examples.\n";
+chdir('examples');
+`perl patchenv.pl`;
+chdir('..');
 
 print "\nSuccesful configuration!\n\n";
 

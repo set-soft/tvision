@@ -90,7 +90,7 @@ void TMyApp::inputBox()
   ListBoxItem *v;
   char label[MAXLABELLEN];
   TLineCollection *list;
-  TRect r = getExtent();
+  //TRect r = getExtent();
   list = new TLineCollection(MAXINPLN,0);
   for (i = 0; i < MAXINPLN; i++)
    {
