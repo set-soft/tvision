@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.148  2004/03/18 18:02:37  set
+* Fixed: [BC++] The version to use ISO C++ 1998 stuff seems to be >= 0x560.
+From a report by Hartmut Welpmann <hartmut.welpmann@gmx.de>
+
 Revision 2.399.2.147  2004/03/12 19:22:13  set
 * Added: [config] Some stuff to the configure and makefiles to maintain
 compatibility with packages that uses "auto tools". Patch by Aurelian
