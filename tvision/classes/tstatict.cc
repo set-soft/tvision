@@ -32,7 +32,7 @@ TStaticText::TStaticText( const TRect& bounds, const char *aText ) :
 
 TStaticText::~TStaticText()
 {
-    delete (char *)text;
+    delete[] text;
 }
 
 void TStaticText::draw()

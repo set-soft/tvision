@@ -29,7 +29,7 @@ TPalette::TPalette( const TPalette& tp ) :
 
 TPalette::~TPalette()
 {
-    delete data;
+    delete[] data;
 }
 
 TPalette& TPalette::operator = ( const TPalette& tp )

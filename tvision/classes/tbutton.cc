@@ -50,7 +50,7 @@ TButton::TButton( const TRect& bounds,
 
 TButton::~TButton()
 {
-    delete (char *)title;
+    delete[] title;
 }
 
 void TButton::draw()
