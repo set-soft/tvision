@@ -7,7 +7,7 @@
 
 version=$(shell cat version.txt)
 package=rhtvision
-destdir=debian/tmp/usr
+destdir=$(shell pwd)/debian/tmp/usr
 
 # Uncomment this to turn on verbose mode:
 #export DH_VERBOSE=1
@@ -39,8 +39,9 @@ clean: clean-debian debianbackup.tar
 	rm -f debianbackup.tar
 # FIXME: ask upstream about adding the next files to his clean target:
 	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env \
-		Makefile compat/rhide.env examples/rhide.env include/tv/configtv.h linux/rhide.env \
-		linuxso/Makefile linuxso/compat.mak
+		Makefile compat/rhide.env examples/rhide.env include/tv/configtv.h \
+		linux/rhide.env linuxso/Makefile linuxso/compat.mak \
+		intl/es_iso.mo intl/es_iso.po intl/es.mo intl/ru.mo
 	rm -f build-stamp
 
 # Use the following target when you just want for example to rebuild the
@@ -67,20 +68,26 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean
-	dh_installdirs -p $(package)$(version)-dev usr/lib usr/include/$(package) usr/share/doc usr/share/doc/$(package)$(version)-dev usr/share/doc/$(package)$(version)-dev/examples
-	dh_installdirs -p $(package)$(version) usr/lib usr/share usr/share/doc/$(package)$(version) usr/share/doc/$(package)$(version)/eterm
+	dh_installdirs -p $(package)$(version)-dev usr/lib \
+		usr/include/$(package) usr/share/doc \
+		usr/share/doc/$(package)$(version)-dev \
+		usr/share/doc/$(package)$(version)-dev/examples
+	dh_installdirs -p $(package)$(version) usr/lib usr/share \
+		usr/share/doc/$(package)$(version) \
+		usr/share/doc/$(package)$(version)/eterm
 	$(MAKE) install
 # We need to move files for other packages than the first one in the control file:
-	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version)
+	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version) \
+		usr/share/locale/
 
 
 # Build the packages for a specific architecture:
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installdocs -A borland.txt copying copying.rh readme.txt doc/X11.txt \
+	dh_installdocs -A borland.txt copying copying.rh readme.txt \
 		doc/CodePages.txt doc/ConfigFile.txt doc/Eterm.txt doc/Linux.txt \
-		doc/XTerm.txt THANKS
+		doc/X11.txt doc/XTerm.txt THANKS
 	dh_installdocs -p $(package)$(version)-dev doc/TVReference.html
 	dh_installdocs -p $(package)$(version) extra/eterm/ debian/README.debian
 	mv debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.debian \
