@@ -98,8 +98,8 @@ void TComboBox::handleEvent(TEvent& event)
        (event.what == evKeyDown && ctrlToArrow(event.keyDown.keyCode) == kbDown
 				&& (link->state & sfFocused) != 0))
    {
-      if (strlen(link->data))               // If length of link->data > 0,
-	 list->insert(newStr(link->data));  // add new data to list
+      if (strlen((const char *)link->getData()))               // If length of link->data > 0,
+	 list->insert(newStr((const char *)link->getData()));  // add new data to list
       link->select();                       // Make InputLine the active view
       r = link->getBounds();                // Get bounds of the InputLine
       r.b.x += 1;                           // Extend x bound by 1
@@ -110,8 +110,8 @@ void TComboBox::handleEvent(TEvent& event)
       r.b.y -= 1;
       ComboWindow = new TComboWindow(r, list); // Create a new TComboWindow
       if (ComboWindow != 0) {
-	 if (strlen(link->data))
-	    ComboWindow->setSelection(link->data);
+	 if (strlen((const char *)link->getData()))
+	    ComboWindow->setSelection((const char *)link->getData());
 
 	 c = owner->execView(ComboWindow);           // Execute TComboWindow as modal view
 
@@ -119,7 +119,7 @@ void TComboBox::handleEvent(TEvent& event)
 	    char rslt[256];
 
 	    ComboWindow->getSelection(rslt);         // Set the link data to the selection
-	    strncpy(link->data, rslt, link->maxLen);
+	    link->setDataFromStr(rslt);
 	    link->selectAll(True);                   // Select all in the linked view
 	    link->drawView();                        // Redraw the linked view
 	 }
@@ -130,8 +130,8 @@ void TComboBox::handleEvent(TEvent& event)
    else if (event.what == evBroadcast)
       if ((event.message.command == cmReleasedFocus && event.message.infoPtr == link)
        || (event.message.command == cmRecordHistory))
-	 if (strlen(link->data))               // If length of link->data > 0,
-	    list->insert(newStr(link->data));  // add new data to list
+	 if (strlen((const char *)link->getData()))               // If length of link->data > 0,
+	    list->insert(newStr((const char *)link->getData()));  // add new data to list
 }
 
 

@@ -1,0 +1,53 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea.
+# Covered by the GPL license.
+#
+
+##########################################################################################
+#
+# Beggining of maintained lines
+#
+##########################################################################################
+#
+# Source directories
+#
+vpath_src=.. ../classes ../classes/dos ../classes/linux ../classes/qnxrtp \
+	../classes/unix ../classes/win32 ../classes/wingr ../classes/winnt \
+	../classes/x11 ../compat ../stream ../names
+vpath_obj=obj
+#
+# Include directories
+#
+INCLUDE_DIR=../include
+CLASSES_DIR=../classes
+EXTRA_SRC_DIR=..
+INCLUDE_DIRS=$(INCLUDE_DIR)
+
+##########################################################################################
+#
+# Beggining of fixed part
+#
+##########################################################################################
+
+#
+# Common rules used by RHIDE.
+# It also includes rhide.env.
+#
+include common.imk
+
+#
+# All the RHIDE data should come from here.
+#
+ifdef MAINTAINER_MODE
+ ExIMK=.imk
+else
+ ExIMK=.umk
+endif
+include librhtv$(ExIMK)
+
+#
+# This file pulls all the .imk
+#
+include includer.imk
+

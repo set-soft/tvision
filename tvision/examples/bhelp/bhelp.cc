@@ -213,7 +213,7 @@ TBorlandHelpFile::TBorlandHelpFile(fpstream & s):THelpFile(s)
   {
     char type;
     unsigned short length;
-    unsigned char *buffer;
+    unsigned char *buffer=NULL;
 
     *stream >> type;
     if (type != 1)

@@ -1,0 +1,19 @@
+#!/usr/bin/make
+# Automatically generated from RHIDE projects, don't edit
+# 2003-06-02 11:20
+#
+
+tv_logo$(ExEXE):: \
+	./tv_logo$(ExOBJ) \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_LINK)
+
+./tv_logo$(ExOBJ):: tv_logo.cc \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+OBJFILES=\
+	./tv_logo$(ExOBJ) 
+
+LIBRARIES=
+

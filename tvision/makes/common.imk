@@ -1,0 +1,62 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea.
+# Covered by the GPL license.
+#
+
+#
+# Any configurable detail should come from here.
+#
+include rhide.env
+
+vpath %.c $(vpath_src)
+vpath %.s $(vpath_src)
+vpath %.cc $(vpath_src)
+vpath %.o $(vpath_obj)
+vpath %.h $(INCLUDE_DIRS)
+
+# These files changes the compilation process so they are important
+# dependencies.
+ifdef MAINTAINER_MODE
+MAKEFILE_DEPS=rhide.env common.imk
+else
+MAKEFILE_DEPS=
+endif
+# Extensions used by GNU tools
+ifdef DYNAMIC_LIB
+ExOBJ=.lo
+ExLIB=.so.$(LIB_VER)
+#ExLIB=.so
+else
+ExOBJ=.o
+ExLIB=.a
+endif
+ExEXE=.exe
+
+RHIDE_AS=$(RHIDE_GCC)
+SOURCE_NAME=$<
+OUTFILE=$@
+ALL_PREREQ=$^
+RHIDE_COMPILE_ASM_FORCE=$(RHIDE_AS) $(RHIDE_INCLUDES) $(C_DEBUG_FLAGS)\
+	$(C_OPT_FLAGS)  $(C_WARN_FLAGS) $(C_EXTRA_FLAGS) -x assembler-with-cpp\
+	$(LOCAL_OPT)  -c $(SOURCE_NAME) -o $(OUTFILE)
+RHIDE_INCLUDES=$(SPECIAL_CFLAGS) $(addprefix -I,$(INCLUDE_DIRS))
+LIB_DIRS=$(addprefix -L,$(TVOBJ))
+
+ifdef DYNAMIC_LIB
+C_EXTRA_FLAGS=$(SHARED_CODE_OPTION)
+RHIDE_COMPILE_ARCHIVE=$(RHIDE_LD) $(RHIDE_LIBDIRS) $(LDFLAGS) \
+	$(RHIDE_LDFLAGS) $(C_EXTRA_FLAGS) -o $(OUTFILE)  \
+	$(OBJFILES)
+else
+RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) $(OUTFILE)\
+	$(ALL_PREREQ)
+endif
+
+LIBS=rhtv
+RHIDE_COMPILE_C=$(RHIDE_GCC) $(RHIDE_INCLUDES) $(C_DEBUG_FLAGS) $(C_OPT_FLAGS)  $(C_WARN_FLAGS) $(C_C_LANG_FLAGS) $(C_EXTRA_FLAGS) $(LOCAL_OPT) $(RHIDE_OS_CFLAGS) -c $(SOURCE_NAME) -o $(OUTFILE)
+RHIDE_COMPILE_CC=$(RHIDE_GXX) $(RHIDE_INCLUDES) $(C_DEBUG_FLAGS) $(C_OPT_FLAGS)  $(C_WARN_FLAGS) $(C_C_LANG_FLAGS) $(C_CXX_LANG_FLAGS) $(C_EXTRA_FLAGS) $(RHIDE_OS_CXXFLAGS) $(LOCAL_OPT) -c $(SOURCE_NAME) -o $(OUTFILE)
+RHIDE_LIBS=$(addprefix -l,$(LIBS) $(RHIDE_OS_LIBS))
+RHIDE_LIBDIRS=$(LIB_DIRS)
+RHIDE_COMPILE_LINK=$(RHIDE_LD) $(RHIDE_LIBDIRS) $(LDFLAGS) $(C_EXTRA_FLAGS) -o $(OUTFILE)  $(OBJFILES) $(LIBRARIES) $(RHIDE_LIBS)
+

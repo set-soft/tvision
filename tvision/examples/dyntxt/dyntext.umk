@@ -1,0 +1,27 @@
+#!/usr/bin/make
+# Automatically generated from RHIDE projects, don't edit
+# 2003-06-02 11:20
+#
+
+dyntext$(ExEXE):: \
+	./dyntext$(ExOBJ) \
+	./testdyn$(ExOBJ) \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_LINK)
+
+./dyntext$(ExOBJ):: dyntext.cpp \
+	dyntext.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./testdyn$(ExOBJ):: testdyn.cpp \
+	dyntext.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+OBJFILES=\
+	./dyntext$(ExOBJ) \
+	./testdyn$(ExOBJ) 
+
+LIBRARIES=
+

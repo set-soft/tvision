@@ -964,7 +964,7 @@ sub ModifySimpleMakefiles
 
 sub CreateRHIDEenvs
 {
- my ($a,$text,$rep,$useXtreme,$b);
+ my ($a,$text,$rep,$useXtreme,$b,$old);
 
  print 'Configuring RHIDE: ';
  foreach $a (@_)
@@ -1009,13 +1009,17 @@ sub CreateRHIDEenvs
        $text.="$rep\n";
       }
 
-    if ($text)
+    $old=cat($b);
+    if ($text ne $old)
       {
-       replace($b,$text);
-      }
-    else
-      {
-       unlink $b;
+       if ($text)
+         {
+          replace($b,$text);
+         }
+       else
+         {
+          unlink $b;
+         }
       }
    }
  print "\n";

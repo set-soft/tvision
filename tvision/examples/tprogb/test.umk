@@ -1,0 +1,27 @@
+#!/usr/bin/make
+# Automatically generated from RHIDE projects, don't edit
+# 2003-06-02 11:20
+#
+
+test$(ExEXE):: \
+	./calc$(ExOBJ) \
+	./tprogbar$(ExOBJ) \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_LINK)
+
+./calc$(ExOBJ):: calc.cpp \
+	tprogbar.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./tprogbar$(ExOBJ):: tprogbar.cpp \
+	tprogbar.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+OBJFILES=\
+	./calc$(ExOBJ) \
+	./tprogbar$(ExOBJ) 
+
+LIBRARIES=
+

@@ -1,0 +1,26 @@
+#!/usr/bin/make
+# Automatically generated from RHIDE projects, don't edit
+# 2003-06-02 11:20
+#
+
+msgcls$(ExEXE):: \
+	./testdyn$(ExOBJ) \
+	./tlnmsg$(ExOBJ) \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_LINK)
+
+./testdyn$(ExOBJ):: testdyn.cpp \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./tlnmsg$(ExOBJ):: tlnmsg.cpp \
+	tlnmsg.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+OBJFILES=\
+	./testdyn$(ExOBJ) \
+	./tlnmsg$(ExOBJ) 
+
+LIBRARIES=
+

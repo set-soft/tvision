@@ -37,4 +37,10 @@ assumes a fixed value you'll need to fix it. Some code in the original TV had
 this error.
 * The program doesn't respond to some key.
 
+9) Direct manipulation of TInputLine::data member
+This is no longer valid, use getData and setDataFromStr members. This is
+because now the class keeps the length of the data member and doesn't compute
+it all the time. It also helps to the Unicode experimental code.
+* The compiler informs the data member is protected.
+
 Salvador Eduardo Tropea (salvador@inti.gov.ar)

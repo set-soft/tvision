@@ -119,7 +119,7 @@ void TFreeDsgnApp::handleEvent(TEvent& event)
   TDialog * d;
   TWindow * w;
   TRect r;
-  char * str;
+  const char * str;
 
   if (( event.what == evCommand ) && ( event.message.command == cmQuit ))
   {
@@ -349,13 +349,13 @@ void TFreeDsgnApp::outOfMemory()
 
 int main()
 {
-  char * _LocaleDir = bindtextdomain ("mtv", NULL);
+  const char * _LocaleDir = TVIntl::bindTextDomain("mtv", NULL);
   if (_LocaleDir)
   {
      char * LocaleDir = strdup(_LocaleDir);
      setlocale(LC_ALL, "");                 // Utilizando ambiente LANG
-     bindtextdomain("mtv", LocaleDir);      // Ajusta o caminho
-     textdomain("mtv");                     // Confirma o arquivo mo
+     TVIntl::bindTextDomain("mtv", LocaleDir);      // Ajusta o caminho
+     TVIntl::textDomain("mtv");                     // Confirma o arquivo mo
      free(LocaleDir);
   }
   TFreeDsgnApp *app = new TFreeDsgnApp();

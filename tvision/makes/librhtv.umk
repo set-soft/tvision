@@ -1,0 +1,1387 @@
+#!/usr/bin/make
+# Automatically generated from RHIDE projects, don't edit
+# 2003-06-02 11:18
+#
+
+librhtv$(ExLIB):: \
+	../makes/obj/beep$(ExOBJ) \
+	../makes/obj/drivevalid$(ExOBJ) \
+	../makes/obj/expandpath$(ExOBJ) \
+	../makes/obj/fexpand$(ExOBJ) \
+	../makes/obj/fileattrs$(ExOBJ) \
+	../makes/obj/fileexists$(ExOBJ) \
+	../makes/obj/filelength$(ExOBJ) \
+	../makes/obj/fixpath$(ExOBJ) \
+	../makes/obj/fnmatch$(ExOBJ) \
+	../makes/obj/getcurdir$(ExOBJ) \
+	../makes/obj/getline$(ExOBJ) \
+	../makes/obj/getopt$(ExOBJ) \
+	../makes/obj/getopt1$(ExOBJ) \
+	../makes/obj/getshell$(ExOBJ) \
+	../makes/obj/glob$(ExOBJ) \
+	../makes/obj/globfree$(ExOBJ) \
+	../makes/obj/iffilelen$(ExOBJ) \
+	../makes/obj/isdir$(ExOBJ) \
+	../makes/obj/isrelpath$(ExOBJ) \
+	../makes/obj/iswild$(ExOBJ) \
+	../makes/obj/itoa$(ExOBJ) \
+	../makes/obj/mkstemp$(ExOBJ) \
+	../makes/obj/nl_langinfo$(ExOBJ) \
+	../makes/obj/ntdirent$(ExOBJ) \
+	../makes/obj/pathvalid$(ExOBJ) \
+	../makes/obj/regex$(ExOBJ) \
+	../makes/obj/releasec$(ExOBJ) \
+	../makes/obj/snprintf$(ExOBJ) \
+	../makes/obj/strlwr$(ExOBJ) \
+	../makes/obj/strupr$(ExOBJ) \
+	../makes/obj/ticks$(ExOBJ) \
+	../makes/obj/unc$(ExOBJ) \
+	../makes/obj/unc_95$(ExOBJ) \
+	../makes/obj/unc_nt$(ExOBJ) \
+	../makes/obj/validfilename$(ExOBJ) \
+	../makes/obj/yieldpro$(ExOBJ) \
+	obj/calcdisp$(ExOBJ) \
+	obj/calculat$(ExOBJ) \
+	obj/codepage$(ExOBJ) \
+	obj/configfile$(ExOBJ) \
+	obj/dosdis$(ExOBJ) \
+	obj/doskey$(ExOBJ) \
+	obj/dosmouse$(ExOBJ) \
+	obj/dosscr$(ExOBJ) \
+	obj/drivers2$(ExOBJ) \
+	obj/dual$(ExOBJ) \
+	obj/fileview$(ExOBJ) \
+	obj/fontcoll$(ExOBJ) \
+	obj/fpbase$(ExOBJ) \
+	obj/fpstream$(ExOBJ) \
+	obj/help$(ExOBJ) \
+	obj/helpbase$(ExOBJ) \
+	obj/histlist$(ExOBJ) \
+	obj/ifpstrea$(ExOBJ) \
+	obj/iopstrea$(ExOBJ) \
+	obj/ipstream$(ExOBJ) \
+	obj/linuxdis$(ExOBJ) \
+	obj/linuxkey$(ExOBJ) \
+	obj/linuxmouse$(ExOBJ) \
+	obj/linuxscr$(ExOBJ) \
+	obj/misc$(ExOBJ) \
+	obj/msgbox$(ExOBJ) \
+	obj/nbackgro$(ExOBJ) \
+	obj/nbutton$(ExOBJ) \
+	obj/ncalcdis$(ExOBJ) \
+	obj/ncalcula$(ExOBJ) \
+	obj/nchdirdi$(ExOBJ) \
+	obj/ncheckbo$(ExOBJ) \
+	obj/nclrdisp$(ExOBJ) \
+	obj/ncluster$(ExOBJ) \
+	obj/ncollect$(ExOBJ) \
+	obj/ncolordi$(ExOBJ) \
+	obj/ncolorgr$(ExOBJ) \
+	obj/ncolorit$(ExOBJ) \
+	obj/ncolorse$(ExOBJ) \
+	obj/ndesktop$(ExOBJ) \
+	obj/ndialog$(ExOBJ) \
+	obj/ndircoll$(ExOBJ) \
+	obj/ndirlist$(ExOBJ) \
+	obj/neditor$(ExOBJ) \
+	obj/neditwi$(ExOBJ) \
+	obj/newstr$(ExOBJ) \
+	obj/nfilecol$(ExOBJ) \
+	obj/nfiledia$(ExOBJ) \
+	obj/nfiledtr$(ExOBJ) \
+	obj/nfileinf$(ExOBJ) \
+	obj/nfileinp$(ExOBJ) \
+	obj/nfilelis$(ExOBJ) \
+	obj/nfilterv$(ExOBJ) \
+	obj/nframe$(ExOBJ) \
+	obj/ngroup$(ExOBJ) \
+	obj/nhistory$(ExOBJ) \
+	obj/nindicat$(ExOBJ) \
+	obj/ninputli$(ExOBJ) \
+	obj/nlabel$(ExOBJ) \
+	obj/nlistbox$(ExOBJ) \
+	obj/nlistvie$(ExOBJ) \
+	obj/nmemo$(ExOBJ) \
+	obj/nmenubar$(ExOBJ) \
+	obj/nmenubox$(ExOBJ) \
+	obj/nmenuvie$(ExOBJ) \
+	obj/nmonosel$(ExOBJ) \
+	obj/nparamte$(ExOBJ) \
+	obj/nradiobu$(ExOBJ) \
+	obj/nrangeva$(ExOBJ) \
+	obj/nresourc$(ExOBJ) \
+	obj/nscrollb$(ExOBJ) \
+	obj/nscrolle$(ExOBJ) \
+	obj/nsortedc$(ExOBJ) \
+	obj/nsortedl$(ExOBJ) \
+	obj/nstatict$(ExOBJ) \
+	obj/nstatusl$(ExOBJ) \
+	obj/nstringc$(ExOBJ) \
+	obj/nstringl$(ExOBJ) \
+	obj/nvalidat$(ExOBJ) \
+	obj/nview$(ExOBJ) \
+	obj/nwindow$(ExOBJ) \
+	obj/ofpstrea$(ExOBJ) \
+	obj/opstream$(ExOBJ) \
+	obj/osclipboard$(ExOBJ) \
+	obj/pstream$(ExOBJ) \
+	obj/qnxdis$(ExOBJ) \
+	obj/qnxkey$(ExOBJ) \
+	obj/qnxmouse$(ExOBJ) \
+	obj/qnxscr$(ExOBJ) \
+	obj/rhscreen$(ExOBJ) \
+	obj/sbackgro$(ExOBJ) \
+	obj/sbutton$(ExOBJ) \
+	obj/scalcdis$(ExOBJ) \
+	obj/scalcula$(ExOBJ) \
+	obj/schdirdi$(ExOBJ) \
+	obj/scheckbo$(ExOBJ) \
+	obj/sclrdisp$(ExOBJ) \
+	obj/scluster$(ExOBJ) \
+	obj/scolordi$(ExOBJ) \
+	obj/scolorgr$(ExOBJ) \
+	obj/scolorit$(ExOBJ) \
+	obj/scolorse$(ExOBJ) \
+	obj/screen$(ExOBJ) \
+	obj/sdesktop$(ExOBJ) \
+	obj/sdialog$(ExOBJ) \
+	obj/sdircoll$(ExOBJ) \
+	obj/sdirlist$(ExOBJ) \
+	obj/seditor$(ExOBJ) \
+	obj/seditwin$(ExOBJ) \
+	obj/sescreen$(ExOBJ) \
+	obj/sfilecol$(ExOBJ) \
+	obj/sfiledia$(ExOBJ) \
+	obj/sfileedi$(ExOBJ) \
+	obj/sfileinf$(ExOBJ) \
+	obj/sfileinp$(ExOBJ) \
+	obj/sfilelis$(ExOBJ) \
+	obj/sfilterv$(ExOBJ) \
+	obj/sframe$(ExOBJ) \
+	obj/sgroup$(ExOBJ) \
+	obj/shistory$(ExOBJ) \
+	obj/sindicat$(ExOBJ) \
+	obj/sinputli$(ExOBJ) \
+	obj/slabel$(ExOBJ) \
+	obj/slistbox$(ExOBJ) \
+	obj/slistvie$(ExOBJ) \
+	obj/smemo$(ExOBJ) \
+	obj/smenubar$(ExOBJ) \
+	obj/smenubox$(ExOBJ) \
+	obj/smenuvie$(ExOBJ) \
+	obj/smonosel$(ExOBJ) \
+	obj/sparamte$(ExOBJ) \
+	obj/sradiobu$(ExOBJ) \
+	obj/srangeva$(ExOBJ) \
+	obj/sresourc$(ExOBJ) \
+	obj/sscrollb$(ExOBJ) \
+	obj/sscrolle$(ExOBJ) \
+	obj/sstatict$(ExOBJ) \
+	obj/sstatusl$(ExOBJ) \
+	obj/sstringc$(ExOBJ) \
+	obj/sstringl$(ExOBJ) \
+	obj/sview$(ExOBJ) \
+	obj/swindow$(ExOBJ) \
+	obj/tapplica$(ExOBJ) \
+	obj/tbackgro$(ExOBJ) \
+	obj/tbutton$(ExOBJ) \
+	obj/tchdirdi$(ExOBJ) \
+	obj/tcheckbo$(ExOBJ) \
+	obj/tclrdisp$(ExOBJ) \
+	obj/tcluster$(ExOBJ) \
+	obj/tcollect$(ExOBJ) \
+	obj/tcolordi$(ExOBJ) \
+	obj/tcolorgr$(ExOBJ) \
+	obj/tcolorit$(ExOBJ) \
+	obj/tcolorse$(ExOBJ) \
+	obj/tcommand$(ExOBJ) \
+	obj/tdesktop$(ExOBJ) \
+	obj/tdialog$(ExOBJ) \
+	obj/tdircoll$(ExOBJ) \
+	obj/tdirlist$(ExOBJ) \
+	obj/tdisplay$(ExOBJ) \
+	obj/tdrawbuf$(ExOBJ) \
+	obj/teditor$(ExOBJ) \
+	obj/teditorf$(ExOBJ) \
+	obj/teditwin$(ExOBJ) \
+	obj/tevent$(ExOBJ) \
+	obj/tfilecol$(ExOBJ) \
+	obj/tfiledia$(ExOBJ) \
+	obj/tfileedi$(ExOBJ) \
+	obj/tfileinf$(ExOBJ) \
+	obj/tfileinp$(ExOBJ) \
+	obj/tfilelis$(ExOBJ) \
+	obj/tfilterv$(ExOBJ) \
+	obj/tframe$(ExOBJ) \
+	obj/tgkey$(ExOBJ) \
+	obj/tgroup$(ExOBJ) \
+	obj/thistory$(ExOBJ) \
+	obj/thistvie$(ExOBJ) \
+	obj/thistwin$(ExOBJ) \
+	obj/thwmouse$(ExOBJ) \
+	obj/tindicat$(ExOBJ) \
+	obj/tinputli$(ExOBJ) \
+	obj/tlabel$(ExOBJ) \
+	obj/tlistbox$(ExOBJ) \
+	obj/tlistvie$(ExOBJ) \
+	obj/tmemo$(ExOBJ) \
+	obj/tmenubar$(ExOBJ) \
+	obj/tmenubox$(ExOBJ) \
+	obj/tmenuvie$(ExOBJ) \
+	obj/tmonosel$(ExOBJ) \
+	obj/tmouse$(ExOBJ) \
+	obj/tnscolle$(ExOBJ) \
+	obj/tnssorte$(ExOBJ) \
+	obj/tobject$(ExOBJ) \
+	obj/tpalette$(ExOBJ) \
+	obj/tparamte$(ExOBJ) \
+	obj/tpoint$(ExOBJ) \
+	obj/tprogini$(ExOBJ) \
+	obj/tprogram$(ExOBJ) \
+	obj/tpwobj$(ExOBJ) \
+	obj/tpwreado$(ExOBJ) \
+	obj/tpwritte$(ExOBJ) \
+	obj/tradiobu$(ExOBJ) \
+	obj/trangeva$(ExOBJ) \
+	obj/trescoll$(ExOBJ) \
+	obj/tresfile$(ExOBJ) \
+	obj/tscreen$(ExOBJ) \
+	obj/tscrollb$(ExOBJ) \
+	obj/tscrolle$(ExOBJ) \
+	obj/tsortedc$(ExOBJ) \
+	obj/tsortedl$(ExOBJ) \
+	obj/tstatict$(ExOBJ) \
+	obj/tstatusd$(ExOBJ) \
+	obj/tstatusl$(ExOBJ) \
+	obj/tstrinde$(ExOBJ) \
+	obj/tstringc$(ExOBJ) \
+	obj/tstringl$(ExOBJ) \
+	obj/tstrlist$(ExOBJ) \
+	obj/tstrmcla$(ExOBJ) \
+	obj/tstrmtyp$(ExOBJ) \
+	obj/tsubmenu$(ExOBJ) \
+	obj/ttermina$(ExOBJ) \
+	obj/ttextdev$(ExOBJ) \
+	obj/tvalidat$(ExOBJ) \
+	obj/tvedit1$(ExOBJ) \
+	obj/tvedit2$(ExOBJ) \
+	obj/tvedit3$(ExOBJ) \
+	obj/tview$(ExOBJ) \
+	obj/tvintl$(ExOBJ) \
+	obj/tvtext1$(ExOBJ) \
+	obj/tvtext2$(ExOBJ) \
+	obj/twindow$(ExOBJ) \
+	obj/unixdis$(ExOBJ) \
+	obj/unixkey$(ExOBJ) \
+	obj/unixmouse$(ExOBJ) \
+	obj/unixscr$(ExOBJ) \
+	obj/vesa$(ExOBJ) \
+	obj/vga$(ExOBJ) \
+	obj/vgaregs$(ExOBJ) \
+	obj/vgastate$(ExOBJ) \
+	obj/win32clip$(ExOBJ) \
+	obj/win32dis$(ExOBJ) \
+	obj/win32key$(ExOBJ) \
+	obj/win32mouse$(ExOBJ) \
+	obj/win32scr$(ExOBJ) \
+	obj/wingrdis$(ExOBJ) \
+	obj/wingrkey$(ExOBJ) \
+	obj/wingrmouse$(ExOBJ) \
+	obj/wingrscr$(ExOBJ) \
+	obj/winntdis$(ExOBJ) \
+	obj/winntkey$(ExOBJ) \
+	obj/winntmouse$(ExOBJ) \
+	obj/winntscr$(ExOBJ) \
+	obj/x11dis$(ExOBJ) \
+	obj/x11key$(ExOBJ) \
+	obj/x11mouse$(ExOBJ) \
+	obj/x11src$(ExOBJ) \
+	obj/xtermdis$(ExOBJ) \
+	obj/xtermkey$(ExOBJ) \
+	obj/xtermmouse$(ExOBJ) \
+	obj/xtermscr$(ExOBJ) \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_ARCHIVE)
+
+INCLUDE00=../compat/compat$(ExIMK)
+
+obj/calcdisp$(ExOBJ):: calcdisp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/calculat$(ExOBJ):: calculat.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/codepage$(ExOBJ):: codepage.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/configfile$(ExOBJ):: configfile.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/dosdis$(ExOBJ):: dosdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/doskey$(ExOBJ):: doskey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/dosmouse$(ExOBJ):: dosmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/dosscr$(ExOBJ):: dosscr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/drivers2$(ExOBJ):: drivers2.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/dual$(ExOBJ):: dual.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/fileview$(ExOBJ):: fileview.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/fontcoll$(ExOBJ):: fontcoll.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/fpbase$(ExOBJ):: fpbase.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/fpstream$(ExOBJ):: fpstream.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/help$(ExOBJ):: help.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/helpbase$(ExOBJ):: helpbase.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/histlist$(ExOBJ):: histlist.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ifpstrea$(ExOBJ):: ifpstrea.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/iopstrea$(ExOBJ):: iopstrea.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ipstream$(ExOBJ):: ipstream.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/linuxdis$(ExOBJ):: linuxdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/linuxkey$(ExOBJ):: linuxkey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/linuxmouse$(ExOBJ):: linuxmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/linuxscr$(ExOBJ):: linuxscr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/misc$(ExOBJ):: misc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/msgbox$(ExOBJ):: msgbox.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nbackgro$(ExOBJ):: nbackgro.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nbutton$(ExOBJ):: nbutton.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncalcdis$(ExOBJ):: ncalcdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncalcula$(ExOBJ):: ncalcula.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nchdirdi$(ExOBJ):: nchdirdi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncheckbo$(ExOBJ):: ncheckbo.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nclrdisp$(ExOBJ):: nclrdisp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncluster$(ExOBJ):: ncluster.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncollect$(ExOBJ):: ncollect.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncolordi$(ExOBJ):: ncolordi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncolorgr$(ExOBJ):: ncolorgr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncolorit$(ExOBJ):: ncolorit.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ncolorse$(ExOBJ):: ncolorse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ndesktop$(ExOBJ):: ndesktop.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ndialog$(ExOBJ):: ndialog.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ndircoll$(ExOBJ):: ndircoll.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ndirlist$(ExOBJ):: ndirlist.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/neditor$(ExOBJ):: neditor.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/neditwi$(ExOBJ):: neditwi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/newstr$(ExOBJ):: newstr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nfilecol$(ExOBJ):: nfilecol.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nfiledia$(ExOBJ):: nfiledia.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nfiledtr$(ExOBJ):: nfiledtr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nfileinf$(ExOBJ):: nfileinf.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nfileinp$(ExOBJ):: nfileinp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nfilelis$(ExOBJ):: nfilelis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nfilterv$(ExOBJ):: nfilterv.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nframe$(ExOBJ):: nframe.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ngroup$(ExOBJ):: ngroup.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nhistory$(ExOBJ):: nhistory.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nindicat$(ExOBJ):: nindicat.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ninputli$(ExOBJ):: ninputli.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nlabel$(ExOBJ):: nlabel.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nlistbox$(ExOBJ):: nlistbox.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nlistvie$(ExOBJ):: nlistvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nmemo$(ExOBJ):: nmemo.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nmenubar$(ExOBJ):: nmenubar.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nmenubox$(ExOBJ):: nmenubox.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nmenuvie$(ExOBJ):: nmenuvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nmonosel$(ExOBJ):: nmonosel.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nparamte$(ExOBJ):: nparamte.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nradiobu$(ExOBJ):: nradiobu.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nrangeva$(ExOBJ):: nrangeva.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nresourc$(ExOBJ):: nresourc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nscrollb$(ExOBJ):: nscrollb.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nscrolle$(ExOBJ):: nscrolle.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nsortedc$(ExOBJ):: nsortedc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nsortedl$(ExOBJ):: nsortedl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nstatict$(ExOBJ):: nstatict.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nstatusl$(ExOBJ):: nstatusl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nstringc$(ExOBJ):: nstringc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nstringl$(ExOBJ):: nstringl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nvalidat$(ExOBJ):: nvalidat.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nview$(ExOBJ):: nview.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/nwindow$(ExOBJ):: nwindow.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ofpstrea$(ExOBJ):: ofpstrea.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/opstream$(ExOBJ):: opstream.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/osclipboard$(ExOBJ):: osclipboard.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/pstream$(ExOBJ):: pstream.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnxdis$(ExOBJ):: qnxdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnxkey$(ExOBJ):: qnxkey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnxmouse$(ExOBJ):: qnxmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/qnxscr$(ExOBJ):: qnxscr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/rhscreen$(ExOBJ):: rhscreen.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sbackgro$(ExOBJ):: sbackgro.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sbutton$(ExOBJ):: sbutton.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scalcdis$(ExOBJ):: scalcdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scalcula$(ExOBJ):: scalcula.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/schdirdi$(ExOBJ):: schdirdi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scheckbo$(ExOBJ):: scheckbo.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sclrdisp$(ExOBJ):: sclrdisp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scluster$(ExOBJ):: scluster.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scolordi$(ExOBJ):: scolordi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scolorgr$(ExOBJ):: scolorgr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scolorit$(ExOBJ):: scolorit.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/scolorse$(ExOBJ):: scolorse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/screen$(ExOBJ):: screen.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sdesktop$(ExOBJ):: sdesktop.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sdialog$(ExOBJ):: sdialog.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sdircoll$(ExOBJ):: sdircoll.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sdirlist$(ExOBJ):: sdirlist.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/seditor$(ExOBJ):: seditor.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/seditwin$(ExOBJ):: seditwin.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sescreen$(ExOBJ):: sescreen.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sfilecol$(ExOBJ):: sfilecol.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sfiledia$(ExOBJ):: sfiledia.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sfileedi$(ExOBJ):: sfileedi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sfileinf$(ExOBJ):: sfileinf.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sfileinp$(ExOBJ):: sfileinp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sfilelis$(ExOBJ):: sfilelis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sfilterv$(ExOBJ):: sfilterv.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sframe$(ExOBJ):: sframe.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sgroup$(ExOBJ):: sgroup.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/shistory$(ExOBJ):: shistory.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sindicat$(ExOBJ):: sindicat.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sinputli$(ExOBJ):: sinputli.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/slabel$(ExOBJ):: slabel.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/slistbox$(ExOBJ):: slistbox.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/slistvie$(ExOBJ):: slistvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/smemo$(ExOBJ):: smemo.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/smenubar$(ExOBJ):: smenubar.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/smenubox$(ExOBJ):: smenubox.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/smenuvie$(ExOBJ):: smenuvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/smonosel$(ExOBJ):: smonosel.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sparamte$(ExOBJ):: sparamte.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sradiobu$(ExOBJ):: sradiobu.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/srangeva$(ExOBJ):: srangeva.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sresourc$(ExOBJ):: sresourc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sscrollb$(ExOBJ):: sscrollb.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sscrolle$(ExOBJ):: sscrolle.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sstatict$(ExOBJ):: sstatict.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sstatusl$(ExOBJ):: sstatusl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sstringc$(ExOBJ):: sstringc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sstringl$(ExOBJ):: sstringl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sview$(ExOBJ):: sview.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/swindow$(ExOBJ):: swindow.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tapplica$(ExOBJ):: tapplica.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tbackgro$(ExOBJ):: tbackgro.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tbutton$(ExOBJ):: tbutton.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tchdirdi$(ExOBJ):: tchdirdi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcheckbo$(ExOBJ):: tcheckbo.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tclrdisp$(ExOBJ):: tclrdisp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcluster$(ExOBJ):: tcluster.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcollect$(ExOBJ):: tcollect.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcolordi$(ExOBJ):: tcolordi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcolorgr$(ExOBJ):: tcolorgr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcolorit$(ExOBJ):: tcolorit.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcolorse$(ExOBJ):: tcolorse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tcommand$(ExOBJ):: tcommand.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tdesktop$(ExOBJ):: tdesktop.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tdialog$(ExOBJ):: tdialog.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tdircoll$(ExOBJ):: tdircoll.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tdirlist$(ExOBJ):: tdirlist.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tdisplay$(ExOBJ):: tdisplay.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tdrawbuf$(ExOBJ):: tdrawbuf.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/teditor$(ExOBJ):: teditor.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/teditorf$(ExOBJ):: teditorf.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/teditwin$(ExOBJ):: teditwin.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tevent$(ExOBJ):: tevent.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tfilecol$(ExOBJ):: tfilecol.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tfiledia$(ExOBJ):: tfiledia.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tfileedi$(ExOBJ):: tfileedi.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tfileinf$(ExOBJ):: tfileinf.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tfileinp$(ExOBJ):: tfileinp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tfilelis$(ExOBJ):: tfilelis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tfilterv$(ExOBJ):: tfilterv.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tframe$(ExOBJ):: tframe.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tgkey$(ExOBJ):: tgkey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tgroup$(ExOBJ):: tgroup.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/thistory$(ExOBJ):: thistory.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/thistvie$(ExOBJ):: thistvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/thistwin$(ExOBJ):: thistwin.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/thwmouse$(ExOBJ):: thwmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tindicat$(ExOBJ):: tindicat.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tinputli$(ExOBJ):: tinputli.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tlabel$(ExOBJ):: tlabel.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tlistbox$(ExOBJ):: tlistbox.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tlistvie$(ExOBJ):: tlistvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tmemo$(ExOBJ):: tmemo.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tmenubar$(ExOBJ):: tmenubar.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tmenubox$(ExOBJ):: tmenubox.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tmenuvie$(ExOBJ):: tmenuvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tmonosel$(ExOBJ):: tmonosel.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tmouse$(ExOBJ):: tmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tnscolle$(ExOBJ):: tnscolle.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tnssorte$(ExOBJ):: tnssorte.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tobject$(ExOBJ):: tobject.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tpalette$(ExOBJ):: tpalette.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tparamte$(ExOBJ):: tparamte.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tpoint$(ExOBJ):: tpoint.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tprogini$(ExOBJ):: tprogini.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tprogram$(ExOBJ):: tprogram.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tpwobj$(ExOBJ):: tpwobj.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tpwreado$(ExOBJ):: tpwreado.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tpwritte$(ExOBJ):: tpwritte.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tradiobu$(ExOBJ):: tradiobu.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/trangeva$(ExOBJ):: trangeva.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/trescoll$(ExOBJ):: trescoll.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tresfile$(ExOBJ):: tresfile.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tscreen$(ExOBJ):: tscreen.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tscrollb$(ExOBJ):: tscrollb.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tscrolle$(ExOBJ):: tscrolle.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tsortedc$(ExOBJ):: tsortedc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tsortedl$(ExOBJ):: tsortedl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstatict$(ExOBJ):: tstatict.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstatusd$(ExOBJ):: tstatusd.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstatusl$(ExOBJ):: tstatusl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstrinde$(ExOBJ):: tstrinde.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstringc$(ExOBJ):: tstringc.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstringl$(ExOBJ):: tstringl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstrlist$(ExOBJ):: tstrlist.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstrmcla$(ExOBJ):: tstrmcla.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tstrmtyp$(ExOBJ):: tstrmtyp.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tsubmenu$(ExOBJ):: tsubmenu.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ttermina$(ExOBJ):: ttermina.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/ttextdev$(ExOBJ):: ttextdev.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tvalidat$(ExOBJ):: tvalidat.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tvedit1$(ExOBJ):: tvedit1.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tvedit2$(ExOBJ):: tvedit2.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tvedit3$(ExOBJ):: tvedit3.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tview$(ExOBJ):: tview.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tvintl$(ExOBJ):: tvintl.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tvtext1$(ExOBJ):: tvtext1.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tvtext2$(ExOBJ):: tvtext2.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/twindow$(ExOBJ):: twindow.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/unixdis$(ExOBJ):: unixdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/unixkey$(ExOBJ):: unixkey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/unixmouse$(ExOBJ):: unixmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/unixscr$(ExOBJ):: unixscr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/vesa$(ExOBJ):: vesa.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/vga$(ExOBJ):: vga.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/vgaregs$(ExOBJ):: vgaregs.c  
+	$(RHIDE_COMPILE_C)
+
+obj/vgastate$(ExOBJ):: vgastate.c  
+	$(RHIDE_COMPILE_C)
+
+obj/win32clip$(ExOBJ):: win32clip.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/win32dis$(ExOBJ):: win32dis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/win32key$(ExOBJ):: win32key.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/win32mouse$(ExOBJ):: win32mouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/win32scr$(ExOBJ):: win32scr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/wingrdis$(ExOBJ):: wingrdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/wingrkey$(ExOBJ):: wingrkey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/wingrmouse$(ExOBJ):: wingrmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/wingrscr$(ExOBJ):: wingrscr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/winntdis$(ExOBJ):: winntdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/winntkey$(ExOBJ):: winntkey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/winntmouse$(ExOBJ):: winntmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/winntscr$(ExOBJ):: winntscr.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/x11dis$(ExOBJ):: x11dis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/x11key$(ExOBJ):: x11key.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/x11mouse$(ExOBJ):: x11mouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/x11src$(ExOBJ):: x11src.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/xtermdis$(ExOBJ):: xtermdis.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/xtermkey$(ExOBJ):: xtermkey.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/xtermmouse$(ExOBJ):: xtermmouse.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/xtermscr$(ExOBJ):: xtermscr.cc  
+	$(RHIDE_COMPILE_CC)
+
+OBJFILES=\
+	../makes/obj/beep$(ExOBJ) \
+	../makes/obj/drivevalid$(ExOBJ) \
+	../makes/obj/expandpath$(ExOBJ) \
+	../makes/obj/fexpand$(ExOBJ) \
+	../makes/obj/fileattrs$(ExOBJ) \
+	../makes/obj/fileexists$(ExOBJ) \
+	../makes/obj/filelength$(ExOBJ) \
+	../makes/obj/fixpath$(ExOBJ) \
+	../makes/obj/fnmatch$(ExOBJ) \
+	../makes/obj/getcurdir$(ExOBJ) \
+	../makes/obj/getline$(ExOBJ) \
+	../makes/obj/getopt$(ExOBJ) \
+	../makes/obj/getopt1$(ExOBJ) \
+	../makes/obj/getshell$(ExOBJ) \
+	../makes/obj/glob$(ExOBJ) \
+	../makes/obj/globfree$(ExOBJ) \
+	../makes/obj/iffilelen$(ExOBJ) \
+	../makes/obj/isdir$(ExOBJ) \
+	../makes/obj/isrelpath$(ExOBJ) \
+	../makes/obj/iswild$(ExOBJ) \
+	../makes/obj/itoa$(ExOBJ) \
+	../makes/obj/mkstemp$(ExOBJ) \
+	../makes/obj/nl_langinfo$(ExOBJ) \
+	../makes/obj/ntdirent$(ExOBJ) \
+	../makes/obj/pathvalid$(ExOBJ) \
+	../makes/obj/regex$(ExOBJ) \
+	../makes/obj/releasec$(ExOBJ) \
+	../makes/obj/snprintf$(ExOBJ) \
+	../makes/obj/strlwr$(ExOBJ) \
+	../makes/obj/strupr$(ExOBJ) \
+	../makes/obj/ticks$(ExOBJ) \
+	../makes/obj/unc$(ExOBJ) \
+	../makes/obj/unc_95$(ExOBJ) \
+	../makes/obj/unc_nt$(ExOBJ) \
+	../makes/obj/validfilename$(ExOBJ) \
+	../makes/obj/yieldpro$(ExOBJ) \
+	obj/calcdisp$(ExOBJ) \
+	obj/calculat$(ExOBJ) \
+	obj/codepage$(ExOBJ) \
+	obj/configfile$(ExOBJ) \
+	obj/dosdis$(ExOBJ) \
+	obj/doskey$(ExOBJ) \
+	obj/dosmouse$(ExOBJ) \
+	obj/dosscr$(ExOBJ) \
+	obj/drivers2$(ExOBJ) \
+	obj/dual$(ExOBJ) \
+	obj/fileview$(ExOBJ) \
+	obj/fontcoll$(ExOBJ) \
+	obj/fpbase$(ExOBJ) \
+	obj/fpstream$(ExOBJ) \
+	obj/help$(ExOBJ) \
+	obj/helpbase$(ExOBJ) \
+	obj/histlist$(ExOBJ) \
+	obj/ifpstrea$(ExOBJ) \
+	obj/iopstrea$(ExOBJ) \
+	obj/ipstream$(ExOBJ) \
+	obj/linuxdis$(ExOBJ) \
+	obj/linuxkey$(ExOBJ) \
+	obj/linuxmouse$(ExOBJ) \
+	obj/linuxscr$(ExOBJ) \
+	obj/misc$(ExOBJ) \
+	obj/msgbox$(ExOBJ) \
+	obj/nbackgro$(ExOBJ) \
+	obj/nbutton$(ExOBJ) \
+	obj/ncalcdis$(ExOBJ) \
+	obj/ncalcula$(ExOBJ) \
+	obj/nchdirdi$(ExOBJ) \
+	obj/ncheckbo$(ExOBJ) \
+	obj/nclrdisp$(ExOBJ) \
+	obj/ncluster$(ExOBJ) \
+	obj/ncollect$(ExOBJ) \
+	obj/ncolordi$(ExOBJ) \
+	obj/ncolorgr$(ExOBJ) \
+	obj/ncolorit$(ExOBJ) \
+	obj/ncolorse$(ExOBJ) \
+	obj/ndesktop$(ExOBJ) \
+	obj/ndialog$(ExOBJ) \
+	obj/ndircoll$(ExOBJ) \
+	obj/ndirlist$(ExOBJ) \
+	obj/neditor$(ExOBJ) \
+	obj/neditwi$(ExOBJ) \
+	obj/newstr$(ExOBJ) \
+	obj/nfilecol$(ExOBJ) \
+	obj/nfiledia$(ExOBJ) \
+	obj/nfiledtr$(ExOBJ) \
+	obj/nfileinf$(ExOBJ) \
+	obj/nfileinp$(ExOBJ) \
+	obj/nfilelis$(ExOBJ) \
+	obj/nfilterv$(ExOBJ) \
+	obj/nframe$(ExOBJ) \
+	obj/ngroup$(ExOBJ) \
+	obj/nhistory$(ExOBJ) \
+	obj/nindicat$(ExOBJ) \
+	obj/ninputli$(ExOBJ) \
+	obj/nlabel$(ExOBJ) \
+	obj/nlistbox$(ExOBJ) \
+	obj/nlistvie$(ExOBJ) \
+	obj/nmemo$(ExOBJ) \
+	obj/nmenubar$(ExOBJ) \
+	obj/nmenubox$(ExOBJ) \
+	obj/nmenuvie$(ExOBJ) \
+	obj/nmonosel$(ExOBJ) \
+	obj/nparamte$(ExOBJ) \
+	obj/nradiobu$(ExOBJ) \
+	obj/nrangeva$(ExOBJ) \
+	obj/nresourc$(ExOBJ) \
+	obj/nscrollb$(ExOBJ) \
+	obj/nscrolle$(ExOBJ) \
+	obj/nsortedc$(ExOBJ) \
+	obj/nsortedl$(ExOBJ) \
+	obj/nstatict$(ExOBJ) \
+	obj/nstatusl$(ExOBJ) \
+	obj/nstringc$(ExOBJ) \
+	obj/nstringl$(ExOBJ) \
+	obj/nvalidat$(ExOBJ) \
+	obj/nview$(ExOBJ) \
+	obj/nwindow$(ExOBJ) \
+	obj/ofpstrea$(ExOBJ) \
+	obj/opstream$(ExOBJ) \
+	obj/osclipboard$(ExOBJ) \
+	obj/pstream$(ExOBJ) \
+	obj/qnxdis$(ExOBJ) \
+	obj/qnxkey$(ExOBJ) \
+	obj/qnxmouse$(ExOBJ) \
+	obj/qnxscr$(ExOBJ) \
+	obj/rhscreen$(ExOBJ) \
+	obj/sbackgro$(ExOBJ) \
+	obj/sbutton$(ExOBJ) \
+	obj/scalcdis$(ExOBJ) \
+	obj/scalcula$(ExOBJ) \
+	obj/schdirdi$(ExOBJ) \
+	obj/scheckbo$(ExOBJ) \
+	obj/sclrdisp$(ExOBJ) \
+	obj/scluster$(ExOBJ) \
+	obj/scolordi$(ExOBJ) \
+	obj/scolorgr$(ExOBJ) \
+	obj/scolorit$(ExOBJ) \
+	obj/scolorse$(ExOBJ) \
+	obj/screen$(ExOBJ) \
+	obj/sdesktop$(ExOBJ) \
+	obj/sdialog$(ExOBJ) \
+	obj/sdircoll$(ExOBJ) \
+	obj/sdirlist$(ExOBJ) \
+	obj/seditor$(ExOBJ) \
+	obj/seditwin$(ExOBJ) \
+	obj/sescreen$(ExOBJ) \
+	obj/sfilecol$(ExOBJ) \
+	obj/sfiledia$(ExOBJ) \
+	obj/sfileedi$(ExOBJ) \
+	obj/sfileinf$(ExOBJ) \
+	obj/sfileinp$(ExOBJ) \
+	obj/sfilelis$(ExOBJ) \
+	obj/sfilterv$(ExOBJ) \
+	obj/sframe$(ExOBJ) \
+	obj/sgroup$(ExOBJ) \
+	obj/shistory$(ExOBJ) \
+	obj/sindicat$(ExOBJ) \
+	obj/sinputli$(ExOBJ) \
+	obj/slabel$(ExOBJ) \
+	obj/slistbox$(ExOBJ) \
+	obj/slistvie$(ExOBJ) \
+	obj/smemo$(ExOBJ) \
+	obj/smenubar$(ExOBJ) \
+	obj/smenubox$(ExOBJ) \
+	obj/smenuvie$(ExOBJ) \
+	obj/smonosel$(ExOBJ) \
+	obj/sparamte$(ExOBJ) \
+	obj/sradiobu$(ExOBJ) \
+	obj/srangeva$(ExOBJ) \
+	obj/sresourc$(ExOBJ) \
+	obj/sscrollb$(ExOBJ) \
+	obj/sscrolle$(ExOBJ) \
+	obj/sstatict$(ExOBJ) \
+	obj/sstatusl$(ExOBJ) \
+	obj/sstringc$(ExOBJ) \
+	obj/sstringl$(ExOBJ) \
+	obj/sview$(ExOBJ) \
+	obj/swindow$(ExOBJ) \
+	obj/tapplica$(ExOBJ) \
+	obj/tbackgro$(ExOBJ) \
+	obj/tbutton$(ExOBJ) \
+	obj/tchdirdi$(ExOBJ) \
+	obj/tcheckbo$(ExOBJ) \
+	obj/tclrdisp$(ExOBJ) \
+	obj/tcluster$(ExOBJ) \
+	obj/tcollect$(ExOBJ) \
+	obj/tcolordi$(ExOBJ) \
+	obj/tcolorgr$(ExOBJ) \
+	obj/tcolorit$(ExOBJ) \
+	obj/tcolorse$(ExOBJ) \
+	obj/tcommand$(ExOBJ) \
+	obj/tdesktop$(ExOBJ) \
+	obj/tdialog$(ExOBJ) \
+	obj/tdircoll$(ExOBJ) \
+	obj/tdirlist$(ExOBJ) \
+	obj/tdisplay$(ExOBJ) \
+	obj/tdrawbuf$(ExOBJ) \
+	obj/teditor$(ExOBJ) \
+	obj/teditorf$(ExOBJ) \
+	obj/teditwin$(ExOBJ) \
+	obj/tevent$(ExOBJ) \
+	obj/tfilecol$(ExOBJ) \
+	obj/tfiledia$(ExOBJ) \
+	obj/tfileedi$(ExOBJ) \
+	obj/tfileinf$(ExOBJ) \
+	obj/tfileinp$(ExOBJ) \
+	obj/tfilelis$(ExOBJ) \
+	obj/tfilterv$(ExOBJ) \
+	obj/tframe$(ExOBJ) \
+	obj/tgkey$(ExOBJ) \
+	obj/tgroup$(ExOBJ) \
+	obj/thistory$(ExOBJ) \
+	obj/thistvie$(ExOBJ) \
+	obj/thistwin$(ExOBJ) \
+	obj/thwmouse$(ExOBJ) \
+	obj/tindicat$(ExOBJ) \
+	obj/tinputli$(ExOBJ) \
+	obj/tlabel$(ExOBJ) \
+	obj/tlistbox$(ExOBJ) \
+	obj/tlistvie$(ExOBJ) \
+	obj/tmemo$(ExOBJ) \
+	obj/tmenubar$(ExOBJ) \
+	obj/tmenubox$(ExOBJ) \
+	obj/tmenuvie$(ExOBJ) \
+	obj/tmonosel$(ExOBJ) \
+	obj/tmouse$(ExOBJ) \
+	obj/tnscolle$(ExOBJ) \
+	obj/tnssorte$(ExOBJ) \
+	obj/tobject$(ExOBJ) \
+	obj/tpalette$(ExOBJ) \
+	obj/tparamte$(ExOBJ) \
+	obj/tpoint$(ExOBJ) \
+	obj/tprogini$(ExOBJ) \
+	obj/tprogram$(ExOBJ) \
+	obj/tpwobj$(ExOBJ) \
+	obj/tpwreado$(ExOBJ) \
+	obj/tpwritte$(ExOBJ) \
+	obj/tradiobu$(ExOBJ) \
+	obj/trangeva$(ExOBJ) \
+	obj/trescoll$(ExOBJ) \
+	obj/tresfile$(ExOBJ) \
+	obj/tscreen$(ExOBJ) \
+	obj/tscrollb$(ExOBJ) \
+	obj/tscrolle$(ExOBJ) \
+	obj/tsortedc$(ExOBJ) \
+	obj/tsortedl$(ExOBJ) \
+	obj/tstatict$(ExOBJ) \
+	obj/tstatusd$(ExOBJ) \
+	obj/tstatusl$(ExOBJ) \
+	obj/tstrinde$(ExOBJ) \
+	obj/tstringc$(ExOBJ) \
+	obj/tstringl$(ExOBJ) \
+	obj/tstrlist$(ExOBJ) \
+	obj/tstrmcla$(ExOBJ) \
+	obj/tstrmtyp$(ExOBJ) \
+	obj/tsubmenu$(ExOBJ) \
+	obj/ttermina$(ExOBJ) \
+	obj/ttextdev$(ExOBJ) \
+	obj/tvalidat$(ExOBJ) \
+	obj/tvedit1$(ExOBJ) \
+	obj/tvedit2$(ExOBJ) \
+	obj/tvedit3$(ExOBJ) \
+	obj/tview$(ExOBJ) \
+	obj/tvintl$(ExOBJ) \
+	obj/tvtext1$(ExOBJ) \
+	obj/tvtext2$(ExOBJ) \
+	obj/twindow$(ExOBJ) \
+	obj/unixdis$(ExOBJ) \
+	obj/unixkey$(ExOBJ) \
+	obj/unixmouse$(ExOBJ) \
+	obj/unixscr$(ExOBJ) \
+	obj/vesa$(ExOBJ) \
+	obj/vga$(ExOBJ) \
+	obj/vgaregs$(ExOBJ) \
+	obj/vgastate$(ExOBJ) \
+	obj/win32clip$(ExOBJ) \
+	obj/win32dis$(ExOBJ) \
+	obj/win32key$(ExOBJ) \
+	obj/win32mouse$(ExOBJ) \
+	obj/win32scr$(ExOBJ) \
+	obj/wingrdis$(ExOBJ) \
+	obj/wingrkey$(ExOBJ) \
+	obj/wingrmouse$(ExOBJ) \
+	obj/wingrscr$(ExOBJ) \
+	obj/winntdis$(ExOBJ) \
+	obj/winntkey$(ExOBJ) \
+	obj/winntmouse$(ExOBJ) \
+	obj/winntscr$(ExOBJ) \
+	obj/x11dis$(ExOBJ) \
+	obj/x11key$(ExOBJ) \
+	obj/x11mouse$(ExOBJ) \
+	obj/x11src$(ExOBJ) \
+	obj/xtermdis$(ExOBJ) \
+	obj/xtermkey$(ExOBJ) \
+	obj/xtermmouse$(ExOBJ) \
+	obj/xtermscr$(ExOBJ) 
+
+LIBRARIES=
+

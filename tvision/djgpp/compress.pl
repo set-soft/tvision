@@ -28,55 +28,6 @@ foreach $i (@ARGV)
      }
   }
 
-# Update the makefile if needed
-$here=`pwd`;
-chop $here;
-$here=~s/djgpp//;
-print 'makefile: ';
-if (-M 'makefile' > -M 'librhtv.gpr')
-  {# This fixes some details:
-   system('gprexp librhtv.gpr');
-   # Export the file:
-   system('gpr2mak librhtv.gpr');
-   # Now fix the remaining. This is needed only for RHIDE 1.5 CVS
-   $a=cat('librhtv.mak');
-   $a=~s/$here/\.\.\//mg;
-   replace('Makefile',$a);
-   unlink('librhtv.mak');
-   print "(1) updated";
-  }
-else
-  {
-   print "(1) uptodate";
-  }
-if (-M '../compat/compat.mak' > -M '../compat/compat.gpr')
-  {
-   system('gprexp ../compat/compat.gpr');
-   system('gpr2mak ../compat/compat.gpr');
-   print "(2) updated\n";
-  }
-else
-  {
-   print "(2) uptodate\n";
-  }
-@files=glob('../examples/*/*.gpr');
-foreach $i (@files)
-  {
-   $r=$i;
-   $r=~s/\.gpr/\.mak/;
-   print "$r: ";
-   if (!(-e $r) || (-M $r > -M $i))
-     {
-      system("gprexp $i");
-      system("gpr2mak $i");
-      print "updated\n";
-     }
-   else
-     {
-      print "uptodate\n";
-     }
-  }
-print "\n";
 # BC++ 5.5 Makefile
 chdir('..');
 `perl confignt.pl`;
@@ -113,9 +64,18 @@ foreach $i (@files)
      }
    $r.='contrib/tvision/'.$i;
   }
-@files=glob('contrib/tvision/examples/*/*.mak');
+# Add example makefiles
+@files=glob('tvision/examples/*/*.umk');
 $r.=join("\n",@files);
+@files=glob('tvision/examples/*/*/*.umk');
+$r.=join("\n",@files);
+@files=glob('tvision/examples/*/*.mkf');
+$r.=join("\n",@files);
+@files=glob('tvision/examples/*/*/*.mkf');
+$r.=join("\n",@files);
+# Manifest and version
 $r.="\n$srcmft\n$srcver\n";
+# Sort the list
 @files=split(/\n/,$r);
 @files=sort(@files);
 $r=join("\n",@files);

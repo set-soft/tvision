@@ -178,7 +178,7 @@ class TComboWindow : public TWindow {
       TPalette& getPalette() const;
       void getSelection(char *);
       virtual void handleEvent(TEvent&);
-      void setSelection(char *);
+      void setSelection(const char *);
 
    private:
       virtual const char *streamableName() const

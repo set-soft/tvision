@@ -40,7 +40,6 @@ TChDirDialog::TChDirDialog( ushort opts, ushort histId ) :
     TDialog( TRect( 16, 2, 64, 20 ), __("Change Directory") )
     , TWindowInit( &TChDirDialog::initFrame )
 {
-    const char *tmp;
     options |= ofCentered;
 
     dirInput = new TInputLine( TRect( 3, 3, 30, 4 ), FILENAME_MAX );

@@ -108,7 +108,7 @@ tvhc/tvhc.exe: tvhc/tvhc.gpr
 videomode/test.exe: videomode/test.gpr
 
 %.exe: %.gpr
-	$(MAKE) -C $(dir $<) -f $(addsuffix .mak,$(basename $(notdir $<)))
+	$(MAKE) -C $(dir $<) -f $(addsuffix .mkf,$(basename $(notdir $<)))
 
 clean:
 	@echo 'Cleaning examples.'

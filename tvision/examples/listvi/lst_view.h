@@ -40,6 +40,7 @@ class TListViewDialog : public TDialog {
 	TListViewBox *listBox2;
 	TListViewBox *listBoxPtr; // temp holds active listview ptr during modifications
 	TInputLine *inputLine;
+	int inputLineLen;
 	TInputLine *itemNumber; // displays currently active line, not selectable
 };
 

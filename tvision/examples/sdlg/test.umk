@@ -1,0 +1,34 @@
+#!/usr/bin/make
+# Automatically generated from RHIDE projects, don't edit
+# 2003-06-02 11:20
+#
+
+test$(ExEXE):: \
+	./main$(ExOBJ) \
+	./scrldlg$(ExOBJ) \
+	./scrlgrp$(ExOBJ) \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_LINK)
+
+./main$(ExOBJ):: main.cpp \
+	dlg.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./scrldlg$(ExOBJ):: scrldlg.cpp \
+	dlg.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./scrlgrp$(ExOBJ):: scrlgrp.cpp \
+	dlg.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+OBJFILES=\
+	./main$(ExOBJ) \
+	./scrldlg$(ExOBJ) \
+	./scrlgrp$(ExOBJ) 
+
+LIBRARIES=
+

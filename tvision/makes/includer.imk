@@ -1,0 +1,35 @@
+#!/usr/bin/make
+# This file is to absorve the difference between GNU Make's include directive
+# and Borland's !include directive. :-(
+#
+ifdef INCLUDE00
+include $(INCLUDE00)
+endif
+ifdef INCLUDE01
+include $(INCLUDE01)
+endif
+ifdef INCLUDE02
+include $(INCLUDE02)
+endif
+ifdef INCLUDE03
+include $(INCLUDE03)
+endif
+ifdef INCLUDE04
+include $(INCLUDE04)
+endif
+ifdef INCLUDE05
+include $(INCLUDE05)
+endif
+ifdef INCLUDE06
+include $(INCLUDE06)
+endif
+ifdef INCLUDE07
+include $(INCLUDE07)
+endif
+ifdef INCLUDE08
+include $(INCLUDE08)
+endif
+ifdef INCLUDE09
+include $(INCLUDE09)
+endif
+

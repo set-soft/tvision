@@ -1,0 +1,105 @@
+#!/usr/bin/make
+# Automatically generated from RHIDE projects, don't edit
+# 2003-06-02 11:20
+#
+
+test$(ExEXE):: \
+	./nmcmbobx$(ExOBJ) \
+	./nmcmbovw$(ExOBJ) \
+	./nmcmbown$(ExOBJ) \
+	./nmsinput$(ExOBJ) \
+	./scombobx$(ExOBJ) \
+	./scombovw$(ExOBJ) \
+	./scombown$(ExOBJ) \
+	./ssinputl$(ExOBJ) \
+	./tcmbovwr$(ExOBJ) \
+	./tcmbowin$(ExOBJ) \
+	./tcombobx$(ExOBJ) \
+	./test$(ExOBJ) \
+	./tsinputl$(ExOBJ) \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_LINK)
+
+./nmcmbobx$(ExOBJ):: nmcmbobx.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./nmcmbovw$(ExOBJ):: nmcmbovw.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./nmcmbown$(ExOBJ):: nmcmbown.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./nmsinput$(ExOBJ):: nmsinput.cpp \
+	tsinputl.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./scombobx$(ExOBJ):: scombobx.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./scombovw$(ExOBJ):: scombovw.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./scombown$(ExOBJ):: scombown.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./ssinputl$(ExOBJ):: ssinputl.cpp \
+	tsinputl.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./tcmbovwr$(ExOBJ):: tcmbovwr.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./tcmbowin$(ExOBJ):: tcmbowin.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./tcombobx$(ExOBJ):: tcombobx.cpp \
+	tcombobx.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./test$(ExOBJ):: test.cpp \
+	tcombobx.h \
+	tsinputl.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+./tsinputl$(ExOBJ):: tsinputl.cpp \
+	tsinputl.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+OBJFILES=\
+	./nmcmbobx$(ExOBJ) \
+	./nmcmbovw$(ExOBJ) \
+	./nmcmbown$(ExOBJ) \
+	./nmsinput$(ExOBJ) \
+	./scombobx$(ExOBJ) \
+	./scombovw$(ExOBJ) \
+	./scombown$(ExOBJ) \
+	./ssinputl$(ExOBJ) \
+	./tcmbovwr$(ExOBJ) \
+	./tcmbowin$(ExOBJ) \
+	./tcombobx$(ExOBJ) \
+	./test$(ExOBJ) \
+	./tsinputl$(ExOBJ) 
+
+LIBRARIES=
+

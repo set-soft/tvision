@@ -972,7 +972,7 @@ void * TDDialog::dsgGetData() { return (void *)title; }
 
 Boolean TDDialog::Save(int aCommand)
 {
-   char * f;
+   const char * f;
    int cmd = aCommand;
    if (modified)
    {
@@ -1017,7 +1017,7 @@ static void saveObject(void * v, void * d)
 #endif
 }
 
-Boolean TDDialog::saveToFile(char * FileName)
+Boolean TDDialog::saveToFile(const char * FileName)
 {
     ofpstream * S = initFile(FileName, fileName, dialogFileSig);
     if (S != 0)
