@@ -101,7 +101,9 @@ if ($Compf eq 'MinGW')
 $realPrefix=@conf{'real-prefix'};
 $realPrefix=@conf{'prefix'} unless $realPrefix;
 # Path for the includes
-$MakeDefsRHIDE[1]='TVSRC=../../include '.$here.'/include '.$realPrefix.'/include/rhtvision';
+$MakeDefsRHIDE[1]='TVSRC=../../include ';
+$MakeDefsRHIDE[1].=$here.'/include ' unless $conf{'libs-here'} eq 'no';
+$MakeDefsRHIDE[1].=$realPrefix.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
