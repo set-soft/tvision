@@ -60,6 +60,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #endif
 
 #ifdef Uses_TEditorApp
+#define Uses_TApplication
 #define INCL_TVEDIT_H
 #endif
 // SET: End of the TEditor classes

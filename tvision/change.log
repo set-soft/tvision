@@ -1,4 +1,11 @@
 $Log$
+Revision 1.242.2.3  2001/11/25 18:44:28  set
+* Modified: compatlayer.h should be included just once as tv.h, but this
+isn't the case for all the applications and enforces a policy that doesn't
+have to be the same used by other projects. For this reason I removed the
+protection and any collision will be solved for the particular case instead
+of protecting the whole file. After a talk with Andris.
+
 Revision 1.242.2.2  2001/11/25 15:45:57  set
 * Fixed: Desklogo examples to work with anything different than 80x25 and a
 lack of a redraw in tv_logo. Reported by Cesar Rabak <csrabak@uol.com.br>.
