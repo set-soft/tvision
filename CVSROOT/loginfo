@@ -26,7 +26,7 @@
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 #CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
 #CVSROOT ls -la $CVSROOT/CVSROOT/
-CVSROOT cp /cvsroot/tvision/tvision/classes/linux/linuxdis.cc,v /cvsroot/tvision/tvision/classes/linux/unixdis.cc,v ; cp /cvsroot/tvision/tvision/classes/linux/linuxkey.cc,v /cvsroot/tvision/tvision/classes/linux/unixkey.cc,v ; cp /cvsroot/tvision/tvision/classes/linux/linuxmouse.cc,v /cvsroot/tvision/tvision/classes/linux/unixmouse.cc,v ; cp /cvsroot/tvision/tvision/classes/linux/linuxscr.cc,v /cvsroot/tvision/tvision/classes/linux/unixscr.cc,v ; cp /cvsroot/tvision/tvision/include/tv/linux/key.h,v /cvsroot/tvision/tvision/include/tv/unix/key.h,v ; cp /cvsroot/tvision/tvision/include/tv/linux/mouse.h,v /cvsroot/tvision/tvision/include/tv/unix/mouse.h,v ; cp /cvsroot/tvision/tvision/include/tv/linux/screen.h,v /cvsroot/tvision/tvision/include/tv/unix/screen.h,v ; echo Copiado
+CVSROOT mv /cvsroot/tvision/tvision/classes/linux/unixdis.cc,v /cvsroot/tvision/tvision/classes/unix ; mv /cvsroot/tvision/tvision/classes/linux/unixkey.cc,v /cvsroot/tvision/tvision/classes/unix ; mv /cvsroot/tvision/tvision/classes/linux/unixmouse.cc,v /cvsroot/tvision/tvision/classes/unix ; mv /cvsroot/tvision/tvision/classes/linux/unixscr.cc,v /cvsroot/tvision/tvision/classes/unix
 DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} tvision-checkins@lists.sourceforge.net
 #DEFAULT chmod +x /cvsroot/tvision/tvision/configure,v /cvsroot/tvision/tvision/configset,v
 #DEFAULT whoami; ls -la /cvsroot/tvision/tvision; ls -la /cvsroot/tvision
