@@ -1,13 +1,13 @@
 cd ../..
-rm -f tvision-1.0.0.source.tar.gz tvision-1.0.0.bin.tar.gz tv100s.zip
-zip -r0 tvision/linux/tmp/tv100s tvision -x "*.o" "*.gdt" "*.bkp" "*.dst" "*.a" "*cvs/*" "*CVS/*"
+rm -f tvision-1.0.1.source.tar.gz tvision-1.0.1.bin.tar.gz tv100s.zip
+zip -r0 tvision/linux/tmp/tv101s tvision -x "*.o" "*.gdt" "*.bkp" "*.dst" "*.a" "*cvs/*" "*CVS/*"
 cd tvision/linux/tmp/
-unzip tv100s.zip
-mv tv100s.zip tvision.zip
-zip -9m  ../../../tv100s.zip tvision.zip
-tar -zcvf tvision-1.0.0.source.tar.gz tvision
+unzip tv101s.zip
+mv tv101s.zip tvision.zip
+zip -9m  ../../../tv101s.zip tvision.zip
+tar -zcvf tvision-1.0.1.source.tar.gz tvision
 cd ../../..
-mv tvision/linux/tmp/tvision-1.0.0.source.tar.gz .
+mv tvision/linux/tmp/tvision-1.0.1.source.tar.gz .
 rm -r tvision/linux/tmp/*
-tar -zcvf tvision-1.0.0.bin.tar.gz tvision/readme.src tvision/copying* tvision/borland.txt tvision/linux/libtv.a tvision/linux/sacadeb tvision/include/*.h tvision/linux/tmp
+tar -zcvf tvision-1.0.1.bin.tar.gz tvision/readme.txt tvision/copying* tvision/borland.txt tvision/linux/libtv.a tvision/linux/sacadeb tvision/include/*.h tvision/linux/tmp
 
