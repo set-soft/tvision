@@ -1116,6 +1116,19 @@ typedef unsigned long  ulong;
  // Note: snprintf and vsnprintf seems to be available in some versions but not in others.
  // But looks like _snprintf and _vsnprintf is available in 1000 and 1300 versions.
  // So currently I assume the _* versions are available for all versions.
+ //
+ // Note 2: at least MSVC 1200 (6.0) have a wrong implemetation of vsnprintf, it have an
+ // assert checking that the buffer is != NULL and/or size != 0. This is wrong. According
+ // to the IEEE 1003.1 (POSIX 1003.1) standard (Issue 6 2004):
+ // ... "If /n/ is zero, nothing shall be written and /s/ may be a null pointer." ...
+ // And when the result value is explained says:
+ // "Upon successful completion, the /snprintf/() function shall return the number of bytes
+ // that would be written to /s/ had /n/ been sufficiently large excluding the terminating
+ // null byte."
+ //
+ // As I don't know which version fixed this bug I use the replacement that really works.
+ //
+ #undef CLY_Have_snprintf
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
@@ -1474,6 +1487,8 @@ typedef unsigned long  ulong;
   #undef  Include_stdio
   #define Include_stdio 1
   #ifdef TVComp_MSC
+   // Note: Currently unused because the implementation is wrong. See notes in
+   // the MSVC section.
    #define CLY_snprintf  _snprintf
    #define CLY_vsnprintf _vsnprintf
   #else
