@@ -3,6 +3,7 @@
    Covered by the GPL license. */
 #include <tv/configtv.h>
 
+#define Uses_string
 #define Uses_TDisplay
 #define Uses_TScreen
 #include <tv.h>
@@ -34,8 +35,8 @@ char      TDisplayX11::cShapeTo;
 char      TDisplayX11::windowSizeChanged=0;
 int       TDisplayX11::maxX;
 int       TDisplayX11::maxY;
-int       TDisplayX11::oldX;
-int       TDisplayX11::oldY;
+int       TDisplayX11::newX;
+int       TDisplayX11::newY;
 unsigned  TDisplayX11::fontW;
 unsigned  TDisplayX11::fontWb;
 unsigned  TDisplayX11::fontH;
@@ -91,22 +92,29 @@ void TDisplayX11::SetCursorShape(unsigned start, unsigned end)
 
 ushort TDisplayX11::GetRows()
 {
- return oldY;
+ return maxY;
 }
 
 ushort TDisplayX11::GetCols()
 {
- return oldX;
+ return maxX;
 }
 
 int TDisplayX11::CheckForWindowSize(void)
 {
- int ret=windowSizeChanged!=0;
- windowSizeChanged=0;
- // Now we can change the values because the application is aware
- oldX=maxX;
- oldY=maxY;
- return ret;
+ if (windowSizeChanged)
+   {
+    // Now we can change the values because the application is aware
+    maxX=newX;
+    maxY=newY;
+    // Reallocate the buffer cleaning it to force a deep redraw
+    delete[] TScreen::screenBuffer;
+    TScreen::screenBuffer=new ushort[maxX*maxY];
+    memset(TScreen::screenBuffer,0,maxX*maxY*sizeof(ushort));
+    windowSizeChanged=0;
+    return 1;
+   }
+ return 0;
 }
 #else
 

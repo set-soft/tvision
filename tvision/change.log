@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.361  2002/11/27 20:52:32  set
+* Fixed: [X11] When the window manager forces the window size during
+initialization a race appears between the path to reach the point where
+TProgram asks for the new window size and other draw routines that asks
+for the current screen width/height. This is fixed and may be needed by
+other drivers. But the driver still crash if the WM forces the size. I
+don't know why but the crash is inside X lib. Efence doesn't show any kind
+of memory corruption. Looks like a missuse of the Xlib API.
+
 Revision 2.360  2002/11/27 17:24:28  set
 * Added: Now the TScreen::System member can take 3 optional arguments. They
 are used to redirect the stdin, stdout and stderr file handles of the child

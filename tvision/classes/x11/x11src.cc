@@ -857,8 +857,6 @@ TScreenX11::TScreenX11()
  fontH=useFont->h;
  fontWb=(useFont->w+7)/8;
  uchar *fontData=useFont->data;
- oldX=maxX;
- oldY=maxY;
 
  /* Setting to fine tune this driver */
  aux=1;
@@ -1321,23 +1319,18 @@ void TScreenX11::ProcessGenericEvents()
             if (event.xresizerequest.window!=mainWin)
                break;*/
 
-            //printf("ConfigureNotify %d,%d\n",event.xconfigure.width,event.xconfigure.height);
-            lastW=maxX;
-            lastH=maxY;
-            maxX=event.xconfigure.width /fontW;
-            maxY=event.xconfigure.height/fontH;
+            lastW=windowSizeChanged ? newX : maxX;
+            lastH=windowSizeChanged ? newY : maxY;
+            newX=event.xconfigure.width /fontW;
+            newY=event.xconfigure.height/fontH;
 
             /* Minimal size */
-            if (maxX<40) maxX=40;
-            if (maxY<20) maxY=20;
-            //printf("maxX %d maxY %d lastW %d lastH %d\n",maxX,maxY,lastW,lastH);
+            if (newX<40) newX=40;
+            if (newY<20) newY=20;
 
-            /* If size changed realloc buffer and indicate it */
-            if ((maxX!=(int)lastW) || (maxY!=(int)lastH))
-              {
-               screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
+            /* If size changed indicate it */
+            if ((newX!=(int)lastW) || (newY!=(int)lastH))
                windowSizeChanged=1;
-              }
 
             /* KDE 3.1 alpha maximize doesn't use cell sizes and our resize
                confuses KDE. */
@@ -1345,16 +1338,16 @@ void TScreenX11::ProcessGenericEvents()
                break;
 
             /* Force the window to have a size in chars */
-            newPW=fontW*maxX;
-            newPH=fontH*maxY;
+            newPW=fontW*newX;
+            newPH=fontH*newY;
 
             if ((unsigned)event.xconfigure.width==newPW &&
                 (unsigned)event.xconfigure.height==newPH)
                break;
 
-            //printf("Nuevo: %d,%d (%d,%d)\n",maxX,maxY,lastW,lastH);
+            //printf("Nuevo: %d,%d (%d,%d)\n",newX,newY,lastW,lastH);
             XResizeWindow(disp,mainWin,newPW,newPH);
-            //printf("Nuevo 2: %d,%d\n",maxX,maxY);
+            //printf("Nuevo 2: %d,%d\n",newX,newY);
             break;
       }
    }
@@ -1810,9 +1803,12 @@ int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
        CreateXImageFont(1,nsFont->data,nW,nH);
    }
  // Should I check the size?
- oldX=maxX=w; oldY=maxY=h;
+ maxX=w; maxY=h;
 
- screenBuffer=(uint16 *)realloc(screenBuffer,maxX*maxY*2);
+ delete[] screenBuffer;
+ screenBuffer=new ushort[maxX*maxY];
+ memset(screenBuffer,0,maxX*maxY*sizeof(ushort));
+
  DoResize(nW,nH);
 
  return (nW==(unsigned)fW && nH==(unsigned)fH) ? 1 : 2;
