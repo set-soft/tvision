@@ -1,4 +1,16 @@
 $Log$
+Revision 1.96  1999/08/26 00:32:19  set
+* Applied 7 more patches from Laurynas Biveinis <lauras@softhome.net>:
+* Fixed: validation bypassed when switching windows
+* Fixed: missing stream class members in TSortedListBox
+* Fixed: memory leak in opstream::seekp
+* Fixed: potential crash in TListViewer::setRange
+* Fixed: Alt-number bypass view validation
+* Fixed: THistory::handleEvent doesn't always put '\0'
+* Fixed: TInputLine::options not read correctly
+* Also: Now is possible to pass backslashes to TDirListBox. Patch suggested
+by Laurynas too.
+
 Revision 1.95  1999/08/25 00:11:17  set
 * Fixed: One of the new broadcasts was overlying a TButton command. Now I
 moved the TButton command to the views.h file so it won't happend again. I
