@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.399.2.1  2003/02/13 18:03:45  set
+* Added: Members for Unicode of 16 bits to TDrawBuffer. Completly
+experimental and untested.
+* Modified: The TView::exposed member to be much more easy to understand.
+I simply recoded it.
+* Modified: Part of the TView::writeView machinery to be more easy to
+understand. Needs much more work but I'm committing it because it currently
+works.
+
 Revision 2.399  2003/02/05 13:43:51  set
 * Modified: The default TMouse::resume behavior to restore the buttonsCount
 member. It allows calling suspend/resume when using drivers that doesn't
