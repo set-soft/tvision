@@ -1,4 +1,8 @@
 $Log$
+Revision 1.99  1999/09/07 01:12:26  set
+* Added: First attempt for a UNIXified configure/make/make install mechanism.
+Not using autoconf yet, just some Perl scripts.
+.
 Revision 1.98  1999/09/02 23:26:05  set
 * Fixed: I forgot some files, so I'm releasing a fixed .zip.
 .
