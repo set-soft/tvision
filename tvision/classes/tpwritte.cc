@@ -17,7 +17,8 @@ Modified by Robert H”hne to be used for RHIDE.
 
 TPWrittenObjects::TPWrittenObjects() : TNSSortedCollection( 5, 5 ), curId( 0 )
 {
-  shouldDelete = False;
+  // SET: Why this? it just leaks memory, anybody knows?
+  //shouldDelete = False;
 }
 
 TPWrittenObjects::~TPWrittenObjects()

@@ -58,6 +58,7 @@ extern REGS r_display;
 int TScreen_suspended = 1;
 
 void SaveScreen();
+void SaveScreenReleaseMemory();
 void RestoreScreen();
 void ScreenUpdate();
 extern ushort user_mode;
@@ -140,6 +141,7 @@ void TScreen::resume()
 TScreen::~TScreen()
 {
   suspend();
+  SaveScreenReleaseMemory();
 //  setCrtMode(startupMode);
 //  textmode(startupMode);
 //  if (startupMode == user_mode)

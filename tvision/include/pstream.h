@@ -53,6 +53,8 @@ public:
     streambuf * rdbuf() const;
 
     static void initTypes();
+    // SET: called atexit to kill the collection
+    static void deInitTypes();
 
     void error( StreamableError );
     void error( StreamableError, const TStreamable& );

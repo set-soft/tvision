@@ -29,10 +29,19 @@ pstream::~pstream()
 {
 }
 
+void pstream::deInitTypes(void)
+{
+ if (types)
+    delete types;
+}
+
 void pstream::initTypes()
 {
-    if( types == 0 )
-        types = new TStreamableTypes;
+ if (!types)
+   {
+    types=new TStreamableTypes;
+    atexit(pstream::deInitTypes);
+   }
 }
 
 int pstream::rdstate() const
