@@ -226,6 +226,7 @@ djgpp/obj/delete.me
 djgpp/tmp/delete.me
 doc/QNX.txt
 doc/X11.txt
+doc/Eterm.txt
 drivers2.cc
 dual.cc
 examples/Makefile
@@ -299,6 +300,8 @@ examples/dyntxt/dyntext.h
 examples/dyntxt/readme
 examples/dyntxt/rhide.env
 examples/dyntxt/testdyn.cpp
+examples/eterm/menus.cfg
+examples/eterm/theme.cfg
 -examples/fonts/font.016
 examples/fonts/genraw.cc
 -examples/fonts/genraw.gpr
@@ -422,8 +425,6 @@ examples/videomode/test.cc
 -examples/videomode/test.gpr
 examples/videomode/rhide.env
 examples/xterm/Xterm.res
-examples/xterm/menus.cfg
-examples/xterm/theme.cfg
 extra/doskeys/kextend.asm
 -extra/doskeys/kextend.com
 extra/doskeys/kextend.txt

@@ -1,0 +1,40 @@
+Driver: Eterm
+Author: Salvador E. Tropea
+
+  This driver was designed for Eterm 0.9.x. Previous versions like 0.8.10 are
+no longer supported.
+  Use this driver when you have X Window but you need to use a remote machine
+and the connection isn't fast enough to use the native X11 mode.
+  The driver isn't a full driver but a special mode of XTerm driver. For this
+reason most of the information fro XTerm driver applies. Please read about
+the XTerm driver too.
+  This driver is enabled when the environment variable TERM indicates the
+terminal is called Eterm. Old Linux distros, like Debian GNU/Linux Potato,
+defined Eterm terminals as xterm, that's wrong because they aren't the same.
+  The driver supports:
+
+* Window size.
+* Fonts size (no restore).
+* Palette. Eterm is relative fast for it but the screen flashes quickly.
+* Window title set/restore.
+* Most keyboard combinations when a special Eterm theme is used.
+
+  In order to get the maximum of key combinations you must install and use an
+Eterm theme specially designed for Turbo Vision applications.
+  The files are stored in examples/eterm. Copy this files to
+~/.Eterm/themes/tvapp or to /usr/share/Eterm/themes/tvapp if you want to
+make this theme globally available. Then start Eterm with:
+
+$ Eterm -t tvapp
+
+  Note this theme is specially configured for TV applications and isn't the
+best for other tasks. I recommend to use at leat two connections to the
+remote machine, one for general tasks and another from an Eterm with the
+tvapp theme to run TV applications.
+  If you want to test this driver locally just export the DISPLAY variable
+with a null content like this (bash syntax):
+
+$ export DISPLY=
+
+
+

@@ -1,9 +1,11 @@
 Driver: X11
 Author: Salvador E. Tropea
 
-This file documents details specific to the X11 driver.
-Currently this file isn't organized and just contains things I think somebody
-could need to know.
+  This file documents details specific to the X11 driver. By X11 I mean the X
+Window system version 11 release 6 also known as X11R6. The driver was tested
+with XFree86 and Solaris.
+  Currently this file isn't organized and just contains things I think
+somebody could need to know.
 
 * The X11 driver was tested using Debian GNU/Linux Potato and Woody and
 Solaris 2.7 (Sun Ultra 60 machine).
@@ -30,8 +32,8 @@ width fonts.
 XFree86 fixed font, which in fact are included.
 
 * I use monochromatic XImage objects for the fonts and I let X to expand the
-colors. XFree86 seems to quite ineficient doing it, while Solaris' X is much
-faster. I think we can get much more speed by expanding the colors to an
+colors. XFree86 seems to be quite ineficient doing it, while Solaris' X is
+much faster. I think we can get much more speed by expanding the colors to an
 internal bitmap and then doing the blit in one operation. But this needs
 special care about different color depths and colors organizations. I guess
 the color values returned by X can make it easy, but never tried.
@@ -78,8 +80,8 @@ The bigger the number the more important the driver. The default value is
 key combinations for their own purposes interfering with applications.
 I don't know how to tell X11 to send the keystrokes to my application instead
 of the WM. I know an application can drag the keyboard focus but I also know
-it makes quite dificult to debug such an application. If you know about a way
-to tell X11 something like: Alt+F1 is mine, send it to me when I have the
+it makes quite difficult to debug such an application. If you know about a
+way to tell X11 something like: Alt+F1 is mine, send it to me when I have the
 focus, please contact me.
 My suggestion is to configure your WM/Desktop to use more convenient
 keystrokes.

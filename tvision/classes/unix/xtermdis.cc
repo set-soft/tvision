@@ -204,7 +204,10 @@ const char *TDisplayXTerm::GetWindowTitle(void)
 
 int TDisplayXTerm::SetWindowTitle(const char *name)
 {
- fprintf(stdout,"\E]2;%s\E\\",name); // \E\\ is the string terminator
+ if (terminalType==Eterm)
+    fprintf(stdout,"\E]2;%s\x7",name); // BEL is the string terminator
+ else
+    fprintf(stdout,"\E]2;%s\E\\",name); // \E\\ is the string terminator
  return 1;
 }
 
@@ -263,6 +266,7 @@ void TDisplayXTerm::ResetPaletteColorsEt()
 // This is supported only by XTerm
 char *TDisplayXTerm::GetCurrentFontName()
 {
+ if (terminalType==Eterm) return NULL;
  char fontNameAux[84];
  fputs("\E]50;?\x7",stdout);
  if (fscanf(TGKeyXTerm::fIn,"\E]50;%80[^\x7]\x7",fontNameAux)==1)
