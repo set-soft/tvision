@@ -392,7 +392,12 @@ elsif ($i=~'--real-prefix=(.*)')
       {
        $conf{'EXTRA_INCLUDE_DIRS'}.=" $1";
       }
-    # For compatibility with autoconf:
+    elsif ($i eq '--debug')
+      {
+       $conf{'CFLAGS'}=
+       $conf{'CXXFLAGS'}='-O2 -Wall -Werror -gstabs+3';
+      }
+   # For compatibility with autoconf:
     # LinCS/tiger - ignore some autoconf generated params
     elsif (($i=~'--cache-file=(.*)') || ($i=~'--srcdir=(.*)') || ($i=~'--enable-ltdl-convenience'))
       {
@@ -411,6 +416,7 @@ sub ShowHelp
  print "Flags:\n";
  print "--cflags=val    : normal C flags [default is env. CFLAGS].\n";
  print "--cxxflags=val  : normal C++ flags [default is env. CXXFLAGS].\n";
+ print "--debug         : selects C/C++ switches for debugging\n";
  
  print "\nPaths and library names:\n";
  print "--x-include=path: X11 include path [/usr/X11R6/lib].\n";
