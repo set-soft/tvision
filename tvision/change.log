@@ -1,8 +1,13 @@
 $Log$
+Revision 1.242.2.8  2001/12/11 00:24:28  set
+* Added: Some adjusts to compatlayer for Cygwin target. Needed to compile the
+editor. Patch from Robert.
+
 Revision 1.242.2.7  2001/12/06 01:13:55  set
 * Fixed: Some errors in listvi example. It used constant strings for input
 lines (read only on UNIX and of limited size a disaster). Also fixed the size
-of the columns and input line to be nicer.
+of the columns and input line to be nicer. Reported by Wojciech Warczakowski
+(Wowar) <wowar@poczta.onet.pl>.
 
 Revision 1.242.2.6  2001/11/28 23:40:02  set
 * Added: getopt when Solaris is detected.
