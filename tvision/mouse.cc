@@ -16,7 +16,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv.h>
 
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 #include <dpmi.h>
 
 int draw_mouse(int,int);

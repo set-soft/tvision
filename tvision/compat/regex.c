@@ -27,7 +27,7 @@
   #pragma alloca
 #endif
 
-#if defined(__MINGW32__) || defined(__TURBOC__)
+#if defined(TVCompf_MinGW) || defined(TVComp_BCPP)
 #define STDC_HEADERS 1
 #endif
 
@@ -77,7 +77,7 @@ char *malloc ();
 char *realloc ();
 #endif
 
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
 #pragma option push -w-dpu -w-pro -w-csu
 #include <malloc.h>
 #endif
@@ -203,17 +203,17 @@ init_syntax_once ()
 #ifndef alloca
 
 /* Make alloca work the best possible way.  */
-#ifdef __GNUC__
+#ifdef TVComp_GCC
 #define alloca __builtin_alloca
-#else /* not __GNUC__ */
+#else /* not TVComp_GCC */
 #if HAVE_ALLOCA_H
 #include <alloca.h>
-#else /* not __GNUC__ or HAVE_ALLOCA_H */
+#else /* not TVComp_GCC or HAVE_ALLOCA_H */
 #ifndef _AIX /* Already did AIX, up at the top.  */
 char *alloca ();
 #endif /* not _AIX */
 #endif /* not HAVE_ALLOCA_H */ 
-#endif /* not __GNUC__ */
+#endif /* not TVComp_GCC */
 
 #endif /* not alloca */
 
@@ -4960,7 +4960,7 @@ regfree (preg)
 
 #endif /* not emacs  */
 
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
 #pragma option pop
 #endif
 

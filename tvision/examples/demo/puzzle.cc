@@ -16,19 +16,9 @@
 
 // SET: moved the standard headers before tv.h
 #define Uses_string
-#include <stdio.h>	/* SS: for sprintf(...) */
-#include <stdlib.h>
-#include <ctype.h>
-#ifdef _MSC_VER
-#include <strstrea.h>
-#include <time.h>
-#include <io.h>
-#else
-#include <sys/time.h>
-#include <unistd.h>
-#include <strstream.h>
-#endif
-
+#define Uses_stdio	/* SS: for sprintf(...) */
+#define Uses_stdlib
+#define Uses_ctype
 
 #define Uses_TRect
 #define Uses_TEvent
@@ -39,7 +29,17 @@
 #define Uses_TView
 #define Uses_TWindow
 #define Uses_TPalette
+#define Uses_strstream
 #include <tv.h>
+
+#ifdef TVComp_MSC
+#include <time.h>
+#include <io.h>
+#else
+#include <sys/time.h>
+#include <unistd.h>
+#endif
+
 __link( RView )
 __link( RWindow )
 

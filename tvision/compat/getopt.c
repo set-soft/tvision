@@ -27,7 +27,7 @@
 
 /* NOTE!!!  AIX requires this to be the first thing in the file.
    Do not put ANYTHING before it!  */
-#if !defined (__GNUC__) && defined (_AIX)
+#if !defined (TVComp_GCC) && defined (_AIX)
  #pragma alloca
 #endif
 
@@ -35,21 +35,21 @@
 #include "config.h"
 #endif
 
-#ifdef __GNUC__
+#ifdef TVComp_GCC
 #define alloca __builtin_alloca
-#else /* not __GNUC__ */
+#else /* not TVComp_GCC */
 #if defined (HAVE_ALLOCA_H) || (defined(sparc) && (defined(sun) || (!defined(USG) && !defined(SVR4) && !defined(__svr4__))))
 #include <alloca.h>
 #else
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
 #include <malloc.h>
 #else
 #ifndef _AIX
 char *alloca ();
 #endif
-#endif /* __TURBOC__ */
+#endif /* TURBOC */
 #endif /* alloca.h */
-#endif /* not __GNUC__ */
+#endif /* not TVComp_GCC */
 
 #if !__STDC__ && !defined(const) && IN_GCC
 #define const
@@ -85,11 +85,11 @@ char *alloca ();
 #endif	/* GNU C library.  */
 
 /* SET: more headers needed, __alloca isn't valid */
-#if defined(__DJGPP__) || defined(_WIN32)
+#if defined(TVCompf_djgpp) || defined(TVOS_Win32)
 #include <stdlib.h>
 #endif
 
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
 #include <malloc.h> /* alloca */
 #endif
 
@@ -192,7 +192,7 @@ static enum
 } ordering;
 
 /* SET: I don't understand why hello.c doesn't make it */
-#if defined(__GNU_LIBRARY__) || defined(__DJGPP__) || defined(_WIN32)
+#if defined(__GNU_LIBRARY__) || defined(TVCompf_djgpp) || defined(TVOS_Win32)
 /* We want to avoid inclusion of string.h with non-GNU libraries
    because there are many ways it can cause trouble.
    On some systems, it contains special magic macros that don't work

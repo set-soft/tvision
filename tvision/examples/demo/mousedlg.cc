@@ -33,13 +33,8 @@
 #define Uses_TSItem
 #define Uses_TEventQueue
 #define Uses_TPalette
+#define Uses_strstream
 #include <tv.h>
-
-#ifdef _MSC_VER
-#include <strstrea.h>
-#else
-#include <strstream.h>
-#endif
 
 #include <iomanip.h>
 

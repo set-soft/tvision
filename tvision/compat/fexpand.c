@@ -7,7 +7,8 @@
 
 #include <cl/needs.h>
 
-#if defined(TVOSf_djgpp) || defined(TVOSf_NT) || defined(TVOS_UNIX)
+#if defined(TVCompf_djgpp) || defined(TVComp_BCPP) || defined(TVOS_UNIX) || \
+    defined(TVCompf_Cygwin)
 #define Uses_fixpath
 #define Uses_string
 #define Uses_limits
@@ -31,8 +32,8 @@ void CLY_fexpand( char *rpath )
 #define Uses_limits
 #define Uses_stdlib
 #define Uses_ctype
+#define Uses_direct
 #include <compatlayer.h>
-#include <direct.h>
 
 static void squeeze( char *path )
 {

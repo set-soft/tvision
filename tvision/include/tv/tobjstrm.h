@@ -19,13 +19,13 @@ struct fLink
 {
     fLink *f;
     class TStreamableClass *t;
-    #ifdef __TURBOC__
+    #ifdef TVComp_BCPP
     fLink(fLink* af, class TStreamableClass *at) : f(af), t(at) {}
     #endif
 };
 #endif
 
-#ifdef __TURBOC__
+#ifdef TVComp_BCPP
 #define __link( s )             \
   extern TStreamableClass s;    \
   static fLink force ## s       \

@@ -14,7 +14,9 @@ Modified by Robert H”hne to be used for RHIDE.
 #if !defined( __TTYPES_H )
 #define __TTYPES_H
 
-#ifdef __GNUC__
+#include <tv/configtv.h>
+
+#ifdef TVComp_GCC
 #undef Boolean
 #undef False
 #undef True
@@ -32,10 +34,10 @@ typedef int         int32;
 typedef unsigned char  uint8;
 typedef unsigned short uint16;
 typedef unsigned int   uint32;
-#if defined(__GNUC__)
+#if defined(TVComp_GCC)
 typedef unsigned long long uint64;
 typedef          long long int64;
-#elif defined(__TURBOC__) || defined(_MSVC)
+#elif defined(TVComp_BCPP) || defined(TVComp_MSC)
 typedef unsigned __int64 uint64;
 typedef          __int64 int64;
 #else

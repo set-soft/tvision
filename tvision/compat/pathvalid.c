@@ -10,7 +10,7 @@
 #include <compatlayer.h>
 
 // CheckOnlyDrive(dir) and CheckDriveValid(a)
-#if defined(TVOS_DOS) || defined(TVOS_Win32)
+#if CLY_HaveDriveLetters
 #define CheckOnlyDrive(dir) if (!unc && strlen(dir)<=3)\
                                return CLY_DriveValid(dir[0])
 #define CheckDriveValid(a)  if (!unc && !CLY_DriveValid(dir[0]))\
@@ -29,7 +29,7 @@
 #endif
 
 // CheckUNC(path)
-#ifdef TVOSf_NT
+#ifdef TVComp_BCPP
 #define CheckUNC(path) \
   unc = CLY_IsUNC(path); \
   if (unc && CLY_IsUNCShare(path)) \

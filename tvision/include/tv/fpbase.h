@@ -38,7 +38,7 @@ public:
     ~fpbase();
 
     void open( const char *, int, int = FILEBUF_OPENPROT );
-    #ifndef __TURBOC__
+    #ifndef TVComp_BCPP
     void attach( int );
     #endif
     void close();

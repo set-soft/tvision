@@ -6,7 +6,7 @@
 
 #include <compatlayer.h>
 
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 #include <pc.h>
 #include <dos.h>
 

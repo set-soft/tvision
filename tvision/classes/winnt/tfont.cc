@@ -1,8 +1,9 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
 /* Copyright (C) 1997 Salvador Eduardo Tropea */
+#include <tv/configtv.h>
 
-#ifdef _WIN32
+#ifdef TVOS_Win32
 
 #define Uses_TScreen
 #include <tv.h>

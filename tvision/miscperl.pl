@@ -13,6 +13,7 @@ sub GetVersion
  $VersionMajor =$1;
  $VersionMiddle=$2;
  $VersionMinor =$3;
+ $Version="$1.$2.$3";
 }
 
 sub replace

@@ -45,7 +45,7 @@
 
 /* This needs to come after some library #include
    to get __GNU_LIBRARY__ defined.  */
-#if defined(__GNU_LIBRARY__) || defined(_WIN32)
+#if defined(__GNU_LIBRARY__) || defined(TVOS_Win32)
 #include <stdlib.h>
 #else
 char *getenv ();

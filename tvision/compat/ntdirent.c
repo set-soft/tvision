@@ -26,7 +26,7 @@
 #include <sys/stat.h>
 #include <io.h>
 
-#ifndef __GNUC__
+#ifndef TVComp_GCC
 #ifndef alloca
 #define alloca _alloca
 #endif

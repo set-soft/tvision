@@ -9,20 +9,22 @@ I have two versions. Both are based in djgpp's code. One is for Linux
 
 #include <cl/needs.h>
 
-
-
-//#ifdef TVOSf_NT
-#ifdef TVOS_Win32
+#if defined(TVOS_Win32) && !defined(TVCompf_Cygwin)
+/* BC++/Win32, MingW32 and MSVC */
 /* Copyright (C) 1997 DJ Delorie, see COPYING.DJ for details */
 /* Copyright (C) 1996 DJ Delorie, see COPYING.DJ for details */
 /* Copyright (C) 1995 DJ Delorie, see COPYING.DJ for details */
 /* Modified for Win32 by Anatoli Soltan */
 
+#include <tv/configtv.h>
 #define Uses_string
 #define Uses_getcurdir
+#ifndef TVComp_BCPP
+ #define Uses_direct
+#endif
 #include <compatlayer.h>
 
-#ifdef __BORLANDC__
+#ifdef TVComp_BCPP
 
 #include <dir.h>
 
@@ -31,9 +33,7 @@ static int __fp_getdisk(void)
   return getdisk();
 }
 
-#elif defined(_MSC_VER) || defined(__MINGW32__)
-
-#include <direct.h>
+#elif defined(TVComp_MSC) || defined(TVCompf_MinGW)
 
 static int __fp_getdisk(void)
 {
@@ -158,7 +158,7 @@ _fixpath(const char *in, char *out)
 }
 /* vi: set ts=8 sw=2 : */
 #define FIXPATH_DEFINED
-#endif // TVOSf_NT -- Anatoli's version
+#endif /* BC++/Win32, MingW32 and MSVC */
 
 
 
@@ -167,6 +167,7 @@ _fixpath(const char *in, char *out)
 
 
 #if defined(NEEDS_FIXPATH) && !defined(FIXPATH_DEFINED)
+/* DJGPP, Linux and CygWin */
 /*
    Robert:
    Here now the very usefull function _fixpath() from DJGPP's
@@ -258,5 +259,5 @@ void _fixpath(const char *in, char *out)
 /*
   End of modified code from DJGPP's libc 'fixpath.c'
 */
-#endif // Default version
+#endif /* DJGPP, Linux and CygWin */
 

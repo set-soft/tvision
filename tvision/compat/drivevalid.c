@@ -7,7 +7,7 @@
 
 #include <cl/needs.h>
 
-#ifdef TVOSf_djgpp
+#ifdef TVCompf_djgpp
 #define Uses_ctype
 #include <compatlayer.h>
 #include <dpmi.h>

@@ -218,6 +218,7 @@ RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib
 TVSRC=e:/dj/contrib/tvision/include e:/dj/include/rhtvision ../../include
 RHIDE_OS_LIBS=intl iconv 
 TVOBJ=e:/dj/contrib/tvision/djgpp e:/dj/lib ../../djgpp
+RHIDE_AR=ar
 INCLUDE_DIRS=../include
 LIB_DIRS=
 C_DEBUG_FLAGS=
@@ -711,61 +712,80 @@ DEPS_16=msgbox.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/window.h
 obj/msgbox.o:: $(DEPS_16)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_17=nbackgro.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_17=nbackgro.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nbackgro.o:: $(DEPS_17)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_18=nbutton.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_18=nbutton.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nbutton.o:: $(DEPS_18)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_19=ncalcdis.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_19=ncalcdis.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncalcdis.o:: $(DEPS_19)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_20=ncalcula.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_20=ncalcula.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncalcula.o:: $(DEPS_20)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_21=nchdirdi.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_21=nchdirdi.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nchdirdi.o:: $(DEPS_21)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_22=ncheckbo.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_22=ncheckbo.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncheckbo.o:: $(DEPS_22)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_23=nclrdisp.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_23=nclrdisp.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nclrdisp.o:: $(DEPS_23)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_24=ncluster.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_24=ncluster.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncluster.o:: $(DEPS_24)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_25=ncollect.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_25=ncollect.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncollect.o:: $(DEPS_25)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_26=ncolordi.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_26=ncolordi.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncolordi.o:: $(DEPS_26)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_27=ncolorgr.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_27=ncolorgr.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncolorgr.o:: $(DEPS_27)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_28=ncolorit.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_28=ncolorit.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncolorit.o:: $(DEPS_28)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_29=ncolorse.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_29=ncolorse.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ncolorse.o:: $(DEPS_29)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_30=ndesktop.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_30=ndesktop.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ndesktop.o:: $(DEPS_30)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_31=ndialog.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_31=ndialog.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ndialog.o:: $(DEPS_31)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_32=ndircoll.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_32=ndircoll.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ndircoll.o:: $(DEPS_32)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_33=ndirlist.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_33=ndirlist.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ndirlist.o:: $(DEPS_33)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_34=neditor.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_34=neditor.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/neditor.o:: $(DEPS_34)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_35=neditwi.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_35=neditwi.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/neditwi.o:: $(DEPS_35)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_36=newstr.cc ../include/compatlayer.h ../include/tv.h\
@@ -777,109 +797,144 @@ DEPS_36=newstr.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/tvutil.h ../include/tv/views.h
 obj/newstr.o:: $(DEPS_36)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_37=nfilecol.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_37=nfilecol.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nfilecol.o:: $(DEPS_37)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_38=nfiledia.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_38=nfiledia.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nfiledia.o:: $(DEPS_38)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_39=nfiledtr.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_39=nfiledtr.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nfiledtr.o:: $(DEPS_39)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_40=nfileinf.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_40=nfileinf.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nfileinf.o:: $(DEPS_40)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_41=nfileinp.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_41=nfileinp.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nfileinp.o:: $(DEPS_41)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_42=nfilelis.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_42=nfilelis.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nfilelis.o:: $(DEPS_42)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_43=nfilterv.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_43=nfilterv.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nfilterv.o:: $(DEPS_43)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_44=nframe.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_44=nframe.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nframe.o:: $(DEPS_44)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_45=ngroup.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_45=ngroup.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ngroup.o:: $(DEPS_45)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_46=nhistory.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_46=nhistory.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nhistory.o:: $(DEPS_46)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_47=nindicat.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_47=nindicat.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nindicat.o:: $(DEPS_47)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_48=ninputli.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_48=ninputli.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/ninputli.o:: $(DEPS_48)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_49=nlabel.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_49=nlabel.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nlabel.o:: $(DEPS_49)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_50=nlistbox.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_50=nlistbox.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nlistbox.o:: $(DEPS_50)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_51=nlistvie.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_51=nlistvie.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nlistvie.o:: $(DEPS_51)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_52=nmemo.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_52=nmemo.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nmemo.o:: $(DEPS_52)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_53=nmenubar.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_53=nmenubar.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nmenubar.o:: $(DEPS_53)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_54=nmenubox.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_54=nmenubox.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nmenubox.o:: $(DEPS_54)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_55=nmenuvie.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_55=nmenuvie.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nmenuvie.o:: $(DEPS_55)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_56=nmonosel.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_56=nmonosel.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nmonosel.o:: $(DEPS_56)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_57=nparamte.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_57=nparamte.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nparamte.o:: $(DEPS_57)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_58=nradiobu.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_58=nradiobu.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nradiobu.o:: $(DEPS_58)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_59=nrangeva.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_59=nrangeva.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nrangeva.o:: $(DEPS_59)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_60=nresourc.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_60=nresourc.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nresourc.o:: $(DEPS_60)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_61=nscrollb.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_61=nscrollb.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nscrollb.o:: $(DEPS_61)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_62=nscrolle.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_62=nscrolle.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nscrolle.o:: $(DEPS_62)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_63=nsortedc.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_63=nsortedc.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nsortedc.o:: $(DEPS_63)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_64=nsortedl.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_64=nsortedl.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nsortedl.o:: $(DEPS_64)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_65=nstatict.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_65=nstatict.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nstatict.o:: $(DEPS_65)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_66=nstatusl.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_66=nstatusl.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nstatusl.o:: $(DEPS_66)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_67=nstringc.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_67=nstringc.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nstringc.o:: $(DEPS_67)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_68=nstringl.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_68=nstringl.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nstringl.o:: $(DEPS_68)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_69=nvalidat.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_69=nvalidat.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nvalidat.o:: $(DEPS_69)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_70=nview.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_70=nview.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nview.o:: $(DEPS_70)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_71=nwindow.cc ../include/tv/ttypes.h ../include/tv/tvutil.h
+DEPS_71=nwindow.cc ../include/tv/configtv.h ../include/tv/ttypes.h\
+	../include/tv/tvutil.h
 obj/nwindow.o:: $(DEPS_71)
 	$(RHIDE_COMPILE.cc.o)
 DEPS_72=ofpstrea.cc ../include/compatlayer.h ../include/tv.h\
@@ -2905,7 +2960,7 @@ obj/tvtext1.o:: $(DEPS_213)
 DEPS_214=tvtext2.cc
 obj/tvtext2.o:: $(DEPS_214)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_215=tweaked.c
+DEPS_215=tweaked.c ../include/tv/configtv.h
 obj/tweaked.o:: $(DEPS_215)
 	$(RHIDE_COMPILE.c.o)
 DEPS_216=twindow.cc ../include/compatlayer.h ../include/tv.h\
@@ -2924,16 +2979,16 @@ DEPS_216=twindow.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/views.h ../include/tv/window.h
 obj/twindow.o:: $(DEPS_216)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_217=vesa.cc
+DEPS_217=vesa.cc ../include/tv/configtv.h
 obj/vesa.o:: $(DEPS_217)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_218=vga.cc vgastate.h
+DEPS_218=vga.cc ../include/tv/configtv.h vgastate.h
 obj/vga.o:: $(DEPS_218)
 	$(RHIDE_COMPILE.cc.o)
-DEPS_219=vgaregs.c vgaregs.h
+DEPS_219=vgaregs.c ../include/tv/configtv.h vgaregs.h
 obj/vgaregs.o:: $(DEPS_219)
 	$(RHIDE_COMPILE.c.o)
-DEPS_220=vgastate.c vgaregs.h
+DEPS_220=vgastate.c ../include/tv/configtv.h vgaregs.h
 obj/vgastate.o:: $(DEPS_220)
 	$(RHIDE_COMPILE.c.o)
 all:: librhtv.a

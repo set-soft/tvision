@@ -1,6 +1,8 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
-#if defined( DJGPP )
+#include <tv/configtv.h>
+
+#ifdef TVCompf_djgpp
 /* This file is for saving/restoring the screen in graphics and/or
    text modes. Many parts and most of the very good comments came
    from SET.

@@ -1,6 +1,8 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
 /* This file is part of RHIDE. */
-#ifdef __DJGPP__
+#include <tv/configtv.h>
+
+#ifdef TVCompf_djgpp
 // SET: Moved the Linux code to tscreen.cc
 #define Uses_TScreen
 #include <tv.h>

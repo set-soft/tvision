@@ -7,8 +7,9 @@
   ROUTINES to store/retrieve the VGA registers.
 
 *****************************************************************************/
+#include <tv/configtv.h>
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 
 #include <pc.h>
 #include <sys/movedata.h>
@@ -203,4 +204,4 @@ int VGAStateLoad(void *buffer)
  return 1;
 }
 
-#endif // __DJGPP__
+#endif // DJGPP

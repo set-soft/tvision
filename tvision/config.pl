@@ -25,7 +25,6 @@ SeeCommandLine();
 print "Configuring Turbo Vision v$Version library\n\n";
 # Determine the OS
 $OS=DetectOS();
-LookForPrefix();
 # Determine C flags
 $CFLAGS=FindCFLAGS();
 # Determine C++ flags
@@ -36,6 +35,11 @@ $GCC=CheckGCC();
 $GXX=CheckGXX();
 # Which architecture are we using?
 DetectCPU();
+# Some platforms aren't easy to detect until we can compile.
+DetectOS2();
+# The prefix can be better determined if we know all the rest
+# about the environment
+LookForPrefix();
 # Only gnu make have the command line and commands we use.
 LookForGNUMake();
 # Same for ar, it could be `gar'
@@ -63,17 +67,22 @@ GenerateMakefile();
 #
 $here=`pwd`;
 chop($here);
+if (!$here && ($OS ne 'UNIX'))
+  {# command.com, cmd.exe, etc. have it.
+   $here=`cd`;
+   chop($here);
+  }
 # Path for the includes
 $MakeDefsRHIDE[1]='TVSRC='.$here.'/include '.@conf{'prefix'}.'/include/rhtvision ../../include';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
  # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
  # be added for things like FreeBSD or SunOS.
-$MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSflavor eq 'Linux'));
-$MakeDefsRHIDE[2].='intl ' if ($OS eq 'DOS') && (@conf{'intl'} eq 'yes');
-$MakeDefsRHIDE[2].='iconv ' if (@conf{'iconv'} eq 'yes');
-$MakeDefsRHIDE[2].=$conf{'NameCurses'}.' m ' if ($OS eq 'UNIX');
-$MakeDefsRHIDE[2].='gpm ' if @conf{'HAVE_GPM'} eq 'yes';
+$MakeDefsRHIDE[2].=substr($stdcxx,2) unless (($OS eq 'DOS') || ($OSf eq 'Linux'));
+$MakeDefsRHIDE[2].=' intl' if (($OS eq 'DOS') || ($OS eq 'Win32')) && (@conf{'intl'} eq 'yes');
+$MakeDefsRHIDE[2].=' iconv' if (@conf{'iconv'} eq 'yes');
+$MakeDefsRHIDE[2].=' '.$conf{'NameCurses'}.' m' if ($OS eq 'UNIX');
+$MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
 $MakeDefsRHIDE[4]='RHIDE_AR='.$conf{'GNU_AR'};
 if ($OS eq 'UNIX')
   {
@@ -95,27 +104,25 @@ elsif ($OS eq 'Win32')
    $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile');
+   CreateRHIDEenvs('examples/rhide.env');
+   # Repeated later for other targets
   }
 CreateConfigH();
 
-## Generate the BC++ makefile
-## 1) Get the list of files used by djgpp version
-#$col=14;
-#$a=ExtractItemsMak('djgpp/makefile',$col);
-## 2) Remove djgpp specific things
-#$a=~s/vga.cc//;
-#$a=~s/vgaregs.c//;
-#$a=~s/vgastate.c//;
-## 3) Add BC++ specific
-#$a.=' gkeyw32.cc';
-#$a=~s/(\w+)\.(\w+)/\+$1\.obj/g;
-#$a=~s/\t//g;
-## 4) Generate makefile from the template
-#$ReplaceTags{'TV_OBJS_BCC'}=$a;
-#ReplaceText('winnt/bccmake.in','winnt/Makefile');
-#$a='';
+# Help MinGW target
+if ($OS ne 'Win32')
+  {
+   $MakeDefsRHIDE[0]='';
+   $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2);
+   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/win32 '.@conf{'prefix'}.'/lib ../../win32';
+   $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
+   `cp djgpp/makefile win32/Makefile`;
+   ModifyMakefiles('win32/Makefile');
+  }
+# Help BC++ target
 `perl confignt.pl`;
 
+# UNIX dynamic library
 if ($OS eq 'UNIX')
   {
    $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
@@ -196,7 +203,7 @@ sub GiveAdvice
     print "\n";
     print "* The international support was disabled because gettext library could not\n";
     print "  be detected.\n";
-    if ($OSflavor eq 'Linux')
+    if ($OSf eq 'Linux')
       {
        print "  Starting with glibc 2.0 this is included in libc, perhaps your system\n";
        print "  just lacks the propper header file.\n";
@@ -206,12 +213,16 @@ sub GiveAdvice
        print "  Install the gtxtNNNb.zip package from the v2gnu directory of djgpp's\n";
        print "  distribution. Read the readme file for more information.\n";
       }
-    elsif ($OS eq 'Win32')
+    elsif ($Compf eq 'MinGW')
       {
-       print "  That's normal for Win32.\n";
+       print "  That's normal for MinGW.\n";
+      }
+    elsif ($Compf eq 'Cygwin')
+      {
+       print "  Install gettext library.\n";
       }
    }
- if ((@conf{'HAVE_GPM'} eq 'no') && ($OSflavor eq 'Linux'))
+ if ((@conf{'HAVE_GPM'} eq 'no') && ($OSf eq 'Linux'))
    {
     print "\n";
     print "* No mouse support for console! please install the libgpm package needed\n";
@@ -299,7 +310,7 @@ int main(void)
  printf("%s\n",_("OK"));
  return 0;
 }';
- $intllib=$OS eq 'DOS' ? '-lintl' : '';
+ $intllib=(($OS eq 'DOS') || ($OS eq 'Win32')) ? '-lintl' : '';
  $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$intllib);
  if ($test ne "OK\n")
    {
@@ -605,8 +616,11 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_OUTB_IN_SYS','out/in functions defined by glibc');
  $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
  $text.="\n\n";
- $text.="#define TVOS_$OS\n#define TVOSf_$OSflavor\n";
- $text.="#define TVCPU_$conf{'TV_CPU'}\n";
+ $text.="#define TVOS_$OS\n";
+ $text.="#define TVOSf_$OSf\n";
+ $text.="#define TVCPU_$CPU\n";
+ $text.="#define TVComp_$Comp\n";
+ $text.="#define TVCompf_$Compf\n";
 
  $old=cat('include/tv/configtv.h');
  replace('include/tv/configtv.h',$text) unless $text eq $old;

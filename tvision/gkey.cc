@@ -52,8 +52,9 @@ Note: I did a TSR to detect 19 key combinations that BIOS doesn't report,
 takes only 400 bytes of memory.
 
 *****************************************************************************/
+#include <tv/configtv.h>
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 #include <go32.h>
 #include <sys/farptr.h>
 #include <dpmi.h>
@@ -102,7 +103,7 @@ char *TGKey::KeyNames[]=
 
 const int NumKeyNames=sizeof(TGKey::KeyNames)/sizeof(char *);
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 static
 unsigned char kbWithASCII0[256] =
 {
@@ -575,7 +576,7 @@ void InterpretAbstract(void)
     printf(" ALT-L");
 }
 
-#ifdef __DJGPP__
+#ifdef TVCompf_djgpp
 #include <signal.h>
 #include <conio.h>
 /* ungetch() is available only on DJGPP
@@ -596,7 +597,7 @@ int count=0;
 int main(int argc, char *argv[])
 {
   unsigned short key=0;
-#ifdef __linux__
+#ifdef TVOSf_Linux
   void startcurses();
   void stopcurses();
   void resume_keyboard();
@@ -625,7 +626,7 @@ int main(int argc, char *argv[])
       printf(" ASCII: %c\r\n",TGKey::ascii);
      }
   } while (key!=kbEsc);
-#ifdef __linux__
+#ifdef TVOSf_Linux
   suspend_keyboard();
   stopcurses();
 #endif
