@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.576  2004/09/30 20:55:36  set
+* Added: [Config] OpenBSD as known OS. Tested with OpenBSD 3.4.
+* Fixed: [XTerm] input problems with *BSD systems. They interpret VMIN in a
+very particular way and if that's 0 the input blocks forever. Now the input
+code works for Darwin 6.8 (MacOS X 10.2), FreeBSD 4.8, NetBSD 1.6.1 and
+NetBSD 1.6.1. Some output problems remains when big chunks of the screen
+are updated.
+
 Revision 2.575  2004/09/30 17:22:48  set
 * Updated: [WWW] adding the RC1
 --------- CVS tag r_2_0_3rc1 and r_2_0_3rc1_nu

@@ -30,6 +30,10 @@
 #include <tv/unix/xtkey.h>
 #include <tv/linux/log.h>
 
+#ifndef TEMP_FAILURE_RETRY
+ #define TEMP_FAILURE_RETRY(a) (a)
+#endif
+
 int                   TDisplayXTerm::curX=0;
 int                   TDisplayXTerm::curY=0;
 // Current cursor shape
@@ -189,12 +193,28 @@ const char *TDisplayXTerm::GetWindowTitle(void)
 {
  char buffer[256]; // Put a max.
  fputs("\E[21t",stdout);
- // This looks dangerous ...
- // Lamentably Xterm doesn't return it inmediatly
- while (fgets(buffer,255,TGKeyXTerm::fIn)==NULL);
+
+ // Nasty:
+ // Lamentably Xterm doesn't return it immediately
+ fd_set set;
+ struct timeval timeout;
+ int ret;
+
+ FD_ZERO(&set);
+ FD_SET(TGKeyXTerm::hIn,&set);
+ timeout.tv_sec=0;
+ timeout.tv_usec=300000;
+ ret=TEMP_FAILURE_RETRY(select(FD_SETSIZE,&set,NULL,NULL,&timeout));
+ // Note: As this feature was reported as potentially exploitable now most
+ // XTerms just ignores this request. So if after 300 ms we didn't get an
+ // answer we assume the XTerm won't reply and report empty title.
+ if (!ret)
+    return newStr("");
+ fgets(buffer,255,TGKeyXTerm::fIn);
+ buffer[255]=0;
  // OSC l Name ST (\E]lName\E\\)
  if (buffer[0]!=27 || buffer[1]!=']' || buffer[2]!='l')
-    return 0;
+    return NULL;
  // Convert it into something the application can use for other things, not
  // only for restoring. Read: get rid of the EOS.
  char *end=strstr(buffer,"\E\\");
