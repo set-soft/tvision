@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright (c) 2003 by Salvador Eduardo Tropea.
+  Copyright (c) 2003-2004 by Salvador Eduardo Tropea.
   Covered by the GPL license.
   Description:
   This program generates a .imk file containing the dependencies for a
@@ -732,7 +732,21 @@ void ProcessMakefile(const char *mak, stMak &mk, int level)
  struct tm *brkT=localtime(&now);
  strftime(timeBuf,32,"%Y-%m-%d %H:%M",brkT);
  fprintf(stdout,"#!/usr/bin/make\n# Automatically generated from RHIDE projects, don't edit\n# %s\n#\n\n",timeBuf);
- GenerateAll(stdout,mk);
+
+ // Write the body to a temporal
+ char bNameT[12];
+ strcpy(bNameT,"mkXXXXXX");
+ int hT=mkstemp(bNameT);
+ FILE *fT=fdopen(hT,"wt");
+ if (hT==-1 || !fT)
+   {
+    fprintf(stderr,"Unable to create temporal\n");
+    exit(31);
+   }
+ GenerateAll(fT,mk);
+ fclose(fT);
+
+ // Write the variables now
  if (mk.mainTarget && *mk.mainTarget)
    {
     char *ext=strrchr(mk.mainTarget,'.');
@@ -743,6 +757,22 @@ void ProcessMakefile(const char *mak, stMak &mk, int level)
        GenerateLibs(stdout,mk);
       }
    }
+
+ // Now copy the body
+ fT=fopen(bNameT,"rt");
+ if (!fT)
+   {
+    fprintf(stderr,"Unable to copy temporal\n");
+    exit(32);
+   }
+ char buffer[maxLine];
+ while (!feof(fT))
+   {
+    if (fgets(buffer,maxLine,fT))
+       fputs(buffer,stdout);
+   }
+ fclose(fT);
+ unlink(bNameT);
 }
 
 static
