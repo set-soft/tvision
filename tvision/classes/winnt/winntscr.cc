@@ -93,7 +93,7 @@ void TScreenWinNT::InitOnce()
 TScreenWinNT::TScreenWinNT()
 {
  InitOnce();
- flags0=CodePageVar;
+ flags0=CodePageVar | CursorShapes;
  screenMode=startupMode=getCrtMode();
  Resume();
 

@@ -48,7 +48,7 @@ unsigned                   TScreenWin32::xCurStart,
 TScreenWin32::TScreenWin32()
 {
  InitConsole();
- flags0=CodePageVar;
+ flags0=CodePageVar | CursorShapes;
  screenMode=startupMode=getCrtMode();
  cursorLines=startupCursor=getCursorType();
  screenWidth =GetCols();

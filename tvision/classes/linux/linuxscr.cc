@@ -579,7 +579,7 @@ int TScreenLinux::InitOnce()
  // Setup the driver properties.
  // Our code page isn't fixed.
  // We can change the palette (but can't restore it perfectly)
- flags0=CanSetPalette | CodePageVar;
+ flags0=CanSetPalette | CodePageVar | CursorShapes;
 
  return 0;
 }

@@ -632,7 +632,7 @@ TScreenX11::TScreenX11()
  // Our code page isn't fixed.
  // We can change the palette
  // A redraw is needed after setting the palette. But currently is in the color setting.
- flags0=CanSetPalette | CanReadPalette | CodePageVar /*| PalNeedsRedraw*/;
+ flags0=CanSetPalette | CanReadPalette | CodePageVar | CursorShapes /*| PalNeedsRedraw*/;
 }
 
 int TScreenX11::setWindowTitle(const char *aName)

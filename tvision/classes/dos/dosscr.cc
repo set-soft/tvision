@@ -84,7 +84,7 @@ TScreenDOS::TScreenDOS()
  THWMouseDOS::Init();
  TGKeyDOS::Init();
 
- flags0=CodePageVar | CanSetPalette | CanReadPalette;
+ flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes;
  user_mode=screenMode=startupMode=getCrtMode();
  SaveScreen();
  setCrtData();
