@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2001 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2002 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -659,7 +659,7 @@ int main(void)
 
 sub GenerateMakefile
 {
- my ($text,$rep,$makeDir);
+ my ($text,$rep,$makeDir,$ver);
 
  print "Generating Makefile\n";
  $text=cat('Makefile.in');
@@ -751,15 +751,16 @@ sub GenerateMakefile
  $rep='';
  if ($OS eq 'UNIX')
    {# Dynamic library
+    $ver=($OSf eq 'FreeBSD') ? $VersionMajor : $Version;
     $rep= "install-dynamic: dynamic-lib\n";
     $rep.="\trm -f \$(libdir)/librhtv.so\n";
-    $rep.="\trm -f \$(libdir)/librhtv.so.1\n";
-    $rep.="\trm -f \$(libdir)/librhtv.so.$Version\n";
-    $rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so\n";
+    $rep.="\trm -f \$(libdir)/librhtv.so.$VersionMajor\n";
+    $rep.="\trm -f \$(libdir)/librhtv.so.$ver\n";
+    $rep.="\tcd \$(libdir); ln -s librhtv.so.$ver librhtv.so\n";
     # Not needed if the soname changes which each version (at least Ivan says that)
-    #$rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so.1\n";
-    $rep.="\tinstall -m 0644 linuxso/librhtv.so.$Version \$(libdir)\n";
-    $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$Version\n";
+    #$rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so.$VersionMajor\n";
+    $rep.="\tinstall -m 0644 linuxso/librhtv.so.$ver \$(libdir)\n";
+    $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$ver\n";
     $rep.="\t-ldconfig\n";
    }
  $text=~s/\@install2_rule\@/$rep/g;
