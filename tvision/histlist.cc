@@ -28,6 +28,12 @@ public:
 
     void *operator new( size_t );
     void *operator new( size_t, HistRec * );
+    // SET: This class can't be "deleted", is just some kind of "cast" to
+    // interpret a buffer as a list of elements, some kind of "heap helper".
+    // MSVC compiler worries about the fact that it oveloads new but
+    // doesn't overload delete. So we just make clear that delete isn't
+    // valid.
+    void  operator delete( void * ) { abort(); };
 
     uchar id;
     uchar len;
