@@ -40,11 +40,6 @@
 #include "fileview.h"
 
 #include <help.h>
-#ifdef __DJGPP__
-#include <dpmi.h>
-#else
-#include <unistd.h>
-#endif
 
 //
 // Mouse Control Dialog Box function
@@ -181,11 +176,6 @@ void TVDemo::idle()
         disableCommand(cmTile);
         disableCommand(cmCascade);
         }
-    #ifdef __DJGPP__
-    __dpmi_yield();
-    #else
-    usleep(1000);
-    #endif
 }
 
 //
