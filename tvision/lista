@@ -483,6 +483,7 @@ linux/rhide.env
 +linux/sacadeb
 linux/tmp/delete.me
 +linuxso/makemak.pl
++linuxso/makemak.in
 linuxso/obj/delete.me
 linuxso/tmp/delete.me
 Makefile.in

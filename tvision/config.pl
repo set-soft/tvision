@@ -89,6 +89,11 @@ $ReplaceTags{'TV_OBJS_BCC'}=$a;
 ReplaceText('winnt/bccmake.in','winnt/Makefile');
 $a='';
 
+$ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
+ReplaceText('linuxso/makemak.in','linuxso/makemak.pl');
+chmod(0755,'linuxso/makemak.pl');
+
+
 print "\nSuccesful configuration!\n\n";
 
 GiveAdvice();

@@ -1,4 +1,7 @@
 $Log$
+Revision 1.154  2000/06/04 18:40:39  set
+* Updated: The list of files and DOS files.
+.
 Revision 1.153  2000/05/23 01:43:23  set
 * Added: Now the configuration process generates the BC++ makefile. Even when
 people using BC++ won't use it I can use it to update the makefile.

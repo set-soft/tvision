@@ -20,6 +20,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_sys_stat
 #define Uses_alloca
 #define Uses_filelength
+#define Uses_unistd
 
 #define Uses_MsgBox
 #define Uses_TKeys
