@@ -252,7 +252,8 @@ public:
                     // If this value isn't present the user can set the palette,
                     // but the original colors want be restored at exit. We will
                     // try to let them as default for the used display.
-  PalNeedsRedraw=8  // Indicates we must redraw after changing the palette.
+  PalNeedsRedraw=8, // Indicates we must redraw after changing the palette.
+  CursorShapes=16   // When the cursor shape is usable.
  };
 
  // Used internally to avoid nested calls to suspend/resume
@@ -266,6 +267,7 @@ public:
  static Boolean canSetPalette()    { return flags0 & CanSetPalette ? True : False; };
  static Boolean canReadPalette()   { return flags0 & CanReadPalette ? True : False; };
  static Boolean palNeedsRedraw()   { return flags0 & PalNeedsRedraw ? True : False; };
+ static Boolean cursorShapes()     { return flags0 & CursorShapes ? True : False; };
 
 protected:
  // SET: Capabilities flags
