@@ -71,6 +71,13 @@ more simple for people don't familiarized with it.
   Most of the notes applies only to the source distribution but there are a
 lot of important information for the binary too.
 
+  *** IMPORTANT *** Note: This information is about the DOS version but could
+be valid for the Linux version too.
+  the binary distribution was compiled with gcc 2.8.0 be careful if you have
+2.8.1, Artur Zaroda <zaroda@mimuw.edu.pl> reported problems with some of the
+examples compiled with 2.8.1 and linked with the binary distribution. All was
+solved after recompiling the library with 2.8.1. So don't forget it.
+
 
 
 

@@ -30,4 +30,11 @@ Put all the standard (stdio, stdlib, string, unistd, time, mem, etc.) headers
 before the #include <tv.h>. Isn't supposed to be needed with djgpp v2.02.
 * Compiler complains about redefinitions of NULL.
 
+8) kbXXXX constants
+The keyboard constants are different in this port. You should ever use the
+constants and never suppose the value they contain is fixed. So if your code
+assumes a fixed value you'll need to fix it. Some code in the original TV had
+this error.
+* The program doesn't respond to some key.
+
 Salvador Eduardo Tropea (set-soft@usa.net)
