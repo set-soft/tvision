@@ -25,7 +25,6 @@
 #define Uses_TVCodePage
 #define Uses_string
 #define Uses_ctype
-#define Uses_iostream
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible

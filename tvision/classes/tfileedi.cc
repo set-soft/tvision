@@ -2,6 +2,7 @@
 /* Modified by Vadim Beloborodov to be used on WIN32 console */
 /* Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
    Andris Pavenis. */
+/* Modified by Salvador E. Tropea to avoid using C++ streams (just C code) */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -10,11 +11,10 @@
 /*----------------------------------------------------------*/
 #include <tv/configtv.h>
 
-#define Uses_fstream
+#define Uses_filelength
 #define Uses_limits
 #define Uses_string
 #define Uses_fcntl
-#define Uses_ifsFileLength
 #ifdef TVComp_MSC
  #include <io.h>
 #else
@@ -96,7 +96,7 @@ Boolean TFileEditor::loadFile()
 {
     int crfound = 0;
     char tmp[PATH_MAX];
-    ifstream f( fileName, ios::in | CLY_IOSBin );
+    FILE *f=fopen(fileName,"rb");
     if( !f )
         {
         setBufLen( 0 );
@@ -109,9 +109,9 @@ Boolean TFileEditor::loadFile()
 /* check for a unix text file (is a heuristic, because only 1024 chars checked */
         {
           char tmpbuf[1024];
-          long fsize=CLY_ifsFileLength(f);
+          long fsize=filelength(fileno(f));
           if (fsize > 1024) fsize = 1024;
-          f.read( tmpbuf, fsize);
+          fread(tmpbuf,fsize,1,f);
           for (i=0;i<1024;i++)
           {
             if (tmpbuf[i] == '\r') crfound = 1;
@@ -119,12 +119,12 @@ Boolean TFileEditor::loadFile()
           }
           if (crfound)
           {
-            f.seekg(0);
+            fseek(f,0,SEEK_SET);
           }
           else
           {
             int readhandle,writehandle;
-            f.close();
+            fclose(f);
             readhandle = open(fileName,O_RDONLY|O_BINARY);
             tmpnam(tmp);
             writehandle = open(tmp,O_WRONLY|O_CREAT|O_TRUNC|O_TEXT,0600);
@@ -132,11 +132,11 @@ Boolean TFileEditor::loadFile()
               ::write(writehandle,tmpbuf,fsize);
             close(readhandle);
             close(writehandle);
-            f.open(tmp,ios::in | CLY_IOSBin);
+            f=fopen(tmp,"rb");
           }
         }
         #endif
-        long fSize=CLY_ifsFileLength(f);
+        long fSize=filelength(fileno(f));;
         if( setBufSize((uint32)(fSize)) == False )
             {
             editorDialog( edOutOfMemory );
@@ -147,15 +147,15 @@ Boolean TFileEditor::loadFile()
             {
             if ( fSize > INT_MAX )
             {
-               f.read( &buffer[bufSize - (uint32)(fSize)], INT_MAX );
-               f.read( &buffer[bufSize - (uint32)(fSize) + INT_MAX],
-                                (uint32)(fSize - INT_MAX) );
+               fread( &buffer[bufSize - (uint32)(fSize)], INT_MAX, 1, f );
+               fread( &buffer[bufSize - (uint32)(fSize) + INT_MAX],
+                                (uint32)(fSize - INT_MAX), 1, f );
 
             }
             else
-               f.read( &buffer[bufSize - (uint32)(fSize)], (uint32)(fSize) );
-            f.close();
-            if( !f )
+               fread( &buffer[bufSize - (uint32)(fSize)], (uint32)(fSize), 1, f );
+            int error=ferror(f);
+            if( fclose(f) || error )
                 {
                 editorDialog( edReadError, fileName );
                 if (!crfound) remove(tmp);
@@ -193,12 +193,12 @@ Boolean TFileEditor::saveAs()
     return res;
 }
 
-static void writeBlock( ofstream& f, char *buf, unsigned len )
+static void writeBlock( FILE *f, char *buf, unsigned len )
 {
     while( len > 0 )
         {
         int l = len < INT_MAX ? len : INT_MAX;
-        f.write( buf, l );
+        fwrite( buf, l, 1, f );
         buf += l;
         len -= l;
         }
@@ -237,7 +237,7 @@ Boolean TFileEditor::saveFile()
        rename( fileName, backupName );
       }
 
-    ofstream f( fileName, ios::out | CLY_IOSBin );
+    FILE *f=fopen(fileName,"wb");
 
     if( !f )
         {
@@ -249,7 +249,8 @@ Boolean TFileEditor::saveFile()
         writeBlock( f, buffer, curPtr );
         writeBlock( f, buffer+curPtr+gapLen, bufLen-curPtr );
 
-        if( !f )
+        int error=ferror(f); // SET: Is that needed? Or fclose will inform the error?
+        if( fclose(f) || error )
             {
             editorDialog( edWriteError, fileName );
             return False;

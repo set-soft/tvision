@@ -11,7 +11,6 @@
 #define Uses_TVCodePage
 #define Uses_string
 #define Uses_ctype
-#define Uses_iostream
 #define Uses_stdio
 #define Uses_unistd
 #define Uses_fcntl

@@ -20,7 +20,6 @@ Mouse reporting not disabled at exit!!!
 #define Uses_TGKey
 #define Uses_string
 #define Uses_ctype
-#define Uses_iostream
 #define Uses_TVCodePage
 #include <tv.h>
 

@@ -34,19 +34,19 @@ trick will be used.
 #define __fpbase
 
 #ifdef CLY_DefineSpecialFileBuf
-class CLY_filebuf: public std::filebuf
+class CLY_int_filebuf: public CLY_filebuf
 {
 public:
- CLY_filebuf() : std::filebuf() {};
- CLY_filebuf(FILE *f, std::ios_base::openmode mode)
+ CLY_int_filebuf() : CLY_filebuf() {};
+ CLY_int_filebuf(FILE *f, std::ios_base::openmode mode)
    { open(f,mode); };
- CLY_filebuf(int h, std::ios_base::openmode mode)
+ CLY_int_filebuf(int h, std::ios_base::openmode mode)
    { open(h,mode); };
 
- CLY_filebuf *open(FILE *f, std::ios_base::openmode);
- CLY_filebuf *open(int h, std::ios_base::openmode);
- std::filebuf *open(const char *file, std::ios_base::openmode mode)
-   { return std::filebuf::open(file,mode); };
+ CLY_int_filebuf *open(FILE *f, std::ios_base::openmode);
+ CLY_int_filebuf *open(int h, std::ios_base::openmode);
+ CLY_filebuf *open(const char *file, std::ios_base::openmode mode)
+   { return CLY_filebuf::open(file,mode); };
 };
 #endif
 
@@ -67,11 +67,11 @@ public:
     #endif
     void close();
     void setbuf( char *, int );
-    CLY_std(filebuf) * rdbuf();
+    CLY_filebuf * rdbuf();
 
 private:
 
-    CLY_filebuf *buf;
+    CLY_int_filebuf *buf;
 
 };
 

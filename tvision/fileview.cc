@@ -23,9 +23,6 @@ Andris Pavenis.
 #define Uses_filelength
 #define Uses_unistd
 #define Uses_AllocLocal
-#ifndef NO_STREAM
- #define Uses_fstream
-#endif
 
 #define Uses_MsgBox
 #define Uses_TKeys
