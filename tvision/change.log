@@ -1,4 +1,13 @@
 $Log$.
+Revision 2.520  2003/12/02 14:51:14  set
+* Added: A first try to support the last MSVC compiler from information
+provided by Grzegorz, it includes:
+1) Adding /EHsc to compilation
+2) Looks like this version follows the ISO C++ 1998 standard like gcc 3.x.
+3) Default values for arguments of function pointers are no longer
+supported. This is bizarre because all gcc versions support it. May be
+that's part of ISO C++ 1998, not sure.
+.
 Revision 2.519  2003/11/28 05:23:32  lmike
 * [QNX6] Added experimental mouse support in text mode.
 
