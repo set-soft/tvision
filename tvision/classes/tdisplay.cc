@@ -56,6 +56,7 @@ TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
 uint32        TDisplay::opts1                     =0;
 TVCodePage   *TDisplay::codePage                  =NULL;
+TVScreenDriverDetectCallBack TDisplay::dCB        =NULL;
 TScreenResolution TDisplay::dosModesRes[TDisplayDOSModesNum]=
 {
  {  80,25 },
@@ -170,19 +171,37 @@ void TDisplay::defaultGetCursorShape(unsigned &start, unsigned &end)
 }
 
 /**[txh]********************************************************************
-  Description: Sets the video mode.
+  Description:
+  Returns information about a legacy DOS mode.
+  Return: True if the mode is known.
 ***************************************************************************/
 
-void TDisplay::defaultSetCrtMode(ushort mode)
+Boolean TDisplay::searchDOSModeInfo(ushort mode, unsigned &w, unsigned &h,
+                                    int &fW, int &fH)
 {
  int i;
  for (i=0; i<TDisplayDOSModesNum; i++)
      if (dosModes[i]==mode)
        {
-        setCrtModeRes(dosModesRes[i].x,dosModesRes[i].y,
-                      dosModesCell[i].x,dosModesCell[i].y);
-        break;
+        w=dosModesRes[i].x;
+        h=dosModesRes[i].y;
+        fW=dosModesCell[i].x;
+        fH=dosModesCell[i].y;
+        return True;
        }
+ return False;
+}
+
+/**[txh]********************************************************************
+  Description: Sets the video mode.
+***************************************************************************/
+
+void TDisplay::defaultSetCrtMode(ushort mode)
+{
+ unsigned w, h;
+ int fW, fH;
+ if (searchDOSModeInfo(mode,w,h,fW,fH))
+    setCrtModeRes(w,h,fW,fH);
  setCursorShape(86,99);
 }
 
@@ -403,6 +422,13 @@ void TDisplay::defaultGetDisPaletteColors(int from, int number, TScreenColor *co
 int TDisplay::defaultSetDisPaletteColors(int , int number, TScreenColor *)
 {
  return number;
+}
+
+TVScreenDriverDetectCallBack TDisplay::setDetectCallBack(TVScreenDriverDetectCallBack aCB)
+{
+ TVScreenDriverDetectCallBack ret=dCB;
+ dCB=aCB;
+ return ret;
 }
 
 /*****************************************************************************

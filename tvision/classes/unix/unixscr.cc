@@ -616,6 +616,7 @@ TScreenUNIX::TScreenUNIX()
   setegid(getgid());
   
   initialized=1;
+  if (dCB) dCB();
 
   TDisplayUNIX::Init();
 

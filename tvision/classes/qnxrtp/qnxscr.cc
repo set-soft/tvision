@@ -76,6 +76,9 @@ TScreenQNXRtP::TScreenQNXRtP()
    seteuid(getuid());
    setegid(getgid());
 
+   initialized=1;
+   if (dCB) dCB();
+
    TDisplayQNXRtP::Init();
 
    TScreen::Resume=Resume;
@@ -103,7 +106,6 @@ TScreenQNXRtP::TScreenQNXRtP()
                            forcedScrCP!=-1 ? forcedScrCP : TVCodePage::PC437,
                            forcedInpCP!=-1 ? forcedInpCP : TVCodePage::PC437);
 
-   initialized=1;
    suspended=0;
 
    startupCursor=getCursorType();

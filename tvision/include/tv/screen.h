@@ -36,6 +36,10 @@ struct TScreenResolution
 // Type for the callback called when the driver needs a new font.
 typedef TScreenFont256 *(*TVScreenFontRequestCallBack)(int which, unsigned w,
                          unsigned height);
+// Type for the callback called when the driver is detected.
+// This is called when we know which driver will be used but it isn't
+// initilized yet.
+typedef void (*TVScreenDriverDetectCallBack)();
 
 const int TDisplayDOSModesNum=18;
 
@@ -142,6 +146,10 @@ public:
                                   unsigned cant, unsigned &pos);
  // Returns the default palette
  static const TScreenColor *getDefaultPalette() { return PC_BIOSPalette; }
+ // Uses to be called when driver is detected but not yet initialized
+ static TVScreenDriverDetectCallBack setDetectCallBack(TVScreenDriverDetectCallBack aCB);
+ // Searchs information about a known DOS video mode
+ static Boolean searchDOSModeInfo(ushort mode, unsigned &w, unsigned &h, int &fW, int &fH);
  
  // Tables for the DOS video modes, used to look for similar modes by other drivers
  static TScreenResolution dosModesRes[];
@@ -189,6 +197,8 @@ protected:
  static TScreenColor UserStartPalette[16];
  // Code page initializator
  static TVCodePage *codePage;
+ // Initialization call back
+ static TVScreenDriverDetectCallBack dCB;
  
  // Default behaviors
  static void        defaultClearScreen(uchar, uchar);

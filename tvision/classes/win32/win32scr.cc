@@ -100,7 +100,6 @@ TScreenWin32::TScreenWin32()
  ZeroMemory(screenBuffer,screenHeight*screenWidth*sizeof(ushort));
 
  GetCursorPos(xCurStart,yCurStart);
- initialized=1;
  suspended=0;
  setCrtData();
 }
@@ -118,6 +117,10 @@ int TScreenWin32::InitConsole()
  // Make the new one the active
  if (!SetConsoleActiveScreenBuffer(hOut))
     return 0;
+
+ // If we are here this driver will be used
+ initialized=1;
+ if (dCB) dCB();
 
  // Enable mouse input
  GetConsoleMode(hIn,&oldConsoleMode);

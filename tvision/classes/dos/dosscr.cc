@@ -18,6 +18,8 @@
   AppCP
   ScrCP
   InpCP
+  ExtProgVideoMode
+  VideoMode
   
 ***************************************************************************/
 
@@ -107,6 +109,7 @@ TScreenDOS::TScreenDOS()
 {
  // Currently initialization never fails
  initialized=1;
+ if (dCB) dCB();
 
  TDisplayDOS::Init();
 
@@ -165,12 +168,26 @@ TScreenDOS::TScreenDOS()
     primaryFontSet=1;
     appFonts[0].h=0;
    }
- if (maxX!=startScreenWidth || maxY!=startScreenHeight)
-    setCrtModeRes(maxX,maxY); // if frCB installed it will use the application font
- else
+ char *ext=optSearch("ExtProgVideoMode");
+ if (optSearch("VideoMode",aux))
+   {// if frCB installed it will use the application font
+    setCtrMode(aux);
+   }
+ else if (ext)
+   {
+    setCrtModeExt(ext);
     if (frCB)
        SelectFont(charLines,False); // Try loading the application font
-
+   }
+ else if (maxX!=startScreenWidth || maxY!=startScreenHeight)
+   {// if frCB installed it will use the application font
+    setCrtModeRes(maxX,maxY);
+   }
+ else
+   {
+    if (frCB)
+       SelectFont(charLines,False); // Try loading the application font
+   }
  // User requested palette
  if (parseUserPalette())
     setPaletteColors(0,16,UserStartPalette);

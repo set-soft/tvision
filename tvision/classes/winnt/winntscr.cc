@@ -120,6 +120,11 @@ int TScreenWinNT::InitOnce()
  if (!SetConsoleActiveScreenBuffer(hOut))
     return 0;
  //hCurrentOut=hOut;
+
+ // If we are here this driver will be used
+ initialized=1;
+ if (dCB) dCB();
+
  // Console mode
  GetConsoleMode(hIn,&saveScreenConsoleMode);
  SetConsoleCtrlHandler(ConsoleEventHandler,TRUE);
@@ -190,7 +195,6 @@ TScreenWinNT::TScreenWinNT()
  screenMode=getCrtMode();
  setCrtData();
 
- initialized=1;
  suspended=0;
 }
 
