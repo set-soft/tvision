@@ -17,6 +17,26 @@ to be useful for the other.
 
   Here is how to use the spec file:
 
+I. THE EASY WAY
+===============
+
+  This procedure is really rigid and could be incorrect for your system. In
+particular it assumes all will compile ok and nothing will fail. For this
+reason I also explain it step by step in point (II).
+
+  To create the RPM files just execute:
+
+$ redhat/create-rpms.sh
+
+  Then look for the RPMs in ~/rpm/RPMS/i386/
+  I'm looking for volunteers to make this script more flexible.
+  IMPORTANT! The script temporally changes your ~/.rpmacros file, please
+back-up it if you have valuable information there. The script creates a
+back-up and restores the original file but it could fail.
+
+II. STEP BY STEP
+================
+
 1) Choose a directory to create the files. If you are root you can use the
 default directories for your system. If not I recommend using a directory
 located in your home directory. I provide a small script that creates the

@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.399.2.98  2003/06/13 20:40:30  set
+* Added: Files and instructions to create RPMs. They are bbcat's .spec
+files with some additions and corrections. Things I'm not sure they will
+remain:
+1) Need of tar.bz2 file.
+2) Use of package-version dir.
+3) The package have a name different than Debian package.
+
 Revision 2.399.2.97  2003/06/10 15:17:55  set
 * Fixed: The dependencies to reflect the fact we use .umks.
 
