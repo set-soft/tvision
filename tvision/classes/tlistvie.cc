@@ -184,18 +184,67 @@ void TListViewer::focusItem( ccIndex item )
         drawView();
 
     if( item < topItem )
+        {
         if( numCols == 1 )
             topItem = item;
         else
             topItem = item - item % size.y;
+        }
     else
+        {
         if( item >= topItem + size.y*numCols )
+            {
             if( numCols == 1 )
                 topItem = item - size.y + 1;
             else
                 topItem = item - item % size.y - (size.y * (numCols-1));
+            }
+        }
     if (owner && (options & ofBeVerbose))
        message(owner,evBroadcast,cmListItemFocused,this);
+}
+
+
+/**[txh]********************************************************************
+
+  Description:
+  That's a variant of focusItem that tries to center the focused item when
+the list have only one column.
+  
+***************************************************************************/
+
+void TListViewer::focusItemCentered( ccIndex item )
+{
+    if( numCols != 1 )
+        {
+        focusItem( item );
+        return;
+        }
+    center = True;
+    focused = item;
+    if( vScrollBar != 0 )
+        vScrollBar->setValue( item );
+    else
+        drawView();
+
+    if( item < topItem )
+        {
+        topItem = item - size.y/2;
+        if( topItem < 0)
+            topItem = 0;
+        }
+    else
+        {
+        if( item >= topItem + size.y*numCols )
+            {
+            topItem = item - size.y/2;
+            if( topItem + size.y >= range && range > size.y)
+                topItem = range - size.y;
+            }
+        }
+    if (owner && (options & ofBeVerbose))
+       message(owner,evBroadcast,cmListItemFocused,this);
+    center = False;
 }
 
 void TListViewer::focusItemNum( ccIndex item )
@@ -207,7 +256,10 @@ void TListViewer::focusItemNum( ccIndex item )
             item = range - 1;
 
     if( range !=  0 )
-        focusItem( item );
+        if( center )
+            focusItemCentered( item );
+        else
+            focusItem( item );
 }
 
 TPalette& TListViewer::getPalette() const

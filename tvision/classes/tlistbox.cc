@@ -30,17 +30,20 @@ TListBox::TListBox( const TRect& bounds,
     items( 0 )
 {
     setRange(0);
+    center = False;
 }
 
 // SET:
 TListBox::TListBox( const TRect& bounds,
                     ushort aNumCols,
                     TScrollBar *aHScrollBar,
-                    TScrollBar *aVScrollBar) :
+                    TScrollBar *aVScrollBar,
+                    Boolean aCenterOps) :
     TListViewer(bounds, aNumCols, aHScrollBar, aVScrollBar),
     items( 0 )
 {
     setRange(0);
+    center = aCenterOps;
 }
 
 TListBox::~TListBox()
@@ -96,7 +99,10 @@ void TListBox::setData( void *rec, Boolean destroyItems )
 {
     TListBoxRec *p = (TListBoxRec *)rec;
     newList( p->items, destroyItems );
-    focusItem( p->selection );
+    if( center )
+        focusItemCentered( p->selection );
+    else
+        focusItem( p->selection );
     drawView();
 }
 

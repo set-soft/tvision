@@ -82,6 +82,8 @@ if ($Compf eq 'Cygwin')
   }
 LookForIntlSupport();
 LookForEndianess();
+# TODO: implement it.
+LookForAllegro() if @conf{'alcon'} eq 'yes';
 
 print "\n";
 GenerateMakefile();
@@ -952,6 +954,13 @@ int main(int argc, char *argv[])
  print "OK\n";
 }
 
+sub LookForAllegro
+{
+ print 'Looking for Allegro library: [Not yet implemented]';
+ $conf{'HAVE_ALLEGRO'}='yes';
+ print "OK\n";
+}
+
 sub GenerateMakefile
 {
  my ($text,$rep,$makeDir,$ver,$internac,$maintain);
@@ -1139,6 +1148,7 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_SSC','Use stream replacements');
  $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
  $text.=ConfigIncDefYes('HAVE_LINUX_PTHREAD','Linux implementation of POSIX threads');
+ $text.=ConfigIncDefYes('HAVE_ALLEGRO','Allegro library for AlCon');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n";
  $text.="#define TVOSf_$OSf\n";
@@ -1146,7 +1156,6 @@ sub CreateConfigH
  $text.="#define TVComp_$Comp\n";
  $text.="#define TVCompf_$Compf\n";
  $text.="\n#define MSS\n#include <mss.h>\n" if @conf{'mss'} eq 'yes';
- $text.="\n#define USING_ALCON\n" if @conf{'alcon'} eq 'yes';
  $text.="\n";
  foreach $line (@MakeDefsRHIDE)
    {

@@ -32,6 +32,7 @@ public:
     virtual void changeBounds( const TRect& bounds );
     virtual void draw();
     virtual void focusItem( ccIndex item );
+    virtual void focusItemCentered( ccIndex item );
     virtual TPalette& getPalette() const;
     virtual void getText( char *dest, ccIndex item, short maxLen );
     virtual Boolean isSelected( ccIndex item );
@@ -63,6 +64,8 @@ protected:
     static unsigned extraOptions;
     // SET: neede to change the scroll bars too.
     void setNumCols(int aNumCols);
+    // SET: Used to center the focused item.
+    Boolean center;
 
 #if !defined( NO_STREAM )
 private:

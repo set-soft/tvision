@@ -1,6 +1,8 @@
 // -*- mode:C++; tab-width: 4 -*-
 #include <tv/configtv.h>
 
+#define Uses_stdio
+
 #define Uses_TScreen
 #define Uses_TEvent
 #define Uses_TGKey
