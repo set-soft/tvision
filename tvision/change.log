@@ -1,4 +1,8 @@
 $Log$
+Revision 2.16  2001/11/25 16:12:00  set
+* Added: Some support for linux-* terminals. Patch provided by "Dimitar
+Jekov" <jimmy@ncp.infonet.bg>
+
 Revision 2.15  2001/11/25 15:44:29  set
 * Fixed: Desklogo examples to work with anything different than 80x25 and a
 lack of a redraw in tv_logo. Reported by Cesar Rabak <csrabak@uol.com.br>.
