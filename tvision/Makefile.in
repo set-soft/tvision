@@ -2,7 +2,7 @@ prefix=@prefix@
 libdir=$(prefix)/lib
 OS=@OS@
 
-.PHONY: @targets@ @installers@ install-headers clean intl-dummy
+.PHONY: @targets@ @installers@ install-headers clean intl-dummy examples
 
 all: @targets@ intl-dummy
 
@@ -11,6 +11,9 @@ all: @targets@ intl-dummy
 @target2_rule@
 
 @intl_dummy_rule@
+
+examples:
+	make -C examples
 
 install-headers:
 	@install_headers@
