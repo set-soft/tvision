@@ -14,7 +14,9 @@ GetVersion('');
 # I never tested with an older version, you can try reducing it.
 $GPMVersionNeeded='1.10';
 # I never tested with an older version, you can try reducing it.
-$NCursesVersionNeeded='1.9.9';
+#$NCursesVersionNeeded='1.9.9';
+# That's a test to see if that works:
+$NCursesVersionNeeded='1.8.6';
 # Adds some nice stuff to define key sequences.
 $NCursesVersionRecomended='4.2';
 $DJGPPVersionNeeded='2.0.2';
@@ -291,7 +293,7 @@ int main(void)
  printf(NCURSES_VERSION);
  return 0;
 }';
- $test=RunGCCTest($GCC,'c',$test,'-lgpm');
+ $test=RunGCCTest($GCC,'c',$test,'-lncurses');
  if (!length($test))
    {
     print "\nError: ncurses library not found, please install ncurses $vNeed or newer\n";

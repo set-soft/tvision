@@ -1,4 +1,7 @@
 $Log$
+Revision 1.134  2000/02/04 02:18:44  root (set)
+* Fixed: Tab is an exception to the modifications done in 1.129.
+
 Revision 1.133  2000/02/04 02:03:58  root (set)
 * Modified: The configure process now only configures the target OS.
 * Modified: TStatusItem now uses copies of the strings passed.
