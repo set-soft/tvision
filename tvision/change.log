@@ -1,4 +1,8 @@
 $Log$
+Revision 1.75  1999/07/03 16:55:54  set
+* Fixed: Another call to delete instead of delete[] in the TInputLine
+destructor. Patch by Laurynas Biveinis <lauras@softhome.net>.
+.
 Revision 1.74  1999/07/01 02:42:49  root (set)
 * Added: Support for the --report-as-keysyms options of Eterm 0.8.10. It
 makes the programs work very well under Eterm, example: in my editor now is
