@@ -98,11 +98,12 @@ basically the same for DOS and Linux. If you have the Linux distribution and
 you want to use it under DOS just unpack the files and run the fromunix.pl
 Perl script. The reverse is valid: the DOS package can be used under Linux
 running the fromdos.pl Perl script.
-  Starting with 1.0.5 I include the Debian package files, if you uncompress
-the files in plain DOS you'll get some warnings about files with the same
-name, don't worry they are Linux files and they aren't needed under DOS. Of
-course you won't be able to use these files under Linux, you'll need to
-uncompress the .zip again in Linux.
+  Starting with 1.0.5 I include the Debian package files. As these files
+aren't 8+3 clean if you uncompress the files in plain DOS you'll get some
+warnings about files with the same name, so I removed these files from the
+DOS distribution in 1.0.6, now they are only in the Linux distribution. So
+if you want to try generating the .deb packages you *must* have the Linux
+distribution of the editor.
   The compress and compress.bat files are used to create the distribution
 packages and are included.
 
