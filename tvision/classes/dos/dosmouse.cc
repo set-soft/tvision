@@ -342,13 +342,17 @@ void THWMouseDOS::Suspend()
  biosRestoreState();
 }
 
-THWMouseDOS::~THWMouseDOS()
+void THWMouseDOS::DeInit()
 {
  if (handlerInstalled==True)
    {
     registerHandler(0xFFFF,0);
     _go32_dpmi_free_real_mode_callback(&mouseIntInfo);
    }
+}
+
+THWMouseDOS::~THWMouseDOS()
+{
 }
 
 void THWMouseDOS::ShowDrv()

@@ -9,6 +9,8 @@
 
 #ifndef DOS_SCREEN_HEADER_INCLUDED
 #define DOS_SCREEN_HEADER_INCLUDED
+class THWMouseDOS;
+
 // virtual to avoid problems with multiple inheritance
 class TDisplayDOS : virtual public TDisplay
 {
