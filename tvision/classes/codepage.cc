@@ -2640,7 +2640,10 @@ void TVCodePage::CreateCPFromUnicode(CodePage *cp, int id, const char *name,
      if (v==0xFFFF)
         cp->Font[i-128]=0;
      else
-        cp->Font[i-128]=InternalCodeForUnicode(v);
+       {
+        v=InternalCodeForUnicode(v);
+        cp->Font[i-128]=v==-1 ? 0 : v;
+       }
     }
  // Currently we lack an Unicode toupper/lower and isalpha mechanism
  cp->UpLow=cp->MoreLetters=NULL;
@@ -2652,7 +2655,10 @@ void TVCodePage::CreateCPFromUnicode(CodePage *cp, int id, const char *name,
      if (v==0xFFFF)
         cp->LowRemap[i]=0;
      else
-        cp->LowRemap[i]=InternalCodeForUnicode(v);
+       {
+        v=InternalCodeForUnicode(v);
+        cp->Font[i-128]=v==-1 ? 0 : v;
+       }
     }
 }
 
