@@ -872,6 +872,14 @@ typedef unsigned long  ulong;
   #endif
  #endif
 
+ /* OSF1 (Tru64) */
+ #ifdef TVOSf_Tru64
+  #ifdef Uses_alloca
+   #undef  Include_alloca
+   #define Include_alloca 1
+  #endif
+ #endif
+
  /* Generic UNIX system */
  #if defined(TVOS_UNIX) && !defined(TVOSf_Linux) && !defined(TVOSf_Solaris) \
      && !defined(TVOSf_OpenBSD) && !defined(TVOSf_NetBSD)
@@ -1772,6 +1780,12 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_stdlib) && !defined(Included_stdlib)
  #define Included_stdlib 1
  #include <stdlib.h>
+#endif
+
+#if defined(Include_alloca) && !defined(Included_alloca)
+ /* OSF1 (Tru64) */
+ #define Included_alloca 1
+ #include <alloca.h>
 #endif
 
 #if defined(Include_malloc) && !defined(Included_malloc)

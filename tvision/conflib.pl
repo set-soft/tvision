@@ -18,6 +18,8 @@ $CPU='';
 $Comp='';
 # djgpp, MinGW, Cygwin
 $Compf='';
+# gcc's -pipe option
+$UsePipe=0;
 
 sub GetCache
 {
@@ -549,7 +551,7 @@ sub FindCFLAGS
     $ret='-O2'; # -gstabs+3';
     # In UNIX pipes are in memory and allows multithreading so they are
     # usually faster. In Linux that's faster.
-    $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -pipe' if $UsePipe;
     # Looks like that's common and some sysadmins doesn't configure gcc to
     # look there:
     $conf{'EXTRA_INCLUDE_DIRS'}.=' /usr/local/include' if ($OSf eq 'FreeBSD');
@@ -625,7 +627,7 @@ sub FindCXXFLAGS
  if (!$ret)
    {
     $ret='-O2'; # -gstabs+3';
-    $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -pipe' if $UsePipe;
     $ret.=' -L/usr/local/include' if ($OSf eq 'FreeBSD');
     $conf{'EXTRA_INCLUDE_DIRS'}.=' /usr/local/include' if ($OSf eq 'FreeBSD');
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
@@ -666,7 +668,7 @@ sub FindXCFLAGS
  if (!$ret)
    {
     $ret='-O3 -fomit-frame-pointer -ffast-math';
-    $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -pipe' if $UsePipe;
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
    }
  print "$ret\n";
@@ -702,7 +704,7 @@ sub FindXCXXFLAGS
  if (!$ret)
    {
     $ret='-O3 -fomit-frame-pointer -ffast-math';
-    $ret.=' -pipe' if ($OS eq 'UNIX');
+    $ret.=' -pipe' if $UsePipe;
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
    }
  print "$ret\n";
@@ -868,10 +870,22 @@ sub DetectOS
     $defaultCXX='g++';
     $supportDir='linux';
    }
+ elsif ($os=~/OSF1/)
+   {
+    $OS='UNIX';
+    $OSf='Tru64';
+    $Compf='';
+    $stdcxx='-lstdc++';
+    $defaultCXX='g++';
+    $supportDir='linux';
+   }
  else
    {
     die('Unknown OS, you must do things by yourself');
    }
+ # The gcc I found in an HP DS20E machine comes in a package called TWWfsw and
+ # doesn't support -pipe. (Dual EV67 667 MHz machine running OSF1 v5.1).
+ $UsePipe=($OS eq 'UNIX') && ($OSf ne 'Tru64');
  print "$OS";
  print " [$OSf]" if $OSf;
  print " [$Compf]" if $Compf;
@@ -1375,7 +1389,7 @@ sub LookForGNUar
     print "gar\n";
     return 'gar';
    }
- if (($OSf eq 'Darwin') || ($OSf eq 'HP-UX'))
+ if (($OSf eq 'Darwin') || ($OSf eq 'HP-UX') || ($OSf eq 'Tru64'))
    {
     $conf{'GNU_AR'}='ar';
     $conf{'UseRanLib'}=1;

@@ -112,8 +112,8 @@ $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
 # be added for things like FreeBSD or SunOS. But not for QNX.
 $MakeDefsRHIDE[2].=substr($stdcxx,2); # unless (($OS eq 'DOS') || ($OSf eq 'Linux') || ($OSf eq 'QNXRtP'));
-$OSUSesIntl=($OS eq 'DOS') || ($OS eq 'Win32') || ($OSf eq 'Darwin') || ($OSf eq 'NetBSD')
-            || ($OSf eq 'OpenBSD');
+# Linux, Solaris and FreeBSD have gettext in its C library.
+$OSUSesIntl=!(($OSf eq 'Linux') || ($OSf eq 'Solaris') || ($OSf eq 'FreeBSD'));
 if ($OSUSesIntl)
   {
    if ((@conf{'intl-force-dummy'} ne 'yes') && (@conf{'intl'} eq 'yes'))

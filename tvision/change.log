@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.583  2004/10/05 22:33:23  terrible
+* [Debian] Updated to 2.0.3-2 (minor changes mostly cosmetic).
+
 Revision 2.582  2004/10/05 21:43:21  set
 * Fixed(?!): [gcc 3.4.1] For some, unknown, reason the mechanism to "pull"
 stream dependencies fails for Mandrake 10.0 (gcc 3.4.1 + glibc 2.3.3 +
