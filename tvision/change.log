@@ -1,4 +1,8 @@
 $Log$
+Revision 1.167  2001/08/15 23:58:19  set
+* Added: The .mak files to the Linux distribution.
+Released as beta.
+
 Revision 1.166  2001/08/14 15:20:47  set
 * Added: Makefiles for all the examples. They are created/updated when the
 package is created and updated by the configure script to be adapted to the
