@@ -1,4 +1,8 @@
 $Log$
+Revision 1.161  2001/08/05 00:27:56  set
+* Fixed: Problems with the detection of input/output functions provided by
+libc 2.1.3.
+
 Revision 1.160  2000/12/09 21:17:06  set
 * Applied changes from Anatoli to the WinNT port. They enhances the
 configuration process and fixes some problems and typos. Read-only temporals
