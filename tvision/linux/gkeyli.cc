@@ -309,7 +309,6 @@ unsigned short TGKey::gkey(void)
  else
    { // The rest are passed by the tables
     key&=0x7F;
-    printf("key %X name[key] %X flags[key] %X\r\n",key,name[key],flags[key]);
     ascii=key;
     rawCode.b.scan=ascii;
     Abstract|=name[key] | (flags[key]<<4);

@@ -102,7 +102,7 @@ djgpp/makefile
 +djgpp/distlist
 drivers2.cc
 dual.cc
-examples/clean.bat
++examples/clean.bat
 examples/common.env
 examples/dyntxt/dyntext.cpp
 -examples/dyntxt/dyntext.gpr
