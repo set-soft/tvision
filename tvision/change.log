@@ -1,4 +1,7 @@
 $Log$
+Revision 1.232  2001/10/17 22:38:51  set
+* Fixed: [UNIX] Unconditional request for definekey()
+.
 Revision 1.231  2001/10/17 22:35:55  set
 * Fixed: Now clean target also deletes the configure.cache.
 

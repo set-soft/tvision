@@ -43,7 +43,7 @@ LookForPrefix();
 # Only gnu make have the command line and commands we use.
 LookForGNUMake();
 # Same for ar, it could be `gar'
-LookForGNUar();
+$GAR=LookForGNUar();
 # Is the right djgpp?
 if ($OS eq 'DOS')
   {
@@ -83,27 +83,26 @@ $MakeDefsRHIDE[2].=' intl' if (($OS eq 'DOS') || ($OS eq 'Win32')) && (@conf{'in
 $MakeDefsRHIDE[2].=' iconv' if (@conf{'iconv'} eq 'yes');
 $MakeDefsRHIDE[2].=' '.$conf{'NameCurses'}.' m' if ($OS eq 'UNIX');
 $MakeDefsRHIDE[2].=' gpm' if @conf{'HAVE_GPM'} eq 'yes';
-$MakeDefsRHIDE[4]='RHIDE_AR='.$conf{'GNU_AR'};
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
-   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/linux '.@conf{'prefix'}.'/lib ../../linux';
-   ModifyMakefiles('linux/Makefile');
+   $MakeDefsRHIDE[3]='TVOBJ=../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib';
+   ModifyMakefiles('linux/Makefile','compat/compat.mak');
    CreateRHIDEenvs('linux/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'DOS')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
-   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/djgpp '.@conf{'prefix'}.'/lib ../../djgpp';
-   ModifyMakefiles('djgpp/makefile');
+   $MakeDefsRHIDE[3]='TVOBJ=../../djgpp '.$here.'/djgpp '.@conf{'prefix'}.'/lib';
+   ModifyMakefiles('djgpp/makefile','compat/compat.mak');
    CreateRHIDEenvs('djgpp/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'Win32')
   {
-   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/win32 '.@conf{'prefix'}.'/lib ../../win32';
+   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
    $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
-   ModifyMakefiles('win32/Makefile');
+   ModifyMakefiles('win32/Makefile','compat/compat.mak');
    CreateRHIDEenvs('examples/rhide.env');
    # Repeated later for other targets
   }
@@ -114,7 +113,7 @@ if ($OS ne 'Win32')
   {
    $MakeDefsRHIDE[0]='';
    $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2);
-   $MakeDefsRHIDE[3]='TVOBJ='.$here.'/win32 '.@conf{'prefix'}.'/lib ../../win32';
+   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib';
    $ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/makefile win32/Makefile`;
    ModifyMakefiles('win32/Makefile');
