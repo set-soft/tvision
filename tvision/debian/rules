@@ -83,7 +83,7 @@ install-stamp: build-stamp
 
 ## Build architecture-independent files here.
 #binary-indep: build install
-##	dh_testversion
+	dh_testversion 1.2.9
 #	dh_testdir -i
 #	dh_testroot -i
 #	dh_installdocs -i
