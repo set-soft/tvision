@@ -6,13 +6,18 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea to avoid macros collisions and make easier to use.
 
- *
- *
  */
 
 #if !defined( __UTIL_H )
 #define __UTIL_H
+
+// SET: Used by names, they only include this file.
+#ifdef Uses_n
+ #include <compatlayer.h>
+#endif
+
 #undef __CM
 #undef __HC
 #undef __BASE

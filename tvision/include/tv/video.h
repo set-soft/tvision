@@ -49,57 +49,57 @@
 
 /*
 typedef struct {
-    short	ModeAttributes	  PACK;	    mode attributes
+    short	ModeAttributes	  CLY_Packed;	    mode attributes
 */
 #define ModeAttributes _WORD(0)
 /*
-    char	WinAAttributes	  PACK;	    Window A attributes
-    char	WinBAttributes	  PACK;	    Window B attributes
+    char	WinAAttributes	  CLY_Packed;	    Window A attributes
+    char	WinBAttributes	  CLY_Packed;	    Window B attributes
 */
 #define WinAAttributes _BYTE(2)
 #define WinBAttributes _BYTE(3)
 /*
-    short	WinGranularity	  PACK;	    window granularity
+    short	WinGranularity	  CLY_Packed;	    window granularity
 */
 #define WinGranularity _WORD(4)
 /*
-    short	WinSize		  PACK;	    window size
+    short	WinSize		  CLY_Packed;	    window size
 */
 #define WinSize _WORD(6)
 /*
-    short	WinASegment	  PACK;	    Window A start segment
-    short	WinBSegment	  PACK;	    Window B start segment
+    short	WinASegment	  CLY_Packed;	    Window A start segment
+    short	WinBSegment	  CLY_Packed;	    Window B start segment
 */
 #define WinASegment _WORD(8)
 #define WinBSegment _WORD(10)
 /*
-    void far  (*WinFuncPtr)()	  PACK;	    pointer to window function
-    short	BytesPerScanLine  PACK;	    bytes per scan line
+    void far  (*WinFuncPtr)()	  CLY_Packed;	    pointer to window function
+    short	BytesPerScanLine  CLY_Packed;	    bytes per scan line
       ==== extended and optional information ====
-    short	XResolution	  PACK;	    horizontal resolution
-    short	YResolution	  PACK;	    vertical resolution
-    char	XCharSize	  PACK;	    character cell width
-    char	YCharSize	  PACK;	    character cell height
-    char	NumberOfPlanes	  PACK;	    number of memory planes
+    short	XResolution	  CLY_Packed;	    horizontal resolution
+    short	YResolution	  CLY_Packed;	    vertical resolution
+    char	XCharSize	  CLY_Packed;	    character cell width
+    char	YCharSize	  CLY_Packed;	    character cell height
+    char	NumberOfPlanes	  CLY_Packed;	    number of memory planes
 */
 #define NumberOfPlanes _BYTE(0x18)
 /*
-    char	BitsPerPixel	  PACK;	    bits per pixel
-    char	NumberOfBanks	  PACK;	    number of banks
-    char	MemoryModel	  PACK;	    memory model type
-    char	BankSize	  PACK;	    bank size in K
-    char	NumImagePages	  PACK;	    number of image pages
-    char	reserved[1]	  PACK;
+    char	BitsPerPixel	  CLY_Packed;	    bits per pixel
+    char	NumberOfBanks	  CLY_Packed;	    number of banks
+    char	MemoryModel	  CLY_Packed;	    memory model type
+    char	BankSize	  CLY_Packed;	    bank size in K
+    char	NumImagePages	  CLY_Packed;	    number of image pages
+    char	reserved[1]	  CLY_Packed;
        ==== VESA 1.2 and later ====
-    char	RedMaskSize	  PACK;	    number of bits in red mask
-    char	RedMaskPos	  PACK;	    starting bit for red mask
-    char	GreenMaskSize	  PACK;
-    char	GreenMaskPos	  PACK;
-    char	BlueMaskSize	  PACK;
-    char	BlueMaskPos	  PACK;
-    char	ReservedMaskSize  PACK;	    reserved bits in pixel
-    char	ReservedMaskPos	  PACK;
-    char	DirectScreenMode  PACK;
+    char	RedMaskSize	  CLY_Packed;	    number of bits in red mask
+    char	RedMaskPos	  CLY_Packed;	    starting bit for red mask
+    char	GreenMaskSize	  CLY_Packed;
+    char	GreenMaskPos	  CLY_Packed;
+    char	BlueMaskSize	  CLY_Packed;
+    char	BlueMaskPos	  CLY_Packed;
+    char	ReservedMaskSize  CLY_Packed;	    reserved bits in pixel
+    char	ReservedMaskPos	  CLY_Packed;
+    char	DirectScreenMode  CLY_Packed;
 } VESAmodeInfoBlock;
 */
 

@@ -26,6 +26,9 @@ const unsigned fcolHideEndBkp  =0x200; // *.bkp
 const unsigned fcolHideStartDot=0x400; // .*
 const unsigned fcolHideBit=8, fcolHideMask=0xF00;
 
+// Avoid replacing free by MSS's macro
+#include <tv/no_mss.h>
+
 class TFileCollection: public TSortedCollection
 {
 
@@ -72,6 +75,8 @@ public:
     static TStreamable *build();
 #endif // NO_STREAM
 };
+
+#include <tv/yes_mss.h>
 
 #if !defined( NO_STREAM )
 inline ipstream& operator >> ( ipstream& is, TFileCollection& cl )

@@ -22,10 +22,15 @@ TStreamableTypes::TStreamableTypes() : TNSSortedCollection( 5, 5 )
 {
 }
 
+// Avoid replacing new by MSS's macro
+#include <tv/no_mss.h>
+
 void *TStreamableTypes::operator new( size_t, void * arena )
 {
     return arena;
 }
+
+#include <tv/yes_mss.h>
 
 TStreamableTypes::~TStreamableTypes()
 {

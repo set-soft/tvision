@@ -13,6 +13,8 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #if defined( Uses_TDirCollection ) && !defined( __TDirCollection )
 #define __TDirCollection
+// Avoid replacing free by MSS's macro
+#include <tv/no_mss.h>
 
 class TDirEntry;
 
@@ -57,6 +59,8 @@ public:
     static TStreamable *build();
 #endif
 };
+
+#include <tv/yes_mss.h>
 
 #if !defined( NO_STREAM )
 inline ipstream& operator >> ( ipstream& is, TDirCollection& cl )

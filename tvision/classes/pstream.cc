@@ -35,6 +35,10 @@ void pstream::deInitTypes(void)
     delete types;
 }
 
+// The following call to new is overloaded, avoid
+// using MSS for it.
+#include <tv/no_mss.h>
+
 void pstream::initTypes()
 {
  if (!types)
@@ -43,6 +47,8 @@ void pstream::initTypes()
     atexit(pstream::deInitTypes);
    }
 }
+
+#include <tv/yes_mss.h>
 
 int pstream::rdstate() const
 {
