@@ -108,7 +108,8 @@ int getBlinkState();
 
 TScreen::TScreen()
 {
-  screenMode = startupMode = getCrtMode();
+  user_mode = screenMode = startupMode = getCrtMode();
+  TScreen_suspended = 1;
   resume();
 }
 
