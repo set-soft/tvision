@@ -226,6 +226,7 @@ djgpp/obj/delete.me
 djgpp/tmp/delete.me
 doc/QNX.txt
 doc/X11.txt
+doc/XTerm.txt
 doc/Eterm.txt
 drivers2.cc
 dual.cc
