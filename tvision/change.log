@@ -1,4 +1,13 @@
-$Log$.
+$Log$
+Revision 2.220  2002/07/16 19:22:00  set
+* Added: Default code page concept.
+* Fixed:(?) Remapping problem when the "similar" was outside the ASCII
+range.
+* Fixed: IndexToID was wrongly implemented.
+* Added: TButtonRef, a button that just uses a reference to the "title".
+* Modified: TScrollbars, they are now less configurable but doesn't fail
+when remapping the screen.
+
 Revision 2.219  2002/07/15 15:16:40  set
 * Modified: The TVCodePage semantics. Now is more clear. I hope it doesn't
 break the code ;-).
