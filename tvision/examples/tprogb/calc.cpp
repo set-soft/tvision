@@ -4,7 +4,10 @@
 // and fixed a small bug.
 //
 // Author: Jay Perez.
-#include <unistd.h>
+#define Uses_unistd
+#define Uses_stdio
+#define Uses_stdlib
+#define Uses_ctype
 
 #define Uses_TBackground
 #define Uses_TListBox
@@ -41,10 +44,6 @@
 __link( RView )
 __link( RDialog )
 __link( RButton )
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 
 #include "tprogbar.h"
 
@@ -173,7 +172,7 @@ void TMyApplication::statusDlg()
 
 	 if( TProgram::application->validView( pd ) != 0 ) {    // If it's valid...
 		 TProgram::deskTop->execView( pd ) ;
-		 TObject::destroy( pd ) ;
+		 TObject::CLY_destroy( pd ) ;
 	 }
 	 }
 	 return ;

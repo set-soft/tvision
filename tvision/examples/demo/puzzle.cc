@@ -34,7 +34,7 @@
 #define Uses_TPalette
 #include <tv.h>
 
-#ifdef TVComp_MSC
+#if defined(TVComp_MSC) || defined(TVComp_BCPP)
  #include <time.h>
  #include <io.h>
 #else

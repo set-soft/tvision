@@ -65,13 +65,13 @@ foreach $i (@files)
    $r.='contrib/tvision/'.$i;
   }
 # Add example makefiles
-@files=glob('tvision/examples/*/*.umk');
+@files=glob('contrib/tvision/examples/*/*.?mk');
 $r.="\n".join("\n",@files);
-@files=glob('tvision/examples/*/*/*.umk');
+@files=glob('contrib/tvision/examples/*/*/*.?mk');
 $r.="\n".join("\n",@files);
-@files=glob('tvision/examples/*/*.mkf');
+@files=glob('contrib/tvision/examples/*/*.mkf');
 $r.="\n".join("\n",@files);
-@files=glob('tvision/examples/*/*/*.mkf');
+@files=glob('contrib/tvision/examples/*/*/*.mkf');
 $r.="\n".join("\n",@files);
 # Manifest and version
 $r.="\n$srcmft\n$srcver\n";
