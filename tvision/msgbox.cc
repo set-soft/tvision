@@ -186,8 +186,12 @@ ushort messageBox( ushort aOptions, const char *fmt, ... )
 }
 
 ushort inputBox( const char *Title, const char *aLabel, char *s, int limit )
-{
-    TRect r(0, 0, 60, 8);
+{   // Use a size according to the label+limit and title
+    int len;
+    len = max( strlen(aLabel) + 8 + limit, strlen(Title) + 11 );
+    len = min( len, 60 );
+    len = max( len , 24 );
+    TRect r(0, 0, len, 7);
     r.move((TProgram::deskTop->size.x - r.b.x) / 2,
            (TProgram::deskTop->size.y - r.b.y) / 2);
     return inputBoxRect(r, Title, aLabel, s, limit);
@@ -206,16 +210,17 @@ ushort inputBoxRect( const TRect &bounds,
 
     dialog = new TDialog(bounds, Title);
 
-    r = TRect( 4 + strlen(aLabel), 2, dialog->size.x - 3, 3 );
+    unsigned x = 4 + strlen( aLabel );
+    r = TRect( x, 2, min(x + limit + 2, dialog->size.x - 3), 3 );
     control = new TInputLine( r, limit );
     dialog->insert( control );
 
-    stTVIntl *intlLabel;
+    stTVIntl *intlLabel = NULL;
     r = TRect(2, 2, 3 + strlen(TVIntl::getText(aLabel,intlLabel)), 3);
     dialog->insert( new TLabel( r, aLabel, control, intlLabel ) );
 
-    r = TRect( dialog->size.x - 24, dialog->size.y - 4,
-               dialog->size.x - 14, dialog->size.y - 2);
+    r = TRect( dialog->size.x / 2 - 11, dialog->size.y - 3,
+               dialog->size.x / 2 - 1 , dialog->size.y - 1);
     dialog->insert( new TButton(r, __("~O~K"), cmOK, bfDefault));
 
     r.a.x += 12;
