@@ -855,6 +855,8 @@ void TScreenDOS::SelectFont(unsigned height, Boolean Force)
              SetFontBIOS(0,height,font->data,0);
              MemorizeFont(0,font);
              fontOk=1;
+             DeleteArray(font->data);
+             delete font;
             }
          }
        if (!fontOk)
@@ -887,6 +889,8 @@ void TScreenDOS::SelectFont(unsigned height, Boolean Force)
              SetFontBIOS(1,height,font->data,0);
              MemorizeFont(1,font);
              fontOk=1;
+             DeleteArray(font->data);
+             delete font;
             }
          }
        if (!fontOk)
