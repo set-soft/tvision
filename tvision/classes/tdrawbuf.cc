@@ -49,6 +49,41 @@ void TDrawBuffer::moveBuf(unsigned indent, const void *source,
   }
 }
 
+void TDrawBuffer::moveBufU16(unsigned indent, const void *source,
+                             unsigned attr, unsigned count)
+
+{
+  if (!count || (indent >= (unsigned)maxViewWidth)) return;
+  if (count+indent > (unsigned)maxViewWidth)
+    count = maxViewWidth - indent;
+
+  uint16 *dest1 = &data[indent];
+  uint16 *dest2 = &data2[indent];
+  const uint16 *s = (const uint16 *)source;
+
+  if (attr)
+  {
+    uchar attr2 = (uchar)(attr>>8);
+    while (count-- && *s)
+    {
+      ((uchar *)dest1)[0] = (uchar)(*s);
+      ((uchar *)dest2)[0] = (uchar)(*s>>8);
+      s++;
+      ((uchar *)dest1++)[1] = (uchar)attr;
+      ((uchar *)dest2++)[1] = attr2;
+    }
+  }
+  else
+  {
+    while (count-- && *s)
+    {
+      *(uchar *)dest1++ = (uchar)(*s);
+      *(uchar *)dest2++ = (uchar)(*s>>8);
+      s++;
+    }
+  }
+}
+
 /**[txh]********************************************************************
 
   Description:
@@ -92,6 +127,51 @@ void TDrawBuffer::moveChar(unsigned indent, char c, unsigned attr,
     while (count--)
     {
       *(uchar *)dest++ = c;
+    }
+  }
+}
+
+void TDrawBuffer::moveCharU16(unsigned indent, unsigned c, unsigned attr,
+                              unsigned count )
+{
+  if (!count || (indent >= (unsigned)maxViewWidth)) return;
+  if (count+indent > (unsigned)maxViewWidth)
+    count = maxViewWidth - indent;
+
+  uint16 *dest1=&data[indent];
+  uint16 *dest2=&data2[indent];
+  unsigned c2 = c>>8;
+
+  if (attr)
+  {
+    uchar attr2 = (uchar)(attr>>8);
+    if (c)
+    {
+      while (count--)
+      {
+        ((uchar*)dest1)[0] = c;
+        ((uchar*)dest2)[0] = c2;
+        ((uchar*)dest1++)[1] = attr;
+        ((uchar*)dest2++)[1] = attr2;
+      }
+    }
+    else
+    {
+      dest1=(uint16 *)((uchar *)dest1+1);
+      dest2=(uint16 *)((uchar *)dest2+1);
+      while (count--)
+      {
+        *(uchar *)dest1++ = attr;
+        *(uchar *)dest2++ = attr2;
+      }
+    }
+  }
+  else
+  {
+    while (count--)
+    {
+      *(uchar *)dest1++ = c;
+      *(uchar *)dest2++ = c2;
     }
   }
 }
@@ -195,6 +275,34 @@ void TDrawBuffer::moveCStr( unsigned indent, const char *str, unsigned attrs )
 #endif
 }
 
+void TDrawBuffer::moveCStrU16( unsigned indent, const uint16 *str, unsigned attrs1,
+                               unsigned attrs2 )
+{
+  uchar cHigh1 = attrs1 >> 8, cColor1 = attrs1 & 0xff;
+  uchar cHigh2 = attrs2 >> 8, cColor2 = attrs2 & 0xff;
+  uchar cAux;
+  uint16 charAux;
+  ushort *dest1 = data+indent;
+  ushort *dest2 = data2+indent;
+  ushort *end = data+maxViewWidth;
+  while (*str && dest1<end)
+  {
+    charAux = *str++;
+    if (charAux == '~')
+    {
+      cAux=cColor1; cColor1=cHigh1; cHigh1=cAux;
+      cAux=cColor2; cColor2=cHigh1; cHigh2=cAux;
+    }
+    else
+    {
+      ((uchar*)dest1)[0] = charAux;
+      ((uchar*)dest2)[0] = charAux>>8;
+      ((uchar*)dest1++)[1] = cColor1;
+      ((uchar*)dest2++)[1] = cColor2;
+    }
+  }
+}
+
 /**[txh]********************************************************************
 
   Description:
@@ -254,4 +362,18 @@ void TDrawBuffer::moveStr( unsigned indent, const char *str, unsigned attr )
 #endif
 }
 
-
+void TDrawBuffer::moveStrU16( unsigned indent, const uint16 *str, unsigned attr )
+{
+  uint16 *dest1 = data+indent;
+  uint16 *dest2 = data2+indent;
+  uint16 *end = data+maxViewWidth;
+  unsigned attr2 = attr>>8;
+  while (*str && dest1<end)
+  {
+    ((uchar*)dest1)[0] = *str;
+    ((uchar*)dest2)[0] = *str>>8;
+    str++;
+    ((uchar*)dest1++)[1] = attr;
+    ((uchar*)dest2++)[1] = attr2;
+  }
+}
