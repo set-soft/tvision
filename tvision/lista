@@ -208,7 +208,7 @@ debian/rhtvision.postinst
 debian/shlibs.local.ex
 debian/watch.ex
 -djgpp/librhtv.gpr
-djgpp/makefile
+djgpp/Makefile
 djgpp/rhide.env
 +djgpp/sacadeb.bat
 +djgpp/compress.bat
