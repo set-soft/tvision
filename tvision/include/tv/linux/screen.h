@@ -46,10 +46,9 @@ protected:
  static ushort GetCols();
  //static ushort GetColsMDA(); is ushort TDisplay::defaultGetCols()
  
- // Not available, but does some defaults
- static void   SetCrtMode(ushort mode);
+ // Not available static void   SetCrtMode(ushort mode);
  // Not available static ushort getCrtMode();
- static void   SetCrtModeExt(char *mode);
+ // Not available static void   SetCrtModeExt(char *mode);
  static int    CheckForWindowSize(void);
  static const char *GetWindowTitle(void);
  static int    SetWindowTitle(const char *name);

@@ -96,8 +96,6 @@ void TDisplayLinux::Init(int mode)
     setCursorShape=SetCursorShapeMDA;
     getRows=defaultGetRows;
     getCols=defaultGetCols;
-    setCrtMode=defaultSetCrtMode;
-    setCrtModeExt=defaultSetCrtModeExt;
     getDisPaletteColors=defaultGetDisPaletteColors;
     setDisPaletteColors=defaultSetDisPaletteColors;
    }
@@ -107,8 +105,6 @@ void TDisplayLinux::Init(int mode)
     setCursorShape=SetCursorShape;
     getRows=GetRows;
     getCols=GetCols;
-    setCrtMode=SetCrtMode;
-    setCrtModeExt=SetCrtModeExt;
     getDisPaletteColors=tioclinuxOK ? GetDisPaletteColors : defaultGetDisPaletteColors;
     setDisPaletteColors=SetDisPaletteColors;
    }
@@ -191,19 +187,6 @@ ushort TDisplayLinux::GetCols()
  win.ws_col=0xFFFF;
  ioctl(hOut,TIOCGWINSZ,&win);
  return win.ws_col!=0xFFFF ? win.ws_col : 80;
-}
-
-void TDisplayLinux::SetCrtMode(ushort )
-{ // Just set the cursor to a known state
- cursorStart=86;
- cursorEnd  =99;
- fputs("\E[?2c",stdout);
-}
-
-void TDisplayLinux::SetCrtModeExt(char *mode)
-{
- setCrtMode(0); // Just set the cursor to a known state
- system(mode);
 }
 
 int TDisplayLinux::CheckForWindowSize(void)

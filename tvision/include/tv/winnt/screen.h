@@ -22,9 +22,9 @@ protected:
  static void   SetCursorShape(unsigned start, unsigned end);
  static ushort GetRows();
  static ushort GetCols();
- // Not available static void setCrtMode(ushort mode);
+ // Default static void   SetCrtMode(ushort mode);
+ // Default static void   SetCrtModeExt(char *mode);
  // Not available static ushort getCrtMode();
- // Not available static void   SetCrtModeExt(char *mode);
  // Not implemented static int    CheckForWindowSize(void);
  static const char
               *GetWindowTitle(void);
