@@ -466,7 +466,7 @@ int main(void)
 
 sub GenerateMakefile
 {
- my $text,$rep,$makeDir;
+ my ($text,$rep,$makeDir);
 
  print "Generating Makefile\n";
  $text=cat('Makefile.in');
@@ -501,16 +501,29 @@ sub GenerateMakefile
    }
 
  # Write install stuff
+ # What versions of the library we will install
+ $rep= 'install-static ';
+ $rep.='install-dynamic' if ($OS eq 'UNIX');
+ $text=~s/\@installers\@/$rep/g;
+
+ # Headers
  $rep= "install -d -m 0755 \$(prefix)/include/rhtvision\n";
  $rep.="\trm -f \$(prefix)/include/rhtvision/*.h\n";
  $rep.="\tinstall -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
  $rep.="\tinstall -d -m 0755 \$(prefix)/include/rhtvision/tv\n";
  $rep.="\tinstall -m 0644 include/tv/*.h \$(prefix)/include/rhtvision/tv\n";
- # This should be created if the target is a new directory
+ $text=~s/\@install_headers\@/$rep/g;
+ 
+ # Static library
+ $rep ="install-static: static-lib\n";
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
  $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
+ $text=~s/\@install1_rule\@/$rep/g;
+
+ $rep='';
  if ($OS eq 'UNIX')
-   {
+   {# Dynamic library
+    $rep= "install-dynamic: dynamic-lib\n";
     $rep.="\trm -f \$(libdir)/librhtv.so\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.1\n";
     $rep.="\trm -f \$(libdir)/librhtv.so.$Version\n";
@@ -521,7 +534,7 @@ sub GenerateMakefile
     $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$Version\n";
     $rep.="\tldconfig\n";
    }
- $text=~s/\@install_rule\@/$rep/g;
+ $text=~s/\@install2_rule\@/$rep/g;
 
  replace('Makefile',$text);
 }
