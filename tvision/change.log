@@ -1,5 +1,9 @@
 $Log$
-Revision 1.52  1999/05/23 22:58:08  root
+Revision 1.53  1999/05/26 00:03:51  set
+* Fixed: a leak in TResourceFile constructor. Patch submited by Laurynas
+Biveinis <lauras@softhome.net>.
+
+Revision 1.52  1999/05/23 22:58:08  root (set)
 * Modified: Now, in Linux, left alt and right alt are different keys. I did
 it because that's the only way to paste with gpm.
 .

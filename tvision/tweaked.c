@@ -77,7 +77,8 @@ static unsigned short ttweaks[][16] = {
     }
 };
 
-int set_tweaked_text(int tmode, void (*set_font)(int))
+int set_tweaked_text(int tmode, void (*set_font)(int),
+                     void (*sm)(__dpmi_regs *regs))
 {
   __dpmi_regs regs;
   int i;
@@ -86,7 +87,7 @@ int set_tweaked_text(int tmode, void (*set_font)(int))
   if(tmode>=NUM_TWEAKED_MODES) return -1;
   
   regs.x.ax = 0x3 | 0x80; // do not clear the screen
-  __dpmi_int(0x10, &regs);
+  sm(&regs);
 
   /* load 8x14 font for 34 line modes */
   if(height[tmode] == 34)
