@@ -34,6 +34,8 @@ char      TDisplayX11::cShapeTo;
 char      TDisplayX11::windowSizeChanged=0;
 int       TDisplayX11::maxX;
 int       TDisplayX11::maxY;
+int       TDisplayX11::oldX;
+int       TDisplayX11::oldY;
 unsigned  TDisplayX11::fontW;
 unsigned  TDisplayX11::fontWb;
 unsigned  TDisplayX11::fontH;
@@ -89,18 +91,21 @@ void TDisplayX11::SetCursorShape(unsigned start, unsigned end)
 
 ushort TDisplayX11::GetRows()
 {
- return maxY;
+ return oldY;
 }
 
 ushort TDisplayX11::GetCols()
 {
- return maxX;
+ return oldX;
 }
 
 int TDisplayX11::CheckForWindowSize(void)
 {
  int ret=windowSizeChanged!=0;
  windowSizeChanged=0;
+ // Now we can change the values because the application is aware
+ oldX=maxX;
+ oldY=maxY;
  return ret;
 }
 #else
