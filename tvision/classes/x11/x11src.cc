@@ -545,7 +545,7 @@ TScreenX11::TScreenX11()
  /* Create what we'll use as font */
  CreateXImageFont(0,DefaultFont,fontW,fontH);
  /* Set up the code page used for it */
- codePage=new TVCodePage(TVCodePage::ISOLatin1Linux);
+ codePage=new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
 
  /* Create the cursor image */
  cursorData=(char *)malloc(fontH);
@@ -1210,7 +1210,7 @@ int TScreenX11::GetFontGeometryRange(unsigned &wmin, unsigned &hmin,
  return 1;
 }
 
-int TScreenX11::SetFont(int which, TScreenFont256 *font, int encoding)
+int TScreenX11::SetFont(int which, TScreenFont256 *font, int fontCP, int appCP)
 {
  // Check if that's just a call to disable the secondary font
  if (which && !font)
@@ -1241,8 +1241,13 @@ int TScreenX11::SetFont(int which, TScreenFont256 *font, int encoding)
    }
  DestroyXImageFont(which);
  CreateXImageFont(which,font->data,font->w,font->h);
- if (encoding!=-1)
-    TVCodePage::SetCodePage(encoding);
+ if (which && fontCP!=-1)
+   {
+    if (appCP==-1)
+       TVCodePage::SetScreenCodePage(fontCP);
+    else
+       TVCodePage::SetCodePage(appCP,fontCP);
+   }
  FullRedraw();
  return 1;
 }
@@ -1250,7 +1255,7 @@ int TScreenX11::SetFont(int which, TScreenFont256 *font, int encoding)
 void TScreenX11::RestoreFonts()
 {
  TScreenFont256 font={8,16,DefaultFont};
- SetFont(0,&font,TVCodePage::ISOLatin1Linux);
+ SetFont(0,&font,TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
  disableSecondaryFont();
 }
 #else

@@ -172,6 +172,7 @@ struct stCodePageCk TScreenLinux::knownFonts[]=
 struct stCodePageCk TScreenLinux::knownScreenMaps[]=
 {
  { -1,                          0xD53CF052 }, // Trivial map, what this mean?
+ //{ TVCodePage::ISOLatin1Linux,  0xD53CF052 }, // Trivial map, what this mean?
  // It means the codes should pass unchanged, no remap on the fly.
  // Hence 0xA0 is translated into unicode U+F0A0 which is then passed to the
  // screen using the 0xA0 `glyph' of the font.
@@ -409,6 +410,8 @@ int TScreenLinux::AnalyzeCodePage()
  if (knownScreenMaps[i].codepage)
    {
     installedACM=knownScreenMaps[i].codepage;
+    if (installedACM==-1)
+       installedACM=installedSFM;
     fprintf(stderr,"Known code page detected %d\n",installedACM);
    }
  else
@@ -477,6 +480,8 @@ int TScreenLinux::AnalyzeCodePage()
     if (knownScreenMaps[i].codepage)
       {
        installedACM=knownScreenMaps[i].codepage;
+       if (installedACM==-1)
+          installedACM=installedSFM;
        LOG("Known ACM detected: " << installedACM);
       }
     else
@@ -572,7 +577,7 @@ int TScreenLinux::InitOnce()
  // Try to figure out which code page is loaded
  if (!tioclinuxOK || !AnalyzeCodePage())
     GuessCodePageFromLANG();
- codePage=new TVCodePage(installedSFM,installedACM);
+ codePage=new TVCodePage(installedACM,installedSFM);
  if (tioclinuxOK && GetLinuxFontGeometry())
    {
     canSetFonts=1;
@@ -1373,7 +1378,7 @@ void TScreenLinux::ExpandFont(uchar *dest, TScreenFont256 *font)
      memcpy(dest,b,sizeOrig);
 }
 
-int TScreenLinux::SetFont(int which, TScreenFont256 *font, int encoding)
+int TScreenLinux::SetFont(int which, TScreenFont256 *font, int fontCP, int appCP)
 {
  if (!canSetFonts) return 0;
  // Check if that's just a call to disable the secondary font
@@ -1393,7 +1398,6 @@ int TScreenLinux::SetFont(int which, TScreenFont256 *font, int encoding)
     int ret=ioctl(hOut,KDFONTOP,&linuxFont)>=0;
     // We no longer have a font loaded
     FreeFontsMemory();
-    TVCodePage::SetCodePage(origCPScr,origCPApp);
     return ret;
    }
 
@@ -1405,7 +1409,6 @@ int TScreenLinux::SetFont(int which, TScreenFont256 *font, int encoding)
    {
     if (!AllocateFontsMemory() || !GetLinuxFont())
        return 0;
-    TVCodePage::GetCodePages(origCPScr,origCPApp);
     ourFont.width=linuxFont.width;
     ourFont.height=linuxFont.height;
    }
@@ -1428,13 +1431,20 @@ int TScreenLinux::SetFont(int which, TScreenFont256 *font, int encoding)
       { // P but not S
        ourFont.charcount=256;
       }
+    if (!primaryFontSet)
+       TVCodePage::GetCodePages(origCPApp,origCPScr);
     ExpandFont(ourFont.data,font);
     ourFont.op=KD_FONT_OP_SET;
     if (ioctl(hOut,KDFONTOP,&ourFont)<0) return 0;
     primaryFontSet=1;
+    if (fontCP!=-1)
+      {
+       if (appCP==-1)
+          TVCodePage::SetScreenCodePage(fontCP);
+       else
+          TVCodePage::SetCodePage(appCP,fontCP);
+      }
    }
- if (encoding!=-1)
-    TVCodePage::SetCodePage(encoding);
  return 1;
 }
 
@@ -1446,7 +1456,7 @@ void TScreenLinux::RestoreFonts()
  ioctl(hOut,KDFONTOP,&linuxFont);
  // We no longer have a font loaded
  FreeFontsMemory();
- TVCodePage::SetCodePage(origCPScr,origCPApp);
+ TVCodePage::SetCodePage(origCPApp,origCPScr);
  secondaryFontSet=primaryFontSet=0;
 }
 

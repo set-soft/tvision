@@ -16,24 +16,23 @@ new code that affects a lot of TV components.@p
 1) That's the most complex mechanism I found in all the targets so far.@*
 2) This is quite crazy but at the same time flexible.@*
   What's similar?@*
-  We have two maps, one is optional. The first map is what Linux calls SFM
-(Screen Font Map). It defines which internal codes are rendered by each
-font character (which unicodes in Linux kernel). This is basically a map
-that describes the font. This is the only map I had in the editor. The
-CurrentCP variable holds the ID of the map.@p
-  The second map is optional and is what the Linux kernel calls ACM
-(Application Charset Map). This map describes how is the application data
-encoded, as an example: how is encoded the text. It doesn't have to map
-one to one with the font, and that's the complex stuff. For this reason
-this map is used to do an "on-the-fly" remap before sending the characters
-to the screen. If this map is identical to the SFM or not needed (maps 1
-to 1 => what Linux calls trivial mapping) we don't do the remap. The
-OnTheFlyRemapNeeded() and OnTheFlyRemap(uchar val) are used for the remap.
-The CurrentScrCP holds the ID of this map.@p
-  Is important to note that we don't do 8-bits -> Unicode -> ACM -> SFM ->
-Screen like the Linux kernel does. We recode the application using the ACM
-and if ACM!=SFM we use a simple table that makes: 8-bits -> Screen and if
-it isn't needed we just send the code to the screen.@p
+  We have two maps. The first map is what Linux calls SFM (Screen Font Map).
+It defines which internal codes are rendered by each font character (which
+unicodes in Linux kernel). This is basically a map that describes the font.
+This is the only map I had in the editor. The curScrCP variable holds the
+ID of this map.@p
+  The second map is what the Linux kernel calls ACM (Application Charset
+Map). This map describes how is the application data encoded, as an example:
+how is encoded the text. It doesn't have to map one to one with the font,
+and that's the complex stuff. For this reason this map is used to do an
+"on-the-fly" remap before sending the characters to the screen. If this map
+is identical to the SFM (maps 1 to 1 => what Linux calls trivial mapping)
+we don't do the remap. The OnTheFlyRemapNeeded() and OnTheFlyRemap(uchar val)
+are used for the remap. The curAppCP holds the ID of this map.@p
+  Is important to note that we don't do 8-bits -> ACM -> Unicode -> SFM ->
+8-bits Screen like the Linux kernel does. We recode the application using
+the ACM and if ACM!=SFM we use a simple table that makes: 8-bits -> 8-bits
+Screen and if it isn't needed we just send the code to the screen.@p
   
 ***************************************************************************/
 
@@ -84,9 +83,11 @@ uchar          TVCodePage::AlphaTable[256];
 // in a better place.
 uchar          TVCodePage::OnTheFlyMap[256];
 char           TVCodePage::NeedsOnTheFlyRemap=0;
-// Current code page
-int            TVCodePage::CurrentCP=437;
-int            TVCodePage::CurrentScrCP=-1;
+// Current code pages
+//  The source code is encoded in CP 437
+int            TVCodePage::curAppCP=437;
+//  We assume the screen is also CP 437, if it isn't true the driver will inform it.
+int            TVCodePage::curScrCP=437;
 // User provided function to call each time we change the code page.
 // This is called before sending a broadcast.
 void         (*TVCodePage::UserHook)(ushort *map)=NULL;
@@ -1239,30 +1240,28 @@ void TVCodePage::CreateCodePagesCol()
  #undef a
 }
 
-TVCodePage::TVCodePage(int idScr, int idApp)
+TVCodePage::TVCodePage(int idApp, int idScr)
 {
  if (!CodePages)
     CreateCodePagesCol();
- FillTables(idScr);
- int id=idApp==-1 ? idScr : idApp;
- if (id!=CurrentCP)
-   {
-    CurrentCP=id;
-    RemapTVStrings(GetTranslate(id));
-   }
+ FillTables(idApp);
  CreateOnTheFlyRemap(idApp,idScr);
+ curScrCP=idScr;
+ if (idApp!=curAppCP)
+   {
+    curAppCP=idApp;
+    RemapTVStrings(GetTranslate(curAppCP));
+   }
 }
 
 void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
 {
  // Create on-the-fly remap table if needed
- if (idApp==-1 || idApp==idScr)
+ if (idApp==idScr)
    {
-    CurrentScrCP=-1;
     NeedsOnTheFlyRemap=0;
     return;
    }
- CurrentScrCP=idScr;
  NeedsOnTheFlyRemap=1;
 
  unsigned i;
@@ -1323,19 +1322,27 @@ void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
 
   Description:
   Selects the current code page used for toupper, tolower, etc. opperations.
+If any of the arguments is -1 the current value is used. If the code pages
+aren't the same the remap on the fly is enabled. The application code page
+is used to remap the application, only if it changed.
   
 ***************************************************************************/
 
-void TVCodePage::SetCodePage(int idScr, int idApp)
+void TVCodePage::SetCodePage(int idApp, int idScr)
 {
- if (CurrentCP!=idApp || CurrentScrCP!=idScr)
+ if (idApp==-1)
+    idApp=curAppCP;
+ if (idScr==-1)
+    idScr=curScrCP;
+ if (curAppCP!=idApp || curScrCP!=idScr)
     CreateOnTheFlyRemap(idApp,idScr);
- int id=idApp==-1 ? idScr : idApp;
- if (id==CurrentCP)
-    return;
- CurrentCP=id;
- FillTables(id);
- RemapTVStrings(GetTranslate(id));
+ curScrCP=idScr;
+ if (curAppCP!=idApp)
+   {
+    curAppCP=idApp;
+    FillTables(curAppCP);
+    RemapTVStrings(GetTranslate(curAppCP));
+   }
 }
 
 /**[txh]********************************************************************
@@ -2447,15 +2454,9 @@ ccIndex TVCodePage::AddCodePage(CodePage *cp)
  return CodePages->insert(cp);
 }
 
-void TVCodePage::GetCodePages(int &idScr, int &idApp)
+void TVCodePage::GetCodePages(int &idApp, int &idScr)
 {
- if (CurrentScrCP==-1)
-   {
-    idScr=CurrentCP;
-    idApp=CurrentScrCP;
-    return;
-   }
- idApp=CurrentCP;
- idScr=CurrentScrCP;
+ idApp=curAppCP;
+ idScr=curScrCP;
 }
 

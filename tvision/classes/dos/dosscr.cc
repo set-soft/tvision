@@ -130,7 +130,7 @@ TScreenDOS::TScreenDOS()
     dosInt();
     dosCodePage=BX;
    }
- codePage=new TVCodePage(dosCodePage);
+ codePage=new TVCodePage(dosCodePage,dosCodePage);
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
         CanSetBFont | CanSetSBFont;
@@ -571,7 +571,7 @@ void TScreenDOS::ResumeFonts()
    }
 }
 
-int TScreenDOS::SetFont(int which, TScreenFont256 *font, int encoding)
+int TScreenDOS::SetFont(int which, TScreenFont256 *font, int fontCP, int appCP)
 {
  // Check if that's just a call to disable the secondary font
  if (which && !font)
@@ -581,18 +581,12 @@ int TScreenDOS::SetFont(int which, TScreenFont256 *font, int encoding)
     secondaryFontSet=0;
     DisableDualFont();
     if (!primaryFontSet)
-      {
-       TVCodePage::SetCodePage(origCPScr,origCPApp);
        ReleaseMemFonts();
-      }
     return 1;
    }
 
  if (font->w!=8 || font->h!=charLines || !MemorizeFont(which,font))
     return 0;
-
- if (!primaryFontSet && !secondaryFontSet)
-    TVCodePage::GetCodePages(origCPScr,origCPApp);
 
  // Which one?
  if (which)
@@ -602,11 +596,18 @@ int TScreenDOS::SetFont(int which, TScreenFont256 *font, int encoding)
    }
  else
    { // Primary
+    if (!primaryFontSet)
+       TVCodePage::GetCodePages(origCPApp,origCPScr);
     primaryFontSet=1;
    }
  SetFontBIOS(which,charLines,font->data,0);
- if (encoding!=-1)
-    TVCodePage::SetCodePage(encoding);
+ if (which && fontCP!=-1)
+   {
+    if (appCP==-1)
+       TVCodePage::SetScreenCodePage(fontCP);
+    else
+       TVCodePage::SetCodePage(appCP,fontCP);
+   }
  return 1;
 }
 
@@ -617,7 +618,7 @@ void TScreenDOS::RestoreFonts()
  DisableDualFont();
  SelectRomFont(charLines,0,0);
  ReleaseMemFonts();
- TVCodePage::SetCodePage(origCPScr,origCPApp);
+ TVCodePage::SetCodePage(origCPApp,origCPScr);
  secondaryFontSet=primaryFontSet=0;
 }
 
@@ -831,7 +832,7 @@ void TScreenDOS::SelectFont(unsigned height, Boolean Force)
 
  if (fontWasLoaded && !(primaryFontSet || secondaryFontSet))
     // Restore the original encoding if we forced ROM fonts
-    TVCodePage::SetCodePage(origCPScr,origCPApp);
+    TVCodePage::SetCodePage(origCPApp,origCPScr);
 }
 
 

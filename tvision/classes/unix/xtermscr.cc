@@ -163,7 +163,7 @@ TScreenXTerm::TScreenXTerm()
  TGKeyXTerm::Init();
 
  // Code page initialization
- codePage=new TVCodePage(TVCodePage::ISOLatin1Linux);
+ codePage=new TVCodePage(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
 
  if (terminalType==Eterm)
    {// Only 8 colors + brightness (8*2+8*2)
