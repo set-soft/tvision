@@ -32,7 +32,7 @@ TEditWindow *clipWindow;
 
 TEditWindow *TEditorApp::openEditor( const char *fileName, Boolean visible )
 {
-    TRect r = deskTop->getExtent();
+    TRect r = deskTop->getExtent();//TRect(0,0,80,6);
     TView *p = validView( new TEditWindow( r, fileName, wnNoNumber ) );
     if( !visible )
         p->hide();

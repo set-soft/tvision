@@ -855,7 +855,7 @@ void TEditor::newLine()
            ( (buffer[i] == ' ') || (buffer[i] == '\x9'))
          )
          i++;
-    insertText("\x0D\x0A", 2, False);
+    insertText(CLY_crlf,CLY_LenEOL,False);
     if( autoIndent == True )
         insertText( &buffer[p], i - p, False);
 }
@@ -1293,7 +1293,7 @@ lab2:
   if ((uint32)di == curPtr) goto lab4;
   if ((uint32)di == bufLen) goto lab4;
   // SET: When lines end only with \n it fails
-  #ifndef TVOS_UNIX
+  #ifdef CLY_UseCrLf
   if (buffer[di+bx] != '\n') goto lab4;
   di++;
   #endif
@@ -1311,7 +1311,9 @@ uint32 TEditor::nextChar(uint32 p)
   p++;
   if (p == bufLen) return p;
   if (p >= curPtr) gl = gapLen;
+  #ifdef CLY_UseCrLf
   if (buffer[gl+p] == '\n' && buffer[gl+p-1] == '\r') return (p+1);
+  #endif
   return p;
 }
 
@@ -1322,7 +1324,9 @@ uint32 TEditor::prevChar(uint32 p)
   p--;
   if (!p) return p;
   if (p >= curPtr) gl = gapLen;
+  #ifdef CLY_UseCrLf
   if (buffer[gl+p] == '\n' && buffer[gl+p-1] == '\r') return (p-1);
+  #endif
   return p;
 }
 
