@@ -322,7 +322,7 @@ Linux using telnet:
     Not supported, don't know if possible, in fact kmous is not defined in
    the terminfo file for Linux.
 
-Linux using xterm:
+Linux using xterm: (see also Eterm section!!)
   Keyboard:
     The same limitations that "Linux using telnet" because xterms and ncurses
    can't do more.
@@ -336,9 +336,10 @@ Linux using xterm:
    when you press or release a button, but not mouse movement. You must get
    acustomed, but works.
 
-Linux using Xterm: That's the way to go if we want very good support for X,
-                   currently I don't have time to do it so if you can help
-                   please volunteer. I have all the information needed.
+Linux using Eterm: (an excellent replacement for xterm)
+    In addition to the things supported for xterm all the keyboard
+   combinations are detected correctly. To get it working you must setup some
+   things see in the extra/eterm directory.
 
 Windows 3.1: Currently I don't test under this platform, tell me if you have
              problems, I tested in the past and worked OK. Most of the W9x

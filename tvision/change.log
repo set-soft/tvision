@@ -1,4 +1,11 @@
 $Log$
+Revision 1.76  1999/07/07 23:02:04  set
+* Added: a new couple of members to TCommandSet, they are used to enable or
+disable a range of commands. I usedit in the editor to disable all the editor
+commands when the editor loses the focus. I think that's usefull for any
+class that have a big number of commands. The editor currently have over than
+128 commands.
+.
 Revision 1.75  1999/07/03 16:55:54  set
 * Fixed: Another call to delete instead of delete[] in the TInputLine
 destructor. Patch by Laurynas Biveinis <lauras@softhome.net>.
