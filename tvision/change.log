@@ -1,4 +1,8 @@
 $Log$
+Revision 1.27  1999/02/23 22:45:26  root
+* Tested the Debian distribution stuff. Works after a couple of small patches
+to the rules make script.
+.
 Revision 1.26  1999/02/23 00:06:25  set
 * Added an example of how to change the desktop appearance. Contributed by
 Joel <jso@europay.com>.

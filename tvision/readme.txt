@@ -11,11 +11,14 @@ The small sections are:
 7. How to submit a patch
 8. Contact information
 
+****** Important! for old users: the library generated is now called ******
+****** librhtv.a this change in the name is to avoid confusion with  ******
+****** other ports of the library.                                   ******
 
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.4.
+  That's the Turbo Vision distribution (TVision for short) v1.0.5.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -163,7 +166,7 @@ From binary distribution:
 
   That's very experimental so be careful I don't know if the version numbers
 are OK and what will happend if you try to execute something created with
-the 1.0.4 library using the 1.0.4 library. If you have hints about this
+the 1.0.5 library using the 1.0.5 library. If you have hints about this
 topic please contact me.
   My tests shows that a small TVision example (examples/dyntxt) is only 14Kb
 long when linked dynamically and without debug information. But you should
