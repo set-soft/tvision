@@ -1,4 +1,8 @@
 $Log$
+Revision 1.121  1999/12/02 23:47:57  set
+* Fixed: A bug in the DeskLogo examples. Pointed as a problem by Arvin
+Baccay <arvinbaccay@yahoo.com>.
+.
 Revision 1.120  1999/11/20 14:52:55  set
 * Fixed: Problem with rhgdb messing terminal settings. Patch from Andris to
 enable the old code that saves/restores the terminfo stuff.
