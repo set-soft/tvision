@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.599  2004/11/02 20:06:39  set
+* Added: [Compilation][MSVC] Option to compile with debug information.
+>From information sent by Grzegorz.
+* Fixed: [Compilation][Darwin] libtvfintl.a must be listed "as-is", not
+using -l.
+* Modified: [Configuration] ar and install detection. Now more robust.
+
 Revision 2.598  2004/10/29 16:12:37  set
 * Fixed: [DOS] The default encoding wasn't CP437. From a report by
 jessehardy/126/com, a chinese user of RHIDE using code page 936.
