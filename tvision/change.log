@@ -1,4 +1,11 @@
 $Log$
+Revision 1.65  1999/06/23 01:15:56  set
+* Modified: Now the file dialog doesn't show ".." in the root directory (DOS).
+* Fixed: Calling the file dialog with fdNoLoadDir (needed to avoid an extra
+directory read, sometimes quite slow) was using a null pointer, also fixed
+a memory leak (not releasing the current directory in readDirectory) and
+changed delete (char *)directory to delete[] directory;
+.
 Revision 1.64  1999/06/16 01:44:04  root
 * Added: Now the Linux keyboard routines disables ^Z because it is dangerous.
 Sugested by Luis Pistoia <lu5gpl@arnet.com.ar>.
