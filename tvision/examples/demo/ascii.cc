@@ -210,10 +210,10 @@ void TReport::draw()
     char        color = getColor(6);
     char        str[80];
 
-    sprintf(str, "%s%c%s%3d%s%2X",
+    sprintf(str, "%s%c%s%3d%s%2X  ", //wsz: to print 32 characters
                  "  Char: ", (asciiChar==0)?(char)0x20:(char)asciiChar,
                  " Decimal: ", (int)asciiChar,
-                 " Hex ", (int)asciiChar);
+                 " Hex: ", (int)asciiChar); //wsz: :-)
     /* SET: from Robert's port
     statusStr
       << "  Char: " << (char ) ((asciiChar == 0) ? 0x20 : asciiChar)
