@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Salvador E. Tropea. Changed to sort directory names.
  *
  *
  */
@@ -22,6 +23,7 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 #define Uses_TDirEntry
 #define Uses_TButton
 #define Uses_TStreamableClass
+#define Uses_TStringCollection
 #if defined(TVCompf_djgpp) || defined(TVComp_BCPP)
  #define Uses_dir // getdisk()
 #endif
@@ -200,6 +202,9 @@ void TDirListBox::showDirs( TDirCollection *dirs )
     
     Boolean isFirst = True;
     DIR *d=opendir(path);
+    // SET: Insert them sorted
+    // SET: First pass collect them
+    TStringCollection *col=new TStringCollection(10,10);
     if (d)
       {
        struct dirent *ent;
@@ -210,21 +215,29 @@ void TDirListBox::showDirs( TDirCollection *dirs )
            stat(path,&st);
            if( S_ISDIR(st.st_mode) && strcmp(ent->d_name,".")!=0 &&
                strcmp(ent->d_name,"..")!=0)
-               {
-               if( isFirst )
-                   {
-                   memcpy( org, firstDir, strlen(firstDir)+1 );
-                   isFirst = False;
-                   }
-               else
-                   memcpy( org, middleDir, strlen(middleDir)+1 );
-               strcpy( name, ent->d_name );
-               strcpy( end, ent->d_name );
-               dirs->insert( new TDirEntry( org - indent, path ) );
-               }
+               col->insert( newStr( ent->d_name ) );
            }
        closedir(d);
       }
+
+    // SET: 2nd pass insert sorted
+    int cnt = col->getCount();
+    for( int j = 0; j < cnt; j++ )
+        {
+         char *s = (char *) col->at(j);
+         if( isFirst )
+             {
+             memcpy( org, firstDir, strlen(firstDir)+1 );
+             isFirst = False;
+             }
+         else
+             memcpy( org, middleDir, strlen(middleDir)+1 );
+         strcpy( name, s );
+         strcpy( end, s );
+         dirs->insert( new TDirEntry( org - indent, path ) );
+        }
+
+    CLY_destroy(col);
 
     char *p = dirs->at(dirs->getCount()-1)->text();
     char *i = strchr( p, graphics[0] );
