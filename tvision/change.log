@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.522  2003/12/03 20:28:08  set
+* Fixed: Moved changes to winnt/Makefile.nmk to winnt/msvcmake.in. Reported
+by gradha.
+.
 Revision 2.521  2003/12/03 15:09:10  set
 * Added: Patch from Mike to cleanly compile using MSVC 7.1 (.NET 2003
 Architect).
