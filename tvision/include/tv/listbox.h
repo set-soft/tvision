@@ -32,7 +32,7 @@ public:
 
     TListBox( const TRect& bounds, ushort aNumCols, TScrollBar *aScrollBar );
     TListBox( const TRect& bounds, ushort aNumCols, TScrollBar *aHScrollBar,
-              TScrollBar *aVScrollBar );
+              TScrollBar *aVScrollBar, Boolean aCenterOps = False );
     ~TListBox();
 
     virtual uint32 dataSize();
@@ -43,6 +43,9 @@ public:
     // SET: You not always want to destroy the items.
     virtual void newList( TCollection *aList, Boolean destroyItems );
     virtual void setData( void *rec, Boolean destroyItems );
+
+    // SET: Center the list in setData
+    Boolean center;
 
     TCollection *list();
 

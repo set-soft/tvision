@@ -1,12 +1,16 @@
-$Log$.
+$Log$
+Revision 2.523  2003/12/04 19:44:59  set
+* Fixed: MinGW seems to lack the ioctl.h header. Compatlayer must avoid
+to try to include it.
+
 Revision 2.522  2003/12/03 20:28:08  set
 * Fixed: Moved changes to winnt/Makefile.nmk to winnt/msvcmake.in. Reported
 by gradha.
-.
+
 Revision 2.521  2003/12/03 15:09:10  set
 * Added: Patch from Mike to cleanly compile using MSVC 7.1 (.NET 2003
 Architect).
-.
+
 Revision 2.520  2003/12/02 14:51:14  set
 * Added: A first try to support the last MSVC compiler from information
 provided by Grzegorz, it includes:
@@ -15,7 +19,7 @@ provided by Grzegorz, it includes:
 3) Default values for arguments of function pointers are no longer
 supported. This is bizarre because all gcc versions support it. May be
 that's part of ISO C++ 1998, not sure.
-.
+
 Revision 2.519  2003/11/28 05:23:32  lmike
 * [QNX6] Added experimental mouse support in text mode.
 

@@ -44,8 +44,9 @@ TSortedListBox::TSortedListBox( const TRect& bounds,
 TSortedListBox::TSortedListBox( const TRect& bounds,
                                 ushort aNumCols,
                                 TScrollBar *aHScrollBar,
-                                TScrollBar *aVScrollBar) :
-    TListBox(bounds, aNumCols, aHScrollBar, aVScrollBar),
+                                TScrollBar *aVScrollBar,
+                                Boolean aCenterOps) :
+    TListBox(bounds, aNumCols, aHScrollBar, aVScrollBar, aCenterOps),
     shiftState( 0 ),
     searchPos( USHRT_MAX )
 {
