@@ -269,7 +269,7 @@ Boolean TFileDialog::valid(ushort command)
             CLY_ExpandPath(fName, dir, name);
             if (checkDirectory(dir))
             {
-                delete (char *)directory;
+                DeleteArray((char *)directory);
                 directory = newStr(dir);
                 strcpy(wildCard, name);
                 if (command != cmFileInit)
