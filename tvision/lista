@@ -126,6 +126,7 @@ compat/fexpand.c
 compat/fileattrs.c
 compat/filelength.c
 compat/getcurdir.c
+compat/getline.c
 compat/getopt.c
 compat/getshell.c
 compat/iffilelen.cc
