@@ -317,7 +317,7 @@ void TScreenDOS::getCharacters(unsigned offset,ushort *buf,unsigned count)
    }
 }
 
-void TScreenDOS::setCharacter(unsigned offset,ushort value)
+void TScreenDOS::setCharacter(unsigned offset,uint32 value)
 {
  _farpokew(_dos_ds,(dual_display ? mdaBaseAddress : ScreenPrimary)+offset*2,value);
 }
