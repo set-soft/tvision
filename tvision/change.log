@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.140  2003/12/03 15:39:14  set
+* Fixed: Wrong ushort vs unsigned in Windows drivers. Patch from Grzegorz
+(gradha).
+
 Revision 2.399.2.139  2003/12/03 15:05:18  set
 * Added: Patch from Mike to cleanly compile using MSVC 7.1 (.NET 2003
 Architect).
