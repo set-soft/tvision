@@ -164,7 +164,7 @@ sub RunGCCTest
  `echo $label >> $ErrorLog`;
 
  RunRedirect($command,$ErrorLog);
- $test=`./test.exe`;
+ $test=RunRedirect('./test.exe',$ErrorLog);
  #print "\n$command: $test";
  # Does anybody know why I can't delete the exe here?
  # In Linux it makes the variable $test to change!

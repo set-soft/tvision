@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.22  2003/04/02 13:33:28  set
+* Fixed: [BC++] Warning about unused parameter in tgkey.cc.
+
 Revision 2.399.2.21  2003/03/20 20:29:37  set
 * Fixed: intl lib configuration for QNX. Patch from Mike.
 
