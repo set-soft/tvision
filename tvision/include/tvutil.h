@@ -73,6 +73,10 @@ Boolean relativePath(const char *); // tfiledia.cc
    The directory will have a trailing slash */
 void expandPath(const char *path, char *dir, char *file);
 
+/* SET: Added a conditional for it because n is too common. I remmember I had
+   problems with it and Jerzy Witkowski <jwi@pl.ibm.com> complained about
+   conflicts between a class member in your code and this macro */
+#ifdef Uses_n
 /* The following macro is a little hack to decrease the compile time
    for the TV lib when compiling all the n*.cc files */
 
@@ -84,6 +88,7 @@ public:                                   \
 };                                        \
                                           \
 const char * const CLASS::name = #CLASS;
+#endif
 
 /* return the number of ticks (on MSDOS 1 tick is 1/18 sec),
    this is used to compute the double click */
