@@ -1,14 +1,14 @@
 #!/usr/bin/perl
-$oldv='1.0.3';
-$newv='1.0.4';
+$oldv='1.0.4';
+$newv='1.0.5';
 @files=('../readme.txt');
 
 # Update the makefile if needed
 print 'makefile: ';
-if (-M 'makefile' > -M 'libtv.gpr')
+if (-M 'makefile' > -M 'librhtv.gpr')
   {
-   system('gpr2mak libtv.gpr');
-   system('mv libtv.mak makefile');
+   system('gpr2mak librhtv.gpr');
+   system('mv librhtv.mak makefile');
    print "updated\n";
   }
 else
