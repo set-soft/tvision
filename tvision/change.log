@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.315  2002/09/16 14:30:33  set
+* Added: [XTerm] A new configuration option called "UseShellScreen". It
+could help if someday we compile an RHIDE with TV 2.0.0 and want to use it
+running on a XTerm/Eterm.
+* Added: XTerm driver documentation and corrected some Eterm details.
+
 Revision 2.314  2002/09/16 14:29:41  set
 * Added: [XTerm] Support for "application mode" keys (4 arrows, home and
 end). Also modified the Xterm.res script to use them. These keys works ok

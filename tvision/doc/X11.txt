@@ -101,3 +101,34 @@ the desired size. If you change the size after initialization the window
 resize will be visible and part of the window could become outside the
 screen.
 
+* The driver is probably the most complete and flexible of all available
+drivers. All the TScreen things are supported:
+
+ * Window size.
+ * Window title.
+ * Font size, but you must provide the fonts.
+ * Secondary font.
+ * Color palette.
+ * Busy indicator.
+
+* The standard configuration options are supported:
+
+ScreenWidth     Columns of the window.
+ScreenHeight    Rows of the window.
+ScreenPalette   Color palette, that's a string containing the 16 RGB values.
+                "0,0,0,0,0,168,..."
+FontWidth       Width of the font in pixels.
+FontHeight      Height of the font in pixels.
+AppCP           Application encoding.
+ScrCP           Screen encoding, this should be 885901.
+InpCP           Input encoding.
+
+  Plus the following options:
+
+Font10x20              Selects the 10x20 font instead of 8x16.
+HideCursorWhenNoFocus  By default enabled
+DontResizeToCells      Don't resize the window to a cells multiple size if the WM
+                       fails to follow the hints. This helps to avoid problems found
+                       in KDE 3.1 alpha.
+InternalBusyCursor     When enabled we use our own mouse cursor for it.
+

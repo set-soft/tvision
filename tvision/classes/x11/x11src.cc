@@ -21,7 +21,7 @@
    ScrCP
    InpCP
    HideCursorWhenNoFocus
-   DontResizeToCells     Doesn't resize the window to a cells multiple size if the WM
+   DontResizeToCells     Don't resize the window to a cells multiple size if the WM
                          fails to follow the hints. This helps to avoid problems found
                          in KDE 3.1 alpha.
    InternalBusyCursor    When enabled we use our own mouse cursor for it
@@ -929,12 +929,13 @@ TScreenX11::TScreenX11()
  classHint->res_class="XTVApp"; /* X Turbo Vision Application */
 
  /* Size hints are just hints, not all WM take care about them */
- sizeHints->flags=PResizeInc | PMinSize /* PBaseSize */;
+ sizeHints->flags=PResizeInc | PMinSize | PBaseSize;
  /* Fonts increments */
  sizeHints->width_inc =fontW;
  sizeHints->height_inc=fontH;
  sizeHints->min_width =fontW*40;
  sizeHints->min_height=fontH*20;
+ sizeHints->base_width=sizeHints->base_height=0;
 
  XSetWMProperties(disp,mainWin,
                   NULL,       /* Visible title, i.e. &name */
@@ -1308,7 +1309,7 @@ void TScreenX11::ProcessGenericEvents()
             /* Currently masked
             if (event.xresizerequest.window!=mainWin)
                break;*/
-    
+
             lastW=maxX;
             lastH=maxY;
             maxX=event.xconfigure.width /fontW;
@@ -1702,6 +1703,8 @@ void TScreenX11::DoResize(unsigned w, unsigned h)
     /* Inform the WM about this change*/
     sizeHints->width_inc =fontW;
     sizeHints->height_inc=fontH;
+    sizeHints->min_width =fontW*40;
+    sizeHints->min_height=fontH*20;
     XSetWMNormalHints(disp,mainWin,sizeHints);
    }
  /* Change the size */
