@@ -247,7 +247,7 @@ sub LookForPrefix
               ($i=~/(.*)[\\\/][bB][iI][nN]/))
             {
              $prefix=$1;
-             $prefix=~s/\\/\//;
+             $prefix=~s/\\/\//g;
              $found=1;
             }
          }

@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.325  2002/09/16 20:51:38  set
+* Added: [Cygwin] The X11 libraries seems to be linked statically and I
+don't know how to do it dynamically. It pulls various X libraries like
+Xt, SM and ICE. As a workaround I added them to the list of libraries. The
+demo compiles for Win32 using X11 driver!!
+
 Revision 2.324  2002/09/16 19:18:40  set
 * Modified: eliminated the direct use of alloca in C++ code. Now the code
 calls AllocLocalStr giving more chances to hide the implementation.
