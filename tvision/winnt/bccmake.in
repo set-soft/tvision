@@ -1,11 +1,23 @@
 # Makefile for building Turbo Vision library for Win32
 
+@DYNRTL@
+
 # Borland C++
 CC       = bcc32
+LD       = bcc32
 CXX      = $(CC)
 INC      = -I.\include -I..\include
+
+!ifdef DEBUG
+CDEBUGFLAGS = -v -vi -y -6 -Od
+!else
 CDEBUGFLAGS = -O2 -6 -T -DNDEBUG
-#CDEBUGFLAGS = -v -vi -y -6 -Od
+!endif
+
+!ifdef DYNRTL
+DYNRTLDFLAGS = -WR
+!endif
+
 # SET: I disabled the condition always true warning. BC++ should be more
 #      cleaver about it, code like this: if (1) ... isn't wrong and is
 #      obviously on purpose. GCC reports it for things like
@@ -13,11 +25,11 @@ CDEBUGFLAGS = -O2 -6 -T -DNDEBUG
 # Note: SAA disabled Asigned a value that is never used because BC++ is very
 #       annoying about assigning a default value for a variable that is
 #       assigned latter.
-CFLAGS   = -D_BCPP -w-aus -w-ccc -a8 -WR -WC -X -q $(CDEBUGFLAGS)
+CFLAGS   = -D_BCPP -w-aus -w-ccc -a8 $(DYNRTLDFLAGS) -WC -X -q $(CDEBUGFLAGS)
 # SET: I disabled the member x hides virtual member y because I don't
 #      understand why it is reported if you know please explain me.
 CXXFLAGS = -P -RT- -w-hid $(CFLAGS)
-LFLAGS   = -WR -WC
+LDFLAGS   = $(DYNRTLDFLAGS) -WC
 
 # Microsoft Visual C++
 # NOTE: does not work yet
@@ -40,7 +52,7 @@ rhtv.lib: $(OBJS)
 !
 
 tvex.exe: objs\tvex.obj rhtv.lib
-	$(CC) $(LFLAGS) -etvex.exe objs\tvex.obj rhtv.lib
+	$(CC) $(LDFLAGS) -etvex.exe objs\tvex.obj rhtv.lib
 	
 {.}.cc{objs}.obj:
 	$(CXX) -c $(CXXFLAGS) $(INC) -nobjs $<

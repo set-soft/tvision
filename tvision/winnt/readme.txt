@@ -14,7 +14,8 @@ the Win32 family members (98, 2000, etc.).
 * Why this target have special instructions and isn't explained in the main
   readme file?
 
-  Because you can't use the configuration mechanism to compile the library.
+  Because the configuration mechanism to compile the library uses tools that
+aren't common for BC++ users.
   
 * How do I compile the library?
 
@@ -22,7 +23,7 @@ the Win32 family members (98, 2000, etc.).
 
 * How do I compile the demo?
 
-  I compiled by the makefile, the name is tvex.exe.
+  Is compiled by the makefile, the name is tvex.exe.
 
 * Some additional comments:
 
@@ -30,4 +31,8 @@ the Win32 family members (98, 2000, etc.).
 That's because the Win32 console API isn't fast. It seems to run better under
 NT.
 
+* How can I reconfigure the makefile?
 
+  You need a Perl interpreter for it. The script confignt.pl located in the
+root directory of the distribution is used for it. Run "perl confignt.pl
+--help" to get help.
