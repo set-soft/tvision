@@ -623,7 +623,7 @@ extern ushort user_mode;
 #ifdef h386LowLevel
  /* GLibC 2.1.3 defines it in sys/io.h, which is already included, and doesn't
     check for collisions :-( */
- #ifndef outb
+ #ifndef HAVE_OUTB_IN_SYS
   #include <asm/io.h>
  #endif
 
