@@ -240,11 +240,11 @@ OBJFILES=../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/getshell.o ../compat/obj/glob.o\
 	../compat/obj/globfree.o ../compat/obj/isdir.o\
 	../compat/obj/isrelpath.o ../compat/obj/iswild.o\
-	../compat/obj/mkstemp.o ../compat/obj/ntdirent.o\
-	../compat/obj/pathvalid.o ../compat/obj/regex.o\
-	../compat/obj/releasec.o ../compat/obj/strlwr.o\
-	../compat/obj/strupr.o ../compat/obj/ticks.o ../compat/obj/unc.o\
-	../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
+	../compat/obj/itoa.o ../compat/obj/mkstemp.o\
+	../compat/obj/ntdirent.o ../compat/obj/pathvalid.o\
+	../compat/obj/regex.o ../compat/obj/releasec.o\
+	../compat/obj/strlwr.o ../compat/obj/strupr.o ../compat/obj/ticks.o\
+	../compat/obj/unc.o ../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
 	../compat/obj/validfilename.o ../compat/obj/yieldpro.o\
 	obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/fileview.o obj/fpbase.o obj/fpstream.o obj/gkey.o obj/gkeyli.o\
@@ -448,11 +448,11 @@ DEPS_0= ../compat/obj/beep.o ../compat/obj/drivevalid.o\
 	../compat/obj/getshell.o ../compat/obj/glob.o\
 	../compat/obj/globfree.o ../compat/obj/isdir.o\
 	../compat/obj/isrelpath.o ../compat/obj/iswild.o\
-	../compat/obj/mkstemp.o ../compat/obj/ntdirent.o\
-	../compat/obj/pathvalid.o ../compat/obj/regex.o\
-	../compat/obj/releasec.o ../compat/obj/strlwr.o\
-	../compat/obj/strupr.o ../compat/obj/ticks.o ../compat/obj/unc.o\
-	../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
+	../compat/obj/itoa.o ../compat/obj/mkstemp.o\
+	../compat/obj/ntdirent.o ../compat/obj/pathvalid.o\
+	../compat/obj/regex.o ../compat/obj/releasec.o\
+	../compat/obj/strlwr.o ../compat/obj/strupr.o ../compat/obj/ticks.o\
+	../compat/obj/unc.o ../compat/obj/unc_95.o ../compat/obj/unc_nt.o\
 	../compat/obj/validfilename.o ../compat/obj/yieldpro.o\
 	obj/calcdisp.o obj/calculat.o obj/drivers2.o obj/dual.o\
 	obj/fileview.o obj/fpbase.o obj/fpstream.o obj/gkey.o obj/gkeyli.o\
@@ -2565,7 +2565,7 @@ DEPS_193=tscrollb.cc ../include/compatlayer.h ../include/tv.h\
 	../include/tv/ipstream.h ../include/tv/object.h\
 	../include/tv/objects.h ../include/tv/opstream.h\
 	../include/tv/palette.h ../include/tv/point.h\
-	../include/tv/pstream.h ../include/tv/rect.h\
+	../include/tv/pstream.h ../include/tv/rect.h ../include/tv/screen.h\
 	../include/tv/scrlbar.h ../include/tv/stddlg.h\
 	../include/tv/streambl.h ../include/tv/system.h\
 	../include/tv/tkeys.h ../include/tv/tobjstrm.h\
