@@ -31,6 +31,11 @@ void TPWrittenObjects::registerObject( const void *adr )
     insert( o );
 }
 
+void TPWrittenObjects::freeItem( void *item )
+{
+    delete (TPWObj *)item;
+}
+
 P_id_type TPWrittenObjects::find( const void *d )
 {
     ccIndex loc;
