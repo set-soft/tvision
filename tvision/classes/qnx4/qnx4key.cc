@@ -127,12 +127,12 @@ int TGKeyQNX4::KbHit()
       tempkey=term_key();
       if (tempkey!=-1)
       {
-        key=1;
-        if (tempkey==K_RESIZE)
-        {
-           TDisplayQNX4::ConsoleResizing=1;
-           term_relearn_size();
-        }
+         key=1;
+         if (tempkey==K_RESIZE)
+         {
+            TDisplayQNX4::ConsoleResizing=1;
+            term_relearn_size();
+         }
          __ungetch(tempkey);
       }
       __nodelay(0, 0);
@@ -192,6 +192,19 @@ void TGKeyQNX4::FillTEvent(TEvent &e)
    if ((e.keyDown.keyCode==kbEnter) && (shiftstate & (kbLeftCtrl | kbRightCtrl)))
    {
       e.keyDown.keyCode=kbCtM;
+   }
+
+   // qnxterm keyboard hack.
+   if (e.keyDown.keyCode==kbCtJ)
+   {
+      if (shiftstate & (kbLeftCtrl | kbRightCtrl))
+      {
+         e.keyDown.keyCode=kbCtJ;
+      }
+      else
+      {
+         e.keyDown.keyCode=kbEnter;
+      }
    }
 
    if ((e.keyDown.keyCode==kbTab) && (shiftstate & (kbLeftCtrl | kbRightCtrl)))
@@ -268,6 +281,8 @@ unsigned TGKeyQNX4::GetShiftState()
 }
 
 #else
-// Here to generate the dependencies in RHIDE
-#include <tv/qnx4/key.h>
+
+   // Here to generate the dependencies in RHIDE
+   #include <tv/qnx4/key.h>
+
 #endif // TVOS_UNIX && TVOSf_QNX4

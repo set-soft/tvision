@@ -787,13 +787,27 @@ typedef unsigned long  ulong;
    #define Include_string 1
    #undef  strncasecmp
    #define strncasecmp strcasencmp
-  #endif
+
+   // declare strcase* functions here to avoid unix.h inclusion.
+   #include <sys/types.h>
+
+   CLY_CFunc int strcasecmp(const char* s1, const char* s2);
+   CLY_CFunc int strcasencmp(const char* s1, const char* s2, size_t n);
+
+  #endif // string
+  
+  #if defined(Uses_stdlib) || defined(Uses_unistd)
+   #undef  Include_process
+   #define Include_process 1
+  #endif // process
 
   #undef CLY_Redraw
   #define CLY_Redraw ForcedRedraw
-  
+
   #undef  IOCTL_HEADER
   #define IOCTL_HEADER    <ioctl.h>
+
+  #undef CLY_Have_snprintf
  #endif // TVOSf_QNX4
 
  /* Generic UNIX system */

@@ -14,6 +14,10 @@ struct _VideoModes
    unsigned int y;
 };
 
+#define QNX_CONSOLE_RAW   0
+#define QNX_CONSOLE_PTERM 1
+#define QNX_CONSOLE_XQSH  2
+
 class TDisplayQNX4: virtual public TDisplay
 {
    protected:
@@ -61,12 +65,12 @@ class TScreenQNX4: public TDisplayQNX4, public TScreen
    protected:
       static void   Resume();
       static void   Suspend();
-      static ushort fixCrtMode(ushort mode);
-      static void   setCrtData();
+      static ushort FixCrtMode(ushort mode);
+      static void   SetCrtData();
       static void   clearScreen();
-      static void   setVideoMode(ushort mode);
-      static int    setVideoModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
-      static void   setVideoModeExt(char* mode);
+      static void   SetVideoMode(ushort mode);
+      static int    SetVideoModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
+      static void   SetVideoModeExt(char* mode);
       static void   getCharacters(unsigned offset,ushort* buf, unsigned count);
       static ushort getCharacter(unsigned dst);
       static void   setCharacter(unsigned offset, ushort value);

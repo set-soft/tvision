@@ -27,25 +27,54 @@ extern "C"
 int THWMouseQNX4::MousePositionX=0;
 int THWMouseQNX4::MousePositionY=0;
 int THWMouseQNX4::MouseButtons=0;
+ushort THWMouseQNX4::ConsoleMode=QNX_CONSOLE_RAW;
 
 THWMouseQNX4::~THWMouseQNX4()
 {
-   term_mouse_off();
+   // this destructor is never called !
+   // instead of it ::Suspend method called.
 }
 
-void THWMouseQNX4::Init()
+void THWMouseQNX4::Init(ushort mousemode)
 {
+   ConsoleMode=mousemode;
+
+   if (ConsoleMode!=QNX_CONSOLE_RAW)
+   {
+      // a bit of black magic :)
+      printf("\x1B""/""0""t");    // clear mouse options.
+      printf("\x1B""/"">""1""h"); // enable clicking events (press).
+      printf("\x1B""/"">""6""h"); // enable clicking events. (release).
+      printf("\x1B""/"">""7""h"); // enable movement events.
+      printf("\x1B""/"">""9""l"); // intercept all stuff (X10 mouse events reporting).
+      fflush(stdout);
+   }
+
    if (term_mouse_on()==0)
    {
-      buttonCount=2;
+      buttonCount=3;
    }
    else
    {
-      buttonCount=0;
+      if (ConsoleMode==QNX_CONSOLE_XQSH)
+      {
+         // under qnxterm mouse is not detected by termlib.
+         buttonCount=3;
+      }
+      else
+      {
+         buttonCount=0;
+      }
    }
    
    term_mouse_handler(MouseHandler);
    
+   if (ConsoleMode==QNX_CONSOLE_PTERM)
+   {
+      term_mouse_flags(TERM_MOUSE_RELEASE | TERM_MOUSE_ADJUST | TERM_MOUSE_MENU | TERM_MOUSE_SELECT, 
+                       TERM_MOUSE_RELEASE | TERM_MOUSE_ADJUST | TERM_MOUSE_MENU | TERM_MOUSE_SELECT);
+   };
+
    THWMouse::Show=Show;
    THWMouse::Hide=Hide;
    THWMouse::Suspend=Suspend;
@@ -55,11 +84,25 @@ void THWMouseQNX4::Init()
 
 void THWMouseQNX4::Show()
 {
-   buttonCount=1;
+   if (term_mouse_on()==0)
+   {
+      buttonCount=3;
+   }
+   else
+   {
+      if (ConsoleMode==QNX_CONSOLE_XQSH)
+      {
+         // under qnxterm mouse is not detected by termlib.
+         buttonCount=3;
+      }
+      else
+      {
+         buttonCount=0;
+      }
+   }
+
    term_mouse_move(-1, -1);
    term_flush();
-
-   term_mouse_on();
 }
 
 void THWMouseQNX4::Hide()
@@ -73,12 +116,48 @@ void THWMouseQNX4::Suspend()
 {
    buttonCount=0;
    term_mouse_off();
+   term_flush();
+
+   if (ConsoleMode!=QNX_CONSOLE_RAW)
+   {
+      printf("\x1B""/""0""t");    // clear all mouse options.
+      printf("\x1B""/"">""1""l"); // disable clicking events (press).
+      printf("\x1B""/"">""6""l"); // disable clicking events. (release).
+      printf("\x1B""/"">""7""l"); // disable movement events.
+      printf("\x1B""/"">""9""h"); // release hook (Disable X10 mouse events reporting).
+      fflush(stdout);
+   }
 }
 
 void THWMouseQNX4::Resume()
 {
-   buttonCount=2;
-   term_mouse_on();
+   if (term_mouse_on()==0)
+   {
+      buttonCount=3;
+   }
+   else
+   {
+      if (ConsoleMode==QNX_CONSOLE_XQSH)
+      {
+         // under qnxterm mouse is not detected by termlib.
+         buttonCount=3;
+      }
+      else
+      {
+         buttonCount=0;
+      }
+   }
+
+   if (ConsoleMode!=QNX_CONSOLE_RAW)
+   {
+      // a bit of black magic :)
+      printf("\x1B""/""0""t");    // clear mouse options.
+      printf("\x1B""/"">""1""h"); // enable clicking events (press).
+      printf("\x1B""/"">""6""h"); // enable clicking events. (release).
+      printf("\x1B""/"">""7""h"); // enable movement events.
+      printf("\x1B""/"">""9""l"); // intercept all stuff (X10 mouse events reporting).
+      fflush(stdout);
+   }
 }
 
 int THWMouseQNX4::MouseHandler(unsigned int* key, struct mouse_event* event)
@@ -91,6 +170,50 @@ int THWMouseQNX4::MouseHandler(unsigned int* key, struct mouse_event* event)
 
    if (event==NULL)
    {
+      // special case for the pterm.
+      MousePositionX = term_state.mouse_col;
+      MousePositionY = term_state.mouse_row;
+      
+      if ((key!=NULL) && (*key!=0x00000000UL))
+      {
+         if ((*key & K_MOUSE_POS) == K_MOUSE_POS)
+         {
+            if ((*key & K_MOUSE_BSELECT) == K_MOUSE_BSELECT)
+            {
+               if ((*key & K_MOUSE_CLICK) == K_MOUSE_CLICK)
+               {
+                  MouseButtons|=mbLeftButton; // left button;
+               }
+               if ((*key & K_MOUSE_RELEASE) == K_MOUSE_RELEASE)
+               {
+                  MouseButtons&=~mbLeftButton; // left button;
+               }
+            }
+            if ((*key & K_MOUSE_BADJUST) == K_MOUSE_BADJUST)
+            {
+               if ((*key & K_MOUSE_CLICK) == K_MOUSE_CLICK)
+               {
+                  MouseButtons|=mbMiddleButton; // middle button;
+               }
+               if ((*key & K_MOUSE_RELEASE) == K_MOUSE_RELEASE)
+               {
+                  MouseButtons&=~mbMiddleButton; // middle button;
+               }
+            }
+            if ((*key & K_MOUSE_BMENU) == K_MOUSE_BMENU)
+            {
+               if ((*key & K_MOUSE_CLICK) == K_MOUSE_CLICK)
+               {
+                  MouseButtons|=mbRightButton; // right button;
+               }
+               if ((*key & K_MOUSE_RELEASE) == K_MOUSE_RELEASE)
+               {
+                  MouseButtons&=~mbRightButton; // right button;
+               }
+            }
+         }
+      }
+
       return 0;
    }
 

@@ -3,14 +3,32 @@ Author: Mike Gorchak
 Status: Just a few words and patches.
 Revision: $Revision$
 
-Some notes before you starting using TurboVision under QNX4:
+I. What QNX4 driver supports:
+
+1. Supports qnx/qnxm terminal protocols via termlib library.
+2. Supports mouse on raw console and under pterm and qnxterm.
+3. Supports almost all key combinations under raw console.
+4. Supports pterm - Photon qnx terminal emulator. But it is very slow and
+   without some key combinations support due to internal pterm problems.
+5. Supports cpterm - Cyrillic Photon qnx terminal emulator by InfoMarket
+   (http://www.infomarket.ru). It's resonably fast and stable. With mouse
+   support.
+
+II. Some notes before you starting using TurboVision under QNX4:
 
 1. Before compiling TurboVision you must have the latest updates for the
    Watcom C/C++ 10.6, including patch A and patch B.
-2. After that (important!) you must install or reinstall the latest EGCS 1.1.2
+2. Watcom C/C++ 10.6 Patch A and B have broken unis3s.lib library which
+   damages registers during function call, so you must download the fixed
+   one from the http://mama.indstate.edu/users/liug/unix3s.lib .
+3. After that (important!) you must install or reinstall the latest EGCS 1.1.2
    for the QNX4 from the http://www.jcmichot.usenet-fr.net/gcc/ .
-3. You must obtain the latest perl version 5.x from the QUICS at the
-   ftp://ftp.qnx.com/usr/free/ .
+4. You must obtain the latest perl version 5.x from the QUICS at the
+   ftp://ftp.qnx.com/usr/free/ . Or better obtain latest perl 5.8.1 from
+   the http://mama.indstate.edu/users/liug/perl-5.8.1-bin.tar.gz .
+5. To successfully run TV under X11 and xterm drivers you can download
+   latest XFree86 for QNX4 from the http://sf.net/projects/openqnx .
+
 
 Attention! EGCS 1.1.2/QNX4 distributive have some errors in headers, so before
            compiling TurboVision you must apply the following patch:
@@ -66,15 +84,6 @@ Attention! EGCS 1.1.2/QNX4 distributive have some errors in headers, so before
 
 --- //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66-orig/include/curses.h	Mon Nov  3 01:24:29 2003
 +++ //1/usr/local/lib/gcc-lib/i386-pc-qnx4/egcs-2.91.66/include/curses.h	Wed Nov  5 01:09:40 2003
-@@ -26,7 +26,7 @@
- #if	__WATCOMC__ > 1000
- #pragma	pack(__push,1);
- #else
--#pragma	pack(1);
-+#pragma	pack(1)
- #endif
- 
- #define CURSES 1
 @@ -82,7 +82,7 @@
  
  #undef TRUE
