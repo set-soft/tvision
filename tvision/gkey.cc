@@ -58,6 +58,7 @@ takes only 400 bytes of memory.
 #include <sys/farptr.h>
 #include <dpmi.h>
 #include <pc.h>
+#include <bios.h>
 #define REGS __dpmi_regs
 #define INTR(nr,r) __dpmi_int(nr,&r)
 #endif
@@ -474,7 +475,7 @@ unsigned short TGKey::gkey(void)
 int TGKey::kbhit(void)
 {
  if (useBIOS)
-    return ::kbhit();
+    return bioskey(1);
  else
     return (_farpeekw(_dos_ds, 0x41a)!=_farpeekw(_dos_ds, 0x41c));
 }

@@ -1,4 +1,9 @@
 $Log$
+Revision 1.142  2000/04/13 00:41:17  root (set)
+* Updated: The Linux .gpr for the new headers structure (tv/...).
+* Fixed: Tab key problems when using the Eterm trick.
+* Fixed: Some warnings reported by gcc 2.7.2.3.
+
 Revision 1.141  2000/04/12 23:36:37  set
 * Added: A "non-inline" version of the functions defined in the djgpp's
 vgaregs.h file. They are needed to compile the DOS version without
