@@ -742,6 +742,12 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
   #endif
+  #ifdef TV_MAJOR_VERSION
+   // size_t needs a explicit include for Solaris.
+   // That's used by TV headers by default.
+   #undef  Include_stdio
+   #define Include_stdio 1
+  #endif
  #endif
 
  /* Generic UNIX system */

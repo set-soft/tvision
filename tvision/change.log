@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.446  2003/05/16 12:39:47  set
+* Added: A small tool called "rhtv-config.exe" that can be used to
+determine the libraries needed to link with TV (statically and
+dynamically), the path for libraries and the path for includes. I'm quite
+sure it doesn't work perfectly but I was able to compile the tvedit
+example using: gcc -o tvedit.exe `rhtv-config.exe --include` tvedit.cc
+`rhtv-config.exe --dir-libs` `rhtv-config.exe --dlibs`
+* Modified: To ever include stdc++ as library in the worst case it will be
+listed twice.
+
 Revision 2.445  2003/05/15 18:37:08  set
 * Fixed(?): msgfmt (gettext) problems:
 1) It didn't reuse ~Alt-X~ Exit and let it commented. A bug.
