@@ -17,4 +17,12 @@ So you must add a #define Uses_TPalette.
 Most of the Borland code doesn't declare the TRect references as constants.
 * The compiler barfs about a non-const reference.
 
+5) event.mouse.eventFlags & meDoubleClick
+This doesn't exist, use event.mouse.doubleClick instead
+* Compiler says that eventFlags isn't a member of the structure.
+
+6) #include <tvision/tv.h>
+The files in this port are just included with #include <tv.h>
+* The compiler says the header can't be located.
+
 Salvador Eduardo Tropea (set-soft@usa.net)
