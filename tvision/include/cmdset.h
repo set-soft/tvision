@@ -26,7 +26,9 @@ public:
     Boolean has( int cmd );
 
     void disableCmd( int cmd );
+    void disableCmd( int cmdStart, int cmdEnd ); // SET: Added
     void enableCmd( int cmd );
+    void enableCmd( int cmdStart, int cmdEnd ); // SET: Added
     void enableAllCommands();
     void operator += ( int cmd );
     void operator -= ( int cmd );
