@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.228  2002/07/22 19:34:17  set
+* Added: New methods to TListBox that allows setting a new list without
+destroying the one currently used.
+* Updated: MSVC and BC++ makefiles.
+
 Revision 2.227  2002/07/22 19:33:25  set
 * Added: Mechanisms to list the available fonts from a directory and create
 dialogs with it (collection and list box for the structure).
