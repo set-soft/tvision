@@ -167,13 +167,16 @@ void TScreenUNIX::InitPCCharsMapping()
     {
      PC2curses[i]=pctoascii[i];
     }
- if (use_pc_chars)
+ if (use_pc_chars==1)
     return;
  for (i=128; i<256; i++)
      PC2curses[i]=i;
  // Special characters we can't print
  PC2curses[127]='?';
  PC2curses[128+27]='?';
+ // Terminals where the alternate charset fails (FreeBSD)
+ if (use_pc_chars==2)
+    return;
  // Patch the curses available values from terminfo
  PC2curses[0xDA]=ACS_ULCORNER; // Ú
  PC2curses[0xC9]=ACS_ULCORNER; // É We don't have doubles in curses
@@ -270,7 +273,7 @@ void TScreenUNIX::SpecialKeysRestore(int file)
 }
 
 // This routine was heavily modified, and I think it needs more work (SET)
-void TScreenUNIX::startcurses()
+void TScreenUNIX::startcurses(int &terminalCodePage)
 {
   int xterm=0;
 
@@ -353,6 +356,14 @@ void TScreenUNIX::startcurses()
      TScreenUNIX::screenMode = TScreenUNIX::smMono;
      use_pc_chars = 0;
      TerminalType=GENER_TERMINAL;
+    }
+  // SET: Not sure about it: FreeBSD terminals doesn't have frames in the "alternate
+  // characters map" or at leat needs more setup for using them.
+  if (strncmp(terminal,"cons25",6)==0)
+    {
+     use_pc_chars=2;
+     if (terminal[6]=='r' || terminal[6]=='u')
+        terminalCodePage=TVCodePage::KOI8r;
     }
 
   switch (TerminalType)
@@ -660,20 +671,22 @@ TScreenUNIX::TScreenUNIX()
   for (i=0;i<len;i++)
       screenBuffer[i] = 0x0720;
 
+  int terminalCodePage=TVCodePage::ISOLatin1Linux;
+  startcurses(terminalCodePage);
+
   // Look for user settings
   optSearch("AppCP",forcedAppCP);
   optSearch("ScrCP",forcedScrCP);
   optSearch("InpCP",forcedInpCP);
   // User settings have more priority than detected settings
-  // That's the most common case and I don't know anout any reliable way to
+  // That's the most common case and I don't know about any reliable way to
   // find a better default.
   codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::ISOLatin1Linux,
-                          forcedScrCP!=-1 ? forcedScrCP : TVCodePage::ISOLatin1Linux,
+                          forcedScrCP!=-1 ? forcedScrCP : terminalCodePage,
                           forcedInpCP!=-1 ? forcedInpCP : TVCodePage::ISOLatin1Linux);
   SetDefaultCodePages(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
                       TVCodePage::ISOLatin1Linux);
 
-  startcurses();
   setVideoMode(screenMode);
   suspended = 0;
 

@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.502  2003/09/02 13:46:45  set
+* Updated: QNX configuration. Patch from Mike.
+
 Revision 2.501  2003/08/13 20:18:47  set
 * Added: Link to the BC++ and pure DOS fix release to the web page.
 
