@@ -71,11 +71,11 @@ void *TStringList::read( ipstream& is )
     return this;
 }
 
-TStringList::TStringList( StreamableInit ) :
-    basePos(0),
-    indexSize(0),
-    index(0)
+TStringList::TStringList( StreamableInit )
 {
+   basePos=0;
+   indexSize=0;
+   index=0;
 }
 
 TStreamable *TStringList::build()

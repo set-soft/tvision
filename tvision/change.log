@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.72  2002/05/16 18:19:30  set
+* Added: QNX needs -shared to create a module for a dynamic library.
+Pointed out by Mike.
+
 Revision 2.71  2002/05/15 20:43:48  set
 * Added: The first patches to configure under QNX, they just add QNX
 detection but more will be added. Patches by Mike Gorchak <mike@malva.ua>
