@@ -1,4 +1,12 @@
 $Log$
+Revision 2.340  2002/09/25 20:29:01  set
+* Modified: The readme file to be more clear about what is supported and
+what to read.
+* Removed: All MSVC files found in win32 directory. They are outdated and
+now replaced by the nmake files found in winnt directory.
+* Added: More clarifications to the winnt/readme.txt file. It had wrong
+information about how to proceed when using MSVC.
+
 Revision 2.339  2002/09/25 19:39:04  set
 * Fixed: [MSVC] Now gdi32.lib is also needed (for the WinGr driver).
 Reported by Sergey Krivulja <skrivulja@erec.ru>

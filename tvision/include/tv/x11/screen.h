@@ -88,7 +88,6 @@ protected:
  
 protected:
  // Blinking cursor emulation
- static void   sigAlm(int sig);
  static void   UnDrawCursor();
  static void   DrawCursor();
  static void   DisableCursor();
@@ -123,11 +122,10 @@ protected:
  static char      cursorEnabled,cursorInScreen;
  // Packed colors
  static uchar     curAttr;
- // Indicates if we must make a change in the cursor (for the blink)
- static volatile char
-                  cursorChange;
  // Buffer for cursor shape
  static char     *cursorData;
+ // Timers for the cursor blinking
+ static struct timeval refCursorTime, curCursorTime;
  // X display we are connected
  static Display  *disp;
  // Screen we are on
