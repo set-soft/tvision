@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.35  2002/01/03 02:14:41  set
+* Fixed: Need to create win32/rhide.env for Cygwin/MinGW targets. Needed for
+RHIDE 1.4.9.
+
 Revision 2.34  2002/01/03 01:28:38  set
 * Fixed: getline code for BC++ 5.5 target. [lack of ssize_t]
 
