@@ -45,23 +45,32 @@ public:
 
     void writeByte( uchar );
     void writeBytes( const void *, size_t );
-    void writeWord( ushort );
+    void writeWord( ushort val ) { writeShort(val); };
     void writeString( const char * );
+    /* Platform dependent: */
+    void writeShort(ushort val);
+    void writeInt(uint val);
+    void writeLong(ulong val);
+    /* The following are platform independent (stores in little endian) */
+    void write8(uint8 val) { writeByte(); };
+    void write16(uint16 val);
+    void write32(uint32 val);
+    void write64(uint64 val);
 
-    friend opstream& operator << ( opstream&, char );
-#ifndef __TURBOC__
-    friend opstream& operator << ( opstream&, signed char );
-#endif
-    friend opstream& operator << ( opstream&, unsigned char );
-    friend opstream& operator << ( opstream&, signed short );
-    friend opstream& operator << ( opstream&, unsigned short );
-    friend opstream& operator << ( opstream&, signed int );
-    friend opstream& operator << ( opstream&, unsigned int );
-    friend opstream& operator << ( opstream&, signed long );
-    friend opstream& operator << ( opstream&, unsigned long );
-    friend opstream& operator << ( opstream&, float );
-    friend opstream& operator << ( opstream&, double );
-    friend opstream& operator << ( opstream&, long double );
+    opstream& operator << ( opstream&, char           val ) { ps.writeByte(val); return ps; };
+    #ifndef __TURBOC__
+    opstream& operator << ( opstream&, signed char    val ) { ps.writeByte(val); return ps; };
+    #endif
+    opstream& operator << ( opstream&, unsigned char  val ) { ps.writeByte(val); return ps; };
+    opstream& operator << ( opstream&, signed short   val ) { ps.writeShort(val); return ps; };
+    opstream& operator << ( opstream&, unsigned short val ) { ps.writeShort(val); return ps; };
+    opstream& operator << ( opstream&, signed int     val ) { ps.writeInt(val); return ps; };
+    opstream& operator << ( opstream&, unsigned int   val ) { ps.writeInt(val); return ps; };
+    opstream& operator << ( opstream&, signed long    val ) { ps.writeLong(val); return ps; };
+    opstream& operator << ( opstream&, unsigned long  val ) { ps.writeLong(val); return ps; };
+    opstream& operator << ( opstream&, float          val ) { ps.writeBytes(&val,sizeof(val)); return ps; };
+    opstream& operator << ( opstream&, double         val ) { ps.writeBytes(&val,sizeof(val)); return ps; };
+    opstream& operator << ( opstream&, long double    val ) { ps.writeBytes(&val,sizeof(val)); return ps; };
 
     friend opstream& operator << ( opstream&, TStreamable& );
     friend opstream& operator << ( opstream&, TStreamable * );
