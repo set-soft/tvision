@@ -78,7 +78,7 @@ protected:
  // Default: static void   setVideoModeExt(char *mode);
  static void   GetCharacters(unsigned offset,ushort *buf,unsigned count);
  static ushort GetCharacter(unsigned dst);
- static void   SetCharacter(unsigned offset, ushort value);
+ static void   SetCharacter(unsigned offset, unsigned int value);
  static void   SetCharacters(unsigned dst, ushort *src, unsigned len);
  static int    System(const char *command, pid_t *pidChild, int in, int out,
                       int err);

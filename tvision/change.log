@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.139  2003/12/03 15:05:18  set
+* Added: Patch from Mike to cleanly compile using MSVC 7.1 (.NET 2003
+Architect).
+
 Revision 2.399.2.138  2003/12/02 14:47:14  set
 * Added: A first try to support the last MSVC compiler from information
 provided by Grzegorz, it includes:
