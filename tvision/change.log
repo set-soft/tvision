@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.177  2002/06/25 12:17:16  set
+* Fixed: The Help Compiler to compile with gcc 3.x, also fixed some bugs.
+
 Revision 2.176  2002/06/25 12:15:01  set
 * Added: [Linux] driver options to disable: keyboard patching (PatchKeys),
 VCS use (UseVCS) and MDA use (UseMDA).
