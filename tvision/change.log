@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.564  2004/09/16 21:04:05  set
+* Added: [Config] AMD64 and NetBSD detection. Code seems to compile for
+both. It doesn't mean they are supported.
+.
 Revision 2.563  2004/08/30 13:13:44  set
 * Fixed: [MSVC] MSVC 6.0 also failed to compile the WinGr driver, so we are
 just disabling it for MSVC.

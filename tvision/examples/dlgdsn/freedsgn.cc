@@ -63,7 +63,6 @@ public:
     virtual void outOfMemory();
 //  virtual void idle();
 private:
-//  const char * getFileName(const char * Title, int Mode);
     void viewBuffer(TMemoData& r);
     TDialog * ToolDlg;
     TDDialog * EditDialog;
@@ -223,6 +222,7 @@ void TFreeDsgnApp::handleEvent(TEvent& event)
         case cmOpenObj:
            str = getFileName(_("Open a dialog"), "*.fd*", 0);
            if (str != 0) InitDlgEditor(str);
+           delete[] str;
            break;
         case cmSaveObj:
            if (EditDialog) EditDialog->Save(cmYes);
@@ -232,6 +232,7 @@ void TFreeDsgnApp::handleEvent(TEvent& event)
            {
               str = getFileName(_("Save dialog as"), "*.fdg", 1);
               if (str) EditDialog->saveToFile(str);
+              delete[] str;
            }
            break;
         case cmWriteObjFunc:
@@ -252,6 +253,7 @@ void TFreeDsgnApp::handleEvent(TEvent& event)
                  s->writeBytes(srcBuffer->buffer, srcBuffer->bufLen);
                  s->close();
                  delete s;
+                 delete[] str;
               }
            }
            break;
