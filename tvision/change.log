@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.399.2.135  2003/11/18 14:41:21  lmike
+* Removed QNX4 ifdefs from the main tv sources, all done via Uses_xxx now.
+* Added CLY version of snprintf for the QNX4.
+* Added more QNX4 related fixes, including support for the pterm/qnxterm.
+
 Revision 2.399.2.134  2003/11/17 15:43:06  set
 * Added: --without-static and --without-dynamic to the configuration.
 Suggested by Oswald.
