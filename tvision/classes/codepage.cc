@@ -2709,7 +2709,7 @@ void TVCodePage::CreateCPFromUnicode(CodePage *cp, int id, const char *name,
      else
        {
         v=InternalCodeForUnicode(v);
-        cp->Font[i-128]=v==-1 ? 0 : v;
+        cp->LowRemap[i]=v==-1 ? 0 : v;
        }
     }
 }

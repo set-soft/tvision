@@ -173,6 +173,8 @@ protected:
  static void ExpandFont(uchar *dest, TScreenFont256 *font);
  static void SuspendFont();
  static void ResumeFont();
+ static int  isInUTF8();
+ static void AvoidUTF8Mode();
  // Terminal state before starting
  static struct termios outTermiosOrig;
  // Our terminal state
@@ -209,6 +211,12 @@ protected:
  static struct console_font_op linuxFont;
  static struct console_font_op ourFont;
  static int    origCPScr, origCPApp, origCPInp;
+ // Original UTF-8 state
+ static int    origUTF8Mode;
+ // We detected the user is using a 512 symbols font
+ static int    font512Detected;
+ // Related to font512Detected, it means we have to reduce colors to 8
+ static int    reduceTo8Colors;
 };
 
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't

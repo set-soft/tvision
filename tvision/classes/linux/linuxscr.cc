@@ -155,7 +155,9 @@ struct console_font_op
 int            TScreenLinux::origCPScr,
                TScreenLinux::origCPApp,
                TScreenLinux::origCPInp,
-               TScreenLinux::origUTF8Mode;
+               TScreenLinux::origUTF8Mode,
+               TScreenLinux::font512Detected=0,
+               TScreenLinux::reduceTo8Colors=0;
 
 // Information about known font maps
 struct stCodePageCk
@@ -300,6 +302,8 @@ void TScreenLinux::Init(int mode)
 }
 
 
+const int firstTrySize=512;
+
 //#define DEBUG_CODEPAGE
 #ifdef DEBUG_CODEPAGE
 // This is the code to debug the code page detection
@@ -316,97 +320,119 @@ static int compareUni(const void *v1, const void *v2)
 
 int TScreenLinux::AnalyzeCodePage()
 {
- // GIO_UNIMAP: get unicode-to-font mapping from kernel
- struct unimapdesc map;
- map.entry_ct=512;
- map.entries=new struct unipair[512];
- if (ioctl(hOut,GIO_UNIMAP,&map)==-1)
-   {
-    delete[] map.entries;
-    return 0;
-   }
-
+ ushort scrUniMap[E_TABSZ];
  int i,j;
- fprintf(stderr,"The map have %d entries\n",map.entry_ct);
- fprintf(stderr,"Raw information:\n");
- for (i=0; i<map.entry_ct; i++)
-     fprintf(stderr,"0x%02X => 0x%04X\n",map.entries[i].fontpos,map.entries[i].unicode);
- fprintf(stderr,"\n\nSorted information:\n");
- // Sort the entries
- qsort(map.entries,map.entry_ct,sizeof(struct unipair),compareUni);
- // Print all marking the entries that provides more than a code
- for (i=0,j=0; i<map.entry_ct; i++)
-    {
-     if (j!=map.entries[i].fontpos)
-       {
-        while (j<map.entries[i].fontpos)
-           fprintf(stderr,"0x%02X => NO UNICODE\n",j++);
-       }
-     fprintf(stderr,"0x%02X => 0x%04X",map.entries[i].fontpos,map.entries[i].unicode);
-     if (i && map.entries[i-1].fontpos==map.entries[i].fontpos)
-        fputs(" *",stderr);
-     else
-        j++;
-     fputc('\n',stderr);
-    }
- // Create a special list containing only one unicode by symbol
- ushort UnicodeMap[256];
- memset(UnicodeMap,0xFF,256*sizeof(ushort));
- for (i=0; i<map.entry_ct; i++)
-    {
-     int pos=map.entries[i].fontpos;
-     if (i && map.entries[i-1].fontpos==pos) continue;
-     if (pos>255) continue;
-     UnicodeMap[pos]=map.entries[i].unicode;
-    }
- // Print this map
- fputs("-------------\nSimplified map for checksum:\n",stderr);
- for (i=0; i<256; i++)
-     if (UnicodeMap[i]==0xFFFF)
-        fprintf(stderr,"0x%02X NO UNICODE\n",i);
-     else
-        fprintf(stderr,"0x%02X U+%04x\n",i,UnicodeMap[i]);
- // Compute a good check sum
- uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
- fprintf(stderr,"Adler-32 checksum: 0x%08X\n",cks);
- // Map it to internal codes
- fputs("-------------\nInternal codes equivalent:\n",stderr);
- for (i=0; i<256; i++)
-    {
-     int v=UnicodeMap[i];
-     if (v==0xFFFF)
-        fputs("  0,",stderr);
-     else
-        fprintf(stderr,"%3d,",TVCodePage::InternalCodeForUnicode(v));
-     if (!((i+1) & 0xF))
-        fputc('\n',stderr);
-    }
- fputs("-------------\nWhat's missing:\n",stderr);
- for (i=0; i<256; i++)
-    {
-     int v=UnicodeMap[i];
-     if (v==0xFFFF)
-        continue;
-     if (TVCodePage::InternalCodeForUnicode(v)==-1)
-        fprintf(stderr,"%03d U+%04x\n",i,v);
-    }
- fputs("-------------\n",stderr);
- char SFMCreated=0;
- for (i=0; knownFonts[i].codepage && knownFonts[i].checksum!=cks; i++);
- if (knownFonts[i].codepage)
+
+ // GIO_UNIMAP: get unicode-to-font mapping from kernel
+ int success=0;
+ struct unimapdesc map;
+ map.entry_ct=firstTrySize;
+ map.entries=new struct unipair[firstTrySize];
+ if (ioctl(hOut,GIO_UNIMAP,&map)==-1 && map.entry_ct>firstTrySize)
    {
-    installedSFM=knownFonts[i].codepage;
-    fprintf(stderr,"Known code page detected %d\n",installedSFM);
+    LOG("The starting size of " << firstTrySize << " wasn't enough, we need " << map.entry_ct);
+    delete[] map.entries;
+    map.entries=new struct unipair[map.entry_ct];
+    success= ioctl(hOut,GIO_UNIMAP,&map)!=-1;
+   }
+ if (success)
+   {
+    fprintf(stderr,"The map have %d entries\n",map.entry_ct);
+    fprintf(stderr,"Raw information:\n");
+    for (i=0; i<map.entry_ct; i++)
+        fprintf(stderr,"0x%02X => 0x%04X\n",map.entries[i].fontpos,map.entries[i].unicode);
+    fprintf(stderr,"\n\nSorted information:\n");
+    // Sort the entries
+    qsort(map.entries,map.entry_ct,sizeof(struct unipair),compareUni);
+    // Print all marking the entries that provides more than a code
+    for (i=0,j=0; i<map.entry_ct; i++)
+       {
+        if (j!=map.entries[i].fontpos)
+          {
+           while (j<map.entries[i].fontpos)
+              fprintf(stderr,"0x%02X => NO UNICODE\n",j++);
+          }
+        fprintf(stderr,"0x%02X => 0x%04X",map.entries[i].fontpos,map.entries[i].unicode);
+        if (i && map.entries[i-1].fontpos==map.entries[i].fontpos)
+           fputs(" *",stderr);
+        else
+           j++;
+        fputc('\n',stderr);
+       }
+    // Create a special list containing only one unicode by symbol
+    ushort UnicodeMap[256];
+    memset(UnicodeMap,0xFF,256*sizeof(ushort));
+    for (i=0; i<map.entry_ct; i++)
+       {
+        int pos=map.entries[i].fontpos;
+        if (i && map.entries[i-1].fontpos==pos) continue;
+        if (pos>255)
+          {
+           font512Detected++;
+           continue;
+          }
+        UnicodeMap[pos]=map.entries[i].unicode;
+       }
+    // Print this map
+    fputs("-------------\nSimplified map for checksum:\n",stderr);
+    for (i=0; i<256; i++)
+        if (UnicodeMap[i]==0xFFFF)
+           fprintf(stderr,"0x%02X NO UNICODE\n",i);
+        else
+           fprintf(stderr,"0x%02X U+%04x\n",i,UnicodeMap[i]);
+    // Compute a good check sum
+    uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
+    fprintf(stderr,"Adler-32 checksum: 0x%08X\n",cks);
+    // Map it to internal codes
+    fputs("-------------\nInternal codes equivalent:\n",stderr);
+    for (i=0; i<256; i++)
+       {
+        int v=UnicodeMap[i];
+        if (v==0xFFFF)
+           fputs("  0,",stderr);
+        else
+           fprintf(stderr,"%3d,",TVCodePage::InternalCodeForUnicode(v));
+        if (!((i+1) & 0xF))
+           fputc('\n',stderr);
+       }
+    fputs("-------------\nWhat's missing:\n",stderr);
+    for (i=0; i<256; i++)
+       {
+        int v=UnicodeMap[i];
+        if (v==0xFFFF)
+           continue;
+        if (TVCodePage::InternalCodeForUnicode(v)==-1)
+           fprintf(stderr,"%03d U+%04x\n",i,v);
+       }
+    fputs("-------------\n",stderr);
+    char SFMCreated=0;
+    for (i=0; knownFonts[i].codepage && knownFonts[i].checksum!=cks; i++);
+    if (knownFonts[i].codepage)
+      {
+       installedSFM=knownFonts[i].codepage;
+       fprintf(stderr,"Known code page detected %d\n",installedSFM);
+      }
+    else
+      {
+       fputs("Unknown code page, creating a custom one\n",stderr);
+       CreateSFMFromTable(UnicodeMap);
+       SFMCreated=1;
+      }
    }
  else
    {
-    fputs("Unknown code page\n",stderr);
-    CreateSFMFromTable(UnicodeMap);
-    SFMCreated=1;
+    LOG("GIO_UNIMAP failed");
+    // Something arbitrary
+    installedSFM=TVCodePage::ISOLatin1Linux;
    }
+
  fputs("-------------\nGIO_UNISCRNMAP\n",stderr);
- ushort scrUniMap[E_TABSZ];
- ioctl(hOut,GIO_UNISCRNMAP,scrUniMap);
+ if (ioctl(hOut,GIO_UNISCRNMAP,scrUniMap)==-1)
+   {
+    LOG("GIO_UNISCRNMAP failed");
+    delete[] map.entries;
+    return 0;
+   }
  int isTrivial=1;
  for (i=0; i<E_TABSZ; i++)
     {
@@ -438,12 +464,16 @@ int TScreenLinux::AnalyzeCodePage()
    {
     installedACM=knownScreenMaps[i].codepage;
     if (installedACM==-1)
+      {
+       fprintf(stderr,"Using the same used for SFM\n");
        installedACM=installedSFM;
-    fprintf(stderr,"Known code page detected %d\n",installedACM);
+      }
+    else
+       fprintf(stderr,"Known code page detected %d\n",installedACM);
    }
  else
    {
-    fputs("Unknown code page\n",stderr);
+    fputs("Unknown code page, creating a new one\n",stderr);
     // This a workaround for broken KOI8-R systems.
     if (installedSFM==TVCodePage::KOI8r && scrUniMap[0xC0]==0xC0)
       {// That's bogus, try to fix it
@@ -469,10 +499,18 @@ int TScreenLinux::AnalyzeCodePage()
 {
  // Get the font unicode map (SFM)
  // GIO_UNIMAP: get unicode-to-font mapping from kernel
+ int success=0;
  struct unimapdesc map;
- map.entry_ct=512;
- map.entries=new struct unipair[512];
- if (ioctl(hOut,GIO_UNIMAP,&map)==-1)
+ map.entry_ct=firstTrySize;
+ map.entries=new struct unipair[firstTrySize];
+ if (ioctl(hOut,GIO_UNIMAP,&map)==-1 && map.entry_ct>firstTrySize)
+   {
+    LOG("The starting size of " << firstTrySize << " wasn't enough, we need " << map.entry_ct);
+    delete[] map.entries;
+    map.entries=new struct unipair[map.entry_ct];
+    success= ioctl(hOut,GIO_UNIMAP,&map)!=-1;
+   }
+ if (!success)
    {
     delete[] map.entries;
     return 0;
@@ -484,7 +522,11 @@ int TScreenLinux::AnalyzeCodePage()
  for (i=0; i<map.entry_ct; i++)
     {
      int pos=map.entries[i].fontpos;
-     if (pos>255) continue;
+     if (pos>255)
+       {
+        font512Detected++;
+        continue;
+       }
      if (map.entries[i].unicode<UnicodeMap[pos])
         UnicodeMap[pos]=map.entries[i].unicode;
     }
@@ -715,9 +757,11 @@ int TScreenLinux::InitOnce()
  optSearch("ScrCP",forcedScrCP);
  optSearch("InpCP",forcedInpCP);
  // Try to figure out which code page is loaded
- //if (forcedAppCP==-1 || forcedScrCP==-1) This is always needed for the defaults
-    if (!tioclinuxOK || !AnalyzeCodePage())
-       GuessCodePageFromLANG();
+ // Note: This is always needed for the defaults
+ if (!tioclinuxOK || !AnalyzeCodePage())
+   {
+    GuessCodePageFromLANG();
+   }
  // User settings have more priority than detected settings
  codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : installedACM,
                          forcedScrCP!=-1 ? forcedScrCP : installedSFM,
@@ -756,6 +800,11 @@ int TScreenLinux::InitOnce()
     TScreen::optSearch("UseSecondaryFont",useSecondaryFont);
     if (useSecondaryFont)
        flags0|=CanSetSBFont;
+   }
+ if (font512Detected && !useSecondaryFont)
+   {
+    reduceTo8Colors=1;
+    LOG("Applying color reduction to 8 colors");
    }
 
  return 0;
@@ -1241,6 +1290,25 @@ void TScreenLinux::SetCharactersMDA(unsigned dst, ushort *src, unsigned len)
 void TScreenLinux::SetCharactersVCS(unsigned dst, ushort *src, unsigned len)
 {
  unsigned length=len*sizeof(ushort);
+
+ if (reduceTo8Colors)
+   {
+    unsigned i;
+    uchar *s=(uchar *)src, back, fore, newfore;
+    for (i=1; i<length; i+=2)
+       {
+        back=(s[i] >> 4) & 7;
+        fore=s[i] & 15;
+        newfore=fore & 7;
+        if (back!=fore && back==newfore)
+           newfore=(newfore+1) & 7;
+        s[i]=newfore | (back<<4);
+        // The following is faster but you need a palette designed for 8
+        // colors. I personally think people using UTF-8 for consoles
+        // must be ready to lose performance.
+        //s[i]&=0xF7;
+       }
+   }
 
  lseek(vcsWfd,dst*sizeof(ushort)+4,SEEK_SET);
  write(vcsWfd,src,length);
