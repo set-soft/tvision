@@ -438,6 +438,9 @@ typedef unsigned long  ulong;
  #define False false
 
  #ifdef TVCompf_MinGW
+  // MinGW uses MSVC runtime. Read more about the MSVC bug in the MSVC
+  // section.
+  #undef CLY_Have_snprintf
   #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
   #undef  FA_ARCH

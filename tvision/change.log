@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.399.2.227  2004/12/27 14:38:24  terrible
+* [Updated] Debian packaging to version 2.0.4-1, it seems Salvador didn't
+  run the version update script, so I made changes to Debian packaging
+  manually; maybe this fixes problems Sergio was having building the package
+  but I didn't try to compile it so I cross my fingers... :).
+
 Revision 2.399.2.226  2004/12/13 14:33:59  set
 * Fixed: [WWW] URL to Sigala's doc. Patch by Thiago.
 * Fixed: [config] install was searched in the path without using the "Exe
