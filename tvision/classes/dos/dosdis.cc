@@ -131,6 +131,9 @@ void TDisplayDOS::GetCursorShape(unsigned &start, unsigned &end)
 
 void TDisplayDOS::SetCursorShape(unsigned start, unsigned end)
 {
+ if (start>=end && !getShowCursorEver())
+    return;
+
  unsigned lStart=(start*charLines+50)/100;
  unsigned lEnd=(end*charLines+50)/100;
 

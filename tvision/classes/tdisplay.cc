@@ -50,6 +50,7 @@ char        **TDisplay::environ                   =NULL;
 TScreenColor  TDisplay::OriginalPalette[16];
 TScreenColor  TDisplay::ActualPalette[16];
 char          TDisplay::paletteModified           =0;
+uint32        TDisplay::opts1                     =0;
 
 /*****************************************************************************
 
@@ -297,3 +298,20 @@ void TDisplay::defaultGetDisPaletteColors(int from, int number, TScreenColor *co
 void TDisplay::defaultSetDisPaletteColors(int , int , TScreenColor *)
 {
 }
+
+/*****************************************************************************
+
+  Options routines, they are created to isolate the internal aspects.
+
+*****************************************************************************/
+
+Boolean TDisplay::setShowCursorEver(Boolean value)
+{
+ Boolean ret=getShowCursorEver();
+ if (value)
+    opts1|=ShowCursorEver;
+ else
+    opts1&= ~ShowCursorEver;
+ return ret;
+}
+

@@ -78,7 +78,10 @@ void TDisplayX11::SetCursorShape(unsigned start, unsigned end)
  if ((unsigned)cShapeFrom>fontH) cShapeFrom=fontH;
  if ((unsigned)cShapeTo>fontH)   cShapeTo  =fontH;
  if (start>=end)
-    TScreenX11::DisableCursor();
+   {
+    if (!getShowCursorEver())
+       TScreenX11::DisableCursor();
+   }
  else
     TScreenX11::EnableCursor();
  //fprintf(stderr,"Seteando X11: %d a %d\n",cShapeFrom,cShapeTo);

@@ -139,7 +139,8 @@ void TDisplayLinux::SetCursorShape(unsigned start, unsigned end)
  LOG("Setting cursor shape to " << start << "," << end);
  if (start>=end)
    {
-    fputs("\E[?1c",stdout);
+    if (!getShowCursorEver())
+       fputs("\E[?1c",stdout);
     cursorStart=start;
     cursorEnd=end;
    }
