@@ -18,7 +18,7 @@
 #include <stdarg.h>
 #ifdef __GLIBC__
 // Works for glibc 2.0 and glibc 2.1 for Alpha.
-#include <sys/io.h>
+#include <sys/perm.h>
 #endif
 
 // I don't know why it's needed, but it seems to be only known to me way
@@ -445,6 +445,10 @@ void stopcurses()
     endwin();
    }
  fclose(tty_file);
+ 
+ #ifdef SAVE_TERMIOS
+ tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
+ #endif
 }
 
 /*
@@ -621,11 +625,7 @@ extern ushort user_mode;
 #endif
 
 #ifdef h386LowLevel
- /* GLibC 2.1.3 defines it in sys/io.h, which is already included, and doesn't
-    check for collisions :-( */
- #ifndef HAVE_OUTB_IN_SYS
-  #include <asm/io.h>
- #endif
+#include <asm/io.h>
 
 static inline
 unsigned char I(unsigned char i)
@@ -743,19 +743,25 @@ TScreen::TScreen()
      */
     FILE *statfile;
     char path[PATH_MAX];
-    sprintf(path, "/proc/%d/stat", getpid());
-    if ((statfile = fopen(path, "r")) != NULL)
+    bool found_vcsa = false;
+    int pid = getpid();
+    sprintf(path, "/proc/%d/stat", pid);
+    while (!found_vcsa &&
+           (pid != -1) &&
+           ((statfile = fopen(path, "r")) != NULL))
      {
       int dev;
+      int ppid;
   
       /* TTYs have 4 as major number */
       /* virtual consoles have minor numbers <= 63 */
   
-      fscanf(statfile, "%*d %*s %*c %*d %*d %*d %d", &dev);
+      fscanf(statfile, "%*d %*s %*c %d %*d %*d %d", &ppid, &dev);
       if ((dev & 0xff00) == 0x0400 && (dev & 0xff) <= 63)
       {
         LOG("virtual console detected");
         sprintf(path, "/dev/vcsa%d", dev & 0xff);
+        found_vcsa = true;
 
         if (TurboVision_screenOptions & TurboVision_screenUserScreenNeeded)
           { // SET: Full VCSA or Curses, not half. See screen.h.
@@ -775,6 +781,13 @@ TScreen::TScreen()
           }
       }
       fclose(statfile);
+      if (!found_vcsa && (pid != ppid))
+      {
+        pid = ppid;
+        sprintf(path, "/proc/%d/stat", pid);
+      }
+      else
+        pid = -1;
      }
    }
   // SET: Set the cursor to a known position to avoid reading the postion.
@@ -855,10 +868,6 @@ TScreen::~TScreen()
   // FIXME: When I know, how to get the cursor state
   setCursorType(0x0607); // make the cursor visible
   stopcurses();
-
-  #ifdef SAVE_TERMIOS
-  tcsetattr (STDOUT_FILENO, TCSANOW, &old_term);
-  #endif
 
   if (!suspended)
      RestoreScreen();
