@@ -30,6 +30,7 @@ TFileInfoPane::TFileInfoPane( const TRect& bounds ) :
     TView(bounds)
 {
     eventMask |= evBroadcast;
+    *(file_block.name) = EOS; // SET: We must have something in case there are no matches
 }
 
 const char * const TFileInfoPane::months[] =
