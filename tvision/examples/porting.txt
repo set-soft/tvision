@@ -1,0 +1,20 @@
+Hints to port TVision programs to the RH port:
+
+1) ushort dataSize()
+This is unsigned dataSize().
+* Reported by the compiler as wrong return value (gcc 2.8.0)
+
+2) TListBox::getText(...
+The second parameter was short now is ccIndex.
+* The text doesn't show in the object because the code uses the not-overrided
+  version.
+
+3) TPalette isn't defined by default.
+So you must add a #define Uses_TPalette.
+* The compiler informs TPalette is incomplete.
+
+4) const TRect& r
+Most of the Borland code doesn't declare the TRect references as constants.
+* The compiler barfs about a non-const reference.
+
+Salvador Eduardo Tropea (set-soft@usa.net)
