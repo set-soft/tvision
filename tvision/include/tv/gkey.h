@@ -139,26 +139,29 @@ public:
  enum keyMode
  {
   // Linux styles
-  linuxNormal=0,
   linuxDisableKeyPatch=1,
   linuxEnableKeyPatch=2,
   // DOS
-  dosUS=0,
-  dosGreek737=20,
+  // Should be incorporated to the remapping but I need volunteers
+  //dosUS=0,
+  //dosGreek737=20,
   dosUseBIOS=21,
   dosUseDirect=22,
+  dosTranslateKeypad=23,
+  dosNormalKeypad=24,
   // UNIX styles
   unixXterm=40,
   unixNoXterm=41,
   unixEterm=42
  };
  static void   (*SetKbdMapping)(int version);
- static int      GetKbdMapping(void) { return Mode; };
+ static int    (*GetKbdMapping)(int version);
 
 protected:
  static uchar    defaultNonASCII2ASCII(uchar val);
  static int      defaultCompareASCII(uchar val, uchar code);
  static void     defaultSetKbdMapping(int version);
+ static int      defaultGetKbdMapping(int version);
  static int      defaultKbhit(void);
  static void     defaultClear(void);
  static ushort   defaultGkey(void);

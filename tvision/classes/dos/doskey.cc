@@ -462,7 +462,36 @@ void TGKeyDOS::SetKbdMapping(int version)
     GetRaw=GetRawDirect;
     return;
    }
+ else if (version==dosTranslateKeypad)
+   {
+    translateKeyPad=1;
+   }
+ else if (version==dosNormalKeypad)
+   {
+    translateKeyPad=0;
+   }
  Mode=version;
+}
+
+void TGKeyDOS::GetKbdMapping(int version)
+{
+ if (version==dosUseBIOS)
+   {
+    return useBIOS;
+   }
+ else if (version==dosUseDirect)
+   {
+    return !useBIOS;
+   }
+ else if (version==dosTranslateKeypad)
+   {
+    return translateKeyPad;
+   }
+ else if (version==dosNormalKeypad)
+   {
+    return !translateKeyPad;
+   }
+ return 0;
 }
 
 void TGKeyDOS::Init()
@@ -471,6 +500,7 @@ void TGKeyDOS::Init()
  TGKey::gkey=GKey;
  TGKey::fillTEvent=FillTEvent;
  TGKey::SetKbdMapping=SetKbdMapping;
+ TGKey::GetKbdMapping=GetKbdMapping;
  TGKey::NonASCII2ASCII=NonASCII2ASCII;
  TGKey::CompareASCII=CompareASCII;
  // Default to direct mode

@@ -26,6 +26,7 @@ public:
  static ushort   GKey();
  static void     FillTEvent(TEvent &e);
  static void     SetKbdMapping(int version);
+ static int      GetKbdMapping(int version);
  static uchar    NonASCII2ASCII(uchar val);
  static int      CompareASCII(uchar val, uchar code);
 

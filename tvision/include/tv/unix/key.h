@@ -21,6 +21,7 @@ public:
  static unsigned GetShiftState();
  static void     FillTEvent(TEvent &e);
  static void     SetKbdMapping(int version);
+ static int      GetKbdMapping(int version);
 
  // Setup the pointers to point our members
  static void     Init();
