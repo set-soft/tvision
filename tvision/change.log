@@ -1,4 +1,12 @@
 $Log$.
+Revision 2.536  2004/05/07 20:09:19  set
+* Added: A new function called CLY_memcpy to compatlayer.h. This must be
+used when we use memcpy and the blocks overlaps but we know the "normal"
+implementation will work. Platforms where the copy order isn't OK can
+define it to be memmove. A configuration option allows to do it too.
+* Fixed: Some calls to memcpy that overlaps are now to CLY_memcpy. From
+reports obtained by valgrind.
+.
 Revision 2.535  2004/05/06 19:39:02  set
 * Fixed: Use of delete[] for TVBitmapFontSize * objects. Reported by
 Oswald using valgrind.

@@ -297,23 +297,26 @@ void TButton::setState( ushort aState, Boolean enable )
 
 void TButton::press()
 {
-    message( owner, evBroadcast, cmRecordHistory, 0 );
-    if( (flags & bfBroadcast) != 0 )
-        message( owner, evBroadcast, command, this );
-    else
-        {
-        TEvent e;
-        e.what = evCommand;
-        e.message.command = command;
-        e.message.infoPtr = this;
-        putEvent( e );
-        }
-    if (callBack) // SET: That's really useful
-      {
-       int ret=callBack(command);
+ message(owner,evBroadcast,cmRecordHistory,0);
+ if (flags & bfBroadcast)
+    message(owner,evBroadcast,command,this);
+ else
+   {
+    if (callBack)
+      {// SET: That's really useful
+       int ret=callBack(command,cbData);
        if (ret==btcbEndModal && owner)
           owner->endModal(command);
       }
+    else
+      {
+       TEvent e;
+       e.what=evCommand;
+       e.message.command=command;
+       e.message.infoPtr=this;
+       putEvent(e);
+      }
+   }
 }
 
 #if !defined( NO_STREAM )
