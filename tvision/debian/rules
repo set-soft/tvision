@@ -70,12 +70,11 @@ install-stamp: build-stamp
 	# Add here commands to install the package into debian/tmp.
 	#$(MAKE) install DESTDIR=`pwd`/debian/tmp
 	cp linuxso/librhtv.so.$(version) debian/tmp/usr/lib
-	ln -sf librhtv.so.$(version) debian/tmp/usr/lib/librhtv.so.$(version_major)
 	cp linux/librhtv.a debian/tmp/usr/lib/librhtv_g.a
 	cp linux/librhtv.a debian/tmp/usr/lib/librhtv.a
 	cp include/*.h debian/tmp/usr/include/rhtvision
-	ln -sf librhtv.so.$(version) debian/tmp/usr/lib/librhtv.so
 
+	dh_link usr/lib/librhtv.so.$(version) usr/lib/librhtv.so.$(version_major)   usr/lib/librhtv.so.$(version) usr/lib/librhtv.so
 	dh_movefiles -p rhtvision1
 
 	touch install-stamp

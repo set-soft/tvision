@@ -2,7 +2,7 @@ Source: rhtvision
 Section: libs
 Priority: optional
 Maintainer: Ivan Baldo <lubaldo@adinet.com.uy>
-Standards-Version: 2.4.0.0
+Standards-Version: 2.5.0.0
 
 Package: rhtvision1-dev
 Architecture: i386

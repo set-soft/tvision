@@ -1,3 +1,18 @@
+rhtvision (1.0.5-1) unstable; urgency=low
+
+  * New upstream version:
+    - Bugfixes.
+    - Debian diffs incorporated on upstream source.
+    - Renamed the name of the library from libtv to librhtv.
+    - Some more classes added.
+  * Standards version now is 2.5.0.0 (no changes).
+  * Instead of doing the symlinks manually, now I use dh_link.
+  * Now requires debhelpers >= 1.2.9.
+  * Mention in debian/maintainer.notes that debian/rules should be mode
+    755.
+
+ -- Ivan Baldo <lubaldo@adinet.com.uy>  Tue,  6 Apr 1999 22:24:13 -0300
+
 rhtvision (1.0.3-6) unstable; urgency=low
 
   * Removed postrm for rhtvision1-dev and rhtvision1, since it is not
