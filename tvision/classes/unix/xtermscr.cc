@@ -51,6 +51,7 @@ int            TScreenXTerm::palette;
 int            TScreenXTerm::oldCol=-1,
                TScreenXTerm::oldBack=-1,
                TScreenXTerm::oldFore=-1;
+char           TScreenXTerm::useShellScreen=0;
 
 #define force_redraw 0
 
@@ -170,6 +171,10 @@ TScreenXTerm::TScreenXTerm()
 
  TGKeyXTerm::Init();
 
+ long aux;
+ if (optSearch("UseShellScreen",aux))
+    useShellScreen=aux;
+
  // Code page initialization
  // Look for user settings
  optSearch("AppCP",forcedAppCP);
@@ -224,7 +229,6 @@ TScreenXTerm::TScreenXTerm()
  // Look for defaults
  unsigned maxX=startScreenWidth, maxY=startScreenHeight;
  unsigned fW=fontW, fH=fontH;
- long aux;
  if (optSearch("ScreenWidth",aux))
     maxX=aux;
  if (optSearch("ScreenHeight",aux))
@@ -339,13 +343,20 @@ void TScreenXTerm::Resume()
 *****************************************************************************/
 
 void TScreenXTerm::SaveScreen()
-{// Just switch to the alternative buffer
- printf("\E[?47h");
+{
+ if (!useShellScreen)
+    // Just switch to the alternative buffer
+    printf("\E[?47h");
 }
 
 void TScreenXTerm::RestoreScreen()
-{// Just go back to the normal buffer
- printf("\E[?47l");
+{
+ if (useShellScreen)
+    // Clear the screen
+    printf("\E[2J");
+ else
+    // Just go back to the normal buffer
+    printf("\E[?47l");
 }
 
 void TScreenXTerm::SaveScreenReleaseMemory(void)

@@ -127,6 +127,8 @@ protected:
  // Tables to convert to ISO 2022 scheme
  static const uchar Code[256];
  static const uchar Modifier[256];
+ // Indicates if we must use the shell screen instead of the secondary buffer
+ static char  useShellScreen;
 };
 
 #endif // XTERMSCREEN_HEADER_INCLUDED

@@ -1,4 +1,4 @@
-Driver: Eterm
+Driver: Eterm (part of XTerm driver)
 Author: Salvador E. Tropea
 
   This driver was designed for Eterm 0.9.x. Previous versions like 0.8.10 are
@@ -18,9 +18,14 @@ defined Eterm terminals as xterm, that's wrong because they aren't the same.
 * Palette. Eterm is relative fast for it but the screen flashes quickly.
 * Window title set/restore.
 * Most keyboard combinations when a special Eterm theme is used.
+* Restore shell screen (limited, you can't nest)
 
   In order to get the maximum of key combinations you must install and use an
 Eterm theme specially designed for Turbo Vision applications.
+  If you have problems with the Alt key combinations please try using the
+Eterm command line option --meta-mod. Traditionally UNIX terminals have a key
+called Meta (Sun keyboards have it) and what you really need is this key, so
+you must tell Eterm to use the Alt modifier as Meta modifier.
   The files are stored in examples/eterm. Copy this files to
 ~/.Eterm/themes/tvapp or to /usr/share/Eterm/themes/tvapp if you want to
 make this theme globally available. Then start Eterm with:
@@ -31,10 +36,8 @@ $ Eterm -t tvapp
 best for other tasks. I recommend to use at leat two connections to the
 remote machine, one for general tasks and another from an Eterm with the
 tvapp theme to run TV applications.
-  If you want to test this driver locally just export the DISPLAY variable
-with a null content like this (bash syntax):
-
-$ export DISPLY=
-
+  For instructions on how to test this driver locally, supported
+configuration variables and other details read the XTerm driver
+documentation.
 
 
