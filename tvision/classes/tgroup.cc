@@ -540,7 +540,10 @@ void TGroup::setState( ushort aState, Boolean enable )
 void TGroup::unlock()
 {
     if( lockFlag != 0 && --lockFlag == 0 )
+       {
         drawView();
+        resetCursor();
+       }
 }
 
 Boolean isInvalid( TView *p, void * commandP)
@@ -710,3 +713,13 @@ void TGroup::removeView(TView *p)
   if (akt == last) return;
 }
 
+Boolean TGroup::canShowCursor()
+{
+ if (buffer)
+   {
+    if (owner)
+       return owner->canShowCursor();
+    return False;
+   }
+ return lockFlag ? False : True;
+}

@@ -47,6 +47,7 @@ public:
     // SET: Added to setup the tileable options
     unsigned getOptions() { return flagsOptions; }
     void setOptions(unsigned aFlags) { flagsOptions=aFlags; }
+    virtual Boolean canShowCursor();
 
     static const char defaultBkgrnd;
 

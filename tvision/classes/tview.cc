@@ -327,7 +327,7 @@ void TView::draw()
 
 void TView::drawCursor()
 {
-    if( (state & sfFocused) != 0 )
+    if( (state & sfFocused) != 0 && owner && owner->canShowCursor())
         resetCursor();
 }
 
@@ -709,7 +709,8 @@ void TView::setState( ushort aState, Boolean enable )
             drawUnderView( True, 0 );
             break;
         case  sfFocused:
-            resetCursor();
+            if (owner && owner->canShowCursor())
+               resetCursor();
             message( owner,
                      evBroadcast,
                      (enable == True) ? cmReceivedFocus : cmReleasedFocus,

@@ -64,6 +64,9 @@ public:
     void lock();
     void unlock();
     virtual void resetCursor();
+    // SET: A view should ask your owner (a group) if that's right
+    // time to show the cursor or we are locked.
+    virtual Boolean canShowCursor();
 
     virtual void endModal( ushort command );
 
