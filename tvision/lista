@@ -111,6 +111,10 @@ classes/WinNT/tdisplay.cc
 classes/WinNT/tfont.cc
 classes/WinNT/thwmouse.cc
 classes/WinNT/tscreen.cc
+classes/x11/x11dis.cc
+classes/x11/x11key.cc
+classes/x11/x11mouse.cc
+classes/x11/x11src.cc
 compat/beep.c
 compat/drivevalid.c
 compat/expandpath.c

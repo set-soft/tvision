@@ -1,4 +1,9 @@
 $Log$
+Revision 2.3  2001/11/24 23:40:10  set
+* Merged: New code for the Linux terminals. It's currently only one driver
+(the mouse is the only exception) and should be split in three, but is
+adapted to the new class style.
+
 Revision 2.2  2001/11/24 23:21:19  set
 * Changed version to 2.0.0 because big changes are about to be merged.
 
