@@ -24,6 +24,12 @@ $UseDummyIntl=0;
 
 SeeCommandLine();
 
+if ($JustSpec)
+  {
+   UpdateSpec();
+   exit 0;
+  }
+
 print "Configuring Turbo Vision v$Version library\n\n";
 # Determine the OS
 $OS=DetectOS();
@@ -191,8 +197,7 @@ chdir('..');
 
 print "Makefiles for translations.\n";
 ReplaceText('intl/gnumake.in','intl/Makefile');
-$ReplaceTags{'version'}=$Version;
-ReplaceText('redhat/librhtv.spec.in',"redhat/librhtv-$Version.spec");
+UpdateSpec();
 
 print "\nSuccesful configuration!\n\n";
 
@@ -200,6 +205,12 @@ GiveAdvice();
 CreateCache();
 unlink $ErrorLog;
 unlink 'test.exe';
+
+sub UpdateSpec()
+{
+ $ReplaceTags{'version'}=$Version;
+ ReplaceText('redhat/librhtv.spec.in',"redhat/librhtv-$Version.spec");
+}
 
 sub SeeCommandLine
 {
@@ -288,6 +299,10 @@ elsif ($i=~'--real-prefix=(.*)')
       {
        $conf{'MAINTAINER_MODE'}='yes';
       }
+    elsif ($i eq '--just-spec')
+      {
+       $JustSpec=1;
+      }
     else
       {
        ShowHelp();
@@ -329,6 +344,7 @@ sub ShowHelp
  print "--enable-maintainer-mode:\n";
  print "                : enables header dependencies and other stuff needed\n";
  print "                  for developement, not just use the editor.\n";
+ print "--just-spec     : update RPMs spec file and exit.\n";
  print "--help          : displays this text.\n";
 }
 

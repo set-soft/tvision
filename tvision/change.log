@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.479  2003/06/17 12:30:11  set
+* Fixed: Extra lines at the end.
+
 Revision 2.478  2003/06/13 20:49:30  set
 * Added: Files and instructions to create RPMs. They are bbcat's .spec
 files with some additions and corrections. Things I'm not sure they will

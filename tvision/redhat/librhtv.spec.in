@@ -59,7 +59,7 @@ rm -f $RPM_BUILD_DIR/tvision
 ln -s $RPM_BUILD_DIR/%{name}-%{version} $RPM_BUILD_DIR/tvision
 
 %setup
-/configure
+./configure
 
 %build
 make

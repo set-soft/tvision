@@ -738,6 +738,7 @@ readme.in
 readme.txt
 redhat/config-rpm.sh
 redhat/create-dirs.sh
+redhat/create-rpms.sh
 redhat/.cvsignore
 redhat/librhtv.spec.in
 redhat/README
