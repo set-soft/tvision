@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.200  2002/07/02 14:36:05  set
+* Fixed: [MSVC] a couple of warnings. From cl output sent by WintiX.
+
 Revision 2.199  2002/07/02 13:32:20  set
 * Added: [Linux] Font restore on suspend and set again on resume. Also
 handled console switch.
