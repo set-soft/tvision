@@ -67,7 +67,7 @@ void TNSCollection::atRemove( ccIndex index )
 
 void TNSCollection::atFree( ccIndex index )
 {
-    void *item = at( index );
+    void *item = at( index ); // It could be: (*this)[index];
     atRemove( index );
     freeItem( item );
 }
@@ -216,3 +216,16 @@ void TNSCollection::setLimit(ccIndex aLimit)
         }
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Just like at() but not inline and easier to call in some cases.
+
+***************************************************************************/
+
+void *TNSCollection::operator[](ccIndex i)
+{
+ if (i<0 || i>=count)
+    error(1,0);
+ return items[i];
+}

@@ -100,10 +100,10 @@ void TInputLine::draw()
 
     if( canScroll(1) )
         b.moveChar( size.x-1, rightArrow, getColor(4), 1 );
-    if( (state & sfSelected) != 0 )
+    if( canScroll(-1) )
+        b.moveChar( 0, leftArrow, getColor(4), 1 );
+    if( state & sfSelected )
         {
-        if( canScroll(-1) )
-            b.moveChar( 0, leftArrow, getColor(4), 1 );
         l = selStart - firstPos;
         r = selEnd - firstPos;
         l = max( 0, l );

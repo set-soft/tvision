@@ -45,6 +45,7 @@ ipstream& ipstream::seekg( streampos pos )
 {
     objs->removeAll();
     bp->seekoff( pos, ios::beg );
+    clear(); //is added by V.Bugrov for clear eof bit
     return *this;
 }
 
@@ -52,24 +53,35 @@ ipstream& ipstream::seekg( streamoff off, ios::seek_dir dir )
 {
     objs->removeAll();
     bp->seekoff( off, dir );
+    clear(); //is added by V.Bugrov for clear eof bit
     return *this;
 }
 
 uchar ipstream::readByte()
 {
-    return bp->sbumpc();
+    // Added modified code by V. Bugrov
+    int result = bp->sbumpc();
+    if (result == EOF)
+       setstate(ios::eofbit);
+    return (uchar)result; // This cast is safe here
 }
 
 ushort ipstream::readWord()
 {
-    ushort temp;
-    bp->sgetn( (char *)&temp, sizeof( ushort ) );
+    // Added modified code by V. Bugrov here.
+    ushort temp, i;
+    i = bp->sgetn( (char *)&temp, sizeof( ushort ) );
+    if (i < sizeof(ushort))
+       setstate(ios::eofbit);
     return temp;
 }
 
 void ipstream::readBytes( void *data, size_t sz )
 {
-    bp->sgetn( (char *)data, sz );
+    // Added modified code by V. Bugrov here.
+    size_t i = bp->sgetn( (char *)data, sz );
+    if (i < sz)
+       setstate(ios::eofbit);
 }
 
 char *ipstream::readString()

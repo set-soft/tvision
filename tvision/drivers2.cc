@@ -31,13 +31,13 @@ Modified by Robert H”hne to be used for RHIDE.
 ushort ctrlToArrow(ushort keyCode)
 {
 
-const ushort ctrlCodes[] =
+static const ushort ctrlCodes[] =
     {
     kbCtrlS, kbCtrlD, kbCtrlE, kbCtrlX, kbCtrlA,
     kbCtrlF, kbCtrlG, kbCtrlV, kbCtrlR, kbCtrlC, kbCtrlH
     };
 
-const ushort arrowCodes[] =
+static const ushort arrowCodes[] =
     {
     kbLeft, kbRight, kbUp, kbDown, kbHome,
     kbEnd,  kbDel,   kbIns,kbPgUp, kbPgDn, kbBack

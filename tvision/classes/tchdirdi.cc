@@ -129,6 +129,9 @@ void TChDirDialog::handleEvent( TEvent& event )
 #endif
                     break;
                     }
+                case cmDirSelection:
+                    chDirButton->makeDefault((Boolean)event.message.infoPtr);
+                    return; // Do not use break here ! 
                 default:
                     return;
                 }

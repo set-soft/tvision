@@ -312,7 +312,7 @@ void TDirListBox::setState( ushort nState, Boolean enable )
 {
     TListBox::setState( nState, enable );
     if( (nState & sfFocused) != 0 )
-        ((TChDirDialog *)owner)->chDirButton->makeDefault( enable );
+        message(owner, evCommand, cmDirSelection, (void *)enable);
 }
 
 #if !defined( NO_STREAM )

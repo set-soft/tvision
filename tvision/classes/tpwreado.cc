@@ -28,9 +28,10 @@ TPReadObjects::~TPReadObjects()
 void TPReadObjects::registerObject( const void *adr )
 {
     ccIndex loc = insert( (void *)adr );
-    assert( (unsigned)loc == curId++ );   // to be sure that TNSCollection
+    assert( (unsigned)loc == curId);   // to be sure that TNSCollection
                                 // continues to work the way
                                 // it does now...
+    curId++;  // Increment moved out of assertion check...
 }
 
 const void *TPReadObjects::find( P_id_type id )
