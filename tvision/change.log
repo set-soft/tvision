@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.170  2002/06/24 15:02:54  set
+* Fixed: [BC++] details to cleanly compile with BC++ 5.5.
+
 Revision 2.169  2002/06/24 15:01:35  set
 * Modified: [DJGPP] to use /dev/env/DJDIR/etc as directory for
 configuration.

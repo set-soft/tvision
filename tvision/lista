@@ -572,8 +572,6 @@ linux/obj/delete.me
 linux/rhide.env
 +linux/sacadeb
 linux/tmp/delete.me
-linuxso/compat.mak
-linuxso/Makefile
 +linuxso/makemak.pl
 +linuxso/makemak.in
 linuxso/obj/delete.me
