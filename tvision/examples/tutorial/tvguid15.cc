@@ -55,6 +55,8 @@ UNIX.
 #define Uses_TInputLine
 #include <tv.h>
 
+UsingNamespaceStd
+
 // note the extra #define above
 
 const int cmMyFileOpen = 200;   // assign new command values

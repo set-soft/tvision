@@ -49,6 +49,8 @@ UNIX.
 #define Uses_TScrollBar
 #include <tv.h>
 
+UsingNamespaceStd
+
 const int cmMyFileOpen = 200; // assign new command values
 const int cmMyNewWin   = 201;
 

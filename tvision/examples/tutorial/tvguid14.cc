@@ -53,6 +53,8 @@ UNIX.
 #define Uses_TLabel
 #include <tv.h>
 
+UsingNamespaceStd
+
 // note the extra #defines above
 
 const int cmMyFileOpen = 200;   // assign new command values

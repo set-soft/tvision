@@ -48,6 +48,8 @@ UNIX.
 #define Uses_TDialog
 #include <tv.h>
 
+UsingNamespaceStd
+
 // note the extra #define above
 
 const int cmMyFileOpen = 200;   // assign new command values

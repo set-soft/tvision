@@ -60,6 +60,8 @@ objects inserted in the dialog.
 #define Uses_MsgBox
 #include <tv.h>
 
+UsingNamespaceStd
+
 const int cmMyFileOpen = 200;   // assign new command values
 const int cmMyNewWin   = 201;
 const int cmNewDialog  = 202;
