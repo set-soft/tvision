@@ -1,4 +1,8 @@
 $Log$
+Revision 2.9  2001/11/25 00:29:02  set
+* Modified: TEventQueue::resume to avoid calling magic Linux functions, now
+TGKey have a suspend/resume for it.
+
 Revision 2.8  2001/11/25 00:26:56  set
 * Modified: TColorDialog to avoid using the old getBlinkState function, now
 part of the TScreen class.
