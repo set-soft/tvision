@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.407  2003/04/07 13:36:47  set
+* Modified: Now TMenu and TStatusLine are "i18n award". It means that when
+translations are enabled these classes translates their strings on the fly
+using caches to avoid useless searchs. It also supports code page changes
+transparently because the cache is invalidated and fresh translations are
+retreived.
+* Modified: Version to 2.0.2 because that's an important change for
+applications as SETEdit and RHIDE.
+
 Revision 2.406  2003/04/07 13:32:43  set
 * Added: A new class TVIntl to handle all the gettext mess. The GNU gettext
 library is a mess and a source of problems and limitations. For this reason
