@@ -606,6 +606,7 @@ sub GenerateMakefile
  $rep.="\trm -f linux/obj/*.o\n";
  $rep.="\trm -f compat/obj/*.o\n";
  $rep.="\trm -f djgpp/obj/*.o\n";
+ $rep.="\texamples/clean\n";
  $text=~s/\@clean\@/$rep/g;
 
  replace('Makefile',$text);

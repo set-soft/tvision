@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis.
 
  *
  *
@@ -21,6 +23,9 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_alloca
 #define Uses_filelength
 #define Uses_unistd
+#ifndef NO_STREAM
+ #define Uses_fstream
+#endif
 
 #define Uses_MsgBox
 #define Uses_TKeys
@@ -35,8 +40,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv.h>
 
 #if !defined( NO_STREAM )
-
-#include <fstream.h>
 
 __link(RScroller)
 __link(RScrollBar)
