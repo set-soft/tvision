@@ -15,7 +15,7 @@ The small sections are:
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TVision for short) v1.0.3.
+  That's the Turbo Vision distribution (TVision for short) v1.0.4.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
@@ -163,7 +163,7 @@ From binary distribution:
 
   That's very experimental so be careful I don't know if the version numbers
 are OK and what will happend if you try to execute something created with
-the 1.0.3 library using the 1.0.4 library. If you have hints about this
+the 1.0.4 library using the 1.0.4 library. If you have hints about this
 topic please contact me.
   My tests shows that a small TVision example (examples/dyntxt) is only 14Kb
 long when linked dynamically and without debug information. But you should
