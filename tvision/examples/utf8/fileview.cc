@@ -46,18 +46,38 @@ UNIX.
 #define Uses_TWindow
 #define Uses_TScroller
 #define Uses_TVConfigFile
+#define Uses_TDialog
+#define Uses_TCheckBoxes
+#define Uses_TLabel
+#define Uses_TSItem
+#define Uses_TRadioButtons
+#define Uses_TInputLine
+#define Uses_TValidator
+#define Uses_TButton
+#define Uses_MsgBox
 #include <tv.h>
 
 UsingNamespaceStd
 
 const int cmMyFileOpen = 200; // assign new command values
 const int cmMyNewWin   = 201;
+const int cmNewDialog  = 202;
 
 const char *fileToRead = "test.utf8";
 const int maxLineLength = maxViewWidth+1;
 const int maxLines      = 100;
 uint16 *lines[maxLines];
 int lineCount = 0;
+
+struct DialogData
+{
+    ushort checkBoxData;
+    ushort radioButtonData;
+    char inputLineData[128];
+    char inputLineRangeData[34];
+};
+
+DialogData *demoDialogData;
 
 static inline
 uint16 charUTF8_2_U16(const char *&b)
@@ -137,10 +157,12 @@ class TMyApp : public TApplication
 
 public:
     TMyApp();
+    ~TMyApp();
     static TStatusLine *initStatusLine( TRect r );
     static TMenuBar *initMenuBar( TRect r );
     virtual void handleEvent( TEvent& event);
     void myNewWindow();
+    void newDialog();
 };
 
 
@@ -222,6 +244,16 @@ TMyApp::TMyApp() :
                &TMyApp::initDeskTop
              )
 {
+    demoDialogData = new DialogData;
+    demoDialogData->checkBoxData = 1;
+    demoDialogData->radioButtonData = 2;
+    strcpy( demoDialogData->inputLineData, "Phone Mum!" );
+    sprintf( demoDialogData->inputLineRangeData, "%d", 16 );
+}
+
+TMyApp::~TMyApp()
+{
+   delete demoDialogData;
 }
 
 TStatusLine *TMyApp::initStatusLine(TRect r)
@@ -247,10 +279,11 @@ TMenuBar *TMyApp::initMenuBar( TRect r )
             *new TMenuItem( "~O~pen", cmMyFileOpen, kbF3, hcNoContext, "F3" )+
             *new TMenuItem( "~N~ew",  cmMyNewWin,   kbF4, hcNoContext, "F4" )+
             newLine()+
-            *new TMenuItem( "E~x~it", cmQuit, cmQuit, hcNoContext, "Alt-X" )+
+            *new TMenuItem( "E~x~it", cmQuit, kbAltX, hcNoContext, "Alt-X" )+
         *new TSubMenu( "~W~indow", kbAltW )+
             *new TMenuItem( "~N~ext", cmNext,     kbF6, hcNoContext, "F6" )+
-            *new TMenuItem( "~Z~oom", cmZoom,     kbF5, hcNoContext, "F5" )
+            *new TMenuItem( "~Z~oom", cmZoom,     kbF5, hcNoContext, "F5" )+
+            *new TMenuItem( "~D~ialog", cmNewDialog, kbF2, hcNoContext, "F2" )
         );
 }
 
@@ -265,10 +298,17 @@ void TMyApp::handleEvent(TEvent& event)
                 myNewWindow();          // define action for cmMyNewWin
                                         //   command
                 break;
+            case cmNewDialog:
+                newDialog();
+                break;
             default:
                 return;
             }
         clearEvent( event );            // clear event after handling
+        }
+    else if( event.what == evKeyDown )
+        {
+         printf("Key down: U+%04X\n",event.keyDown.charCode);
         }
 }
 
@@ -292,6 +332,68 @@ TDemoWindow::TDemoWindow( const TRect& bounds, const char *aTitle,
     makeInterior(); // creates scrollable interior and inserts into window
 }
 
+
+// changed from tvguid12: add buttons
+void TMyApp::newDialog()
+{
+    TDialog *pd = new TDialog( TRect( 20, 4, 60, 20), "Demo Dialog" );
+    if( pd )
+        {
+        TView *b = new TCheckBoxes( TRect( 3, 3, 18, 6),
+            new TSItem( "~H~varti",
+            new TSItem( "~T~ilset",
+            new TSItem( "~J~arlsberg", 0 )
+            )));
+        pd->insert( b );
+
+        pd->insert( new TLabel( TRect( 2, 2, 10, 3), "Cheeses", b ));
+
+        b = new TRadioButtons( TRect( 22, 3, 34, 6),
+            new TSItem( "~S~olid",
+            new TSItem( "~R~unny",
+            new TSItem( "~M~elted", 0 )
+            )));
+        pd->insert( b );
+
+        pd->insert( new TLabel( TRect( 21, 2, 33, 3), "Consistency", b ));
+
+        // add input line
+        b = new TInputLine( TRect( 3, 8, 37, 9 ), 128 );
+        pd->insert( b );
+        pd->insert( new TLabel( TRect( 2, 7, 24, 8 ),
+                "Delivery Instructions", b ));
+
+        // add input line with range validation
+        TInputLine *inp=new TInputLine( TRect( 3,11, 37,12 ), 32 );
+        pd->insert( inp );
+        pd->insert( new TLabel( TRect( 2,10, 26,11 ),
+                "A value from -20 to 590", inp ));
+        TValidator *vld=new TRangeValidator(-20,590);
+        inp->SetValidator( vld );
+
+        pd->insert( new TButton( TRect( 15, 13, 25, 15 ), "~O~K", cmOK,
+                    bfDefault ));
+        pd->insert( new TButton( TRect( 28, 13, 38, 15 ), "~C~ancel", cmCancel,
+                    bfNormal ));
+
+        // we save the dialog data:
+        pd->setData( demoDialogData );
+
+        ushort control = deskTop->execView( pd );
+
+        // and read it back when the dialog box is successfully closed
+        if( control != cmCancel )
+            {
+            char *end;
+            pd->getData( demoDialogData );
+            // this is a message box with arguments like printf
+            messageBox( mfInformation|mfOKButton, "Deliver: %s value %ld",
+                        demoDialogData->inputLineData,
+                        strtol(demoDialogData->inputLineRangeData,&end,0) );
+            }
+        }
+    destroy( pd );
+}
 
 int main()
 {

@@ -29,6 +29,7 @@ other stuff).
 #define Uses_TVOSClipboard
 #include <tv.h>
 
+// Not used here should be moved away
 char hotKey( const char *s )
 {
     const char *p;
@@ -43,16 +44,17 @@ char hotKey( const char *s )
 
 TInputLine::TInputLine( const TRect& bounds, int aMaxLen ) :
     TView(bounds),
-    data( new char[aMaxLen] ),
     maxLen( aMaxLen-1 ),
     curPos( 0 ),
     firstPos( 0 ),
     selStart( 0 ),
     selEnd( 0 ),
+    dataLen( 0 ),
     validator(NULL)
 {
     state |= sfCursorVis;
     options |= ofSelectable | ofFirstClick;
+    data = new char[aMaxLen];
     *data = EOS;
 }
 
@@ -76,7 +78,7 @@ Boolean TInputLine::canScroll( int delta )
         return Boolean( firstPos > 0 );
     else
         if( delta > 0 )
-            return Boolean( (int32)strlen(data) - firstPos + 2 > size.x );
+            return Boolean( dataLen - firstPos + 2 > size.x );
         else
             return False;
 }
@@ -146,7 +148,7 @@ int TInputLine::mousePos( TEvent& event )
     mouse.x = max( mouse.x, 1 );
     int pos = mouse.x + firstPos - 1;
     pos = max( pos, 0 );
-    pos = min( pos, strlen(data) );
+    pos = min( pos, dataLen );
     return pos;
 }
 
@@ -155,6 +157,7 @@ void  TInputLine::deleteSelect()
     if( selStart < selEnd )
         {
         strcpy( data+selStart, data+selEnd );
+        dataLen -= selEnd - selStart;
         curPos = selStart;
         }
 }
@@ -188,26 +191,30 @@ Boolean TInputLine::insertChar(char value)
     {
         deleteSelect();
     }
-    int32 l = strlen(data);
-    if (((l == maxLen) && ((state & sfCursorIns) == 0)) ||
+    if (((dataLen == maxLen) && ((state & sfCursorIns) == 0)) ||
         ((state & sfCursorIns) && curPos == maxLen))
       resizeData();
     {
       if( (state & sfCursorIns) == 0 )
       {
-        if (l < maxLen)
+        if (dataLen < maxLen)
+        {
           memmove( data + curPos + 1, data + curPos,
-                   strlen(data+curPos)+1 );
+                   (dataLen - curPos) + 1 );
+          dataLen++;
+        }
       }
-      else if (l == curPos)
+      else if (dataLen == curPos)
       {
         data[curPos+1] = 0;
       }
-      if ((((state & sfCursorIns) == 0) && (l < maxLen)) ||
+      if ((((state & sfCursorIns) == 0) && (dataLen < maxLen)) ||
           ((state & sfCursorIns) && (curPos < maxLen)))
       {
         if( firstPos > curPos )
             firstPos = curPos;
+        if( curPos == dataLen )
+            dataLen++;
         data[curPos++] = value;
       }
     }
@@ -303,27 +310,28 @@ void  TInputLine::handleEvent( TEvent& event )
                             curPos--;
                         break;
                     case kbRight:
-                        if( curPos < (int32)strlen(data) )
+                        if( curPos < dataLen )
                             curPos++;
                         break;
                     case kbHome:
                         curPos =  0;
                         break;
                     case kbEnd:
-                        curPos = strlen(data);
+                        curPos = dataLen;
                         break;
                     case kbBack:
                         if( curPos > 0 )
                             {
-                            strcpy( data+curPos-1, data+curPos );
-                            curPos--;
+                            selStart = curPos - 1;
+                            selEnd = curPos;
+                            deleteSelect();
                             if( firstPos > 0 )
                                 firstPos--;
                             }
                         break;
                     case kbDel:
                         if( selStart == selEnd )
-                            if( curPos < (int32)strlen(data) )
+                            if( curPos < dataLen )
                                 {
                                 selStart = curPos;
                                 selEnd = curPos + 1;
@@ -365,7 +373,7 @@ void TInputLine::selectAll( Boolean enable )
 {
     selStart = 0;
     if( enable )
-        curPos = selEnd = strlen(data);
+        curPos = selEnd = dataLen;
     else
         curPos = selEnd = 0;
     firstPos = max( 0, curPos-size.x+2 );
@@ -378,6 +386,7 @@ void TInputLine::setData( void *rec )
 {
     memcpy( data, rec, dataSize()-1 );
     data[dataSize()-1] = EOS;
+    dataLen = strlen( data );
     selectAll( True );
 }
 
