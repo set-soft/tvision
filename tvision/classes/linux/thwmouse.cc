@@ -14,14 +14,14 @@
 
 //#define DEBUG
 #ifdef DEBUG
-#ifdef TVOSf_Linux
-extern char *program_invocation_short_name;
-#define LOG(s) cerr << program_invocation_short_name << ": " << s << "\n"
+ #ifdef TVOSf_Linux
+  extern char *program_invocation_short_name;
+  #define LOG(s) do {cerr << program_invocation_short_name << ": " << s << endl; fflush(stderr);} while(0)
+ #else
+  #define LOG(s) do {cerr << s << endl; fflush(stderr);} while(0)
+ #endif
 #else
-#define LOG(s) cerr << __FILE__": " << s << "\n"
-#endif
-#else
-#define LOG(s)
+ #define LOG(s) do {;} while(0)
 #endif
 
 uchar THWMouse::buttonCount = 0;
@@ -155,6 +155,7 @@ void THWMouse::resume()
     if (gpm_fd!=-1)
       { // It can happend only if a bug is there
        handlerInstalled=True;
+       LOG("gpm_fd!=-1 && handlerInstalled==False");
        return;
       }
     if (SetUpGPMConnection()<0)
@@ -194,7 +195,7 @@ void THWMouse::suspend()
     if (gpm_fd==-1)
        return;
     Gpm_Close();
-    LOG("gpm connection closed")
+    LOG("gpm connection closed");
    }
 }
 
