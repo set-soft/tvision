@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.306  2002/09/12 21:08:56  set
+* Fixed: XTerm driver needs UNIX mouse code, changed conditionals.
+
 Revision 2.305  2002/09/12 21:03:42  set
 * Fixed: XTerm driver included an uneeded ncurses header.
 
