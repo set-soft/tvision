@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.74  2003/05/20 14:05:53  set
+* Fixed(?): When trying to enable DEBUG logs in Linux driver and using
+gcc 3.x it wasn't compilable. Not tested.
+
 Revision 2.399.2.73  2003/05/19 17:51:27  set
 * Fixed: [Linux] if the console was in UTF-8 mode:
 1) The library failed to draw some stuff during the first screen update
