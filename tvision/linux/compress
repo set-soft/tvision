@@ -76,9 +76,9 @@ foreach $i (@files)
    $r.='tvision/'.$i.' ';
   }
 # Add example makefiles
-@files=glob('tvision/examples/*/*.umk');
+@files=glob('tvision/examples/*/*.?mk');
 $r.=' '.join(' ',@files);
-@files=glob('tvision/examples/*/*/*.umk');
+@files=glob('tvision/examples/*/*/*.?mk');
 $r.=' '.join(' ',@files);
 @files=glob('tvision/examples/*/*.mkf');
 $r.=' '.join(' ',@files);

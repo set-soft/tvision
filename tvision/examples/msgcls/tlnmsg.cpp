@@ -273,7 +273,7 @@ void postInfo(int line, const char * text)
      message(TProgram::deskTop, evBroadcast, cmFindInfoBox, 0);
 
    if ((line < 0) && (wPtr != 0)){
-     TProgram::deskTop -> destroy(wPtr);
+     TProgram::deskTop -> CLY_destroy(wPtr);
      return;
    }
 

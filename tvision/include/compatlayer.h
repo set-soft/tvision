@@ -954,6 +954,10 @@ typedef unsigned long  ulong;
   #undef  Uses_CLY_ssize_t
   #define Uses_CLY_ssize_t 1
  #endif
+ #ifndef usleep
+  // Doesn't work, needs to be fixed.
+  #define usleep(microseconds) CLY_YieldProcessor(microseconds)
+ #endif
 
  /* ifstream::getline behaves strangely in BC++
     I take the gcc implementation, here is a replacement. */

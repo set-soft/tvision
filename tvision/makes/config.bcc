@@ -1,0 +1,36 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea
+# Covered by the GPL license.
+#
+# This file contains the definitions that configures the compilation.
+# They include the C and C++ options and linker options.
+# I used BC++ 5.5 free command line tools for testing.
+#
+
+!ifdef DEBUG
+CDEBUGFLAGS = -v -vi -y -6 -Od
+!else
+CDEBUGFLAGS = -O2 -6 -T -DNDEBUG
+!endif
+
+!ifdef DYNRTL
+DYNRTLDFLAGS = -WR
+!endif
+
+CFLAGS   = -w-aus -w-ccc -a8 $(DYNRTLDFLAGS) -WC -X -q $(CDEBUGFLAGS)
+# Note: rch == Unreachable code. BC++ 5.5 is idiot to detect code that is
+#              disabled on purpose. i.e. if (0) ...
+CXXFLAGS = -P -RT- -w-hid -w-par -w-rch $(CFLAGS)
+LDFLAGS  = $(DYNRTLDFLAGS) -WC
+
+RHIDE_GCC=bcc32
+RHIDE_GXX=bcc32
+RHIDE_LD=bcc32
+
+# Sets the variables for the sub-makes
+EXTRALIB_MAKE_ARGS=_SUBMAKE=1 CC="$(RHIDE_GCC)" LD="$(RHIDE_LD)" CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" -f Makefile.bcc
+
+MK_EXT=.bcc
+MKF_EXT=.bmk
+

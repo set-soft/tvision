@@ -1,0 +1,12 @@
+#!/usr/bin/make
+#
+# Copyright (c) 2003 by Salvador E. Tropea.
+# Covered by the GPL license.
+#
+SRCDIRS=.
+INCLUDE_DIRS=-I../../winnt/include -I../../include
+RHIDE_LIBS=../../makes/librhtv.lib
+CONFIG_PATH=../../makes
+.cpp.obj:
+
+.cpp.exe:
