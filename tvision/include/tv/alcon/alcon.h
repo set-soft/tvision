@@ -67,7 +67,8 @@ extern int AlCon_IsVisCursor();
 /* Initialization routines */
 extern int AlCon_Init(int w, int h, int fw=-1, int fh=-1, uchar *fdata=NULL,
                       AlCon_Color *pal=NULL);
-extern int AlCon_Resize(int new_font_width, int new_font_height);
+extern int AlCon_Resize(unsigned sW, unsigned sH, int new_font_width,
+                        int new_font_height);
 extern void AlCon_Exit();
 
 /* Keyboard input routines */
