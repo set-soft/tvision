@@ -275,7 +275,7 @@ void InitDlgEditor(const char * FileName)
      else if ((EditDlg) && EditDlg->modified)
      {
          if (!EditDlg->Save(cmCancel)) return;
-         TProgram::destroy(EditDlg);
+         TProgram::CLY_destroy(EditDlg);
          EditDlg = new TDDialog();
      }
    TProgram::deskTop->insert(EditDlg);
@@ -935,7 +935,7 @@ void TDDialog::dlgRun()
    d->selectNext(false);
    TProgram::deskTop->execView(d);
    changeBounds(d->getBounds());
-   TObject::destroy(d);
+   TObject::CLY_destroy(d);
    show();
 }
 
@@ -1060,7 +1060,7 @@ Boolean TDDialog::loadFromFile(const char * FileName)
    TView * p = last;
    do {
       TView * t = p->prev();
-      if (p != frame) destroy(p);
+      if (p != frame) CLY_destroy(p);
       p = t;
    } while (first() != last);
    

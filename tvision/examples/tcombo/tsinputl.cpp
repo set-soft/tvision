@@ -114,7 +114,7 @@ void TStaticInputLine::handleEvent(TEvent& event)
 void TStaticInputLine::newList(TCollection *aList)
 {
    if (list)
-      destroy(list);
+      CLY_destroy(list);
    list = aList;
    drawView();
 }

@@ -129,7 +129,7 @@ int lmessageBox(const char * msg, TGroup * aOwner)
    d->insert( new TButton( r, __("~C~ancel"), cmCancel, 0) );
    d->selectNext(false);
    int rst = aOwner->execView(d);
-   TObject::destroy( d );
+   TObject::CLY_destroy( d );
    return rst;
 }
 

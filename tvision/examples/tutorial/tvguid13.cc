@@ -311,7 +311,7 @@ void TMyApp::newDialog()
                     bfNormal ));
         deskTop->execView( pd );
         }
-    destroy( pd );
+    CLY_destroy( pd );
 }
 
 int main()

@@ -187,7 +187,7 @@ void TVDemo::getEvent(TEvent &event)
                     if (validView(w) != 0)
                         {
                         execView(w);
-                        destroy( w );
+                        CLY_destroy(w);
                         }
                     clearEvent(event);
                     }

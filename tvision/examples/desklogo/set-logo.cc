@@ -219,7 +219,7 @@ void TApp::AboutDialog()
 				cmOK, bfDefault ) );
 	deskTop->execView( pd );
     }
-    destroy( pd );
+    CLY_destroy( pd );
 }
 
 //========================================================================

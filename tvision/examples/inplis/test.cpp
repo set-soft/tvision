@@ -104,7 +104,7 @@ void TMyApp::inputBox()
   if (validView(pd))
    {
     deskTop->execView( pd );
-    destroy( pd );
+    CLY_destroy( pd );
    }
  }
 
