@@ -1156,6 +1156,9 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_string) && !defined(Included_string)
  #define Included_string 1
  #include <string.h>
+ #if defined(TVOSf_QNXRtP)
+  #include <strings.h> // QNX RtP requires this include for functions strcasecmp, etc.
+ #endif // __QNXNTO__
 #endif
 
 #if defined(Include_limits) && !defined(Included_limits)

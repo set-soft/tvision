@@ -741,7 +741,7 @@ sub DetectOS
     $OS='UNIX';
     $OSf='QNXRtP';
     $Compf='';
-    $stdcxx='';
+    $stdcxx='-lstdc++';
     $defaultCXX='qcc -Y_gpp';
     $supportDir='linux';
    }

@@ -20,14 +20,14 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #include <tv.h>
 
-TStrListMaker::TStrListMaker( ushort aStrSize, ushort aIndexSize ) :
-    strPos( 0 ),
-    strSize( aStrSize ),
-    strings( new char[aStrSize] ),
-    indexPos( 0 ),
-    indexSize( aIndexSize ),
-    index( new TStrIndexRec[aIndexSize] )
+TStrListMaker::TStrListMaker( ushort aStrSize, ushort aIndexSize )
 {
+    strPos=0;
+    strSize=0;
+    strings=new char[aStrSize];
+    indexPos=0;
+    indexSize=aIndexSize;
+    index=new TStrIndexRec[aIndexSize];
 }
 
 

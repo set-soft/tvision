@@ -35,11 +35,14 @@
 #include <tv.h>
 
 #ifdef TVComp_MSC
-#include <time.h>
-#include <io.h>
+ #include <time.h>
+ #include <io.h>
 #else
-#include <sys/time.h>
-#include <unistd.h>
+ #if defined(TVOSf_QNXRtP)
+  #include <time.h>
+ #endif // __QNXNTO__
+ #include <sys/time.h>
+ #include <unistd.h>
 #endif
 
 __link( RView )
