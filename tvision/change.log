@@ -1,4 +1,10 @@
 $Log$
+Revision 2.11  2001/11/25 00:34:04  set
+* Modified: TView because now the functions to set the shape of the cursor
+are compatible with BTV 2.0 and not BTV 1.03. Also a change in an extended
+member. The names of extended members changed to keep API coherence and
+avoid pointer collisions.
+
 Revision 2.10  2001/11/25 00:31:40  set
 * Modified: TProgram because I changed the names of some members in TScreen
 (all extensions not found in BTV) and to avoid using the magic "dual"

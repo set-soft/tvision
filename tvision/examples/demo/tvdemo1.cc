@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 {
     TVDemo *demoProgram = new TVDemo(argc, argv);
 
-    TScreen::SetWindowTitle("Turbo Vision Demo Program");
+    TScreen::setWindowTitle("Turbo Vision Demo Program");
     demoProgram->run();
 
     TObject::destroy( demoProgram );
