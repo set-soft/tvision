@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.475  2003/06/05 19:55:38  set
+* Fixed: Compilation problems with MSVC 7.0. Patch from Mike. Doubt:
+vsnprintf, may be the MSVC version should be lower or for all.
+
 Revision 2.474  2003/06/05 19:49:00  set
 * Modified: A couple of C++ header requests that Andris pointed out to be
 portable. I'm not sure if they are a side effect of using SSC.
