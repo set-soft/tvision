@@ -9,7 +9,7 @@ require "miscperl.pl";
 require "conflib.pl";
 
 # If the script is newer discard the cache.
-GetCache() unless (-M 'config.pl' < -M 'configure.cache');
+#GetCache() unless (-M 'config.pl' < -M 'configure.cache');
 GetVersion('');
 
 # I never tested with an older version, you can try reducing it.
@@ -49,7 +49,8 @@ LookForGNUMake();
 # Same for ar, it could be `gar'
 $GAR=LookForGNUar();
 # Look for recode and version
-LookForRecode();
+# Currently not needed
+#LookForRecode();
 # Look for xgettext
 LookForGettextTools();
 # Is the right djgpp?
@@ -89,8 +90,10 @@ if ($Compf eq 'MinGW')
   {
    $here=~s/\\/\//g;
   }
+$realPrefix=@conf{'real-prefix'};
+$realPrefix=@conf{'prefix'} unless $realPrefix;
 # Path for the includes
-$MakeDefsRHIDE[1]='TVSRC=../../include '.$here.'/include '.@conf{'prefix'}.'/include/rhtvision';
+$MakeDefsRHIDE[1]='TVSRC=../../include '.$here.'/include '.$realPrefix.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
@@ -131,11 +134,13 @@ if ($OS eq 'UNIX')
    # QNX 6.2 beta 3 workaround
    $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
    # Link with installed libraries
-   $MakeDefsRHIDE[3].=@conf{'prefix'}.'/lib ';
+   $MakeDefsRHIDE[3].=$realPrefix.'/lib ';
    # Give more priority to dynamic libs
-   $MakeDefsRHIDE[3].='../../linuxso '.$here.'/linuxso ';
+   $MakeDefsRHIDE[3].='../../linuxso ';
+   $MakeDefsRHIDE[3].=$here.'/linuxso ' unless $conf{'libs-here'} eq 'no';
    # Then the static ones
-   $MakeDefsRHIDE[3].='../../linux '.$here.'/linux ';
+   $MakeDefsRHIDE[3].='../../linux ';
+   $MakeDefsRHIDE[3].=$here.'/linux ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
    ModifyMakefiles('linux/Makefile','compat/compat.mak','intl/dummy/Makefile');
@@ -144,7 +149,9 @@ if ($OS eq 'UNIX')
 elsif ($OS eq 'DOS')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
-   $MakeDefsRHIDE[3]='TVOBJ=../../djgpp '.$here.'/djgpp '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
+   $MakeDefsRHIDE[3]='TVOBJ=../../djgpp ';
+   $MakeDefsRHIDE[3].=$here.'/djgpp ' unless $conf{'libs-here'} eq 'no';
+   $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    ModifyMakefiles('djgpp/Makefile','compat/compat.mak','intl/dummy/Makefile');
    CreateRHIDEenvs('djgpp/rhide.env','examples/rhide.env','compat/rhide.env');
@@ -153,7 +160,9 @@ elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=';
    $MakeDefsRHIDE[2].=' gdi32'; # Needed for WinGr driver
-   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
+   $MakeDefsRHIDE[3]='TVOBJ=../../win32 ';
+   $MakeDefsRHIDE[3].=$here.'/win32 ' unless $conf{'libs-here'} eq 'no';
+   $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
    #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
@@ -169,7 +178,9 @@ if ($OS ne 'Win32')
   {
    $MakeDefsRHIDE[0]='';
    $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2).' gdi32';
-   $MakeDefsRHIDE[3]='TVOBJ=../../win32 '.$here.'/win32 '.@conf{'prefix'}.'/lib '.$LDExtraDirs;
+   $MakeDefsRHIDE[3]='TVOBJ=../../win32 ';
+   $MakeDefsRHIDE[3].=$here.'/win32 ' unless $conf{'libs-here'} eq 'no';
+   $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
    `cp djgpp/Makefile win32/Makefile`;
@@ -208,9 +219,9 @@ chdir('examples');
 `perl patchenv.pl`;
 chdir('..');
 
-$ReplaceTags{'recode'}=$conf{'recode'} eq 'no' ? '@echo' : 'recode';
-$ReplaceTags{'recode_sep'}=$conf{'recode_sep'};
-$ReplaceTags{'copy_recode'}='perl utod.pl'; #($OS eq 'UNIX') ? 'perl utod.pl' : 'cp';
+#$ReplaceTags{'recode'}=$conf{'recode'} eq 'no' ? '@echo' : 'recode';
+#$ReplaceTags{'recode_sep'}=$conf{'recode_sep'};
+#$ReplaceTags{'copy_recode'}='perl utod.pl'; #($OS eq 'UNIX') ? 'perl utod.pl' : 'cp';
 print "Makefiles for translations.\n";
 ReplaceText('intl/gnumake.in','intl/Makefile');
 
@@ -235,6 +246,10 @@ sub SeeCommandLine
     elsif ($i=~'--prefix=(.*)')
       {
        $conf{'prefix'}=$1;
+      }
+elsif ($i=~'--real-prefix=(.*)')
+      {
+       $conf{'real-prefix'}=$1;
       }
     elsif ($i eq '--no-intl')
       {
@@ -296,6 +311,10 @@ sub SeeCommandLine
       {
        $conf{'HAVE_SSC'}='no';
       }
+    elsif ($i eq '--no-libs-here')
+      {
+       $conf{'libs-here'}='no';
+      }
     else
       {
        ShowHelp();
@@ -315,13 +334,15 @@ sub ShowHelp
  print "--x-include=path: X11 include path [/usr/X11R6/lib].\n";
  print "--x-lib=path    : X11 library path [/usr/X11R6/include].\n";
  print "--X11lib=val    : Name of X11 libraries [default is X11 Xmu].\n";
+ print "--no-libs-here  : Don't use the sources path for libs.\n";
  
  print "\nIntallation:\n";
  print "--prefix=path   : defines the base directory for installation.\n";
  print "--fhs           : force the FHS layout under UNIX.\n";
  print "--no-fhs        : force to not use the FHS layout under UNIX.\n";
- print "--with-debug    : install dynamic library without running strip\n";
+ print "--with-debug    : install dynamic library without running strip.\n";
  print "--without-debug : run strip to reduce the size [default]\n";
+ print "--real-prefix=pa: real prefix, for Debian package\n";
  
  print "\nLibraries:\n";
  print "--force-dummy   : use the dummy intl library even when gettext is detected.\n";
@@ -378,6 +399,13 @@ sub GiveAdvice
    {
     print "\n";
     print "* Please use $conf{'GNU_Make'} instead of make command.\n";
+   }
+ if ((@conf{'HAVE_X11'} eq 'no') && ($OS eq 'UNIX'))
+   {
+    print "\n";
+    print "* No X11 support detected. If X11 is installed make sure you have the\n";
+    print "  development package installed (i.e. xlibs-dev). Also check the options\n";
+    print "  to specify the paths for X11 libs and headers\n";
    }
 }
 
