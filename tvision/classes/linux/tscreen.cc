@@ -24,6 +24,7 @@
 #endif
 
 int dual_display = 0;
+int TScreen_suspended = 1;
 
 #ifdef __FreeBSD__
 #include <ncurses.h>
@@ -387,15 +388,18 @@ void stopcurses()
  // I know the name of only some attributes: 0=normal (what we need),
  // 1=bold, 4=underline, 5=blink, 7=inverse and I think they are 9:
  TScreen::SendToTerminal(tparm(set_attributes,0,0,0,0,0,0,0,0,0));
- // 3) Clear the screen
- clear();
- refresh();
- // 4) Set usable settings (like new line mode)
- resetterm();
- // 5) Enable the echo or the user won't see anything
- echo();
- // Now we can finally end
- endwin();
+ if (!TScreen_suspended)
+   {
+    // 3) Clear the screen
+    clear();
+    refresh();
+    // 4) Set usable settings (like new line mode)
+    resetterm();
+    // 5) Enable the echo or the user won't see anything
+    echo();
+    // Now we can finally end
+    endwin();
+   }
  fclose(tty_file);
 }
 
@@ -553,8 +557,6 @@ Boolean TScreen::checkSnow = True;
 ushort *TScreen::screenBuffer = 0;
 ushort TScreen::cursorLines = 0;
 volatile sig_atomic_t TDisplay::windowSizeChanged=0;
-
-int TScreen_suspended = 1;
 
 void SaveScreen();
 void RestoreScreen();
