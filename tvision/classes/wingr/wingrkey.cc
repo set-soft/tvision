@@ -11,25 +11,23 @@
   windows GUI code by Jose Angel Sanchez Caso (JASC).
 
   Description:
-
   Windows Keyboard routines.
 
 ***************************************************************************/
-
 #include <tv/configtv.h>
 
-#ifdef TVOS_Win32
-
+#define Uses_ctype
+#define Uses_string
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_TKeys
 #define Uses_TKeys_Extended
-#define Uses_ctype
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TVCodePage
 #include <tv.h>
-#include <string.h>
+
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -393,8 +391,11 @@ ConvKeyRec xlateTable[]=
     case  437: remapKey= NULL; }}  // MS-DOS United States, native format
 
 
+#else
 
-#endif // TVOS_Windows
+#include <tv/wingr/screen.h>
+#include <tv/wingr/key.h>
+#include <tv/wingr/mouse.h>
 
-
+#endif // TVOS_Win32
 

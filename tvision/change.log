@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.273  2002/08/28 13:50:45  domatlantida
+* Added: WinGr driver. It isn't integrated to the make process yet. The
+author is JASC (domatlantida). But this check-in is being done by set using
+domatlantida user until JASC solves your CVS setup problems.
+
 Revision 2.272  2002/08/27 17:20:09  set
 * Added: [X11] An option to avoid adjusts in the window size when the WM
 doesn't follow our hints. Roman Valyushenko discovered problems using KDE

@@ -8,11 +8,7 @@
   Windows GUI Display routines.
 
 ***************************************************************************/
-
-#include <stdlib.h>
 #include <tv/configtv.h>
-
-#ifdef TVOS_Win32
 
 #define Uses_stdio
 #define Uses_TDisplay
@@ -31,6 +27,8 @@
 #define Uses_TButton         // JASC, ago 2002
 #define Uses_TLabel          // JASC, ago 2002
 #include <tv.h>
+
+#ifdef TVOS_Win32
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -669,6 +667,11 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
   TProgram::doNotReleaseCPU= true; }   // annoys windows loop, implemented here
 
 
+#else
 
-#endif // TVOS_Windows
+#include <tv/wingr/screen.h>
+#include <tv/wingr/key.h>
+#include <tv/wingr/mouse.h>
+
+#endif // TVOS_Win32
 

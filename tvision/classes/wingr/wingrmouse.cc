@@ -9,10 +9,7 @@
   THWindows mouse stuff.
 
 *****************************************************************************/
-
 #include <tv/configtv.h>
-
-#ifdef TVOS_Win32
 
 #define Uses_TDisplay
 #define Uses_TScreen
@@ -21,7 +18,9 @@
 #define Uses_TEvent
 #define Uses_TEventQueue
 #define Uses_TVCodePage
-#include "tv.h"
+#include <tv.h>
+
+#ifdef TVOS_Win32
 
 // #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -169,6 +168,11 @@
    buttonCount= 3; }
 
 
-#endif // TVOS_Win32
+#else
 
+#include <tv/wingr/screen.h>
+#include <tv/wingr/mouse.h>
+#include <tv/wingr/key.h>
+
+#endif // TVOS_Win32
 
