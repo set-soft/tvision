@@ -18,11 +18,11 @@ foreach $i (@ARGV)
   }
 
 #  Update the makefile if needed
-print 'makefile: ';
-if (-M 'makefile' > -M 'librhtv.gpr')
+print 'Makefile: ';
+if (-M 'Makefile' > -M 'librhtv.gpr')
   {
    system('gpr2mak librhtv.gpr');
-   system('mv libtv.mak makefile');
+   system('mv librhtv.mak Makefile');
    print "updated\n";
   }
 else
