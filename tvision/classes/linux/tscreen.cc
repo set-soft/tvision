@@ -70,6 +70,88 @@ static unsigned char pctoascii[] =
   "`++}-+++`.+++=+++++++++++'.|-||-abipeouyooooooEn=+><()-=o..Vn2X "
 };
 
+static unsigned PC2curses[256];
+
+/**[txh]********************************************************************
+
+  Description:
+  This function fixes the PC437->ASCII table. This solution is only partial
+because the UNIX terminals usually use ISO-1 and never PC437. This will be
+finally fixed when I add the codepage stuff in TVision (currently only
+available in my editor). Anyways, it makes the windows look much better in
+Xterminals, additionally that's what is supposed to do (ask curses). The
+only non-clear stuff is that I'm supposing that the frames are in one of the
+character sets (G0 or G1) and not made with some trick. That's true in Linux
+and any ISO2022 terminal (Xterminals and DEC almost sure). (SET)
+
+***************************************************************************/
+
+static
+void InitPCCharsMapping()
+{
+ int i;
+ // By default take the above translation
+ for (i=0; i<256; i++)
+    {
+     PC2curses[i]=pctoascii[i];
+    }
+ // Patch the curses available values from terminfo
+ PC2curses[0xDA]=ACS_ULCORNER; // Ú
+ PC2curses[0xC9]=ACS_ULCORNER; // É We don't have doubles in curses
+ PC2curses[0xC0]=ACS_LLCORNER; // À
+ PC2curses[0xC8]=ACS_LLCORNER; // È
+ PC2curses[0xBF]=ACS_URCORNER; // ¿
+ PC2curses[0xBB]=ACS_URCORNER; // »
+ PC2curses[0xD9]=ACS_LRCORNER; // Ù
+ PC2curses[0xBC]=ACS_LRCORNER; // ¼
+
+ PC2curses[0xC3]=ACS_LTEE;     // Ã
+ PC2curses[0xCC]=ACS_LTEE;     // Ì
+ PC2curses[0xC6]=ACS_LTEE;     // Æ
+ PC2curses[0xC7]=ACS_LTEE;     // Ç
+
+ PC2curses[0xB4]=ACS_RTEE;     // ´
+ PC2curses[0xB9]=ACS_RTEE;     // ¹
+ PC2curses[0xB5]=ACS_RTEE;     // µ
+ PC2curses[0xB6]=ACS_RTEE;     // ¶
+
+ PC2curses[0xC1]=ACS_BTEE;     // Á
+ PC2curses[0xCA]=ACS_BTEE;     // Ê
+ PC2curses[0xCF]=ACS_BTEE;     // Ï
+ PC2curses[0xD0]=ACS_BTEE;     // Ð
+
+ PC2curses[0xC2]=ACS_TTEE;     // Â
+ PC2curses[0xCB]=ACS_TTEE;     // Ë
+ PC2curses[0xD1]=ACS_TTEE;     // Ñ
+ PC2curses[0xD2]=ACS_TTEE;     // Ò
+
+ PC2curses[0xC4]=ACS_HLINE;    // Ä
+ PC2curses[0xCD]=ACS_HLINE;    // Í
+ PC2curses[0xB3]=ACS_VLINE;    // ³
+ PC2curses[0xBA]=ACS_VLINE;    // º
+ PC2curses[0xC5]=ACS_PLUS;
+ PC2curses[0x04]=ACS_DIAMOND;
+ PC2curses[0xB1]=ACS_CKBOARD;
+ PC2curses[0xFE]=ACS_BULLET;
+ PC2curses[0x11]=ACS_LARROW;
+ PC2curses[0x10]=ACS_RARROW;
+ PC2curses[0x19]=ACS_DARROW;
+ PC2curses[0x18]=ACS_UARROW;
+ // ACS_BOARD is the best choice here but isn't available in Xterms because
+ // the DEC graphic chars have only one "gray" character (ACS_CKBOARD)
+ PC2curses[0xB0]=ACS_CKBOARD;//ACS_BOARD;
+ // The block isn't available in DEC graphics.
+ PC2curses[0xDB]=' ';//ACS_BLOCK;
+ PC2curses[0xDC]=' ';
+ PC2curses[0xDD]=' ';
+ PC2curses[0xDF]=' ';
+ // I added the following line even when is supposed to be the default
+ // because in some way I managed to break it in Eterm while testing so I
+ // think other users could do the same. Explicitly requesting it for G1
+ // is the best.
+ write(tty_fd,"\x1B)0",3); // Choose DEC characters for G1 set (ISO2022)
+}
+
 inline int range(int test, int min, int max)
 {
   return test < min ? min : test > max ? max : test;
@@ -170,7 +252,8 @@ void startcurses()
   /* Save the terminal attributes so we can restore them later. */
   /* for our screen */
   tcgetattr (tty_fd, &new_term);
-
+  if (!use_pc_chars)
+     InitPCCharsMapping();
 }
 
 void stopcurses()
@@ -233,6 +316,7 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
 {
   char out[4096], *p = out;
   int col = -1;
+  int altSet=0,needAltSet;
 
 #if 0
 #define ___C() write(2,out,p-out)
@@ -275,10 +359,28 @@ static void writeBlock(int dst, int len, ushort *old, ushort *src)
       }
     }
 
-    if (!use_pc_chars || code < ' ') code = pctoascii[code];
+    if (!use_pc_chars || code < ' ')
+      {
+       code=PC2curses[code];
+       //code=pctoascii[code];
+       needAltSet=code & WA_ALTCHARSET;
+       if (needAltSet && !altSet)
+         {
+          altSet=1;
+          safeput(p,enter_alt_charset_mode);
+         }
+       else
+         if (!needAltSet && altSet)
+           {
+            altSet=0;
+            safeput(p,exit_alt_charset_mode);
+           }
+      }
     *p++ = code;
     _C();
   }
+  if (altSet)
+     safeput(p,exit_alt_charset_mode);
 #ifdef __SAVECURSOR_OK
   safeput(p, restore_cursor);
 #else
