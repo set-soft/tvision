@@ -1,8 +1,12 @@
 $Log$
+Revision 1.227  2001/10/17 00:00:29  set
+* Added: to the readme notes about some success compiling for Linux+HPPA+gcc
+3.0 reported by Joël Soete <JSO@EUROPAY.COM>. [ISO-1]
+
 Revision 1.226  2001/10/16 23:53:18  set
 * Fixed: A couple of formating errors in the ASCII table and Calendar of the
 demo example. Patch from Waldemar Schultz <schultz@mathematik.tu-muenchen.de>
-.
+
 Revision 1.225  2001/10/13 23:53:49  set
 * Fixed: The clean target didn't ignore errors from the examples/clean
 script.
