@@ -33,13 +33,15 @@
 
 ushort execDialog( TDialog *d, void *data )
 {
+    // SET: set the data before checking if the dialog is valid.
+    // If we use validators that's very important.
+    if( d && data )
+        d->setData( data );
     TView *p = TProgram::application->validView( d );
     if( p == 0 )
         return cmCancel;
     else
         {
-        if( data != 0 )
-            p->setData( data );
         ushort result = TProgram::deskTop->execView( p );
         if( result != cmCancel && data != 0 )
             p->getData( data );
