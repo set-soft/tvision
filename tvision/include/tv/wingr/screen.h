@@ -9,7 +9,8 @@
  *  Covered by the GPL license. 
  */
  
-#if defined(TVOS_Win32) && !defined(WINGRSCR_HEADER_INCLUDED)
+#if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver) \
+    && !defined(WINGRSCR_HEADER_INCLUDED)
 #define WINGRSCR_HEADER_INCLUDED
 
 

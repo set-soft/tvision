@@ -1,4 +1,11 @@
 $Log$.
+Revision 2.549  2004/06/24 20:47:46  set
+* Fixed: [MSVC] Cast to (char *) for alloca return value in ntdirent.c.
+* Fixed: K&R 1 prototypes in regex.c.
+* Fixed: [MSVC] Lack of ioctl in 4.0
+* Fixed: Forced stddef.h because of size_t use everywhere.
+* All the above from Arnold Wiegert, also previous patch.
+.
 Revision 2.548  2004/06/23 20:11:04  set
 * Added: [MSVC] Version 4.0 seems to report version 1000 and lacks
 snprintf. I also needs new.h instead of new.

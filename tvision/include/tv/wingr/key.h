@@ -7,8 +7,9 @@
  *  Covered by the GPL license. 
  */
  
-#if defined(TVOS_Win32) && !defined(WINDOWSKEY_HEADER_INCLUDED)
-#define WINDOWSKEY_HEADER_INCLUDED
+#if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver) \
+    && !defined(WINGRKEY_HEADER_INCLUDED)
+#define WINGRKEY_HEADER_INCLUDED
 
 struct TEvent;
 
