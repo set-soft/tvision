@@ -205,9 +205,9 @@ TBorlandHelpFile::TBorlandHelpFile(fpstream & s):THelpFile(s)
   modified=false;
   stream->seekg(0);
   Stamp = read0String(*stream);
-  stream->seekg(14, ios::cur);
+  stream->seekg(14, CLY_IOSCur);
   *stream >> FormatVersion;
-  stream->seekg(1, ios::cur);
+  stream->seekg(1, CLY_IOSCur);
 
   while (!stream->eof())
   {
@@ -240,11 +240,11 @@ TBorlandHelpFile::TBorlandHelpFile(fpstream & s):THelpFile(s)
         break;
 
       case 2:                  /* Text */
-        stream->seekg(-(length + 3), ios::cur);
+        stream->seekg(-(length + 3), CLY_IOSCur);
         return;
 
       case 3:                  /* KeyWord */
-        stream->seekg(-(length + 3), ios::cur);
+        stream->seekg(-(length + 3), CLY_IOSCur);
         return;
 
       case 4:                  /* Index */

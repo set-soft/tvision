@@ -25,7 +25,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class iopstream : public ipstream, public opstream
 {
 public:
- iopstream(CLY_std(streambuf) *);
+ iopstream(CLY_streambuf *);
  ~iopstream();
 
 protected:

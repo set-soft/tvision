@@ -22,7 +22,7 @@ UsingNamespaceStd
 
 fpbase::fpbase()
 {
- buf=new CLY_filebuf();
+ buf=new CLY_int_filebuf();
  pstream::init(buf);
 }
 
@@ -34,7 +34,7 @@ fpbase::fpbase(int f)
 
 fpbase::fpbase( const char *name, CLY_OpenModeT omode, int prot )
 {
- buf=new CLY_filebuf();
+ buf=new CLY_int_filebuf();
  open(name,omode,prot);
  pstream::init(buf);
 }
@@ -49,20 +49,20 @@ fpbase::fpbase( int f, char *b, int len )
 void fpbase::setbuf(char* b, int len)
 {
  if (buf->CLY_PubSetBuf(b,len))
-    clear(ios::goodbit);
+    clear(CLY_IOSGoodBit);
  else
-    setstate(ios::failbit);
+    setstate(CLY_IOSFailBit);
 }
 
 #ifdef CLY_HaveFBAttach
 void fpbase::attach(int f)
 {
  if (buf->is_open())
-    setstate(ios::failbit);
+    setstate(CLY_IOSFailBit);
  else if(buf->attach(f))
-    clear(ios::goodbit);
+    clear(CLY_IOSGoodBit);
  else
-    clear(ios::badbit);
+    clear(CLY_IOSBadBit);
 }
 #endif
 
@@ -74,31 +74,31 @@ fpbase::~fpbase()
 void fpbase::open( const char *b, CLY_OpenModeT m, int prot )
 {
  if (buf->is_open())
-    clear(ios::failbit);        // fail - already open
+    clear(CLY_IOSFailBit);        // fail - already open
  else if (buf->CLY_FBOpen(b,m,prot))
-    clear(ios::goodbit);        // successful open
+    clear(CLY_IOSGoodBit);        // successful open
  else
-    clear(ios::badbit);     // open failed
+    clear(CLY_IOSBadBit);     // open failed
 }
 
 void fpbase::close()
 {
  if (buf->close())
-    clear(ios::goodbit);
+    clear(CLY_IOSGoodBit);
  else
-    setstate(ios::failbit);
+    setstate(CLY_IOSFailBit);
 }
 
-filebuf *fpbase::rdbuf()
+CLY_filebuf *fpbase::rdbuf()
 {
  return buf;
 }
 
 #ifdef CLY_DefineSpecialFileBuf
 // gcc 3.1 specific
-CLY_filebuf *CLY_filebuf::open(FILE *f, ios_base::openmode mode)
+CLY_int_filebuf *CLY_int_filebuf::open(FILE *f, ios_base::openmode mode)
 {
- CLY_filebuf *ret=NULL;
+ CLY_int_filebuf *ret=NULL;
  if (!this->is_open())
    {
     _M_file.sys_open(f,mode);
@@ -118,9 +118,9 @@ CLY_filebuf *CLY_filebuf::open(FILE *f, ios_base::openmode mode)
  return ret;
 }
 
-CLY_filebuf *CLY_filebuf::open(int h, ios_base::openmode mode)
+CLY_int_filebuf *CLY_int_filebuf::open(int h, ios_base::openmode mode)
 {
- CLY_filebuf *ret=NULL;
+ CLY_int_filebuf *ret=NULL;
  if (!this->is_open())
    {
     _M_file.sys_open(h,mode,false);

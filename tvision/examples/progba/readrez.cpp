@@ -142,7 +142,7 @@ void TMyApplication::statusDlg()
    TProgressBar *pbar;
    TDialog *pd;
    fpstream *ofps=0;
-   ofps = new fpstream( rezFileName, ios::in|ios::binary );
+   ofps = new fpstream( rezFileName, CLY_IOSIn | CLY_IOSBin );
    if( !ofps->good() )
      messageBox("Stream open error", mfError|mfOKButton );
 

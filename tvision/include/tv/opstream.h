@@ -30,7 +30,7 @@ class TPWrittenObjects;
 class opstream : virtual public pstream
 {
 public:
-    opstream( CLY_std(streambuf) * );
+    opstream( CLY_streambuf * );
     ~opstream();
 
     CLY_StreamPosT tellp();

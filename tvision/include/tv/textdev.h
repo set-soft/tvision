@@ -19,7 +19,7 @@ Andris Pavenis.
 class TRect;
 class TScrollBar;
 
-class TTextDevice : public CLY_std(streambuf), public TScroller
+class TTextDevice : public CLY_streambuf, public TScroller
 /* I have changed the order of the baseclasses, because there is a bug in
    the iostream library. The functions in this library call the functions
    if of a streambuf object with a this pointer to the streambuf object,

@@ -35,7 +35,7 @@ public:
     ~fpstream();
     long filelength();
 
-    CLY_std(filebuf) *rdbuf();
+    CLY_filebuf *rdbuf();
     void open( const char *, CLY_OpenModeT, int = CLY_FBOpenProtDef );
 };
 

@@ -32,7 +32,7 @@ class TPReadObjects;
 class ipstream : virtual public pstream
 {
 public:
-    ipstream(CLY_std(streambuf) *);
+    ipstream(CLY_streambuf *);
     ~ipstream();
 
     CLY_StreamPosT tellg();

@@ -1,7 +1,14 @@
+Topic: TV Streams
+Author: Salvador E. Tropea
+Status: Just random data
+Revision: $Revision$
+
 This is an incomplete and inaccurate collection of data about TV streams.
 Use it carefuly.
 
 Classes hierarchy:
+
+Note: Arrows are from parent to child, sorry if that's confusing.
 
    +--------------------------- pstream ----------------------------+
    |                               |                                |

@@ -28,7 +28,7 @@ fpstream::fpstream()
 }
 
 fpstream::fpstream( const char* name, CLY_OpenModeT omode, int prot ) :
-        fpbase( name, omode | ios::out | CLY_IOSBin, prot )
+        fpbase( name, omode | CLY_IOSOut | CLY_IOSBin, prot )
 {
 }
 
@@ -44,14 +44,14 @@ fpstream::~fpstream()
 {
 }
 
-filebuf *fpstream::rdbuf()
+CLY_filebuf *fpstream::rdbuf()
 {
     return fpbase::rdbuf();
 }
 
 void fpstream::open( const char *name, CLY_OpenModeT omode, int prot )
 {
-    fpbase::open( name, omode | ios::in | ios::out | CLY_IOSBin, prot );
+    fpbase::open( name, omode | CLY_IOSIn | CLY_IOSOut | CLY_IOSBin, prot );
 }
 
 
@@ -63,8 +63,8 @@ void fpstream::open( const char *name, CLY_OpenModeT omode, int prot )
 long fpstream::filelength()
 {
  long basePos=tellp();
- long ret=seekg(0, std::ios::end).tellg();
- seekg(basePos, std::ios::beg);
+ long ret=seekg(0, CLY_IOSEnd).tellg();
+ seekg(basePos, CLY_IOSBeg);
  return ret;
 }
 #else

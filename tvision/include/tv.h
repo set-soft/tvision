@@ -562,25 +562,25 @@ Modified by Salvador E. Tropea
 
 #if defined( Uses_ofpstream )
 #define Uses_fpbase
-#define Uses_iostream
+#define Uses_iostream_simple
 #define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_ifpstream )
 #define Uses_fpbase
-#define Uses_iostream
+#define Uses_iostream_simple
 #define INCLUDE_TOBJSTRM_H
 #endif
 
 #if defined( Uses_fpbase )
 #define Uses_pstream
-#define Uses_fstream
+#define Uses_fstream_simple
 #define INCLUDE_TOBJSTRM_H
 #define Uses_FILEBUF_OPENPROT
 #endif
 
 #if defined( Uses_iopstream )
-#define Uses_iostream
+#define Uses_iostream_simple
 #define INCLUDE_TOBJSTRM_H
 #endif
 
@@ -595,7 +595,7 @@ Modified by Salvador E. Tropea
 #endif
 
 #if defined( Uses_pstream )
-#define Uses_iostream
+#define Uses_iostream_simple
 #define INCLUDE_TOBJSTRM_H
 #endif
 

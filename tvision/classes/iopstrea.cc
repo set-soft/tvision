@@ -19,7 +19,7 @@ Andris Pavenis.
 
 UsingNamespaceStd
 
-iopstream::iopstream( streambuf * sb )
+iopstream::iopstream( CLY_streambuf * sb )
 {
     pstream::init( sb );
 }

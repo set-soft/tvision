@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2002 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2003 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -282,9 +282,17 @@ sub SeeCommandLine
       {
        $conf{'debugInfo'}='yes';
       }
-    elsif ($i eq '--with-debug')
+    elsif ($i eq '--without-debug')
       {
        $conf{'debugInfo'}='no';
+      }
+    elsif ($i eq '--with-ssc')
+      {
+       $conf{'HAVE_SSC'}='yes';
+      }
+    elsif ($i eq '--without-ssc')
+      {
+       $conf{'HAVE_SSC'}='no';
       }
     else
       {
@@ -318,6 +326,8 @@ sub ShowHelp
  print "--no-intl       : don't use international support.\n";
  print "--with-mss      : compiles with MSS memory debugger.\n";
  print "--without-mss   : compiles without MSS [default].\n";
+ print "--with-ssc      : compiles using Simple Streams Compatibility.\n";
+ print "--without-ssc   : compiles without SSC [default].\n";
  
  print "\nOthers:\n";
  print "--help          : displays this text.\n";
@@ -930,6 +940,7 @@ sub CreateConfigH
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
  $text.=ConfigIncDefYes('HAVE_GPM','GPM mouse support');
  $text.=ConfigIncDefYes('HAVE_OUTB_IN_SYS','out/in functions defined by glibc');
+ $text.=ConfigIncDefYes('HAVE_SSC','Use stream replacements');
  $text.=ConfigIncDefYes('TV_BIG_ENDIAN','Byte order for this machine');
  $text.="\n\n";
  $text.="#define TVOS_$OS\n";

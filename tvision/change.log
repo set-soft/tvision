@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.427  2003/04/21 18:03:14  set
+* Added: Some documentation about the new TVIntl API.
+
 Revision 2.426  2003/04/21 16:56:56  set
 * Fixed: Alt-X Exit wasn't marked for translation.
 * Added: An i18n example.

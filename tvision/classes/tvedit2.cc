@@ -10,9 +10,8 @@
 /*   Turbo Vision TVEDIT source file                        */
 /*----------------------------------------------------------*/
 
-#include <stdlib.h>
-#include <stdarg.h>
-#define Uses_iomanip
+#define Uses_stdlib
+#define Uses_stdarg
 
 #define Uses_TDialog
 #define Uses_TDeskTop

@@ -30,6 +30,7 @@ classes/ofpstrea.cc
 classes/opstream.cc
 classes/osclipboard.cc
 classes/pstream.cc
+classes/ssc_streams.cc
 classes/tvtext1.cc
 classes/tvtext2.cc
 classes/tapplica.cc
@@ -602,6 +603,7 @@ include/tv/skeleton/mouse.h
 include/tv/skeleton/screen.h
 include/tv/sortcoll.h
 include/tv/sortlibo.h
+include/tv/ssc_streams.h
 include/tv/statsdef.h
 include/tv/statsitm.h
 include/tv/statslin.h

@@ -50,7 +50,7 @@ void makerez()
 
    cout<< "Creating "<< rezFileName << endl;
 
-   ofps = new fpstream( rezFileName, ios::out|ios::binary );
+   ofps = new fpstream( rezFileName, CLY_IOSOut | CLY_IOSBin );
    if( !ofps->good() )
     {
       cerr<< rezFileName <<": init failed..."<<endl;
