@@ -1,0 +1,178 @@
+<Eterm-0.8>
+#
+# Eterm configuration file to be used with setedit
+#
+
+begin main
+
+  begin color
+
+# Foreground, background, cursor, scrollbar, pointer colors
+    foreground white
+    background black
+    cursor #ffff00
+    cursor_text #880000
+    menu_text white
+    scrollbar #3f1c00
+    unfocusedscrollbar #777777
+    pointer white
+
+# video attribute can either be "normal" or "reverse"
+    video normal
+
+# Redefine the 16 basic colors, if you really feel the need
+# First word is "color", next is the number (0-15, BD, or UL),
+# then the values for red, green, and blue separated by spaces
+# Numbers are base 10 unless preceded by "0x" (base 16) or '0'
+# (base 8).  Alternatively, you can use color names or #xxxxxx
+# format.
+
+# The colors below are taken from Rasterman's .Xdefaults file.  They are intended to
+# display ANSI art properly when combined with a good ANSI-art font (like vga or
+# Rasterman's nexus font).
+#   color  0 0    0    0
+#   color  1 0xaa 0    0
+#   color  2 0    0210 0
+#   color  3 0xaa 0x55 0x22
+#   color  4 0    0    0xaa
+#   color  5 0xaa 0    0xaa
+#   color  6 0    0xaa 0xaa
+#   color  7 0xaa 0xaa 0xaa
+#   color  8 0x44 0x44 0x44
+#   color  9 0xff 0x44 0x44
+#   color 10 0x44 0xff 0x44
+#   color 11 0xff 0xff 0x44
+#   color 12 0x44 0x44 0xff
+#   color 13 0xff 0x44 0xff
+#   color 14 0x44 0xff 0xff
+#   color 15 #ffffff
+#   color bd #ffffff
+#   color ul #ffffff
+
+  end color
+
+  begin attributes
+
+# Geometry == widthxheight+x_offset+y_offset, offsets from top left
+#             if +, bottom right if -
+    geometry 94x34
+    title "Setedit - %appname()"
+    name ""
+    iconname Setedit
+
+# Set the fonts.  These must be monospace fonts.  The values shown are
+# the Eterm defaults.  The "bold" font is the font used if color BD has
+# not been set and Eterm cannot map the foreground color to one of the
+# high-intensity colors (8-15).
+    font 0 fixed
+    font 1 6x10
+    font 2 6x13
+    font 3 8x13
+    font 4 9x15
+#    font bold 7x14
+  end attributes
+
+# This section is for pixmap definitions.  The only one used currently
+# is "background".  The supplied numbers work just like they do for
+# Enlightenment:  first is X (width), second is Y (height).  -1 to
+# scale 100%, 0 to tile, any other number specifies W/H in pixels
+  begin pixmaps
+#    background %random(`cat pixmaps.list 2>/dev/null`)
+#    path "./pix/:~/.Eterm/:~/.Eterm/themes/Eterm/pix:~/.Eterm/pix/:/usr/share/Eterm/pix/"
+
+# Support for these is forthcoming
+#    scroll_up -1 -1 ~/.Eterm/up_arrow.ppm
+#    scroll_down -1 -1 ~/.Eterm/down_arrow.ppm
+#    scroll_background 0 0 ~/.Eterm/scroll.ppm
+#    scroll_anchor -1 -1 ~/.Eterm/anchor.ppm
+  end
+
+# The Kanji support options.  Same goes for these fonts as for the normal
+# ones.  The "encoding" attribute can be either "eucj" or "sjis".
+#  begin kanji
+#    font 0 k14
+#    font 1 jiskan16
+#    font 2 jiskan18
+#    font 3 jiskan24
+#    font 4 jiskan26
+#    encoding eucj
+#  end kanji
+
+# Boolean variables.  The values can be "1", "on", or "true" for TRUE, or "0",
+# "off", or "false" for FALSE.
+  begin toggles
+
+# If true, Eterm will un-iconify itself when it receives a beep (ASCII 0x07)
+    map_alert on
+
+# If true, Eterm will flash rather than sending a beep.
+    visual_bell off
+
+# If true, Eterm will prepend '-' to the shell name when calling it.
+    login_shell true
+
+# If true, Eterm will display the scroll bar
+    scrollbar off
+
+# If true, Eterm will attempt to make an entry in the utmp file to record the
+# login information.  Eterm *must* run privileged to do this.
+    utmp_logging on
+
+# If true, Eterm will handle the Meta (Alt) + keypress to set the 8th bit.
+# If false, Eterm will handle the Meta + keypress as an escape prefix. (default)
+#    meta8 false
+
+# If true, Eterm will start iconified.
+    iconic false
+
+# If true, Eterm will jump to the bottom of the window when something is echoed
+# to the terminal, either by program output or user input.
+    home_on_echo 1
+
+# If true, Eterm will jump to the bottom of the window when you refresh the
+# screen (^L).
+    home_on_refresh 1
+
+# If true, Eterm will put the scrollbar on the right of the window (default is left).
+    scrollbar_right true
+
+# If true, the scrollbar will have no trough.
+    scrollbar_floating false
+
+# If true, Eterm will run with no window borders.
+    borderless false
+
+  end toggles
+
+  begin keyboard
+
+# Use the supplied keysym to reduce/enlarge the font
+    smallfont_key LessThan
+    bigfont_key GreaterThan
+
+# You can also associate a given keysym (0xff00 - 0xffff) with a string
+#    keysym 0xffff "\r\n\e\007\t"
+    keysym 0xffea "ALT_R"
+
+# Greek keyboard mode.  First the word "greek", then its boolean
+# state, then its mode (either "iso" or "ibm").
+#    greek off iso
+  end keyboard
+
+  begin misc
+
+    save_lines 0
+    cut_chars "\t\\\`\\\"\'&() *,;<=>?@[]{|}"
+    border_width 5
+    menu Setedit.menu
+
+# Value to use for $TERM
+# The library will use some Eterm tricks if this terminal is detected:
+    term_name xterm-eterm-tv
+
+# Program to exec (intended for use with themes)
+    exec setedit
+#    exec /usr/src/tvision/gkey.exe
+  end misc
+
+end main

@@ -1,0 +1,28 @@
+# Setedit control menu
+[menu:Eterm]
+
+/Font/*
+{Normal}				^@\e]50;#
+{Larger}				^@\e]50;#+
+{Smaller}				^@\e]50;#-
+{-}
+{Font 1}				^@\e]50;#1
+{Font 2}				^@\e]50;#2
+{Font 3}				^@\e]50;#3
+{Font 4}				^@\e]50;#4
+
+/Terminal/*
+./Toggles/*
+{Map Alert}				^@\e]6;21\a
+{Primary/Secondary Screen}		^@\e[?47t
+{Reverse Video}				^@\e[?5t
+{Visual Bell}				^@\e]6;20\a
+{Xterm Selection Behavior}		^@\e]6;22\a
+../Menubar/*
+{Toggle Visibility}{Ctrl-Button3}	^@\e[?10t
+{Refresh Menubar}			^@\e[?10h
+{Toggle Window Move by Menubar}		^@\e]6;15\a
+
+/
+[show]
+[done]
