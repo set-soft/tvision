@@ -1,4 +1,4 @@
 #!/bin/sh
 rm -f configure.cache
 rm -f Makefile
-perl config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe
+perl  config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe
