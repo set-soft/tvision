@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.546  2004/06/14 14:43:39  set
+- From valgrind:
+* Fixed: TVIntl::emptySt() new/delete[] missmatch
+* Fixed: TFileDialog::valid new[]/delete missmatch
+* Added: TVOSClipboard clean-up at exit.
+.
 Revision 2.545  2004/06/14 14:42:42  set
 * Fixed: [X11] A race condition in the update thread code. It was possible
 that a SIGALRM arrived after destroying the TScreen class and before we
