@@ -1,4 +1,15 @@
-$Log$
+$Log$.
+Revision 2.264  2002/08/22 18:29:44  set
+* Fixed: Write pass 1 error in configfile.cc. Detected with efence while
+using SETEdit.
+* Added: Configfile members to search strings to match the integer
+facilities.
+* Added: DOS, Linux, X11 and XTerm/Eterm drivers now supports setting a
+default palette in the tvrc file. The Eterm is really slow and flickers
+when we set the palette :-(. DOS is untested.
+* Fixed: [Linux] keys reported as Alt+key from ESC+key now doesn't have
+an associated ASCII.
+
 Revision 2.263  2002/08/21 12:50:59  set
 * Fixed: [Win32] unsigned/signed comparisson. Patch by Igor.
 
