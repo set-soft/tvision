@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 1.242.2.25  2002/04/29 16:41:15  set
+* Fixed: When running in a generic color terminal (using 8 colors) no color
+remapping was applied. As a result the colors were messed.
+* Added: Some minor support for "screen" terminal. Both from reports by
+"Tatu Kilappa" <trilkk@hotmail.com>.
+
 Revision 1.242.2.24  2002/04/29 16:12:23  set
 * Added: compat.mak to CVS so people without RHIDE can compile.
 * Fixed: linuxso/makemak.pl created rhide.env symlink after calling make
