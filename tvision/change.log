@@ -1,4 +1,31 @@
-$Log$
+$Log$.
+Revision 2.240  2002/08/12 15:42:33  set
+* Added: A new member to TDisplay: setCrtModeRes. It allows setting the
+video mode specifying the resolution instead of a magic mode number.
+Also added the TScreen::setVideoModeRes counterpart.
+* Added: The default setCrtMode member now translates the DOS modes into
+a width and height and calls to setCrtModeRes. In this way X11 and XTerm
+video drivers can adjust the window size to the spected size.
+* Modified: When we detect an asynchronous mode change the TProgram class
+sets the video mode to the current one. This generates conflicts so now it
+sets the mode to 0xFFFF and it means reset the variables but don't change
+the mode.
+* Added: A member to TProgram to access the new TDisplay functionality.
+* Added: [DOS] Support for 80x50x8x8 mode as defined in Borland TV 2.0
+(mode 0x100). But isn't recommended.
+* Added: [XTerm] Support to the new TDisplay member. The window size is
+adjusted to the desired size. I also added font size adjust, it looks for
+the closest XFree86 font and selects it. XFree86 4.1.0 have 13 fixed fonts.
+Also added font size and window size suspend/resume. Eterm 0.9.2 doesn't
+implement the mechanism to find the current font so the size isn't
+restored.
+* Added: [X11] Support to the new TDisplay member. It calls the font call
+back to get a new font if the size of the font is changed in the call.
+* Added: Symbolic names to all the DOS text modes.
+* Modified: The font test program to use the symbolic names and added a
+couple of examples that sets a video mode using the number and a
+resolution.
+
 Revision 2.239  2002/08/12 15:40:18  set
 * Fixed: TVFontCollection::EnlargeOne to avoid SIGSEGVs (only detected with
 efence). I also changed the strategy to repeat the last line.
