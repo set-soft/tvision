@@ -110,9 +110,9 @@ Window    TScreenX11::rootWin;
 Window    TScreenX11::mainWin;
 Colormap  TScreenX11::cMap;
 GC        TScreenX11::gc;
-GC        TScreenX11::cursorGC;
-XIC       TScreenX11::xic;
-XIM       TScreenX11::xim;
+GC        TScreenX11::cursorGC=NULL;
+XIC       TScreenX11::xic=NULL;
+XIM       TScreenX11::xim=NULL;
 Atom      TScreenX11::theProtocols;
 ulong     TScreenX11::colorMap[16];
 XImage   *TScreenX11::ximgFont[256];    /* Our "font" is just a collection of images */
@@ -139,13 +139,32 @@ void    (*TScreenX11::redrawBuf)(int x, int y, unsigned w, unsigned off)=
 
 TScreenX11::~TScreenX11()
 {
- if(!disp) return; //no X11 resources acquired.
-
  STOP_UPDATE_THREAD;
- XDestroyIC(xic);
- XCloseIM(xim);
- XDestroyWindow(disp,mainWin);
- XCloseDisplay(disp); //This could do all of the above for us, but anyway...
+
+ if (sizeHints)
+    XFree(sizeHints);
+ if (classHint)
+    XFree(classHint);
+
+ if (xic)
+    XDestroyIC(xic);
+ if (xim)
+    XCloseIM(xim);
+
+ DestroyXImageFont(0);
+ DestroyXImageFont(1);
+ if (cursorImage)
+    XDestroyImage(cursorImage);
+
+ if (disp)
+   {
+    if (cursorGC)
+       XFreeGC(disp,cursorGC);
+    XDestroyWindow(disp,mainWin);
+    XCloseDisplay(disp); //This could do all of the above for us, but anyway...
+   }
+
+ delete[] screenBuffer;
 }
 
 void TScreenX11::clearScreen()
@@ -1220,6 +1239,9 @@ char *TScreenX11::SearchX11Font(const char *pattern)
 
 TScreenX11::TScreenX11()
 {
+ memset(ximgFont,0,sizeof(XImage *)*256);
+ memset(ximgSecFont,0,sizeof(XImage *)*256);
+
  /* Try to connect to the X server */
  disp=XOpenDisplay(NULL);
  /* If we fail just return */
@@ -1357,9 +1379,12 @@ TScreenX11::TScreenX11()
     if (frCB && optSearch("LoadSecondaryFont",aux) && aux)
        secFont=frCB(1,fontW,fontH);
    }
- printf("Drawing mode: %s\n",drawingMode==unicode16 ? "Unicode 16" : "Code Page");
- if (useX11Font)
-    printf("Using X11 fonts\n");
+ if (0)
+   {
+    printf("Drawing mode: %s\n",drawingMode==unicode16 ? "Unicode 16" : "Code Page");
+    if (useX11Font)
+       printf("Using X11 fonts\n");
+   }
 
  TDisplayX11::Init();
 
@@ -1599,13 +1624,15 @@ void TScreenX11::DestroyXImageFont(int which)
     if (useSecondaryFont)
       {
        for (i=0; i<256; i++)
-           XDestroyImage(ximgSecFont[i]);
+           if (ximgSecFont[i])
+              XDestroyImage(ximgSecFont[i]);
        useSecondaryFont=0;
       }
    }
  else
    for (i=0; i<256; i++)
-       XDestroyImage(ximgFont[i]);
+       if (ximgFont[i])
+          XDestroyImage(ximgFont[i]);
 }
 
 int TScreenX11::setWindowTitle(const char *aName)
@@ -2707,7 +2734,7 @@ Disadvantages:
 // Used to print a mark every 250 updates
 #define TIC 0
 // Prints some debug info when the mechanism is dis/enabled
-#define DBG_ALM_STATE 1
+#define DBG_ALM_STATE 0
 
 int     TVX11UpdateThread::running=0;
 int     TVX11UpdateThread::initialized=0;
