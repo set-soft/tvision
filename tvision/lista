@@ -693,6 +693,7 @@ lista.dos
 Makefile
 rhide.env
 snapshot.pl
+THANKS
 TODO
 tvision.po
 win32/Makefile
@@ -712,9 +713,10 @@ winnt/Makefile
 winnt/objs/delete.me
 winnt/readme.txt
 winnt/tvex.cc
+www-site/bvucs-n1.jpg
 www-site/contrib.html
+www-site/envelp.gif
 www-site/history.html
 www-site/index.html
 www-site/sf.css
-www-site/envelp.gif
-www-site/bvucs-n1.jpg
+www-site/update

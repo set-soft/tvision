@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.125  2002/06/04 19:39:41  set
+* Modified: Now the configuration determines the directories where extra
+libraries could be located and adds it to the list of directories.
+
 Revision 2.124  2002/06/04 18:34:40  set
 * Fixed: Another *.* pattern, reported by Tapio.
 
