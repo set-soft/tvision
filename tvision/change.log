@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.335  2002/09/23 12:41:24  set
+* Added: More documentation to the codepage.cc file.
+* Added: A SETEdit project and SDG configuration to generate some
+documentation in HTML format. It is just oriented to the new stuff added
+and isn't complete.
+
 Revision 2.334  2002/09/23 12:37:24  set
 * Added: Win32 and WinGr documentation.
 * Modified: X11 docs, added the fact that X11 driver can be used for Win32.
