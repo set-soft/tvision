@@ -1,4 +1,9 @@
 $Log$
+Revision 1.40  1999/05/02 14:00:36  set
+* Added: The desklogo example to the distribution. I already added it in the
+CVS tree (see Revision 1.26) but forgot to add it to the list of distributed
+files. Noted by "Norberto Alfredo Bensa" <norberto.bensa@abaconet.com.ar>
+.
 Revision 1.39  1999/05/02 13:51:09  set
 * Avoided the distribution of the Debian files in the DOS release because
 these files aren't 8+3 clean and will confuse users.
