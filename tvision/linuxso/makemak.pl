@@ -24,9 +24,11 @@ unlink('tcedit.dst',glob('*.bkp'));
 $f=&cat('../linux/Makefile');
 &replaceVar($f,'RHIDE_TYPED_LIBS_DJGPP.cc=stdcxx','RHIDE_TYPED_LIBS_DJGPP.cc=');
 &replaceVar($f,'RHIDE_TYPED_LIBS_Linux.cc=stdc\+\+','RHIDE_TYPED_LIBS_Linux.cc=');
+# We will specify the libraries in the special flags
+&replaceVar($f,'RHIDE_LIBS=(.*)','RHIDE_LIBS=');
 &replaceVar($f,'SPECIAL_CFLAGS=','SPECIAL_CFLAGS=-fPIC');
 &replaceVar($f,'SPECIAL_LDFLAGS=',"SPECIAL_LDFLAGS=-shared -Wl,-soname,librhtv.so.$intver -lc -lstdc++ -lncurses -lm -lgpm");
-&replaceVar($f,'MAIN_TARGET=librhtv.a','MAIN_TARGET=librhtv.so.1.0');
+&replaceVar($f,'MAIN_TARGET=librhtv.a',"MAIN_TARGET=librhtv.so.$intver");
 &replaceVar($f,'librhtv.a:: \$\(DEPS_0\)',"librhtv.so.$intver\:\: \$(DEPS_0)");
 &replaceVar($f,'\$\(RHIDE_COMPILE_ARCHIVE\)','$(RHIDE_COMPILE_LINK)');
 &replaceVar($f,'all:: librhtv.a',"all\:\: librhtv.so.$intver");
