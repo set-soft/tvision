@@ -1,4 +1,13 @@
-$Log$
+$Log$.
+Revision 2.579  2004/10/02 21:00:02  set
+* Fixed: [Darwin] The file libfintl.a must be generated before the dynamic
+lib. My previous try worked because I already installed it during the test.
+* Fixed: [FreeBSD] Even when miniEleph said me that I had to install
+librhtv.so and librhtv.so.2 the fact is that if I use sonames like in the
+other UNIX systems I have to also install librhtv.so.2.0.3. I understand
+that's unusual for FreeBSD and also that my versions are wrong but that's
+the only way to get a usable setup.
+
 Revision 2.578  2004/10/01 21:35:27  set
 * Added: Support for NetBSD:
   * install moves files by default so we need to add -c.
