@@ -77,10 +77,10 @@ void TDisplayWin32::SetCursorShape(unsigned start, unsigned end)
 
  GetConsoleCursorInfo(hOut,&ConsoleCursorInfo);
  if (start>=end)
-    ConsoleCursorInfo.bVisible=False;
+    ConsoleCursorInfo.bVisible=FALSE;
  else
    {
-    ConsoleCursorInfo.bVisible=True;
+    ConsoleCursorInfo.bVisible=TRUE;
     ConsoleCursorInfo.dwSize=end-start;
     if (ConsoleCursorInfo.dwSize>=100)
        ConsoleCursorInfo.dwSize=99;

@@ -13,7 +13,7 @@ same used in original Turbo Vision for compatibility purposes.
 
 //#define DEBUG_CURSOR
 #ifdef DEBUG_CURSOR
- #include <stdio.h>
+ #define Uses_stdio
 #endif
 #define Uses_stdlib
 #define Uses_TScreen
