@@ -19,10 +19,16 @@ int CLY_isUNC_helper_95(const char* server, const char* share);
 #define is_slash(c) (c == '/' || c == '\\')
 #define is_term(c) (c == '/' || c == '\\' || c == '\0')
 
-/*
- * isUNC returns 1 if passed path looks like a UNC name.
- * That is it starts with //server
- */
+/**[txh]********************************************************************
+
+  Description:
+  Returns 1 if passed path looks like an UNC name. That is it starts with
+//server.
+  
+  Return: 1 if UNC
+  
+***************************************************************************/
+
 int CLY_IsUNC(const char* path)
 {
   if (!is_slash(path[0]) || !is_slash(path[1]) || is_term(path[2]))
@@ -30,11 +36,16 @@ int CLY_IsUNC(const char* path)
   return 1;
 }
 
-/*
- * isUNCShare returns 1 if passed path refers to a network share.
- * That is the path matches //server/share[/[.]] mask and
- * the share really exists.
- */
+/**[txh]********************************************************************
+
+  Description:
+  Returns 1 if passed path refers to a network share. That is the path
+matches //server/share[/[.]] mask and the share really exists.
+  
+  Return: 1 if that's an existing share.
+  
+***************************************************************************/
+
 int CLY_IsUNCShare(const char* path)
 {
   static int nt = -1;

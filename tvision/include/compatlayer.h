@@ -956,7 +956,7 @@ typedef unsigned long  ulong;
  #ifdef Uses_fixpath
   CLY_CFunc void _fixpath(const char *in, char *out);
  #endif
- /* Checks for UNCs under NT provided by Anantoli Soltan */
+ /* Checks for UNCs under Win9x and NT provided by Anantoli Soltan */
  CLY_CFunc int CLY_IsUNC(const char* path);
  CLY_CFunc int CLY_IsUNCShare(const char* path);
  #ifdef Uses_HaveLFNs
@@ -1302,11 +1302,9 @@ typedef unsigned long  ulong;
  #ifdef Uses_fixpath
   CLY_CFunc void _fixpath(const char *in, char *out);
  #endif
- /* Not yet supported for Win9x with MSVC */
- #undef  CLY_IsUNCShare
- #define CLY_IsUNCShare(a) (0)
- #undef  CLY_IsUNC
- #define CLY_IsUNC(a)      (0)
+ /* Checks for UNCs under Win9x and NT provided by Anantoli Soltan */
+ CLY_CFunc int CLY_IsUNC(const char* path);
+ CLY_CFunc int CLY_IsUNCShare(const char* path);
  #ifdef Uses_HaveLFNs
   #undef  OS_HaveLFNs
   #define OS_HaveLFNs 1
