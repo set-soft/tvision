@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.552  2004/06/28 17:51:19  set
+* Fixed: [BC++] warnings in regex.c because of implicit const char * to
+unsigned char * conversion (double error).
+
 Revision 2.551  2004/06/25 19:30:54  set
 * Added: [MSVC] a simple bool/true/false replacement to compatlayer.
 
