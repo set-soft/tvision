@@ -38,7 +38,9 @@ uchar TScreen::screenHeight = 0;
 uchar TDisplay::Page = 0;
 Boolean TScreen::hiResScreen = False;
 Boolean TScreen::checkSnow = True;
-ushort *TScreen::screenBuffer = 0;
+// SET: In djgpp this value is symbolic, just a number that can't be a
+// malloced pointer, the screenBuffer isn't used to access the screen.
+ushort *TScreen::screenBuffer = (ushort *)-1;
 ushort TScreen::cursorLines = 0;
 
 extern REGS r_display;
