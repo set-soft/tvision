@@ -1,4 +1,8 @@
 $Log$
+Revision 1.25  1999/02/22 23:04:30  set
+* Included the debian directory for the debianization but yet not included in
+the distribution package. Debian package by Ivan Baldo <lubaldo@adinet.com.uy>
+.
 Revision 1.24  1999/02/18 02:41:34  set
 * Compiled with djgpp v2.02 and gcc 2.8.1.
 .
