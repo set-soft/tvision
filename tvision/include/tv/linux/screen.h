@@ -9,6 +9,7 @@ const int lnxInitVCSrw=0, lnxInitVCSwo=1, lnxInitSimple=2, lnxInitMDA=3;
 
 struct stCodePageCk;
 struct stCodePageLang;
+struct CodePage;
 
 // virtual to avoid problems with multiple inheritance
 class TDisplayLinux : virtual public TDisplay
@@ -82,8 +83,9 @@ protected:
  static char tioclinuxOK;
  // Color translation table
  static char cMap[16];
- // The code page we detected or just guess is installed
- static int  installedCodePage;
+ // The code page we detected (or just guess) is installed
+ static int  installedSFM;
+ static int  installedACM;
 };
 
 inline
@@ -179,9 +181,12 @@ protected:
  // Current colors, for escape sequences
  static int oldCol, oldBack, oldFore;
  // List of known code pages
- static struct stCodePageCk   knownCodePages[];
+ static struct stCodePageCk   knownFonts[];
+ static struct stCodePageCk   knownScreenMaps[];
  // List of known languages and their code pages
  static struct stCodePageLang langCodePages[];
+ // Used when the loaded maps are unknown
+ static CodePage unknownACM, unknownSFM;
 };
 
 // SET: Enclosed all the I/O stuff in "__i386__ defined" because I don't

@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.155  2002/06/12 20:51:18  set
+* Added: Functions to map unicode into the internal code and more
+functionality to the code page debug stuff. With this I discovered that
+Potato not only have iso-latin1 damaged fonts but also latin2 damaged.
+
 Revision 2.154  2002/06/12 18:28:12  set
 * Modified: [Linux] GetCursorPos so if it gets a wrong escape sequence
 doesn't crash. From a report by Tapio.

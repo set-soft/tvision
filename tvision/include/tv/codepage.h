@@ -35,12 +35,12 @@ const unsigned rbgDontRemapLow32=1, rbgOnlySelected=2;
 class TVCodePage
 {
 public:
- TVCodePage(int id);
+ TVCodePage(int idScr, int idApp=-1);
  ~TVCodePage();
  static ccIndex IDToIndex(int id);
  static int     IndexToID(ccIndex index);
  static ushort *GetTranslate(int id);
- static void    SetCodePage(int id);
+ static void    SetCodePage(int idScr, int idApp=-1);
  static TStringCollection
                *GetList(void);
  static uchar   RemapChar(uchar c, ushort *map);
@@ -57,6 +57,12 @@ public:
  static int     InternalCodeForUnicode(ushort unicode);
  static TVCodePageCallBack SetCallBack(TVCodePageCallBack map);
 
+ static Boolean OnTheFlyRemapNeeded() { return NeedsOnTheFlyRemap ? True : False; }
+ static uchar   OnTheFlyRemap(uchar val) { return OnTheFlyMap[val]; }
+ static void    CreateCPFromUnicode(CodePage *cp, int id, const char *name,
+                                    ushort *unicodes);
+ static ccIndex AddCodePage(CodePage *cp);
+
  // Arbitrary names for the supported code pages
  // Just to avoid using the magics, look in codepage.cc for more information
  enum
@@ -66,26 +72,33 @@ public:
   CP1251=1251, CP1252=1252, CP1253=1253, CP1254=1254, CP1257=1257, MacCyr=10007,
   ISOLatin1=88791, ISOLatin2=88792, ISOLatin3=88593, ISOLatin4=88594,
   ISORussian=88595, ISOGreek=88597, ISO9=88599, ISOLatin1Linux=885901,
-  ISOLatin1uLinux=885911, ISO14=885914, ISOIceland=885915, KOI8r=100000,
-  KOI8_CRL_NMSU=100001, MacOSUkrainian=100072, OsnovnojVariantRussian=885951,
+  ISOLatin1uLinux=885911, ISO14=885914, ISOIceland=885915,
+  ISOLatin2uLinux=885921, ISOLatin2Linux=885920, ISOLatin2Sun=885922,
+  ISOLatin2eLinux=885923, KOI8r=100000, KOI8_CRL_NMSU=100001,
+  MacOSUkrainian=100072, OsnovnojVariantRussian=885951,
   AlternativnyjVariantRU=885952, UcodeRussian=885953, Mazovia=1000000,
   ISO5427=3604494, ECMACyr=17891342, ISOIR146=21364750, ISOIR147=21430286,
-  ISOIR153=22216718
+  ISOIR153=22216718,
+  LinuxACM=0x7FFF0000, LinuxSFM=0x7FFF0001
  };
 
 protected:
  static CodePage *CodePageOfID(int id);
  static void      RemapTVStrings(ushort *map);
  static void      FillTables(int id);
+ static void      CreateOnTheFlyRemap(int idApp, int idScr);
+ static void      CreateCodePagesCol();
 
  static TVCodePageCol *CodePages;
  static ushort CPTable[257];
- static int    CurrentCP;
+ static int    CurrentCP,CurrentScrCP;
  static uchar  toUpperTable[256];
  static uchar  toLowerTable[256];
  static uchar  AlphaTable[256];
  static uchar  Similar[];
  static ushort Similar2[];
+ static char   NeedsOnTheFlyRemap;
+ static uchar  OnTheFlyMap[256];
  static TVCodePageCallBack  UserHook;
  static stIntCodePairs      InternalMap[];
  static const int           providedUnicodes;
@@ -103,6 +116,10 @@ protected:
  static CodePage ISO8859_1_Lat1;
  static CodePage ISO8859_1u_Lat1;
  static CodePage ISO8879_2;
+ static CodePage ISO8859_2_Lat2;
+ static CodePage ISO8859_2u_Lat2;
+ static CodePage ISO8859_2_Sun;
+ static CodePage ISO8859_2e_Lat2;
  static CodePage ISO8859_3;
  static CodePage ISO8859_4;
  static CodePage ISO8859_9;
@@ -138,6 +155,7 @@ protected:
  static ushort tbKOI7[];
  static ushort tbISOIR147[];
  static ushort tbISOIR146[];
+ static uchar  High32FramesSwap[];
 };
 
 #endif

@@ -8,6 +8,8 @@
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
 Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
+         Rewrote call50() to support on the fly remapping and avoid using
+         setCharacter.
  *
  *
  */
@@ -29,6 +31,8 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TPalette
+#define Uses_TVCodePage
+
 #include <tv.h>
 
 #include <limits.h>
@@ -991,66 +995,58 @@ void call30(int x)
   x_pos_start = x;
 }
 
-// SET: Be careful about nibble order
-#ifdef TV_BIG_ENDIAN
- #define GetAttrShadow(a) ((a) & 0xFF)
- #define ChangeAttr(v,a)  (((v) & 0xFF00) | (a))
-#else
- #define GetAttrShadow(a) (((a) & 0xFF)<<8)
- #define ChangeAttr(v,a)  (((v) & 0xFF) | (a))
-#endif
-
 void call50()
 {
   int count = x_pos_end - x_pos_start;
   int buf_offset = y_pos * _view->size.x + x_pos_start;
   int skip_offset = x_pos_start - offset;
-  ushort * buffer;
-#if 0 // def TVCompf_djgpp
-  long _buffer = (dual_display ? 0xb0000 : ScreenPrimary) + buf_offset*2;
-#endif
-  buffer = ((TGroup *)(_view))->buffer+buf_offset;
-  if (!in_shadow)
-  {
-    if (((TGroup *)(_view))->buffer == TScreen::screenBuffer)
+  const ushort *toBlit=((const ushort *)_Buffer)+skip_offset;
+  int isScreen=((TGroup *)(_view))->buffer==TScreen::screenBuffer;
+
+  // Remap characters if needed
+  char *aux=(char *)alloca(count*sizeof(ushort));
+  if (isScreen && TVCodePage::OnTheFlyRemapNeeded())
     {
-#if 0 // def TVCompf_djgpp
-      movedata(_my_ds(),(int) (((const ushort *)_Buffer) +skip_offset),
-               _dos_ds,_buffer,count*2);
-#else
-      TScreen::setCharacters(buf_offset,(ushort *)_Buffer+skip_offset,count);
-#endif
+     memcpy(aux,toBlit,count*sizeof(ushort));
+     int i;
+     if (in_shadow)
+       {// Remap and shadow
+        for (i=0; i<count; i++)
+           {
+            uchar *s=((uchar *)aux)+i*2;
+            *s=TVCodePage::OnTheFlyRemap(*s);
+            s[1]=shadowAttr;
+           }
+       }
+     else
+       {// Just remap
+        for (i=0; i<count; i++)
+           {
+            uchar *s=((uchar *)aux)+i*2;
+            *s=TVCodePage::OnTheFlyRemap(*s);
+           }
+       }
+     toBlit=(const ushort *)aux;
     }
-    else
-    {
-      while (count--) (buffer++)[0] = ((const ushort *)(_Buffer))[skip_offset++];
-    }
-    return;
-  }
-  // in_shadow
-  if (((TGroup *)(_view))->buffer == TScreen::screenBuffer)
-  {
-    int i;
-    unsigned short attr = GetAttrShadow(shadowAttr);
-#if 0 // def TVCompf_djgpp
-    _farsetsel(_dos_ds);
-#endif
-    for (i=0;i<count;i++)
-    {
-#if 0 // def TVCompf_djgpp
-      _farnspokew(_buffer+i*2,(((const ushort *)(_Buffer))[skip_offset++] & 0x00ff) | attr);
-#else
-      TScreen::setCharacter(buf_offset+i,
-        ChangeAttr(((const ushort *)(_Buffer))[skip_offset++],attr));
-#endif
-    }
-  }
   else
-  {
-    unsigned short attr=GetAttrShadow(shadowAttr);
-    while (count--)
-      (buffer++)[0]=ChangeAttr(((const ushort *)(_Buffer))[skip_offset++],attr);
-  }
+    {// We don't need to remap, but ...
+     if (in_shadow)
+       {// is much more efficient to call the OS just once
+        memcpy(aux,toBlit,count*sizeof(ushort));
+        int i;
+        for (i=0; i<count; i++)
+           {
+            uchar *s=((uchar *)aux)+i*2;
+            s[1]=shadowAttr;
+           }
+        toBlit=(const ushort *)aux;
+       }
+    }
+
+  if (isScreen)
+     TScreen::setCharacters(buf_offset,(ushort *)toBlit,count);
+  else
+     memcpy(((TGroup *)(_view))->buffer+buf_offset,toBlit,count*sizeof(ushort));
 }
 
 #ifdef TVCompf_MinGW

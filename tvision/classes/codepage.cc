@@ -9,11 +9,35 @@
   This module provides code page remapping needed to adapt the special
 character to all the supported terminals.@p
   It was originally designed for SETEdit and moved to Turbo Vision in 2002.@p
-  The internal encoding system maps the first 256 to CP 437.@*
+  The internal encoding system maps the first 256 to CP 437.@p
+  Important: The Turbo Vision never had such a thing and this is completly
+new code that affects a lot of TV components.@p
+  The mechanism used is similar to what Linux kernel uses, why? simple:@*
+1) That's the most complex mechanism I found in all the targets so far.@*
+2) This is quite crazy but at the same time flexible.@*
+  What's similar?@*
+  We have two maps, one is optional. The first map is what Linux calls SFM
+(Screen Font Map). It defines which internal codes are rendered by each
+font character (which unicodes in Linux kernel). This is basically a map
+that describes the font. This is the only map I had in the editor. The
+CurrentCP variable holds the ID of the map.@p
+  The second map is optional and is what the Linux kernel calls ACM
+(Application Charset Map). This map describes how is the application data
+encoded, as an example: how is encoded the text. It doesn't have to map
+one to one with the font, and that's the complex stuff. For this reason
+this map is used to do an "on-the-fly" remap before sending the characters
+to the screen. If this map is identical to the SFM or not needed (maps 1
+to 1 => what Linux calls trivial mapping) we don't do the remap. The
+OnTheFlyRemapNeeded() and OnTheFlyRemap(uchar val) are used for the remap.
+The CurrentScrCP holds the ID of this map.@p
+  Is important to note that we don't do 8-bits -> Unicode -> ACM -> SFM ->
+Screen like the Linux kernel does. We recode the application using the ACM
+and if ACM!=SFM we use a simple table that makes: 8-bits -> Screen and if
+it isn't needed we just send the code to the screen.@p
   
 ***************************************************************************/
 
-//#define Uses_stdio
+#define Uses_stdio
 
 #define Uses_string
 #define Uses_stdlib //bsearch
@@ -56,8 +80,13 @@ ushort         TVCodePage::CPTable[257];
 uchar          TVCodePage::toUpperTable[256];
 uchar          TVCodePage::toLowerTable[256];
 uchar          TVCodePage::AlphaTable[256];
+// Some Linux codepages aren't what they claim to be just to put the frames
+// in a better place.
+uchar          TVCodePage::OnTheFlyMap[256];
+char           TVCodePage::NeedsOnTheFlyRemap=0;
 // Current code page
 int            TVCodePage::CurrentCP=437;
+int            TVCodePage::CurrentScrCP=-1;
 // User provided function to call each time we change the code page.
 // This is called before sending a broadcast.
 void         (*TVCodePage::UserHook)(ushort *map)=NULL;
@@ -250,12 +279,13 @@ ushort         TVCodePage::Similar2[]=
  'L',  // 247   <U039B> GREEK CAPITAL LETTER LAMDA
  'a','A',  // 248/9   <U0101/0> LATIN LETTER A WITH MACRON
  'G', //  24A   <U0120> LATIN CAPITAL LETTER G WITH DOT ABOVE
+ 'E', //  24B   <U20AC> Euro Sign
 };
 
 
 // We use an internal code. This is currently a 16 bits code.
 // The ammount of defined symbols: [0 ... maxSymbolDefined-1]
-const unsigned maxSymbolDefined=587;
+const unsigned maxSymbolDefined=587+1;
 
 // This is what usually call: TNoCaseNoOwnerStringCollection, but isn't
 // available in TV, yet
@@ -303,6 +333,10 @@ ISO Latin 1 (Linux)         885901
 ISO Latin 1u(Linux)         885911
 ISO 8859-14                 885914
 ISO 8859-15 Icelan.         885915
+ISO Latin 2 (Linux)         885920
+ISO Latin 2u(Linux)         885921
+ISO Latin 2 (Sun)           885922
+ISO Latin 2+Euro (Linux)    885923
 KOI-8r (Russian)            100000
 KOI-8 with CRL/NMSU         100001
 Mac OS Ukrainian            100072
@@ -554,8 +588,8 @@ CodePage TVCodePage::ISO8859_1u_Lat1=
    456,457,458,200,459,186,201,204,460,188,205,202,187,185,203,206,
    133,160,131,284,132,134,145,135,138,130,136,137,141,161,140,139,
    321,164,149,162,147,285,148,246,318,151,163,150,129,261,332,152 },
- "àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜÿýÝþÞ",
- "µß",
+ "à€áâ‚ãƒä„å…æ†ç‡èˆé‰êŠë‹ìŒíîŽïðñ‘ò’ó“ô”õ•ö–ø˜ù™úšû›üœÿýþž",
+ "µŸ",
  128,LowCrazyCharsRemaped
 };
 
@@ -564,14 +598,75 @@ CodePage TVCodePage::ISO8879_2=
   88792,
  { 218,196,191,192,217,179,195,180,194,193,197,201,205,187,200,188,
    186,199,182,209,207,219,178,177,176,223,220,222,221,254,254,254,
-    32,313,351,319,331,356,270, 21,345,304,309,305,273,341,306,316,
-   167,311,349,317,340,355,260,350,344,297,307,357,262,348,298,315,
-   269,263,289,330,142,327,264,128,299,144,314,280,301,265,291,300,
-   323,267,302,268,292,354,153,334,303,283,271,274,154,272,310,225,
-   259,160,131,328,132,325,256,135,294,130,312,137,358,161,140,359,
-   321,258,295,162,147,353,148,246,296,282,163,286,129,261,308,352 },
+   255,313,351,319,331,356,270, 21,345,304,309,305,273,341,306,316,
+   248,311,349,317,340,325,260,350,344,297,307,326,262,348,298,315,
+   269,263,289,330,142,266,264,128,299,144,314,280,301,265,291,300,
+   323,267,302,268,292,354,153,334,303,282,271,274,154,272,310,225,
+   259,160,131,328,132,257,256,135,294,130,312,137,358,161,140,324,
+   321,258,295,162,147,353,148,246,296,283,163,286,129,261,308,352 },
  "±¡³£µ¥¶¦¹©ºª»«¼¬¾®¿¯àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞ",
- "¤",0,0
+ "",0,0
+};
+
+CodePage TVCodePage::ISO8859_2_Lat2=
+{ "ISO Latin 2 (Linux)",
+  885920,
+ {451,452,453,192,454,179,218,195,455,217,196,193,191,180,194,197,
+  456,457,458,200,459,186,201,204,460,188,205,202,187,185,203,206,
+  255,313,351,319,331,356,270, 21,345,304,309,305,273,341,306,316,
+  248,311,349,317,340,325,260,350,344,297,307,326,262,348,298,315,
+  269,263,289,330,142,266,264,128,299,144,314,280,301,265,291,300,
+  323,267,302,268,292,354,153,334,303,282,271,274,154,272,310,225,
+  259,160,131,328,132,257,256,135,294,130,312,137,358,161,140,324,
+  321,258,295,162,147,353,148,246,296,283,163,286,129,261,308,352 },
+ "±¡³£µ¥¶¦¹©ºª»«¼¬¾®¿¯àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞ",
+ "",0,0
+};
+
+CodePage TVCodePage::ISO8859_2u_Lat2=
+{ "ISO Latin 2u(Linux)",
+  885921,
+ {269,263,289,330,142,266,264,128,299,144,314,280,301,265,291,300,
+  323,267,302,268,292,354,153,334,303,282,271,274,154,272,310,225,
+  255,313,351,319,331,356,270, 21,345,304,309,305,273,341,306,316,
+  248,311,349,317,340,325,260,350,344,297,307,326,262,348,298,315,
+  451,452,453,192,454,179,218,195,455,217,196,193,191,180,194,197,
+  456,457,458,200,459,186,201,204,460,188,205,202,187,185,203,206,
+  259,160,131,328,132,257,256,135,294,130,312,137,358,161,140,324,
+  321,258,295,162,147,353,148,246,296,283,163,286,129,261,308,352 },
+ "±¡³£µ¥¶¦¹©ºª»«¼¬¾®¿¯à€áâ‚ãƒä„å…æ†ç‡èˆé‰êŠë‹ìŒíîŽïðñ‘ò’ó“ô”õ•ö–ø˜ù™úšû›üœýþž",
+ "",0,0
+};
+
+// This code page have the Euro
+CodePage TVCodePage::ISO8859_2_Sun=
+{ "ISO Latin 2 (Sun)",
+  885922,
+ {255,313,351,319,331,356,270, 21,345,304,309,305,273,341,306,316,
+  248,311,349,317,340,325,260,350,344,297,307,326,262,348,298,315,
+  269,263,289,330,142,266,264,128,299,144,314,280,301,265,291,300,
+  176,177,178,179,180,323,267,302,268,185,186,187,188,292,354,191,
+  192,193,194,195,196,197,153,334,200,201,202,203,204,205,206,303,
+  282,271,274,154,272,310,225,587,216,217,218,219,220,221,222,223,
+  259,160,131,328,132,257,256,135,294,130,312,137,358,161,140,324,
+  321,258,295,162,147,353,148,246,296,283,163,286,129,261,308,352 },
+ "‘“ƒ•…–†–‰šŠ›‹œŒžŽŸà á¡â¢ã£ä¤å¥æ¦ç§è¨é©êªë«ì¬í­î®ï¯ðµñ¶ó¸ô½õ¾öÆøÏùÐúÑûÒüÓýÔþÕ",
+ "Ö",0,0
+};
+
+CodePage TVCodePage::ISO8859_2e_Lat2=
+{ "ISO Latin 2+Euro (Linux)",
+  885923,
+ {451,452,453,192,454,179,218,195,455,217,196,193,191,180,194,197,
+  456,457,458,200,459,186,201,204,460,188,205,202,187,185,203,206,
+  255,313,351,319,587,356,270, 21,345,304,309,305,273,341,306,316,
+  248,311,349,317,340,325,260,350,344,297,307,326,262,348,298,315,
+  269,263,289,330,142,266,264,128,299,144,314,280,301,265,291,300,
+  323,267,302,268,292,354,153,334,303,282,271,274,154,272,310,225,
+  259,160,131,328,132,257,256,135,294,130,312,137,358,161,140,324,
+  321,258,295,162,147,353,148,246,296,283,163,286,129,261,308,352 },
+ "±¡³£µ¥¶¦¹©ºª»«¼¬¾®¿¯àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞ",
+ "",0,0
 };
 
 CodePage TVCodePage::ISO8859_3=
@@ -1085,68 +1180,143 @@ CodePage TVCodePage::stMazovia=
  "‚ƒ…ˆ‰Š‹Œ“–—á",0,0
 };
 
-TVCodePage::TVCodePage(int id)
+void TVCodePage::CreateCodePagesCol()
+{
+ CodePages=new TVCodePageCol(43,3);
+
+ #define a(v) CodePages->insert(&v)
+ // Total: 47
+ // Latin (27)
+ a(stPC437);
+ a(stPC775);
+ a(stPC850);
+ a(stPC852);
+ a(stPC857);
+ a(stPC860);
+ a(stPC861);
+ a(stPC863);
+ a(stPC865);
+ a(ISO8879_1);
+ a(ISO8859_1_Lat1);
+ a(ISO8859_1u_Lat1);
+ a(ISO8879_2);
+ a(ISO8859_2_Lat2);
+ a(ISO8859_2u_Lat2);
+ a(ISO8859_2e_Lat2);
+ a(ISO8859_2_Sun);
+ a(ISO8859_3);
+ a(ISO8859_4);
+ a(ISO8859_9);
+ a(ISO8859_14);
+ a(ISO8859_15);
+ a(stPC1250);
+ a(stPC1252);
+ a(stPC1254);
+ a(stPC1257);
+ a(stMazovia);
+ // Russian (16)
+ a(stPC855);
+ a(stPC866);
+ a(ISO8859_5);
+ a(KOI_8r);
+ a(KOI_8crl);
+ a(PC1251);
+ a(ISO_IR_111);
+ a(ISO_IR_153);
+ a(CP10007);
+ a(CP100072);
+ a(OVR);
+ a(AVR);
+ a(U_CodeR);
+ a(KOI_7);
+ a(ISO_IR_147);
+ a(ISO_IR_146);
+ // Greek (4)
+ a(stPC737);
+ a(stPC869);
+ a(stPC1253);
+ a(ISO8859_7);
+ #undef a
+}
+
+TVCodePage::TVCodePage(int idScr, int idApp)
 {
  if (!CodePages)
-   {
-    CodePages=new TVCodePageCol(43,3);
-   
-    #define a(v) CodePages->insert(&v)
-    // Total: 43
-    // Latin (23)
-    a(stPC437);
-    a(stPC775);
-    a(stPC850);
-    a(stPC852);
-    a(stPC857);
-    a(stPC860);
-    a(stPC861);
-    a(stPC863);
-    a(stPC865);
-    a(ISO8879_1);
-    a(ISO8859_1_Lat1);
-    a(ISO8859_1u_Lat1);
-    a(ISO8879_2);
-    a(ISO8859_3);
-    a(ISO8859_4);
-    a(ISO8859_9);
-    a(ISO8859_14);
-    a(ISO8859_15);
-    a(stPC1250);
-    a(stPC1252);
-    a(stPC1254);
-    a(stPC1257);
-    a(stMazovia);
-    // Russian (16)
-    a(stPC855);
-    a(stPC866);
-    a(ISO8859_5);
-    a(KOI_8r);
-    a(KOI_8crl);
-    a(PC1251);
-    a(ISO_IR_111);
-    a(ISO_IR_153);
-    a(CP10007);
-    a(CP100072);
-    a(OVR);
-    a(AVR);
-    a(U_CodeR);
-    a(KOI_7);
-    a(ISO_IR_147);
-    a(ISO_IR_146);
-    // Greek (4)
-    a(stPC737);
-    a(stPC869);
-    a(stPC1253);
-    a(ISO8859_7);
-    #undef a
-   }
- FillTables(id);
+    CreateCodePagesCol();
+ FillTables(idScr);
+ int id=idApp==-1 ? idScr : idApp;
  if (id!=CurrentCP)
    {
     CurrentCP=id;
     RemapTVStrings(GetTranslate(id));
    }
+ CreateOnTheFlyRemap(idApp,idScr);
+}
+
+void TVCodePage::CreateOnTheFlyRemap(int idApp, int idScr)
+{
+ // Create on-the-fly remap table if needed
+ if (idApp==-1 || idApp==idScr)
+   {
+    CurrentScrCP=-1;
+    NeedsOnTheFlyRemap=0;
+    return;
+   }
+ CurrentScrCP=idScr;
+ NeedsOnTheFlyRemap=1;
+
+ unsigned i;
+ // Table to convert a value into an internal code
+ ushort *toCode=GetTranslate(idApp),*aux;
+ // Table to convert an internal value into a 0-255 value
+ uchar *fromCode=new uchar[maxSymbolDefined];
+ memset(fromCode,0,maxSymbolDefined*sizeof(uchar));
+ CodePage *destCP=CodePageOfID(idScr);
+ aux=destCP->Font;
+ for (i=0; i<128; i++)
+     if (aux[i]<maxSymbolDefined) // extra check, just in case I forgot to update the constant
+        fromCode[aux[i]]=i+128;
+
+ i=0;
+ if (destCP->LowRemapNum)
+   {
+    unsigned to=destCP->LowRemapNum;
+    aux=destCP->LowRemap;
+    for (; i<to; i++)
+        if (aux[i]<maxSymbolDefined)
+           fromCode[aux[i]]=i;
+   }
+ for (; i<128; i++)
+     fromCode[i]=i;
+
+ // Adjust values found in source but not in dest (look for similars)
+ for (i=1; i<256; i++)
+    {
+     unsigned val=toCode[i];
+     if (fromCode[val])
+        continue;
+     while (!fromCode[val])
+       { // Find an equivalent for val
+        if (val<256)
+           val=Similar[val];
+        else
+           val=Similar2[val-256];
+       }
+     fromCode[toCode[i]]=val;
+    }
+
+ for (i=0; i<256; i++)
+     OnTheFlyMap[i]=fromCode[toCode[i]];
+
+ delete[] fromCode;
+
+ /* To debug the reampping table:
+ fputs("Usando remapeo:\n",stderr);
+ for (i=0; i<256; i++)
+    {
+     fprintf(stderr,"0x%02X,",OnTheFlyMap[i]);
+     if (!((i+1)&0xF)) fputc('\n',stderr);
+    }*/
 }
 
 /**[txh]********************************************************************
@@ -1156,8 +1326,11 @@ TVCodePage::TVCodePage(int id)
   
 ***************************************************************************/
 
-void TVCodePage::SetCodePage(int id)
+void TVCodePage::SetCodePage(int idScr, int idApp=-1)
 {
+ if (CurrentCP!=idApp || CurrentScrCP!=idScr)
+    CreateOnTheFlyRemap(idApp,idScr);
+ int id=idApp==-1 ? idScr : idApp;
  if (id==CurrentCP)
     return;
  CurrentCP=id;
@@ -1198,15 +1371,17 @@ void TVCodePage::FillTables(int id)
     }
  // 2) For this code page
  uchar *s=(uchar *)p->UpLow;
- for (; *s; s+=2)
-    {
-     toLowerTable[*(s+1)]=*s;
-     toUpperTable[*s]=*(s+1);
-     AlphaTable[*s]=AlphaTable[*(s+1)]=1;
-    }
+ if (s)
+    for (; *s; s+=2)
+       {
+        toLowerTable[*(s+1)]=*s;
+        toUpperTable[*s]=*(s+1);
+        AlphaTable[*s]=AlphaTable[*(s+1)]=1;
+       }
  s=(uchar *)p->MoreLetters;
- for (; *s; s++)
-     AlphaTable[*s]=1;
+ if (s)
+    for (; *s; s++)
+        AlphaTable[*s]=1;
 }
 
 /**[txh]********************************************************************
@@ -2061,6 +2236,7 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0x203c,   19 },
  { 0x207f,  252 },
  { 0x20a7,  158 },
+ { 0x20ac,  587 },
  { 0x2116,  411 },
  { 0x2122,  436 },
  { 0x2190,   27 },
@@ -2199,9 +2375,74 @@ int compare(const void *v1, const void *v2)
  return (p1->unicode>p2->unicode)-(p1->unicode<p2->unicode);
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Finds which internal code can render an Unicode value.
+  
+  Return: The internal or -1 if none can do it.
+  
+***************************************************************************/
+
 int TVCodePage::InternalCodeForUnicode(ushort unicode)
 {
+ if (!unicode) return 0;
  stIntCodePairs s={unicode,0};
  void *res=bsearch(&s,InternalMap,providedUnicodes,sizeof(stIntCodePairs),compare);
  return res ? ((stIntCodePairs *)res)->code : -1;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Creates a new code page from an arry containing the unicodes for each
+symbol. Use an id over than 0x7FFF8000 to avoid collisions. This is used by
+the Linux driver when the unicodes maps doesn't match with known cp.
+  
+***************************************************************************/
+
+void TVCodePage::CreateCPFromUnicode(CodePage *cp, int id, const char *name,
+                                     ushort *unicodes)
+{
+ // Create a code page
+ strcpy(cp->Name,name);
+ cp->id=id;
+ int i;
+ for (i=128; i<256; i++)
+    {
+     int v=unicodes[i];
+     if (v==0xFFFF)
+        cp->Font[i-128]=0;
+     else
+        cp->Font[i-128]=InternalCodeForUnicode(v);
+    }
+ // Currently we lack an Unicode toupper/lower and isalpha mechanism
+ cp->UpLow=cp->MoreLetters=NULL;
+ cp->LowRemapNum=128;
+ cp->LowRemap=new ushort[128];
+ for (i=0; i<128; i++)
+    {
+     int v=unicodes[i];
+     if (v==0xFFFF)
+        cp->LowRemap[i]=0;
+     else
+        cp->LowRemap[i]=InternalCodeForUnicode(v);
+    }
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Adds a custom code page to the list. You can create a new one from an
+array containing the Unicodes for each symbol. @x{CreateCPFromUnicode}.
+
+  Return: The index of the new code page in the collection.
+  
+***************************************************************************/
+
+ccIndex TVCodePage::AddCodePage(CodePage *cp)
+{
+ if (!CodePages) // Drivers could need to add custom cps before init.
+    CreateCodePagesCol();
+ return CodePages->insert(cp);
 }
