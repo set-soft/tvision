@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.312  2002/09/16 14:26:33  set
+* Added: Experimental support for X11 under Win32. I just enabled the code
+for Cygwin, isn't tested.
+
 Revision 2.311  2002/09/16 14:25:07  set
 * Modified: [UNIX] now the priority for linking the examples is: (1)
 installed libraries, (2) compiled dynamic and (3) compiled static. It
