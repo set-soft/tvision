@@ -104,8 +104,10 @@ classes/linux/tfont.cc
 classes/linux/thwmouse.cc
 classes/linux/tscreen.cc
 config.pl
-configure.bat
-configure
++configure.bat
++configure
++configset.bat
++configset
 copying
 copying.rh
 debian/README.debian
@@ -129,6 +131,7 @@ debian/shlibs.local.ex
 debian/watch.ex
 -djgpp/librhtv.gpr
 djgpp/makefile
+djgpp/rhide.env
 +djgpp/sacadeb.bat
 +djgpp/compress.bat
 +djgpp/distlist
@@ -142,6 +145,7 @@ drivers2.cc
 dual.cc
 +examples/clean.bat
 examples/common.env
+examples/config.env
 examples/demo/ascii.cc
 examples/demo/ascii.h
 examples/demo/calendar.cc
@@ -292,6 +296,7 @@ gkey.cc
 gkey.gpr
 histlist.cc
 include/calc.h
+include/configtv.h
 include/editors.h
 include/tvedit.h
 include/video.h
@@ -307,7 +312,6 @@ include/indicato.h
 include/intl.h
 include/menus.h
 include/msgbox.h
-include/nointl.h
 include/objects.h
 include/resource.h
 include/stddlg.h
@@ -323,7 +327,6 @@ include/tvobjs.h
 include/tvutil.h
 include/validate.h
 include/views.h
-include/yesintl.h
 include/backgrnd.h
 include/button.h
 include/chdirdlg.h
@@ -419,6 +422,7 @@ linux/includbi.txt
 -linux/librhtv.gpr
 linux/Makefile
 linux/obj/delete.me
+linux/rhide.env
 +linux/sacadeb
 linux/tmp/delete.me
 +linuxso/makemak.pl

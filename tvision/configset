@@ -1,0 +1,4 @@
+#!/bin/sh
+rm configure.cache
+export CFLAGS='-O2 -Wall -Werror -gstabs+3 -pipe'
+./configure
