@@ -136,18 +136,10 @@ $MakeDefsRHIDE[2].=' '.$conf{'X11Lib'} if ($conf{'HAVE_X11'} eq 'yes');
 $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
 if (@conf{'alcon'} eq 'yes')
   {
-   if ($OS eq 'UNIX')
-     {
-      # TODO: change this for the output of allegro-config.
-      $MakeDefsRHIDE[1].='/usr/local/lib /usr/X11R6/lib';
-      $MakeDefsRHIDE[2].=' alld m pthread Xxf86dga Xxf86vm Xext X11 dl';
-      # No idea where to put this. And doesn't seem to be needed anyway :-?
-      #$MakeDefsRHIDE[?].=' -Wl,-export-dynamic';
-     }
-   else
-     {
-      $MakeDefsRHIDE[2].=' alld';
-     }
+   $MakeDefsRHIDE[1].=$conf{'allegro-path'};
+   $MakeDefsRHIDE[2].=$conf{'allegro-libs'};
+   # allegro-config also exports -Wl,-export-dynamic.
+   # Doesn't seem to be needed, however. :-?
   }
 $MakeDefsRHIDE[2].=' intl' if ((($OSf eq 'FreeBSD') || ($OSf eq 'QNXRtP')) && ($conf{'intl'} eq 'yes'));
 $MakeDefsRHIDE[2].=' pthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
