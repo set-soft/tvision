@@ -1435,6 +1435,7 @@ OBJFILES=\
 	obj/alconkey$(ExOBJ) \
 	obj/alconmouse$(ExOBJ) \
 	obj/alconscr$(ExOBJ) \
+	obj/alcon$(ExOBJ) \
 	obj/x11dis$(ExOBJ) \
 	obj/x11key$(ExOBJ) \
 	obj/x11mouse$(ExOBJ) \
