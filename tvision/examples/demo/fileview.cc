@@ -56,7 +56,7 @@ TFileViewer::TFileViewer( const TRect& bounds,
 
 TFileViewer::~TFileViewer()
 {
-     delete fileName;
+     delete [] fileName;
      destroy (fileLines);
 }
 
