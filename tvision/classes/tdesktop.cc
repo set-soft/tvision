@@ -249,6 +249,15 @@ Boolean TDeskTop::canShowCursor()
  return lockFlag ? False : True;
 }
 
+// SET: If nobody will recover the focus move the cursor to the status line
+ushort TDeskTop::execView( TView *p )
+{
+ ushort ret=TGroup::execView(p);
+ if (p && !current && TScreen::getShowCursorEver())
+    TScreen::setCursorPos(0,TScreen::screenHeight-1);
+ return ret;
+}
+
 #if !defined( NO_STREAM )
 TStreamable *TDeskTop::build()
 {

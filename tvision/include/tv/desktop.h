@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea, tile, options, cursor behavior, etc.
 
  *
  *
@@ -48,6 +49,8 @@ public:
     unsigned getOptions() { return flagsOptions; }
     void setOptions(unsigned aFlags) { flagsOptions=aFlags; }
     virtual Boolean canShowCursor();
+    // SET: Added to help Braille Terminals
+    virtual ushort execView( TView *p );
 
     static const char defaultBkgrnd;
 
