@@ -694,6 +694,7 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
    }
   
    /* Load a binary font. Hack to get the font/screen properties set. */
+   ASSERT(fdata);
    AlCon_LoadCustomFont(0,fdata,AlCon_FontWidth,AlCon_FontHeight);
    //AlCon_LoadCustomFont("rom-PC437.016");
   
@@ -715,10 +716,69 @@ int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
    return 0;
 }
 
+/**[txh]********************************************************************
+
+  Description: Called when you want to change the font size. You
+  can call this first with the font size you would like, and see
+  if AlCon is able to resize the screen to that size.
+  
+  Return: Zero on success. A positive number if the resolution was
+  not set, but AlCon was able to restore the previous screen size
+  using the old parameters. A negative number if the resolution was
+  not set, and trying to set it AlCon lost the previous screen,
+  leaving the whole graphic mode in a mess you can only abort
+  execution.
+  
+***************************************************************************/
+
+int AlCon_Resize(int new_font_width, int new_font_height)
+{
+   ASSERT(screen && "Did you really initialise me properly?");
+   ASSERT(new_font_width > 0);
+   ASSERT(new_font_height > 0);
+   ASSERT(AlCon_ScreenWidth > 0);
+   ASSERT(AlCon_ScreenHeight > 0);
+
+   // Save here the previous parameters...
+   const int old_w = SCREEN_W;
+   const int old_h = SCREEN_H;
+   const int old_card = gfx_driver->id;
+
+   // Be brave and try the new screen resolution.
+   // TODO: Get rid of explicit driver. Maybe use configuration file?
+   int ret = set_gfx_mode(GFX_AUTODETECT_WINDOWED,
+      AlCon_ScreenWidth * new_font_width, AlCon_ScreenHeight * new_font_height,
+      AlCon_ScreenWidth * new_font_width, AlCon_ScreenHeight * new_font_height);
+
+   if (ret == 0)
+      return 0;
+
+   // Oops, try to fix our mistake.
+   ret = set_gfx_mode(old_card, old_w, old_h, old_w, old_h);
+   if (ret != 0)
+      return -1;  // Bail out completely.
+   else
+      return 1;   // At least we kept our head safe...
+}
+
+/**[txh]********************************************************************
+
+  Description: Removes allegro from the system, freeing any internal
+  memory and resetting the graphic mode and other subsystems.
+  
+***************************************************************************/
+
 void AlCon_Exit()
 {
+ ASSERT(chars);
+ ASSERT(attrs);
+ 
  remove_int(AlCon_IntCursor);
  set_gfx_mode(GFX_TEXT,0,0,0,0);
+ allegro_exit();
+ free(chars);
+ free(attrs);
+ chars = attrs = 0;
 }
 
 int AlCon_SetDisPaletteColors(int from, int number, AlCon_Color *c)

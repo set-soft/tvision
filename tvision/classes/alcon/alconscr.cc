@@ -146,6 +146,9 @@ TScreenAlcon::TScreenAlcon()
     startupCursor = cursorLines;
     startupMode = screenMode;
 
+    // TODO: Obviously this is for testing here...
+    DoResize(8, 16);
+
     // Create memory buffer for screen. We want a buffer (even though
     // AlCon is buffered) because otherwise TVision will use simple
     // memcpy calls to "paint" the screen. We don't want this, because
@@ -331,5 +334,45 @@ int TScreenAlcon::SetDisPaletteColors(int from, int number, TScreenColor *colors
  int i=AlCon_SetDisPaletteColors(from,number,(AlCon_Color *)colors);
  AlCon_Redraw();
  return i;
+}
+
+/**[txh]********************************************************************
+
+  Description:  Called to perform a screen resize. The fonts for the new
+  screen size have already been loaded. The parameters indicate the size
+  in pixels of each text cell. Therefore, this function adjusts the cursor,
+  some internal variables, and requests Allegro to set a different size.
+  
+***************************************************************************/
+
+void TScreenAlcon::DoResize(unsigned w, unsigned h)
+{
+ ASSERT(w > 0);
+ ASSERT(h > 0);
+ 
+#if SOMEBODY_UNDERSTANDS
+ if (w!=fontW || h!=fontH)
+   {
+    unsigned start=100*cShapeFrom/fontH;
+    unsigned end  =100*cShapeTo/fontH;
+    fontW=w;
+    fontWb=(w+7)/8;
+    fontH=h;
+    fontSz=fontWb*h;
+    
+    /* Change the cursor shape */
+    AlCon_SetCursorShape(start,end);
+   }
+#endif
+
+ // SET, obviamente estos +1 son de prueba para ver que funciona.
+ int ret = AlCon_Resize(w + 1, h + 1);
+ if (ret != 0)
+   {
+    PRINTF("Ayeeee! A monkey with three heads! %d\n", ret);
+    exit(ret);
+   }
+ /* Compute cursor position and draw it */
+// AlCon_GotoXY(cursorX,cursorY);
 }
 
