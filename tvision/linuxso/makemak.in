@@ -54,6 +54,8 @@ $f=&cat('../compat/compat.mak');
 &replaceVar($f,'-Werror','');
 &replace('compat.mak',$f);
 
+# RHIDE 1.4.9 includes rhide.env
+system('ln -s ../linux/rhide.env rhide.env') unless (-s 'rhide.env');
 system('ln -s ../linux/gkeyli.cc gkeyli.cc') unless (-s 'gkeyli.cc');
 system("@make@");
 # Create the links so the library can be used from here

@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.42  2002/04/22 18:26:55  set
+* Fixed: The file collection didn't support duplicates, but when it was
+configured to be no case sensitive in an OS that is case sensitive some
+names could look like duplicates and be omitted. Reported by David A.
+Capello <dacap@users.sourceforge.net>.
+
 Revision 2.41  2002/04/22 18:11:04  set
 * Fixed: The configuration script configured the examples for Win32 in all
 platforms.
