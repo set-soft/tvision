@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.256  2002/08/13 13:37:48  set
+* Fixed: The TDrawBuffer patch tested in the wrong order generating more
+problems than the avoided =-P
+
 Revision 2.255  2002/08/13 13:37:06  set
 * Fixed: TVFontCollection didn't initialize fontName and fileName if the
 font wasn't loaded generating a SIGSEGV when destroying the object.
