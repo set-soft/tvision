@@ -238,7 +238,15 @@ sub LookForPrefix
    {
     if ($Compf eq 'MinGW')
       {
-       @lista=split(/;/,@ENV{'PATH'});
+       # Try to find out cygwin like paths
+       if (substr(@ENV{'PATH'},0,1) == '/')
+         {
+          @lista=split(/:/,@ENV{'PATH'});
+         }
+       else
+         {
+          @lista=split(/;/,@ENV{'PATH'});
+         }
        $found=0;
        foreach $i (@lista)
          {
@@ -860,17 +868,16 @@ sub DetectOS2
 int main(void)
 {
  #ifdef __CYGWIN__
- printf("Cygwin\n");
+ printf("Cygwin");
  #else
- printf("MinGW\n");
+ printf("MinGW");
  #endif
  return 0;
 }
 ';
        $Compf=RunGCCTest($GCC,'c',$test,'');
-       chop($Compf);
+       chomp($Compf);
        $conf{'Cygwin/MinGW'}=$Compf;
-       print "$Compf\n";
       }
    }
 }

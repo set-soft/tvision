@@ -279,9 +279,16 @@ sub SeeCommandLine
       {
        $conf{'mss'}='no';
       }
+    elsif ($i eq '--force-mingw')
+      {
+       $conf{'GCC'}='gcc -mno-cygwin';
+       $conf{'GXX'}='g++ -mno-cygwin';
+      }
     elsif ($i eq '--with-alcon')
       {
        $conf{'alcon'}='yes';
+       $conf{'GCC'}='gcc -mno-cygwin';
+       $conf{'GXX'}='g++ -mno-cygwin';
       }
     elsif ($i eq '--without-alcon')
       {
@@ -377,7 +384,8 @@ sub ShowHelp
  print "--without-mss    : compiles without MSS [default].\n";
  print "--with-ssc       : compiles using Simple Streams Compatibility.\n";
  print "--without-ssc    : compiles without SSC [default].\n";
- print "--with-alcon     : compiles with Alcon hack.\n";
+ print "--force-mingw    : forces mingw32 compile under cygwin [default no].\n";
+ print "--with-alcon     : compiles with Alcon hack (implies --force-mingw).\n";
  print "--without-alcon  : compiles without Alcon hack [default].\n";
  print "--with-pthread   : uses pthread for X11 driver.\n";
  print "--without-pthread: avoids pthread for X11 driver [default].\n";
