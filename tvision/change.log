@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.215  2002/07/10 19:23:11  set
+* Added: [FreeBSD] Code to solve the "last line problem". It was suggested
+by Mike and should be tested by miniEleph.
+
 Revision 2.214  2002/07/08 15:41:08  set
 * Added: [MSVC] A lot of translations to MSVC library names. Most of the
 POSIX low level stuff (open, close, etc.) exists in MSVC but the names are
