@@ -27,20 +27,6 @@ Robert did a quick hack. We still using some of this code so isn't too bad
 
 #define CALL if (call10(this,(ushort *)DrawBuf,color,count,offset,LinePtr,bufptr,Width) == False) return
 
-#define fill_line(flag)\
-do {\
-  int count = Width-offset;\
-  if (count<=0) return flag;\
-  while (count--) {drawBuf[bufptr++] = endianCol(' ', color);}\
-  return flag;\
-} while (0)
-
-#define SETCHAR(c)\
-do {\
-  drawBuf[bufptr++] = endianCol(' ', color);\
-  offset++;\
-} while (0)
-
 Boolean call10(const TEditor *edit, ushort *drawBuf, ushort color, int cx,
                int &offset, unsigned &lineptr, int &bufptr, int Width)
 {
@@ -55,7 +41,8 @@ Boolean call10(const TEditor *edit, ushort *drawBuf, ushort color, int cx,
       {
         do 
         {
-          SETCHAR(' ');
+         drawBuf[bufptr++] = endianCol(' ', color);
+         offset++;
 #if 1
         } while (offset & 7);
 #else
@@ -64,10 +51,19 @@ Boolean call10(const TEditor *edit, ushort *drawBuf, ushort color, int cx,
       }
       else
       {
-        fill_line(False);
+        count = Width-offset;
+        if (count<=0)
+           return True;
+        while (count--)
+           drawBuf[bufptr++] = endianCol(' ', color);
+        return False;
       }
     }
-    else SETCHAR(c);
+    else
+    {
+     drawBuf[bufptr++] = endianCol(c, color);
+     offset++;
+    }
     if (offset >= Width)
     {
       return False;
