@@ -1,4 +1,9 @@
 $Log$
+Revision 2.5  2001/11/24 23:56:50  set
+* Moved gkey.cc, classes/tdisplay.cc, classes/thwmouse.cc and
+classes/tscreen.cc to the DOS driver because they have the DOS code. They
+will be changed to follow the new class structure.
+
 Revision 2.4  2001/11/24 23:43:28  set
 * Added: A new driver for X11, it is quite functional and complete.
 
