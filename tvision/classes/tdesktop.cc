@@ -37,8 +37,7 @@ TDeskTop::TDeskTop( const TRect& bounds ) :
 {
     growMode = gfGrowHiX | gfGrowHiY;
 
-    if( TScreen::getShowCursorEver() )
-        TScreen::setCursorPos( bounds.a.x , bounds.b.y );
+    TScreen::setCursorPos( bounds.a.x , bounds.b.y );
         
     if( createBackground != 0 &&
         (background = createBackground( getExtent() )) != 0 )
@@ -103,8 +102,7 @@ void TDeskTop::cascade( const TRect &r )
 
 void TDeskTop::handleEvent(TEvent& event)
 {
-    if( (event.what == evBroadcast) && (event.message.command == cmReleasedFocus) &&
-        TScreen::getShowCursorEver() )
+    if( (event.what == evBroadcast) && (event.message.command == cmReleasedFocus) )
         // SET: Move the cursor away, hopefully we will have a status bar.
         // Helps Braille Terminals to know the object lost the focus.
         TScreen::setCursorPos( origin.x , origin.y + size.y );
@@ -263,7 +261,7 @@ Boolean TDeskTop::canShowCursor()
 ushort TDeskTop::execView( TView *p )
 {
  ushort ret=TGroup::execView(p);
- if (p && !current && TScreen::getShowCursorEver())
+ if (p && !current)
     TScreen::setCursorPos(0,TScreen::screenHeight-1);
  return ret;
 }

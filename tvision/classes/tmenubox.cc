@@ -130,7 +130,7 @@ void TMenuBox::draw()
     writeBuf( 0, y++, size.x, 1, b );
     // SET: Force a cursor movement to indicate which one is selected.
     // This helps Braille Terminals, but the cursor must be visible!
-    if( TScreen::getShowCursorEver() && yCur != -1 )
+    if( yCur != -1 )
         {
         setCursor( 2 , yCur );
         resetCursor();

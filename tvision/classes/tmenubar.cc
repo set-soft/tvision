@@ -151,7 +151,7 @@ void TMenuBar::draw()
             }
         }
     writeBuf( 0, 0, size.x, 1, b );
-    if( TScreen::getShowCursorEver() && xSel != -1 )
+    if( xSel != -1 )
         {
         setCursor( xSel , 0 );
         resetCursor();
