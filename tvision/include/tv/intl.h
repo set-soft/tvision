@@ -9,7 +9,7 @@
 
 #ifdef HAVE_INTL_SUPPORT
 
-#ifdef TVCompf_djgpp
+#ifdef __DJGPP__
  // Avoid collisions with conio
  #undef gettext
 #endif
@@ -19,7 +19,9 @@ extern "C" {
 // We know the prototypes and it helps with the dummy
 char *textdomain(const char *domainname);
 char *bindtextdomain(const char *domainname, const char *dirname);
+#ifndef __DJGPP__
 char *gettext(const char *msgid);
+#endif
 char *gettext__(const char *msgid);
 #ifdef __cplusplus
 }
