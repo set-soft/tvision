@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis.
 
  *
  *
@@ -14,6 +16,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_pstream
 #define Uses_iopstream
 #include <tv.h>
+
+UsingNamespaceStd
 
 iopstream::iopstream( streambuf * sb )
 {

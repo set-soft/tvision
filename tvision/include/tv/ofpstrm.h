@@ -24,30 +24,21 @@ Andris Pavenis and Christoph Bauer.
 #if defined( Uses_ofpstream ) && !defined( __ofpstream )
 #define __ofpstream
 
-#if !defined( __IOSTREAM_H )
-#include <iostream.h>
-#endif  // __IOSTREAM_H
-
 class ofpstream : public fpbase, public opstream
 {
-
 public:
+ ofpstream();
+ ofpstream(const char *,
+           CLY_OpenModeT = CLY_std(ios::out),
+           int = CLY_FBOpenProtDef);
+ ofpstream(int);
+ ofpstream(int, char *, int);
+ ~ofpstream();
 
-    ofpstream();
-    ofpstream( const char *,
-                      CLY_OpenModeT = ios::out,
-                      int = CLY_FBOpenProtDef
-                    );
-    ofpstream( int );
-    ofpstream( int, char *, int );
-    ~ofpstream();
-
-    filebuf * rdbuf();
-    void open( const char *,
-                      CLY_OpenModeT = ios::out,
-                      int = CLY_FBOpenProtDef
-                    );
-
+ CLY_std(filebuf) *rdbuf();
+ void open(const char *,
+           CLY_OpenModeT = CLY_std(ios::out),
+           int = CLY_FBOpenProtDef);
 };
 
 #endif  // Uses_ofpstream

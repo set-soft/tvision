@@ -12,6 +12,8 @@
  */
 /*
  * Modified by Sergio Sigala <ssigala@globalnet.it>
+ * Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+ * Andris Pavenis.
  */
 
 // SET: moved the standard headers before tv.h
@@ -19,6 +21,7 @@
 #define Uses_stdio	/* SS: for sprintf(...) */
 #define Uses_stdlib
 #define Uses_ctype
+#define Uses_iomanip
 
 #define Uses_TRect
 #define Uses_TEvent
@@ -29,7 +32,6 @@
 #define Uses_TView
 #define Uses_TWindow
 #define Uses_TPalette
-#define Uses_strstream
 #include <tv.h>
 
 #ifdef TVComp_MSC
@@ -42,9 +44,6 @@
 
 __link( RView )
 __link( RWindow )
-
-
-#include <iomanip.h>
 
 #include "puzzle.h"
 

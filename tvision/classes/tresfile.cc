@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis.
 
  *
  *
@@ -19,6 +21,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStringCollection
 #define Uses_TResourceCollection
 #include <tv.h>
+
+UsingNamespaceStd
 
 const long rStreamMagic = 0x52504246uL; // 'FBPR'
 

@@ -1,5 +1,7 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
 /* Modified by Vadim Beloborodov to be used on WIN32 console */
+/* Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+   Andris Pavenis. */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -11,8 +13,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #define Uses_string //strcpy()
-//#define Uses_strstream
-#include <iomanip.h>
+#define Uses_iomanip
 
 #define Uses_TApplication
 #define Uses_TEditWindow
@@ -27,6 +28,8 @@
 #define Uses_TVEdConstant
 
 #include <tv.h>
+
+UsingNamespaceStd
 
 TEditWindow *clipWindow;
 

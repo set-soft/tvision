@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis.
 
  *
  *
@@ -14,15 +16,10 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_otstream ) && !defined( __otstream )
 #define __otstream
 
-#include <iostream.h>
-
-class otstream : public ostream
+class otstream : public CLY_std(ostream)
 {
-
 public:
-
-    otstream( TTerminal * );
-
+ otstream( TTerminal * );
 };
 
 #endif

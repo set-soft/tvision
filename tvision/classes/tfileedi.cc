@@ -1,5 +1,7 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
 /* Modified by Vadim Beloborodov to be used on WIN32 console */
+/* Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+   Andris Pavenis. */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -8,7 +10,7 @@
 /*----------------------------------------------------------*/
 #include <tv/configtv.h>
 
-#include <fstream.h>
+#define Uses_fstream
 #define Uses_limits
 #define Uses_string
 #define Uses_fcntl
@@ -30,6 +32,8 @@
 #define Uses_TStreamableClass
 #define Uses_IOS_BIN
 #include <tv.h>
+
+UsingNamespaceStd
 
 inline uint32 min( uint32 u1, uint32 u2 )
 {

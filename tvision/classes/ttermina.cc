@@ -6,6 +6,8 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+Andris Pavenis.
 
  *
  *
@@ -18,6 +20,8 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TTerminal
 #define Uses_otstream
 #include <tv.h>
+
+UsingNamespaceStd
 
 TTerminal::TTerminal( const TRect& bounds,
                       TScrollBar *aHScrollBar,

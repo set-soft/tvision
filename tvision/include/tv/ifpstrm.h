@@ -24,30 +24,23 @@ Andris Pavenis and Christoph Bauer.
 #if defined( Uses_ifpstream ) && !defined( __ifpstream )
 #define __ifpstream
 
-#if !defined( __IOSTREAM_H )
-#include <iostream.h>
-#endif  // __IOSTREAM_H
-
 class ifpstream : public fpbase, public ipstream
 {
-
 public:
-
     ifpstream();
     ifpstream( const char *,
-                      CLY_OpenModeT = ios::in,
+                      CLY_OpenModeT = CLY_std(ios::in),
                       int = CLY_FBOpenProtDef
                     );
     ifpstream( int );
     ifpstream( int, char *, int );
     ~ifpstream();
 
-    filebuf * rdbuf();
+    CLY_std(filebuf) *rdbuf();
     void open( const char *,
-                      CLY_OpenModeT = ios::in,
+                      CLY_OpenModeT = CLY_std(ios::in),
                       int = CLY_FBOpenProtDef
                     );
-
 };
 
 #endif  // Uses_ifpstream

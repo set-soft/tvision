@@ -22,22 +22,14 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_iopstream ) && !defined( __iopstream )
 #define __iopstream
 
-#if !defined( __IOSTREAM_H )
-#include <iostream.h>
-#endif  // __IOSTREAM_H
-
 class iopstream : public ipstream, public opstream
 {
-
 public:
-
-    iopstream( streambuf * );
-    ~iopstream();
+ iopstream(CLY_std(streambuf) *);
+ ~iopstream();
 
 protected:
-
-    iopstream();
-
+ iopstream();
 };
 
 #endif  // Uses_iopstream

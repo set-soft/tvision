@@ -26,19 +26,13 @@
 #if defined( Uses_ipstream ) && !defined( __ipstream )
 #define __ipstream
 
-#if !defined( __IOSTREAM_H )
-#include <iostream.h>
-#endif  // __IOSTREAM_H
-
 class TStreamableClass;
 class TPReadObjects;
 
 class ipstream : virtual public pstream
 {
-
 public:
-
-    ipstream( streambuf * );
+    ipstream(CLY_std(streambuf) *);
     ~ipstream();
 
     CLY_StreamPosT tellg();
@@ -78,7 +72,6 @@ public:
     friend ipstream& operator >> ( ipstream&, void *& );
 
 protected:
-
     ipstream();
 
     const TStreamableClass * readPrefix();
@@ -90,9 +83,7 @@ protected:
     void registerObject( const void *adr );
 
 private:
-
     TPReadObjects *objs;
-
 };
 
 #endif  // Uses_ipstream

@@ -22,7 +22,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 //#include <strstream.h> SET: These two are only to bloat the code.
-//#include <iomanip.h>
 #include <stdio.h>  // SET: printf does the job much simplier
 
 #define Uses_TRect

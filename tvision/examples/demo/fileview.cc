@@ -21,6 +21,7 @@
 #define Uses_stdlib
 #define Uses_ctype
 #define Uses_IfStreamGetLine
+#define Uses_fstream
 
 #define Uses_MsgBox
 #define Uses_TKeys
@@ -34,11 +35,10 @@
 __link(RScroller)
 __link(RScrollBar)
 
-#include <fstream.h>
-
 #include "tvcmds.h"
 #include "fileview.h"
 
+UsingNamespaceStd
 
 const char * const TFileViewer::name = "TFileViewer";
 

@@ -6,10 +6,10 @@
 #define Uses_TGKey
 #define Uses_string
 #define Uses_ctype
+#define Uses_iostream
 #include <tv.h>
 
 #include <fcntl.h>
-#include <iostream.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,5 +1,7 @@
 /* Modified by Robert Hoehne and Salvador Eduardo Tropea for the gcc port */
 /* Modified by Vadim Beloborodov to be used on WIN32 console */
+/* Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
+   Andris Pavenis. */
 /*----------------------------------------------------------*/
 /*                                                          */
 /*   Turbo Vision 1.0                                       */
@@ -26,12 +28,11 @@
 #define Uses_TDeskTop
 #define Uses_TEditorApp
 #define Uses_TVEdConstant
-#define Uses_strstream
+#define Uses_StrStream
+#define Uses_iomanip
 
 #include <tv.h>
-
 #include <stdarg.h>
-#include <iomanip.h>
 
 TMenuBar *TEditorApp::initMenuBar( TRect r )
 {
@@ -114,8 +115,7 @@ function.
 
 ushort doEditDialogDefault( int dialog, va_list arg )
 {
-    char buf[80];
-    ostrstream os( buf, sizeof( buf ) );
+    CreateStrStream(os,buf,80);
     switch( dialog )
         {
         case edOutOfMemory:
@@ -124,30 +124,30 @@ ushort doEditDialogDefault( int dialog, va_list arg )
         case edReadError:
             {
             os << _("Error reading file ") << va_arg( arg, _charPtr )
-               << "." << ends;
-            va_end( arg );
-            return messageBox( buf, mfError | mfOKButton );
+               << "." << CLY_std(ends);
+            va_end(arg);
+            return messageBox( GetStrStream(buf), mfError | mfOKButton );
             }
         case edWriteError:
             {
             os << _("Error writing file ") << va_arg( arg,_charPtr )
-               << "." << ends;
+               << "." << CLY_std(ends);
             va_end( arg );
-            return messageBox( buf, mfError | mfOKButton );
+            return messageBox( GetStrStream(buf), mfError | mfOKButton );
             }
         case edCreateError:
             {
             os << _("Error creating file ") << va_arg( arg, _charPtr )
-               << "." << ends;
+               << "." << CLY_std(ends);
             va_end( arg );
-            return messageBox( buf, mfError | mfOKButton );
+            return messageBox( GetStrStream(buf), mfError | mfOKButton );
             }
         case edSaveModify:
             {
             os << va_arg( arg, _charPtr )
-               << _(" has been modified. Save?") << ends;
+               << _(" has been modified. Save?") << CLY_std(ends);
             va_end( arg );
-            return messageBox( buf, mfInformation | mfYesNoCancel );
+            return messageBox( GetStrStream(buf), mfInformation | mfYesNoCancel );
             }
         case edSaveUntitled:
             return messageBox( _("Save untitled file?"),
