@@ -2,13 +2,15 @@ prefix=@prefix@
 libdir=$(prefix)/lib
 OS=@OS@
 
-.PHONY: @targets@ @installers@ install-headers clean
+.PHONY: @targets@ @installers@ install-headers clean intl-dummy
 
-all: @targets@
+all: @targets@ intl-dummy
 
 @target1_rule@
 
 @target2_rule@
+
+@intl_dummy_rule@
 
 install-headers:
 	@install_headers@
@@ -17,6 +19,8 @@ install-headers:
 
 @install2_rule@
 
-install: @installers@ install-headers
+@intl_dummy_install_rule@
+
+install: @installers@ install-headers install-intl-dummy
 
 @clean@

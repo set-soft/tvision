@@ -547,7 +547,7 @@ sub GenerateMakefile
  $makeDir='win32' if ($OS eq 'Win32');
  # Write target rules:
  #$rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
- $rep="static-lib:\n\t\$(MAKE) -C ".$makeDir;
+ $rep= "static-lib:\n\t\$(MAKE) -C ".$makeDir;
  $text=~s/\@target1_rule\@/$rep/g;
  if ($OS eq 'UNIX')
    {
@@ -560,6 +560,8 @@ sub GenerateMakefile
    {
     $text=~s/\@target2_rule\@//g;
    }
+ $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy";
+ $text=~s/\@intl_dummy_rule\@/$rep/g;
 
  # Write install stuff
  # What versions of the library we will install
@@ -582,6 +584,12 @@ sub GenerateMakefile
  $rep.="\tinstall -d -m 0755 \$(libdir)\n";
  $rep.="\tinstall -m 0644 $makeDir/librhtv.a \$(libdir)\n";
  $text=~s/\@install1_rule\@/$rep/g;
+
+ # Dummy replacement for i8n library
+ $rep ="install-intl-dummy: intl-dummy\n";
+ $rep.="\tinstall -d -m 0755 \$(libdir)\n";
+ $rep.="\tinstall -m 0644 intl/dummy/libintl.a \$(libdir)/libtvfintl.a\n";
+ $text=~s/\@intl_dummy_install_rule\@/$rep/g;
 
  $rep='';
  if ($OS eq 'UNIX')
@@ -606,6 +614,8 @@ sub GenerateMakefile
  $rep.="\trm -f linux/obj/*.o\n";
  $rep.="\trm -f compat/obj/*.o\n";
  $rep.="\trm -f djgpp/obj/*.o\n";
+ $rep.="\trm -f intl/dummy/*.o\n";
+ $rep.="\trm -f intl/dummy/*.a\n";
  $rep.="\texamples/clean\n";
  $text=~s/\@clean\@/$rep/g;
 
