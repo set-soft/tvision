@@ -117,7 +117,12 @@ if ($OS eq 'UNIX')
    $MakeDefsRHIDE[3]='TVOBJ='.$LDExtraDirs.' ';
    # QNX 6.2 beta 3 workaround
    $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
-   $MakeDefsRHIDE[3].='../../linux '.$here.'/linux '.@conf{'prefix'}.'/lib ';
+   # Link with installed libraries
+   $MakeDefsRHIDE[3].=@conf{'prefix'}.'/lib ';
+   # Give more priority to dynamic libs
+   $MakeDefsRHIDE[3].='../../linuxso '.$here.'/linuxso ';
+   # Then the static ones
+   $MakeDefsRHIDE[3].='../../linux '.$here.'/linux ';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
    ModifyMakefiles('linux/Makefile','compat/compat.mak','intl/dummy/Makefile');
@@ -237,10 +242,6 @@ sub SeeCommandLine
       {
        $conf{'X11Lib'}=$1;
       }
-    elsif ($i=~'--X11path=(.*)')
-      {
-       $conf{'X11LibPath'}=$1;
-      }
     elsif ($i eq '--with-mss')
       {
        $conf{'mss'}='yes';
@@ -257,6 +258,14 @@ sub SeeCommandLine
       {
        $conf{'X11LibPath'}=$1;
       }
+    elsif ($i eq '--with-debug')
+      {
+       $conf{'debugInfo'}='yes';
+      }
+    elsif ($i eq '--with-debug')
+      {
+       $conf{'debugInfo'}='no';
+      }
     else
       {
        ShowHelp();
@@ -268,20 +277,30 @@ sub SeeCommandLine
 sub ShowHelp
 {
  print "Available options:\n\n";
- print "--help          : displays this text.\n";
- print "--prefix=path   : defines the base directory for installation.\n";
- print "--no-intl       : don't use international support.\n";
- print "--force-dummy   : use the dummy intl library even when gettext is detected.\n";
- print "--fhs           : force the FHS layout under UNIX.\n";
- print "--no-fhs        : force to not use the FHS layout under UNIX.\n";
+ print "Flags:\n";
  print "--cflags=val    : normal C flags [default is env. CFLAGS].\n";
  print "--cxxflags=val  : normal C++ flags [default is env. CXXFLAGS].\n";
- print "--X11lib=val    : Name of X11 libraries [default is X11 Xmu].\n";
- print "--X11path=val   : Path for X11 library [default is /usr/X11R6/lib].\n";
- print "--with-mss      : compiles with MSS memory debugger.\n";
- print "--without-mss   : compiles without MSS [default].\n";
+ 
+ print "\nPaths and library names:\n";
  print "--x-include=path: X11 include path [/usr/X11R6/lib].\n";
  print "--x-lib=path    : X11 library path [/usr/X11R6/include].\n";
+ print "--X11lib=val    : Name of X11 libraries [default is X11 Xmu].\n";
+ 
+ print "\nIntallation:\n";
+ print "--prefix=path   : defines the base directory for installation.\n";
+ print "--fhs           : force the FHS layout under UNIX.\n";
+ print "--no-fhs        : force to not use the FHS layout under UNIX.\n";
+ print "--with-debug    : install dynamic library without running strip\n";
+ print "--without-debug : run strip to reduce the size [default]\n";
+ 
+ print "\nLibraries:\n";
+ print "--force-dummy   : use the dummy intl library even when gettext is detected.\n";
+ print "--no-intl       : don't use international support.\n";
+ print "--with-mss      : compiles with MSS memory debugger.\n";
+ print "--without-mss   : compiles without MSS [default].\n";
+ 
+ print "\nOthers:\n";
+ print "--help          : displays this text.\n";
 }
 
 sub GiveAdvice
@@ -789,7 +808,7 @@ sub GenerateMakefile
     # Not needed if the soname changes which each version (at least Ivan says that)
     #$rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so.$VersionMajor\n";
     $rep.="\tinstall -m 0644 linuxso/librhtv.so.$ver \$(libdir)\n";
-    $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$ver\n";
+    $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$ver\n" unless $conf{'debugInfo'} eq 'yes';
     # FreeBSD: merge data from libdir
     $rep.=($OSf eq 'FreeBSD') ? "\t-ldconfig -m \$(libdir)\n" : "\t-ldconfig\n";
    }
