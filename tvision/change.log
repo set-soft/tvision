@@ -1,4 +1,18 @@
 $Log$
+Revision 1.92  1999/08/14 02:13:32  set
+* Applied 8 more patches from Laurynas Biveinis <lauras@softhome.net>:
+* Fixed: unnecesarry stack usage in drivers2.cc
+* Fixed: TNSCollection::error should be not static
+* Fixed: TPReadObjects::registerObject w/ and w/o assertion check.
+* Fixed: incorrect scroll arrow display in TInputLine
+* Fixed: EOF not always detected in ipstream
+* Fixed: memory usage bug in HistRect ctor
+* Fixed: TButton w/o bfDefault can became such.
+* Fixed: TDirListBox is unusable outside TChDirDialog
+* Added: I also added an oprator [] for collections. It isn't inline and can
+be used as an alternative of at() when the speed isn't so important but the
+size is the point.
+.
 Revision 1.91  1999/08/14 00:50:57  set
 * Applied 6 more patches from Laurynas Biveinis <lauras@softhome.net>:
 * Fixed: unnecesary TInputLine scrolling.
