@@ -16,7 +16,7 @@ need to run the configure script and then run make.
   MinGW, currently you can install the MSys package and some Perl interpreter
 (like SiePerl) and then follow the Linux/UNIX instruction. More about is can
 be found in the ../win32/readme.txt file.
-  MSVC (5.0/6.0/7.0) is also supported.
+  MSVC (5.0/6.0/7.0/7.1) is also supported.
 
 * Why this target have special instructions and isn't explained in the main
   readme file?
