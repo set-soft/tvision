@@ -13,12 +13,15 @@ simple and the 2.0 code is quite compact and simple.
 
   Cygwin, I used 1.3.3-2 for testing.
   
-  MinGW, I did the last test and adjustments with MinGW 1.1, MSys 1.0.7 and
+  MinGW, I did the last test and adjustments with MinGW 2.0.0, MSys 1.0.8 and
 the Siemens Perl port (SiePerl). This provides a good environment for
 compilation. You must ensure that MSys' make is used because MinGW 1.1 ships
 a make command that fails. Attention!!! never run TV program from the MSys
-prompt, at least in v1.0.7 it doesn't support Win32 console applications
+prompt, at least in v1.0.7/8 it doesn't support Win32 console applications
 (redirects stdin/stdout).
+  I also recommend configuring the package to generate files without debug
+information and without international support:
+$ perl config.pl --no-intl --cflags=-O2 --cxxflags=-O2
 
   MSVC (5.0/6.0) is also supported, but I don't have access to it so I can't
 be sure if it works ok. You should have no problems or at most very simple
