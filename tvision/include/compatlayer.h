@@ -134,6 +134,7 @@ typedef unsigned long  ulong;
 #undef CreateStrStream
 #undef GetStrStream
 #undef UsingNamespaceStd
+#undef CLY_HiddenDifferent
 
 #ifdef TVComp_GCC
 /* GNU C is supported for various OSs: */
@@ -387,6 +388,7 @@ typedef unsigned long  ulong;
 
  /* Win32/Cygwin -- OH! */
  #ifdef TVCompf_Cygwin
+  #define CLY_HiddenDifferent 1
   #define CLY_Have_UGID 1
   #undef  FA_ARCH
   #undef  FA_DIREC
@@ -541,6 +543,7 @@ typedef unsigned long  ulong;
  /* Common to all UNIX systems */
  #ifdef TVOS_UNIX
   /* Filesystem */
+  #define CLY_HiddenDifferent 1
   #define CLY_Have_UGID 1
   #undef  FA_ARCH
   #undef  FA_DIREC

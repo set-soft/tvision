@@ -39,6 +39,7 @@ char     TScreen::initCalled=0;
 uint32   TScreen::flags0=0;
 TScreen *TScreen::driver=0;
 
+
 /*****************************************************************************
   Function pointer members initialization
 *****************************************************************************/

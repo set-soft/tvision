@@ -33,29 +33,29 @@ Modified by Robert H”hne to be used for RHIDE.
     "\x0F\x0F\x07\x70\x07\x07\x70\x07\x07\x07\x70\x0F\x07\x07\x07\x00"
 
 
-class TStatusLine;
-class TMenuBar;
-class TDeskTop;
+class  TStatusLine;
+class  TMenuBar;
+class  TDeskTop;
 struct TEvent;
-class TView;
+class  TView;
+class  TScreen;
+class  TVMainConfigFile;
 
 class TProgInit
 {
-
 public:
-
     TProgInit( TStatusLine *(*cStatusLine)( TRect ),
                TMenuBar *(*cMenuBar)( TRect ),
                TDeskTop *(*cDeskTop )( TRect )
              );
     virtual ~TProgInit();
+    static TVMainConfigFile *config;
 
 protected:
-
     TStatusLine *(*createStatusLine)( TRect );
     TMenuBar *(*createMenuBar)( TRect );
     TDeskTop *(*createDeskTop)( TRect );
-
+    static TScreen *tsc;
 };
 
 /* ---------------------------------------------------------------------- */
