@@ -36,8 +36,8 @@ protected:
 
     fpstream *stream;
     Boolean modified;
-    long basePos;
-    long indexPos;
+    CLY_StreamPosT basePos;
+    CLY_StreamPosT indexPos;
     TResourceCollection *index;
 };
 

@@ -92,8 +92,10 @@ TResourceFile::TResourceFile( fpstream *aStream ) : TObject()
 
     if (found)
     {
-        stream->seekg(basePos + sizeof(long) * 2, CLY_IOSBeg);
-        *stream >> indexPos;
+        stream->seekg(basePos + CLY_StreamPosT(sizeof(long) * 2), CLY_IOSBeg);
+        long aux;
+        *stream >> aux;
+        indexPos=aux;
         stream->seekg(basePos + indexPos, CLY_IOSBeg);
         *stream >> index;
     }
@@ -141,11 +143,11 @@ void TResourceFile::flush()
     {
         stream->seekg(basePos + indexPos, CLY_IOSBeg);
         *stream << index;
-        lenRez =  stream->tellp() - basePos -  long(sizeof(long) * 2);
+        lenRez =  stream->tellp() - basePos -  CLY_StreamPosT(sizeof(long) * 2);
         stream->seekg(basePos, CLY_IOSBeg);
         *stream << rStreamMagic;
         *stream << lenRez;
-        *stream << indexPos;
+        *stream << long(indexPos);
         stream->flush();
         modified = False;
     }
@@ -158,7 +160,8 @@ void *TResourceFile::get( const char *key)
 
     if (! index->search((char *)key, i))
         return  0;
-    stream->seekg(basePos + ((TResourceItem*)(index->at(i)))->pos, CLY_IOSBeg);
+    stream->seekg(basePos + CLY_StreamPosT(((TResourceItem*)(index->at(i)))->pos),
+                  CLY_IOSBeg);
     *stream >> p;
     return p;
 }
@@ -185,7 +188,7 @@ void TResourceFile::put(TStreamable *item, const char *key)
     stream->seekp(basePos + indexPos, CLY_IOSBeg);
     *stream << item;
     indexPos = stream->tellp() - basePos;
-    p->size  = indexPos - p->pos;
+    p->size  = indexPos - CLY_StreamPosT(p->pos);
     modified = True;
 }
 
