@@ -190,8 +190,7 @@ void TVIntl::freeSt(stTVIntl *&cache)
 
 stTVIntl *TVIntl::emptySt()
 {
- stTVIntl *p=new stTVIntl[1]; // It will be inserted in a TStringColletion
-                              // where delete[] is used.
+ stTVIntl *p=new stTVIntl;
  p->translation=NULL;
  p->cp=-1;
  return p;
