@@ -75,9 +75,9 @@ void TComboWindow::handleEvent(TEvent& event)
 }
 
 
-void TComboWindow::setSelection(char *data)
+void TComboWindow::setSelection(const char *data)
 {
-   viewer->focusItem(viewer->list->indexOf(data));
+   viewer->focusItem(viewer->list->indexOf((void *)data));
 }
 
 

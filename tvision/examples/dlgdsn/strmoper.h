@@ -28,6 +28,6 @@
 #define hintsDataFileSig  "FreeDsgn Hints File\x1a"
 
 ifpstream * openFile(const char * FileName, char * Signature);
-ofpstream * initFile(char * FileName, char * current, char * Signature);
-char * getFileName(char * aTitle, const char * ext, int Mode);
+ofpstream * initFile(const char * FileName, char * current, char * Signature);
+const char * getFileName(const char * aTitle, const char * ext, int Mode);
 

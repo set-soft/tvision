@@ -48,9 +48,6 @@ LookForPrefix();
 LookForGNUMake();
 # Same for ar, it could be `gar'
 $GAR=LookForGNUar();
-# Look for recode and version
-# Currently not needed
-#LookForRecode();
 # Look for xgettext
 LookForGettextTools();
 # Is the right djgpp?
@@ -143,8 +140,6 @@ if ($OS eq 'UNIX')
    $MakeDefsRHIDE[3].=$here.'/linux ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
-   ModifyMakefiles('linux/Makefile','compat/compat.mak','intl/dummy/Makefile');
-   CreateRHIDEenvs('linux/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'DOS')
   {
@@ -153,8 +148,6 @@ elsif ($OS eq 'DOS')
    $MakeDefsRHIDE[3].=$here.'/djgpp ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   ModifyMakefiles('djgpp/Makefile','compat/compat.mak','intl/dummy/Makefile');
-   CreateRHIDEenvs('djgpp/rhide.env','examples/rhide.env','compat/rhide.env');
   }
 elsif ($OS eq 'Win32')
   {
@@ -165,52 +158,33 @@ elsif ($OS eq 'Win32')
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
-   #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
-   `cp djgpp/Makefile win32/Makefile`;
-   ModifyMakefiles('win32/Makefile','compat/compat.mak','intl/dummy/Makefile');
-   CreateRHIDEenvs('examples/rhide.env','win32/rhide.env','compat/rhide.env');
-   # Repeated later for other targets
   }
+$MakeDefsRHIDE[4]='STDCPP_LIB='.$stdcxx;
+# C options for dynamic lib
+$MakeDefsRHIDE[5]='SHARED_CODE_OPTION=-fPIC';
+$MakeDefsRHIDE[5].=' -shared' if ($OSf eq 'QNXRtP');
+# Flags to link as a dynamic lib
+$MakeDefsRHIDE[6]='RHIDE_LDFLAGS=';
+$MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
+$MakeDefsRHIDE[6].=' -shared -Wl,-soname,librhtv.so.'.$Version;
+$libs=$conf{'X11Lib'};
+$libs=~s/(\S+)/-l$1/g;
+$MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
+$MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
+$MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
+$MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
+$MakeDefsRHIDE[7]="LIB_VER=$Version";
+$MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
+
+ModifyMakefiles('intl/dummy/Makefile');
+CreateRHIDEenvs('examples/rhide.env','makes/rhide.env','compat/rhide.env');
+
+# Repeated later for other targets
 CreateConfigH();
 
-# Help MinGW target
-if ($OS ne 'Win32')
-  {
-   $MakeDefsRHIDE[0]='';
-   $MakeDefsRHIDE[2]='RHIDE_OS_LIBS='.substr($stdcxx,2).' gdi32';
-   $MakeDefsRHIDE[3]='TVOBJ=../../win32 ';
-   $MakeDefsRHIDE[3].=$here.'/win32 ' unless $conf{'libs-here'} eq 'no';
-   $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
-   $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
-   #$ExtraModifyMakefiles{'vpath_src'}="../classes/win32 ../classes/dos ../stream ../names ../classes .. ../djgpp\nvpath %.h ../djgpp";
-   `cp djgpp/Makefile win32/Makefile`;
-   ModifyMakefiles('win32/Makefile');
-   # No the examples because they are needed by the current target
-   # 'examples/rhide.env' nor the compat/compat.mak
-   CreateRHIDEenvs('win32/rhide.env');
-  }
 # Help BC++ target
 system("perl confignt.pl");
 
-# UNIX dynamic library
-if ($OS eq 'UNIX')
-  {
-   $libs=$conf{'X11Lib'};
-   $libs=~s/(\S+)/-l$1/g;
-   $ReplaceTags{'LIB_X11_SWITCH'}=@conf{'HAVE_X11'} eq 'yes' ? "-L".$conf{'X11LibPath'}." $libs" : '';
-   $ReplaceTags{'LIB_GPM_SWITCH'}=@conf{'HAVE_GPM'} eq 'yes' ? '-lgpm' : '';
-   $ReplaceTags{'LIB_STDCXX_SWITCH'}=$stdcxx;
-   $ReplaceTags{'LIB_NCURSES_SWITCH'}=($OSf eq 'QNXRtP') ? '-lncursesS' : '-lncurses';
-   $ReplaceTags{'LIB_NCURSES_SWITCH'}='' if ($conf{'ncurses'} eq 'no');
-   # QNX 6.2 beta 3 workaround
-   $ReplaceTags{'QNX_LIB_SRCH'}=($OSf eq 'QNXRtP') ? '-L/lib' : '';
-   $ReplaceTags{'make'}=$conf{'GNU_Make'};
-   $a='-fPIC';
-   $a.=' -shared' if ($OSf eq 'QNXRtP');
-   $ReplaceTags{'SHARED_CODE_OPTION'}=$a;
-   ReplaceText('linuxso/makemak.in','linuxso/makemak.pl');
-   chmod(0755,'linuxso/makemak.pl');
-  }
 #
 # Adjust .mak files
 #
@@ -219,9 +193,6 @@ chdir('examples');
 `perl patchenv.pl`;
 chdir('..');
 
-#$ReplaceTags{'recode'}=$conf{'recode'} eq 'no' ? '@echo' : 'recode';
-#$ReplaceTags{'recode_sep'}=$conf{'recode_sep'};
-#$ReplaceTags{'copy_recode'}='perl utod.pl'; #($OS eq 'UNIX') ? 'perl utod.pl' : 'cp';
 print "Makefiles for translations.\n";
 ReplaceText('intl/gnumake.in','intl/Makefile');
 
@@ -315,6 +286,10 @@ elsif ($i=~'--real-prefix=(.*)')
       {
        $conf{'libs-here'}='no';
       }
+    elsif ($i eq '--enable-maintainer-mode')
+      {
+       $conf{'MAINTAINER_MODE'}='yes';
+      }
     else
       {
        ShowHelp();
@@ -353,6 +328,9 @@ sub ShowHelp
  print "--without-ssc   : compiles without SSC [default].\n";
  
  print "\nOthers:\n";
+ print "--enable-maintainer-mode:\n";
+ print "                : enables header dependencies and other stuff needed\n";
+ print "                  for developement, not just use the editor.\n";
  print "--help          : displays this text.\n";
 }
 
@@ -820,7 +798,7 @@ sub LookForRecode
 
 sub GenerateMakefile
 {
- my ($text,$rep,$makeDir,$ver,$internac);
+ my ($text,$rep,$makeDir,$ver,$internac,$maintain);
 
  print "Generating Makefile\n";
  $text=cat('Makefile.in');
@@ -830,7 +808,11 @@ sub GenerateMakefile
     die "Can't find Makefile.in!!\n";
    }
  $internac=@conf{'xgettext'} ne 'no';
- $rep='static-lib';
+ $maintain=@conf{'MAINTAINER_MODE'} eq 'yes';
+
+ $rep ='';
+ $rep.=' maintainance' if $maintain;
+ $rep.=' static-lib';
  $rep.=' rhtv-config$(EXE_EXT)';
  $rep.=' dynamic-lib' if ($OS eq 'UNIX');
  $rep.=' internac' if ($internac);
@@ -838,20 +820,25 @@ sub GenerateMakefile
  $text=~s/\@OS\@/$OS/g;
  $text=~s/\@prefix\@/@conf{'prefix'}/g;
  $text=~s/\@exe_ext\@/$ExeExt/g;
+ $text=~s/\@maintainer_mode\@/MAINTAINER_MODE=1/g if $maintain;
+ $text=~s/\@maintainer_mode\@//g                  unless $maintain;
 
- $makeDir='linux' if ($OS eq 'UNIX');
- $makeDir='djgpp' if ($OS eq 'DOS');
- $makeDir='win32' if ($OS eq 'Win32');
+ $makeDir='makes';
+
+ # Write target maintainance rule:
+ $rep='';
+ $rep="maintainance:\n\t\$(MAKE) -C $makeDir -f maintain.mak" if $maintain;
+ $text=~s/\@maintainance_rule\@/$rep/g;
+
  # Write target rules:
- #$rep="static-lib: $makeDir/librhtv.a\n$makeDir/librhtv.a:\n\t\$(MAKE) -C ".$makeDir;
- $rep ="static-lib:\n\t\$(MAKE) -C ".$makeDir;
+ $rep ="static-lib:\n\t\$(MAKE) -C $makeDir -f librhtv.mkf";
  $rep.="\n\tranlib $makeDir/librhtv.a" if $conf{'UseRanLib'};
  $rep.="\n";
  if ($OS eq 'UNIX')
    {
-    #$rep="linuxso/librhtv.so.$Version";
-    #$rep="dynamic-lib: $rep\n$rep:\n\tcd linuxso; ./makemak.pl --no-inst-message";
-    $rep.="\ndynamic-lib:\n\tcd linuxso; perl makemak.pl --no-inst-message\n";
+    $rep.="\ndynamic-lib:\n\t\$(MAKE) DYNAMIC_LIB=1 -C $makeDir -f librhtv.mkf\n";
+    $rep.="\tcd $makeDir; ln -sf librhtv.so.$Version librhtv.so\n";
+    $rep.="\tcd $makeDir; ln -sf librhtv.so.$Version librhtv.so.$VersionMajor\n";
    }
  if ($internac)
    {
@@ -862,7 +849,6 @@ sub GenerateMakefile
  $rep="intl-dummy:\n\t\$(MAKE) -C intl/dummy\n";
  $rep.="\tcp intl/dummy/libtvfintl.a $makeDir\n";
  $rep.="\tranlib $makeDir/libtvfintl.a\n" if $conf{'UseRanLib'};
- $rep.="\trm -f linuxso/libtvfintl.a\n\tln -s ../intl/dummy/libtvfintl.a linuxso/libtvfintl.a" if ($OS eq 'UNIX');
  $text=~s/\@intl_dummy_rule\@/$rep/g;
 
  $text=~s/\@GCC\@/$GCC/g;
@@ -929,25 +915,22 @@ sub GenerateMakefile
     $rep.="\trm -f \$(libdir)/librhtv.so.$ver\n";
     $rep.="\tcd \$(libdir); ln -s librhtv.so.$ver librhtv.so\n";
     # Not needed if the soname changes which each version (at least Ivan says that)
-    #$rep.="\tcd \$(libdir); ln -s librhtv.so.$Version librhtv.so.$VersionMajor\n";
-    $rep.="\tinstall -m 0644 linuxso/librhtv.so.$ver \$(libdir)\n";
+    $rep.="\tinstall -m 0644 $makeDir/librhtv.so.$ver \$(libdir)\n";
     $rep.="\tstrip --strip-debug \$(libdir)/librhtv.so.$ver\n" unless $conf{'debugInfo'} eq 'yes';
     # FreeBSD: merge data from libdir
     $rep.=($OSf eq 'FreeBSD') ? "\t-ldconfig -m \$(libdir)\n" : "\t-ldconfig\n";
    }
  if ($internac)
    {
-    $rep.="\ninstall-internac:\n\tmake -C intl install\n";
+    $rep.="\ninstall-internac:\n\t\$(MAKE) -C intl install\n";
    }
  $text=~s/\@install_rules\@/$rep/g;
 
  $rep= "clean:\n";
- $rep.="\trm -f linuxso/librhtv.so*\n";
- $rep.="\trm -f linuxso/obj/*.o\n";
- $rep.="\trm -f linux/librhtv.a\n";
- $rep.="\trm -f linux/obj/*.o\n";
+ $rep.="\trm -f $makeDir/librhtv.so*\n";
+ $rep.="\trm -f $makeDir/obj/*.o\n";
+ $rep.="\trm -f $makeDir/librhtv.a\n";
  $rep.="\trm -f compat/obj/*.o\n";
- $rep.="\trm -f djgpp/obj/*.o\n";
  $rep.="\trm -f intl/dummy/*.o\n";
  $rep.="\trm -f intl/dummy/*.a\n";
  $rep.="\t-\$(MAKE) -C examples clean\n";

@@ -95,6 +95,7 @@ TListViewDialog::TListViewDialog(const TRect &trect, char *title,
 		aList2,aListSize);
   // insert the list box with its scroller into the dialog box
   inputLine = new TInputLine(TRect(x1,3,x1+w1,4),wList);
+  inputLineLen = wList;
   inputLine->hide(); //hide input line
   itemNumber = new TInputLine(TRect(x1,lbhite,x1+w1,lbhite+1),wList);
   itemNumber->options &= (!ofSelectable); // used to hold current line number
@@ -108,6 +109,8 @@ TListViewDialog::TListViewDialog(const TRect &trect, char *title,
 // a single mouse click is not cleared by List View Box, Dialog uses it
 // to erase inputline if user clicks off of it .
 void TListViewDialog::handleEvent(TEvent &event) {
+	char b[inputLineLen];
+
 	switch(event.what)
 	{
 	  case evMouseDown:  // clears input line
@@ -126,7 +129,7 @@ void TListViewDialog::handleEvent(TEvent &event) {
 			break;
 		  case kbEnter: // saves input line to list box using listBoxPtr
 			if (inputLine->state&sfSelected) {
-				listBoxPtr->putData( inputLine->data );
+				listBoxPtr->putData( (void *)inputLine->getData() );
 				inputLine->hide();
 				clearEvent(event);
 			}
@@ -145,7 +148,7 @@ void TListViewDialog::handleEvent(TEvent &event) {
 				int mouseLocX =((TListViewBox *)event.message.infoPtr)->origin.x ;
 				listBoxPtr =(TListViewBox *)event.message.infoPtr;
 				inputLine->moveTo(mouseLocX, mouseLocY+2);
-				strcpy(inputLine->data,"        ");
+				inputLine->setDataFromStr( (void *)"        " );
 				inputLine->show();
 				clearEvent(event);
 			}
@@ -155,7 +158,8 @@ void TListViewDialog::handleEvent(TEvent &event) {
 			int mouseLocX =((TListViewBox *)event.message.infoPtr)->origin.x ;
 			listBoxPtr =(TListViewBox *)event.message.infoPtr;
 			inputLine->moveTo(mouseLocX, mouseLocY+2);
-			listBoxPtr->getText( inputLine->data,listBoxPtr->focused,inputLine->maxLen );
+			listBoxPtr->getText( b,listBoxPtr->focused,inputLineLen );
+			inputLine->setDataFromStr( b );
 			inputLine->show();
 			clearEvent(event);
 			break;
@@ -163,8 +167,8 @@ void TListViewDialog::handleEvent(TEvent &event) {
 	}
 	// Let TDialog handler do it's thing with any remaining events.
 	TDialog::handleEvent(event);
-	//itoa(listBox->focused, itemNumber->data, 10);
-   sprintf(itemNumber->data,"%d",listBox->focused);
+	sprintf(b,"%d",listBox->focused);
+	itemNumber->setDataFromStr( b );
 	itemNumber->draw();
 } // end of MyDialogBox::eventHandler()
 

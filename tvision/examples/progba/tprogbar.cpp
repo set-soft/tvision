@@ -24,7 +24,7 @@ CIS: 70662,1523
 #define Uses_TPalette
 #include <tv.h>
 
-#include <tprogbar.h>
+#include "tprogbar.h"
 
 __link( RView )
 

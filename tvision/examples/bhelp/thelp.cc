@@ -196,10 +196,10 @@ void THelp::ParseCommandLine(int argc, char *argv[])
             printf("Borland's Help file viewer\n");
             printf("Copyright (c) 1999 by Andreas F. Gorup von Besanez <besanez@compuserve.de>\n");
             printf("Copyright (c) 2002 by Jan Van Buggenhout <Chipzz@ULYSSIS.Org>\n");
-            printf("Copyright (c) 2002 by Salvador E. Tropea <set@ieee.org>\n");
+            printf("Copyright (c) 2002-2003 by Salvador E. Tropea <set@ieee.org>\n");
             printf("This program is covered by the GPL license.\n");
             printf("\n\n");
-            printf("%s [--file Name] Text_to_search\n");
+            printf("%s [--file Name] Text_to_search\n",argv[0]);
             printf("--file Name    : Name of the help file\n");
             printf("--help         : This text\n");
             exit(1);
