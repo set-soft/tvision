@@ -191,6 +191,8 @@ chdir('..');
 
 print "Makefiles for translations.\n";
 ReplaceText('intl/gnumake.in','intl/Makefile');
+$ReplaceTags{'version'}=$Version;
+ReplaceText('redhat/librhtv.spec.in',"redhat/librhtv-$Version.spec");
 
 print "\nSuccesful configuration!\n\n";
 

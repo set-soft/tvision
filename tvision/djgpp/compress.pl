@@ -54,7 +54,7 @@ close(FIL);
 $r='';
 foreach $i (@files)
   {
-   if ($i =~ /debian\//)
+   if (($i =~ /debian\//) || ($i =~ /redhat\//))
      {
       next;
      }

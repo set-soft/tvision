@@ -736,6 +736,11 @@ newstr.cc
 qnxrtp/tvision.qpg
 readme.in
 readme.txt
+redhat/config-rpm.sh
+redhat/create-dirs.sh
+redhat/.cvsignore
+redhat/librhtv.spec.in
+redhat/README
 rhtv-config.c
 searchstrs.sh
 stream/sbackgro.cc
