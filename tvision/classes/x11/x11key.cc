@@ -4,6 +4,7 @@
 #include <tv/configtv.h>
 
 #if defined(TVOS_UNIX) && defined(HAVE_X11)
+#define Uses_stdio // debug
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TGKey
@@ -281,6 +282,7 @@ ushort TGKeyX11::GKey()
    {/* Special keys by keysym */
     Symbol=(unsigned char)bufferKb[0];
     name=KeyCodeByKeySym[Key & 0xFF];
+    //printf("Key by keysym 0x%X name: %d Symbol %d\n",(unsigned)Key,name,Symbol);
    }
  else if (lenKb==1)
    {/* A key by their ASCII */
@@ -288,7 +290,13 @@ ushort TGKeyX11::GKey()
     if (Symbol>=32 && Symbol<128)
        name=KeyCodeByASCII[Symbol-32];
     else
-       name=kbUnkNown;
+      {
+       if (Symbol>=1 && Symbol<=26) // ^A to ^Z
+          name=kbA+Symbol-1;
+       else
+          name=kbUnkNown;
+      }
+    //printf("Key of lenght 1: name: %d Symbol %d\n",name,Symbol);
    }
  else
    {/* A key with something else, not handled yet */

@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.126  2002/06/05 14:16:40  set
+* Updated: Distribution files list to include update and THANKS.
+
 Revision 2.125  2002/06/04 19:39:41  set
 * Modified: Now the configuration determines the directories where extra
 libraries could be located and adds it to the list of directories.
