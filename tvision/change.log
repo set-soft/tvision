@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.102  2002/06/03 12:49:11  set
+* Added: [Win32] According to Thiago newer versions of MinGW have their own
+uname command that reports MINGW32_<windows flavor>. Added to the
+conflib.pl.
+
 Revision 2.101  2002/05/30 18:57:15  set
 * Fixed: [FreeBSD] when calling ldconfig we must specify to merge the data
 of the directory we installed the library. Suggested by miniEleph.
