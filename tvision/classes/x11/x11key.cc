@@ -289,16 +289,21 @@ ushort TGKeyX11::GKey()
  else if (lenKb==1)
    {/* A key by their ASCII */
     Symbol=(unsigned char)bufferKb[0];
-    if (Symbol>=32 && Symbol<128)
-       name=KeyCodeByASCII[Symbol-32];
+    if (Symbol==0 && Key==' ')
+       name=kbSpace; // Why Ctrl+Space reports it? is my X?
     else
       {
-       if (Symbol>=1 && Symbol<=26) // ^A to ^Z
-          name=kbA+Symbol-1;
+       if (Symbol>=32 && Symbol<128)
+          name=KeyCodeByASCII[Symbol-32];
        else
-          name=kbUnkNown;
+         {
+          if (Symbol>=1 && Symbol<=26) // ^A to ^Z
+             name=kbA+Symbol-1;
+          else
+             name=kbUnkNown;
+         }
       }
-    //printf("Key of lenght 1: name: %d Symbol %d\n",name,Symbol);
+    //printf("Key of lenght 1: name: %d Symbol %d Key: 0x%04X\n",name,Symbol,Key);
    }
  else
    {/* A key with something else, not handled yet */

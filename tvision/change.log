@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.182  2002/06/27 18:41:45  set
+* Fixed: [MSVC] ssize_t isn't defined by standard headers. I also unified
+the mechanism to request it because BC++ and MinGW doesn't define it as
+MSVC and each one used a different mechanism.
+* Fixed: [MSVC] The C flags to include the -I../include. Both fixes from
+the output of MSVC sent by WintiX.
+
 Revision 2.181  2002/06/27 18:24:26  set
 * Fixed: [MSVC] C code compile rule, patch from WintiX.
 
