@@ -22,6 +22,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 static TEventQueue *teq = 0;
 
+#if 0 /************** Disabled ************/
 #ifdef TVCompf_djgpp
 #include <dpmi.h>
 
@@ -81,6 +82,7 @@ static void save_mouse_state()
   }
 #endif
 }
+#endif /************** Disabled ************/
 
 
 /************** Disabled ************/
@@ -130,7 +132,9 @@ static void save_my_mouse_state()
 
 void TApplication::resume()
 {
+  #if 0
   save_mouse_state();
+  #endif
   TScreen::resume();
   TEventQueue::resume();
   #if 0
@@ -146,7 +150,9 @@ void TApplication::suspend()
   #endif
   TEventQueue::suspend();
   TScreen::suspend();
+  #if 0
   restore_mouse_state();
+  #endif
 }
 
 void initHistory();
