@@ -294,7 +294,6 @@ void PatchTablesForNewKbdLayout(void)
 
 void TGKey::SetKbdMapping(int version)
 {
- int i;
  Mode=version;
  switch (version)
    {
@@ -328,8 +327,11 @@ void TGKey::SetKbdMapping(int version)
          // SET: I submited a patch to Eterm maintainers for it:
          define_key("\x1B[k",KEY_F(57)); // End
          memset(kbX11Keys,0,sizeof(kbX11Keys));
-         for (i=0; XEquiv[i].symbol; i++)
-             kbX11Keys[XEquiv[i].symbol & 0xFF]=XEquiv[i].key;
+         {
+          int i;
+          for (i=0; XEquiv[i].symbol; i++)
+              kbX11Keys[XEquiv[i].symbol & 0xFF]=XEquiv[i].key;
+         }
          #endif
          #ifdef KEY_MOUSE
          // 0631 == KEY_MOUSE
