@@ -41,8 +41,7 @@ install-headers:
 @intl_dummy_install_rule@
 
 install-config:
-	$(INSTALL) -d -m 0755 $(prefix)/bin
-	$(INSTALL) -m 0755 rhtv-config$(EXE_EXT) $(prefix)/bin
+	@install_config@
 
 install: @installers@ install-headers install-intl-dummy install-config
 

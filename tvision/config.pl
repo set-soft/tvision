@@ -54,6 +54,8 @@ LookForPrefix();
 LookForGNUMake();
 # Same for ar, it could be `gar'
 $GAR=LookForGNUar();
+# Similar for install tool.
+LookForGNUinstall();
 # Look for xgettext
 LookForGettextTools();
 # Is the right djgpp?
@@ -995,8 +997,7 @@ sub GenerateMakefile
  $text=~s/\@exe_ext\@/$ExeExt/g;
  $text=~s/\@maintainer_mode\@/MAINTAINER_MODE=1/g if $maintain;
  $text=~s/\@maintainer_mode\@//g                  unless $maintain;
- $text=~s/\@install\@/install/    if $OSf ne 'NetBSD';
- $text=~s/\@install\@/install -c/ if $OSf eq 'NetBSD';
+ $text=~s/\@install\@/@conf{'GNU_INSTALL'}/;
  $text=~s/\@darwin\@/DARWIN=1/g   if $OSf eq 'Darwin';
  $text=~s/\@darwin\@//g           if $OSf ne 'Darwin';
 
@@ -1031,8 +1032,10 @@ sub GenerateMakefile
        $nameSOM="librhtv.$VersionMajor.dylib";
        $nameSOV="librhtv.$Version.dylib";
       }
-    $rep.="\tcd $makeDir; ln -sf $nameSOV $nameSO\n";
-    $rep.="\tcd $makeDir; ln -sf $nameSOV $nameSOM\n";
+    # Note: -sf should work for Solaris 9 but at least in the machines at S.F.
+    # it doesn't. So we just delete the file and do the link.
+    $rep.="\t-cd $makeDir; rm $nameSO; ln -s $nameSOV $nameSO\n";
+    $rep.="\t-cd $makeDir; rm $nameSOM; ln -s $nameSOV $nameSOM\n";
    }
  if ($internac)
    {
@@ -1056,44 +1059,45 @@ sub GenerateMakefile
  $text=~s/\@installers\@/$rep/g;
 
  # Headers
- $rep= "\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision\n";
+
+ $rep= GenInstallDir('0755','$(prefix)/include/rhtvision');
  $rep.="\trm -f \$(prefix)/include/rhtvision/*.h\n";
- $rep.="\t\$(INSTALL) -m 0644 include/*.h \$(prefix)/include/rhtvision\n";
- $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv\n";
- $rep.="\t\$(INSTALL) -m 0644 include/tv/*.h \$(prefix)/include/rhtvision/tv\n";
+ $rep.="\t".GenInstallFiles('0644','include/*.h','$(prefix)/include/rhtvision');
+ $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/tv');
+ $rep.="\t".GenInstallFiles('0644','include/tv/*.h','$(prefix)/include/rhtvision/tv');
  if ($OS eq 'DOS')
    {
-    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/dos\n";
-    $rep.="\t\$(INSTALL) -m 0644 include/tv/dos/*.h \$(prefix)/include/rhtvision/tv/dos\n";
+    $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/tv/dos');
+    $rep.="\t".GenInstallFiles('0644','include/tv/dos/*.h','$(prefix)/include/rhtvision/tv/dos');
    }
  if ($OS eq 'UNIX')
    {
-    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/linux\n";
-    $rep.="\t\$(INSTALL) -m 0644 include/tv/linux/*.h \$(prefix)/include/rhtvision/tv/linux\n";
+    $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/tv/linux');
+    $rep.="\t".GenInstallFiles('0644','include/tv/linux/*.h','$(prefix)/include/rhtvision/tv/linux');
    }
  if ($OSf eq 'QNXRtP')
    {
-    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/qnxrtp\n";
-    $rep.="\t\$(INSTALL) -m 0644 include/tv/qnxrtp/*.h \$(prefix)/include/rhtvision/tv/qnxrtp\n";
+    $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/tv/qnxrtp');
+    $rep.="\t".GenInstallFiles('0644','include/tv/qnxrtp/*.h','$(prefix)/include/rhtvision/tv/qnxrtp');
    }
  if ($OS eq 'Win32')
    {
-    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/win32\n";
-    $rep.="\t\$(INSTALL) -m 0644 include/tv/win32/*.h \$(prefix)/include/rhtvision/tv/win32\n";
+    $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/tv/win32');
+    $rep.="\t".GenInstallFiles('0644','include/tv/win32/*.h','$(prefix)/include/rhtvision/tv/win32');
    }
  if (@conf{'HAVE_X11'} eq 'yes')
    {
-    $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/tv/x11\n";
-    $rep.="\t\$(INSTALL) -m 0644 include/tv/x11/*.h \$(prefix)/include/rhtvision/tv/x11\n";
+    $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/tv/x11');
+    $rep.="\t".GenInstallFiles('0644','include/tv/x11/*.h','$(prefix)/include/rhtvision/tv/x11');
    }
- $rep.="\t\$(INSTALL) -d -m 0755 \$(prefix)/include/rhtvision/cl\n";
- $rep.="\t\$(INSTALL) -m 0644 include/cl/*.h \$(prefix)/include/rhtvision/cl\n";
+ $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/cl');
+ $rep.="\t".GenInstallFiles('0644','include/cl/*.h','$(prefix)/include/rhtvision/cl');
  $text=~s/\@install_headers\@/$rep/g;
  
  # Dummy replacement for i8n library
  $rep ="install-intl-dummy: intl-dummy\n";
- $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
- $rep.="\t\$(INSTALL) -m 0644 intl/dummy/libtvfintl.a \$(libdir)/libtvfintl.a\n";
+ $rep.="\t".GenInstallDir('0755','$(libdir)');
+ $rep.="\t".GenInstallFiles('0644','intl/dummy/libtvfintl.a','$(libdir)');
  # In Darwin the linker checks the time stamp of the ranlib pass and the one of
  # the file. It complains if we use ranlib and then copy the file.
  $rep.="\tranlib \$(libdir)/libtvfintl.a\n" if $conf{'UseRanLib'};
@@ -1104,21 +1108,21 @@ sub GenerateMakefile
  if ($dosta)
    {
     $rep.="install-static: static-lib\n";
-    $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
-    $rep.="\t\$(INSTALL) -m 0644 $makeDir/librhtv.a \$(libdir)\n";
+    $rep.="\t".GenInstallDir('0755','$(libdir)');
+    $rep.="\t".GenInstallFiles('0644',"$makeDir/librhtv.a",'$(libdir)');
    }
 
  if ($dodyn)
    {# Dynamic library
     $ver=($OSf eq 'FreeBSD') ? $nameSOM : $nameSOV;
     $rep.="\ninstall-dynamic: dynamic-lib\n";
-    $rep.="\t\$(INSTALL) -d -m 0755 \$(libdir)\n";
+    $rep.="\t".GenInstallDir('0755','$(libdir)');
     $rep.="\trm -f \$(libdir)/$nameSO\n";
     $rep.="\trm -f \$(libdir)/$nameSOM\n";
     $rep.="\trm -f \$(libdir)/$nameSOV\n";
     $rep.="\tcd \$(libdir); ln -s $ver $nameSO\n";
     $rep.="\tcd \$(libdir); ln -s $ver $nameSOV\n" if $OSf eq 'FreeBSD';
-    $rep.="\t\$(INSTALL) -m 0644 $makeDir/$ver \$(libdir)\n";
+    $rep.="\t".GenInstallFiles('0644',"$makeDir/$ver",'$(libdir)');
     $stripDebug=($OSf eq 'Darwin') ? '-S' : '--strip-debug';
     $rep.="\tstrip $stripDebug \$(libdir)/$ver\n" unless $conf{'debugInfo'} eq 'yes';
     # FreeBSD: merge data from libdir.
@@ -1133,6 +1137,11 @@ sub GenerateMakefile
     $rep.="\ninstall-internac:\n\t\$(MAKE) -C intl install\n";
    }
  $text=~s/\@install_rules\@/$rep/g;
+
+ # rhtv-config installation
+ $rep= GenInstallDir('0755','$(prefix)/bin');
+ $rep.="\t".GenInstallFiles('0755','rhtv-config$(EXE_EXT)','$(prefix)/bin');
+ $text=~s/\@install_config\@/$rep/g;
 
  $rep= "clean:\n";
  $rep.="\trm -f $makeDir/librhtv.so*\n";
