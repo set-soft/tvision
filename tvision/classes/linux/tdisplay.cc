@@ -16,6 +16,11 @@ static uchar CrtRows;
 #include <term.h>
 #include <sys/ioctl.h>
 
+// SET: By now that isn't used but is requested by the inline destructor so
+// I added it here (even when I could made the destructor different for
+// Linux version).
+TFont *TDisplay::font=0;
+
 ushort * TDisplay::equipment = &Equipment;
 uchar * TDisplay::crtInfo = &CrtInfo;
 uchar * TDisplay::crtRows = &CrtRows;
