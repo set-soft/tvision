@@ -282,7 +282,7 @@ ConvKeyRec xlateTable[]=
     case WM_CHAR:      
       storedEvent.what= evKeyDown;
       storedEvent.keyDown.shiftState= keyMask;
-      storedEvent.keyDown.charScan.charCode= wParam;
+      storedEvent.keyDown.charScan.charCode= ( wParam<32 && wParam!=9 ) ? 0 : wParam;
       storedEvent.keyDown.keyCode= /* keyMask | wParam */ 0;
       storedEvent.keyDown.raw_scanCode= ( lParam >> 16 ) & 0xFF;
       storedEvent.keyDown.charScan.scanCode= 0;

@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.351  2002/11/05 13:12:26  set
+* Fixed: The Linux driver initialization could use a NULL pointer to delete
+a requested font.
+
 Revision 2.350  2002/11/05 13:00:33  set
 * Added: Support for DBCS systems at compile level in codepage.cc code.
 More adjusts could be needed. Related to SF FR #633611 by Kirby Zhou
