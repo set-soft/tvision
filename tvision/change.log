@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.39  2003/04/21 14:37:44  set
+* Fixed: unused variable.
+
 Revision 2.399.2.38  2003/04/16 19:54:42  set
 * Added: adapted the messageBox to the new i18n API.
 * Modified: messageBox to use snprintf instead a fixed size buffer.

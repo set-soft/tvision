@@ -1,7 +1,10 @@
 /* Internationalization support routines header.
    Copyright by Salvador E. Tropea (SET) (2003)
    Covered by the GPL license. */
-/* TODO: Implement the propper dummies for systems without intl support */
+/* The dummies are in nointl.h to make this header less complex */
+
+#ifndef TVIntl_Included
+#define TVIntl_Included
 
 #ifdef FORCE_INTL_SUPPORT
  #define HAVE_INTL_SUPPORT 1
@@ -9,8 +12,11 @@
  #include <tv/configtv.h>
 #endif
 
-#ifndef TVIntl_Included
-#define TVIntl_Included
+#ifndef HAVE_INTL_SUPPORT
+
+#include <tv/nointl.h>
+
+#else
 
 #ifdef __cplusplus
 struct stTVIntl
@@ -67,11 +73,7 @@ protected:
 };
 
 #ifndef _
- #ifdef HAVE_INTL_SUPPORT
-  #define _(msg) TVIntl::getText(msg)
- #else
-  #define _(msg) (msg)
- #endif
+ #define _(msg) TVIntl::getText(msg)
 #endif
 
 #ifndef __
@@ -112,6 +114,8 @@ protected:
 #endif
 
 #endif /* __cplusplus */
+
+#endif /* HAVE_INTL_SUPPORT */
 
 #endif /* TVIntl_Included */
 
