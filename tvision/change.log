@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.590  2004/10/15 23:41:53  set
+* Fixed: [Win32][gcc 3.x] gcc 3.3.3 warning in WinGr code (using char as
+array index).
+
 Revision 2.589  2004/10/15 23:38:24  set
 * Fixed: [Win32] The Win32 driver: when the application or configuration
 file requested a screen size bigger than 80x25 the code failed to register
