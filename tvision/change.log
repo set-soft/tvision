@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.339  2002/09/25 19:39:04  set
+* Fixed: [MSVC] Now gdi32.lib is also needed (for the WinGr driver).
+Reported by Sergey Krivulja <skrivulja@erec.ru>
+
 Revision 2.338  2002/09/23 16:02:03  set
 * Added: Daily snapshot to the web site.
 

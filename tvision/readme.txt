@@ -19,23 +19,18 @@ The small sections are:
 14. Contact information
 
 If you are looking for information about the Win32 target please look in the
-win32 (MingW) directory and winnt directory (BC++).
-
-****** Important! for old users: the headers now have two levels. In ******
-****** the first level tv.h is located. The rest of the headers are  ******
-****** located in a subdirectory called tv. It shouldn't affect your ******
-****** program.                                                      ******
-
-****** Important! for old users: the library generated is now called ******
-****** librhtv.a this change in the name is to avoid confusion with  ******
-****** other ports of the library.                                   ******
+win32 (MinGW) directory and winnt directory (BC++/MSVC).
+Cygwin users and MinGW users that have MSys and a perl interpreter can follow
+the UNIX instructions.
+DOS and UNIX (FreeBSD, Linux, QNX, Solaris, etc.) read this file.
 
 0.  Ultra quick instructions
 ----------------------------
 
-  If you can't wait even a second and you are running Linux or have a very
-well equiped djgpp installation (Perl, shell utils, file utils, bash,
-make, etc.) you can just follow these steps:
+  If you can't wait even a second and you are running a UNIX like system with
+most of the GNU tools (Perl, shell utils, file utils, bash, make, etc.) you
+can just follow these steps: [These tools are installed in all Linux systems;
+they are available for most UNIX systems and also for djgpp, Cygwin and MinGW]
 
 A) Run the configure script (./configure or configure).
 
@@ -44,7 +39,8 @@ Examples:
    c:\djgpp\contrib\tvision>configure
 
 B) If all is OK run "make".
-C) If all is OK just run "make install".
+C) If all is OK just run "make install". [On UNIX systems you'll need to
+change to the root user before installing]
 
   With it you'll get the headers and library installed.
   If the configure script makes a wrong guess about something and you want to
@@ -55,8 +51,8 @@ script passing --prefix=dir as argument.
 Example:
   linux:/usr/src/tvision# ./configure --prefix=/usr/local
   
-  Note: The configuration mechanism can be used for Win32+MingW but you must
-install some GNU tools.
+  Note: The configuration mechanism can be used for Cygwin or MinGW but you
+must install some GNU tools.
 
 
 
@@ -101,32 +97,30 @@ files are examples.
 issues.
 </Clarification>
 
-  They were heavily patched to work with gcc. Some patches fixes bugs, others
-changes the behavior of things limited to 16 bits values, the resulting
-TV isn't 100% compatible with the original. See the examples/porting.txt
-file for more information, I explain which differences I found while porting
-the examples found there.
+  They were heavily patched to work with gcc, BC++ and MSVC. Some patches
+fixes bugs, others changes the behavior of things limited to 16 bits values
+and others add brand new functionality. The resulting TV isn't 100%
+compatible with the original. See the examples/porting.txt file for more
+information, I explain which differences I found while porting the examples.
   Up to release 1.0.1 most of the patches were made by Robert Hoehne. I
 contributed with various patches and modules mainly to extend the original
 functionality. For information about what changed before it just read the
-change.log file.
+change.log and change1.log files. You'll find more information in the "doc"
+directory.
   The library is distributed under the GPL license, it seems to be OK because
 according to a FAQ in the Inprise web site the base library is Public
-Domain. The file copying contains the GPL license and the file copying.rh
+Domain. The file "copying" contains the GPL license and the file "copying.rh"
 contains the RHIDE copyright.
-
-  The purpose of this distribution is avoid downloading the whole RHIDE to
-use TV. I'm doing the distribution because Robert doesn't have enough time
-to do it. Additionally this distribution will make RHIDE's compilation much
-more simple for people don't familiarized with it.
 
   Recent news: Richard M. Stallman contacted me and put some doubts about the
 distribution of Borland's sources, he contacted somebody at Borland asking if
-TV was freesoftware and he got no as an answer. I think this reply was mainly
+TV was freesoftware and he got no as answer. I think this reply was mainly
 because RMS asked without clarifying your point. To clarify it I contacted
 the person in charge of the Linux web section of Borland and he told me that
 he is redirecting these doubts to the right people inside Borland. Until now
-I didn't get a final answer.
+I didn't get a final answer. Note it was in 2000, Borland never replied and I
+insisted during 18 months. Also note that I tried to contact Linux
+International but they never replied.
 
 
 
@@ -139,6 +133,8 @@ I didn't get a final answer.
   The files that must be in DOS format are listed in lista.dos, the rest are
 binary or can be UNIX files because djgpp tools handles these UNIX files very
 well.
+  The following text talks about DOS and Linux, but most of the DOS concepts
+apply to Win32 and Linux concepts applies to POSIX/UNIX systems.
   If you take a look at the tree you'll see I included both, the DOS and
 Linux, makefiles and .gpr files. That's because the source distribution is
 basically the same for DOS and Linux. If you have the Linux distribution and
@@ -155,6 +151,8 @@ distribution of the library.
 packages and are included.
   Starting with 1.1.0 Win32 platforms are also supported using MingW and BC++
 5.5 compilers.
+  In 2.0.0 we added MSVC and QNX support. The UNIX support was also enhanced
+to support FreeBSD and Solaris.
 
 
 
