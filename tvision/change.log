@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.127  2002/06/05 14:17:50  set
+* Fixed: [X11] the driver didn't map ^a-^z, reported by Ivan.
+
 Revision 2.126  2002/06/05 14:16:40  set
 * Updated: Distribution files list to include update and THANKS.
 
