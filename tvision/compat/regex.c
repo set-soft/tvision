@@ -2878,7 +2878,7 @@ int
 re_search ( struct re_pattern_buffer *bufp, const char *string,
      int size, int startpos, int range, struct re_registers *regs )
 {
-  return re_search_2 (bufp, NULL, 0, string, size, startpos, range, 
+  return re_search_2 (bufp, NULL, string, 0, size, startpos, range, 
                       regs, size);
 }
 
@@ -2990,7 +2990,7 @@ re_search_2 ( struct re_pattern_buffer *bufp,
           && !bufp->can_be_null)
         return -1;
 
-      val = re_match_2 (bufp, string1, size1, string2, size2,
+      val = re_match_2 (bufp, string1, string2, size1, size2,
                         startpos, regs, stop);
       if (val >= 0)
         return startpos;
@@ -3180,7 +3180,7 @@ int
 re_match (struct re_pattern_buffer *bufp, const char *string, int size, int
           pos, struct re_registers *regs)
 {
-  return re_match_2 (bufp, NULL, 0, string, size, pos, regs, size); 
+  return re_match_2 (bufp, NULL, string, 0, size, pos, regs, size); 
 }
 #endif /* not emacs */
 

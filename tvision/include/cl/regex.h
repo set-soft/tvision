@@ -435,10 +435,9 @@ extern int re_search
 /* Like `re_search', but search in the concatenation of STRING1 and
    STRING2.  Also, stop searching at index START + STOP.  */
 extern int re_search_2
-  _RE_ARGS ((struct re_pattern_buffer *buffer, const char *string1,
-             int length1, const char *string2, int length2,
-             int start, int range, struct re_registers *regs, int stop));
-
+  _RE_ARGS (( struct re_pattern_buffer *bufp,
+     const char *string1, const char *string2, int size1, int size2,
+     int startpos, int range, struct re_registers *regs, int stop ));
 
 /* Like `re_search', but return how many characters in STRING the regexp
    in BUFFER matched, starting at position START.  */
@@ -449,9 +448,9 @@ extern int re_match
 
 /* Relates to `re_match' as `re_search_2' relates to `re_search'.  */
 extern int re_match_2 
-  _RE_ARGS ((struct re_pattern_buffer *buffer, const char *string1,
-             int length1, const char *string2, int length2,
-             int start, struct re_registers *regs, int stop));
+  _RE_ARGS (( struct re_pattern_buffer *bufp, const char *string1,
+   const char *string2, int size1, int size2, int pos,
+     struct re_registers *regs, int stop ));
 
 
 /* Set REGS to hold NUM_REGS registers, storing them in STARTS and

@@ -36,7 +36,15 @@ General Public License for more details.  */
 /** Header **/
 #define GETLINE_NO_LIMIT -1
 
-#if defined(TVComp_BCPP) || defined(TVCompf_MinGW) || defined(TVComp_MSC)
+#if defined(TVCompf_MinGW)
+ #if defined(_SSIZE_T_) && !defined(_NO_OLDNAMES)
+  #define MinGW_SSIZE_T 0
+ #else
+  #define MinGW_SSIZE_T 1
+ #endif
+#endif
+
+#if defined(TVComp_BCPP) || MinGW_SSIZE_T || defined(TVComp_MSC)
 typedef long ssize_t;
 #endif
 
