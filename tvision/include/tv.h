@@ -17,8 +17,8 @@ Modified by Robert H”hne to be used for RHIDE.
 // in programs that are very sensitive, like my editor.
 #define TV_MAJOR_VERSION  1
 #define TV_MIDDLE_VERSION 0
-#define TV_MINOR_VERSION  9
-#define TV_VERSION "1.0.9"
+#define TV_MINOR_VERSION  10
+#define TV_VERSION "1.0.10"
 
 #define Uses_EventCodes
 #define Uses_ViewCommands

@@ -1,4 +1,12 @@
 $Log$
+Revision 1.125  1999/12/22 00:40:08  root (set)
+* Bug found: [Linux] When suspending a TV application in a remote terminal
+and using a font different than the default the frames gets scrambled when
+resuming the application. I can reproduce it, but I don't have a clue about
+the source of the problem. Remote terminals are complex and full of problems
+so I don't plan to spend time searching the source of the problem. Reported
+by Matt Mueller <donut@azstarnet.com>
+
 Revision 1.124  1999/12/19 19:50:08  root (set)
 * Added: Now the library also patches the Ctrl+Shift+Tab combination so the
 kernel reports it. Ivan reported it as a bug.
