@@ -15,6 +15,13 @@
 #define Uses_stdlib
 #include <compatlayer.h>
 
+#if defined(TVOS_DOS) || defined(TVOS_Win32)
+ // Currently only static linking is supported for DOS and Win32.
+ #define ONLY_STATIC 1
+#else
+ #define ONLY_STATIC 0
+#endif
+
 static char *curdir=TVCONFIG_REF_DIR;
 static int   lcurdir;
 
@@ -58,7 +65,10 @@ void SLibs(void)
  char *copy=strdup(TVCONFIG_RHIDE_OS_LIBS);
  char *s=strtok(copy," ");
 
- printf("-Wl,-dn -lrhtv -Wl,-dy ");
+ if (ONLY_STATIC)
+    printf("-lrhtv ");
+ else
+    printf("-Wl,-dn -lrhtv -Wl,-dy ");
 
  while (s)
    {
@@ -73,12 +83,17 @@ void SLibs(void)
 static
 void DLibs(void)
 {
- char *copy=strdup(TVCONFIG_RHIDE_OS_LIBS);
- char *s=strtok(copy," ");
+ if (ONLY_STATIC)
+    SLibs();
+ else
+   {
+    char *copy=strdup(TVCONFIG_RHIDE_OS_LIBS);
+    char *s=strtok(copy," ");
 
- printf("-lrhtv ");
- if (strstr(TVCONFIG_RHIDE_OS_LIBS,"tvfintl"))
-    printf("-ltvfintl");
+    printf("-lrhtv ");
+    if (strstr(TVCONFIG_RHIDE_OS_LIBS,"tvfintl"))
+       printf("-ltvfintl");
+   }
 }
 
 static
