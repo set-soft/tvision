@@ -143,6 +143,7 @@ void CLY_GetDefaultFileAttr(CLY_mode_t *mode)
  mode->mode=S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR;
  mode->user=getuid();
  mode->group=getgid();
+ mode->writemask=S_IWUSR;
 }
 #define FILE_ATTRS_DEFINED
 #endif
