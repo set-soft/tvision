@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.234  2002/07/25 17:24:23  set
+* Fixed: [DOS] The 90x34 and 94x34 video modes uses 14 lines fonts but
+didn't set it into the BIOS DATA AREA, for this reason some BIOSes didn't
+show the cursor.
+
 Revision 2.233  2002/07/24 19:57:02  set
 * Modified: Part of the font settings API, now you can set both fonts in
 one call. Modified for X11, Linux and DOS. Tested for X11 and Linux.
