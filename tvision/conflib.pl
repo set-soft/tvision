@@ -539,7 +539,7 @@ sub FindCFLAGS
  $ret=@ENV{'CFLAGS'};
  if (!$ret)
    {
-    $ret='-O2 -gstabs+3';
+    $ret='-O2'; # -gstabs+3';
     # In UNIX pipes are in memory and allows multithreading so they are
     # usually faster. In Linux that's faster.
     $ret.=' -pipe' if ($OS eq 'UNIX');
@@ -613,7 +613,7 @@ sub FindCXXFLAGS
  $ret=@ENV{'CFLAGS'} unless $ret;
  if (!$ret)
    {
-    $ret='-O2 -gstabs+3';
+    $ret='-O2'; # -gstabs+3';
     $ret.=' -pipe' if ($OS eq 'UNIX');
     $ret.=' -I/usr/local/include -L/usr/local/include' if ($OSf eq 'FreeBSD');
     $ret.=' -Wno-long-double' if ($OSf eq 'Darwin');
