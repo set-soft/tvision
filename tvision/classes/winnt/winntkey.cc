@@ -48,7 +48,7 @@ ushort       TGKeyWinNT::vk2kk[]=
  0x0010, 0x0011, 0x0012, 0x0013, 0x0014, 0x0015, 0x0016, 0x0017,
  0x0018, 0x0019, 0x001a, 0x0063, 0x0064, 0x0065, 0x0000, 0x0000,
  0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
- 0x0000, 0x0000, 0x0000, 0x0036, 0x0000, 0x0035, 0x0000, 0x0000,
+ 0x0000, 0x0000, 0x0033, 0x0036, 0x0000, 0x0035, 0x0000, 0x0000,
  0x0039, 0x003a, 0x003b, 0x003c, 0x003d, 0x003e, 0x003f, 0x0040,
  0x0041, 0x0042, 0x0043, 0x0044, 0x0000, 0x0000, 0x0000, 0x0000,
  0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
@@ -126,8 +126,13 @@ void TGKeyWinNT::FillTEvent(TEvent &e)
  //  shiftState |= kbCapsState;
 
  e.keyDown.charScan.scanCode=inpRec.Event.KeyEvent.wVirtualScanCode;
- e.keyDown.charScan.charCode=inpRec.Event.KeyEvent.uChar.AsciiChar;
+ uchar Symbol=inpRec.Event.KeyEvent.uChar.AsciiChar;
+ e.keyDown.charScan.charCode=((shiftState & kbAltLCode) && (Symbol<128)) ?
+                             0 : Symbol;
  e.keyDown.shiftState=shiftState;
+ // To debug the codes
+ //fprintf(stderr,"inpRec.Event.KeyEvent.wVirtualKeyCode=%d\n",
+ //        inpRec.Event.KeyEvent.wVirtualKeyCode);
  e.keyDown.keyCode=(inpRec.Event.KeyEvent.wVirtualKeyCode<256) ?
                    vk2kk[inpRec.Event.KeyEvent.wVirtualKeyCode] :
                    (ushort)0;

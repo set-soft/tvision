@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.113  2003/07/29 20:06:28  set
+* Updated the web page to list the new packages.
+
 Revision 2.399.2.112  2003/07/29 13:09:20  set
 * Fixed: fileview.cc used destroy instead of CLY_destroy. Looks like some
 patch from my home CVS was missing. I also adapted all examples to use
