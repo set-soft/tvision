@@ -47,7 +47,13 @@ bool fileExists(const char * FileName)
    return rst;
 }
 
-const char * getFileName(const char * aTitle, const char * ext, int Mode)
+// SET: This function was originaly declared as const char * and returned a
+// pointer to a temporal variable in the stack. Nicola Asuni found it and
+// suggested a partial workaround. I then modified the function to return
+// a char * using newStr to allocate it. I also modified all the points
+// where this function is used (at least all that I found) to release the
+// returned value.
+char * getFileName(const char * aTitle, const char * ext, int Mode)
 {
    TFileDialog *d = 0;
    int cmd = cmCancel;
@@ -64,7 +70,7 @@ const char * getFileName(const char * aTitle, const char * ext, int Mode)
       char fileName[PATH_MAX];
       d->getFileName( fileName );
       delete d;
-      return _(fileName);
+      return newStr( fileName );
    }
    else return NULL;
 }
