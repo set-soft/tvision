@@ -47,6 +47,7 @@ unsigned   TDisplayWinGr::xPos= UINT_MAX; /* X axis of the cursor */
 unsigned   TDisplayWinGr::yPos= UINT_MAX; /* Y axis of the cursor */
 unsigned   TDisplayWinGr::zPos;           /* Z axis of the cursor (means size )*/
 int        TDisplayWinGr::sizeChanged= 0; /* Resizinf counter                  */
+int        TDisplayWinGr::forceRedraw= 0;
 
 TEvent     TDisplayWinGr::storedEvent;    /* Correctly processes message queue */
 HWND       TDisplayWinGr::hwnd= NULL;     /* Main window handler */
@@ -292,13 +293,15 @@ dialogModeRec TDisplayWinGr::mode= { -1, 0 };     // To hold modes
 	  unsigned ofs= getCols()*y+x;
 	  ushort  *src= TScreen::screenBuffer+ofs;
 
+	  forceRedraw=1;
 	  while (h>=0)
 	  { TScreen::setCharacters( ofs
 				  , src
-				  , -(w+1) );
+				  , w+1 );
 	    src+= getCols();         /* Next line         */
 	    ofs+= getCols();
 	    h --; y ++; }}}                      /* A line minus left */
+	  forceRedraw=0;
 
       EndPaint( hwnd, &ps );
     return( 5 ); }

@@ -86,6 +86,7 @@ protected:
 // Support variables
 
  static int        sizeChanged; /* Resizing counter  */
+ static int        forceRedraw; /* Used to force setCharacters to unconditionally draw */
 
  static TEvent storedEvent; /* Correctly processes message queue */
  static HFONT      hFont;

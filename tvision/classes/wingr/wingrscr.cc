@@ -228,13 +228,12 @@ TScreenWinGr::~TScreenWinGr()
 /* ------------------------------------------------------ [ JASC jul/2002] -- */
    void TScreenWinGr::setCharacters( unsigned  offset
 		                   , ushort  * src
-	                           , unsigned  aLen )
+	                           , unsigned  len )
 /* -------------------------------------------------------------------------- */
 { uchar letra;
   uchar color;
   int add  ;
   int last ;
-  int len = aLen;
 
   ushort x= offset % screenWidth;  // Regenerate cartesian coordinates
   ushort y= offset / screenWidth;
@@ -247,19 +246,17 @@ TScreenWinGr::~TScreenWinGr()
   char * tmp;
 
 
-  if (len < 0x8000 )
+  if (!len)
+  { return; }
+
+  if (!forceRedraw)
   { while (len > 0 && *old == *src)             /* remove unchanged characters from left to right */
     { x++; offset++;  old++; src++; len--; }
 
 
     while (len > 0 && *old_right == *src_right) /* remove unchanged characters from right to left */
     { old_right--; src_right--; len--;     }}
-  else                                          /* force redraw */
-  { len= -len; }                                /* real wide    */
 
-
-  if (!len)
-  { return; }
 
   tmp= (char *)alloca( len*sizeof( char ) ); /* write only middle changed characters */
   dst= tmp; add= 0; last= -1;
