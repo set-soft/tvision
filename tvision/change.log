@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.288  2002/09/06 14:22:13  set
+* Added: Workaround for broken KOI8-R systems (looks that's the most common
+case) where the SFM and ACM doesn't use Unicode, or uses Unicode mixed with
+KOI8. Also added the test data.
+
 Revision 2.287  2002/09/06 00:08:13  terrible
 * Updated: Debian packaging to version 2.0.0-0.4.
 * Note: it seems that the library is binary compatible with the 0.3 version,
