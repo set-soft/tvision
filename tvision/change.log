@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.559  2004/08/23 20:43:53  set
+* Added: Sorted directories for the non POSIX platforms in TDirListBox.
+* Modified: The TDirListBox code to be easier to maintain. I hope the
+changes doesn't break all platforms ;-)
+.
 Revision 2.558  2004/08/18 20:23:16  set
 * Modified: TDirListBox to show the directories alphabetically sorted.
 .
