@@ -139,10 +139,11 @@ TScreenDOS::TScreenDOS()
 
  flags0=CodePageVar | CanSetPalette | CanReadPalette | CursorShapes | UseScreenSaver |
         CanSetBFont | CanSetSBFont  | CanSetVideoSize;
- startupMode=getCrtMode();
+ user_mode=startupMode=getCrtMode();
  SaveScreen();
+ unsigned startScreenWidth=GetCols(), startScreenHeight=GetRows();
 
- unsigned maxX=GetCols(), maxY=GetRows();
+ unsigned maxX=startScreenWidth, maxY=startScreenHeight;
  long aux;
  if (optSearch("ScreenWidth",aux))
     maxX=aux;
@@ -159,7 +160,7 @@ TScreenDOS::TScreenDOS()
     if (frCB)
        SelectFont(charLines,False); // Try loading the application font
 
- user_mode=screenMode=getCrtMode();
+ screenMode=getCrtMode();
  setCrtData();
  // We use the video memory as buffer, not a malloced buffer
  screenBuffer=(uint16 *)-1;

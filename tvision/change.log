@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.259  2002/08/16 12:58:55  set
+* Modified: [MSVC] the way I define close, open, etc. replacements. The
+inline keyword only works for C++ and I must use __inline. I also moved
+the definitions after io.h to have the _* prototypes. From errors sent by
+WintiX.
+
 Revision 2.258  2002/08/14 12:55:29  set
 * Fixed: genraw example created a TVCodePage object without specifying the
 input code page. Reported by Igor Gnip <gnipi@digitalsystem.co.yu>
