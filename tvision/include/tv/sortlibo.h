@@ -28,6 +28,8 @@ public:
 		    ushort aNumCols,
 		    TScrollBar *aScrollBar
 		  );
+   TSortedListBox( const TRect& bounds, ushort aNumCols,
+                   TScrollBar *aHScrollBar, TScrollBar *aVScrollBar );
 
     virtual void handleEvent( TEvent& event );
     void newList( TSortedCollection *aList );

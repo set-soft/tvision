@@ -7,6 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Vadim Beloborodov to be used on WIN32 console
+Modified by Salvador E. Tropea to add functionality.
  *
  *
  */
@@ -321,13 +322,20 @@ void TListViewer::handleEvent( TEvent& event )
                     if( numCols > 1 )
                         newItem = focused + size.y;
                     else
+                        { // SET: if the user put a scroll bar with one column
+                          // that's what he wants
+                        if (hScrollBar) hScrollBar->handleEvent(event);
                         return;
+                        }
                     break;
                 case kbLeft:
                     if( numCols > 1 )
                         newItem = focused - size.y;
                     else
+                        { // SET: see kbRight
+                        if (hScrollBar) hScrollBar->handleEvent(event);
                         return;
+                        }
                     break;
                 case kbPgDn:
                     newItem = focused + size.y * numCols;

@@ -1,4 +1,7 @@
 $Log$
+Revision 1.149  2000/05/13 16:02:39  set
+* Fixed: Yet another call to delete without []. Pointed out by Laurynas.
+.
 Revision 1.148  2000/05/12 23:13:05  root (set)
 * Fixed: Some details in the compat layer library to compile under Linux
 (first compilation issues ;-)
