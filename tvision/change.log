@@ -1,5 +1,8 @@
 $Log$
-Revision 1.122  1999/12/05 13:12:59  root
+Revision 1.123  1999/12/05 13:28:08  root
+* Applied patchs from Ivan for the Debian files (sets architecture to any).
+
+Revision 1.122  1999/12/05 13:12:59  root (set)
 * Modified: Now the initialization of the TScreen is called from TProgInit.
 I must test it under DOS. The old methode failed for the examples.
 * Added: [Linux] An example on how to suspend an application with ^Z and then
