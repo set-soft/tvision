@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.400  2003/03/18 16:03:17  set
+* Fixed: QNX details, patch from Mike.
+
 Revision 2.399  2003/02/05 13:43:51  set
 * Modified: The default TMouse::resume behavior to restore the buttonsCount
 member. It allows calling suspend/resume when using drivers that doesn't
