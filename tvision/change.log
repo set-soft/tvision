@@ -1,4 +1,10 @@
 $Log$
+Revision 1.143  2000/04/13 01:07:02  set
+* Fixed: [DOS] Now when BIOS is selected the keyboard is polled really using
+BIOS. Previous code used djgpp's kbhit() and it doesn't really call BIOS.
+* Modified: Now the canScroll member of TInputLine is just protected and not
+private.
+.
 Revision 1.142  2000/04/13 00:41:17  root (set)
 * Updated: The Linux .gpr for the new headers structure (tv/...).
 * Fixed: Tab key problems when using the Eterm trick.

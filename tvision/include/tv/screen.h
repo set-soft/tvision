@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TScreen ) && !defined( __TScreen )
 #define __TScreen
 
-#ifdef __linux__
+#ifdef TVOS_UNIX
 #include <signal.h>
 #endif
 
@@ -79,7 +79,7 @@ protected:
     ~TDisplay() { if (font) {delete font; font=0;} };
 
     static TFont *font;
-    #ifdef __linux__
+    #ifdef TVOS_UNIX
     // SET: 1 when the size of the window where the program is running changed
     static volatile sig_atomic_t windowSizeChanged;
     #endif
@@ -140,7 +140,7 @@ public:
     static void setCharacter(unsigned offset,ushort value);
     static void setCharacter(unsigned offset,ushort *values,unsigned count);
 
-    #ifdef __linux__
+    #ifdef TVOS_UNIX
     // SET: That's very low level, don't call it from any place!
     static void SendToTerminal(const char *value);
     #endif
@@ -157,7 +157,7 @@ int TDisplay::CheckForWindowSize(void)
 }
 #endif
 
-#ifdef __linux__
+#ifdef TVOS_UNIX
 // SET: Added the following functionallity:
 // Linux specific stuff, enclose it in __linux__ section:
 //   If you want to setup a specific value define this variable in your code
