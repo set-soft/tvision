@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.393  2003/01/08 13:45:40  set
+* Modified: Small optimization in TMenuView::findItem to avoid searching
+for ch==0. Proposed by Roman.
+
 Revision 2.392  2003/01/08 12:49:30  set
 * Fixed: [UNIX] In some cases the headers are included even when a driver
 isn't supported just to keep the propper dependencies. Some of the UNIX
