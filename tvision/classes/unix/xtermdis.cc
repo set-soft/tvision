@@ -23,7 +23,6 @@
 #if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP)
 
 #include <termios.h>
-#include <term.h>
 #include <sys/ioctl.h>
 #include <signal.h>
 
