@@ -15,7 +15,10 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TStatusLine
 #define Uses_TDeskTop
 #define Uses_TMenuBar
+#define Uses_TScreen
 #include <tv.h>
+
+static TScreen *tsc;
 
 TProgInit::TProgInit( TStatusLine *(*cStatusLine)( TRect ),
                             TMenuBar *(*cMenuBar)( TRect ),
@@ -25,5 +28,11 @@ TProgInit::TProgInit( TStatusLine *(*cStatusLine)( TRect ),
     createMenuBar( cMenuBar ),
     createDeskTop( cDeskTop )
 {
+ tsc=new TScreen();
 }
 
+TProgInit::~TProgInit()
+{
+ delete tsc;
+ tsc=0;
+}

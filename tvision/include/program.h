@@ -48,6 +48,7 @@ public:
                TMenuBar *(*cMenuBar)( TRect ),
                TDeskTop *(*cDeskTop )( TRect )
              );
+    virtual ~TProgInit();
 
 protected:
 
