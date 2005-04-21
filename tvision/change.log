@@ -1,12 +1,17 @@
-$Log$.
+$Log$
+Revision 2.610  2005/02/28 13:31:07  set
+* Fixed: [Linux] Removed term.h inclusion from linuxdis.cc, that's ncurses
+stuff not needed by the current implementation of the Linux driver.
+Reported by Thiago.
+
 Revision 2.609  2005/01/17 15:05:49  set
 * Fixed: Compilation problems when using MSS and gcc 3.4.1. Patch by
 Michael Vzoroff.
-.
+
 Revision 2.608  2005/01/11 18:49:54  set
 * Fixed: [MinGW] The snprintf implementation is broken. That's obvious
 because MinGW uses M$ runtime. Now MinGW target uses the replacement.
-.
+
 Revision 2.607  2004/12/23 21:21:59  terrible
 * [Updated] Debian packaging to version 2.0.4-1, it seems Salvador didn't
   run the version update script, so I made changes to Debian packaging

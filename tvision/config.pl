@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2004 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2005 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -85,6 +85,7 @@ if ($Compf eq 'Cygwin')
   }
 LookForIntlSupport();
 LookForEndianess();
+LookForMaintainerTools() if $conf{'MAINTAINER_MODE'} eq 'yes';
 
 print "\n";
 GenerateMakefile();
@@ -288,7 +289,7 @@ sub SeeCommandLine
       {
        $conf{'prefix'}=$1;
       }
-elsif ($i=~'--real-prefix=(.*)')
+    elsif ($i=~'--real-prefix=(.*)')
       {
        $conf{'real-prefix'}=$1;
       }
@@ -1273,6 +1274,18 @@ sub CreateConfigH
    {
     print "created new header\n";
     replace('include/tv/configtv.h',$text);
+   }
+}
+
+sub LookForMaintainerTools
+{
+ my $file;
+
+ $file=LookForFileInPath('gpr2mak*');
+ if (!length($file))
+   {
+    die "\nRHIDE tools aren't installed. They are needed only for maintainer mode.\n".
+        "Install RHIDE or disable the maintaner mode.\n\n";
    }
 }
 
