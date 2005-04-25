@@ -13,7 +13,7 @@ CFLAGS   = /nologo -D_WIN32 -DFOR_EDITOR /GX /Zi
 LDFLAGS  = /DEBUG
 !else
 # Options for optimization (production)
-CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GX
+CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GX -D_USE_32BIT_TIME_T
 #CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GR- /GX-
 LDFLAGS  = /verbose
 !endif
