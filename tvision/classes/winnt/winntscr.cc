@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright (c) 2002 by Salvador E. Tropea (SET)
+  Copyright (c) 2002-2005 by Salvador E. Tropea (SET)
   Based on code contributed by Anatoli Soltan.
 
   Description:
@@ -52,6 +52,7 @@ I think they aren't useful but I left it here in case I need this example.
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#undef YieldProcessor
 
 #include <tv/winnt/screen.h>
 #include <tv/winnt/mouse.h>

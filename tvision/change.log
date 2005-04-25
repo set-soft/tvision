@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.231  2005/04/21 18:16:45  set
+* Added: [configuration] A check for RHIDE tools when the user enables the
+maintainer mode.
+
 Revision 2.399.2.230  2005/02/28 12:54:44  set
 * Fixed: [Linux] Removed term.h inclusion from linuxdis.cc, that's ncurses
 stuff not needed by the current implementation of the Linux driver.

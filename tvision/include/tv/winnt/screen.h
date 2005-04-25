@@ -1,9 +1,12 @@
 /* WinNT screen routines header.
-   Copyright (c) 2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2002-2005 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // This headers needs windows header
 #if defined(TVOS_Win32) && !defined(WINNTSCR_HEADER_INCLUDED)
 #define WINNTSCR_HEADER_INCLUDED
+
+// Some windows.h headers defines a macro with this name
+#undef YieldProcessor
 
 #define USE_NEW_BUFFER
 #define hCurrentOut hOut

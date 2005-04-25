@@ -1820,7 +1820,43 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 
 #if defined(Include_io) && !defined(Included_io)
  #define Included_io 1
+ #undef _CRT_INSECURE_OPEN // Visual Studio .NET 2005 Express Beta Edition
  #include <io.h>
+ #ifdef CLY_Define_Inline_IO_Translations
+  /* Needed for MSVC */
+  /* Note we must avoid macros here or we risk to collide with TV read/write
+     C++ members. */
+  #ifndef CLY_close_inline_defined
+   #define CLY_close_inline_defined 1
+   __inline int close(int FILEDES)
+    { return _close(FILEDES); }
+  #endif
+  #ifndef CLY_dup_inline_defined
+   #define CLY_dup_inline_defined 1
+   __inline int dup(int OLD)
+    { return _dup(OLD); }
+  #endif
+  #ifndef CLY_dup2_inline_defined
+   #define CLY_dup2_inline_defined 1
+   __inline int dup2(int OLD, int NEW)
+    { return _dup2(OLD,NEW); }
+  #endif
+  #ifndef CLY_read_inline_defined
+   #define CLY_read_inline_defined 1
+   __inline long read(int FILEDES, void *BUFFER, unsigned long SIZE)
+    { return _read(FILEDES,BUFFER,SIZE); }
+  #endif
+  #ifndef CLY_write_inline_defined
+   #define CLY_write_inline_defined 1
+   __inline long write(int FILEDES, void *BUFFER, unsigned long SIZE)
+    { return _write(FILEDES,BUFFER,SIZE); }
+  #endif
+  #ifndef CLY_lseek_inline_defined
+   #define CLY_lseek_inline_defined 1
+   __inline long lseek(int FILEDES, long OFFSET, int WHENCE)
+    { return _lseek(FILEDES,OFFSET,WHENCE); }
+  #endif
+ #endif
 #endif
 
 #if defined(Include_direct) && !defined(Included_direct)
@@ -1940,46 +1976,6 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #define Included_cl_getopt 1
  // This header defines all as CLY_* to avoid conflicts
  #include <cl/getopt.h>
-#endif
-
-#if defined(Include_io) && !defined(Included_io)
- #define Included_io 1
- #include <io.h>
- #ifdef CLY_Define_Inline_IO_Translations
-  /* Needed for MSVC */
-  /* Note we must avoid macros here or we risk to collide with TV read/write
-     C++ members. */
-  #ifndef CLY_close_inline_defined
-   #define CLY_close_inline_defined 1
-   __inline int close(int FILEDES)
-    { return _close(FILEDES); }
-  #endif
-  #ifndef CLY_dup_inline_defined
-   #define CLY_dup_inline_defined 1
-   __inline int dup(int OLD)
-    { return _dup(OLD); }
-  #endif
-  #ifndef CLY_dup2_inline_defined
-   #define CLY_dup2_inline_defined 1
-   __inline int dup2(int OLD, int NEW)
-    { return _dup2(OLD,NEW); }
-  #endif
-  #ifndef CLY_read_inline_defined
-   #define CLY_read_inline_defined 1
-   __inline long read(int FILEDES, void *BUFFER, unsigned long SIZE)
-    { return _read(FILEDES,BUFFER,SIZE); }
-  #endif
-  #ifndef CLY_write_inline_defined
-   #define CLY_write_inline_defined 1
-   __inline long write(int FILEDES, void *BUFFER, unsigned long SIZE)
-    { return _write(FILEDES,BUFFER,SIZE); }
-  #endif
-  #ifndef CLY_lseek_inline_defined
-   #define CLY_lseek_inline_defined 1
-   __inline long lseek(int FILEDES, long OFFSET, int WHENCE)
-    { return _lseek(FILEDES,OFFSET,WHENCE); }
-  #endif
- #endif
 #endif
 
 #if defined(Include_stdio) && !defined(Included_stdio)
