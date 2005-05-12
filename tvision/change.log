@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.612  2005/04/25 13:29:21  set
+* Updated: Version in readme.txt and QNX package.
+* Added: [MSVC] Compatibility with Visual Studio .NET 2005 Express Beta
+Edition from Christian Kirches <christian/kirches/gmx/de>.
+  * Added: -D_USE_32BIT_TIME_T to flags to keep time_t as 32 bits.
+  * Added: #undef _CRT_INSECURE_OPEN before including io.h to avoid
+  warnings about _open.
+  * Added: #undef YieldProcessor to avoid collisions with a macro defined
+  in windows.h.
+
 Revision 2.611  2005/04/21 14:27:32  set
 * Added: [configuration] A check for RHIDE tools when the user enables the
 maintainer mode.

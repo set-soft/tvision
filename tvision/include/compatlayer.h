@@ -330,8 +330,8 @@ typedef unsigned long  ulong;
     library. GCC implemented it in version 3.0. BC++ implemented some
     stuff in versions like BC++ 5.5. So that's a real mess. */
  #if __GNUC__>=3
-  #if __GNUC_MINOR__>=4
-   // gcc 3.4. It have __gnu_cxx::stdio_filebuf class.
+  #if __GNUC__>=4 || __GNUC_MINOR__>=4
+   // gcc>=3.4. It have __gnu_cxx::stdio_filebuf class.
    #define CLY_filebuf       __gnu_cxx::stdio_filebuf<char>
    #define CLY_int_filebuf   CLY_filebuf
    #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)

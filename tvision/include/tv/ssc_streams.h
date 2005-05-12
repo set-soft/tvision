@@ -45,6 +45,7 @@ public:
  virtual size_t sgetn(char *data, size_t cant);
 /*protected:
  SSC_streambuf(int =0) {};*/
+ virtual ~SSC_streambuf () {}
 };
 
 class SSC_filebuf : public SSC_streambuf
@@ -52,6 +53,7 @@ class SSC_filebuf : public SSC_streambuf
 public:
  SSC_filebuf();
  SSC_filebuf(int fh, SSC_OpenModeT mode);
+ virtual ~SSC_filebuf () {}
 
  SSC_filebuf *open(const char *name, SSC_OpenModeT mode, int prot);
  int  is_open() { return opened; };
