@@ -39,6 +39,8 @@ protected:
     virtual void *read( ipstream& ) = 0;
     virtual void write( opstream& ) = 0;
 
+public:
+    virtual ~TStreamable () {}
 };
 
 #endif  // Uses_TStreamable

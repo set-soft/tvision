@@ -19,6 +19,7 @@ Changed classes hierarchy and added new draw buffers by Salvador E. Tropea
 class TDrawBufferBase
 {
 public:
+ virtual ~TDrawBufferBase () {}
  enum Types { codepage=0, unicode16=1 };
  int getType();
  virtual void *getBuffer() = 0;
@@ -40,6 +41,7 @@ class TDrawBuffer : public TDrawBufferBase
 
 public:
  TDrawBuffer() { type=codepage; }
+  virtual ~TDrawBuffer () {}
 
   void moveChar(unsigned indent, char c, unsigned attr, unsigned count);
   void moveStr(unsigned indent, const char *str, unsigned attrs, int maxLen=-1);
@@ -77,6 +79,7 @@ class TDrawBufferU16 : public TDrawBufferBase
 
 public:
  TDrawBufferU16() { type=unicode16; }
+ virtual ~TDrawBufferU16 () {}
 
  void moveChar(unsigned indent, unsigned c, unsigned attr, unsigned count);
  void moveStr(unsigned indent, const uint16 *str, unsigned attrs, int maxLen=-1);
