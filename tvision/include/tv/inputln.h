@@ -133,7 +133,7 @@ class TInput1Line : public TInputLine
 {
 public:
  TInput1Line(int x, int y, int max) :
-   TInputLine(TRect(x,y,x+max+2,y+1), max)) {};
+   TInputLine(TRect(x,y,x+max+2,y+1), max) {};
 };
 #endif // Uses_TInput1Line
 

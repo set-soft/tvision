@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.613  2005/05/12 18:42:08  set
+* Added: gcc 4.x detection in compatlayer to use the same tricks used for
+gcc 3.4.x. Patch from Andris.
+* Fixed: Some classes with virtual members didn't have a virtual
+destructor. Reported by gcc 4.0.0. Patch from Andris.
+.
 Revision 2.612  2005/04/25 13:29:21  set
 * Updated: Version in readme.txt and QNX package.
 * Added: [MSVC] Compatibility with Visual Studio .NET 2005 Express Beta
