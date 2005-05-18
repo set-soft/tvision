@@ -8,6 +8,9 @@
  /* MSVC 6.0 also failed to compile it. So we are just disabling it until
     somebody fixes the problems. (v 1200) */
  #define TV_Disable_WinGr_Driver
+#elif defined(__WATCOMC__)
+ #define TVOSf_NT
+ #define TVComp_Watcom
 #else
  /* Borland C++ compiler */
  #define TVOSf_NT

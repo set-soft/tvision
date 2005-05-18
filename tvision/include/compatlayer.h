@@ -1165,6 +1165,251 @@ typedef unsigned long  ulong;
   #define Include_strstream 1
  #endif
  #define UsingNamespaceStd
+#endif /* TVComp_BCPP */
+
+
+/* Open Watcom for Win32 support */
+/* Derived from BC++ section */
+#ifdef TVComp_Watcom
+ #define CLY_UseCrLf 1
+ #define CLY_HaveDriveLetters 1
+ #define CLY_Packed
+ #ifndef CLY_BooleanDefined
+  #define CLY_BooleanDefined 1
+  /* Simple Boolean type */
+  enum Boolean { False, True };
+ #endif
+ #ifdef Uses_string
+  #undef  Include_string
+  #define Include_string 1
+  #undef  strncasecmp
+  #define strncasecmp strnicmp
+  #undef  strcasecmp
+  #define strcasecmp  stricmp
+ #endif
+ #ifdef Uses_abort
+  #undef  Include_stdlib
+  #define Include_stdlib 1
+ #endif
+ #ifdef Uses_limits
+  #undef  Include_limits
+  #define Include_limits 1
+ #endif
+ #ifdef Uses_fcntl
+  #undef  Include_fcntl
+  #define Include_fcntl 1
+ #endif
+ #ifdef Uses_sys_stat
+  #undef  Include_sys_stat
+  #define Include_sys_stat 1
+ #endif
+ #ifdef Uses_unistd
+  #undef  Include_cl_unistd
+  #define Include_cl_unistd 1
+  /* Most unistd equivalents are here: */
+  #undef  Include_io
+  #define Include_io 1
+ #endif
+ #ifdef Uses_access
+  #undef  Include_io
+  #define Include_io 1
+  #undef  R_OK
+  #define R_OK 4
+  #undef  W_OK
+  #define W_OK 2
+  #undef  F_OK
+  #define F_OK 0
+  // No test for execute => just exists
+  #undef  X_OK
+  #define X_OK 0
+ #endif
+ #ifdef Uses_ctype
+  #undef  Include_ctype
+  #define Include_ctype 1
+ #endif
+ #ifdef Uses_filelength
+  #undef  Include_io
+  #define Include_io 1
+ #endif
+ #ifdef Uses_getcurdir
+  #undef  Include_dir
+  #define Include_dir 1
+ #endif
+ #ifdef Uses_AllocLocal
+  #undef  AllocLocalStr
+  #define AllocLocalStr(s,l) char* s = (char*)alloca(l)
+  #undef  AllocLocalUShort
+  #define AllocLocalUShort(s,l) ushort *s = (ushort*)alloca(sizeof(ushort) * (l))
+  #undef  Uses_alloca
+  #define Uses_alloca 1
+ #endif
+ #ifdef Uses_alloca
+  #undef  Include_malloc
+  #define Include_malloc 1
+ #endif
+ #ifdef Uses_free
+  #undef  Include_malloc
+  #define Include_malloc 1
+ #endif
+ #define NEVER_RETURNS
+ #define RETURN_WHEN_NEVER_RETURNS return 0
+ #undef  __attribute__
+ #define __attribute__( value )
+ #undef  __inline__
+ #define __inline__ inline
+ #define DeleteArray(a) delete[] a
+ #define PATHSEPARATOR ';'
+ #define PATHSEPARATOR_ ";"
+ #define DIRSEPARATOR '/'
+ #define DIRSEPARATOR_ "/"
+ #define CLY_IsValidDirSep(a) (a=='/' || a=='\\')
+ #ifdef Uses_fixpath
+  CLY_CFunc void _fixpath(const char *in, char *out);
+ #endif
+ /* Checks for UNCs under Win9x and NT provided by Anantoli Soltan */
+ CLY_CFunc int CLY_IsUNC(const char* path);
+ CLY_CFunc int CLY_IsUNCShare(const char* path);
+ #ifdef Uses_HaveLFNs
+  #undef  OS_HaveLFNs
+  #define OS_HaveLFNs 1
+ #endif
+ #ifdef Uses_glob
+  #undef  Include_cl_glob
+  #define Include_cl_glob 1
+ #endif
+ #ifdef Uses_fnmatch
+  #undef  Include_cl_fnmatch
+  #define Include_cl_fnmatch 1
+ #endif
+ #ifdef Uses_regex
+  #undef  Include_cl_regex
+  #define Include_cl_regex 1
+ #endif
+ #ifdef Uses_getopt
+  #undef  Include_cl_getopt
+  #define Include_cl_getopt 1
+ #endif
+ #ifdef Uses_io
+  #undef  Include_io
+  #define Include_io 1
+ #endif
+ #ifdef Uses_dirent
+  #undef  Include_cl_dirent
+  #define Include_cl_dirent 1
+ #endif
+ #ifdef Uses_ftell
+  #undef  Include_io
+  #define Include_io 1
+  #undef  Include_stdio
+  #define Include_stdio 1
+ #endif
+ #ifdef Uses_stdlib
+  #undef  Include_stdlib
+  #define Include_stdlib 1
+ #endif
+ #ifdef Uses_utime
+  #undef  Include_utime
+  #define Include_utime 1
+ #endif
+ #ifdef Uses_mkstemp
+  CLY_CFunc int mkstemp(char *_template);
+ #endif
+ #ifdef Uses_getcwd
+  #undef  Include_dir
+  #define Include_dir 1
+ #endif
+ #ifdef Uses_itoa
+  #undef  Include_stdlib
+  #define Include_stdlib 1
+ #endif
+ #ifdef Uses_direct
+  #undef  Include_direct
+  #define Include_direct 1
+ #endif
+ #ifdef Uses_dir
+  /* dir.h doesn't exist */
+  #undef  Include_direct
+  #define Include_direct 1
+ #endif
+ #ifdef Uses_strstream
+  #undef  Include_strstream
+  #define Include_strstream 1
+ #endif
+ #ifdef Uses_nl_langinfo
+  #undef  Uses_CLY_nl_langinfo
+  #define Uses_CLY_nl_langinfo 1
+ #endif
+ #ifdef Uses_getline
+  #undef  Uses_CLY_getline
+  #define Uses_CLY_getline 1
+  #undef  Uses_CLY_ssize_t
+  #define Uses_CLY_ssize_t 1
+ #endif
+ #ifndef usleep
+  // Doesn't work, needs to be fixed.
+  #define usleep(microseconds) CLY_YieldProcessor(microseconds)
+ #endif
+ // BC++ lacks ioctl.h
+ #undef Include_ioctl
+
+ /* ifstream::getline behaves strangely in BC++
+    I take the gcc implementation, here is a replacement. */
+ #define IfStreamGetLine(istream,buffer,size) \
+         CLY_IfStreamGetLine(istream,buffer,size)
+ #ifdef Uses_IfStreamGetLine
+  #undef  Uses_fstream
+  #define Uses_fstream 1
+  #undef  Uses_CLY_IfStreamGetLine
+  #define Uses_CLY_IfStreamGetLine 1
+ #endif
+
+ #if __BORLANDC__>=0x560
+  // BC++ 5.6 (Builder 6)
+  #define CLY_ISOCpp98 1
+  #define CLY_DONT_DEFINE_MIN_MAX 1
+  // BC++ 5.6 supports the "open(int fd)" UNIX extension.
+  #define CLY_NewFBFromFD(buf,f) buf=new filebuf(); buf->open(f)
+  #undef  CLY_destroy
+  // Note: that 0777 fails to create the file and 0666 creates a hidden file.
+  #define CLY_FBOpenProtDef  0
+ #else
+  // BC++ 5.5 and 5.5.1 (Free command line tools)
+  #define CLY_NewFBFromFD(buf,f) buf=new filebuf(f)
+  #define CLY_FBOpenProtDef  0666
+ #endif
+
+ #define CLY_int_filebuf    filebuf
+ #define CLY_filebuf        filebuf
+ #define CLY_streambuf      streambuf
+ #define CLY_OpenModeT      int
+ #define CLY_StreamPosT     streampos
+ #define CLY_StreamOffT     streamoff
+ #define CLY_IOSSeekDir     ios::seek_dir
+ #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
+ #define CLY_FBOpen(a,b,c)  open(a,b,c)
+ #define CLY_IOSBin         ios::binary
+ #define CLY_IOSOut         ios::out
+ #define CLY_IOSIn          ios::in
+ #define CLY_IOSApp         ios::app
+ #define CLY_IOSAtE         ios::ate
+ #define CLY_IOSBeg         ios::beg
+ #define CLY_IOSCur         ios::cur
+ #define CLY_IOSEnd         ios::end
+ #define CLY_IOSBadBit      ios::badbit
+ #define CLY_IOSEOFBit      ios::eofbit
+ #define CLY_IOSFailBit     ios::failbit
+ #define CLY_IOSGoodBit     ios::goodbit
+ #define CLY_PubSeekOff     pubseekoff
+ #define CLY_PubSync        pubsync
+ #define CLY_std(a)         a
+ #define CreateStrStream(os,buf,size) char buf[size]; \
+                                      ostrstream os(buf,sizeof(buf))
+ #define GetStrStream(os,buf) buf
+ #ifdef Uses_StrStream
+  #undef  Include_strstream
+  #define Include_strstream 1
+ #endif
+ #define UsingNamespaceStd
 #endif
 
 
