@@ -1002,7 +1002,7 @@ sub DetectPointersSize()
 
 int main(void)
 {
- printf("%d\n",sizeof(void *));
+ printf("%d\n",(int) sizeof(void *));
  return 0;
 }
 ';
