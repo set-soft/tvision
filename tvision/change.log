@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.614  2005/05/18 13:45:14  set
+* Fixed: Extra ) in TInput1Line declaration. Reported by Frank Taffelt
+(frank taffelt web de).
+* Fixed: [config] Warning issued by gcc 4.0.0 in DetectPointersSize, it
+makes the configuration fail when using -Werror. Reported by Andris.
+.
 Revision 2.613  2005/05/12 18:42:08  set
 * Added: gcc 4.x detection in compatlayer to use the same tricks used for
 gcc 3.4.x. Patch from Andris.
