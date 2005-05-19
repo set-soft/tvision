@@ -76,7 +76,7 @@ typedef unsigned int   uint32;
 #if defined(TVComp_GCC)
 typedef unsigned long long uint64;
 typedef          long long int64;
-#elif defined(TVComp_BCPP) || defined(TVComp_MSC)
+#elif defined(TVComp_BCPP) || defined(TVComp_MSC) || defined (TVComp_Watcom)
 typedef unsigned __int64 uint64;
 typedef          __int64 int64;
 #else
@@ -1385,7 +1385,7 @@ typedef unsigned long  ulong;
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff
  #define CLY_IOSSeekDir     ios::seek_dir
- #define CLY_PubSetBuf(a,b) pubsetbuf(a,b)
+ #define CLY_PubSetBuf(a,b) setbuf(a,b)
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
  #define CLY_IOSBin         ios::binary
  #define CLY_IOSOut         ios::out
@@ -1399,8 +1399,8 @@ typedef unsigned long  ulong;
  #define CLY_IOSEOFBit      ios::eofbit
  #define CLY_IOSFailBit     ios::failbit
  #define CLY_IOSGoodBit     ios::goodbit
- #define CLY_PubSeekOff     pubseekoff
- #define CLY_PubSync        pubsync
+ #define CLY_PubSeekOff     seekoff
+ #define CLY_PubSync        sync
  #define CLY_std(a)         a
  #define CreateStrStream(os,buf,size) char buf[size]; \
                                       ostrstream os(buf,sizeof(buf))
@@ -1410,7 +1410,7 @@ typedef unsigned long  ulong;
   #define Include_strstream 1
  #endif
  #define UsingNamespaceStd
-#endif
+#endif /* TVComp_Watcom */
 
 
 

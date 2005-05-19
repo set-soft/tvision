@@ -1,16 +1,20 @@
-$Log$.
+$Log$
+Revision 2.615  2005/05/18 15:43:06  set
+* Added: First step towards Open Watcom support. It just detects Watcom
+compiler and defines it almost like BC++.
+
 Revision 2.614  2005/05/18 13:45:14  set
 * Fixed: Extra ) in TInput1Line declaration. Reported by Frank Taffelt
 (frank taffelt web de).
 * Fixed: [config] Warning issued by gcc 4.0.0 in DetectPointersSize, it
 makes the configuration fail when using -Werror. Reported by Andris.
-.
+
 Revision 2.613  2005/05/12 18:42:08  set
 * Added: gcc 4.x detection in compatlayer to use the same tricks used for
 gcc 3.4.x. Patch from Andris.
 * Fixed: Some classes with virtual members didn't have a virtual
 destructor. Reported by gcc 4.0.0. Patch from Andris.
-.
+
 Revision 2.612  2005/04/25 13:29:21  set
 * Updated: Version in readme.txt and QNX package.
 * Added: [MSVC] Compatibility with Visual Studio .NET 2005 Express Beta
@@ -24,7 +28,7 @@ Edition from Christian Kirches <christian/kirches/gmx/de>.
 Revision 2.611  2005/04/21 14:27:32  set
 * Added: [configuration] A check for RHIDE tools when the user enables the
 maintainer mode.
-.
+
 Revision 2.610  2005/02/28 13:31:07  set
 * Fixed: [Linux] Removed term.h inclusion from linuxdis.cc, that's ncurses
 stuff not needed by the current implementation of the Linux driver.
