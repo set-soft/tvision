@@ -83,21 +83,23 @@ char *alloca ();
 /* This needs to come after some library #include
    to get __GNU_LIBRARY__ defined.  */
 #ifdef __GNU_LIBRARY__
-#undef	alloca
-/* Don't include stdlib.h for non-GNU C libraries because some of them
-   contain conflicting prototypes for getopt.  */
-#include <stdlib.h>
+ #undef	alloca
+ /* Don't include stdlib.h for non-GNU C libraries because some of them
+    contain conflicting prototypes for getopt.  */
+ #include <stdlib.h>
 #else	/* Not GNU C library.  */
-#define	__alloca	alloca
+ #ifndef TVComp_Watcom
+  #define	__alloca	alloca
+ #endif
 #endif	/* GNU C library.  */
 
 /* SET: more headers needed, __alloca isn't valid */
 #if defined(TVCompf_djgpp) || defined(TVOS_Win32) || defined(TVOSf_Solaris) || defined(TVOSf_QNX4)
-#include <stdlib.h>
+ #include <stdlib.h>
 #endif
 
-#ifdef TVComp_BCPP
-#include <malloc.h> /* alloca */
+#if defined(TVComp_BCPP) || defined(TVComp_Watcom)
+ #include <malloc.h> /* alloca */
 #endif
 
 /* If GETOPT_COMPAT is defined, `+' as well as `--' can introduce a
