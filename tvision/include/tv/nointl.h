@@ -1,5 +1,5 @@
 /* Internationalization support dummies routines header.
-   Copyright by Salvador E. Tropea (SET) (2003)
+   Copyright by Salvador E. Tropea (SET) (2003-2005)
    Covered by the GPL license. */
 /* Included from intl.h never directly */
 
@@ -10,9 +10,9 @@ struct stTVIntl
  int cp;
 };
 
-extern char *newStr( const char * );
+extern CLY_EXPORT char *newStr( const char * );
 
-class TVIntl
+class CLY_EXPORT TVIntl
 {
 public:
  TVIntl() {};

@@ -62,21 +62,21 @@ template <class T> inline T max( const T &a, const T &b )
 
 #endif
 
-char hotKey( const char *s );
-unsigned short ctrlToArrow( unsigned short );
+char CLY_EXPORT hotKey( const char *s );
+unsigned short CLY_EXPORT ctrlToArrow( unsigned short );
 
-unsigned short historyCount( unsigned char id );
-const char *historyStr( unsigned char id, int index );
-void historyAdd( unsigned char id, const char * );
+unsigned short CLY_EXPORT historyCount( unsigned char id );
+const char CLY_EXPORT *historyStr( unsigned char id, int index );
+void CLY_EXPORT historyAdd( unsigned char id, const char * );
 
 int cstrlen( const char * );
 
 class TView;
-void *message( TView *receiver, unsigned short what, unsigned short command,
+void CLY_EXPORT *message( TView *receiver, unsigned short what, unsigned short command,
                void *infoPtr );
 Boolean lowMemory();
 
-char *newStr( const char * );
+char CLY_EXPORT *newStr( const char * );
 
 /* SET: Added a conditional for it because n is too common. I remmember I had
    problems with it and Jerzy Witkowski <jwi@pl.ibm.com> complained about
@@ -86,7 +86,7 @@ char *newStr( const char * );
    for the TV lib when compiling all the n*.cc files */
 
 #define n(CLASS)                          \
-class CLASS                               \
+class CLY_EXPORT CLASS                    \
 {                                         \
 public:                                   \
   static const char * const name;         \

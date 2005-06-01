@@ -25,7 +25,7 @@ should be replaced by a CLY_* function.
 and regex.
   Added itoa for faster and safe integer to string conversion.
 
-  Copyright (c) 2000-2003 by Salvador E. Tropea
+  Copyright (c) 2000-2005 by Salvador E. Tropea
   Covered by the GPL license.
 
 ***************************************************************************/
@@ -199,6 +199,7 @@ typedef unsigned long  ulong;
 #undef CLY_DONT_DEFINE_MIN_MAX
 #undef CLY_Redraw
 #undef CLY_SAFE_MEMCPY
+#undef CLY_EXPORT
 
 #ifdef HAVE_UNSAFE_MEMCPY
  #define CLY_SAFE_MEMCPY 0
@@ -234,6 +235,9 @@ typedef unsigned long  ulong;
 /* Watcom C++ used for QNX4 doesn't make any difference between Redraw
    and redraw members. */
 #define CLY_Redraw Redraw
+
+/* The default is CLY_EXPORT expanded to nothing. */
+#define CLY_EXPORT
 
 #ifdef TVComp_GCC
 /* GNU C is supported for various OSs: */
@@ -759,10 +763,11 @@ typedef unsigned long  ulong;
    #undef  Include_direct
    #define Include_direct 1
   #endif
+  /* dir.h isn't POSIX.
   #ifdef Uses_dir
    #undef  Include_dir
    #define Include_dir 1
-  #endif
+  #endif*/
  #endif
 
  /* Linux (glibc) */
@@ -1171,6 +1176,13 @@ typedef unsigned long  ulong;
 /* Open Watcom for Win32 support */
 /* Derived from BC++ section */
 #ifdef TVComp_Watcom
+ /* Support for the library as a DLL. */
+ #undef CLY_EXPORT
+ #ifdef CLY_DLL
+  #define CLY_EXPORT __declspec(dllexport)
+ #else
+  #define CLY_EXPORT __declspec(dllimport)
+ #endif
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
@@ -1221,7 +1233,7 @@ typedef unsigned long  ulong;
   #define F_OK 0
   // No test for execute => just exists
   #undef  X_OK
-  #define X_OK 0
+  #define X_OK 1 // Watcom defines 1 for it and F_OK as 0
  #endif
  #ifdef Uses_ctype
   #undef  Include_ctype
@@ -1232,8 +1244,8 @@ typedef unsigned long  ulong;
   #define Include_io 1
  #endif
  #ifdef Uses_getcurdir
-  #undef  Include_dir
-  #define Include_dir 1
+  #undef  getcurdir
+  #define getcurdir CLY_getcurdir
  #endif
  #ifdef Uses_AllocLocal
   #undef  AllocLocalStr
@@ -1293,10 +1305,11 @@ typedef unsigned long  ulong;
   #undef  Include_io
   #define Include_io 1
  #endif
+ /* No need for dirent.h emulation.
  #ifdef Uses_dirent
-  #undef  Include_cl_dirent
-  #define Include_cl_dirent 1
- #endif
+  #undef  Include_dirent
+  #define Include_dirent 1
+ #endif*/
  #ifdef Uses_ftell
   #undef  Include_io
   #define Include_io 1
@@ -1385,6 +1398,8 @@ typedef unsigned long  ulong;
  #define CLY_StreamPosT     streampos
  #define CLY_StreamOffT     streamoff
  #define CLY_IOSSeekDir     ios::seek_dir
+ // Documentation to the diference in setbuf and pubsetbuf:
+ // http://groups-beta.google.com/group/powersoft.public.watcom_c_c++.general/browse_frm/thread/8927d7c2b04acd93/1d37ccff2009cf7e?q=watcom+pubsetbuf&rnum=1#1d37ccff2009cf7e
  #define CLY_PubSetBuf(a,b) setbuf(a,b)
  #define CLY_FBOpen(a,b,c)  open(a,b,c)
  #define CLY_IOSBin         ios::binary
@@ -1974,6 +1989,13 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #endif
 #endif
 
+#if defined(Include_stdio) && !defined(Included_stdio)
+ // Looks like Watcom needs it before other headers.
+ // Is this a temporal hack? should be clarified
+ #define Included_stdio 1
+ #include <stdio.h>
+#endif
+
 #if defined(Include_limits) && !defined(Included_limits)
  #define Included_limits 1
  #include <limits.h>
@@ -2221,11 +2243,6 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #define Included_cl_getopt 1
  // This header defines all as CLY_* to avoid conflicts
  #include <cl/getopt.h>
-#endif
-
-#if defined(Include_stdio) && !defined(Included_stdio)
- #define Included_stdio 1
- #include <stdio.h>
 #endif
 
 #if defined(Include_dirent) && !defined(Included_dirent)

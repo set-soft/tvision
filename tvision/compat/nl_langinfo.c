@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2001      Salvador E. Tropea
+ Copyright (C) 2001-2005      Salvador E. Tropea
  Covered by the GPL license.
 */
 
@@ -10,6 +10,7 @@
 #define Uses_CLY_nl_langinfo
 #define Uses_string
 #define Uses_stdlib
+#define Uses_stdio  // OW needs it
 #include <compatlayer.h>
 #include <locale.h>
 
