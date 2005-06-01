@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.616  2005/05/19 21:01:11  set
+* Note: Watcom effort is being done by: Lothar Behrens (lothar/behrens/
+lollisoft/de)
+* Added: [Watcom] uint64 and int64 definitions.
+* Modified: [Watcom] changed stream members from pub* to *.
+
 Revision 2.615  2005/05/18 15:43:06  set
 * Added: First step towards Open Watcom support. It just detects Watcom
 compiler and defines it almost like BC++.

@@ -12,15 +12,13 @@ Added options to customize the file sorting by Salvador E. Tropea.
  *
  */
 #include <tv/configtv.h>
-// SET: Moved the standard headers here because according to DJ
-// they can inconditionally declare symbols like NULL
-#define Uses_string
-#if defined(TVCompf_djgpp) || defined(TVComp_BCPP)
-#include <dos.h>
-#include <dir.h>
-#endif
-#include <stdio.h>
 
+#if defined(TVCompf_djgpp) || defined(TVComp_BCPP)
+ #include <dos.h>
+#endif
+#define Uses_string
+#define Uses_stdio
+#define Uses_dir
 #define Uses_TFileCollection
 #define Uses_TSearchRec
 #include <tv.h>

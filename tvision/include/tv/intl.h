@@ -1,5 +1,5 @@
 /* Internationalization support routines header.
-   Copyright by Salvador E. Tropea (SET) (2003)
+   Copyright by Salvador E. Tropea (SET) (2003-2005)
    Covered by the GPL license. */
 /* The dummies are in nointl.h to make this header less complex */
 
@@ -27,7 +27,7 @@ struct stTVIntl
 
 const int libPackageNameLen=20;
 
-class TVIntl
+class CLY_EXPORT TVIntl
 {
 public:
  TVIntl() {};

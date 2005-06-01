@@ -22,6 +22,10 @@ I have two versions. Both are based in djgpp's code. One is for Linux
 #ifndef TVComp_BCPP
  #define Uses_direct
 #endif
+#ifdef TVComp_Watcom
+ #define Uses_stdio
+ #define Uses_dir
+#endif
 #include <compatlayer.h>
 
 #ifdef TVComp_BCPP
@@ -33,7 +37,7 @@ static int __fp_getdisk(void)
   return getdisk();
 }
 
-#elif defined(TVComp_MSC) || defined(TVCompf_MinGW)
+#elif defined(TVComp_MSC) || defined(TVCompf_MinGW) || defined(TVComp_Watcom)
 
 static int __fp_getdisk(void)
 {

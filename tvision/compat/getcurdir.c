@@ -2,7 +2,7 @@
  Copyright (C) 1996-1998 Robert H”hne
  Copyright (C) 2000      Vadim Beloborodov
  Copyright (C) 2000      Anatoli Soltan
- Copyright (C) 2000      Salvador E. Tropea
+ Copyright (C) 2000-2005 Salvador E. Tropea
  Covered by the GPL license.
 */
 
@@ -35,7 +35,8 @@ int CLY_getcurdir(int drive, char *buffer)
 #endif // DJGPP
 
 #if defined(TVOS_Win32) && !defined(TVComp_BCPP) && !defined(TVCompf_Cygwin)
-// MSVC/MingW Windows version by Vadim and Anatoli
+// MSVC/MingW/OW Windows version by Vadim and Anatoli
+#include <stdio.h> // OpenWatcom
 #include <direct.h>
 
 int CLY_getcurdir(int drive, char *buffer)
@@ -44,7 +45,7 @@ int CLY_getcurdir(int drive, char *buffer)
   strcpy(buffer,buffer+3);
   return 0;
 }
-#endif // MSVC/MingW
+#endif // MSVC/MingW/OW
 
 #if defined(TVOS_UNIX) || defined(TVCompf_Cygwin)
 // Linux and CygWin version

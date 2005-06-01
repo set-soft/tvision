@@ -44,7 +44,7 @@ General Public License for more details.  */
  #endif
 #endif
 
-#if defined(TVComp_BCPP) || MinGW_SSIZE_T || defined(TVComp_MSC)
+#if defined(TVComp_BCPP) || MinGW_SSIZE_T || defined(TVComp_MSC) || defined(TVComp_Watcom)
 typedef long ssize_t;
 #endif
 
