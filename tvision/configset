@@ -13,7 +13,15 @@ echo Press the \'ENTER\' key to continue or hit \'CTRL+C\' to cancel.
 read idontcare
 rm -f configure.cache
 rm -f Makefile
+# gcc 2.95.4 compiles much faster (3.2x average)
+#export CC="gcc-2.95"
+#export CXX="g++-2.95"
+# gcc 3.3.5 generates faster code (+20% aprox. for K7)
+#export CC="gcc-3.3"
+#export CXX="g++-3.3"
+# Note: Using SSC gcc 3.3.5 compiles in less time (1.37x instead of 3.2x)
 perl config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
                --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
-               --with-debug --enable-maintainer-mode --without-static "$@"
+               --with-debug --enable-maintainer-mode --without-static \
+               --with-ssc "$@"
 
