@@ -452,7 +452,7 @@ sub CheckGXX
 
 sub CheckGXXReal
 {
- my ($test,$res,@list,$i);
+ my ($test,$res,@list,$i,$cxx);
 
  print 'Looking for the C++ compiler: ';
  $test='
@@ -469,6 +469,11 @@ int main(void)
  return 0;
 }';
  @list=split(/:/,$defaultCXX);
+ $cxx=$ENV{'CXX'};
+ if (length($cxx))
+   {
+    unshift @list,$cxx;
+   }
  foreach $i (@list)
    {
     $res=RunGCCTest($i,'cc',$test,$stdcxx);

@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.617  2005/06/01 15:40:11  set
+* Added: A second wave of patches to add support for Open Watcom. All based
+on information and examples from Lothar.
+.
 Revision 2.616  2005/05/19 21:01:11  set
 * Note: Watcom effort is being done by: Lothar Behrens (lothar/behrens/
 lollisoft/de)
