@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.238  2005/06/17 19:51:54  set
+* Added: [Config] Options to use the C++ compiler indicated by the CXX
+environment variable.
+
 Revision 2.399.2.237  2005/06/01 15:32:16  set
 * Added: A second wave of patches to add support for Open Watcom. All based
 on information and examples from Lothar.

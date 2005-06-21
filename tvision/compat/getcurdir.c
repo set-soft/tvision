@@ -36,7 +36,6 @@ int CLY_getcurdir(int drive, char *buffer)
 
 #if defined(TVOS_Win32) && !defined(TVComp_BCPP) && !defined(TVCompf_Cygwin)
 // MSVC/MingW/OW Windows version by Vadim and Anatoli
-#include <stdio.h> // OpenWatcom
 #include <direct.h>
 
 int CLY_getcurdir(int drive, char *buffer)

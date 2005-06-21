@@ -38,24 +38,28 @@
 #endif
 
 #ifdef TVComp_GCC
-#define alloca __builtin_alloca
+ #define alloca __builtin_alloca
 #else /* not TVComp_GCC */
-#if defined (HAVE_ALLOCA_H) || (defined(sparc) && (defined(sun) || (!defined(USG) && !defined(SVR4) && !defined(__svr4__))))
-#include <alloca.h>
-#else
-#ifdef TVComp_BCPP
-#include <malloc.h>
-#else
-#ifdef TVComp_MSC
-#include <malloc.h>
-#define alloca _alloca
-#else
-#ifndef _AIX
-char *alloca ();
-#endif
-#endif /* MSVC */
-#endif /* TURBOC */
-#endif /* alloca.h */
+ #if defined (HAVE_ALLOCA_H) || (defined(sparc) && (defined(sun) || (!defined(USG) && !defined(SVR4) && !defined(__svr4__))))
+  #include <alloca.h>
+ #else
+  #ifdef TVComp_BCPP
+   #include <malloc.h>
+  #else
+   #ifdef TVComp_MSC
+    #include <malloc.h>
+    #define alloca _alloca
+   #else
+    #ifdef TVComp_Watcom
+     void *alloca ();
+    #else
+     #ifndef _AIX
+      char *alloca ();
+     #endif
+    #endif /* TVComp_Watcom */
+   #endif /* MSVC */
+  #endif /* TURBOC */
+ #endif /* alloca.h */
 #endif /* not TVComp_GCC */
 
 #if !__STDC__ && !defined(const) && IN_GCC
