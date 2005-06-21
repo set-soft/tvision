@@ -148,5 +148,6 @@ compiler.@p
  #define NEEDS_NL_LANGINFO
  #define NEEDS_IFSTREAMGETLINE
  #define NEEDS_GETLINE
+ #define NEEDS_GETCURDIR
 #endif
 

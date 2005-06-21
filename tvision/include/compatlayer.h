@@ -200,6 +200,9 @@ typedef unsigned long  ulong;
 #undef CLY_Redraw
 #undef CLY_SAFE_MEMCPY
 #undef CLY_EXPORT
+#undef CLY_BROKEN_WATCOM_SCOPE
+
+#define CLY_BROKEN_WATCOM_SCOPE protected
 
 #ifdef HAVE_UNSAFE_MEMCPY
  #define CLY_SAFE_MEMCPY 0
@@ -1183,6 +1186,12 @@ typedef unsigned long  ulong;
  #else
   #define CLY_EXPORT __declspec(dllimport)
  #endif
+ /* Watcom generates the following error for validate.h:
+    include\tv\validate.h(127): Error! E346: col(33) protected base class accessed to convert cast expression
+    So we just use public there.
+ */
+ #undef  CLY_BROKEN_WATCOM_SCOPE
+ #define CLY_BROKEN_WATCOM_SCOPE public
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
@@ -1305,11 +1314,10 @@ typedef unsigned long  ulong;
   #undef  Include_io
   #define Include_io 1
  #endif
- /* No need for dirent.h emulation.
  #ifdef Uses_dirent
   #undef  Include_dirent
   #define Include_dirent 1
- #endif*/
+ #endif
  #ifdef Uses_ftell
   #undef  Include_io
   #define Include_io 1
@@ -1340,9 +1348,8 @@ typedef unsigned long  ulong;
   #define Include_direct 1
  #endif
  #ifdef Uses_dir
-  /* dir.h doesn't exist */
-  #undef  Include_direct
-  #define Include_direct 1
+  #undef  Include_dir
+  #define Include_dir 1
  #endif
  #ifdef Uses_strstream
   #undef  Include_strstream

@@ -33,9 +33,9 @@ typedef enum {
 class TInputLineBase;
 
 // Abstract TValidator object
-class TValidator : public TObject
+class CLY_EXPORT TValidator : public TObject
 #if !defined( NO_STREAM )
-    , protected TStreamable
+    , CLY_BROKEN_WATCOM_SCOPE TStreamable
 #endif // NO_STREAM
 {
 public:
