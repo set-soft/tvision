@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.619  2005/06/21 20:33:08  set
+* Modified: Third wave of patches to add support for Open Watcom. Patches
+from Lothar. We are almost there ;-)
+.
 Revision 2.618  2005/06/17 19:54:17  set
 * Added: [Config] Options to use the C++ compiler indicated by the CXX
 environment variable.
