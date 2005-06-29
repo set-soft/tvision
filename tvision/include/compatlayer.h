@@ -1315,8 +1315,11 @@ typedef unsigned long  ulong;
   #define Include_io 1
  #endif
  #ifdef Uses_dirent
-  #undef  Include_dirent
-  #define Include_dirent 1
+  //#undef  Include_dirent
+  //#define Include_dirent 1
+  // Watcom defines DIR and dirent in direct.h
+  #undef Include_direct
+  #define Include_direct 1
  #endif
  #ifdef Uses_ftell
   #undef  Include_io
