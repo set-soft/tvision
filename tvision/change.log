@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.620  2005/06/29 14:13:41  set
+* Fixed: [Watcom] DIR and dirent are defined in direct.h
+.
 Revision 2.619  2005/06/21 20:33:08  set
 * Modified: Third wave of patches to add support for Open Watcom. Patches
 from Lothar. We are almost there ;-)

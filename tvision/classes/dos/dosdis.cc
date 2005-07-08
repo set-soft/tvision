@@ -47,6 +47,10 @@
 // some simple future driver could do it.
 #define GetPage() 0
 
+// This could be needed for Windows XP Professional, not sure.
+// Disabled until I get positive confirmation.
+//#define XP_CURSOR_SHAPE_WORKAROUND 1
+
 // x86 registers used for BIOS calls
 __dpmi_regs TDisplayDOS::rDisplay;
 // Numbers of lines of each character (height in pixels)
@@ -123,12 +127,26 @@ void TDisplayDOS::GetCursorPos(unsigned &x, unsigned &y)
 
 void TDisplayDOS::GetCursorShape(unsigned &start, unsigned &end)
 {
+ #if XP_CURSOR_SHAPE_WORKAROUND
+ static int searchedXP=0, detectedXP;
+ #endif
+
  if (dual_display || TScreenDOS::screenMode==7)
    {
     start=InMDA(mdaCursorStart)*100/charLines;
     end  =InMDA(mdaCursorEnd)*100/charLines;
     return;
    }
+
+ #if XP_CURSOR_SHAPE_WORKAROUND
+ if (!searchedXP)
+   {
+    searchedXP=1;
+    char *OS=getenv("OS");
+    detectedXP=(OS && strcmp(OS,"Windows_NT")==0);
+   }
+ #endif
+
  AH=GET_CURSOR_POSITION_AND_SIZE;
  BH=GetPage();
  videoInt();
@@ -138,6 +156,16 @@ void TDisplayDOS::GetCursorShape(unsigned &start, unsigned &end)
     start=end=0;
     return;
    }
+
+ #if XP_CURSOR_SHAPE_WORKAROUND
+ /* Andris reported:
+    "Noticed big nuisance under WinXP Pro: videoInt at
+     start returns 0x0F0F and as result there is no normal
+     cursor in TVision applications later. This workarounds
+     the problem. AP. 26/09/2004)" */
+ if (detectedXP && CX==0x0F0F)
+    CH--;
+ #endif
 
  start=CH*100/charLines;
  end  =CL*100/charLines;

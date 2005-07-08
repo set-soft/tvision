@@ -30,8 +30,10 @@
 
 extern "C" {
 #include <gpm.h>
-}
+// Kernel 2.6.11 (from Gentoo) seems to need it:
+// Not yet confirmed but doesn't interfere with 2.6.0 headers.
 #include <linux/keyboard.h>
+}
 
 static
 int SetUpGPMConnection()
