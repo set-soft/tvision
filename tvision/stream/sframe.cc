@@ -4,7 +4,7 @@
 #define Uses_TStreamableClass
 #include <tv.h>
 
-TStreamableClass RFrame( TFrame::name,
+TStreamableClass CLY_EXPORT RFrame( TFrame::name,
                          TFrame::build,
                          __DELTA(TFrame)
                        );

@@ -5,7 +5,7 @@
 #include <tv.h>
 __link( RView )
 
-TStreamableClass RColorDisplay( TColorDisplay::name,
+TStreamableClass CLY_EXPORT RColorDisplay( TColorDisplay::name,
                                 TColorDisplay::build,
                                 __DELTA(TColorDisplay)
                               );

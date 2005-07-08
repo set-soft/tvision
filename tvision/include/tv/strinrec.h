@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TStrIndexRec ) && !defined( __TStrIndexRec )
 #define __TStrIndexRec
 
-class TStrIndexRec
+class CLY_EXPORT TStrIndexRec
 {
 
 public:

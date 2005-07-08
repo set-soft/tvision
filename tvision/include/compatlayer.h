@@ -2361,38 +2361,38 @@ typedef unsigned int CLY_mode_t;
 #endif
 /* Utility function to find the attributes of a file. You must call stat
    first and pass the st_mode member of stat's struct in statVal. */
-CLY_CFunc void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal, const char *fileName);
+CLY_EXPORT CLY_CFunc void CLY_GetFileAttributes(CLY_mode_t *mode, struct stat *statVal, const char *fileName);
 /* The reverse. The file must be closed! */
-CLY_CFunc int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName);
+CLY_EXPORT CLY_CFunc int CLY_SetFileAttributes(CLY_mode_t *newmode, const char *fileName);
 /* This function alters mode content so the attribute indicates that the
    owner of the file can't read from it */
-CLY_CFunc void CLY_FileAttrReadOnly(CLY_mode_t *mode);
+CLY_EXPORT CLY_CFunc void CLY_FileAttrReadOnly(CLY_mode_t *mode);
 /* This function alters mode content so the attribute indicates that the
    owner of the file can read from it */
-CLY_CFunc void CLY_FileAttrReadWrite(CLY_mode_t *mode);
+CLY_EXPORT CLY_CFunc void CLY_FileAttrReadWrite(CLY_mode_t *mode);
 /* Returns !=0 if the file is read-only */
-CLY_CFunc int  CLY_FileAttrIsRO(CLY_mode_t *mode);
+CLY_EXPORT CLY_CFunc int  CLY_FileAttrIsRO(CLY_mode_t *mode);
 /* Sets the attribute that indicates the file was modified */
-CLY_CFunc void CLY_FileAttrModified(CLY_mode_t *mode);
+CLY_EXPORT CLY_CFunc void CLY_FileAttrModified(CLY_mode_t *mode);
 /* It returns a mode that can be used for a newly created file */
-CLY_CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
+CLY_EXPORT CLY_CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
 #endif
 
 /* Returns the name of the shell command */
-CLY_CFunc char *CLY_GetShellName(void);
+CLY_EXPORT CLY_CFunc char *CLY_GetShellName(void);
 
 /* v/snprintf functions */
 #if defined(Uses_snprintf) && !defined(CLY_Have_snprintf)
-CLY_CFunc int CLY_vsnprintf(char *string, size_t length, const char * format, va_list args);
-CLY_CFunc int CLY_snprintf(char *string, size_t length, const char * format, ...);
+CLY_EXPORT CLY_CFunc int CLY_vsnprintf(char *string, size_t length, const char * format, va_list args);
+CLY_EXPORT CLY_CFunc int CLY_snprintf(char *string, size_t length, const char * format, ...);
 #endif
 
 #ifdef Uses_ifsFileLength
-extern long CLY_ifsFileLength(CLY_std(ifstream) &f);
+CLY_EXPORT long CLY_ifsFileLength(CLY_std(ifstream) &f);
 #endif
 
 #ifdef Uses_CLY_IfStreamGetLine
-extern int CLY_IfStreamGetLine(CLY_std(ifstream) &is, char *buffer, unsigned len);
+CLY_EXPORT int CLY_IfStreamGetLine(CLY_std(ifstream) &is, char *buffer, unsigned len);
 #endif
 
 /* Internal definition of nl_langinfo */
@@ -2422,15 +2422,15 @@ typedef int nl_item;
 #define P_SEP_BY_SPACE   16 /*p_sep_by_space*/
 
 #define nl_langinfo CLY_nl_langinfo
-CLY_CFunc char *CLY_nl_langinfo(nl_item item);
+CLY_EXPORT CLY_CFunc char *CLY_nl_langinfo(nl_item item);
 #endif /* defined(Uses_CLY_nl_langinfo) && !defined(CLY_nl_langinfo_Defined) */
 
 #ifdef Uses_CLY_getline
-CLY_CFunc ssize_t CLY_getstr(char **lineptr, size_t *n, FILE *stream,
-                             char terminator, int offset, int limit);
-CLY_CFunc ssize_t CLY_getline(char **lineptr, size_t *n, FILE *stream);
-CLY_CFunc ssize_t CLY_getline_safe(char **lineptr, size_t *n, FILE *stream,
-                                   int limit);
+CLY_EXPORT CLY_CFunc ssize_t CLY_getstr(char **lineptr, size_t *n, FILE *stream,
+                                        char terminator, int offset, int limit);
+CLY_EXPORT CLY_CFunc ssize_t CLY_getline(char **lineptr, size_t *n, FILE *stream);
+CLY_EXPORT CLY_CFunc ssize_t CLY_getline_safe(char **lineptr, size_t *n,
+                                              FILE *stream, int limit);
 #endif
 
 #undef CLY_High16

@@ -17,7 +17,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TResourceCollection;
 class fpstream;
 
-class TResourceFile: public TObject
+class CLY_EXPORT TResourceFile: public TObject
 {
 
 public:

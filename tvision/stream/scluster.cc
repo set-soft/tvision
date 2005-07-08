@@ -6,7 +6,7 @@
 __link( RView )
 __link( RStringCollection )
 
-TStreamableClass RCluster( TCluster::name,
+TStreamableClass CLY_EXPORT RCluster( TCluster::name,
                            TCluster::build,
                            __DELTA(TCluster)
                          );

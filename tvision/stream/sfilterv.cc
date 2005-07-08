@@ -4,7 +4,7 @@
 #define Uses_TFilterValidator
 #include <tv.h>
 
-TStreamableClass RFilterValidator( TFilterValidator::name,
+TStreamableClass CLY_EXPORT RFilterValidator( TFilterValidator::name,
                          TFilterValidator::build,
                          __DELTA(TFilterValidator)
                        );

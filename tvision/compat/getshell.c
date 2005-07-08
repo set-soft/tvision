@@ -6,7 +6,7 @@
 #include <compatlayer.h>
 
 #if (defined(TVOS_DOS) || defined(TVOS_Win32)) && !defined(TVCompf_Cygwin)
-char *CLY_GetShellName(void)
+CLY_EXPORT char *CLY_GetShellName(void)
 {
  return getenv("COMSPEC");
 }

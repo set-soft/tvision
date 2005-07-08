@@ -24,7 +24,7 @@ Andris Pavenis and Christoph Bauer.
 #if defined( Uses_ofpstream ) && !defined( __ofpstream )
 #define __ofpstream
 
-class ofpstream : public fpbase, public opstream
+class CLY_EXPORT ofpstream : public fpbase, public opstream
 {
 public:
  ofpstream();

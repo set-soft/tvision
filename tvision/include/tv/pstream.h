@@ -26,7 +26,7 @@ Andris Pavenis.
 
 class TStreamableTypes;
 
-class pstream
+class CLY_EXPORT pstream
 {
     friend class TStreamableTypes;
 

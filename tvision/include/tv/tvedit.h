@@ -20,7 +20,7 @@ class TStatusLine;
 class TEditWindow;
 class TDialog;
 
-class TEditorApp : public TApplication
+class CLY_EXPORT TEditorApp : public TApplication
 {
 
 public:

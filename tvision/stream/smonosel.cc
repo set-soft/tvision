@@ -5,7 +5,7 @@
 #include <tv.h>
 __link( RCluster )
 
-TStreamableClass RMonoSelector( TMonoSelector::name,
+TStreamableClass CLY_EXPORT RMonoSelector( TMonoSelector::name,
                                 TMonoSelector::build,
                                 __DELTA(TMonoSelector)
                               );

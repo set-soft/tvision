@@ -5,7 +5,7 @@
 #include <tv.h>
 __link( RView )
 
-TStreamableClass RInputLine( TInputLine::name,
+TStreamableClass CLY_EXPORT RInputLine( TInputLine::name,
                              TInputLine::build,
                              __DELTA(TInputLine)
                            );

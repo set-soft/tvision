@@ -24,7 +24,7 @@ struct TVConfigFileTreeNode
  TVConfigFileTreeNode *next;
 };
 
-class TVConfigFile
+class CLY_EXPORT TVConfigFile
 {
 public:
  TVConfigFile();
@@ -75,7 +75,7 @@ TVConfigFileTreeNode *
 };
 
 // This is a special case to configure the library
-class TVMainConfigFile
+class CLY_EXPORT TVMainConfigFile
 {
 public:
  TVMainConfigFile();

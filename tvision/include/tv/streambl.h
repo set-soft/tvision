@@ -24,7 +24,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TStreamable ) && !defined( __TStreamable )
 #define __TStreamable
 
-class TStreamable
+class CLY_EXPORT TStreamable
 {
 
     friend class opstream;

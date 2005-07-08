@@ -4,7 +4,7 @@
 #define Uses_TStreamableClass
 #include <tv.h>
 
-TStreamableClass RFileInfoPane( TFileInfoPane::name,
+TStreamableClass CLY_EXPORT RFileInfoPane( TFileInfoPane::name,
                                 TFileInfoPane::build,
                                 __DELTA(TFileInfoPane)
                               );

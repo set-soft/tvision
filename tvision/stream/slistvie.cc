@@ -6,7 +6,7 @@
 __link( RView )
 __link( RScrollBar )
 
-TStreamableClass RListViewer( TListViewer::name,
+TStreamableClass CLY_EXPORT RListViewer( TListViewer::name,
                               TListViewer::build,
                               __DELTA(TListViewer)
                             );

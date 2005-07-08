@@ -6,7 +6,7 @@
 __link( RView )
 __link( RInputLine )
 
-TStreamableClass RHistory( THistory::name,
+TStreamableClass CLY_EXPORT RHistory( THistory::name,
                            THistory::build,
                            __DELTA(THistory)
                          );

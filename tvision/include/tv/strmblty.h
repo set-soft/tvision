@@ -27,7 +27,7 @@ Modified by Robert H”hne to be used for RHIDE.
 // Avoid replacing new by MSS's macro
 #include <tv/no_mss.h>
 
-class TStreamableTypes : private TNSSortedCollection
+class CLY_EXPORT TStreamableTypes : private TNSSortedCollection
 {
 
 public:

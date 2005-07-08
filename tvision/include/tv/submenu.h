@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TSubMenu ) && !defined( __TSubMenu )
 #define __TSubMenu
 
-class TSubMenu : public TMenuItem
+class CLY_EXPORT TSubMenu : public TMenuItem
 {
 
 public:

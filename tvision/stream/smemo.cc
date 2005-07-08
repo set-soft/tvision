@@ -5,7 +5,7 @@
 #include <tv.h>
 __link( REditor )
 
-TStreamableClass RMemo( TMemo::name,
+TStreamableClass CLY_EXPORT RMemo( TMemo::name,
                         TMemo::build,
                         __DELTA(TMemo)
                       );

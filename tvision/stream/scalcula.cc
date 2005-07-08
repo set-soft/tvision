@@ -7,7 +7,7 @@ __link( RView )
 __link( RDialog )
 __link( RButton )
 
-TStreamableClass RCalculator( TCalculator::name,
+TStreamableClass CLY_EXPORT RCalculator( TCalculator::name,
                               TCalculator::build,
                               __DELTA(TCalculator)
                             );

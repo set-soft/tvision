@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TPalette ) && !defined( __TPalette )
 #define __TPalette
 
-class TPalette
+class CLY_EXPORT TPalette
 {
 
 public:
