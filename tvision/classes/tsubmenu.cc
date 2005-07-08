@@ -21,7 +21,7 @@ TSubMenu::TSubMenu( const char *nm, ushort key, ushort helpCtx ) :
 {
 }
 
-TSubMenu& operator + ( TSubMenu& s, TMenuItem& i )
+CLY_EXPORT TSubMenu& operator + ( TSubMenu& s, TMenuItem& i )
 {
     TSubMenu *sub = &s;
     while( sub->next != 0 )
@@ -39,7 +39,7 @@ TSubMenu& operator + ( TSubMenu& s, TMenuItem& i )
     return s;
 }
 
-TSubMenu& operator + ( TSubMenu& s1, TSubMenu& s2 )
+CLY_EXPORT TSubMenu& operator + ( TSubMenu& s1, TSubMenu& s2 )
 {
     TMenuItem *cur = &s1;
     while( cur->next != 0 )

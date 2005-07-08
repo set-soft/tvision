@@ -5,7 +5,7 @@
 #include <tv.h>
 __link( REditor )
 
-TStreamableClass RFileEditor( TFileEditor::name,
+TStreamableClass CLY_EXPORT RFileEditor( TFileEditor::name,
                               TFileEditor::build,
                               __DELTA(TFileEditor)
                             );

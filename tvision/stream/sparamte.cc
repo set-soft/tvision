@@ -6,7 +6,7 @@
 __link( RView )
 __link( RStaticText )
 
-TStreamableClass RParamText( TParamText::name,
+TStreamableClass CLY_EXPORT RParamText( TParamText::name,
                               TParamText::build,
                               __DELTA(TParamText)
                             );

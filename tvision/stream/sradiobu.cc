@@ -5,11 +5,11 @@
 #include <tv.h>
 
 __link( RCluster )
-TStreamableClass RRadioButtons( TRadioButtons::name,
+TStreamableClass CLY_EXPORT RRadioButtons( TRadioButtons::name,
                                 TRadioButtons::build,
                                 __DELTA(TRadioButtons)
                               );
-TStreamableClass RRadioButtons32( TRadioButtons32::name,
+TStreamableClass CLY_EXPORT RRadioButtons32( TRadioButtons32::name,
                                   TRadioButtons32::build,
                                   __DELTA(TRadioButtons32)
                                 );

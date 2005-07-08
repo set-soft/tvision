@@ -42,7 +42,7 @@ class  TView;
 class  TScreen;
 class  TVMainConfigFile;
 
-class TProgInit
+class CLY_EXPORT TProgInit
 {
 public:
     TProgInit( TStatusLine *(*cStatusLine)( TRect ),
@@ -80,7 +80,7 @@ const int
     apMonochrome = 2;
 
 
-class TProgram : public TGroup, public virtual TProgInit
+class CLY_EXPORT TProgram : public TGroup, public virtual TProgInit
 {
 
 public:

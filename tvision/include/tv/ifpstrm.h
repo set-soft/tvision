@@ -24,7 +24,7 @@ Andris Pavenis and Christoph Bauer.
 #if defined( Uses_ifpstream ) && !defined( __ifpstream )
 #define __ifpstream
 
-class ifpstream : public fpbase, public ipstream
+class CLY_EXPORT ifpstream : public fpbase, public ipstream
 {
 public:
     ifpstream();

@@ -5,7 +5,7 @@
 #include <tv.h>
 __link( RView )
 
-TStreamableClass RCalcDisplay( TCalcDisplay::name,
+TStreamableClass CLY_EXPORT RCalcDisplay( TCalcDisplay::name,
                                TCalcDisplay::build,
                                __DELTA(TCalcDisplay)
                              );

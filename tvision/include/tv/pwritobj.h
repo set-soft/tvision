@@ -26,7 +26,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TPWrittenObjects ) && !defined( __TPWrittenObjects )
 #define __TPWrittenObjects
 
-class TPWrittenObjects : public TNSSortedCollection
+class CLY_EXPORT TPWrittenObjects : public TNSSortedCollection
 {
 
     friend class opstream;
@@ -59,7 +59,7 @@ private:
 /*                                                                         */
 /* ------------------------------------------------------------------------*/
 
-class TPWObj
+class CLY_EXPORT TPWObj
 {
 
     friend class TPWrittenObjects;

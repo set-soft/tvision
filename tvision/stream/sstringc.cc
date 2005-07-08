@@ -4,7 +4,7 @@
 #define Uses_TStreamableClass
 #include <tv.h>
 
-TStreamableClass RStringCollection( TStringCollection::name,
+TStreamableClass CLY_EXPORT RStringCollection( TStringCollection::name,
                                     TStringCollection::build,
                                     __DELTA(TStringCollection)
                                   );
