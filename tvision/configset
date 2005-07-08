@@ -20,6 +20,9 @@ rm -f Makefile
 #export CC="gcc-3.3"
 #export CXX="g++-3.3"
 # Note: Using SSC gcc 3.3.5 compiles in less time (1.37x instead of 3.2x)
+# gcc 3.4.4 test
+#export CC="gcc-3.4"
+#export CXX="g++-3.4"
 perl config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
                --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
                --with-debug --enable-maintainer-mode --without-static \
