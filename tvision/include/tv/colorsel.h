@@ -28,9 +28,9 @@ const ushort
 class TColorItem;
 class TColorGroup;
 
-TColorItem& operator + ( TColorItem& i1, TColorItem& i2 );
-TColorGroup& operator + ( TColorGroup& g, TColorItem& i );
-TColorGroup& operator + ( TColorGroup& g1, TColorGroup& g2 );
+CLY_EXPORT TColorItem& operator + ( TColorItem& i1, TColorItem& i2 );
+CLY_EXPORT TColorGroup& operator + ( TColorGroup& g, TColorItem& i );
+CLY_EXPORT TColorGroup& operator + ( TColorGroup& g1, TColorGroup& g2 );
 
 #if defined( Uses_TColorItem )
 

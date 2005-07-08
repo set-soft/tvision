@@ -15,7 +15,7 @@
 
 // THelpViewer
 
-class THelpViewer : public TScroller
+class CLY_EXPORT THelpViewer : public TScroller
 {
 public:
 
@@ -36,7 +36,7 @@ public:
 
 // THelpWindow
 
-class THelpWindow : public TWindow
+class CLY_EXPORT THelpWindow : public TWindow
 {
 
     static const char * helpWinTitle;

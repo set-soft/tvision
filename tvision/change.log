@@ -1,4 +1,11 @@
 $Log$.
+Revision 2.621  2005/07/08 16:43:23  set
+* Modified: [Windows XP] Workaround for the cursor shape. Disabled by
+default because I never got confirmation. From Andris.
+* Modified: [Linux] Enclosed Linux headers with extern "C", seems to be
+needed by 2.6.11 headers (new used as a variable *8-P). From a bug report
+in Gentoo.
+.
 Revision 2.620  2005/06/29 14:13:41  set
 * Fixed: [Watcom] DIR and dirent are defined in direct.h
 .

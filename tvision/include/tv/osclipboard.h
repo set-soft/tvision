@@ -13,7 +13,7 @@ class TVDOSClipboard;
 class TVWin32Clipboard;
 class TVX11Clipboard;
 
-class TVOSClipboard
+class CLY_EXPORT TVOSClipboard
 {
 public:
  TVOSClipboard() {};

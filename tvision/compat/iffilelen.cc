@@ -24,14 +24,14 @@ long CLY_ifsFileLength(ifstream &f)
  return ret;
 }
 #else
-long CLY_ifsFileLength(ifstream &f)
+CLY_EXPORT long CLY_ifsFileLength(ifstream &f)
 {
  return filelength(f.rdbuf()->fd());
 }
 #endif
 
 #ifdef NEEDS_IFSTREAMGETLINE
-int CLY_IfStreamGetLine(ifstream &is, char *buffer, unsigned len)
+CLY_EXPORT int CLY_IfStreamGetLine(ifstream &is, char *buffer, unsigned len)
 {
  if (is.get(buffer,len))
    {

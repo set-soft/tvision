@@ -19,7 +19,7 @@ class TRect;
 class TWindow;
 class TInputLine;
 
-class THistInit
+class CLY_EXPORT THistInit
 {
 
 public:
@@ -45,7 +45,7 @@ protected:
 /*        7 = HistoryViewer selected text                                 */
 /* ---------------------------------------------------------------------- */
 
-class THistoryWindow : public TWindow, public virtual THistInit
+class CLY_EXPORT THistoryWindow : public TWindow, public virtual THistInit
 {
 
 public:

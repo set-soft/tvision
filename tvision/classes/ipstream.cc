@@ -191,7 +191,7 @@ char *ipstream::readString( char *buf, unsigned maxLen )
 
 /* Operators moved to headers by JASC */
 
-ipstream& operator >> ( ipstream& ps, TStreamable& t )
+CLY_EXPORT ipstream& operator >> ( ipstream& ps, TStreamable& t )
 {
     const TStreamableClass *pc = ps.readPrefix();
     ps.readData( pc, &t );
@@ -199,7 +199,7 @@ ipstream& operator >> ( ipstream& ps, TStreamable& t )
     return ps;
 }
 
-ipstream& operator >> ( ipstream& ps, void *&t )
+CLY_EXPORT ipstream& operator >> ( ipstream& ps, void *&t )
 {
     char ch = ps.readByte();
     switch( ch )

@@ -24,7 +24,7 @@ const ushort
           cmFileViewAnswer = 599; // I hope this conflicts with
                                   // nothing else
 
-class TLineCollection : public TCollection
+class CLY_EXPORT TLineCollection : public TCollection
 {
 
 public:
@@ -42,7 +42,7 @@ private:
 
 };
 
-class TFileViewer : public TScroller
+class CLY_EXPORT TFileViewer : public TScroller
 {
 
 public:
@@ -106,7 +106,7 @@ public:
 #endif // NO_STREAM
 };
 
-class TFileWindow : public TWindow
+class CLY_EXPORT TFileWindow : public TWindow
 {
 
 public:

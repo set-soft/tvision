@@ -7,7 +7,7 @@ __link( RDialog )
 __link( RFileInputLine )
 __link( RFileList )
 
-TStreamableClass RFileDialog( TFileDialog::name,
+TStreamableClass CLY_EXPORT RFileDialog( TFileDialog::name,
                               TFileDialog::build,
                               __DELTA(TFileDialog)
                             );

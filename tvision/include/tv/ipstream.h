@@ -29,7 +29,7 @@
 class TStreamableClass;
 class TPReadObjects;
 
-class ipstream : virtual public pstream
+class CLY_EXPORT ipstream : virtual public pstream
 {
 public:
     ipstream(CLY_streambuf *);

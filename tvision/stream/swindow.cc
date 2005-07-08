@@ -6,7 +6,7 @@
 __link( RGroup )
 __link( RFrame )
 
-TStreamableClass RWindow( TWindow::name,
+TStreamableClass CLY_EXPORT RWindow( TWindow::name,
                           TWindow::build,
                           __DELTA(TWindow)
                         );

@@ -7,7 +7,7 @@ __link( RView )
 __link( RScrollBar )
 __link( RIndicator )
 
-TStreamableClass REditor( TEditor::name,
+TStreamableClass CLY_EXPORT REditor( TEditor::name,
                           TEditor::build,
                           __DELTA(TEditor)
                         );

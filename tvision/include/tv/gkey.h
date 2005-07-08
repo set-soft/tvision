@@ -93,7 +93,7 @@ const unsigned
 struct TEvent;
 
 // A class to encapsulate the globals, all is static!
-class TGKey
+class CLY_EXPORT TGKey
 {
 public:
  TGKey() { resume(); };

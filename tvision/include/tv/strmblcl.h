@@ -31,7 +31,7 @@ typedef TStreamable *(*BUILDER)();
 //#define __DELTA( d ) (FP_OFF((TStreamable *)(d *)1)-1)
 #define __DELTA( d ) ((long)((TStreamable *)(d *)1)-1)
 
-class TStreamableClass
+class CLY_EXPORT TStreamableClass
 {
 
     friend class TStreamableTypes;

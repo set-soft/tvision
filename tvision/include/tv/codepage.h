@@ -35,7 +35,7 @@ typedef void (*TVCodePageCallBack)(ushort *map);
 
 const unsigned rbgDontRemapLow32=1, rbgOnlySelected=2;
 
-class TVCodePage
+class CLY_EXPORT TVCodePage
 {
 public:
  TVCodePage(int idApp, int idScr, int idInp);

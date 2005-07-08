@@ -16,7 +16,7 @@ Modified by Robert H”hne to be used for RHIDE.
 // Avoid replacing free by MSS's macro
 #include <tv/no_mss.h>
 
-class TNSCollection : public TObject
+class CLY_EXPORT TNSCollection : public TObject
 {
 
 public:

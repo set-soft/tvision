@@ -28,7 +28,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TRect;
 class TScrollBar;
 
-class THistoryViewer : public TListViewer
+class CLY_EXPORT THistoryViewer : public TListViewer
 {
 
 public:

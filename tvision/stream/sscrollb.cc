@@ -5,7 +5,7 @@
 #include <tv.h>
 __link( RView )
 
-TStreamableClass RScrollBar( TScrollBar::name,
+TStreamableClass CLY_EXPORT RScrollBar( TScrollBar::name,
                               TScrollBar::build,
                               __DELTA(TScrollBar)
                            );

@@ -21,17 +21,17 @@ Modified by Salvador E. Tropea.
 
 class TRect;
 
-ushort messageBox( const char *msg, ushort aOptions );
-ushort messageBox( ushort aOptions, const char *msg, ... )
+ushort CLY_EXPORT messageBox( const char *msg, ushort aOptions );
+ushort CLY_EXPORT messageBox( ushort aOptions, const char *msg, ... )
                 __attribute__ ((format (printf, 2, 3)));
 
-ushort messageBoxRect( const TRect &r, const char *msg, ushort aOptions );
-ushort messageBoxRect( const TRect &r, ushort aOptions, const char *msg, ... )
+ushort CLY_EXPORT messageBoxRect( const TRect &r, const char *msg, ushort aOptions );
+ushort CLY_EXPORT messageBoxRect( const TRect &r, ushort aOptions, const char *msg, ... )
                 __attribute__ ((format (printf, 3, 4)));
 
-ushort inputBox( const char *Title, const char *aLabel, char *s, int limit );
+ushort CLY_EXPORT inputBox( const char *Title, const char *aLabel, char *s, int limit );
 
-ushort inputBoxRect( const TRect &bounds, const char *title,
+ushort CLY_EXPORT inputBoxRect( const TRect &bounds, const char *title,
                      const char *aLabel, char *s, int limit );
 
 const ushort
@@ -60,7 +60,7 @@ const ushort
     mfOKCancel     = mfOKButton | mfCancelButton;
                                     // Standard OK, Cancel dialog
 
-class MsgBoxText
+class CLY_EXPORT MsgBoxText
 {
 
 public:

@@ -17,7 +17,7 @@ Modified by Salvador E. Tropea for i18n support.
 
 class TColorItem;
 
-class TColorGroup
+class CLY_EXPORT TColorGroup
 {
 
 public:
