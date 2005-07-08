@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.242  2005/07/08 16:46:59  set
+* Modified: [Win32+Watcom] Changes to export classes, needed to create a
+DLL. That's a first wave of patches from Lothar, more will come ;-)
+
 Revision 2.399.2.241  2005/07/08 16:39:45  set
 * Modified: [Windows XP] Workaround for the cursor shape. Disabled by
 default because I never got confirmation. From Andris.
