@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.623  2005/07/08 20:26:49  set
+* Added: [gcc] Code to solve problems related to gcc 3.4.x and 4.0.0. The
+solution was provided by Andris, but IMHO that's a workaround for gcc bugs
+instead of a solution.
+
 Revision 2.622  2005/07/08 16:50:37  set
 * Modified: [Win32+Watcom] Changes to export classes, needed to create a
 DLL. That's a first wave of patches from Lothar, more will come ;-)
