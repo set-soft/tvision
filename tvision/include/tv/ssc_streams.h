@@ -53,7 +53,7 @@ class SSC_filebuf : public SSC_streambuf
 public:
  SSC_filebuf();
  SSC_filebuf(int fh, SSC_OpenModeT mode);
- virtual ~SSC_filebuf () {}
+ virtual ~SSC_filebuf() {}
 
  SSC_filebuf *open(const char *name, SSC_OpenModeT mode, int prot);
  int  is_open() { return opened; };
@@ -73,6 +73,29 @@ protected:
  FILE *fde;
  int opened;
  SSC_OpenModeT mode;
+};
+
+/* Just for RHIDE, very elemental.
+   Important!!! it doesn't check for int overflow!!! */
+class SSC_strstreambuf : public SSC_streambuf
+{
+public:
+ SSC_strstreambuf();
+ SSC_strstreambuf(void *buf, int len);
+ virtual ~SSC_strstreambuf();
+ void *pbase() { return buffer; }
+ int   pcount() { return length; }
+ virtual SSC_StreamOffT seekoff(SSC_StreamOffT pos, SSC_IOSSeekDir dir,
+                                SSC_OpenModeT mode=0);
+ virtual void   sputc(char c);
+ virtual void   sputn(char *data, size_t cant);
+ virtual int    sbumpc();
+ virtual size_t sgetn(char *data, size_t cant);
+
+protected:
+ void *buffer;
+ int   length, offset, tlen;
+ void  MakeRoomFor(size_t bytes);
 };
 #endif // Included_SSC_Streams
 
