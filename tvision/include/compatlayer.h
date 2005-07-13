@@ -54,6 +54,14 @@ and regex.
  #endif
 #endif
 
+#ifdef Uses_strstream_simple
+ #ifdef HAVE_SSC
+  #define Uses_SSC_Streams 1
+ #else
+  #define Uses_strstream
+ #endif
+#endif
+
 #ifdef Uses_SSC_Streams
  #define Uses_stdio
 #endif
@@ -163,6 +171,7 @@ typedef unsigned long  ulong;
 #undef DIRSEPARATOR_
 #undef CLY_ISOCpp98
 #undef CLY_filebuf
+#undef CLY_strstreambuf
 #undef CLY_int_filebuf
 #undef CLY_streambuf
 #undef CLY_OpenModeT
@@ -359,6 +368,7 @@ typedef unsigned long  ulong;
    #define FSTREAM_HEADER  <fstream>
   #endif
   #define CLY_streambuf      std::streambuf
+  #define CLY_strstreambuf   std::strstreambuf
   #define CLY_ISOCpp98 1
   #define CLY_OpenModeT      std::ios::openmode
   #define CLY_StreamPosT     std::streampos
@@ -396,6 +406,7 @@ typedef unsigned long  ulong;
  #else
   #define CLY_filebuf        filebuf
   #define CLY_int_filebuf    filebuf
+  #define CLY_strstreambuf   strstreambuf
   #define CLY_streambuf      streambuf
   #define CLY_OpenModeT      int
   #define CLY_StreamPosT     streampos
@@ -1143,6 +1154,7 @@ typedef unsigned long  ulong;
 
  #define CLY_int_filebuf    filebuf
  #define CLY_filebuf        filebuf
+ #define CLY_strstreambuf   strstreambuf
  #define CLY_streambuf      streambuf
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
@@ -1403,6 +1415,7 @@ typedef unsigned long  ulong;
 
  #define CLY_int_filebuf    filebuf
  #define CLY_filebuf        filebuf
+ #define CLY_strstreambuf   strstreambuf
  #define CLY_streambuf      streambuf
  #define CLY_OpenModeT      int
  #define CLY_StreamPosT     streampos
@@ -1729,6 +1742,7 @@ typedef unsigned long  ulong;
  #if _MSC_VER > 1300
   // Taked from gcc 3.1 definitions
   #define CLY_filebuf        std::filebuf
+  #define CLY_strstreambuf   std::strstreambuf
   #define CLY_int_filebuf    CLY_filebuf
   #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"))
   #define CLY_streambuf      std::streambuf
@@ -1775,6 +1789,7 @@ typedef unsigned long  ulong;
  #else
   #define CLY_filebuf        filebuf
   #define CLY_int_filebuf    filebuf
+  #define CLY_strstreambuf   strstreambuf
   #define CLY_streambuf      streambuf
   #define CLY_OpenModeT      int
   #define CLY_StreamPosT     streampos
@@ -1838,6 +1853,7 @@ typedef unsigned long  ulong;
 // Simple Streams Compatibility hack *EXPERIMENTAL*
 #ifdef HAVE_SSC
  #undef CLY_filebuf
+ #undef CLY_strstreambuf
  #undef CLY_int_filebuf
  #undef CLY_streambuf
  #undef CLY_OpenModeT
@@ -1868,6 +1884,7 @@ typedef unsigned long  ulong;
 
  #define CLY_filebuf        SSC_filebuf
  #define CLY_int_filebuf    SSC_filebuf
+ #define CLY_strstreambuf   SSC_strstreambuf
  #define CLY_streambuf      SSC_streambuf
  #define CLY_OpenModeT      SSC_ios::openmode
  #define CLY_StreamPosT     SSC_ios::seekoff
