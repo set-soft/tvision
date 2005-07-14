@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.624  2005/07/12 13:18:24  set
+* Fixed: [Win32] The Win32 driver crashed after a window resize. Reported
+by Eddie (one_eddie/tenbit/pl).
+
 Revision 2.623  2005/07/08 20:26:49  set
 * Added: [gcc] Code to solve problems related to gcc 3.4.x and 4.0.0. The
 solution was provided by Andris, but IMHO that's a workaround for gcc bugs

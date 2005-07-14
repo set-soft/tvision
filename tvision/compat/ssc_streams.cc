@@ -4,8 +4,10 @@
 
 #define Uses_SSC_Streams
 #define Uses_stdio
+#define Uses_stdlib
 #define Uses_unistd
 #define Uses_fcntl
+#define Uses_string
 #include <compatlayer.h>
 
 // Ultra dummies:
@@ -158,17 +160,129 @@ size_t SSC_filebuf::sgetn(char *data, size_t cant)
  return size_t(0);
 }
 
+SSC_strstreambuf::SSC_strstreambuf()
+{
+ buffer=NULL;
+ tlen=length=offset=0;
+}
+
+SSC_strstreambuf::SSC_strstreambuf(void *buf, int len)
+{
+ buffer=buf;
+ tlen=length=len;
+ offset=0;
+}
+
+SSC_StreamOffT SSC_strstreambuf::seekoff(SSC_StreamOffT pos, SSC_IOSSeekDir dir,
+                                    SSC_OpenModeT)
+{
+ switch (dir)
+   {
+    case SSC_ios::beg:
+         if (pos>=0 && pos<=length)
+            offset=pos;
+         break;
+    case SSC_ios::cur:
+         if (pos>0)
+           {
+            if (length-offset>=pos)
+               offset+=pos;
+           }
+         else
+           {
+            if (offset>=pos)
+               offset+=pos;
+           }
+         break;
+    case SSC_ios::end:
+         if (pos<=0 && pos<=length)
+            offset=length+pos;
+         break;
+   }
+ return offset;
+}
+
+void SSC_strstreambuf::sputc(char c)
+{
+ MakeRoomFor(1);
+ char *s=(char *)buffer;
+ s[offset++]=c;
+}
+
+void SSC_strstreambuf::sputn(char *data, size_t cant)
+{
+ MakeRoomFor(cant);
+ memcpy(((char *)buffer)+offset,data,cant);
+ offset+=cant;
+}
+
+int SSC_strstreambuf::sbumpc()
+{
+ if (offset<length)
+   {
+    char *s=(char *)buffer;
+    return s[offset++];
+   }
+ return EOF;
+}
+
+size_t SSC_strstreambuf::sgetn(char *data, size_t cant)
+{
+ if (!buffer || !length)
+    return 0;
+ size_t avail=length-offset;
+ if (cant>avail)
+    cant=avail;
+ memcpy(data,((char *)buffer)+offset,cant);
+ return cant;
+}
+
+SSC_strstreambuf::~SSC_strstreambuf()
+{
+ free(buffer);
+}
+
+void SSC_strstreambuf::MakeRoomFor(size_t bytes)
+{
+ size_t avail=length-offset;
+ if (avail>=bytes)
+    return;
+ size_t tavail=tlen-offset;
+ if (tavail>=bytes)
+   {
+    length=offset+bytes;
+    return;
+   }
+ tlen=bytes+offset+4096;
+ buffer=realloc(buffer,tlen);
+ if (!buffer)
+    abort();
+ length=offset+bytes;
+}
+
 #ifdef TEST
+// g++ -DTEST -o /tmp/test -I../include ssc_streams.cc 
+
 int main(int argc, char *argv[])
 {
  CLY_filebuf pp;
  pp.open("test.txt",CLY_IOSIn | CLY_IOSOut | CLY_IOSBin,0644);
  pp.sputn("Hola\n",5);
  pp.pubseekoff(0,CLY_IOSBeg);
- char buf[6];
+ char buf[6+5];
  pp.sgetn(buf,5);
  buf[5]=0;
  printf("%s\n",buf);
+
+ printf("----- strbase test\n");
+ CLY_strstreambuf pp2;
+ pp2.sputn("Hola\n",5);
+ pp2.sputn("Chau\n",5);
+ pp2.pubseekoff(0,CLY_IOSBeg);
+ pp2.sgetn(buf,5+5);
+ buf[5+5]=0;
+ printf("%s",buf);
+
  return 0;
 }
 #endif
