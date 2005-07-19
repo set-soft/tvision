@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.626  2005/07/19 14:55:48  set
+* Fixed: [SSC] offset not updated after a block read.
+.
 Revision 2.625  2005/07/14 18:16:28  set
 * Added: [SSC] very basic support for strstreambuf class. Needed by RHIDE.
 .
