@@ -129,15 +129,17 @@ typedef unsigned long  ulong;
 #endif
 
 #undef  FSTREAM_HEADER
-#define FSTREAM_HEADER  <fstream.h>
+#define FSTREAM_HEADER   <fstream.h>
+#undef  STRSTREAM_HEADER
+#define STRSTREAM_HEADER <strstream.h>
 #undef  IOMANIP_HEADER
-#define IOMANIP_HEADER  <iomanip.h>
+#define IOMANIP_HEADER   <iomanip.h>
 #undef  IOSTREAM_HEADER
-#define IOSTREAM_HEADER <iostream.h>
+#define IOSTREAM_HEADER  <iostream.h>
 #undef  IOCTL_HEADER
-#define IOCTL_HEADER    <sys/ioctl.h>
+#define IOCTL_HEADER     <sys/ioctl.h>
 #undef  NEW_HEADER
-#define NEW_HEADER      <new>
+#define NEW_HEADER       <new>
 
 #ifdef Uses_ioctl
  #undef  Include_ioctl
@@ -403,6 +405,8 @@ typedef unsigned long  ulong;
   #define IOMANIP_HEADER  <iomanip>
   #undef  IOSTREAM_HEADER
   #define IOSTREAM_HEADER <iostream>
+  #undef  STRSTREAM_HEADER
+  #define STRSTREAM_HEADER <strstream>
  #else
   #define CLY_filebuf        filebuf
   #define CLY_int_filebuf    filebuf
@@ -1783,6 +1787,8 @@ typedef unsigned long  ulong;
   #define IOMANIP_HEADER  <iomanip>
   #undef  IOSTREAM_HEADER
   #define IOSTREAM_HEADER <iostream>
+  #undef  STRSTREAM_HEADER
+  #define STRSTREAM_HEADER <strstream>
   #if defined(Include_ioctl)
      #undef Include_ioctl
   #endif // Include_ioctl
@@ -2330,7 +2336,7 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 
 #if defined(Include_strstream) && !defined(Included_strstream)
  #define Included_strstream 1
- #include <strstream.h>
+ #include STRSTREAM_HEADER
 #endif
 
 #if defined(Include_strstrea) && !defined(Included_strstrea)
