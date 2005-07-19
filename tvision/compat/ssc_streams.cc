@@ -234,6 +234,7 @@ size_t SSC_strstreambuf::sgetn(char *data, size_t cant)
  if (cant>avail)
     cant=avail;
  memcpy(data,((char *)buffer)+offset,cant);
+ offset+=cant;
  return cant;
 }
 

@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.625  2005/07/14 18:16:28  set
+* Added: [SSC] very basic support for strstreambuf class. Needed by RHIDE.
+.
 Revision 2.624  2005/07/12 13:18:24  set
 * Fixed: [Win32] The Win32 driver crashed after a window resize. Reported
 by Eddie (one_eddie/tenbit/pl).
