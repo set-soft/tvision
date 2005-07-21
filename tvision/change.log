@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.399.2.247  2005/07/19 14:19:22  set
+* Fixed: [GCC] Some gcc versions only have "strstream" (not .h). Reported
+by Vik while using Fedora Core 4.
+
 Revision 2.399.2.246  2005/07/19 13:58:24  set
 * Fixed: [SSC] offset not updated after a block read.
 
