@@ -120,6 +120,10 @@ Modified by Salvador E. Tropea
 #define INCLUDE_FILEVIEW_H
 #endif
 
+#if defined( Uses_TPXPictureValidator )
+#define Uses_TValidator
+#endif
+
 #if defined( Uses_TRangeValidator )
 #define Uses_TFilterValidator
 #endif

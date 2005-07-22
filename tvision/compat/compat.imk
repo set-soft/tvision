@@ -103,8 +103,6 @@
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/iffilelen$(ExOBJ):: ../compat/iffilelen.cc \
-	cl/needs.h \
-	compatlayer.h \
 	tv/configtv.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
@@ -173,7 +171,10 @@
 	$(RHIDE_COMPILE_C)
 
 ../makes/obj/ssc_streams$(ExOBJ):: ../compat/ssc_streams.cc \
+	cl/unistd.h \
+	compatlayer.h \
 	tv/configtv.h \
+	tv/ssc_streams.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 

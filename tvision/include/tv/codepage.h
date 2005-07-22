@@ -62,6 +62,8 @@ public:
   { return (char)toLowerTable[(uchar)val]; }
  static int     isAlpha(char val)
   { return AlphaTable[(uchar)val] & alphaChar; }
+ static int     isNumber(char val)
+  { return AlphaTable[(uchar)val] & digitChar; }
  static int     isAlNum(char val)
   { return AlphaTable[(uchar)val] & (alphaChar | digitChar); }
  static int     isLower(char val)
