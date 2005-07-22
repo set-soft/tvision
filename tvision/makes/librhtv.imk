@@ -248,6 +248,7 @@ OBJFILES=\
 	obj/tpwobj$(ExOBJ) \
 	obj/tpwreado$(ExOBJ) \
 	obj/tpwritte$(ExOBJ) \
+	obj/tpxvalid$(ExOBJ) \
 	obj/tradiobu$(ExOBJ) \
 	obj/trangeva$(ExOBJ) \
 	obj/trescoll$(ExOBJ) \
@@ -556,6 +557,7 @@ librhtv$(ExLIB):: \
 	obj/tpwobj$(ExOBJ) \
 	obj/tpwreado$(ExOBJ) \
 	obj/tpwritte$(ExOBJ) \
+	obj/tpxvalid$(ExOBJ) \
 	obj/tradiobu$(ExOBJ) \
 	obj/trangeva$(ExOBJ) \
 	obj/trescoll$(ExOBJ) \
@@ -5480,6 +5482,32 @@ obj/tpwritte$(ExOBJ):: ../classes/tpwritte.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/tpxvalid$(ExOBJ):: ../classes/tpxvalid.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/msgbox.h \
+	$(INCLUDE_DIR)/tv/object.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/validate.h \
+	$(INCLUDE_DIR)/tv/views.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
