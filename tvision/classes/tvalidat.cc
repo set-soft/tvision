@@ -21,33 +21,38 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_TValidator
 #include <tv.h>
 
-TValidator::TValidator() : Status(0), Options(0), Owner(NULL)
+TValidator::TValidator() : status(0), options(0)
 {
 }
 
-Boolean TValidator::IsValid(const char *)
-{
-  return True;
-}
-
-Boolean TValidator::IsValidInput(char *,Boolean)
+Boolean TValidator::isValid(const char *)
 {
   return True;
 }
 
-ushort TValidator::Transfer(char *,void *,TVTransfer)
+Boolean TValidator::isValidInput(char *,Boolean)
+{
+  return True;
+}
+
+ushort TValidator::transfer(char *,void *,TVTransfer)
 {
   return 0;
 }
 
-Boolean TValidator::Valid(const char *S)
+Boolean TValidator::validate(const char *S)
 {
-  if (IsValid(S) == True) return True;
-  Error();
+  if (isValid(S))
+     return True;
+  error();
   return False;
 }
 
-void TValidator::Format(char *)
+void TValidator::format(char *)
+{
+}
+
+void TValidator::error()
 {
 }
 
@@ -58,12 +63,12 @@ TValidator::TValidator(StreamableInit)
 
 void TValidator::write(opstream & os)
 {
-  os << Status << Options;
+  os << status << options;
 }
 
 void * TValidator::read(ipstream & is)
 {
-  is >> Status >> Options;
+  is >> status >> options;
   return this;
 }
 #endif // NO_STREAM

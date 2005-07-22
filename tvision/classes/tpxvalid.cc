@@ -19,6 +19,8 @@
 
 // TPXPictureValidator
 
+const char * TPXPictureValidator::errorMsg = "Error in picture format.\n %s";
+
 TPXPictureValidator::TPXPictureValidator(const char* aPic, Boolean autoFill)
     : TValidator()
 {
@@ -26,16 +28,21 @@ TPXPictureValidator::TPXPictureValidator(const char* aPic, Boolean autoFill)
 
   pic = newStr(aPic);
   if ( autoFill )
-       Options |= voFill;
+       options |= voFill;
   s = "";
   if (picture(s, False) != prEmpty)
-    Status = vsSyntax;
+    status = vsSyntax;
 }
 
 #if !defined( NO_STREAM )
 
 TPXPictureValidator::TPXPictureValidator( StreamableInit s ) : TValidator(s)
 {
+}
+
+TStreamable * TPXPictureValidator::build()
+{
+  return (TStreamable *) new TPXPictureValidator(streamableInit);
 }
 
 void TPXPictureValidator::write( opstream& os )
@@ -60,19 +67,19 @@ TPXPictureValidator::~TPXPictureValidator()
   delete pic;
 };
 
-void TPXPictureValidator::error()
+void TPXPictureValidator::Error()
 {
   messageBox(mfError | mfOKButton, errorMsg, pic);
 }
 
-Boolean TPXPictureValidator::isValidInput(char* s, Boolean suppressFill)
+Boolean TPXPictureValidator::IsValidInput(char* s, Boolean suppressFill)
 {
-  Boolean doFill = Boolean(((Options&voFill)!=0) && !suppressFill);
+  Boolean doFill = Boolean(((options&voFill)!=0) && !suppressFill);
 
   return Boolean((pic==0) || (picture( (char*)s, doFill) != prError));
 }
 
-Boolean TPXPictureValidator::isValid(const char* s)
+Boolean TPXPictureValidator::IsValid(const char* s)
 {
   // SET: Modified to allocate memory and avoid buffer overflows.
   int l = strlen(s) + 1;
