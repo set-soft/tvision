@@ -12,18 +12,18 @@ Modified by Salvador E. Tropea (TPXPictureValidator)
  *
  */
 
-#if defined(Uses_TValidator) && !defined(__TValidator)
-#define __TValidator
+#if defined(Uses_TValidator) && !defined(TValidator_Included)
+#define TValidator_Included
 
-const ushort	
+const ushort
 // TValidator Status constants
-		vsOk		= 0,
-		vsSyntax	= 1,
+                vsOk            = 0,
+                vsSyntax        = 1,
 // Validator option flags
-		voFill		= 0x0001,
-		voTransfer	= 0x0002,
-		voOnAppend	= 0x0004,
-		voReserved	= 0x00F8;
+                voFill          = 0x0001,
+                voTransfer      = 0x0002,
+                voOnAppend      = 0x0004,
+                voReserved      = 0x00F8;
 
 typedef enum {
   vtDataSize,
@@ -31,86 +31,34 @@ typedef enum {
   vtGetData
 } TVTransfer;
 
-class TInputLine;
-
-// Abstract TValidator object
+// TValidator object
 class CLY_EXPORT TValidator : public TObject
 #if !defined( NO_STREAM )
     , CLY_BROKEN_WATCOM_SCOPE TStreamable
 #endif // NO_STREAM
 {
 public:
-  ushort Status;
-  ushort Options;
   TValidator();
-  virtual void Error() = 0;
-  virtual Boolean IsValidInput(char *,Boolean);
-  virtual Boolean IsValid(const char *);
-  virtual ushort Transfer(char *,void *,TVTransfer);
-  virtual void Format(char *source);
-  Boolean Valid(const char *);
-  void SetOwner(TInputLine *owner) { Owner = owner; }
-protected:
-  TInputLine *Owner;
+  virtual void error();
+  virtual Boolean isValidInput(char *,Boolean);
+  virtual Boolean isValid(const char *);
+  virtual ushort transfer(char *,void *,TVTransfer);
+  virtual void format(char *source);
+  Boolean validate(const char *);
+
+  ushort status;
+  ushort options;
+  
 #if !defined( NO_STREAM )
+public:
+  static const char * const name;
+  
 private:
   virtual const char *streamableName() const
-	{ return name; }
+    { return name; }
+    
 protected:
   TValidator( StreamableInit );
-public:
-  static const char * const name;
-protected:
-  virtual void write( opstream& );
-  virtual void *read( ipstream& );
-#endif // NO_STREAM
-};
-
-class TFilterValidator : public TValidator
-{
-protected:
-  char * ValidChars;
-public:
-  TFilterValidator();
-  TFilterValidator(const char *);
-  ~TFilterValidator();
-  virtual void Error();
-  virtual Boolean IsValid(const char *);
-  virtual Boolean IsValidInput(char *,Boolean);
-#if !defined( NO_STREAM )
-private:
-  virtual const char *streamableName() const
-	{ return name; }
-protected:
-  TFilterValidator( StreamableInit );
-public:
-  static const char * const name;
-  static TStreamable *build();
-protected:
-  virtual void write( opstream& );
-  virtual void *read( ipstream& );
-#endif // NO_STREAM
-};
-
-class TRangeValidator : public TFilterValidator
-{
-  long Min,Max;
-public:
-  TRangeValidator();
-  TRangeValidator(long aMin,long aMax);
-  virtual void Error();
-  virtual Boolean IsValid(const char *);
-  virtual ushort Transfer(char *,void *,TVTransfer);
-#if !defined( NO_STREAM )
-private:
-  virtual const char *streamableName() const
-	{ return name; }
-protected:
-  TRangeValidator( StreamableInit );
-public:
-  static const char * const name;
-  static TStreamable *build();
-protected:
   virtual void write( opstream& );
   virtual void *read( ipstream& );
 #endif // NO_STREAM
@@ -126,7 +74,45 @@ inline opstream& operator << ( opstream& os, TValidator& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TValidator* cl )
     { return os << (TStreamable *)cl; }
+#endif
 
+#endif // defined(Uses_TValidator) && !defined(TValidator_Included)
+
+
+// TFilterValidator
+#if defined(Uses_TFilterValidator) && !defined(TFilterValidator_Included)
+#define TFilterValidator_Included
+
+class TFilterValidator : public TValidator
+{
+public:
+  TFilterValidator();
+  TFilterValidator(const char *);
+  ~TFilterValidator();
+  virtual void error();
+  virtual Boolean isValid(const char *);
+  virtual Boolean isValidInput(char *,Boolean);
+  
+protected:
+  char * validChars;
+  
+#if !defined( NO_STREAM )
+public:
+  static const char * const name;
+  static TStreamable *build();
+
+private:
+  virtual const char *streamableName() const
+        { return name; }
+        
+protected:
+  TFilterValidator( StreamableInit );
+  virtual void write( opstream& );
+  virtual void *read( ipstream& );
+#endif // NO_STREAM
+};
+
+#if !defined( NO_STREAM )
 inline ipstream& operator >> ( ipstream& is, TFilterValidator& cl )
     { return is >> (TStreamable&)cl; }
 inline ipstream& operator >> ( ipstream& is, TFilterValidator*& cl )
@@ -136,7 +122,44 @@ inline opstream& operator << ( opstream& os, TFilterValidator& cl )
     { return os << (TStreamable&)cl; }
 inline opstream& operator << ( opstream& os, TFilterValidator* cl )
     { return os << (TStreamable *)cl; }
+#endif
 
+#endif // defined(Uses_TFilterValidator) && !defined(TFilterValidator_Included)
+
+
+// TRangeValidator
+#if defined(Uses_TRangeValidator) && !defined(TRangeValidator_Included)
+#define TRangeValidator_Included
+
+class TRangeValidator : public TFilterValidator
+{
+public:
+  TRangeValidator();
+  TRangeValidator(long aMin,long aMax);
+  virtual void error();
+  virtual Boolean isValid(const char *);
+  virtual ushort transfer(char *,void *,TVTransfer);
+
+protected:
+  long min, max;
+
+#if !defined( NO_STREAM )
+public:
+  static const char * const name;
+  static TStreamable *build();
+        
+protected:
+  TRangeValidator( StreamableInit );
+  virtual void write( opstream& );
+  virtual void *read( ipstream& );
+  
+private:
+  virtual const char *streamableName() const
+        { return name; }
+#endif // NO_STREAM
+};
+
+#if !defined( NO_STREAM )
 inline ipstream& operator >> ( ipstream& is, TRangeValidator& cl )
     { return is >> (TStreamable&)cl; }
 inline ipstream& operator >> ( ipstream& is, TRangeValidator*& cl )
@@ -148,9 +171,10 @@ inline opstream& operator << ( opstream& os, TRangeValidator* cl )
     { return os << (TStreamable *)cl; }
 #endif // NO_STREAM
 
-#endif
+#endif // defined(Uses_TRangeValidator) && !defined(TRangeValidator_Included)
 
 
+// TPXPictureValidator
 #if defined(Uses_TPXPictureValidator) && !defined(TPXPictureValidator_Included)
 #define TPXPictureValidator_Included
 
@@ -164,14 +188,12 @@ enum TPicResult {prComplete, prIncomplete, prEmpty, prError, prSyntax,
 
 class TPXPictureValidator : public TValidator
 {
-    static const char * errorMsg;
-
 public:
     TPXPictureValidator(const char* aPic, Boolean autoFill);
     ~TPXPictureValidator();
-    virtual void error();
-    virtual Boolean isValidInput(char* s, Boolean suppressFill);
-    virtual Boolean isValid(const char* s);
+    virtual void Error();
+    virtual Boolean IsValidInput(char* s, Boolean suppressFill);
+    virtual Boolean IsValid(const char* s);
     virtual TPicResult picture(char* input, Boolean autoFill);
 
 protected:
@@ -190,6 +212,7 @@ private:
     Boolean syntaxCheck();
 
     int index, jndex;
+    static const char * errorMsg;
 
 #if !defined( NO_STREAM )
 public:

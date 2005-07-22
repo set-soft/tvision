@@ -64,8 +64,6 @@ void TInputLine::SetValidator(TValidator * aValidator)
 {
   CLY_destroy(validator);
   validator = aValidator;
-  if (validator)
-    validator->SetOwner(this);
 }
 
 TInputLine::~TInputLine()
@@ -185,7 +183,7 @@ Boolean TInputLine::insertChar(char value)
       char tmp[2];
       tmp[0] = value;
       tmp[1] = 0;
-      if (validator->IsValidInput(tmp,False) == False)
+      if (validator->isValidInput(tmp,False) == False)
          return False;
     }
     if( (state & sfCursorIns) == 0 )
@@ -394,7 +392,7 @@ void TInputLine::setState( ushort aState, Boolean enable )
       {
        TValidator *v=validator;
        validator=NULL;             // Avoid nested tests
-       Boolean ret=v->Valid(data); // Check if we have valid data
+       Boolean ret=v->validate(data); // Check if we have valid data
        validator=v;
        if (!ret)                   // If not refuse the focus change
           return;
@@ -444,10 +442,10 @@ Boolean TInputLine::valid(ushort )
   Boolean ret = True;
   if (validator)
   {
-    ret = validator->Valid(data);
+    ret = validator->validate(data);
     if (ret == True)
     {
-      validator->Format(data);
+      validator->format(data);
       drawView();
     }
   }

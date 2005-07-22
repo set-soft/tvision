@@ -30,29 +30,30 @@ const char *ctValidChars="-+" CT_VALID_CHARS;
 const char *ctValidCharsPos=ctValidChars+1;
 const char *ctValidCharsNeg="-" CT_VALID_CHARS;
 
-TRangeValidator::TRangeValidator() : TFilterValidator(ctValidChars)
+TRangeValidator::TRangeValidator() :
+  TFilterValidator(ctValidChars)
 {
-  Min = LONG_MIN;
-  Max = LONG_MAX;
+  min = LONG_MIN;
+  max = LONG_MAX;
 }
 
 TRangeValidator::TRangeValidator(long aMin,long aMax) :
   TFilterValidator(ctValidChars)
 {
-  Min = aMin;
-  Max = aMax;
-  if (Min >= 0) strcpy(ValidChars,ctValidCharsPos);
-  if (Min < 0 && Max < 0) strcpy(ValidChars,ctValidCharsNeg);
+  min = aMin;
+  max = aMax;
+  if (min >= 0) strcpy(validChars,ctValidCharsPos);
+  if (min < 0 && max < 0) strcpy(validChars,ctValidCharsNeg);
 }
 
-void TRangeValidator::Error()
+void TRangeValidator::error()
 {
-  if (Min >= 0)
+  if (min >= 0)
     messageBox(mfError|mfOKButton,__("Value not in the range %lu to %lu"),
-               (unsigned long)Min,(unsigned long)Max);
+               (unsigned long)min,(unsigned long)max);
   else
     messageBox(mfError|mfOKButton,__("Value not in the range %li to %li"),
-               Min,Max);
+               min,max);
   // SET: Replaced %U and %D because MSVC lacks it
 }
 
@@ -69,41 +70,41 @@ static unsigned long get_uval(const char *buf)
 }
 
 
-Boolean TRangeValidator::IsValid(const char *S)
+Boolean TRangeValidator::isValid(const char *S)
 {
   long value;
-  if (TFilterValidator::IsValid(S) == False) return False;
-  if (Min >= 0)
+  if (TFilterValidator::isValid(S) == False) return False;
+  if (min >= 0)
     value = get_uval(S);
   else
     value = get_val(S);
-  if (Min >= 0)
+  if (min >= 0)
   {
-    if ((unsigned long)value < (unsigned long)Min ||
-        (unsigned long)value > (unsigned long)Max)
+    if ((unsigned long)value < (unsigned long)min ||
+        (unsigned long)value > (unsigned long)max)
       return False;
   }
   else
   {
-    if (value < Min || value > Max) return False;
+    if (value < min || value > max) return False;
   }
   return True;
 }
 
-ushort TRangeValidator::Transfer(char *S,void * Buffer,
+ushort TRangeValidator::transfer(char *S,void * Buffer,
   TVTransfer Flag)
 {
-  if (!(Options & voTransfer)) return 0;
+  if (!(options & voTransfer)) return 0;
   switch (Flag)
   {
     case vtGetData:
-      if (Min >= 0)
+      if (min >= 0)
         *((unsigned long *)Buffer) = get_uval(S);
       else
         *((long *)Buffer) = get_val(S);
       break;
     case vtSetData:
-      if (Min >= 0)
+      if (min >= 0)
         sprintf(S,"%lu",*((unsigned long *)Buffer));
       else
         sprintf(S,"%ld",*((long *)Buffer));
@@ -128,13 +129,13 @@ TStreamable * TRangeValidator::build()
 void TRangeValidator::write(opstream & os)
 {
   TFilterValidator::write(os);
-  os << Min << Max;
+  os << min << max;
 }
 
 void * TRangeValidator::read(ipstream & is)
 {
   TFilterValidator::read(is);
-  is >> Min >> Max;
+  is >> min >> max;
   return this;
 }
 #endif // NO_STREAM

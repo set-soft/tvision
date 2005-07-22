@@ -1,17 +1,20 @@
-$Log$.
+$Log$
+Revision 2.629  2005/07/22 18:16:25  set
+* Added: TPXPictureValidator, not tested. Closes SF FR #1235527.
+
 Revision 2.628  2005/07/22 12:53:13  set
 * Added: [WWW] CVS snapshot for Sarge (SPARC).
-.
+
 Revision 2.627  2005/07/19 14:56:57  set
 * Fixed: [GCC] Some gcc versions only have "strstream" (not .h). Reported
 by Vik while using Fedora Core 4.
-.
+
 Revision 2.626  2005/07/19 14:55:48  set
 * Fixed: [SSC] offset not updated after a block read.
-.
+
 Revision 2.625  2005/07/14 18:16:28  set
 * Added: [SSC] very basic support for strstreambuf class. Needed by RHIDE.
-.
+
 Revision 2.624  2005/07/12 13:18:24  set
 * Fixed: [Win32] The Win32 driver crashed after a window resize. Reported
 by Eddie (one_eddie/tenbit/pl).
