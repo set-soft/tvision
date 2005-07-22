@@ -88,6 +88,7 @@ classes/tparamte.cc
 classes/tpoint.cc
 classes/tprogini.cc
 classes/tprogram.cc
+classes/tpxvalid.cc
 classes/tpwobj.cc
 classes/tpwreado.cc
 classes/tpwritte.cc

@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.628  2005/07/22 12:53:13  set
+* Added: [WWW] CVS snapshot for Sarge (SPARC).
+.
 Revision 2.627  2005/07/19 14:56:57  set
 * Fixed: [GCC] Some gcc versions only have "strstream" (not .h). Reported
 by Vik while using Fedora Core 4.

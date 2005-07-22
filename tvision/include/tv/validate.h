@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea (TPXPictureValidator)
 
  *
  *
@@ -148,4 +149,74 @@ inline opstream& operator << ( opstream& os, TRangeValidator* cl )
 #endif // NO_STREAM
 
 #endif
+
+
+#if defined(Uses_TPXPictureValidator) && !defined(TPXPictureValidator_Included)
+#define TPXPictureValidator_Included
+
+// TPXPictureValidator result type
+
+enum TPicResult {prComplete, prIncomplete, prEmpty, prError, prSyntax,
+    prAmbiguous, prIncompNoFill};
+
+// TPXPictureValidator
+
+
+class TPXPictureValidator : public TValidator
+{
+    static const char * errorMsg;
+
+public:
+    TPXPictureValidator(const char* aPic, Boolean autoFill);
+    ~TPXPictureValidator();
+    virtual void error();
+    virtual Boolean isValidInput(char* s, Boolean suppressFill);
+    virtual Boolean isValid(const char* s);
+    virtual TPicResult picture(char* input, Boolean autoFill);
+
+protected:
+    char* pic;
+
+private:
+    void consume(char ch, char* input);
+    void toGroupEnd(int& i, int termCh);
+    Boolean skipToComma(int termCh);
+    int calcTerm(int);
+    TPicResult iteration(char* input, int termCh);
+    TPicResult group(char* input, int termCh);
+    TPicResult checkComplete(TPicResult rslt, int termCh);
+    TPicResult scan(char* input, int termCh);
+    TPicResult process(char* input, int termCh);
+    Boolean syntaxCheck();
+
+    int index, jndex;
+
+#if !defined( NO_STREAM )
+public:
+    static TStreamable *build();
+    static const char * const name;
+    
+protected:
+    TPXPictureValidator( StreamableInit );
+    virtual void write( opstream& os );
+    virtual void* read( ipstream& is );
+
+private:
+    virtual const char *streamableName() const  {return name;};
+#endif // NO_STREAM
+};
+
+#if !defined( NO_STREAM )
+inline ipstream& operator >> ( ipstream& is, TPXPictureValidator& v )
+    { return is >> (TStreamable&)v; }
+inline ipstream& operator >> ( ipstream& is, TPXPictureValidator*& v )
+    { return is >> (void *&)v; }
+
+inline opstream& operator << ( opstream& os, TPXPictureValidator& v )
+    { return os << (TStreamable&)v; }
+inline opstream& operator << ( opstream& os, TPXPictureValidator* v )
+    { return os << (TStreamable *)v; }
+#endif // NO_STREAM
+
+#endif // defined(Uses_TPXPictureValidator) && !defined(TPXPictureValidator_Included)
 
