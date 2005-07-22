@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.249  2005/07/22 17:57:34  set
+* Added: TPXPictureValidator, not tested. Closes SF FR #1235527.
+
 Revision 2.399.2.248  2005/07/21 20:45:23  set
 * Added: [WWW] CVS snapshot for Sarge (SPARC).
 
