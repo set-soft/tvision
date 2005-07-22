@@ -107,6 +107,7 @@ OBJFILES=\
 	obj/nmenuvie$(ExOBJ) \
 	obj/nmonosel$(ExOBJ) \
 	obj/nparamte$(ExOBJ) \
+	obj/npxvalid$(ExOBJ) \
 	obj/nradiobu$(ExOBJ) \
 	obj/nrangeva$(ExOBJ) \
 	obj/nresourc$(ExOBJ) \
@@ -175,6 +176,7 @@ OBJFILES=\
 	obj/smenuvie$(ExOBJ) \
 	obj/smonosel$(ExOBJ) \
 	obj/sparamte$(ExOBJ) \
+	obj/spxvalid$(ExOBJ) \
 	obj/sradiobu$(ExOBJ) \
 	obj/srangeva$(ExOBJ) \
 	obj/sresourc$(ExOBJ) \
@@ -413,6 +415,7 @@ librhtv$(ExLIB):: \
 	obj/nmenuvie$(ExOBJ) \
 	obj/nmonosel$(ExOBJ) \
 	obj/nparamte$(ExOBJ) \
+	obj/npxvalid$(ExOBJ) \
 	obj/nradiobu$(ExOBJ) \
 	obj/nrangeva$(ExOBJ) \
 	obj/nresourc$(ExOBJ) \
@@ -481,6 +484,7 @@ librhtv$(ExLIB):: \
 	obj/smenuvie$(ExOBJ) \
 	obj/smonosel$(ExOBJ) \
 	obj/sparamte$(ExOBJ) \
+	obj/spxvalid$(ExOBJ) \
 	obj/sradiobu$(ExOBJ) \
 	obj/srangeva$(ExOBJ) \
 	obj/sresourc$(ExOBJ) \
@@ -1709,6 +1713,13 @@ obj/nmonosel$(ExOBJ):: ../names/nmonosel.cc \
 	$(RHIDE_COMPILE_CC)
 
 obj/nparamte$(ExOBJ):: ../names/nparamte.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/npxvalid$(ExOBJ):: ../names/npxvalid.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
@@ -3324,6 +3335,30 @@ obj/sparamte$(ExOBJ):: ../stream/sparamte.cc \
 	$(INCLUDE_DIR)/tv/tvobjs.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/spxvalid$(ExOBJ):: ../stream/spxvalid.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/object.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/strmblcl.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/validate.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)

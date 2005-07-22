@@ -734,6 +734,7 @@ names/nmenubox.cc
 names/nmenuvie.cc
 names/nmonosel.cc
 names/nparamte.cc
+names/npxvalid.cc
 names/nradiobu.cc
 names/nrangeva.cc
 names/nresourc.cc
@@ -800,6 +801,7 @@ stream/smenubox.cc
 stream/smenuvie.cc
 stream/smonosel.cc
 stream/sparamte.cc
+stream/spxvalid.cc
 stream/sradiobu.cc
 stream/srangeva.cc
 stream/sresourc.cc
