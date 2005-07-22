@@ -245,6 +245,7 @@ OBJFILES=\
 	obj/tpwobj$(ExOBJ) \
 	obj/tpwreado$(ExOBJ) \
 	obj/tpwritte$(ExOBJ) \
+	obj/tpxvalid$(ExOBJ) \
 	obj/tradiobu$(ExOBJ) \
 	obj/trangeva$(ExOBJ) \
 	obj/trescoll$(ExOBJ) \
@@ -550,6 +551,7 @@ librhtv$(ExLIB):: \
 	obj/tpwobj$(ExOBJ) \
 	obj/tpwreado$(ExOBJ) \
 	obj/tpwritte$(ExOBJ) \
+	obj/tpxvalid$(ExOBJ) \
 	obj/tradiobu$(ExOBJ) \
 	obj/trangeva$(ExOBJ) \
 	obj/trescoll$(ExOBJ) \
@@ -632,6 +634,7 @@ obj/calcdisp$(ExOBJ):: ../classes/calcdisp.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -667,6 +670,7 @@ obj/calculat$(ExOBJ):: ../classes/calculat.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -739,6 +743,7 @@ obj/codepage$(ExOBJ):: ../classes/codepage.cc \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
 	$(INCLUDE_DIR)/tv/searchrc.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statslin.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
@@ -765,6 +770,7 @@ obj/configfile$(ExOBJ):: ../classes/configfile.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -792,6 +798,7 @@ obj/dosdis$(ExOBJ):: ../classes/dos/dosdis.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -821,6 +828,7 @@ obj/doskey$(ExOBJ):: ../classes/dos/doskey.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -845,6 +853,7 @@ obj/dosmouse$(ExOBJ):: ../classes/dos/dosmouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -875,6 +884,7 @@ obj/dosscr$(ExOBJ):: ../classes/dos/dosscr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -893,6 +903,7 @@ obj/drivers2$(ExOBJ):: ../drivers2.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tkeys.h \
@@ -917,6 +928,7 @@ obj/dual$(ExOBJ):: ../dual.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -955,6 +967,7 @@ obj/fileview$(ExOBJ):: ../fileview.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/scroller.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -997,6 +1010,7 @@ obj/fontcoll$(ExOBJ):: ../classes/fontcoll.cc \
 	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
 	$(INCLUDE_DIR)/tv/sortlibo.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strncoll.h \
@@ -1021,6 +1035,7 @@ obj/fpbase$(ExOBJ):: ../classes/fpbase.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1042,6 +1057,7 @@ obj/fpstream$(ExOBJ):: ../classes/fpstream.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1075,6 +1091,7 @@ obj/help$(ExOBJ):: ../classes/help.cc \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
 	$(INCLUDE_DIR)/tv/scroller.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -1106,6 +1123,7 @@ obj/helpbase$(ExOBJ):: ../classes/helpbase.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -1128,6 +1146,7 @@ obj/histlist$(ExOBJ):: ../histlist.cc \
 	$(INCLUDE_DIR)/tv/no_mss.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1149,6 +1168,7 @@ obj/ifpstrea$(ExOBJ):: ../classes/ifpstrea.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1168,6 +1188,7 @@ obj/iopstrea$(ExOBJ):: ../classes/iopstrea.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1191,6 +1212,7 @@ obj/ipstream$(ExOBJ):: ../classes/ipstream.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/preadobj.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -1222,6 +1244,7 @@ obj/linuxdis$(ExOBJ):: ../classes/linux/linuxdis.cc \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1251,6 +1274,7 @@ obj/linuxkey$(ExOBJ):: ../classes/linux/linuxkey.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1277,6 +1301,7 @@ obj/linuxmouse$(ExOBJ):: ../classes/linux/linuxmouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1308,6 +1333,7 @@ obj/linuxscr$(ExOBJ):: ../classes/linux/linuxscr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1332,6 +1358,7 @@ obj/misc$(ExOBJ):: ../misc.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -1373,6 +1400,7 @@ obj/msgbox$(ExOBJ):: ../msgbox.cc \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/sitem.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/sttctext.h \
@@ -1529,6 +1557,7 @@ obj/newstr$(ExOBJ):: ../newstr.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1794,6 +1823,7 @@ obj/ofpstrea$(ExOBJ):: ../classes/ofpstrea.cc \
 	$(INCLUDE_DIR)/tv/ofpstrm.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1817,6 +1847,7 @@ obj/opstream$(ExOBJ):: ../classes/opstream.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/pwritobj.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -1841,6 +1872,7 @@ obj/osclipboard$(ExOBJ):: ../classes/osclipboard.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/osclipboard.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1863,6 +1895,7 @@ obj/pstream$(ExOBJ):: ../classes/pstream.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -1889,6 +1922,7 @@ obj/qnx4dis$(ExOBJ):: ../classes/qnx4/qnx4dis.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/qnx4/screen.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1915,6 +1949,8 @@ obj/qnx4key$(ExOBJ):: ../classes/qnx4/qnx4key.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/qnx4/key.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tkeyext.h \
@@ -1953,6 +1989,7 @@ obj/qnx4scr$(ExOBJ):: ../classes/qnx4/qnx4scr.cc \
 	$(INCLUDE_DIR)/tv/qnx4/key.h \
 	$(INCLUDE_DIR)/tv/qnx4/screen.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -1974,6 +2011,7 @@ obj/qnxdis$(ExOBJ):: ../classes/qnxrtp/qnxdis.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/qnxrtp/screen.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -2000,6 +2038,7 @@ obj/qnxkey$(ExOBJ):: ../classes/qnxrtp/qnxkey.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/qnxrtp/key.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tkeyext.h \
@@ -2038,6 +2077,7 @@ obj/qnxscr$(ExOBJ):: ../classes/qnxrtp/qnxscr.cc \
 	$(INCLUDE_DIR)/tv/qnxrtp/key.h \
 	$(INCLUDE_DIR)/tv/qnxrtp/screen.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -2058,6 +2098,7 @@ obj/rhscreen$(ExOBJ):: ../classes/dos/rhscreen.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -2082,6 +2123,7 @@ obj/sbackgro$(ExOBJ):: ../stream/sbackgro.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2110,6 +2152,7 @@ obj/sbutton$(ExOBJ):: ../stream/sbutton.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2137,6 +2180,7 @@ obj/scalcdis$(ExOBJ):: ../stream/scalcdis.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2168,6 +2212,7 @@ obj/scalcula$(ExOBJ):: ../stream/scalcula.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2200,6 +2245,7 @@ obj/schdirdi$(ExOBJ):: ../stream/schdirdi.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2230,6 +2276,7 @@ obj/scheckbo$(ExOBJ):: ../stream/scheckbo.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2258,6 +2305,7 @@ obj/sclrdisp$(ExOBJ):: ../stream/sclrdisp.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2286,6 +2334,7 @@ obj/scluster$(ExOBJ):: ../stream/scluster.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2318,6 +2367,7 @@ obj/scolordi$(ExOBJ):: ../stream/scolordi.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2348,6 +2398,7 @@ obj/scolorgr$(ExOBJ):: ../stream/scolorgr.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2377,6 +2428,7 @@ obj/scolorit$(ExOBJ):: ../stream/scolorit.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2405,6 +2457,7 @@ obj/scolorse$(ExOBJ):: ../stream/scolorse.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2428,6 +2481,7 @@ obj/screen$(ExOBJ):: ../classes/dos/screen.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -2454,6 +2508,7 @@ obj/sdesktop$(ExOBJ):: ../stream/sdesktop.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2484,6 +2539,7 @@ obj/sdialog$(ExOBJ):: ../stream/sdialog.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2514,6 +2570,7 @@ obj/sdircoll$(ExOBJ):: ../stream/sdircoll.cc \
 	$(INCLUDE_DIR)/tv/objects.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2544,6 +2601,7 @@ obj/sdirlist$(ExOBJ):: ../stream/sdirlist.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2573,6 +2631,7 @@ obj/seditor$(ExOBJ):: ../stream/seditor.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2604,6 +2663,7 @@ obj/seditwin$(ExOBJ):: ../stream/seditwin.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2628,6 +2688,7 @@ obj/sescreen$(ExOBJ):: ../classes/dos/sescreen.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -2655,6 +2716,7 @@ obj/sfilecol$(ExOBJ):: ../stream/sfilecol.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/searchrc.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2686,6 +2748,7 @@ obj/sfiledia$(ExOBJ):: ../stream/sfiledia.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2716,6 +2779,7 @@ obj/sfileedi$(ExOBJ):: ../stream/sfileedi.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2744,6 +2808,7 @@ obj/sfileinf$(ExOBJ):: ../stream/sfileinf.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/searchrc.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2773,6 +2838,7 @@ obj/sfileinp$(ExOBJ):: ../stream/sfileinp.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2811,6 +2877,7 @@ obj/sfilelis$(ExOBJ):: ../stream/sfilelis.cc \
 	$(INCLUDE_DIR)/tv/searchrc.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
 	$(INCLUDE_DIR)/tv/sortlibo.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2835,6 +2902,7 @@ obj/sfilterv$(ExOBJ):: ../stream/sfilterv.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2862,6 +2930,7 @@ obj/sframe$(ExOBJ):: ../stream/sframe.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2890,6 +2959,7 @@ obj/sgroup$(ExOBJ):: ../stream/sgroup.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2918,6 +2988,7 @@ obj/shistory$(ExOBJ):: ../stream/shistory.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2945,6 +3016,7 @@ obj/sindicat$(ExOBJ):: ../stream/sindicat.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -2973,6 +3045,7 @@ obj/sinputli$(ExOBJ):: ../stream/sinputli.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3001,6 +3074,7 @@ obj/slabel$(ExOBJ):: ../stream/slabel.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3031,6 +3105,7 @@ obj/slistbox$(ExOBJ):: ../stream/slistbox.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3058,6 +3133,7 @@ obj/slistvie$(ExOBJ):: ../stream/slistvie.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3087,6 +3163,7 @@ obj/smemo$(ExOBJ):: ../stream/smemo.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3116,6 +3193,7 @@ obj/smenubar$(ExOBJ):: ../stream/smenubar.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3145,6 +3223,7 @@ obj/smenubox$(ExOBJ):: ../stream/smenubox.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3173,6 +3252,7 @@ obj/smenuvie$(ExOBJ):: ../stream/smenuvie.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3203,6 +3283,7 @@ obj/smonosel$(ExOBJ):: ../stream/smonosel.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3231,6 +3312,7 @@ obj/sparamte$(ExOBJ):: ../stream/sparamte.cc \
 	$(INCLUDE_DIR)/tv/parmtext.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3261,6 +3343,7 @@ obj/sradiobu$(ExOBJ):: ../stream/sradiobu.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/radiobtn.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3284,6 +3367,7 @@ obj/srangeva$(ExOBJ):: ../stream/srangeva.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3315,6 +3399,7 @@ obj/sresourc$(ExOBJ):: ../stream/sresourc.cc \
 	$(INCLUDE_DIR)/tv/rescoll.h \
 	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3343,6 +3428,7 @@ obj/sscrollb$(ExOBJ):: ../stream/sscrollb.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3370,6 +3456,7 @@ obj/sscrolle$(ExOBJ):: ../stream/sscrolle.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/scroller.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3397,6 +3484,7 @@ obj/sstatict$(ExOBJ):: ../stream/sstatict.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3425,6 +3513,7 @@ obj/sstatusl$(ExOBJ):: ../stream/sstatusl.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statslin.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
@@ -3456,6 +3545,7 @@ obj/sstringc$(ExOBJ):: ../stream/sstringc.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3481,6 +3571,7 @@ obj/sstringl$(ExOBJ):: ../stream/sstringl.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/resource.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strilist.h \
@@ -3507,6 +3598,7 @@ obj/sview$(ExOBJ):: ../stream/sview.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3535,6 +3627,7 @@ obj/swindow$(ExOBJ):: ../stream/swindow.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3570,6 +3663,7 @@ obj/tapplica$(ExOBJ):: ../classes/tapplica.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3602,6 +3696,7 @@ obj/tbackgro$(ExOBJ):: ../classes/tbackgro.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3638,6 +3733,7 @@ obj/tbutton$(ExOBJ):: ../classes/tbutton.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3684,6 +3780,7 @@ obj/tchdirdi$(ExOBJ):: ../classes/tchdirdi.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -3716,6 +3813,7 @@ obj/tcheckbo$(ExOBJ):: ../classes/tcheckbo.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3746,6 +3844,7 @@ obj/tclrdisp$(ExOBJ):: ../classes/tclrdisp.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3788,6 +3887,7 @@ obj/tcluster$(ExOBJ):: ../classes/tcluster.cc \
 	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/sitem.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strncoll.h \
@@ -3817,6 +3917,7 @@ obj/tcollect$(ExOBJ):: ../classes/tcollect.cc \
 	$(INCLUDE_DIR)/tv/objects.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3866,6 +3967,7 @@ obj/tcolordi$(ExOBJ):: ../classes/tcolordi.cc \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/sttctext.h \
@@ -3901,6 +4003,7 @@ obj/tcolorgr$(ExOBJ):: ../classes/tcolorgr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3934,6 +4037,7 @@ obj/tcolorit$(ExOBJ):: ../classes/tcolorit.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3965,6 +4069,7 @@ obj/tcolorse$(ExOBJ):: ../classes/tcolorse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -3988,6 +4093,7 @@ obj/tcommand$(ExOBJ):: ../classes/tcommand.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -4019,6 +4125,7 @@ obj/tdesktop$(ExOBJ):: ../classes/tdesktop.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4053,6 +4160,7 @@ obj/tdialog$(ExOBJ):: ../classes/tdialog.cc \
 	$(INCLUDE_DIR)/tv/program.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4083,6 +4191,7 @@ obj/tdircoll$(ExOBJ):: ../classes/tdircoll.cc \
 	$(INCLUDE_DIR)/tv/objects.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4101,6 +4210,7 @@ obj/tdirlist$(ExOBJ):: ../classes/tdirlist.cc \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/button.h \
 	$(INCLUDE_DIR)/tv/chdirdlg.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
 	$(INCLUDE_DIR)/tv/collectn.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/dialog.h \
@@ -4117,16 +4227,24 @@ obj/tdirlist$(ExOBJ):: ../classes/tdirlist.cc \
 	$(INCLUDE_DIR)/tv/lstviewr.h \
 	$(INCLUDE_DIR)/tv/no_mss.h \
 	$(INCLUDE_DIR)/tv/nscoll.h \
+	$(INCLUDE_DIR)/tv/nssorcol.h \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/objects.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/resource.h \
+	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
+	$(INCLUDE_DIR)/tv/strncoll.h \
 	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
 	$(INCLUDE_DIR)/tv/ttypes.h \
 	$(INCLUDE_DIR)/tv/tvconfig.h \
@@ -4150,6 +4268,7 @@ obj/tdisplay$(ExOBJ):: ../classes/tdisplay.cc \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -4169,6 +4288,7 @@ obj/tdrawbuf$(ExOBJ):: ../classes/tdrawbuf.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -4201,6 +4321,7 @@ obj/teditor$(ExOBJ):: ../classes/teditor.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4232,6 +4353,7 @@ obj/teditorf$(ExOBJ):: ../classes/teditorf.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4266,6 +4388,7 @@ obj/teditwin$(ExOBJ):: ../classes/teditwin.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4296,6 +4419,7 @@ obj/tevent$(ExOBJ):: ../classes/tevent.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -4323,6 +4447,7 @@ obj/tfilecol$(ExOBJ):: ../classes/tfilecol.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/searchrc.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4373,6 +4498,7 @@ obj/tfiledia$(ExOBJ):: ../classes/tfiledia.cc \
 	$(INCLUDE_DIR)/tv/searchrc.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
 	$(INCLUDE_DIR)/tv/sortlibo.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4409,6 +4535,7 @@ obj/tfileedi$(ExOBJ):: ../classes/tfileedi.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4446,6 +4573,7 @@ obj/tfileinf$(ExOBJ):: ../classes/tfileinf.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/searchrc.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4481,6 +4609,7 @@ obj/tfileinp$(ExOBJ):: ../classes/tfileinp.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/searchrc.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4527,6 +4656,7 @@ obj/tfilelis$(ExOBJ):: ../classes/tfilelis.cc \
 	$(INCLUDE_DIR)/tv/searchrc.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
 	$(INCLUDE_DIR)/tv/sortlibo.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4552,6 +4682,7 @@ obj/tfilterv$(ExOBJ):: ../classes/tfilterv.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4582,6 +4713,7 @@ obj/tframe$(ExOBJ):: ../classes/tframe.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4611,6 +4743,7 @@ obj/tgkey$(ExOBJ):: ../classes/tgkey.cc \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -4637,6 +4770,7 @@ obj/tgroup$(ExOBJ):: ../classes/tgroup.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4671,6 +4805,7 @@ obj/thistory$(ExOBJ):: ../classes/thistory.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4704,6 +4839,7 @@ obj/thistvie$(ExOBJ):: ../classes/thistvie.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4737,6 +4873,7 @@ obj/thistwin$(ExOBJ):: ../classes/thistwin.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4763,6 +4900,7 @@ obj/thwmouse$(ExOBJ):: ../classes/thwmouse.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -4788,6 +4926,7 @@ obj/tindicat$(ExOBJ):: ../classes/tindicat.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4809,6 +4948,7 @@ obj/tinputli$(ExOBJ):: ../classes/tinputli.cc \
 	$(INCLUDE_DIR)/tv/dialogs.h \
 	$(INCLUDE_DIR)/tv/drawbuf.h \
 	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/group.h \
 	$(INCLUDE_DIR)/tv/inputln.h \
 	$(INCLUDE_DIR)/tv/intl.h \
 	$(INCLUDE_DIR)/tv/ipstream.h \
@@ -4819,6 +4959,8 @@ obj/tinputli$(ExOBJ):: ../classes/tinputli.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4857,6 +4999,7 @@ obj/tlabel$(ExOBJ):: ../classes/tlabel.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4891,6 +5034,7 @@ obj/tlistbox$(ExOBJ):: ../classes/tlistbox.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4924,6 +5068,7 @@ obj/tlistvie$(ExOBJ):: ../classes/tlistvie.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -4955,6 +5100,7 @@ obj/tmemo$(ExOBJ):: ../classes/tmemo.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -4988,6 +5134,7 @@ obj/tmenubar$(ExOBJ):: ../classes/tmenubar.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/submenu.h \
@@ -5021,6 +5168,7 @@ obj/tmenubox$(ExOBJ):: ../classes/tmenubox.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5058,6 +5206,7 @@ obj/tmenuvie$(ExOBJ):: ../classes/tmenuvie.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5092,6 +5241,7 @@ obj/tmonosel$(ExOBJ):: ../classes/tmonosel.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/sitem.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5117,6 +5267,7 @@ obj/tmouse$(ExOBJ):: ../classes/tmouse.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5138,6 +5289,7 @@ obj/tnscolle$(ExOBJ):: ../classes/tnscolle.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5162,6 +5314,7 @@ obj/tnssorte$(ExOBJ):: ../classes/tnssorte.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5183,6 +5336,7 @@ obj/tobject$(ExOBJ):: ../classes/tobject.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5203,6 +5357,7 @@ obj/tpalette$(ExOBJ):: ../classes/tpalette.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5227,6 +5382,7 @@ obj/tparamte$(ExOBJ):: ../classes/tparamte.cc \
 	$(INCLUDE_DIR)/tv/parmtext.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/sttctext.h \
@@ -5251,6 +5407,7 @@ obj/tpoint$(ExOBJ):: ../classes/tpoint.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5284,6 +5441,7 @@ obj/tprogini$(ExOBJ):: ../classes/tprogini.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statslin.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
@@ -5320,6 +5478,7 @@ obj/tprogram$(ExOBJ):: ../classes/tprogram.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/objects.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/osclipboard.h \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/point.h \
@@ -5327,6 +5486,7 @@ obj/tprogram$(ExOBJ):: ../classes/tprogram.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statsdef.h \
 	$(INCLUDE_DIR)/tv/statsitm.h \
 	$(INCLUDE_DIR)/tv/statslin.h \
@@ -5357,6 +5517,7 @@ obj/tpwobj$(ExOBJ):: ../classes/tpwobj.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/pwritobj.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5381,6 +5542,7 @@ obj/tpwreado$(ExOBJ):: ../classes/tpwreado.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/preadobj.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5406,6 +5568,7 @@ obj/tpwritte$(ExOBJ):: ../classes/tpwritte.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/pwritobj.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5416,6 +5579,32 @@ obj/tpwritte$(ExOBJ):: ../classes/tpwritte.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/yes_mss.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/tpxvalid$(ExOBJ):: ../classes/tpxvalid.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/msgbox.h \
+	$(INCLUDE_DIR)/tv/object.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/validate.h \
+	$(INCLUDE_DIR)/tv/views.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
@@ -5434,6 +5623,7 @@ obj/tradiobu$(ExOBJ):: ../classes/tradiobu.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/radiobtn.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
@@ -5458,6 +5648,7 @@ obj/trangeva$(ExOBJ):: ../classes/trangeva.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5489,6 +5680,7 @@ obj/trescoll$(ExOBJ):: ../classes/trescoll.cc \
 	$(INCLUDE_DIR)/tv/resitem.h \
 	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strncoll.h \
@@ -5525,6 +5717,7 @@ obj/tresfile$(ExOBJ):: ../classes/tresfile.cc \
 	$(INCLUDE_DIR)/tv/resitem.h \
 	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strncoll.h \
@@ -5543,14 +5736,18 @@ obj/tscreen$(ExOBJ):: ../classes/tscreen.cc \
 	$(INCLUDE_DIR)/cl/unistd.h \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
 	$(INCLUDE_DIR)/tv/configfile.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/drivers.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
 	$(INCLUDE_DIR)/tv/intl.h \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -5579,6 +5776,7 @@ obj/tscrollb$(ExOBJ):: ../classes/tscrollb.cc \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5611,6 +5809,7 @@ obj/tscrolle$(ExOBJ):: ../classes/tscrolle.cc \
 	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
 	$(INCLUDE_DIR)/tv/scroller.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5639,6 +5838,7 @@ obj/tsortedc$(ExOBJ):: ../classes/tsortedc.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5674,6 +5874,7 @@ obj/tsortedl$(ExOBJ):: ../classes/tsortedl.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
 	$(INCLUDE_DIR)/tv/sortlibo.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5703,6 +5904,7 @@ obj/tstatict$(ExOBJ):: ../classes/tstatict.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/sttctext.h \
@@ -5726,6 +5928,7 @@ obj/tstatusd$(ExOBJ):: ../classes/tstatusd.cc \
 	$(INCLUDE_DIR)/tv/menus.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statsdef.h \
 	$(INCLUDE_DIR)/tv/statsitm.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
@@ -5753,6 +5956,7 @@ obj/tstatusl$(ExOBJ):: ../classes/tstatusl.cc \
 	$(INCLUDE_DIR)/tv/palette.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statsdef.h \
 	$(INCLUDE_DIR)/tv/statsitm.h \
 	$(INCLUDE_DIR)/tv/statslin.h \
@@ -5778,6 +5982,7 @@ obj/tstrinde$(ExOBJ):: ../classes/tstrinde.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/resource.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/strinrec.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5805,6 +6010,7 @@ obj/tstringc$(ExOBJ):: ../classes/tstringc.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strncoll.h \
@@ -5829,6 +6035,7 @@ obj/tstringl$(ExOBJ):: ../classes/tstringl.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/resource.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strilist.h \
@@ -5853,6 +6060,7 @@ obj/tstrlist$(ExOBJ):: ../classes/tstrlist.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/resource.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/strilist.h \
@@ -5876,6 +6084,7 @@ obj/tstrmcla$(ExOBJ):: ../classes/tstrmcla.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5899,6 +6108,7 @@ obj/tstrmtyp$(ExOBJ):: ../classes/tstrmtyp.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/strmblcl.h \
 	$(INCLUDE_DIR)/tv/strmblty.h \
@@ -5924,6 +6134,7 @@ obj/tsubmenu$(ExOBJ):: ../classes/tsubmenu.cc \
 	$(INCLUDE_DIR)/tv/menus.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/submenu.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -5936,60 +6147,12 @@ obj/tsubmenu$(ExOBJ):: ../classes/tsubmenu.cc \
 	$(RHIDE_COMPILE_CC)
 
 obj/ttermina$(ExOBJ):: ../classes/ttermina.cc \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
-	$(INCLUDE_DIR)/tv/drawbuf.h \
-	$(INCLUDE_DIR)/tv/intl.h \
-	$(INCLUDE_DIR)/tv/ipstream.h \
-	$(INCLUDE_DIR)/tv/object.h \
-	$(INCLUDE_DIR)/tv/objects.h \
-	$(INCLUDE_DIR)/tv/opstream.h \
-	$(INCLUDE_DIR)/tv/otstream.h \
-	$(INCLUDE_DIR)/tv/point.h \
-	$(INCLUDE_DIR)/tv/pstream.h \
-	$(INCLUDE_DIR)/tv/scroller.h \
-	$(INCLUDE_DIR)/tv/stddlg.h \
-	$(INCLUDE_DIR)/tv/streambl.h \
-	$(INCLUDE_DIR)/tv/system.h \
-	$(INCLUDE_DIR)/tv/terminal.h \
-	$(INCLUDE_DIR)/tv/textdev.h \
-	$(INCLUDE_DIR)/tv/textview.h \
-	$(INCLUDE_DIR)/tv/tobjstrm.h \
-	$(INCLUDE_DIR)/tv/ttypes.h \
-	$(INCLUDE_DIR)/tv/tvconfig.h \
-	$(INCLUDE_DIR)/tv/tvobjs.h \
-	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(INCLUDE_DIR)/tv/view.h \
-	$(INCLUDE_DIR)/tv/views.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
 obj/ttextdev$(ExOBJ):: ../classes/ttextdev.cc \
-	$(INCLUDE_DIR)/compatlayer.h \
-	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
-	$(INCLUDE_DIR)/tv/drawbuf.h \
-	$(INCLUDE_DIR)/tv/intl.h \
-	$(INCLUDE_DIR)/tv/ipstream.h \
-	$(INCLUDE_DIR)/tv/object.h \
-	$(INCLUDE_DIR)/tv/objects.h \
-	$(INCLUDE_DIR)/tv/opstream.h \
-	$(INCLUDE_DIR)/tv/point.h \
-	$(INCLUDE_DIR)/tv/pstream.h \
-	$(INCLUDE_DIR)/tv/scroller.h \
-	$(INCLUDE_DIR)/tv/stddlg.h \
-	$(INCLUDE_DIR)/tv/streambl.h \
-	$(INCLUDE_DIR)/tv/system.h \
-	$(INCLUDE_DIR)/tv/textdev.h \
-	$(INCLUDE_DIR)/tv/textview.h \
-	$(INCLUDE_DIR)/tv/tobjstrm.h \
-	$(INCLUDE_DIR)/tv/ttypes.h \
-	$(INCLUDE_DIR)/tv/tvconfig.h \
-	$(INCLUDE_DIR)/tv/tvobjs.h \
-	$(INCLUDE_DIR)/tv/tvutil.h \
-	$(INCLUDE_DIR)/tv/view.h \
-	$(INCLUDE_DIR)/tv/views.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
@@ -6002,6 +6165,7 @@ obj/tvalidat$(ExOBJ):: ../classes/tvalidat.cc \
 	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -6042,6 +6206,7 @@ obj/tvedit1$(ExOBJ):: ../classes/tvedit1.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -6089,6 +6254,7 @@ obj/tvedit2$(ExOBJ):: ../classes/tvedit2.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/sitem.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/sttctext.h \
@@ -6135,6 +6301,7 @@ obj/tvedit3$(ExOBJ):: ../classes/tvedit3.cc \
 	$(INCLUDE_DIR)/tv/program.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statsdef.h \
 	$(INCLUDE_DIR)/tv/statsitm.h \
 	$(INCLUDE_DIR)/tv/statslin.h \
@@ -6176,6 +6343,7 @@ obj/tview$(ExOBJ):: ../classes/tview.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -6200,6 +6368,7 @@ obj/tvintl$(ExOBJ):: ../classes/tvintl.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6253,6 +6422,7 @@ obj/tvtext1$(ExOBJ):: ../classes/tvtext1.cc \
 	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
 	$(INCLUDE_DIR)/tv/searchrc.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/statslin.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
@@ -6292,6 +6462,7 @@ obj/twindow$(ExOBJ):: ../classes/twindow.cc \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/scrlbar.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -6317,6 +6488,7 @@ obj/unixdis$(ExOBJ):: ../classes/unix/unixdis.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6343,6 +6515,7 @@ obj/unixkey$(ExOBJ):: ../classes/unix/unixkey.cc \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6367,6 +6540,7 @@ obj/unixmouse$(ExOBJ):: ../classes/unix/unixmouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6396,6 +6570,7 @@ obj/unixscr$(ExOBJ):: ../classes/unix/unixscr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6442,6 +6617,7 @@ obj/win32clip$(ExOBJ):: ../classes/win32/win32clip.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/osclipboard.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6462,6 +6638,7 @@ obj/win32dis$(ExOBJ):: ../classes/win32/win32dis.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6488,6 +6665,7 @@ obj/win32key$(ExOBJ):: ../classes/win32/win32key.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tkeyext.h \
@@ -6518,6 +6696,7 @@ obj/win32mouse$(ExOBJ):: ../classes/win32/win32mouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6547,6 +6726,7 @@ obj/win32scr$(ExOBJ):: ../classes/win32/win32scr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6591,6 +6771,7 @@ obj/wingrdis$(ExOBJ):: ../classes/wingr/wingrdis.cc \
 	$(INCLUDE_DIR)/tv/rect.h \
 	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/sitem.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/sttctext.h \
@@ -6624,6 +6805,7 @@ obj/wingrkey$(ExOBJ):: ../classes/wingr/wingrkey.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tkeyext.h \
@@ -6655,6 +6837,7 @@ obj/wingrmouse$(ExOBJ):: ../classes/wingr/wingrmouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6684,6 +6867,7 @@ obj/wingrscr$(ExOBJ):: ../classes/wingr/wingrscr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6712,6 +6896,7 @@ obj/winntdis$(ExOBJ):: ../classes/winnt/winntdis.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
 	$(INCLUDE_DIR)/tv/system.h \
@@ -6741,6 +6926,7 @@ obj/winntkey$(ExOBJ):: ../classes/winnt/winntkey.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6766,6 +6952,7 @@ obj/winntmouse$(ExOBJ):: ../classes/winnt/winntmouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6794,6 +6981,7 @@ obj/winntscr$(ExOBJ):: ../classes/winnt/winntscr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6817,6 +7005,7 @@ obj/x11dis$(ExOBJ):: ../classes/x11/x11dis.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6843,6 +7032,7 @@ obj/x11key$(ExOBJ):: ../classes/x11/x11key.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6868,6 +7058,7 @@ obj/x11mouse$(ExOBJ):: ../classes/x11/x11mouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6897,6 +7088,7 @@ obj/x11src$(ExOBJ):: ../classes/x11/x11src.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6924,6 +7116,7 @@ obj/xtermdis$(ExOBJ):: ../classes/unix/xtermdis.cc \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6952,6 +7145,7 @@ obj/xtermkey$(ExOBJ):: ../classes/unix/xtermkey.cc \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -6977,6 +7171,7 @@ obj/xtermmouse$(ExOBJ):: ../classes/unix/xtermmouse.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
@@ -7006,6 +7201,7 @@ obj/xtermscr$(ExOBJ):: ../classes/unix/xtermscr.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \

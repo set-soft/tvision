@@ -245,6 +245,7 @@ OBJFILES=\
 	obj/tpwobj$(ExOBJ) \
 	obj/tpwreado$(ExOBJ) \
 	obj/tpwritte$(ExOBJ) \
+	obj/tpxvalid$(ExOBJ) \
 	obj/tradiobu$(ExOBJ) \
 	obj/trangeva$(ExOBJ) \
 	obj/trescoll$(ExOBJ) \
@@ -550,6 +551,7 @@ librhtv$(ExLIB):: \
 	obj/tpwobj$(ExOBJ) \
 	obj/tpwreado$(ExOBJ) \
 	obj/tpwritte$(ExOBJ) \
+	obj/tpxvalid$(ExOBJ) \
 	obj/tradiobu$(ExOBJ) \
 	obj/trangeva$(ExOBJ) \
 	obj/trescoll$(ExOBJ) \
@@ -1227,6 +1229,9 @@ obj/tpwreado$(ExOBJ):: ../classes/tpwreado.cc
 	$(RHIDE_COMPILE_CC)
 
 obj/tpwritte$(ExOBJ):: ../classes/tpwritte.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tpxvalid$(ExOBJ):: ../classes/tpxvalid.cc  
 	$(RHIDE_COMPILE_CC)
 
 obj/tradiobu$(ExOBJ):: ../classes/tradiobu.cc  
