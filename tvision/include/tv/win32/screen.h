@@ -65,8 +65,8 @@ protected:
  // Default: ushort fixCrtMode( ushort mode )
  // Default: static void   setCrtData();
  static void   clearScreen();
- static void   setVideoMode(ushort mode);
- static void   setVideoModeExt(char *mode);
+ static void   SetVideoMode(ushort mode);
+ static void   SetVideoModeExt(char *mode);
  // Default: static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
  // Default: static ushort getCharacter(unsigned dst);
  static void   setCharacter(unsigned offset, ushort value);
