@@ -24,7 +24,7 @@ public:
  static void        enableTranslations() { };
  static void        disableTranslations() { };
  static char       *getTextNew(const char *msgid, Boolean onlyIntl=False)
-                    { return onlyIntl ? NULL : newStr(msgid); };
+                    { return onlyIntl ? NULL : newStr(msgid); }
  static const char *getText(const char *msgid, stTVIntl *&)
                     { return msgid; };
  static void        freeSt(stTVIntl *&) { };

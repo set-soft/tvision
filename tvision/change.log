@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.631  2005/07/25 14:09:20  set
+* Fixed: [Win32] Typo in the names of the two new prototypes for
+TWin32Screen.
+.
 Revision 2.630  2005/07/22 20:53:04  set
 * Modified: The TValidator API to be compatible with Borland's TV 2.0 API.
 This will break some old programs but allow compilation of newer ones.
