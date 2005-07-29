@@ -1908,6 +1908,7 @@ void TVCodePage::RemapTVStrings(ushort *map)
  C(TFrame,zoomIcon);
  C(TFrame,unZoomIcon);
  C(TFrame,dragIcon);
+ C(TFrame,animIcon);
  C(THistory,icon);
  C(TMonoSelector,button);
  C(TStatusLine,hintSeparator);

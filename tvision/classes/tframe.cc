@@ -6,15 +6,14 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea
 
  *
  *
  */
-// SET: Moved the standard headers here because according to DJ
-// they can inconditionally declare symbols like NULL
 #define Uses_string
-#include <stdlib.h>
-#include <stdio.h>
+#define Uses_stdlib
+#define Uses_stdio
 
 #define Uses_TFrame
 #define Uses_TDrawBuffer
@@ -27,6 +26,9 @@ Modified by Robert H”hne to be used for RHIDE.
 #include <tv.h>
 
 #define cpFrame "\x01\x01\x02\x02\x03"
+
+// SET: Used to disable icon animation
+Boolean TFrame::doAnimation = True;
 
 TFrame::TFrame( const TRect& bounds ) : TView( bounds )
 {
@@ -162,72 +164,144 @@ void TFrame::dragWindow( TEvent& event, uchar mode )
     clearEvent( event );
 }
 
+const int ciClose=0, ciZoom=1;
+
+void TFrame::drawIcon( int bNormal, const int ciType )
+{
+    ushort cFrame;
+    
+    if( (state & sfActive) == 0 )
+        cFrame = 0x0101;
+    else
+        if( (state & sfDragging) != 0 )
+            cFrame = 0x0505;
+        else
+            cFrame = 0x0503;
+
+    cFrame = getColor(cFrame);
+
+    switch( ciType )
+        {
+        // Close icon
+        case ciClose:
+            {
+            TDrawBuffer drawBuf;
+            drawBuf.moveCStr( 0, bNormal ? closeIcon : animIcon, cFrame );
+            writeLine( 2, 0, 3, 1, drawBuf );
+            }
+            break;
+        // Zoom icon
+        //case ciZoom:
+        default:
+            {
+            TPoint minSize, maxSize;
+            owner->sizeLimits( minSize, maxSize );
+
+            TDrawBuffer drawBuf;
+            drawBuf.moveCStr( 0, bNormal ? ( (owner->size == maxSize) ? unZoomIcon : zoomIcon ) : animIcon, cFrame );
+            writeLine( size.x - 5, 0, 3, 1, drawBuf );
+            }
+            break;
+        }
+}
+
+// SET: Some helpers to make the code easier to understand
+#define mouseOverClose() ( mouse.y == 0 && mouse.x >= 2 && mouse.x <= 4 )
+#define mouseOverZoom()  ( mouse.y == 0 && ( mouse.x >= size.x - 5 ) && \
+                           ( mouse.x <= size.x - 3 ) )
+#define mouseOverGrow()  ( ( mouse.x >= size.x - 2 ) && ( mouse.y >= size.y - 1 ) )
+#define ownerFlags()     ( ((TWindow *)owner)->flags )
+
+
 void TFrame::handleEvent( TEvent& event )
 {
-  TView::handleEvent(event);
-  if( (event.what & (evMouseDown | evMouseUp)) && (state & sfActive) != 0 )
-  {
-    TPoint mouse = makeLocal( event.mouse.where );
-    if( mouse.y == 0 )
+    TView::handleEvent(event);
+    // This version incorporates Eddie changes to "animate" the close and zoom icons.
+    if( (event.what & (evMouseDown | evMouseUp)) && (state & sfActive) )
     {
-      if( ( ((TWindow *)owner)->flags & wfClose ) != 0 &&
-              mouse.x >= 2 &&
-              mouse.x <= 4 )
-      {
-        if (event.what == evMouseUp)
-        {
-          event.what= evCommand;
-          event.message.command = cmClose;
-          event.message.infoPtr = owner;
-          putEvent( event );
-        }
-        clearEvent( event );
-      }
-      else
-      {
-        if (  event.mouse.doubleClick ||
-             ((((TWindow *)owner)->flags & wfZoom) != 0 &&
-              mouse.x >= size.x - 5 &&
-              mouse.x <= size.x - 3))
-        {
-          if (event.mouse.doubleClick || event.what == evMouseUp)
-          {
-            event.what= evCommand;
-            event.message.command = cmZoom;
-            event.message.infoPtr = owner;
-            putEvent( event );
-          }
-          clearEvent( event );
+        TPoint mouse = makeLocal( event.mouse.where );
+        if( mouse.y == 0 )
+        {   // Close icon
+            if( ( ownerFlags() & wfClose ) && mouseOverClose() )
+            {
+                if( doAnimation )
+                {   // Animated version, capture the focus until the button is released
+                    do
+                    {
+                        mouse = makeLocal( event.mouse.where );
+                        drawIcon( !mouseOverClose(), ciClose );
+                    } while( mouseEvent( event, evMouseMove ) );
+    
+                    if( event.what == evMouseUp  && mouseOverClose() )
+                    {
+                        putEvent( evCommand, cmClose, owner );
+                        clearEvent( event );
+                        drawIcon( 1, ciClose );
+                    }
+                }
+                else
+                {   // Not animated
+                    if( event.what == evMouseUp )
+                        putEvent( evCommand, cmClose, owner );
+                    clearEvent( event );
+                }
+            }
+            else
+            {   // Double click on the upper line or zoom icon
+                if ( event.mouse.doubleClick ||
+                     ( ( ownerFlags() & wfZoom ) && mouseOverZoom() ) )
+                {
+                    if ( event.mouse.doubleClick )
+                    {
+                        putEvent( evCommand, cmZoom, owner );
+                        clearEvent( event );
+                    }
+                    else
+                    {
+                        if( doAnimation )
+                        {   // Animated version, capture the focus until the button is released
+                            do
+                            {
+                                mouse = makeLocal( event.mouse.where );
+                                drawIcon( !mouseOverZoom(), ciZoom );
+    
+                            } while( mouseEvent( event, evMouseMove ) );
+    
+                            if( ( event.what == evMouseUp ) && mouseOverZoom() )
+                            {
+                                putEvent( evCommand, cmZoom, owner );
+                                clearEvent( event );
+                                drawIcon( 1, ciZoom );
+                            }
+                        }
+                        else
+                        {   // Not animated
+                            if( event.what == evMouseUp )
+                                putEvent( evCommand, cmZoom, owner );
+                            clearEvent( event );
+                        }
+                    }
+                }
+                else
+                    // Click on the upper line (move)
+                    if( ownerFlags() & wfMove )
+                        dragWindow( event, dmDragMove );
+            }
         }
         else
-        {
-          if( ( ((TWindow *)owner)->flags & wfMove ) != 0 &&
-                    event.what == evMouseDown)
-          {
-            dragWindow( event, dmDragMove );
-          }
-        }
-      }
+            if( mouseOverGrow() )
+            {   // Click on the grow corner
+                if( ownerFlags() & wfGrow )
+                    dragWindow( event, dmDragGrow );
+            }
     }
-    else
-    {
-      if( mouse.x >= size.x - 2 && mouse.y >= size.y - 1 &&
-          event.what == evMouseDown )
-      {
-        if( ( ((TWindow *)owner)->flags & wfGrow ) != 0 )
-        {
-          dragWindow( event, dmDragGrow );
-        }
-      }
-    }
-  }
 }
 
 void TFrame::setState( ushort aState, Boolean enable )
 {
     TView::setState( aState, enable );
     if( (aState & (sfActive | sfDragging)) != 0 )
-	drawView();
+    drawView();
 }
 
 #if !defined( NO_STREAM )
@@ -308,4 +382,5 @@ lab10:
   }
 #endif
 }
+
 

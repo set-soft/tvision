@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea
 
  *
  *
@@ -41,27 +42,33 @@ public:
     virtual void handleEvent( TEvent& event );
     virtual void setState( ushort aState, Boolean enable );
 
+    // SET: Used to disable icon animation
+    static Boolean doAnimation;
+    
     static char frameChars[33];
     static char closeIcon[];
     static char zoomIcon[];
     static char unZoomIcon[];
     static char dragIcon[];
+    static char animIcon[];
     static char oframeChars[33];
     static char ocloseIcon[];
     static char ozoomIcon[];
     static char ounZoomIcon[];
     static char odragIcon[];
+    static char oanimIcon[];
 
 private:
 
     void frameLine( TDrawBuffer& frameBuf, short y, short n, uchar color );
     void dragWindow( TEvent& event, uchar dragMode );
-
+    void drawIcon( int bNormal, const int ciType );
+    
     friend class TDisplay;
     static const char initFrame[19];
 #if !defined( NO_STREAM )
     virtual const char *streamableName() const
-	{ return name; }
+        { return name; }
 
 protected:
 

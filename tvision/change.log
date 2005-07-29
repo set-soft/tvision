@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.633  2005/07/29 13:34:09  set
+* Fixed: [MSVC] Ambiguous call to stdio's read. In modern C++ that's an
+overloaded function. So now TFileViewer::real_bufsize is of ssize_t type. I
+also changed some code to handle size_t return values. Reported by Eddie.
+.
 Revision 2.632  2005/07/27 20:44:50  set
 * Modified: [DJGPP?] Added workaround for problems compiling without i18n
 support using gcc 2.95.2 19991024 (release). Reported by Thiago.

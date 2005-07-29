@@ -74,6 +74,10 @@ char TFrame::zoomIcon[] = "[~\x18~]";
 char TFrame::ozoomIcon[] = "[~\x18~]";
 char TFrame::unZoomIcon[] = "[~\x12~]";
 char TFrame::ounZoomIcon[] = "[~\x12~]";
+// Note: Eddie proposed 0xF (WHITE SUN WITH RAYS) but this reduces to * and
+// is the same as 0xFE (BLACK SQUARE) (also reduced to *).
+char TFrame::animIcon[] = "[~+~]";
+char TFrame::oanimIcon[] = "[~+~]";
 char TFrame::dragIcon[] = "~ды~";
 char TFrame::odragIcon[] = "~ды~";
 
