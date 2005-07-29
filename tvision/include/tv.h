@@ -117,6 +117,8 @@ Modified by Salvador E. Tropea
 #define Uses_TCollection
 #define Uses_TScroller
 #define Uses_TWindow
+// ssize_t
+#define Uses_sys_types
 #define INCLUDE_FILEVIEW_H
 #endif
 

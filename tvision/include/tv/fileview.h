@@ -80,12 +80,12 @@ private:
 */
     TLineCollection *fileLines;
     char *buffer;
-    int real_bufsize;
+    ssize_t real_bufsize;
 
 protected:
 
     const char * const getBuffer() { return buffer; }
-    int getBufsize() { return real_bufsize; }
+    ssize_t getBufsize() { return real_bufsize; }
 
     int width;
     int count;
