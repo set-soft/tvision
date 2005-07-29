@@ -151,7 +151,7 @@ void TFileViewer::readFile( const char *fName )
   }
   else
   {
-    int bufsize = filelength(fileToView) + 1;
+    size_t bufsize = filelength(fileToView) + 1;
     buffer = (char *)malloc(bufsize);
     real_bufsize = ::read(fileToView,buffer,bufsize);
     char *start,*end,*bufend = buffer + real_bufsize;
@@ -232,14 +232,14 @@ void TFileViewer::handleEvent(TEvent &event)
 
 void TFileViewer::insertLine(const char *line)
 {
-  int len = strlen(line)+1;
+  size_t len = strlen(line)+1;
   buffer = (char *)realloc(buffer,real_bufsize+len);
   memcpy(buffer+real_bufsize,line,len);
   fileLines->insert((void*)(long)real_bufsize);
   real_bufsize += len;
   count++;
   len--;
-  width = width < len ? len : width;
+  width = width < (int)len ? (int)len : width;
   setLimit(size.x + width, size.y + count);
 }
 
