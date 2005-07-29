@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.636  2005/07/29 13:34:48  set
+* Added: [gcc] Workaround for a gcc 2.95.2 bug. It looks like inline class
+members that have an extra ; at the end of the function body can confuse
+gcc (only in particular cases). Reported by Thiago.
+.
 Revision 2.635  2005/07/29 13:34:37  set
 * Added: A helper function to TView called putEvent. It fills a TEvent
 structure and calls putEvent (the original one). That's a common operation.
