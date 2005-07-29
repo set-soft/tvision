@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.632  2005/07/27 20:44:50  set
+* Modified: [DJGPP?] Added workaround for problems compiling without i18n
+support using gcc 2.95.2 19991024 (release). Reported by Thiago.
+.
 Revision 2.631  2005/07/25 14:09:20  set
 * Fixed: [Win32] Typo in the names of the two new prototypes for
 TWin32Screen.
