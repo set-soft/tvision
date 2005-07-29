@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.634  2005/07/29 13:34:26  set
+* Added: [Cosmetic] Icon animations for the close and zoom icons of TFrame.
+Based on code sent by Eddie. It can be disabled.
+.
 Revision 2.633  2005/07/29 13:34:09  set
 * Fixed: [MSVC] Ambiguous call to stdio's read. In modern C++ that's an
 overloaded function. So now TFileViewer::real_bufsize is of ssize_t type. I

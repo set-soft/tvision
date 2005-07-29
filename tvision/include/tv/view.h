@@ -91,6 +91,8 @@ public:
     virtual void getEvent( TEvent& event );
     virtual void handleEvent( TEvent& event );
     virtual void putEvent( TEvent& event );
+    // SET: helper to fill the event and call putEvent
+            void putEvent( ushort what, ushort command, void *infoPtr );
 
     static Boolean commandEnabled( ushort command );
     static void disableCommands( TCommandSet& commands );

@@ -622,6 +622,24 @@ void TView::putEvent( TEvent& event )
         owner->putEvent(event);
 }
 
+/**[txh]********************************************************************
+
+  Description:
+  Helper function to fill a TEvent structure and call putEvent.
+@x{::PutEvent}.
+  
+***************************************************************************/
+
+void TView::putEvent( ushort what, ushort command, void *infoPtr )
+{
+    TEvent event;
+
+    event.what = what;
+    event.message.command = command;
+    event.message.infoPtr = infoPtr;
+    putEvent( event );
+}
+
 void TView::putInFrontOf( TView *Target )
 {
     TView *p, *lastView;
