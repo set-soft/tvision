@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.635  2005/07/29 13:34:37  set
+* Added: A helper function to TView called putEvent. It fills a TEvent
+structure and calls putEvent (the original one). That's a common operation.
+.
 Revision 2.634  2005/07/29 13:34:26  set
 * Added: [Cosmetic] Icon animations for the close and zoom icons of TFrame.
 Based on code sent by Eddie. It can be disabled.
