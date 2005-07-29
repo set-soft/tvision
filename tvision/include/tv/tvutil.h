@@ -73,7 +73,7 @@ int cstrlen( const char * );
 
 class TView;
 void CLY_EXPORT *message( TView *receiver, unsigned short what, unsigned short command,
-               void *infoPtr );
+                          void *infoPtr );
 Boolean CLY_EXPORT lowMemory();
 
 char CLY_EXPORT *newStr( const char * );
