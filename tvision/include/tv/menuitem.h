@@ -17,7 +17,7 @@ Modified by Salvador E. Tropea. More operators and append. Also i18n support.
 
 class TMenu;
 
-class TMenuItem
+class CLY_EXPORT TMenuItem
 {
 
 public:

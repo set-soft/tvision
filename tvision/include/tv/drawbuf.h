@@ -16,7 +16,7 @@ Changed classes hierarchy and added new draw buffers by Salvador E. Tropea
 #if defined( Uses_TDrawBuffer ) && !defined( __TDrawBuffer )
 #define __TDrawBuffer
 
-class TDrawBufferBase
+class CLY_EXPORT TDrawBufferBase
 {
 public:
  virtual ~TDrawBufferBase () {}
@@ -35,7 +35,7 @@ inline int TDrawBufferBase::getType()
 
 // Simple TDrawBuffer compatible with original class that handles:
 // 8 bit character, 8 bits attribute, ...
-class TDrawBuffer : public TDrawBufferBase
+class CLY_EXPORT TDrawBuffer : public TDrawBufferBase
 {
  friend class TView;
 
@@ -73,7 +73,7 @@ inline void TDrawBuffer::putChar( unsigned indent, unsigned c )
 
 // This is a more advanced class to handle 16 bits Unicode encodings plus
 // 16 bits attributes.
-class TDrawBufferU16 : public TDrawBufferBase
+class CLY_EXPORT TDrawBufferU16 : public TDrawBufferBase
 {
  friend class TView;
 

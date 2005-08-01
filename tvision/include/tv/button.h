@@ -39,7 +39,7 @@ class TDrawBuffer;
 typedef int (*TButtonCallBack)(unsigned command, void *data);
 const int btcbGoOn=0, btcbEndModal=1;
 
-class TButton : public TView
+class CLY_EXPORT TButton : public TView
 {
 
 public:

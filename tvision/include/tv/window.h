@@ -22,7 +22,7 @@ struct TEvent;
 class TFrame;
 class TScrollBar;
 
-class TWindowInit
+class CLY_EXPORT TWindowInit
 {
 
 public:
@@ -49,7 +49,7 @@ protected:
 /*        8 = Reserved                                                    */
 /* ---------------------------------------------------------------------- */
 
-class TWindow: public TGroup, public virtual TWindowInit
+class CLY_EXPORT TWindow: public TGroup, public virtual TWindowInit
 {
 
 public:
