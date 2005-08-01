@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.261  2005/08/01 16:21:06  set
+* Added: More export directives. Patch from Lothar.
+
 Revision 2.399.2.260  2005/08/01 16:09:18  set
 * Modified: All casts from void * to an integer to use uipointer. The
 problem with MSVC remains, but once we solve what to use as uipointer all
