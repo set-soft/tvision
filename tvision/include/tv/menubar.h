@@ -29,7 +29,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TRect;
 class TMenu;
 
-class TMenuBar : public TMenuView
+class CLY_EXPORT TMenuBar : public TMenuView
 {
 
 public:

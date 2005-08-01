@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TDrawBuffer ) && !defined( __TDrawBuffer )
 #define __TDrawBuffer
 
-class TDrawBuffer
+class CLY_EXPORT TDrawBuffer
 {
 
     friend class TView;

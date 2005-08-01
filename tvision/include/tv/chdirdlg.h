@@ -24,7 +24,7 @@ class TInputLine;
 class TDirListBox;
 class TButton;
 
-class TChDirDialog : public TDialog
+class CLY_EXPORT TChDirDialog : public TDialog
 {
 
 public:

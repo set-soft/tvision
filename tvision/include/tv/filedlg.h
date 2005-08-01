@@ -34,7 +34,7 @@ struct TEvent;
 class TFileInputLine;
 class TFileList;
 
-class TFileDialog : public TDialog
+class CLY_EXPORT TFileDialog : public TDialog
 {
 
 public:

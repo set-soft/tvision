@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TCollection ) && !defined( __TCollection )
 #define __TCollection
 
-class TCollection : public virtual TNSCollection
+class CLY_EXPORT TCollection : public virtual TNSCollection
 #if !defined( NO_STREAM )
                                                  , public TStreamable
 #endif // NO_STREAM

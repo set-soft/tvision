@@ -31,7 +31,7 @@ protected:
     TBackground *(*createBackground)( TRect );
 };
 
-class TDeskTop : public TGroup, public virtual TDeskInit
+class CLY_EXPORT TDeskTop : public TGroup, public virtual TDeskInit
 {
 
 public:

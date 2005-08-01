@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TEventQueue ) && !defined( __TEventQueue )
 #define __TEventQueue
 
-class TEventQueue
+class CLY_EXPORT TEventQueue
 {
 public:
     TEventQueue();

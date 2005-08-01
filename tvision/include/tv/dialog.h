@@ -55,7 +55,7 @@ Modified by Robert H”hne to be used for RHIDE.
 class TRect;
 struct TEvent;
 
-class TDialog : public TWindow
+class CLY_EXPORT TDialog : public TWindow
 {
 
 public:

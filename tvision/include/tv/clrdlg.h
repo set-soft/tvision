@@ -23,7 +23,7 @@ class TColorSelector;
 class TMonoSelector;
 class TPalette;
 
-class TColorDialog : public TDialog
+class CLY_EXPORT TColorDialog : public TDialog
 {
 
 public:

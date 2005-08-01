@@ -30,7 +30,7 @@ class TRect;
 struct TEvent;
 class TView;
 
-class TLabel : public TStaticText
+class CLY_EXPORT TLabel : public TStaticText
 {
 
 public:

@@ -1,4 +1,14 @@
-$Log$.
+$Log$
+Revision 2.640  2005/08/01 16:11:48  set
+* Modified: All casts from void * to an integer to use uipointer. The
+problem with MSVC remains, but once we solve what to use as uipointer all
+the warnings will go away at once. Reported by Eddie.
+* Fixed: [MSVC] Some forward declarations for TEvent used class when
+that's an struct. Reported by Eddie.
+* Modified: [MSVC] The FA_* definitions in compatlayer and other places to
+be coherent. I'm not sure about them but now they are coherent to what
+findfirst returns. Reported by Eddie.
+
 Revision 2.639  2005/08/01 14:55:24  set
 * Added: A small macro to help creating input lines with validators. That's
 related to S.F. FR #1248650 posted by Eddie.

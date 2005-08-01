@@ -28,7 +28,7 @@ class TGroup;
 class TPalette;
 class TCommandSet;
 
-class TView : public TObject
+class CLY_EXPORT TView : public TObject
 #if !defined ( NO_STREAM )
                              , public TStreamable
 #endif // NO_STREAM

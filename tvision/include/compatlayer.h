@@ -2409,7 +2409,7 @@ CLY_EXPORT CLY_CFunc void CLY_GetDefaultFileAttr(CLY_mode_t *mode);
 #endif
 
 /* Returns the name of the shell command */
-CLY_EXPORT CLY_CFunc char *CLY_GetShellName(void);
+CLY_CFunc CLY_EXPORT char *CLY_GetShellName(void);
 
 /* v/snprintf functions */
 #if defined(Uses_snprintf) && !defined(CLY_Have_snprintf)
@@ -2452,14 +2452,14 @@ typedef int nl_item;
 #define P_SEP_BY_SPACE   16 /*p_sep_by_space*/
 
 #define nl_langinfo CLY_nl_langinfo
-CLY_EXPORT CLY_CFunc char *CLY_nl_langinfo(nl_item item);
+CLY_CFunc CLY_EXPORT char *CLY_nl_langinfo(nl_item item);
 #endif /* defined(Uses_CLY_nl_langinfo) && !defined(CLY_nl_langinfo_Defined) */
 
 #ifdef Uses_CLY_getline
-CLY_EXPORT CLY_CFunc ssize_t CLY_getstr(char **lineptr, size_t *n, FILE *stream,
+CLY_CFunc CLY_EXPORT ssize_t CLY_getstr(char **lineptr, size_t *n, FILE *stream,
                                         char terminator, int offset, int limit);
-CLY_EXPORT CLY_CFunc ssize_t CLY_getline(char **lineptr, size_t *n, FILE *stream);
-CLY_EXPORT CLY_CFunc ssize_t CLY_getline_safe(char **lineptr, size_t *n,
+CLY_CFunc CLY_EXPORT ssize_t CLY_getline(char **lineptr, size_t *n, FILE *stream);
+CLY_CFunc CLY_EXPORT ssize_t CLY_getline_safe(char **lineptr, size_t *n,
                                               FILE *stream, int limit);
 #endif
 
