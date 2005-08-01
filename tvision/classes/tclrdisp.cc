@@ -69,7 +69,7 @@ void TColorDisplay::handleEvent( TEvent& event )
 void TColorDisplay::setColor( uchar *aColor )
 {
     color = aColor;
-    message( owner, evBroadcast, cmColorSet, (void *)(long)(*color) );
+    message( owner, evBroadcast, cmColorSet, (void *)(uipointer)(*color) );
     drawView();
 }
 

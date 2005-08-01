@@ -60,9 +60,9 @@ Boolean TMonoSelector::mark( int item )
 void TMonoSelector::newColor()
 {
     message( owner, evBroadcast, cmColorForegroundChanged,
-        (void *)(long)(value & 0x0F) );
+        (void *)(uipointer)(value & 0x0F) );
     message( owner, evBroadcast, cmColorBackgroundChanged,
-        (void *)(long)((value >> 4) & 0x0F));
+        (void *)(uipointer)((value >> 4) & 0x0F));
 }
 
 void TMonoSelector::press( int item )
