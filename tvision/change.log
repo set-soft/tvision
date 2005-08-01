@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.258  2005/08/01 14:08:47  set
+* Fixed: Wrong names in TPXPictureValidator members (IsValid vs isValid,
+etc.) Reported by Eddie.
+
 Revision 2.399.2.257  2005/07/29 13:29:55  set
 * Fixed: [MSVC] The __DELTA macro used for TStreamableClass casts a pointer
 to an integer type. The code used long which isn't a good choice for that.
