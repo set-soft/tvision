@@ -2148,12 +2148,12 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
    __inline int dup2(int OLD, int NEW)
     { return _dup2(OLD,NEW); }
   #endif
-  #ifndef CLY_read_inline_defined
+  #if (_MSC_VER<1310) && !defined(CLY_read_inline_defined)
    #define CLY_read_inline_defined 1
    __inline long read(int FILEDES, void *BUFFER, unsigned long SIZE)
     { return _read(FILEDES,BUFFER,SIZE); }
   #endif
-  #ifndef CLY_write_inline_defined
+  #if (_MSC_VER<1310) && !defined(CLY_write_inline_defined)
    #define CLY_write_inline_defined 1
    __inline long write(int FILEDES, void *BUFFER, unsigned long SIZE)
     { return _write(FILEDES,BUFFER,SIZE); }
