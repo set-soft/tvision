@@ -26,7 +26,7 @@ class TRect;
 class TScrollBar;
 struct TEvent;
 
-class TScroller : public TView
+class CLY_EXPORT TScroller : public TView
 {
 
 public:

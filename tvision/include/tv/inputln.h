@@ -40,7 +40,7 @@ class TValidator;
 const unsigned ilValidatorBlocks=1;  // Don't pass the focus if the validator indicates
                                      // the data isn't valid. by SET.
 
-class TInputLineBase : public TView
+class CLY_EXPORT TInputLineBase : public TView
 {
 public:
  TInputLineBase(const TRect& bounds, int aMaxLen);
@@ -183,7 +183,7 @@ protected:
 #endif // NO_STREAM
 };
 
-class TInputLine : public TInputLineBaseT<char,TDrawBuffer>
+class CLY_EXPORT TInputLine : public TInputLineBaseT<char,TDrawBuffer>
 {
 public:
  TInputLine(const TRect& bounds, int aMaxLen) :
@@ -218,7 +218,7 @@ inline opstream& operator << ( opstream& os, TInputLine* cl )
 #endif // NO_STREAM
 
 
-class TInputLineU16 : public TInputLineBaseT<uint16,TDrawBufferU16>
+class CLY_EXPORT TInputLineU16 : public TInputLineBaseT<uint16,TDrawBufferU16>
 {
 public:
  TInputLineU16(const TRect& bounds, int aMaxLen) :
@@ -258,14 +258,14 @@ inline opstream& operator << ( opstream& os, TInputLineU16* cl )
 #define TInput1Line_defined
 // This is based on TVTools idea, but I think is better to implement it
 // in this way and not like a macro.
-class TInput1Line : public TInputLine
+class CLY_EXPORT TInput1Line : public TInputLine
 {
 public:
  TInput1Line(int x, int y, int max) :
    TInputLine(TRect(x,y,x+max+2,y+1), max) {};
 };
 
-class TInput1LineU16 : public TInputLineU16
+class CLY_EXPORT TInput1LineU16 : public TInputLineU16
 {
 public:
  TInput1LineU16(int x, int y, int max) :

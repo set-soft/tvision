@@ -24,7 +24,7 @@ Modified by Salvador E. Tropea: added i18n support, added T1StaticText.
 
 class TRect;
 
-class TStaticText : public TView
+class CLY_EXPORT TStaticText : public TView
 {
 
 public:

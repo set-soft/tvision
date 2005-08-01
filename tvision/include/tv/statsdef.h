@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TStatusDef ) && !defined( __TStatusDef )
 #define __TStatusDef
 
-class TStatusDef
+class CLY_EXPORT TStatusDef
 {
 
 public:

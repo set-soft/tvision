@@ -30,7 +30,7 @@ class TRect;
 struct TEvent;
 class TPoint;
 
-class TStatusLine : public TView
+class CLY_EXPORT TStatusLine : public TView
 {
 
 public:
