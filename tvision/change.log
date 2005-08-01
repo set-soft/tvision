@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.643  2005/08/01 17:02:53  set
+* Fixed: A couple of errors in the last modifications to TFrame. The move
+and grow should work only for mouse down. If not they get activated when
+we only get the up (i.e. when changing focus).
+.
 Revision 2.642  2005/08/01 16:52:00  set
 * Fixed: [MSVC] v7.1 defines read/write and in an incompatible way to our
 replacements for old versions. Reported by Eddie.
