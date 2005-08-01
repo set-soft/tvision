@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.259  2005/08/01 14:53:28  set
+* Added: A small macro to help creating input lines with validators. That's
+related to S.F. FR #1248650 posted by Eddie.
+
 Revision 2.399.2.258  2005/08/01 14:08:47  set
 * Fixed: Wrong names in TPXPictureValidator members (IsValid vs isValid,
 etc.) Reported by Eddie.
