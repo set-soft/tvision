@@ -273,3 +273,10 @@ public:
 }
 #endif // Uses_TInput1Line
 
+#if defined( Uses_newInputLine ) && !defined( newInputLine_defined )
+#define newInputLine_defined
+#define newInputLine(aClass,aName,bounds,aMaxLen,aValidator) \
+        aClass *aName=new aClass(bounds,aMaxLen); \
+        aName->SetValidator(aValidator)
+#endif // Uses_newInputLine
+
