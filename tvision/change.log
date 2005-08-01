@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.642  2005/08/01 16:52:00  set
+* Fixed: [MSVC] v7.1 defines read/write and in an incompatible way to our
+replacements for old versions. Reported by Eddie.
+.
 Revision 2.641  2005/08/01 16:32:22  set
 * Added: More export directives. Patch from Lothar.
 
