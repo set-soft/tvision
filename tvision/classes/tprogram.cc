@@ -230,7 +230,7 @@ void TProgram::handleEvent( TEvent& event )
                    if( message( deskTop,
                             evBroadcast,
                             cmSelectWindowNum,
-                            (void *)(long)(c - '0')
+                            (void *)(uipointer)(c - '0')
                            ) != 0 )
                    clearEvent( event );
                }

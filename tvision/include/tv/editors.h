@@ -171,7 +171,7 @@ ushort defEditorDialog( int dialog, ... );
 class TRect;
 class TScrollBar;
 class TIndicator;
-class TEvent;
+struct TEvent;
 
 class TEditor : public TView
 {
@@ -379,7 +379,7 @@ inline opstream& operator << ( opstream& os, TMemo* cl )
 class TRect;
 class TScrollBar;
 class TIndicator;
-class TEvent;
+struct TEvent;
 
 class TFileEditor : public TEditor
 {

@@ -460,12 +460,13 @@ typedef unsigned long  ulong;
   #undef CLY_Have_snprintf
   #define CLY_UseCrLf 1
   #define CLY_HaveDriveLetters 1
+  /* I guess they are the same as MSVC: */
   #undef  FA_ARCH
+  #define FA_ARCH   0x00  /* _A_NORMAL */
   #undef  FA_DIREC
+  #define FA_DIREC  0x10  /* _A_SUBDIR */
   #undef  FA_RDONLY
-  #define FA_ARCH   0x01
-  #define FA_DIREC  0x02
-  #define FA_RDONLY 0x04
+  #define FA_RDONLY 0x01  /* _A_RDONLY */
   #ifdef Uses_filelength
    #undef  filelength
    #define filelength _filelength
@@ -1638,12 +1639,13 @@ typedef unsigned long  ulong;
     standard. And which is worst doesn't understand it.
     Vadim Beloborodov pointed out this missfeature. */
  #define DeleteArray(a) delete (void *)a
+ /* These values are returned by findfirst. */
  #undef  FA_ARCH
- #define FA_ARCH   0x01
+ #define FA_ARCH   0x00  /* _A_NORMAL */
  #undef  FA_DIREC
- #define FA_DIREC  0x02
+ #define FA_DIREC  0x10  /* _A_SUBDIR */
  #undef  FA_RDONLY
- #define FA_RDONLY 0x04
+ #define FA_RDONLY 0x01  /* _A_RDONLY */
  #define PATHSEPARATOR ';'
  #define PATHSEPARATOR_ ";"
  /* SET: Not sure why Vadim wanted it. Perhaps to make the port more usable

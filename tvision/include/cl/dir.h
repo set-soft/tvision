@@ -17,7 +17,7 @@
 #define FA_SYSTEM   0x04        /* System file */
 #define FA_LABEL    0x08        /* Volume label */
 #define FA_DIREC    0x10        /* Directory */
-#define FA_ARCH     0x20        /* Archive */
+#define FA_ARCH     0x00        /* Archive */
 #endif /* FA_NORMAL */
 
 #ifndef _FFBLK_DEF

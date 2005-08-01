@@ -235,7 +235,7 @@ void TFileViewer::insertLine(const char *line)
   size_t len = strlen(line)+1;
   buffer = (char *)realloc(buffer,real_bufsize+len);
   memcpy(buffer+real_bufsize,line,len);
-  fileLines->insert((void*)(long)real_bufsize);
+  fileLines->insert((void*)(uipointer)real_bufsize);
   real_bufsize += len;
   count++;
   len--;
@@ -258,7 +258,7 @@ Boolean TFileViewer::valid( ushort )
 const char * const TFileViewer::operator [](int index)
 {
   if (index >= count) return NULL;
-  return (const char *)(buffer + (long)fileLines->at(index));
+  return (const char *)(buffer + (uipointer)fileLines->at(index));
 }
 
 
