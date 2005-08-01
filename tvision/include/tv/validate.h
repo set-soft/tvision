@@ -191,9 +191,9 @@ class TPXPictureValidator : public TValidator
 public:
     TPXPictureValidator(const char* aPic, Boolean autoFill);
     ~TPXPictureValidator();
-    virtual void Error();
-    virtual Boolean IsValidInput(char* s, Boolean suppressFill);
-    virtual Boolean IsValid(const char* s);
+    virtual void error();
+    virtual Boolean isValidInput(char* s, Boolean suppressFill);
+    virtual Boolean isValid(const char* s);
     virtual TPicResult picture(char* input, Boolean autoFill);
 
 protected:

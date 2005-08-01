@@ -67,19 +67,19 @@ TPXPictureValidator::~TPXPictureValidator()
   delete pic;
 };
 
-void TPXPictureValidator::Error()
+void TPXPictureValidator::error()
 {
   messageBox(mfError | mfOKButton, errorMsg, pic);
 }
 
-Boolean TPXPictureValidator::IsValidInput(char* s, Boolean suppressFill)
+Boolean TPXPictureValidator::isValidInput(char* s, Boolean suppressFill)
 {
   Boolean doFill = Boolean(((options&voFill)!=0) && !suppressFill);
 
   return Boolean((pic==0) || (picture( (char*)s, doFill) != prError));
 }
 
-Boolean TPXPictureValidator::IsValid(const char* s)
+Boolean TPXPictureValidator::isValid(const char* s)
 {
   // SET: Modified to allocate memory and avoid buffer overflows.
   int l = strlen(s) + 1;
