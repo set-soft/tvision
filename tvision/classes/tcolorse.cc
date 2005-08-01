@@ -65,7 +65,7 @@ void TColorSelector::colorChanged()
         msg = cmColorForegroundChanged;
     else
         msg = cmColorBackgroundChanged;
-    message( owner, evBroadcast, msg, (void *)(long)color );
+    message( owner, evBroadcast, msg, (void *)(uipointer)color );
 }
  
 void TColorSelector::handleEvent( TEvent& event )

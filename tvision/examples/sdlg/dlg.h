@@ -41,7 +41,7 @@ master header file with the following lines:
 
 class TRect;
 class TScrollBar;
-class TEvent;
+struct TEvent;
 class TBackground;
 
 class ScrollGroupInit
@@ -83,7 +83,7 @@ public:
 #define Def_ScrollDialog
 
 class TRect;
-class TEvent;
+struct TEvent;
 class ScrollGroup;
 
 class ScrollDialog : public TDialog
