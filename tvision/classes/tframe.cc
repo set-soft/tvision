@@ -284,12 +284,12 @@ void TFrame::handleEvent( TEvent& event )
                 }
                 else
                     // Click on the upper line (move)
-                    if( ownerFlags() & wfMove )
+                    if( (ownerFlags() & wfMove) && (event.what & evMouseDown) )
                         dragWindow( event, dmDragMove );
             }
         }
         else
-            if( mouseOverGrow() )
+            if( (event.what & evMouseDown) && mouseOverGrow() )
             {   // Click on the grow corner
                 if( ownerFlags() & wfGrow )
                     dragWindow( event, dmDragGrow );
