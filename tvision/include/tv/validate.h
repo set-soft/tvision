@@ -243,3 +243,91 @@ inline opstream& operator << ( opstream& os, TPXPictureValidator* v )
 
 #endif // defined(Uses_TPXPictureValidator) && !defined(TPXPictureValidator_Included)
 
+
+#if defined(Uses_TLookupValidator) && !defined(TLookupValidator_Included)
+#define TLookupValidator_Included
+
+// TLookupValidator
+
+class TLookupValidator : public TValidator
+{
+public:
+    TLookupValidator() : TValidator() {}
+    virtual Boolean isValid(const char* s);
+    virtual Boolean lookup(const char* s);
+    
+#if !defined( NO_STREAM )
+    static TStreamable *build();
+    static const char * const name;
+protected:
+    TLookupValidator( StreamableInit );
+private:
+    virtual const char *streamableName() const  {return name;}
+#endif
+};
+
+#if !defined( NO_STREAM )
+inline ipstream& operator >> ( ipstream& is, TLookupValidator& v )
+    { return is >> (TStreamable&)v; }
+inline ipstream& operator >> ( ipstream& is, TLookupValidator*& v )
+    { return is >> (void *&)v; }
+
+inline opstream& operator << ( opstream& os, TLookupValidator& v )
+    { return os << (TStreamable&)v; }
+inline opstream& operator << ( opstream& os, TLookupValidator* v )
+    { return os << (TStreamable *)v; }
+#endif
+
+#endif // defined(Uses_TLookupValidator) && !defined(TLookupValidator_Included)
+
+
+#if defined(Uses_TStringLookupValidator) && !defined(TStringLookupValidator_Included)
+#define TStringLookupValidator_Included
+
+// TStringLookupValidator
+
+class TStringCollection;
+
+class TStringLookupValidator : public TLookupValidator
+{
+public:
+    TStringLookupValidator(TStringCollection* aStrings);
+    ~TStringLookupValidator();
+    virtual void error();
+    virtual Boolean lookup(const char* s);
+    void newStringList(TStringCollection* aStrings);
+
+protected:
+    TStringCollection* strings;
+    static const char * errorMsg;
+
+#if !defined( NO_STREAM )
+public:
+    static TStreamable *build();
+    static const char * const name;
+    
+protected:
+    TStringLookupValidator( StreamableInit );
+    virtual void write( opstream& os );
+    virtual void* read( ipstream& is );
+
+private:
+    virtual const char *streamableName() const  {return name;}
+#endif
+};
+
+
+#if !defined( NO_STREAM )
+inline ipstream& operator >> ( ipstream& is, TStringLookupValidator& v )
+    { return is >> (TStreamable&)v; }
+inline ipstream& operator >> ( ipstream& is, TStringLookupValidator*& v )
+    { return is >> (void *&)v; }
+
+inline opstream& operator << ( opstream& os, TStringLookupValidator& v )
+    { return os << (TStreamable&)v; }
+inline opstream& operator << ( opstream& os, TStringLookupValidator* v )
+    { return os << (TStreamable *)v; }
+#endif
+
+#endif // defined(Uses_TStringLookupValidator) && !defined(TStringLookupValidator_Included)
+

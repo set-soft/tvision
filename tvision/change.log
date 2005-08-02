@@ -1,4 +1,19 @@
-$Log$
+$Log$.
+Revision 2.647  2005/08/02 15:39:09  set
+* Added: The Borland's TV 2.0 TInputLine functionality:
+  * TValidator * as last constructor argument.
+  * TValidator try/unroll code.
+  * TValidator "transfer" stuff to meassure the size.
+  * TValidators using the full input instead of the last char.
+  * Shift+Arrows to select the text (I don't like the way that's
+    implemented)
+* Added: TValidator * argument to inputBox helper.
+* Modified: Moved the hotKey function to misc, this function isn't used by
+TInputLine.
+* Added: A TPXPictureValidator example to the demo.
+* Modified: Version to 2.1.0 because the TInputLine and TValidator changes
+are an important API change.
+
 Revision 2.646  2005/08/02 14:49:24  set
 * Fixed: [MSVC] Wrong pragma usage. Pointed out by Eddie.
 

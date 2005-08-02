@@ -127,6 +127,15 @@ Modified by Salvador E. Tropea
 #define Uses_TValidator
 #endif
 
+#if defined( Uses_TStringLookupValidator )
+#define Uses_TStringCollection
+#define Uses_TLookupValidator
+#endif
+
+#if defined( Uses_TLookupValidator )
+#define Uses_TValidator
+#endif
+
 #if defined( Uses_TRangeValidator )
 #define Uses_TFilterValidator
 #endif

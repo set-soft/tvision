@@ -101,6 +101,7 @@ OBJFILES=\
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
 	obj/nlistvie$(ExOBJ) \
+	obj/nlookupv$(ExOBJ) \
 	obj/nmemo$(ExOBJ) \
 	obj/nmenubar$(ExOBJ) \
 	obj/nmenubox$(ExOBJ) \
@@ -170,6 +171,7 @@ OBJFILES=\
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
 	obj/slistvie$(ExOBJ) \
+	obj/slookupv$(ExOBJ) \
 	obj/smemo$(ExOBJ) \
 	obj/smenubar$(ExOBJ) \
 	obj/smenubox$(ExOBJ) \
@@ -230,6 +232,7 @@ OBJFILES=\
 	obj/tlabel$(ExOBJ) \
 	obj/tlistbox$(ExOBJ) \
 	obj/tlistvie$(ExOBJ) \
+	obj/tlookupv$(ExOBJ) \
 	obj/tmemo$(ExOBJ) \
 	obj/tmenubar$(ExOBJ) \
 	obj/tmenubox$(ExOBJ) \
@@ -409,6 +412,7 @@ librhtv$(ExLIB):: \
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
 	obj/nlistvie$(ExOBJ) \
+	obj/nlookupv$(ExOBJ) \
 	obj/nmemo$(ExOBJ) \
 	obj/nmenubar$(ExOBJ) \
 	obj/nmenubox$(ExOBJ) \
@@ -478,6 +482,7 @@ librhtv$(ExLIB):: \
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
 	obj/slistvie$(ExOBJ) \
+	obj/slookupv$(ExOBJ) \
 	obj/smemo$(ExOBJ) \
 	obj/smenubar$(ExOBJ) \
 	obj/smenubox$(ExOBJ) \
@@ -538,6 +543,7 @@ librhtv$(ExLIB):: \
 	obj/tlabel$(ExOBJ) \
 	obj/tlistbox$(ExOBJ) \
 	obj/tlistvie$(ExOBJ) \
+	obj/tlookupv$(ExOBJ) \
 	obj/tmemo$(ExOBJ) \
 	obj/tmenubar$(ExOBJ) \
 	obj/tmenubox$(ExOBJ) \
@@ -803,6 +809,9 @@ obj/nlistbox$(ExOBJ):: ../names/nlistbox.cc
 obj/nlistvie$(ExOBJ):: ../names/nlistvie.cc  
 	$(RHIDE_COMPILE_CC)
 
+obj/nlookupv$(ExOBJ):: ../names/nlookupv.cc  
+	$(RHIDE_COMPILE_CC)
+
 obj/nmemo$(ExOBJ):: ../names/nmemo.cc  
 	$(RHIDE_COMPILE_CC)
 
@@ -1010,6 +1019,9 @@ obj/slistbox$(ExOBJ):: ../stream/slistbox.cc
 obj/slistvie$(ExOBJ):: ../stream/slistvie.cc  
 	$(RHIDE_COMPILE_CC)
 
+obj/slookupv$(ExOBJ):: ../stream/slookupv.cc  
+	$(RHIDE_COMPILE_CC)
+
 obj/smemo$(ExOBJ):: ../stream/smemo.cc  
 	$(RHIDE_COMPILE_CC)
 
@@ -1188,6 +1200,9 @@ obj/tlistbox$(ExOBJ):: ../classes/tlistbox.cc
 	$(RHIDE_COMPILE_CC)
 
 obj/tlistvie$(ExOBJ):: ../classes/tlistvie.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/tlookupv$(ExOBJ):: ../classes/tlookupv.cc  
 	$(RHIDE_COMPILE_CC)
 
 obj/tmemo$(ExOBJ):: ../classes/tmemo.cc  

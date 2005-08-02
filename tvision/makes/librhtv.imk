@@ -101,6 +101,7 @@ OBJFILES=\
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
 	obj/nlistvie$(ExOBJ) \
+	obj/nlookupv$(ExOBJ) \
 	obj/nmemo$(ExOBJ) \
 	obj/nmenubar$(ExOBJ) \
 	obj/nmenubox$(ExOBJ) \
@@ -170,6 +171,7 @@ OBJFILES=\
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
 	obj/slistvie$(ExOBJ) \
+	obj/slookupv$(ExOBJ) \
 	obj/smemo$(ExOBJ) \
 	obj/smenubar$(ExOBJ) \
 	obj/smenubox$(ExOBJ) \
@@ -230,6 +232,7 @@ OBJFILES=\
 	obj/tlabel$(ExOBJ) \
 	obj/tlistbox$(ExOBJ) \
 	obj/tlistvie$(ExOBJ) \
+	obj/tlookupv$(ExOBJ) \
 	obj/tmemo$(ExOBJ) \
 	obj/tmenubar$(ExOBJ) \
 	obj/tmenubox$(ExOBJ) \
@@ -409,6 +412,7 @@ librhtv$(ExLIB):: \
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
 	obj/nlistvie$(ExOBJ) \
+	obj/nlookupv$(ExOBJ) \
 	obj/nmemo$(ExOBJ) \
 	obj/nmenubar$(ExOBJ) \
 	obj/nmenubox$(ExOBJ) \
@@ -478,6 +482,7 @@ librhtv$(ExLIB):: \
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
 	obj/slistvie$(ExOBJ) \
+	obj/slookupv$(ExOBJ) \
 	obj/smemo$(ExOBJ) \
 	obj/smenubar$(ExOBJ) \
 	obj/smenubox$(ExOBJ) \
@@ -538,6 +543,7 @@ librhtv$(ExLIB):: \
 	obj/tlabel$(ExOBJ) \
 	obj/tlistbox$(ExOBJ) \
 	obj/tlistvie$(ExOBJ) \
+	obj/tlookupv$(ExOBJ) \
 	obj/tmemo$(ExOBJ) \
 	obj/tmenubar$(ExOBJ) \
 	obj/tmenubox$(ExOBJ) \
@@ -1671,6 +1677,13 @@ obj/nlistbox$(ExOBJ):: ../names/nlistbox.cc \
 	$(RHIDE_COMPILE_CC)
 
 obj/nlistvie$(ExOBJ):: ../names/nlistvie.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/nlookupv$(ExOBJ):: ../names/nlookupv.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
@@ -3156,6 +3169,39 @@ obj/slistvie$(ExOBJ):: ../stream/slistvie.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/slookupv$(ExOBJ):: ../stream/slookupv.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/collectn.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/no_mss.h \
+	$(INCLUDE_DIR)/tv/nscoll.h \
+	$(INCLUDE_DIR)/tv/nssorcol.h \
+	$(INCLUDE_DIR)/tv/object.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/resource.h \
+	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/strmblcl.h \
+	$(INCLUDE_DIR)/tv/strncoll.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/validate.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(INCLUDE_DIR)/tv/yes_mss.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
@@ -5116,6 +5162,39 @@ obj/tlistvie$(ExOBJ):: ../classes/tlistvie.cc \
 	$(INCLUDE_DIR)/tv/tvutil.h \
 	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/tlookupv$(ExOBJ):: ../classes/tlookupv.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/collectn.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/msgbox.h \
+	$(INCLUDE_DIR)/tv/no_mss.h \
+	$(INCLUDE_DIR)/tv/nscoll.h \
+	$(INCLUDE_DIR)/tv/nssorcol.h \
+	$(INCLUDE_DIR)/tv/object.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/resource.h \
+	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/strncoll.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/validate.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(INCLUDE_DIR)/tv/yes_mss.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 

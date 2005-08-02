@@ -74,6 +74,7 @@ classes/tinputli.cc
 classes/tlabel.cc
 classes/tlistbox.cc
 classes/tlistvie.cc
+classes/tlookupv.cc
 classes/tmemo.cc
 classes/tmenubar.cc
 classes/tmenubox.cc
@@ -728,6 +729,7 @@ names/ninputli.cc
 names/nlabel.cc
 names/nlistbox.cc
 names/nlistvie.cc
+names/nlookupv.cc
 names/nmemo.cc
 names/nmenubar.cc
 names/nmenubox.cc
@@ -795,6 +797,7 @@ stream/sinputli.cc
 stream/slabel.cc
 stream/slistbox.cc
 stream/slistvie.cc
+stream/slookupv.cc
 stream/smemo.cc
 stream/smenubar.cc
 stream/smenubox.cc
