@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.266  2005/08/02 14:20:46  set
+* Fixed: [MSVC] Wrong pragma usage. Pointed out by Eddie.
+
 Revision 2.399.2.265  2005/08/02 13:37:25  set
 * Modified: [MSVC] Disabled warning 4291 in histlist.cc. The compiler is
 wrong.

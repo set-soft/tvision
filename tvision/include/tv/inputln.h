@@ -43,16 +43,16 @@ const unsigned ilValidatorBlocks=1;  // Don't pass the focus if the validator in
 class CLY_EXPORT TInputLineBase : public TView
 {
 public:
- TInputLineBase(const TRect& bounds, int aMaxLen);
+ TInputLineBase(const TRect& bounds, int aMaxLen, TValidator *aValid=NULL);
  ~TInputLineBase();
 
- virtual uint32 dataSize();
+ virtual unsigned dataSize();
  virtual void getData(void *rec);
  virtual TPalette& getPalette() const;
  virtual void handleEvent(TEvent& event);
  void selectAll(Boolean enable);
  virtual void setState(ushort aState, Boolean enable);
- void SetValidator(TValidator *);
+ void setValidator(TValidator *);
  virtual Boolean valid(ushort);
  virtual Boolean insertChar(unsigned val); // Added by SET
  virtual Boolean insertCharEv(TEvent &event)=0;
@@ -60,6 +60,7 @@ public:
  virtual Boolean pasteFromOSClipboard()=0;
  virtual void    copyToOSClipboard()=0;
  virtual void    setDataFromStr(void *str)=0;
+ virtual unsigned recomputeDataLen()=0;
  const void *getData() { return data; };
 
  // Functions to fine tune the behavior. by SET.
@@ -72,10 +73,10 @@ public:
  static unsigned getDefaultModeOptions()
    { return defaultModeOptions; }
 
- int curPos;
- int firstPos;
- int selStart;
- int selEnd;
+ int curPos, oldCurPos;
+ int firstPos, oldFirstPos;
+ int selStart, oldSelStart;
+ int selEnd, oldSelEnd;
 
  static char rightArrow;
  static char leftArrow;
@@ -88,6 +89,9 @@ protected:
  void deleteSelect();
  void makeVisible(); // Added by SET
  Boolean canScroll( int delta );
+ void saveState();
+ void restoreState();
+ Boolean checkValid(Boolean);
 
  // Inline helpers to make the code cleaner
  int insertModeOn();
@@ -98,11 +102,11 @@ protected:
  // work with them: setDataFromStr & getData. All TV code uses these new
  // members. If we don't hide them then we must compute the string length all
  // the time. SET.
- char *data;
+ char *data, *oldData;
  int maxLen;
 
  int cellSize;
- int dataLen;
+ int dataLen, oldDataLen;
 
  // To fine tune the behavior. SET.
  static unsigned defaultModeOptions;
@@ -165,7 +169,7 @@ template <typename T, typename D>
 class TInputLineBaseT: public TInputLineBase
 {
 public:
- TInputLineBaseT(const TRect& bounds, int aMaxLen);
+ TInputLineBaseT(const TRect& bounds, int aMaxLen, TValidator *aValid=NULL);
 
  virtual void    setData(void *rec);
  virtual void    setDataFromStr(void *str);
@@ -173,6 +177,7 @@ public:
  virtual Boolean pasteFromOSClipboard();
  virtual void    copyToOSClipboard();
  virtual void    draw();
+ virtual unsigned recomputeDataLen();
 
 #if !defined( NO_STREAM )
 protected:
@@ -186,8 +191,8 @@ protected:
 class CLY_EXPORT TInputLine : public TInputLineBaseT<char,TDrawBuffer>
 {
 public:
- TInputLine(const TRect& bounds, int aMaxLen) :
-   TInputLineBaseT<char,TDrawBuffer>(bounds,aMaxLen) {};
+ TInputLine(const TRect& bounds, int aMaxLen, TValidator *aValid=NULL) :
+   TInputLineBaseT<char,TDrawBuffer>(bounds,aMaxLen,aValid) {};
 
  virtual Boolean insertCharEv(TEvent &event);
 
@@ -221,8 +226,8 @@ inline opstream& operator << ( opstream& os, TInputLine* cl )
 class CLY_EXPORT TInputLineU16 : public TInputLineBaseT<uint16,TDrawBufferU16>
 {
 public:
- TInputLineU16(const TRect& bounds, int aMaxLen) :
-   TInputLineBaseT<uint16,TDrawBufferU16>(bounds,aMaxLen) {};
+ TInputLineU16(const TRect& bounds, int aMaxLen, TValidator *aValid=NULL) :
+   TInputLineBaseT<uint16,TDrawBufferU16>(bounds,aMaxLen,aValid) {};
 
  virtual Boolean insertCharEv(TEvent &event);
 

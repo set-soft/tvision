@@ -7,7 +7,7 @@
 
 Modified by Robert H”hne to be used for RHIDE.
 Modified by Salvador E. Tropea to add mfDontShowAgain, vsnprintf usage and
-i18n.
+i18n. Added TValidator, etc.
 
  *
  *
@@ -32,6 +32,7 @@ i18n.
 #define Uses_TSItem
 #define Uses_TScreen
 #define Uses_AllocLocal
+#define Uses_TValidator
 #define Uses_snprintf
 #include <tv.h>
 
@@ -185,7 +186,8 @@ ushort messageBox( ushort aOptions, const char *fmt, ... )
     return messageBoxRect( makeRect(), msg, aOptions | mfDontTranslate );
 }
 
-ushort inputBox( const char *Title, const char *aLabel, char *s, int limit )
+ushort inputBox( const char *Title, const char *aLabel, char *s, int limit,
+                 TValidator *v )
 {   // Use a size according to the label+limit and title
     int len;
     len = max( strlen(aLabel) + 8 + limit, strlen(Title) + 11 );
@@ -194,17 +196,18 @@ ushort inputBox( const char *Title, const char *aLabel, char *s, int limit )
     TRect r(0, 0, len, 7);
     r.move((TProgram::deskTop->size.x - r.b.x) / 2,
            (TProgram::deskTop->size.y - r.b.y) / 2);
-    return inputBoxRect(r, Title, aLabel, s, limit);
+    return inputBoxRect(r, Title, aLabel, s, limit, v);
 }
 
 ushort inputBoxRect( const TRect &bounds,
                      const char *Title,
                      const char *aLabel,
                      char *s,
-                     int limit )
+                     int limit,
+                     TValidator *v )
 {
     TDialog *dialog;
-    TView* control;
+    TInputLine* control;
     TRect r;
     ushort c;
 
@@ -213,6 +216,7 @@ ushort inputBoxRect( const TRect &bounds,
     unsigned x = 4 + strlen( aLabel );
     r = TRect( x, 2, min(x + limit + 2, (unsigned int)dialog->size.x - 3), 3 );
     control = new TInputLine( r, limit );
+    control->setValidator( v );
     dialog->insert( control );
 
     stTVIntl *intlLabel = NULL;
