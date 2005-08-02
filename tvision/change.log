@@ -1,4 +1,11 @@
 $Log$.
+Revision 2.645  2005/08/02 14:07:29  set
+* Modified: [MSVC] Disabled warning 4291 in histlist.cc. The compiler is
+wrong.
+* Modified: [MSVC] Added support for 64 bits pointers in uipointer and
+clarified the warning 4311 issue (also disabled). Both from info sent by
+Eddie.
+.
 Revision 2.644  2005/08/01 18:16:07  set
 * Modified: [MSVC] Disabled the MSVC "pointer truncation" warning. I can't
 see any truncation because I think both are 32 bits unsigned values. I'll

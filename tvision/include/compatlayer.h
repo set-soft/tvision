@@ -1492,7 +1492,7 @@ typedef unsigned long  ulong;
    This is just the result of using /Wp64 and is just a potential issue.
  */
  #if _MSC_VER >= 1310
-   #pragma disable( warnings : 4311 )
+   #pragma warning( disable : 4311 )
  #endif
  #if _MSC_VER <= 1000
    // MSVC 4.0 reports version 10.0

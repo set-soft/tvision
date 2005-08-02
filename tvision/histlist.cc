@@ -23,7 +23,7 @@ Modified by Salvador E. Tropea.
 // SET: MSVC 7.1 is even more stupid than previous versions and we must
 // disable this misleading warning.
 #ifdef TVComp_MSC
- #pragma disable( warnings : 4291 )
+ #pragma warning( disable : 4291 )
 #endif
 
 class HistRec
