@@ -6,6 +6,7 @@
  *
 
 Modified by Robert H”hne to be used for RHIDE.
+Modified by Salvador E. Tropea.
 
  *
  *
@@ -18,6 +19,12 @@ Modified by Robert H”hne to be used for RHIDE.
 
 // Avoid replacing new by MSS's macro
 #include <tv/no_mss.h>
+
+// SET: MSVC 7.1 is even more stupid than previous versions and we must
+// disable this misleading warning.
+#ifdef TVComp_MSC
+ #pragma disable( warnings : 4291 )
+#endif
 
 class HistRec
 {
