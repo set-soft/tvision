@@ -48,6 +48,7 @@ Boolean TValidator::validate(const char *S)
   return False;
 }
 
+// Not in TV 2.0
 void TValidator::format(char *)
 {
 }
@@ -69,6 +70,7 @@ void TValidator::write(opstream & os)
 void * TValidator::read(ipstream & is)
 {
   is >> status >> options;
+  // status=0 TV 2.0
   return this;
 }
 #endif // NO_STREAM
