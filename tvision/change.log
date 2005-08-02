@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.644  2005/08/01 18:16:07  set
+* Modified: [MSVC] Disabled the MSVC "pointer truncation" warning. I can't
+see any truncation because I think both are 32 bits unsigned values. I'll
+disable it until somebody can explain it. Eddie provided the pragma.
+.
 Revision 2.643  2005/08/01 17:02:53  set
 * Fixed: A couple of errors in the last modifications to TFrame. The move
 and grow should work only for mouse down. If not they get activated when
