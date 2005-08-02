@@ -37,10 +37,10 @@ class TInputLine : public TView
 {
 public:
 
-    TInputLine( const TRect& bounds, int aMaxLen );
+    TInputLine( const TRect& bounds, int aMaxLen, TValidator *aValid=NULL );
     ~TInputLine();
 
-    virtual uint32 dataSize();
+    virtual unsigned dataSize();
     virtual void draw();
     virtual void getData( void *rec );
     virtual TPalette& getPalette() const;
@@ -48,7 +48,7 @@ public:
     void selectAll( Boolean enable );
     virtual void setData( void *rec );
     virtual void setState( ushort aState, Boolean enable );
-    void SetValidator(TValidator *);
+    void setValidator(TValidator *);
     virtual Boolean valid(ushort);
     virtual Boolean insertChar(char value); // Added by SET
     // This is for compatibility with the Unicode branch
@@ -58,10 +58,10 @@ public:
 
     char* data;
     int maxLen;
-    int curPos;
-    int firstPos;
-    int selStart;
-    int selEnd;
+    int curPos, oldCurPos;
+    int firstPos, oldFirstPos;
+    int selStart, oldSelStart;
+    int selEnd, oldSelEnd;
 
     // Functions to fine tune the behavior. by SET.
     unsigned setModeOptions(unsigned newOps)
@@ -82,9 +82,13 @@ public:
 protected:
     virtual void resizeData() {}
     TValidator * validator;
+    char* oldData;
     void deleteSelect();
     void makeVisible(); // Added by SET
     Boolean canScroll( int delta );
+    void saveState();
+    void restoreState();
+    Boolean checkValid(Boolean);
 
     // To fine tune the behavior. SET.
     static unsigned defaultModeOptions;
@@ -132,15 +136,8 @@ inline opstream& operator << ( opstream& os, TInputLine* cl )
 class TInput1Line : public TInputLine
 {
 public:
- TInput1Line(int x, int y, int max) :
-   TInputLine(TRect(x,y,x+max+2,y+1), max) {};
+ TInput1Line(int x, int y, int max, TValidator *aValid=NULL) :
+   TInputLine(TRect(x,y,x+max+2,y+1), max, aValid) {};
 };
 #endif // Uses_TInput1Line
-
-#if defined( Uses_newInputLine ) && !defined( newInputLine_defined )
-#define newInputLine_defined
-#define newInputLine(aClass,aName,bounds,aMaxLen,aValidator) \
-        aClass *aName=new aClass(bounds,aMaxLen); \
-        aName->SetValidator(aValidator)
-#endif // Uses_newInputLine
 

@@ -20,6 +20,7 @@ Modified by Salvador E. Tropea.
 #endif  // __STDARG_H
 
 class TRect;
+class TValidator;
 
 ushort CLY_EXPORT messageBox( const char *msg, ushort aOptions );
 ushort CLY_EXPORT messageBox( ushort aOptions, const char *msg, ... )
@@ -29,10 +30,12 @@ ushort CLY_EXPORT messageBoxRect( const TRect &r, const char *msg, ushort aOptio
 ushort CLY_EXPORT messageBoxRect( const TRect &r, ushort aOptions, const char *msg, ... )
                 __attribute__ ((format (printf, 3, 4)));
 
-ushort CLY_EXPORT inputBox( const char *Title, const char *aLabel, char *s, int limit );
+ushort CLY_EXPORT inputBox( const char *Title, const char *aLabel, char *s, int limit,
+                            TValidator *aVal=NULL);
 
 ushort CLY_EXPORT inputBoxRect( const TRect &bounds, const char *title,
-                     const char *aLabel, char *s, int limit );
+                                const char *aLabel, char *s, int limit,
+                                TValidator *aVal=NULL);
 
 const ushort
 

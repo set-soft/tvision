@@ -11,6 +11,8 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  */
 
+#define Uses_string
+#define Uses_ctype
 #define Uses_TView
 #define Uses_TEvent
 #define Uses_TObject
@@ -40,4 +42,15 @@ Boolean lowMemory()
     return False;
 #endif
 }
+
+char hotKey( const char *s )
+{
+    const char *p;
+
+    if( (p = strchr( s, '~' )) != 0 )
+        return uctoupper(p[1]);
+    else
+        return 0;
+}
+
 

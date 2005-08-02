@@ -17,7 +17,11 @@ other stuff).
 // Added insertChar member.
 #define Uses_ctype
 #define Uses_string
+#define Uses_stdlib
+#define Uses_AllocLocal
 #define Uses_TKeys
+#define Uses_TKeys_Extended
+#define Uses_TGKey
 #define Uses_TInputLine
 #define Uses_TDrawBuffer
 #define Uses_TEvent
@@ -32,19 +36,9 @@ other stuff).
 
 unsigned TInputLine::defaultModeOptions=0;
 
-char hotKey( const char *s )
-{
-    const char *p;
-
-    if( (p = strchr( s, '~' )) != 0 )
-        return uctoupper(p[1]);
-    else
-        return 0;
-}
-
 #define cpInputLine "\x13\x13\x14\x15"
 
-TInputLine::TInputLine( const TRect& bounds, int aMaxLen ) :
+TInputLine::TInputLine( const TRect& bounds, int aMaxLen, TValidator *aValid ) :
     TView(bounds),
     data( new char[aMaxLen] ),
     maxLen( aMaxLen-1 ),
@@ -52,7 +46,8 @@ TInputLine::TInputLine( const TRect& bounds, int aMaxLen ) :
     firstPos( 0 ),
     selStart( 0 ),
     selEnd( 0 ),
-    validator(NULL)
+    validator( aValid ),
+    oldData( new char[aMaxLen] )
 {
     state |= sfCursorVis;
     options |= ofSelectable | ofFirstClick;
@@ -60,7 +55,7 @@ TInputLine::TInputLine( const TRect& bounds, int aMaxLen ) :
     modeOptions = defaultModeOptions;
 }
 
-void TInputLine::SetValidator(TValidator * aValidator)
+void TInputLine::setValidator(TValidator * aValidator)
 {
   CLY_destroy(validator);
   validator = aValidator;
@@ -69,6 +64,7 @@ void TInputLine::SetValidator(TValidator * aValidator)
 TInputLine::~TInputLine()
 {
     delete[] data;
+    delete[] oldData;
     CLY_destroy(validator);
 }
 
@@ -78,14 +74,20 @@ Boolean TInputLine::canScroll( int delta )
         return Boolean( firstPos > 0 );
     else
         if( delta > 0 )
-            return Boolean( (int32)strlen(data) - firstPos + 2 > size.x );
+            return Boolean( (int)strlen(data) - firstPos + 2 > size.x );
         else
             return False;
 }
 
-uint32 TInputLine::dataSize()
+unsigned TInputLine::dataSize()
 {
-    return maxLen+1;
+    unsigned dSize = 0;
+
+    if (validator)
+        dSize = validator->transfer(data, NULL, vtDataSize);
+    if (dSize == 0)
+        dSize = maxLen + 1;
+    return dSize;
 }
 
 void TInputLine::draw()
@@ -96,7 +98,7 @@ void TInputLine::draw()
     uchar color = (state & sfFocused) ? getColor( 2 ) : getColor( 1 );
 
     b.moveChar( 0, ' ', color, size.x );
-    char buf[256];
+    AllocLocalStr( buf, size.x );
     strncpy( buf, data+firstPos, size.x - 2 );
     buf[size.x - 2 ] = EOS;
     b.moveStr( 1, buf, color );
@@ -120,7 +122,8 @@ void TInputLine::draw()
 
 void TInputLine::getData( void *rec )
 {
-    memcpy( rec, data, dataSize() );
+    if (!validator || !validator->transfer(data, rec, vtGetData))
+        memcpy( rec, data, dataSize() );
 }
 
 TPalette& TInputLine::getPalette() const
@@ -178,19 +181,12 @@ emulating it's behavior.
 
 Boolean TInputLine::insertChar(char value)
 {
-    if (validator)
-    {
-      char tmp[2];
-      tmp[0] = value;
-      tmp[1] = 0;
-      if (validator->isValidInput(tmp,False) == False)
-         return False;
-    }
+    saveState();
     if( (state & sfCursorIns) == 0 )
     {
         deleteSelect();
     }
-    int32 l = strlen(data);
+    int l = strlen(data);
     if (((l == maxLen) && ((state & sfCursorIns) == 0)) ||
         ((state & sfCursorIns) && curPos == maxLen))
       resizeData();
@@ -213,7 +209,8 @@ Boolean TInputLine::insertChar(char value)
         data[curPos++] = value;
       }
     }
-    return True;
+
+    return checkValid(False);
 }
 
 /**[txh]********************************************************************
@@ -226,8 +223,6 @@ the text and force a draw.
 
 void TInputLine::makeVisible()
 {
-    selStart = 0;
-    selEnd = 0;
     if( firstPos > curPos )
         firstPos = curPos;
     int i = curPos - size.x + 2;
@@ -236,11 +231,85 @@ void TInputLine::makeVisible()
     drawView();
 }
 
+void TInputLine::saveState()
+{
+    if (validator)
+        {
+        strcpy(oldData,data);
+        oldCurPos = curPos;
+        oldFirstPos = firstPos;
+        oldSelStart = selStart;
+        oldSelEnd = selEnd;
+        }
+}
+
+void TInputLine::restoreState()
+{
+    if (validator)
+        {
+        strcpy(data, oldData);
+        curPos = oldCurPos;
+        firstPos = oldFirstPos;
+        selStart = oldSelStart;
+        selEnd = oldSelEnd;
+        }
+}
+
+Boolean TInputLine::checkValid(Boolean noAutoFill)
+{
+    int oldLen;
+    char *newData;
+
+    if (validator)
+        {
+        oldLen = (int)strlen(data);
+        // SET:  I think TValidator should avoid to exceed maxLen.
+        newData = new char[maxLen+2];
+        strcpy(newData, data);
+        if (!validator->isValidInput(newData, noAutoFill))
+            {
+                restoreState();
+                delete[] newData;
+                return False;
+            }
+        else
+            {
+            if ((int)strlen(newData) > maxLen)
+                // We don't support validators that write more data than the allowed.
+                abort();
+                //newData[maxLen] = 0;
+            strcpy(data,newData);
+            // Handle the autofill feature
+            if ((curPos >= oldLen) && ((int)strlen(data) > oldLen))
+                curPos = (int)strlen(data);
+            delete[] newData;
+            return True;
+            }
+        }
+    return True;
+}
+
+
+
+#define adjustSelectBlock() \
+          if( curPos < anchor )  \
+              {                  \
+              selStart = curPos; \
+              selEnd = anchor;   \
+              }                  \
+          else                   \
+              {                  \
+              selStart = anchor; \
+              selEnd = curPos;   \
+              }
+
 void  TInputLine::handleEvent( TEvent& event )
 {
+    ushort key;
+    Boolean extendBlock;
     TView::handleEvent(event);
 
-    int delta, anchor;
+    int delta, anchor=0;
     if( (state & sfSelected) != 0 )
         switch( event.what )
             {
@@ -280,16 +349,7 @@ void  TInputLine::handleEvent( TEvent& event )
                           )
                             firstPos += delta;
                         curPos = mousePos(event);
-                        if( curPos < anchor )
-                            {
-                            selStart = curPos;
-                            selEnd = anchor;
-                            }
-                        else
-                            {
-                            selStart = anchor;
-                            selEnd = curPos;
-                            }
+                        adjustSelectBlock()
                         drawView();
                         } while (mouseEvent(event, evMouseMove | evMouseAuto));
                     if( TVOSClipboard::isAvailable() > 1 )
@@ -298,14 +358,30 @@ void  TInputLine::handleEvent( TEvent& event )
                 clearEvent(event);
                 break;
             case  evKeyDown:
-                switch( ctrlToArrow(event.keyDown.keyCode) )
+                key = ctrlToArrow(event.keyDown.keyCode);
+                extendBlock = False;
+                if( key & kbShiftCode )
+                    {
+                    ushort keyS = key & (~kbShiftCode);
+                    if( keyS == kbHome || keyS == kbLeft || keyS == kbRight || keyS == kbEnd )
+                        {
+                        if (curPos == selEnd)
+                            anchor = selStart;
+                        else
+                            anchor = selEnd;
+                        key = keyS;
+                        extendBlock = True;
+                        }
+                    }
+                        
+                switch( key )
                     {
                     case kbLeft:
                         if( curPos > 0 )
                             curPos--;
                         break;
                     case kbRight:
-                        if( curPos < (int32)strlen(data) )
+                        if( curPos < (int)strlen(data) )
                             curPos++;
                         break;
                     case kbHome:
@@ -314,28 +390,32 @@ void  TInputLine::handleEvent( TEvent& event )
                     case kbEnd:
                         curPos = strlen(data);
                         break;
-                    case kbBack:
+                    case kbBackSpace:
                         if( curPos > 0 )
                             {
+                            saveState();
                             strcpy( data+curPos-1, data+curPos );
                             curPos--;
                             if( firstPos > 0 )
                                 firstPos--;
+                            checkValid(True);
                             }
                         break;
-                    case kbDel:
+                    case kbDelete:
+                        saveState();
                         if( selStart == selEnd )
-                            if( curPos < (int32)strlen(data) )
+                            if( curPos < (int)strlen(data) )
                                 {
                                 selStart = curPos;
                                 selEnd = curPos + 1;
                                 }
                         deleteSelect();
+                        checkValid(True);
                         break;
-                    case kbIns:
+                    case kbInsert:
                         setState(sfCursorIns, Boolean(!(state & sfCursorIns)));
                         break;
-                    case kbCtrlY:
+                    case kbCtY:
                         *data = EOS;
                         curPos = 0;
                         break;
@@ -357,6 +437,15 @@ void  TInputLine::handleEvent( TEvent& event )
                              return;
                           }
                     }
+                    if (extendBlock)
+                        {
+                        adjustSelectBlock()
+                        }
+                    else
+                        {
+                        selStart = 0;
+                        selEnd = 0;
+                        }
                     makeVisible();
                     clearEvent( event );
                     break;
@@ -378,25 +467,16 @@ void TInputLine::selectAll( Boolean enable )
 
 void TInputLine::setData( void *rec )
 {
-    memcpy( data, rec, dataSize()-1 );
-    data[dataSize()-1] = EOS;
+    if (!validator || !validator->transfer(data,rec,vtSetData))
+        {
+        memcpy( data, rec, dataSize()-1 );
+        data[dataSize()-1] = EOS;
+        }
     selectAll( True );
 }
 
 void TInputLine::setState( ushort aState, Boolean enable )
 {
-    if (validator &&                           // We have a validator
-        (modeOptions & ilValidatorBlocks)  &&  // We want to block if invalid
-        owner && (owner->state & sfActive) &&  // The owner is visible
-        aState==sfFocused && enable==False)    // We are losing the focus
-      {
-       TValidator *v=validator;
-       validator=NULL;             // Avoid nested tests
-       Boolean ret=v->validate(data); // Check if we have valid data
-       validator=v;
-       if (!ret)                   // If not refuse the focus change
-          return;
-      }
     TView::setState( aState, enable );
     if( aState == sfSelected ||
         ( aState == sfActive && (state & sfSelected) != 0 )
@@ -420,9 +500,11 @@ void *TInputLine::read( ipstream& is )
     is >> maxLen >> curPos >> firstPos
        >> selStart >> selEnd;
     data = new char[maxLen + 1];
+    oldData = new char[maxLen + 1];
     is.readString(data, maxLen+1);
     state |= sfCursorVis;
     is >> validator;
+    // BC++ TV 2.0 options |= ofSelectable | ofFirstClick;
     return this;
 }
 
@@ -437,19 +519,21 @@ TInputLine::TInputLine( StreamableInit ) : TView( streamableInit ),
 }
 #endif // NO_STREAM
 
-Boolean TInputLine::valid(ushort )
+Boolean TInputLine::valid(ushort cmd)
 {
-  Boolean ret = True;
-  if (validator)
-  {
-    ret = validator->validate(data);
-    if (ret == True)
-    {
-      validator->format(data);
-      drawView();
-    }
-  }
-  return ret;
+    if (validator)
+        {
+        if (cmd == cmValid)
+            return Boolean(validator->status == vsOk);
+        else if (cmd != cmCancel)
+            if (!validator->validate(data))
+                {
+                owner->current = 0;
+                select();
+                return False;
+                }
+        }
+    return True;
 }
 
 

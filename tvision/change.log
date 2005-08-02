@@ -1,25 +1,28 @@
-$Log$.
+$Log$
+Revision 2.646  2005/08/02 14:49:24  set
+* Fixed: [MSVC] Wrong pragma usage. Pointed out by Eddie.
+
 Revision 2.645  2005/08/02 14:07:29  set
 * Modified: [MSVC] Disabled warning 4291 in histlist.cc. The compiler is
 wrong.
 * Modified: [MSVC] Added support for 64 bits pointers in uipointer and
 clarified the warning 4311 issue (also disabled). Both from info sent by
 Eddie.
-.
+
 Revision 2.644  2005/08/01 18:16:07  set
 * Modified: [MSVC] Disabled the MSVC "pointer truncation" warning. I can't
 see any truncation because I think both are 32 bits unsigned values. I'll
 disable it until somebody can explain it. Eddie provided the pragma.
-.
+
 Revision 2.643  2005/08/01 17:02:53  set
 * Fixed: A couple of errors in the last modifications to TFrame. The move
 and grow should work only for mouse down. If not they get activated when
 we only get the up (i.e. when changing focus).
-.
+
 Revision 2.642  2005/08/01 16:52:00  set
 * Fixed: [MSVC] v7.1 defines read/write and in an incompatible way to our
 replacements for old versions. Reported by Eddie.
-.
+
 Revision 2.641  2005/08/01 16:32:22  set
 * Added: More export directives. Patch from Lothar.
 

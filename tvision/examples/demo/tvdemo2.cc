@@ -16,8 +16,8 @@
  
 // SET: moved the standard headers before tv.h 
 
-#define Uses_signal
 #define Uses_stdlib
+#define Uses_signal
 #define Uses_TDialog
 #define Uses_TRect
 #define Uses_TStaticText
@@ -37,6 +37,7 @@
 #define Uses_TVCodePage
 // Needed for the inputBoxTest
 #define Uses_MsgBox
+#define Uses_TPXPictureValidator
 
 #include <tv.h>
 
@@ -65,6 +66,22 @@ void TVDemo::testInputBox()
     char buffer[20];
     strcpy(buffer,"Initial value");
     if (inputBox("Test for the inputBox","Enter a number",buffer,20)!=cmCancel)
+    {
+        messageBox(mfInformation | mfOKButton,"Value entered: %s",buffer);
+    }
+    else
+    {
+        messageBox("\x3""Input canceled", mfInformation | mfOKButton);
+    }
+}
+
+void TVDemo::testPictureVal()
+{
+    char buffer[20];
+    strcpy(buffer,"11-6789");
+    if (inputBox("Test for the inputBox","Enter ##-####",buffer,20,
+        // You can add a picture validator like this
+        new TPXPictureValidator("##-####",True))!=cmCancel)
     {
         messageBox(mfInformation | mfOKButton,"Value entered: %s",buffer);
     }
@@ -146,6 +163,10 @@ void TVDemo::handleEvent(TEvent &event)
 
         case cmTestInputBox:
                 testInputBox();
+                break;
+
+        case cmTestPicture:
+                testPictureVal();
                 break;
 
             default:                    //  Unknown command
