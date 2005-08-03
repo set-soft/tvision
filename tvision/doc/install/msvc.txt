@@ -2,12 +2,16 @@
 Microsoft Visual C compiler. Note that I don't have it and Microsoft doesn't
 offer reduced versions for free like Borland does. For this reason this
 target ever lags behind. I need volunteer to test this target periodically.
+  Note: Some time after writing it Microsoft released a reduced and free
+version of the compiler, but only for Windows 2000 and newer systems. I
+don't have access to such a version of Windows.
 
 $Id$
 
 1. INTRODUCTION
 2. HOW TO COMPILE
 3. INSTALLING
+4. MSVC TARGET CONTRIBUTORS
 
 
 
@@ -27,10 +31,44 @@ testing the new MSVC makefiles. For this reason you should use the old
 mechanism explained in winnt/readme.txt
   The winnt/Makefile.nmk file contains the information needed to create the
 executable just use it with nmake.
+  If you want to test the unified compilation mechanism try using nmake and
+the Makefile.nmk file.
 
 
 3. INSTALLATION
 
   Currently this target needs manual installation. You can also use the files
 without installing just providing the paths to the compiler.
+
+
+4. MSVC TARGET CONTRIBUTORS
+
+Chronologically sorted:
+
+Drivers: [Shared with other Win32 targets]
+
+WinNT: Anatoli Soltan
+Win32: Vadim Beloborodov
+WinGr: José Ángel Sánchez Caso
+
+Compilation:
+
+WintiX <wintix/bk/ru>
+  Help to get it working with MSVC 5.0.
+Sergey Krivulja <skrivulja/erec/ru>
+  Compilation issue.
+Mike Gorchak <mike/malva/ua>
+  Adaptation to MSVC 7.0 and 7.1.
+Grzegorz Adam Hankiewicz <gradha/iname/com>
+  Debug options and help with unified mechanism.
+David Doubrava (ddoubrava/volny/cz)
+  Compilation issue.
+Arnold Wiegert <awiegert/telus/net>
+  Adaptation to MSVC 6.0.
+  Hints about MSVC 4.0.
+Christian Kirches <christian/kirches/gmx/de>.
+  Compilation issues related to Visual Studio .NET 2005 Express Beta
+Eddie (K.Blacha) <one_eddie/tenbit/pl>
+  Compilation issues related to MSVC 7.1
+
 
