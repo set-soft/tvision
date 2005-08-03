@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.268  2005/08/02 18:46:12  set
+* Added: TLookupValidator and TStringLookupValidator from Borland's TV 2.0.
+
 Revision 2.399.2.267  2005/08/02 14:30:31  set
 * Added: The Borland's TV 2.0 TInputLine functionality:
   * TValidator * as last constructor argument.
