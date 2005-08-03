@@ -315,7 +315,7 @@ inline opstream& operator << ( opstream& os, TEditor* cl )
 #if defined( Uses_TMemo ) && !defined( __TMemo )
 #define __TMemo
 
-class TEvent;
+struct TEvent;
 
 struct TMemoData
 {

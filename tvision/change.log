@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.269  2005/08/03 13:17:33  set
+* Added: [MSVC] More information about installation.
+* Added: [MSVC] Disabled warning 4312. From a report by Eddie.
+
 Revision 2.399.2.268  2005/08/02 18:46:12  set
 * Added: TLookupValidator and TStringLookupValidator from Borland's TV 2.0.
 
