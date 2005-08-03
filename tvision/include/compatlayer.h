@@ -1466,6 +1466,17 @@ typedef unsigned long  ulong;
  #define _MSC_VER __MSC_VER
 #endif
 
+/*
+ Note about MSVC and compiler versions:
+ It looks like you must add 6 to get the compiler version. I guess they created MSVC 1.0
+when compiler version 7.0 was released.
+ Compiler version   MSVC version
+      10.00             4.0
+      11.00             5.0 (just a guess)
+      12.00             6.0
+      13.00             7.0
+      13.10             7.1 (.NET 2003 Architect)
+*/
 #ifdef TVComp_MSC
  // Note: snprintf and vsnprintf seems to be available in some versions but not in others.
  // But looks like _snprintf and _vsnprintf is available in 1000 and 1300 versions.
@@ -1487,12 +1498,15 @@ typedef unsigned long  ulong;
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
  /*
-   I'm disabling warning 4311 that generates:
-   'type cast' : pointer truncation from 'TStreamable *' to 'uipointer'
+   I'm disabling warnings 4311/2 that generates:
+   'type cast' : pointer truncation from 'void *' to 'uipointer'
+   'type cast' : conversion from 'uipointer' to 'void *' of greater size
    This is just the result of using /Wp64 and is just a potential issue.
+   We already define uipointer as a 64 bits value for Win64.
  */
  #if _MSC_VER >= 1310
    #pragma warning( disable : 4311 )
+   #pragma warning( disable : 4312 )
  #endif
  #if _MSC_VER <= 1000
    // MSVC 4.0 reports version 10.0
