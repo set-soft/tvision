@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.650  2005/08/03 18:27:19  set
+* Fixed: Another "class TEvent" reference. Reported by Eddie.
+.
 Revision 2.649  2005/08/03 13:27:40  set
 * Added: [MSVC] More information about installation.
 * Added: [MSVC] Diabled warning 4312. From a report by Eddie.

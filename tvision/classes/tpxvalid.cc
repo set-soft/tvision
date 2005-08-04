@@ -19,7 +19,7 @@
 
 // TPXPictureValidator
 
-const char * TPXPictureValidator::errorMsg = "Error in picture format.\n %s";
+const char * TPXPictureValidator::errorMsg = __("Error in picture format.\n %s");
 
 TPXPictureValidator::TPXPictureValidator(const char* aPic, Boolean autoFill)
     : TValidator()
