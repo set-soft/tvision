@@ -33,7 +33,7 @@ class TValidator;
 const unsigned ilValidatorBlocks=1;  // Don't pass the focus if the validator indicates
                                      // the data isn't valid. by SET.
 
-class TInputLine : public TView
+class CLY_EXPORT TInputLine : public TView
 {
 public:
 
@@ -133,7 +133,7 @@ inline opstream& operator << ( opstream& os, TInputLine* cl )
 #define TInput1Line_defined
 // This is based on TVTools idea, but I think is better to implement it
 // in this way and not like a macro.
-class TInput1Line : public TInputLine
+class CLY_EXPORT TInput1Line : public TInputLine
 {
 public:
  TInput1Line(int x, int y, int max, TValidator *aValid=NULL) :
