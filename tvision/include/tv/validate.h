@@ -83,7 +83,7 @@ inline opstream& operator << ( opstream& os, TValidator* cl )
 #if defined(Uses_TFilterValidator) && !defined(TFilterValidator_Included)
 #define TFilterValidator_Included
 
-class TFilterValidator : public TValidator
+class CLY_EXPORT TFilterValidator : public TValidator
 {
 public:
   TFilterValidator();
@@ -131,7 +131,7 @@ inline opstream& operator << ( opstream& os, TFilterValidator* cl )
 #if defined(Uses_TRangeValidator) && !defined(TRangeValidator_Included)
 #define TRangeValidator_Included
 
-class TRangeValidator : public TFilterValidator
+class CLY_EXPORT TRangeValidator : public TFilterValidator
 {
 public:
   TRangeValidator();
@@ -186,7 +186,7 @@ enum TPicResult {prComplete, prIncomplete, prEmpty, prError, prSyntax,
 // TPXPictureValidator
 
 
-class TPXPictureValidator : public TValidator
+class CLY_EXPORT TPXPictureValidator : public TValidator
 {
 public:
     TPXPictureValidator(const char* aPic, Boolean autoFill);
@@ -249,7 +249,7 @@ inline opstream& operator << ( opstream& os, TPXPictureValidator* v )
 
 // TLookupValidator
 
-class TLookupValidator : public TValidator
+class CLY_EXPORT TLookupValidator : public TValidator
 {
 public:
     TLookupValidator() : TValidator() {}
@@ -288,7 +288,7 @@ inline opstream& operator << ( opstream& os, TLookupValidator* v )
 
 class TStringCollection;
 
-class TStringLookupValidator : public TLookupValidator
+class CLY_EXPORT TStringLookupValidator : public TLookupValidator
 {
 public:
     TStringLookupValidator(TStringCollection* aStrings);

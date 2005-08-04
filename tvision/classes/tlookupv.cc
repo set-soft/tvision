@@ -30,6 +30,11 @@ Boolean TLookupValidator::lookup(const char* s)
 }
 
 #if !defined(NO_STREAM)
+TStreamable * TLookupValidator::build()
+{
+  return (TStreamable *) new TLookupValidator(streamableInit);
+}
+
 TLookupValidator::TLookupValidator( StreamableInit s ) : TValidator(s)
 {
 }
@@ -47,6 +52,8 @@ TStringLookupValidator::~TStringLookupValidator()
 {
   newStringList(NULL);
 }
+
+const char * TStringLookupValidator::errorMsg = __("Input is not in list of valid strings");
 
 void TStringLookupValidator::error()
 {
@@ -86,6 +93,11 @@ void* TStringLookupValidator::read( ipstream& is )
   is >> strings;
 
   return this;
+}
+
+TStreamable * TStringLookupValidator::build()
+{
+  return (TStreamable *) new TStringLookupValidator(streamableInit);
 }
 
 TStringLookupValidator::TStringLookupValidator( StreamableInit s ) :
