@@ -1,12 +1,16 @@
 ES_FILE=es.mo
 
-LANGUAGES=es ru
+LANGUAGES=es ru pl
 LANG_FILES=$(addsuffix .mo,$(LANGUAGES))
 
 all: $(LANG_FILES)
 
 ifeq ($(msgfmt),)
 msgfmt=msgfmt
+endif
+
+ifeq ($(xgettext),)
+xgettext=xgettext
 endif
 
 destmo=tvision$(shell cat ../version.txt).mo
@@ -24,4 +28,12 @@ install: $(LANG_FILES)
 	install -m 0644 $(ES_FILE) $(prefix)/share/locale/es/LC_MESSAGES/$(destmo)
 	install -d -m 0755 $(prefix)/share/locale/ru/LC_MESSAGES
 	install -m 0644 ru.mo $(prefix)/share/locale/ru/LC_MESSAGES/$(destmo)
+
+tvision.po:
+	$(xgettext) --default-domain=dummy --add-comments --keyword=_ \
+	  --keyword=__ --directory=$(srcdir) --omit-header \
+	  --add-location ../classes/*.cc ../*.cc
+	touch dummy.po
+	cp dummy.po $@
+	rm dummy.po
 
