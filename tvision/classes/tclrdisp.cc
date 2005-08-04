@@ -34,7 +34,7 @@ TColorDisplay::TColorDisplay( const TRect& bounds, const char *aText ) :
 
 TColorDisplay::~TColorDisplay()
 {
-    DeleteArray(text);
+    DeleteArray((char *)text);
 }
 
 void TColorDisplay::draw()

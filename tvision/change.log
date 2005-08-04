@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.272  2005/08/04 19:19:05  set
+* Added: Some missing export directives for the DLL. Patch by Lothar.
+* Fixed: Missing TLookup* members. Patch by Lothar.
+* Updated: Spanish translation.
+
 Revision 2.399.2.271  2005/08/04 18:53:44  set
 * Updated: Spanish translation.
 
