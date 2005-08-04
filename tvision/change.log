@@ -1,17 +1,22 @@
-$Log$.
+$Log$
+Revision 2.652  2005/08/04 19:29:06  set
+* Added: Some missing export directives for the DLL. Patch by Lothar.
+* Fixed: Missing TLookup* members. Patch by Lothar.
+* Updated: Spanish translation.
+
 Revision 2.651  2005/08/04 18:59:08  set
 * Updated: Spanish translation.
-.
+
 Revision 2.650  2005/08/03 18:27:19  set
 * Fixed: Another "class TEvent" reference. Reported by Eddie.
-.
+
 Revision 2.649  2005/08/03 13:27:40  set
 * Added: [MSVC] More information about installation.
 * Added: [MSVC] Diabled warning 4312. From a report by Eddie.
-.
+
 Revision 2.648  2005/08/02 18:54:01  set
 * Added: TLookupValidator and TStringLookupValidator from Borland's TV 2.0.
-.
+
 Revision 2.647  2005/08/02 15:39:09  set
 * Added: The Borland's TV 2.0 TInputLine functionality:
   * TValidator * as last constructor argument.

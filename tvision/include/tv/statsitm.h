@@ -25,7 +25,7 @@ public:
                  ushort cmd,
                  TStatusItem *aNext = 0
                 );
-    ~TStatusItem() { DeleteArray(text); TVIntl::freeSt(intlText); };
+    ~TStatusItem() { DeleteArray((char *)text); TVIntl::freeSt(intlText); };
 
     TStatusItem *next;
     const char *text;
