@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.273  2005/08/04 20:02:45  set
+* Modified: [OpenWatcom] the compiler generates a warning when we use
+"delete[] (const char *)var" so now I cast all of them to (char *).
+Reported by Lothar.
+
 Revision 2.399.2.272  2005/08/04 19:19:05  set
 * Added: Some missing export directives for the DLL. Patch by Lothar.
 * Fixed: Missing TLookup* members. Patch by Lothar.

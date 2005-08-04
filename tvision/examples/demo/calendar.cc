@@ -200,7 +200,7 @@ void TCalendarView::handleEvent(TEvent& event)
         if ( (event.what & evMouse) && (evMouseDown || evMouseAuto) )
             {
             point = makeLocal(event.mouse.where);
-            if (point.x == 15 && point.y == 0)
+            if (point.x == 0 && point.y == 0)
                 {
                 ++month;
                 if (month > 12)
@@ -210,7 +210,7 @@ void TCalendarView::handleEvent(TEvent& event)
                     }
                 drawView();
                 }
-            else if (point.x == 18 && point.y == 0)
+            else if (point.x == 19 && point.y == 0)
                 {
                 --month;
                 if (month < 1)
