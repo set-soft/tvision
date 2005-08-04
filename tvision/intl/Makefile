@@ -32,7 +32,7 @@ install: $(LANG_FILES)
 tvision.po:
 	$(xgettext) --default-domain=dummy --add-comments --keyword=_ \
 	  --keyword=__ --directory=$(srcdir) --omit-header \
-	  --add-location ../classes/*.cc ../*.cc
+	  --add-location ../classes/*.cc ../classes/*/*.cc ../*.cc
 	touch dummy.po
 	cp dummy.po $@
 	rm dummy.po

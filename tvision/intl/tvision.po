@@ -254,6 +254,10 @@ msgstr ""
 msgid "<empty>"
 msgstr ""
 
+#: ../classes/tlookupv.cc:56
+msgid "Input is not in list of valid strings"
+msgstr ""
+
 #: ../classes/tmonosel.cc:32
 msgid "Normal"
 msgstr ""

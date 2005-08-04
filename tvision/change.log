@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.271  2005/08/04 18:53:44  set
+* Updated: Spanish translation.
+
 Revision 2.399.2.270  2005/08/03 18:20:57  set
 * Fixed: Another "class TEvent" reference. Reported by Eddie.
 
