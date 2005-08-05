@@ -23,7 +23,6 @@ SRCDIRS=$(SRCD1);$(SRCD2);$(SRCD3)
 INCLUDE_DIR=../include
 CLASSES_DIR=../classes
 EXTRA_SRC_DIR=..
-INCLUDE_DIRS=-I../winnt/include -I$(INCLUDE_DIR)
 
 ##########################################################################################
 #
@@ -35,8 +34,11 @@ INCLUDE_DIRS=-I../winnt/include -I$(INCLUDE_DIR)
 all: blink.exe librhtv.lib
 
 MKF_EXT=.bmk
+INCLUDE_DIRS=-I$(INCLUDE_DIR)
 !else
 all: mlink.exe librhtv.lib
+
+INCLUDE_DIRS=-I$(INCLUDE_DIR)/cl -I$(INCLUDE_DIR)
 !endif
 
 #

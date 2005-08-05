@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.655  2005/08/05 13:53:20  set
+* Added: Polish translation. Contributed by Eddie.
+.
 Revision 2.654  2005/08/04 20:18:07  set
 * Fixed: The TCalendar class in the demo program tested for wrong mouse
 coordinates to change the month. Patch by Eddie.
