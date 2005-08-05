@@ -64,5 +64,5 @@ ALL_PREREQ=$**
 #LIB_DIRS=$(RHIDE_OS_LIBS_PATH) -L.
 
 mlink.exe:: mlink.c
-	$(RHIDE_GCC) /OUT:$(OUTFILE) kernel32.lib $(ALL_PREREQ)
+	$(RHIDE_GCC) kernel32.lib $(ALL_PREREQ) /link /OUT:$(OUTFILE)
 
