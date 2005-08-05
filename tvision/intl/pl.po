@@ -1,0 +1,642 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tvision 2.1.0\n"
+"PO-Revision-Date: 2005-08-05 11:11-0300\n"
+"Last-Translator: Krzysztof Blacha (Eddie) <one_eddie@tenbit.pl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../classes/calcdisp.cc:103 ../msgbox.cc:58
+msgid "Error"
+msgstr "B³±d"
+
+#: ../classes/calculat.cc:40
+msgid "Pocket Calculator"
+msgstr "Mini kalkulator"
+
+#: ../classes/configfile.cc:45
+msgid "Can't open file"
+msgstr "Nie mozna otworzyæ pliku"
+
+#. -1
+#: ../classes/configfile.cc:46
+msgid "Comment inside section name"
+msgstr "Komentarz wewn±trz nazwy sekcji"
+
+#. -2
+#: ../classes/configfile.cc:47
+msgid "Unterminated section name"
+msgstr "Niezakoñczona nazwa sekcji"
+
+#. -3
+#: ../classes/configfile.cc:48
+msgid "Empty section name"
+msgstr "Pusta nazwa sekcji"
+
+#. -4
+#: ../classes/configfile.cc:49
+msgid "Syntax error"
+msgstr "B³±d sk³adni"
+
+#. -5
+#: ../classes/configfile.cc:50
+msgid "Missing open section {"
+msgstr "Brak znaku rozpoczynaj±cego sekcjê {"
+
+#. -6
+#: ../classes/configfile.cc:51
+msgid "Missing close section }"
+msgstr "Brak znaku koñcz±cego sekcjê }"
+
+#. -7
+#: ../classes/configfile.cc:52
+msgid "Missing equal sign"
+msgstr "Brak znaku równo¶ci"
+
+#. -8
+#: ../classes/configfile.cc:53
+msgid "Missing value after equal"
+msgstr "Brak warto¶ci za znakiem równo¶ci"
+
+#. -9
+#: ../classes/configfile.cc:54
+msgid "Unterminated string"
+msgstr "Niezakoñczony ³añcuch"
+
+#. -10
+#: ../classes/configfile.cc:55
+msgid "Non branch in base"
+msgstr "Brak ga³êzi w podstawie"
+
+#. -11
+#: ../classes/configfile.cc:56
+msgid "Trying to overwrite a value with a section"
+msgstr "Próba nadpisania warto¶ci, sekcj±"
+
+#. -12
+#: ../classes/configfile.cc:57
+msgid "Trying to overwrite a section with a value"
+msgstr "Próba nadpisania sekcji, warto¶ci±"
+
+#: ../classes/opstream.cc:242
+#, c-format
+msgid "type not registered: %s\n"
+msgstr "nizarejestrowany typ: %s\n"
+
+#: ../classes/tchdirdi.cc:43
+msgid "Change Directory"
+msgstr "Zmieñ folder"
+
+#: ../classes/tchdirdi.cc:49
+msgid "Directory ~n~ame"
+msgstr "~N~azwa folderu"
+
+#: ../classes/tchdirdi.cc:62
+msgid "Directory ~t~ree"
+msgstr "Drzewo ka~t~alogów"
+
+#: ../classes/tchdirdi.cc:64 ../classes/tcolordi.cc:99
+#: ../classes/tfiledia.cc:94 ../msgbox.cc:43 ../msgbox.cc:228
+msgid "~O~K"
+msgstr "~O~K"
+
+#: ../classes/tchdirdi.cc:66
+msgid "~C~hdir"
+msgstr "Z~m~ieñ folder"
+
+#: ../classes/tchdirdi.cc:68
+msgid "~R~evert"
+msgstr "Odw~r~óæ"
+
+#: ../classes/tchdirdi.cc:70
+msgid "Help"
+msgstr "Pomoc"
+
+#: ../classes/tchdirdi.cc:122 ../classes/tdirlist.cc:512
+msgid "Drives"
+msgstr "Napêdy"
+
+#: ../classes/tchdirdi.cc:188
+msgid "Invalid directory"
+msgstr "Nieprawid³owy katalog"
+
+#: ../classes/tcolordi.cc:46
+msgid "Colors"
+msgstr "Kolory"
+
+#: ../classes/tcolordi.cc:56
+msgid "~G~roup"
+msgstr "~G~rupa"
+
+#: ../classes/tcolordi.cc:66
+msgid "~I~tem"
+msgstr "~E~lement"
+
+#: ../classes/tcolordi.cc:71
+msgid "~F~oreground"
+msgstr "~P~ierwszo planowy"
+
+#: ../classes/tcolordi.cc:79
+msgid "~B~ackground"
+msgstr "~T~³o"
+
+#: ../classes/tcolordi.cc:83
+msgid "Text "
+msgstr "Tekst"
+
+#: ../classes/tcolordi.cc:89
+msgid "Color"
+msgstr "Kolor"
+
+#: ../classes/tcolordi.cc:97
+msgid "~T~ry"
+msgstr "~P~róbuj"
+
+#: ../classes/tcolordi.cc:101 ../classes/tfiledia.cc:100
+#: ../classes/tvedit2.cc:73 ../classes/tvedit2.cc:105 ../msgbox.cc:44
+#: ../msgbox.cc:232
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: ../classes/teditwin.cc:124
+msgid "Clipboard"
+msgstr "Schowek"
+
+#: ../classes/teditwin.cc:125
+msgid "Untitled"
+msgstr "Bez nazwy"
+
+#: ../classes/tfiledia.cc:81
+msgid "~F~iles"
+msgstr "~P~liki"
+
+#: ../classes/tfiledia.cc:93 ../classes/tvedit3.cc:40
+msgid "~O~pen"
+msgstr "~O~twórz"
+
+#: ../classes/tfiledia.cc:95
+msgid "~A~dd"
+msgstr "Dod~a~j"
+
+#: ../classes/tfiledia.cc:96
+msgid "~S~elect"
+msgstr "~W~ybierz"
+
+#: ../classes/tfiledia.cc:97
+msgid "~R~eplace"
+msgstr "~Z~ast±p"
+
+#: ../classes/tfiledia.cc:98 ../classes/tvedit3.cc:57
+msgid "~C~lear"
+msgstr "~C~zy¶æ"
+
+#: ../classes/tfiledia.cc:100
+msgid "Done"
+msgstr "Koniec"
+
+#: ../classes/tfiledia.cc:109
+msgid "~H~elp"
+msgstr "~P~omoc"
+
+#: ../classes/tfiledia.cc:246
+msgid "Invalid drive or directory"
+msgstr "Nieprawid³owy napêd lub katalog"
+
+#: ../classes/tfiledia.cc:296
+msgid "Invalid file name."
+msgstr "Nieprawid³owa nazwa pliku."
+
+#: ../classes/tfileinf.cc:38
+msgid "Jan"
+msgstr "Sty"
+
+#: ../classes/tfileinf.cc:38
+msgid "Feb"
+msgstr "Lut"
+
+#: ../classes/tfileinf.cc:38
+msgid "Mar"
+msgstr "Mar"
+
+#: ../classes/tfileinf.cc:38
+msgid "Apr"
+msgstr "Kw"
+
+#: ../classes/tfileinf.cc:38
+msgid "May"
+msgstr "Maj"
+
+#: ../classes/tfileinf.cc:38
+msgid "Jun"
+msgstr "Czw"
+
+#: ../classes/tfileinf.cc:39
+msgid "Jul"
+msgstr "Lip"
+
+#: ../classes/tfileinf.cc:39
+msgid "Aug"
+msgstr "Sie"
+
+#: ../classes/tfileinf.cc:39
+msgid "Sep"
+msgstr "Wrz"
+
+#: ../classes/tfileinf.cc:39
+msgid "Oct"
+msgstr "Paz"
+
+#: ../classes/tfileinf.cc:39
+msgid "Nov"
+msgstr "Lis"
+
+#: ../classes/tfileinf.cc:39
+msgid "Dec"
+msgstr "Gr"
+
+#: ../classes/tfilterv.cc:58
+msgid "Invalid character in input"
+msgstr "Wprowadzono nieprawid³owy znak"
+
+#: ../classes/tlistvie.cc:169
+msgid "<empty>"
+msgstr "<pusto>"
+
+#: ../classes/tmonosel.cc:32
+msgid "Normal"
+msgstr "Normalny"
+
+#: ../classes/tmonosel.cc:33
+msgid "Highlight"
+msgstr "Pod¶wietlony"
+
+#: ../classes/tmonosel.cc:34
+msgid "Underline"
+msgstr "Podkre¶lony"
+
+#: ../classes/tmonosel.cc:35
+msgid "Inverse"
+msgstr "Odwrócony"
+
+#: ../classes/tprogram.cc:314
+msgid "~Alt-X~ Exit"
+msgstr "~Alt-X~ Koniec"
+
+#. TPXPictureValidator
+#: ../classes/tpxvalid.cc:22
+#, c-format
+msgid ""
+"Error in picture format.\n"
+" %s"
+msgstr ""
+"Dane wprowadzone b³êdnie.\n"
+"Format danych: %s"
+
+#: ../classes/trangeva.cc:52
+#, c-format
+msgid "Value not in the range %lu to %lu"
+msgstr "Wprowadzone dane nie s± w zakresie, od %lu do %lu"
+
+#: ../classes/trangeva.cc:55
+#, c-format
+msgid "Value not in the range %li to %li"
+msgstr "Wprowadzone dane nie s± w zakresie, od %li do %li"
+
+#: ../classes/tvedit2.cc:55
+msgid "Find"
+msgstr "Znajd¼"
+
+#: ../classes/tvedit2.cc:62 ../classes/tvedit2.cc:88
+msgid "~T~ext to find"
+msgstr "~T~ekst do odszukania"
+
+#: ../classes/tvedit2.cc:67 ../classes/tvedit2.cc:97
+msgid "~C~ase sensitive"
+msgstr "~U~wzglêdnij wielko¶æ liter"
+
+#: ../classes/tvedit2.cc:68 ../classes/tvedit2.cc:98
+msgid "~W~hole words only"
+msgstr "Tylko ca³e s³o~w~a"
+
+#: ../classes/tvedit2.cc:71 ../classes/tvedit2.cc:103
+msgid "O~K~"
+msgstr "O~K~"
+
+#: ../classes/tvedit2.cc:81
+msgid "Replace"
+msgstr "Zast±p"
+
+#: ../classes/tvedit2.cc:93
+msgid "~N~ew text"
+msgstr "~N~owy tekst"
+
+#: ../classes/tvedit2.cc:99
+msgid "~P~rompt on replace"
+msgstr "~P~ytaj przed zast±pieniem"
+
+#: ../classes/tvedit2.cc:100
+msgid "~R~eplace all"
+msgstr "~Zvast±p wszystkie"
+
+#: ../classes/tvedit3.cc:39
+msgid "~F~ile"
+msgstr "~P~lik"
+
+#: ../classes/tvedit3.cc:41
+msgid "~N~ew"
+msgstr "~N~owy"
+
+#: ../classes/tvedit3.cc:42
+msgid "~S~ave"
+msgstr "Zapi~s~z"
+
+#: ../classes/tvedit3.cc:43
+msgid "S~a~ve as..."
+msgstr "Z~a~pisz jako..."
+
+#: ../classes/tvedit3.cc:45
+msgid "~C~hange dir..."
+msgstr "~Z~mieñ folder..."
+
+#: ../classes/tvedit3.cc:46
+msgid "S~h~ell"
+msgstr "P~o~w³oka"
+
+#: ../classes/tvedit3.cc:47
+msgid "E~x~it"
+msgstr "~K~oniec"
+
+#: ../classes/tvedit3.cc:49
+msgid "~E~dit"
+msgstr "~E~dytuj"
+
+#: ../classes/tvedit3.cc:50
+msgid "~U~ndo"
+msgstr "~C~ofnij"
+
+#: ../classes/tvedit3.cc:52
+msgid "Cu~t~"
+msgstr "~W~ytnij"
+
+#: ../classes/tvedit3.cc:53
+msgid "~C~opy"
+msgstr "~K~opiuj"
+
+#: ../classes/tvedit3.cc:54
+msgid "~P~aste"
+msgstr "Wkle~j~"
+
+#: ../classes/tvedit3.cc:55
+msgid "~S~how clipboard"
+msgstr "Pokaz ~s~chowek"
+
+#: ../classes/tvedit3.cc:59
+msgid "~S~earch"
+msgstr "Wy~s~zukiwanie"
+
+#: ../classes/tvedit3.cc:60
+msgid "~F~ind..."
+msgstr "Z~n~ajdz"
+
+#: ../classes/tvedit3.cc:61
+msgid "~R~eplace..."
+msgstr "~Z~ast±p"
+
+#: ../classes/tvedit3.cc:62
+msgid "~S~earch again"
+msgstr "~S~zukaj ponownie"
+
+#: ../classes/tvedit3.cc:64
+msgid "~W~indows"
+msgstr "~O~kna"
+
+#: ../classes/tvedit3.cc:65
+msgid "~S~ize/move"
+msgstr "Zmieñ rozmiar/prze~s~óñ"
+
+#: ../classes/tvedit3.cc:66
+msgid "~Z~oom"
+msgstr "Maksymili~z~uj"
+
+#: ../classes/tvedit3.cc:67
+msgid "~T~ile"
+msgstr "~J~eden pod drugim"
+
+#: ../classes/tvedit3.cc:68
+msgid "C~a~scade"
+msgstr "J~e~den obok drugiego"
+
+#: ../classes/tvedit3.cc:69
+msgid "~N~ext"
+msgstr "~N~astêpny"
+
+#: ../classes/tvedit3.cc:70
+msgid "~P~revious"
+msgstr "~P~oprzedni"
+
+#: ../classes/tvedit3.cc:71
+msgid "~C~lose"
+msgstr "~Z~amknij"
+
+#. SET: F10 before the others so when the library maintains the
+#. cursor visible this option is pointed and the user have a
+#. hint about what to do.
+#: ../classes/tvedit3.cc:90
+msgid "~F10~ Menu"
+msgstr "~F10~ Menu"
+
+#: ../classes/tvedit3.cc:91
+msgid "~F2~ Save"
+msgstr "~F2~ Save"
+
+#: ../classes/tvedit3.cc:92
+msgid "~F3~ Open"
+msgstr "~F3~ Otwórz"
+
+#: ../classes/tvedit3.cc:93
+msgid "~Alt+F3~ Close"
+msgstr "~Alt-F3~ Zamknij"
+
+#: ../classes/tvedit3.cc:94
+msgid "~F5~ Zoom"
+msgstr "~F5~ Maksymilizuj"
+
+#: ../classes/tvedit3.cc:95
+msgid "~F6~ Next"
+msgstr "~F6~ Nastêpny"
+
+#: ../classes/tvedit3.cc:103 ../classes/tvedit3.cc:124
+msgid "Not enough memory for this operation."
+msgstr "Za ma³o pamiêci aby wykonaæ tê operacjê."
+
+#: ../classes/tvedit3.cc:131
+#, c-format
+msgid "Error reading file %s."
+msgstr "Wyst±pi³ b³±d podczas czytania z pliku %s."
+
+#: ../classes/tvedit3.cc:138
+#, c-format
+msgid "Error writing file %s."
+msgstr "Wyst±pi³ b³±d podczas zapisywanie do pliku %s."
+
+#: ../classes/tvedit3.cc:145
+#, c-format
+msgid "Error creating file %s."
+msgstr "Wyst±pi³ b³±d podczas tworzenia pliku %s."
+
+#: ../classes/tvedit3.cc:152
+#, c-format
+msgid "%s has been modified. Save?"
+msgstr "%s zosta³ zmodyfikowany. Zapisaæ?"
+
+#: ../classes/tvedit3.cc:155
+msgid "Save untitled file?"
+msgstr "zapisaæ plik bez nazwy?"
+
+#: ../classes/tvedit3.cc:160
+msgid "Save file as"
+msgstr "Zapisz plik jako"
+
+#: ../classes/tvedit3.cc:161 ../fileview.cc:215
+msgid "~N~ame"
+msgstr "~N~azwa"
+
+#: ../classes/tvedit3.cc:172
+msgid "Search string not found."
+msgstr "Poszukiwany ³añcuch nie zosta³ odnaleziony"
+
+#: ../classes/tvedit3.cc:190
+msgid "Replace this occurence?"
+msgstr "Zamieniæ to wyst±pienie?"
+
+#: ../classes/dos/dosscr.cc:387
+msgid "Windows not present"
+msgstr "Brak okna"
+
+#: ../classes/dos/dosscr.cc:388
+msgid "Clipboard in use by other application"
+msgstr "Schowek jest w u¿yciu przez inna aplikacjê"
+
+#: ../classes/dos/dosscr.cc:389
+msgid "Clipboard too big for the transfer buffer"
+msgstr "Schowek jest zbyt du¿y dla bufora przenosz±cego"
+
+#: ../classes/dos/dosscr.cc:390
+msgid "Not enough memory"
+msgstr "Zbyt ma³o pamiêci"
+
+#: ../classes/dos/dosscr.cc:391
+msgid "Windows reports error"
+msgstr "Okno zg³asza b³±d"
+
+#: ../classes/linux/linuxkey.cc:96 ../classes/unix/xtermkey.cc:81
+msgid "that's an interactive application, don't redirect stdin"
+msgstr "to interkatywna aplikacja, nie przekierowywuj strumienia stdin"
+
+#: ../classes/linux/linuxkey.cc:117 ../classes/unix/xtermkey.cc:88
+msgid "failed to get the name of the current terminal used for input"
+msgstr "wyst±pi³ b³±d podczas pobierania nazwy aktualnego terminala u¿ywanego jako wej¶cie"
+
+#: ../classes/linux/linuxkey.cc:123 ../classes/unix/xtermkey.cc:94
+msgid "failed to open the input terminal"
+msgstr "wyst±pi³ b³±d podczas otwierania terminala wej¶ciowego"
+
+#: ../classes/linux/linuxkey.cc:130 ../classes/unix/xtermkey.cc:101
+msgid "can't get input terminal attributes"
+msgstr "nie mo¿na pobraæ atrybutów terminala wej¶ciowego"
+
+#: ../classes/linux/linuxkey.cc:143 ../classes/unix/xtermkey.cc:126
+msgid "can't set input terminal attributes"
+msgstr "nie mo¿na usrtawiæ atrybutów terminala wej¶ciowego"
+
+#: ../classes/linux/linuxkey.cc:822
+msgid "ioctl VT_SETMODE failed"
+msgstr "ioctl VT_SETMODE zakoñczone niepowodzeniem"
+
+#: ../classes/linux/linuxscr.cc:688 ../classes/qnxrtp/qnxscr.cc:66
+#: ../classes/unix/unixscr.cc:579 ../classes/unix/xtermscr.cc:99
+msgid ""
+"that's an interactive application, don't redirect stdout. If you want to "
+"collect information redirect stderr like this: program 2> file"
+msgstr ""
+"to interaktywna aplikacja, nie przekierowywuj strumienia stdout. Jesli chcesz "
+"zebraæ informacjê przekieruj strumieñ stderr w ten sposób: program 2> plik"
+
+#: ../classes/linux/linuxscr.cc:698
+msgid "failed to get the name of the current terminal used for output"
+msgstr "wystapi³ b³±d podczas pobierania nazwy aktualnego terminala u¿ywanego jako wyj¶cie"
+
+#: ../classes/linux/linuxscr.cc:704
+msgid "failed to open the output terminal"
+msgstr "wyst±pi³ b³±d podczas otwierania terminala wyj¶ciowego"
+
+#: ../classes/linux/linuxscr.cc:712 ../classes/linux/linuxscr.cc:722
+#: ../classes/unix/xtermscr.cc:107
+msgid "can't get output terminal information"
+msgstr "nie mo¿na pobraæ informacji o terminalu wyj¶ciowym"
+
+#: ../classes/linux/linuxscr.cc:733 ../classes/unix/xtermscr.cc:117
+msgid "can't configure terminal mode"
+msgstr "nie mo¿na skonfigurowaæ trybu terminala"
+
+#: ../classes/linux/linuxscr.cc:921 ../classes/linux/linuxscr.cc:929
+#: ../classes/qnxrtp/qnxscr.cc:66 ../classes/unix/unixscr.cc:579
+#: ../classes/unix/xtermscr.cc:147 ../classes/unix/xtermscr.cc:155
+#, c-format
+msgid "Error! %s"
+msgstr "B³±d! %s"
+
+#: ../classes/x11/x11src.cc:2137
+msgid "No available selection"
+msgstr "Brak wybranego elementu"
+
+#: ../classes/x11/x11src.cc:2138
+msgid "Unsupported data type"
+msgstr "Nieobs³ugiwany format danych"
+
+#: ../classes/x11/x11src.cc:2139
+msgid "No data"
+msgstr "Brak danych"
+
+#: ../classes/x11/x11src.cc:2140
+msgid "X11 error"
+msgstr "B³±d X11"
+
+#: ../classes/x11/x11src.cc:2141
+msgid "Another application holds the clipboard"
+msgstr "Schowek u¿ywany jest przez inn± aplikacjê"
+
+#: ../fileview.cc:149
+#, c-format
+msgid "Could not open '%s' for reading"
+msgstr "Nie mo¿na otworzyæ '%s' do odczytu"
+
+#: ../fileview.cc:214
+msgid "Save to file"
+msgstr "Zapisaæ do pliku"
+
+#: ../msgbox.cc:41
+msgid "~Y~es"
+msgstr "~T~ak"
+
+#: ../msgbox.cc:42
+msgid "~N~o"
+msgstr "~N~ie"
+
+#: ../msgbox.cc:57
+msgid "Warning"
+msgstr "Ostrze¿enie"
+
+#: ../msgbox.cc:59
+msgid "Information"
+msgstr "Informacja"
+
+#: ../msgbox.cc:60
+msgid "Confirm"
+msgstr "Potwierdzenie"
+
+#: ../msgbox.cc:94
+msgid "Don't warn you next time"
+msgstr "Nie ostrzegaj nastêpnym razem"

@@ -665,6 +665,7 @@ intl/es.po
 intl/gnumake.in
 intl/Makefile
 intl/tvision.po
+intl/pl.po
 intl/ru.po
 +linux/compress
 linux/inclubin.txt

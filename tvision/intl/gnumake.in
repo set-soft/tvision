@@ -28,6 +28,8 @@ install: $(LANG_FILES)
 	install -m 0644 $(ES_FILE) $(prefix)/share/locale/es/LC_MESSAGES/$(destmo)
 	install -d -m 0755 $(prefix)/share/locale/ru/LC_MESSAGES
 	install -m 0644 ru.mo $(prefix)/share/locale/ru/LC_MESSAGES/$(destmo)
+	install -d -m 0755 $(prefix)/share/locale/pl/LC_MESSAGES
+	install -m 0644 pl.mo $(prefix)/share/locale/pl/LC_MESSAGES/$(destmo)
 
 tvision.po:
 	$(xgettext) --default-domain=dummy --add-comments --keyword=_ \

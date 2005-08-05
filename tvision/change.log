@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.654  2005/08/04 20:18:07  set
+* Fixed: The TCalendar class in the demo program tested for wrong mouse
+coordinates to change the month. Patch by Eddie.
+.
 Revision 2.653  2005/08/04 20:04:47  set
 * Modified: [OpenWatcom] the compiler generates a warning when we use
 "delete[] (const char *)var" so now I cast all of them to (char *).
