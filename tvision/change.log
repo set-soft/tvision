@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.399.2.276  2005/08/05 17:07:13  set
+* Fixed(?): [MSVC] mlink.exe compilation. The /OUT: option must be passed
+to the linker with /link. From a report by Arnold. Untested.
+* Fixed(?): [MSVC] The unified make process didn't include dir.h. From a
+report by Arnold. Untested.
+
 Revision 2.399.2.275  2005/08/05 13:49:50  set
 * Added: Polish translation. Contributed by Eddie.
 
