@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.277  2005/08/08 18:35:12  set
+* Fixed: Disabled gettext v0.14.4 "feature" that returns the
+"Program-Id-..." text when you pass "" to gettext. Previous versions didn't
+have this "feature".
+
 Revision 2.399.2.276  2005/08/05 17:07:13  set
 * Fixed(?): [MSVC] mlink.exe compilation. The /OUT: option must be passed
 to the linker with /link. From a report by Arnold. Untested.
