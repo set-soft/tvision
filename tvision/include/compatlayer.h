@@ -1738,8 +1738,8 @@ when compiler version 7.0 was released.
   #define Include_direct 1
  #endif
  #ifdef Uses_dir
-  #undef  Include_dir
-  #define Include_dir 1
+  #undef  Include_cl_dir
+  #define Include_cl_dir 1
  #endif
  #ifdef Uses_strstream
   #undef  Include_strstrea
@@ -2196,6 +2196,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
 #if defined(Include_dir) && !defined(Included_dir)
  #define Included_dir 1
  #include <dir.h>
+#endif
+
+#if defined(Include_cl_dir) && !defined(Included_cl_dir)
+ #define Included_cl_dir 1
+ #include <cl/dir.h>
 #endif
 
 #if defined(Include_langinfo) && !defined(Included_langinfo)

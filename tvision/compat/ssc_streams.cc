@@ -106,6 +106,8 @@ SSC_filebuf *SSC_filebuf::attach(int fh)
 
 SSC_filebuf *SSC_filebuf::close()
 {
+ if (!opened)
+    return 0;
  opened=0;
  if (fclose(fde)==0)
     return this;
