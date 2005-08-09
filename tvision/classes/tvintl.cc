@@ -1,5 +1,5 @@
 /* Internationalization support routines.
-   Copyright by Salvador E. Tropea (SET) (2003)
+   Copyright by Salvador E. Tropea (SET) (2003-2005)
    Covered by the GPL license. */
 
 #define Uses_string
@@ -71,13 +71,15 @@ const char *TVIntl::defaultEncodingNames[]=
 {
  "de",
  "es",
+ "pl",
  "ru"
 };
 int TVIntl::defaultEncodings[]=
 {
- 885901,
- 885901,
- 100000
+ 885901, // de
+ 885901, // es
+ 885902, // pl
+ 100000  // ru
 };
 const int numEncs=3;
 
@@ -133,6 +135,8 @@ const char *TVIntl::bindTextDomain(const char *domainname, const char *dirname)
 
 const char *TVIntl::getText(const char *msgid)
 {
+ if (!msgid || !msgid[0]) // gettext 0.14.4 feature: "" -> "Project-Id-Version...
+    return msgid;
  const char *msgstr=LibGetTextLow(msgid);
  if (msgid==msgstr)
     msgstr=dgettext(packageName,msgstr);
