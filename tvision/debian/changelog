@@ -1,3 +1,25 @@
+rhtvision (2.1.0-1) unstable; urgency=low
+
+  * New upstream version, still unstable so we cannot guarantee that nothing
+    bad happens to your dog if you use this stuff!
+  * Updated Build-Depends: added "file" (but I am not sure it is used or
+    needed, dpkg-depcheck reported it though), instead
+    of xlibs-dev | xlib6g-dev now it has libxmu-dev | xlibs-dev | xlib6g-dev
+    and libx11-dev | xlibs-dev | xlib6g-dev, this should give backwards
+    compatibility for various old Debian versions.
+  * Changed Depends of rhtvision*-dev package: removed libc6-dev and
+    libstdc++-dev since they are build-essential and also if someone is going
+    to compile something like a hello world in C++ they should have them,
+    instead of xlibs-dev | xlib6g-dev now it has libxmu-dev | xlibs-dev |
+    xlib6g-dev and libx11-dev | xlibs-dev | xlib6g-dev.
+  * Remove on clean the generated intl/pl.mo file (doh! come on Salvador!
+    provide a complete clean target! distribution packagers shouldn't be doing
+    this stuff).
+  * Bumped Standards-Version to 3.6.2.0, we should rename this package
+    librhtv but I don't like it too much.
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Thu, 18 Aug 2005 22:50:33 -0300
+
 rhtvision (2.0.4-1) unstable; urgency=low
 
   * New upstream version, this is unstable yet, beware!
