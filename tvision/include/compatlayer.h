@@ -1209,6 +1209,8 @@ typedef unsigned long  ulong;
  */
  #undef  CLY_BROKEN_WATCOM_SCOPE
  #define CLY_BROKEN_WATCOM_SCOPE public
+ /* Disables useless warnings. */
+ #pragma warning 555 9
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed

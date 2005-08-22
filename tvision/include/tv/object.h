@@ -16,7 +16,7 @@ Modified by Robert H”hne to be used for RHIDE.
 
 #include <stddef.h>
 
-class TObject
+class CLY_EXPORT TObject
 {
 
 public:
