@@ -52,7 +52,7 @@ clean: clean-debian debianbackup.tar
 	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env \
 		Makefile compat/rhide.env examples/rhide.env include/tv/configtv.h \
 		linux/rhide.env linuxso/Makefile linuxso/compat.mak \
-		intl/es_iso.mo intl/es_iso.po intl/es.mo intl/ru.mo \
+		intl/es_iso.mo intl/es_iso.po intl/es.mo intl/ru.mo intl/pl.mo \
 		makes/rhide.env makes/libtvfintl.a redhat/librhtv-*.spec
 	rm -f build-stamp
 
