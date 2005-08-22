@@ -1,8 +1,11 @@
-$Log$.
+$Log$
+Revision 2.399.2.279  2005/08/22 14:53:23  terrible
+* Updated: [Debian] Packaging to version 2.1.0-1.
+
 Revision 2.399.2.278  2005/08/08 19:45:42  set
 * Fixed: [SSC] SIGSEGV when closing a stream that failed to open.
 * Fixed(?): [MSVC] Include path to find cl/dir.h and winnt/include/tv/con*
-.
+
 Revision 2.399.2.277  2005/08/08 18:35:12  set
 * Fixed: Disabled gettext v0.14.4 "feature" that returns the
 "Program-Id-..." text when you pass "" to gettext. Previous versions didn't

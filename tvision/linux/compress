@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2003 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2005 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # Creates a distribution tarball.
@@ -21,7 +21,7 @@ if ($r!~/$Version/)
    chdir('../../debian');
    @ENV{'DEBEMAIL'}='salvador@inti.gov.ar';
    @ENV{'DEBFULLNAME'}='Salvador E. Tropea (SET)';
-   system("dch -v$Version"."-0.1 \"New version automatically modified by version update scripts\"");
+   system("dch --check-dirname-level 0 -v$Version"."-0.1 \"New version automatically modified by version update scripts\"");
    chdir('../makes/linux');
   }
 
