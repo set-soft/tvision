@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.660  2005/08/22 15:27:16  set
+* Added: [Compilation] intl clean to the clean target. As suggested by
+Ivan.
+* Modified: [Debian] Command line for dch, needed for Sarge.
+.
 Revision 2.659  2005/08/19 05:27:14  terrible
 * Updated: [Debian] Packaging to version 2.1.0-1.
 

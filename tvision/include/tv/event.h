@@ -23,7 +23,7 @@ struct MouseEventType
 // be used directly. You should use TMouse instead which is derived from
 // it. That's why most members are protected.
 // See thwmouse.cc
-class THWMouse
+class CLY_EXPORT THWMouse
 {
 protected:
  THWMouse();
@@ -108,7 +108,7 @@ inline void THWMouse::inhibit()
 }
 
 // This class exposses the mouse interface.
-class TMouse : public THWMouse
+class CLY_EXPORT TMouse : public THWMouse
 {
 public:
  TMouse();
