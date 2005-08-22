@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.659  2005/08/19 05:27:14  terrible
+* Updated: [Debian] Packaging to version 2.1.0-1.
+
 Revision 2.658  2005/08/09 11:52:20  set
 * Fixed: [SSC] SIGSEGV when closing a stream that failed to open.
 * Fixed(?): [MSVC] Include path to find cl/dir.h and winnt/include/tv/con*

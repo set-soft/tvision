@@ -1217,6 +1217,7 @@ sub GenerateMakefile
  $rep.="\trm -f intl/dummy/*.lo\n";
  $rep.="\trm -f intl/dummy/*.a\n";
  $rep.="\t-\$(MAKE) -C examples clean\n";
+ $rep.="\t-\$(MAKE) -C intl clean\n";
  $rep.="\trm -f configure.cache\n";
  $rep.="\trm -f rhtv-config\$(EXE_EXT)\n";
  $text=~s/\@clean\@/$rep/g;
