@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.661  2005/08/22 20:04:37  set
+* Modified: [OpenWatcom] Disabled warning 555. Code by Lothar.
+* Added: [Win32 DLL/OpenWatcom] Exported TObject, THWMouse and TMouse.
+Patch by Lothar.
+.
 Revision 2.660  2005/08/22 15:27:16  set
 * Added: [Compilation] intl clean to the clean target. As suggested by
 Ivan.
