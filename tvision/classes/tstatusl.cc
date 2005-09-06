@@ -22,6 +22,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TPalette
+#define Uses_TKeys
 #include <tv.h>
 
 #define cpStatusLine "\x02\x03\x04\x05\x06\x07"
@@ -241,7 +242,8 @@ void TStatusLine::handleEvent( TEvent& event )
             {
             for( TStatusItem *T = items; T != 0; T = T->next )
                 {
-                if( event.keyDown.keyCode ==  T->keyCode && 
+                if( T->keyCode != kbNoKey &&
+                    event.keyDown.keyCode ==  T->keyCode &&
                     commandEnabled(T->command))
                     {
                     event.what = evCommand;

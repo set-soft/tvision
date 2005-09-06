@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.282  2005/08/24 12:54:59  set
+* Added: [WWW] Links to a CVS snapshot (tarball and Sarge).
+
 Revision 2.399.2.281  2005/08/22 20:03:07  set
 * Modified: [OpenWatcom] Disabled warning 555. Code by Lothar.
 * Added: [Win32 DLL/OpenWatcom] Exported TObject, THWMouse and TMouse.
