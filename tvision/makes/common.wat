@@ -3,7 +3,7 @@
 # Copyright (c) 2003-2005 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
-# For MSVC.
+# For Open Watcom. NOT TESTED PLEASE HELP ME TO FIX IT.
 # This file contains the definitions needed to compile and link the rules
 # found in .umk files.
 # The definitions are used by all the makefiles.
@@ -14,15 +14,11 @@
 # Is equivalent to rhide.env.
 #
 !ifdef CONFIG_PATH
-# To avoid using -I....
-!include $(CONFIG_PATH)/config.nmk
+# To avoid usig -I....
+!include $(CONFIG_PATH)/config.wat
 !else
-!include config.nmk
+!include config.wat
 !endif
-
-# .path.cc=$(SRCDIRS)
-# .path.c=$(SRCDIRS);.
-# .path.s=$(SRCDIRS)
 
 # Turn off the implicit rule to generate .obj files from .c files.
 # If we don't do it make will use both rules.
@@ -30,17 +26,13 @@
 
 # These files changes the compilation process so they are important
 # dependencies.
-#MAKEFILE_DEPS=blink.exe Interferes with compile rule.
 MAKEFILE_DEPS=
 # Extensions used by Borland tools
 ExOBJ=.obj
 ExEXE=.exe
-ExLIB=.lib
+ExLIB=.dll
 
-RHIDE_AR=mlink
-#RHIDE_AR=link
-RHIDE_ARFLAGS=
-
+# TODO: Write the following rules, currently they are the MSVC ...
 RHIDE_COMPILE_LINK=$(RHIDE_LD) $(LDFLAGS) /OUT:$(OUTFILE) $(OBJFILES) \
 	$(LIBRARIES) $(RHIDE_LIBDIRS) user32.lib gdi32.lib $(RHIDE_LIBS)
 RHIDE_COMPILE_C=$(RHIDE_GCC) -c $(CFLAGS) $(INCLUDE_DIRS) -Fo$(OUTFILE) \
@@ -61,8 +53,4 @@ SOURCE_NAME=$**
 OUTFILE=$@
 ALL_PREREQ=$**
 
-#LIB_DIRS=$(RHIDE_OS_LIBS_PATH) -L.
-
-mlink.exe:: mlink.c
-	$(RHIDE_GCC) kernel32.lib $(ALL_PREREQ) /link /OUT:$(OUTFILE)
 

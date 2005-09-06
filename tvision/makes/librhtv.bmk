@@ -1,9 +1,10 @@
 #!/usr/bin/make
 #
-# Copyright (c) 2003 by Salvador E. Tropea
+# Copyright (c) 2003-2005 by Salvador E. Tropea
 # Covered by the GPL license.
 #
 # This is the Borland C++ makefile for the Turbo Vision library.
+# Also used by MSVC (nmake) and Open Watcom (wmake).
 #
 ##########################################################################################
 #
@@ -32,11 +33,16 @@ INCLUDE_DIRS=-I../winnt/include -I$(INCLUDE_DIR)
 ##########################################################################################
 
 !ifndef MKF_EXT
+# BC++
 all: blink.exe librhtv.lib
 
 MKF_EXT=.bmk
-!else
+!else ifdef FOR_NMAKE
+# MSVC
 all: mlink.exe librhtv.lib
+!else
+# Open Watcom
+all: librhtv.lib
 !endif
 
 #
