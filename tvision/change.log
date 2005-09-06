@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.283  2005/09/06 18:12:58  set
+* Fixed: Unknown keys triggered status line shortcuts assigned to kbNoKey.
+Closes SF Bug #1278751, submited by David (fytodent).
+
 Revision 2.399.2.282  2005/08/24 12:54:59  set
 * Added: [WWW] Links to a CVS snapshot (tarball and Sarge).
 
