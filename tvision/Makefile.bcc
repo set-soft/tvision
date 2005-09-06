@@ -1,17 +1,21 @@
 #!/usr/bin/make
 #
-# Copyright (c) 2003-2004 by Salvador E. Tropea
+# Copyright (c) 2003-2005 by Salvador E. Tropea
 # Covered by the GPL license.
 #
 # That's the makefile for Borland C++ compiler.
+# Also used by MSVC (nmake) and Open Watcom (wmake).
 # I used BC++ 5.5 free command line tools for testing.
 #
 
-!ifndef FOR_NMAKE
-MKF_EXT=.bmk
-!else
+!ifdef FOR_NMAKE
 MKF_EXT=.nmk
 MAKE=nmake
+!else ifdef FOR_OW
+MKF_EXT=.wat
+MAKE=wmake
+!else
+MKF_EXT=.bmk
 !endif
 
 #
@@ -21,7 +25,7 @@ all: librhtv
 
 librhtv:
 	-cd makes
-	$(MAKE) MKF_EXT="$(MKF_EXT)" -f librhtv.bmk
+	$(MAKE) MKF_EXT="$(MKF_EXT)" DEBUG="$(DEBUG)" -f librhtv.bmk
 	-cd ..
 
 clean:
