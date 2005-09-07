@@ -24,6 +24,7 @@
 # If we don't do it make will use both rules.
 .c.obj:
 
+HELPER_TARGET=
 # These files changes the compilation process so they are important
 # dependencies.
 MAKEFILE_DEPS=
