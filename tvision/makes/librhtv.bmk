@@ -34,15 +34,11 @@ INCLUDE_DIRS=-I../winnt/include -I$(INCLUDE_DIR)
 
 !ifndef MKF_EXT
 # BC++
-all: blink.exe librhtv.lib
-
 MKF_EXT=.bmk
 !else ifdef FOR_NMAKE
 # MSVC
-all: mlink.exe librhtv.lib
 !else
 # Open Watcom
-all: librhtv.lib
 !endif
 
 #
@@ -50,6 +46,8 @@ all: librhtv.lib
 # It also includes rhide.env.
 #
 !include common$(MKF_EXT)
+
+all: $(HELPER_TARGET) librhtv.lib
 
 #
 # All the RHIDE data should come from here.

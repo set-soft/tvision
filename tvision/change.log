@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.284  2005/09/06 20:02:33  set
+* Added: First step toward integrating Open Watcom to the unified make
+system. From info by Lothar.
+
 Revision 2.399.2.283  2005/09/06 18:12:58  set
 * Fixed: Unknown keys triggered status line shortcuts assigned to kbNoKey.
 Closes SF Bug #1278751, submited by David (fytodent).
