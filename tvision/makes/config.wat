@@ -31,14 +31,15 @@ CFLAGS   = $(WATCOM_WARN) $(WATCOM_ERRCOUNT) $(WATCOM_QUIET) $(WATCOM_OPTIMIZE) 
 	$(WATCOM_STACK)
 LDFLAGS  =
 !endif
-LDFLAGS  = $(CFLAGS) -bt=nt -mf
+#LDFLAGS  = $(CFLAGS) -bt=nt -mf
+LDFLAGS  = op q op symf d dwarf
 CXXFLAGS = $(CFLAGS)
 
 RHIDE_GCC=wcc386
 RHIDE_GXX=wpp386
-RHIDE_LD=wpp386
+RHIDE_LD=wlink
 RHIDE_AR=wlink
-RHIDE_ARFLAGS=SYS nt_dll op m op maxe=25 op q op symf d dwarf
+RHIDE_ARFLAGS=SYS nt_dll op m op maxe=25 op q op symf op caseexact d dwarf
 
 # Sets the variables for the sub-makes
 EXTRALIB_MAKE_ARGS=_SUBMAKE=1 CC="$(RHIDE_GCC)" LD="$(RHIDE_LD)" CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" -f Makefile.wat
