@@ -13,7 +13,7 @@ MKF_EXT=.nmk
 MAKE=nmake
 !else ifdef FOR_OW
 MKF_EXT=.wat
-MAKE=wmake
+MAKE=wmake -ms
 !else
 MKF_EXT=.bmk
 !endif
