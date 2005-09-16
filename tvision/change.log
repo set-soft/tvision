@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.665  2005/09/07 18:16:27  set
+* Fixed: [MSVC] nmake doesn't analyze the whole makefile before expanding
+variables, in order to create mlink.exe we need to first define
+HELPER_TARGET. From info by Arnold.
+.
 Revision 2.664  2005/09/06 20:14:30  set
 * Added: First step toward integrating Open Watcom to the unified make
 system. From info by Lothar.
