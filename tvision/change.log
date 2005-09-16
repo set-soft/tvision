@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.399.2.286  2005/09/16 18:54:45  set
+* Fixed: [MSVC] the "all" target isn't special for nmake. After arranging
+things so the variable gets defined by the time all is used I introduced
+a side effect: all isn't the first anymore. So we must explicitly ask for
+"all" target. From information sent by Arnold.
+
 Revision 2.399.2.285  2005/09/07 18:11:21  set
 * Fixed: [MSVC] nmake doesn't analyze the whole makefile before expanding
 variables, in order to create mlink.exe we need to first define
