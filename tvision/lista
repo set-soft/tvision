@@ -247,6 +247,7 @@ doc/install/mingwin.txt
 doc/install/msvc.txt
 doc/install/tools.txt
 doc/install/unix.txt
+doc/install/watcom.txt
 -doc/libdocs.epr
 doc/Linux.txt
 doc/QNX.txt

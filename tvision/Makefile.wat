@@ -13,6 +13,6 @@
 
 FOR_OW=1
 # Uncomment to generate code with debug information.
-#DEBUG=1
+DEBUG=1
 !include Makefile.bcc
 

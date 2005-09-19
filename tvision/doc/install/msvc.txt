@@ -20,19 +20,18 @@ $Id$
   This target is supported because users helped to make it possible. If you
 find any problem just do the same the other users did: help to fix them.
   You can also create Win32 versions of this package using BorlandC Builder,
-Cygwin or MinGW.
+Cygwin, Open Watcom or MinGW.
   Versions 5.0, 6.0, 7.0 and 7.1 compiled the code.
 
 
 2. HOW TO COMPILE
 
-  I'm trying to unify the compilation process but I need volunteers to help
-testing the new MSVC makefiles. For this reason you should use the old
-mechanism explained in winnt/readme.txt
-  The winnt/Makefile.nmk file contains the information needed to create the
-executable just use it with nmake.
-  If you want to test the unified compilation mechanism try using nmake and
-the Makefile.nmk file.
+  You can use the unified make system:
+
+nmake -f Makefile.nmk
+
+  If it fails you can try using the old mechanism explained in
+winnt/readme.txt
 
 
 3. INSTALLATION
@@ -64,6 +63,7 @@ Grzegorz Adam Hankiewicz <gradha/iname/com>
 David Doubrava (ddoubrava/volny/cz)
   Compilation issue.
 Arnold Wiegert <awiegert/telus/net>
+  Help with the free version of MSVC (7.1).
   Adaptation to MSVC 6.0.
   Hints about MSVC 4.0.
 Christian Kirches <christian/kirches/gmx/de>.
