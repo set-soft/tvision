@@ -27,8 +27,10 @@ librhtv:
 	-cd makes
 	$(MAKE) MKF_EXT="$(MKF_EXT)" DEBUG="$(DEBUG)" -f librhtv.bmk all
 	-cd ..
+	-echo Test > librhtv
 
 clean:
 	-del makes\obj\*.obj
 	-del makes\*.lib
+	-del librhtv
 

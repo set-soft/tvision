@@ -12,6 +12,7 @@ DJGPP (2.02, 2.03)                        doc/install/djgpp.txt
 Linux                                     doc/install/linux.txt
 Microsoft Visual C (5.0, 6.0, 7.0)        doc/install/msvc.txt
 MingWin                                   doc/install/mingwin.txt
+Open Watcom                               doc/install/watcom.txt
 UNIX (POSIX) systems                      doc/install/unix.txt
 
   Important: If you want to contribute to this project you can help me to

@@ -21,10 +21,10 @@ SRCDIRS=$(SRCD1);$(SRCD2);$(SRCD3)
 #
 # Include directories
 #
-INCLUDE_DIR=../include
-CLASSES_DIR=../classes
+INCLUDE_DIR=..\include
+CLASSES_DIR=..\classes
 EXTRA_SRC_DIR=..
-INCLUDE_DIRS=-I../winnt/include -I$(INCLUDE_DIR)
+INCLUDE_DIRS=-I..\winnt\include -I$(INCLUDE_DIR)
 
 ##########################################################################################
 #
@@ -47,7 +47,7 @@ MKF_EXT=.bmk
 #
 !include common$(MKF_EXT)
 
-all: $(HELPER_TARGET) librhtv.lib
+all: $(HELPER_TARGET) librhtv$(ExLIB)
 
 #
 # All the RHIDE data should come from here.

@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.667  2005/09/16 19:37:02  set
+* Added: [OpenWatcom] More to the makefiles, not yet usable. From info by
+Lothar.
+.
 Revision 2.666  2005/09/16 18:56:31  set
 * Fixed: [MSVC] the "all" target isn't special for nmake. After arranging
 things so the variable gets defined by the time all is used I introduced

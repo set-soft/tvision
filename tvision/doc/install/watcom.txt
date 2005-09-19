@@ -1,0 +1,53 @@
+  This file describes how to compile the package for Win32 systems using
+Open Watcom compiler. (http://www.openwatcom.org).
+
+$Id$
+
+1. INTRODUCTION
+2. HOW TO COMPILE
+3. INSTALLING
+4. OPEN WATCOM TARGET CONTRIBUTORS
+
+
+
+1. INTRODUCTION
+
+  This target is supported because users helped to make it possible. If you
+find any problem just do the same the other users did: help to fix them.
+  You can also create Win32 versions of this package using BorlandC Builder,
+Cygwin, MSVC or MinGW.
+
+
+2. HOW TO COMPILE
+
+  You can use the unified make system:
+
+wmake -f Makefile.wat
+
+  This will generate makes/librhtv.dll
+
+
+3. INSTALLATION
+
+  Currently this target needs manual installation. You can also use the files
+without installing just providing the paths to the compiler.
+
+
+4. OPEN WATCOM TARGET CONTRIBUTORS
+
+Chronologically sorted:
+
+Drivers: [Shared with other Win32 targets]
+
+WinNT: Anatoli Soltan
+Win32: Vadim Beloborodov
+WinGr: José Ángel Sánchez Caso
+
+Compilation:
+
+Lothar Behrens <lothar/behrens/lollisoft/de>
+  Help to get it working.
+  DLL stuff.
+  Compilation rules.
+
+
