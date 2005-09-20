@@ -16,6 +16,7 @@ $Id$
 find any problem just do the same the other users did: help to fix them.
   You can also create Win32 versions of this package using BorlandC Builder,
 Cygwin, MSVC or MinGW.
+  Version 1.3 compiled the code for 2005/09/20 CVS snapshot.
 
 
 2. HOW TO COMPILE

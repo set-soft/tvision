@@ -1,4 +1,11 @@
 $Log$.
+Revision 2.668  2005/09/19 14:06:58  set
+* Fixed: [OpenWatcom] compilation rules. Patch by Lothar.
+* Added: [OpenWatcom] instructions on how to compile.
+* Modified: [MSVC] the compilation instructions. After Arnold's success
+using the free MSVC tools I think MSVC can use the unified make system as
+default.
+.
 Revision 2.667  2005/09/16 19:37:02  set
 * Added: [OpenWatcom] More to the makefiles, not yet usable. From info by
 Lothar.
