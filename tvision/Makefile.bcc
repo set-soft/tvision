@@ -25,7 +25,7 @@ all: librhtv
 
 librhtv:
 	-cd makes
-	$(MAKE) MKF_EXT="$(MKF_EXT)" DEBUG="$(DEBUG)" -f librhtv.bmk all
+	$(MAKE) MKF_EXT="$(MKF_EXT)" DEBUG="$(DEBUG)" EXTRA_TARGETS="$(EXTRA_TARGETS)" -f librhtv.bmk all
 	-cd ..
 
 clean:

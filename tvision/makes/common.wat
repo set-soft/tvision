@@ -28,7 +28,7 @@ HELPER_TARGET=
 # These files changes the compilation process so they are important
 # dependencies.
 MAKEFILE_DEPS=
-# Extensions used by Borland tools
+# Extensions used by Watcom tools
 ExOBJ=.obj
 ExEXE=.exe
 ExLIB=.dll
@@ -37,16 +37,14 @@ SOURCE_NAME=$[@
 OUTFILE=$^@
 ALL_PREREQ=$<
 
-# TODO: Write the following rules, currently they are the MSVC ...
 RHIDE_COMPILE_LINK=$(RHIDE_LD) $(LDFLAGS) NAME $(OUTFILE) \
 	FILE { $(OBJECTS) $(LIBRARIES) $(RHIDE_LIBS) }
 RHIDE_COMPILE_C=$(RHIDE_GCC) -zq -fo=$(OUTFILE) $(CFLAGS) $(INCLUDE_DIRS) $(SOURCE_NAME)
 RHIDE_COMPILE_CC=$(RHIDE_GXX) -zq -fo=$(OUTFILE) $(CFLAGS) $(INCLUDE_DIRS) $(SOURCE_NAME)
 RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) name $(OUTFILE) \
 	file { $(OBJFILES) }
-# The command line capacity isn't enough for this:
-#RHIDE_COMPILE_ARCHIVE=$(RHIDE_AR) $(RHIDE_ARFLAGS) /OUT:$(OUTFILE) \
-#	$(ALL_PREREQ)
+# Special postprocessing: create the import library
+RHIDE_POST_ARCHIVE=wlib -q -n -b librhtv.lib +librhtv.dll
 # This is fake, the .S files are used only for DJGPP and they are protected
 # by preprocessor constructions. For this reason they can be used as C sources
 # to generate dummy .obj files.
