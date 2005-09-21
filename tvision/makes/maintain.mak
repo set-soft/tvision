@@ -44,11 +44,11 @@ imks_files=$(addsuffix .imk,$(imks_list)) $(addsuffix .umk,$(mkfs_list))
 
 # Tool to extract dependencies
 extrimk.exe: extrimk.cc
-	$(RHIDE_GCC) -o $@ $< $(STDCPP_LIB)
+	$(RHIDE_GXX) -o $@ $< $(STDCPP_LIB)
 
 # Tool to create temporal .mak files and call  extrimk
 genimk.exe: genimk.cc extrimk.exe
-	$(RHIDE_GCC) -o $@ $< $(STDCPP_LIB)
+	$(RHIDE_GXX) -o $@ $< $(STDCPP_LIB)
 
 librhtv.imk: librhtv.gpr ../compat/compat.gpr $(EXDEP)
 	@./genimk.exe $@ $^
