@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.289  2005/09/20 14:41:41  set
+* Added: [OpenWatcom] Which version was used.
+* Modified: [OpenWatcom] Removed test from makefile.
+
 Revision 2.399.2.288  2005/09/19 13:48:36  set
 * Fixed: [OpenWatcom] compilation rules. Patch by Lothar.
 * Added: [OpenWatcom] instructions on how to compile.

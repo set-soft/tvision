@@ -47,7 +47,7 @@ MKF_EXT=.bmk
 #
 !include common$(MKF_EXT)
 
-all: $(HELPER_TARGET) librhtv$(ExLIB)
+all: $(HELPER_TARGET) librhtv$(ExLIB) $(EXTRA_TARGETS)
 
 #
 # All the RHIDE data should come from here.

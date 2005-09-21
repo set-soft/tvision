@@ -14,5 +14,12 @@
 FOR_OW=1
 # Uncomment to generate code with debug information.
 DEBUG=1
+EXTRA_TARGETS=makes\librhtv.lib
 !include Makefile.bcc
+
+# Import library:
+makes\librhtv.lib: librhtv
+	-cd makes
+	$(RHIDE_POST_ARCHIVE)
+	-cd ..
 
