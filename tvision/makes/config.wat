@@ -7,10 +7,6 @@
 # They include the C and C++ options and linker options.
 #
 
-WATCOM_CC=-DWINDOWS -DCLY_DLL -D_WIN32
-
-INCLUDE_DIRS=-I. -I$(WATCOM)\h -I$(WATCOM)\h\nt -I..\winnt\include -I..\winnt\include\msvc -I$(INCLUDE_DIR)
-
 WATCOM_CC=-DWINDOWS -DCLY_DLL -D_WIN32 -bt=nt -mf
 
 INCLUDE_DIRS=-I. -I$(WATCOM)\h -I$(WATCOM)\h\nt -I..\winnt\include -I..\winnt\include\msvc -I$(INCLUDE_DIR)

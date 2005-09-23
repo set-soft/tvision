@@ -18,8 +18,8 @@ EXTRA_TARGETS=makes\librhtv.lib
 !include Makefile.bcc
 
 # Import library:
-makes\librhtv.lib: librhtv
+makes\librhtv.lib: makes\librhtv$(ExLIB)
 	-cd makes
-	$(RHIDE_POST_ARCHIVE)
+	wlib -q -n -b librhtv.lib +librhtv.dll
 	-cd ..
 
