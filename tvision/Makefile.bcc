@@ -14,6 +14,7 @@ MAKE=nmake
 !else ifdef FOR_OW
 MKF_EXT=.wat
 MAKE=wmake -ms
+ExLIB=.dll
 !else
 MKF_EXT=.bmk
 !endif
@@ -21,9 +22,9 @@ MKF_EXT=.bmk
 #
 # Main targets
 #
-all: librhtv
+all: makes\librhtv$(ExLIB) $(EXTRA_TARGETS)
 
-librhtv:
+makes\librhtv$(ExLIB):
 	-cd makes
 	$(MAKE) MKF_EXT="$(MKF_EXT)" DEBUG="$(DEBUG)" EXTRA_TARGETS="$(EXTRA_TARGETS)" -f librhtv.bmk all
 	-cd ..
@@ -31,4 +32,5 @@ librhtv:
 clean:
 	-del makes\obj\*.obj
 	-del makes\*.lib
+	-del makes\*$(ExLIB)
 
