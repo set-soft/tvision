@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.291  2005/11/10 19:38:27  set
+* Modified: TInputLine::setData to support a constant as argument. This is
+related to SF patch #1353157 adapted to the Unicode branch.
+
 Revision 2.399.2.290  2005/09/21 14:49:56  set
 * Modified: [OpenWatcom] compilation flags. Patch by Lothar.
 * Added: [OpenWatcom] Import lib creation.
