@@ -469,8 +469,10 @@ void TInputLine::setData( void *rec )
 {
     if (!validator || !validator->transfer(data,rec,vtSetData))
         {
-        memcpy( data, rec, dataSize()-1 );
-        data[dataSize()-1] = EOS;
+        // The following is invalid is someboy calls setData("string")
+        // memcpy( data, rec, dataSize()-1 );
+        strncpy( data, (const char*)rec, dataSize()-1 );
+        data[dataSize()-1] = EOS; // strncpy doesn't make it if strlen(rec)>dataSize()-1
         }
     selectAll( True );
 }

@@ -1,56 +1,60 @@
-$Log$.
+$Log$
+Revision 2.671  2005/09/23 15:26:07  set
+* Fixed: [OpenWatcom] Some details related to the import lib generation.
+Patch from Lothar. Note: wmake is the worst make tool we support.
+
 Revision 2.670  2005/09/21 15:06:15  set
 * Modified: [OpenWatcom] compilation flags. Patch by Lothar.
 * Added: [OpenWatcom] Import lib creation.
 * Fixed: extrimk was created using the C compiler instead of the C++ one.
-.
+
 Revision 2.669  2005/09/20 14:48:37  set
 * Added: [OpenWatcom] Which version was used.
 * Modified: [OpenWatcom] Removed test from makefile.
-.
+
 Revision 2.668  2005/09/19 14:06:58  set
 * Fixed: [OpenWatcom] compilation rules. Patch by Lothar.
 * Added: [OpenWatcom] instructions on how to compile.
 * Modified: [MSVC] the compilation instructions. After Arnold's success
 using the free MSVC tools I think MSVC can use the unified make system as
 default.
-.
+
 Revision 2.667  2005/09/16 19:37:02  set
 * Added: [OpenWatcom] More to the makefiles, not yet usable. From info by
 Lothar.
-.
+
 Revision 2.666  2005/09/16 18:56:31  set
 * Fixed: [MSVC] the "all" target isn't special for nmake. After arranging
 things so the variable gets defined by the time all is used I introduced
 a side effect: all isn't the first anymore. So we must explicitly ask for
 "all" target. From information sent by Arnold.
-.
+
 Revision 2.665  2005/09/07 18:16:27  set
 * Fixed: [MSVC] nmake doesn't analyze the whole makefile before expanding
 variables, in order to create mlink.exe we need to first define
 HELPER_TARGET. From info by Arnold.
-.
+
 Revision 2.664  2005/09/06 20:14:30  set
 * Added: First step toward integrating Open Watcom to the unified make
 system. From info by Lothar.
-.
+
 Revision 2.663  2005/09/06 18:17:47  set
 * Fixed: Unknown keys triggered status line shortcuts assigned to kbNoKey.
 Closes SF Bug #1278751, submited by David (fytodent).
-.
+
 Revision 2.662  2005/08/24 13:00:22  set
 * Added: [WWW] Links to a CVS snapshot (tarball and Sarge).
-.
+
 Revision 2.661  2005/08/22 20:04:37  set
 * Modified: [OpenWatcom] Disabled warning 555. Code by Lothar.
 * Added: [Win32 DLL/OpenWatcom] Exported TObject, THWMouse and TMouse.
 Patch by Lothar.
-.
+
 Revision 2.660  2005/08/22 15:27:16  set
 * Added: [Compilation] intl clean to the clean target. As suggested by
 Ivan.
 * Modified: [Debian] Command line for dch, needed for Sarge.
-.
+
 Revision 2.659  2005/08/19 05:27:14  terrible
 * Updated: [Debian] Packaging to version 2.1.0-1.
 
