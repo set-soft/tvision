@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.290  2005/09/21 14:49:56  set
+* Modified: [OpenWatcom] compilation flags. Patch by Lothar.
+* Added: [OpenWatcom] Import lib creation.
+* Fixed: extrimk was created using the C compiler instead of the C++ one.
+
 Revision 2.399.2.289  2005/09/20 14:41:41  set
 * Added: [OpenWatcom] Which version was used.
 * Modified: [OpenWatcom] Removed test from makefile.
