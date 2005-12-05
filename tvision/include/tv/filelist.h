@@ -31,6 +31,7 @@ public:
     virtual void focusItem( ccIndex item );
     virtual void getText( char *dest, ccIndex item, short maxLen );
     virtual void selectItem( ccIndex item );
+    virtual void handleEvent( TEvent &event );
     void newList( TFileCollection *aList );
     void readDirectory( const char *dir, const char *wildCard );
     void readDirectory( const char *wildCard );
