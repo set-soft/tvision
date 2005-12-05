@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.292  2005/11/10 19:44:05  set
+* Fixed: TParamText::~TParamText new/delete[] missmatch. SF patch #1353152
+(David cz, using valgrind).
+
 Revision 2.399.2.291  2005/11/10 19:38:27  set
 * Modified: TInputLine::setData to support a constant as argument. This is
 related to SF patch #1353157 adapted to the Unicode branch.

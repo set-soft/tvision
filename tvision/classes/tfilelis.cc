@@ -38,6 +38,8 @@ exlude some particular files by configuration.
 #define Uses_TEvent
 #define Uses_TGroup
 #define Uses_TStreamableClass
+#define Uses_TKeys
+#define Uses_TKeys_Extended
 #define Uses_sys_stat
 
 #if defined(TVCompf_djgpp)
@@ -118,19 +120,32 @@ void TFileList::getText( char *dest, ccIndex item, short maxChars )
   strcat( dest, DIRSEPARATOR_ );
 }
 
-/* SET: Moved (TV 2.0)
 void TFileList::handleEvent( TEvent & event )
 {
-  if ( event.what == evMouseDown && event.mouse.doubleClick )
-  {
-    event.what = evCommand;
-    event.message.command = cmOK;
-    putEvent( event );
-    clearEvent( event );
-  }
-  else
-    TSortedListBox::handleEvent( event );
-}*/
+  TSearchRec trec, *tp;
+
+  TSortedListBox::handleEvent( event );
+  if( event.what == evKeyDown )
+      {
+      if( event.keyDown.keyCode == kbLeft )
+          {
+          clearEvent( event );
+          /* Move to .. */
+          trec.attr = FA_DIREC;
+          strcpy( trec.name, ".." );
+          message( owner, evBroadcast, cmFileFocused, &trec );
+          message( owner, evBroadcast, cmFileDoubleClicked, &trec );
+          }
+      else if( event.keyDown.keyCode == kbRight )
+          {
+          clearEvent( event );
+          /* Enter dir */
+          tp = list()->at(focused);
+          if( tp->attr & FA_DIREC )
+              message( owner, evBroadcast, cmFileDoubleClicked, tp );
+          }
+      }
+}
 
 void TFileList::readDirectory( const char *dir, const char *wildCard )
 {
