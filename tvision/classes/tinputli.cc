@@ -555,13 +555,20 @@ void TInputLineBaseT<T,D>::setData(void *rec)
 {
  if (!validator || !validator->transfer(data,rec,vtSetData))
    {
-    dataLen=StrLen((T *)data);
+    #if 1
+    dataLen=StrLen((T *)rec);
     unsigned ds=dataSize()-sizeof(T);
     unsigned dataLenBytes=dataLen*sizeof(T);
     if (dataLenBytes>ds)
        dataLenBytes=ds;
     memcpy(data,rec,dataLenBytes);
     memset(data+dataLenBytes,EOS,ds-dataLenBytes+1);
+    #else // Old code, can read out of bounds.
+    unsigned ds=dataSize()-sizeof(T);
+    memcpy(data,rec,ds);
+    *((T *)(data+ds))=EOS;
+    dataLen=StrLen((T *)data);
+    #endif
    }
  selectAll(True);
 }
