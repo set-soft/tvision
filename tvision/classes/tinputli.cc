@@ -86,6 +86,7 @@ TInputLineBaseT<T,D>::TInputLineBaseT(const TRect& bounds, int aMaxLen, TValidat
  *((T *)data)=EOS;
  oldData=(char *)new T[aMaxLen];
  cellSize=sizeof(T);
+ hideContent=False;
 }
 
 void TInputLineBase::setValidator(TValidator *aValidator)
@@ -135,7 +136,14 @@ void TInputLineBaseT<T,D>::draw()
  uchar color=(state & sfFocused) ? getColor(2) : getColor(1);
  
  b.moveChar(0,' ',color,size.x);
- b.moveStr(1,((T *)data)+firstPos,color,size.x-2);
+ if (hideContent)
+   {
+    int rest=dataLen-firstPos;
+    if (rest>0)
+       b.moveChar(1,'*',color,min(size.x-2,rest));
+   }
+ else
+    b.moveStr(1,((T *)data)+firstPos,color,size.x-2);
  
  if (canScroll(1))
     b.moveChar(size.x-1,sizeof(T)==1 ? rightArrow : 0x25b6,(uchar)getColor(4),1);
@@ -587,6 +595,18 @@ void TInputLineBaseT<T,D>::setDataFromStr(void *str)
 
 void TInputLineBase::setState(ushort aState, Boolean enable)
 {
+ if (validator &&                           // We have a validator
+     (modeOptions & ilValidatorBlocks)  &&  // We want to block if invalid
+     owner && (owner->state & sfActive) &&  // The owner is visible
+     aState==sfFocused && enable==False)    // We are losing the focus
+   {
+    TValidator *v=validator;
+    validator=NULL;             // Avoid nested tests
+    Boolean ret=v->validate(data); // Check if we have valid data
+    validator=v;
+    if (!ret)                   // If not refuse the focus change
+       return;
+   }
  TView::setState(aState,enable);
  if (aState==sfSelected ||
      (aState==sfActive && (state & sfSelected)))

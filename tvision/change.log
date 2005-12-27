@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.294  2005/12/06 18:21:50  set
+* Fixed: Wrong computation in last patch to TInputLine::setData.
+
 Revision 2.399.2.293  2005/12/05 20:21:26  set
 * Added: Now the list box in the file dialog uses left and right arrows to
 navigate directories. Suggested by Sergio Núñez snunez/esquemas/com.
