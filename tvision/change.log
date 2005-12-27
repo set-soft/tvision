@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.674  2005/12/05 20:24:10  set
+* Added: Now the list box in the file dialog uses left and right arrows to
+navigate directories. Suggested by Sergio Núñez snunez/esquemas/com.
+
 Revision 2.673  2005/11/10 19:46:26  set
 * Fixed: TParamText::~TParamText new/delete[] missmatch. SF patch #1353152
 (David cz, using valgrind).
