@@ -62,6 +62,7 @@ public:
     int firstPos, oldFirstPos;
     int selStart, oldSelStart;
     int selEnd, oldSelEnd;
+    Boolean hideContent;
 
     // Functions to fine tune the behavior. by SET.
     unsigned setModeOptions(unsigned newOps)

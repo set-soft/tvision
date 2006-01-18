@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.675  2005/12/27 14:18:30  set
+* Modified: Restored the code to honor the ilValidatorBlocks flag in
+TInputLineBase::setState. I don't know why I removed it when I added BTV
+2.0 stuff.
+
 Revision 2.674  2005/12/05 20:24:10  set
 * Added: Now the list box in the file dialog uses left and right arrows to
 navigate directories. Suggested by Sergio Núñez snunez/esquemas/com.

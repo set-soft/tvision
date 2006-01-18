@@ -53,6 +53,7 @@ TInputLine::TInputLine( const TRect& bounds, int aMaxLen, TValidator *aValid ) :
     options |= ofSelectable | ofFirstClick;
     *data = EOS;
     modeOptions = defaultModeOptions;
+    hideContent = False;
 }
 
 void TInputLine::setValidator(TValidator * aValidator)
@@ -99,9 +100,18 @@ void TInputLine::draw()
 
     b.moveChar( 0, ' ', color, size.x );
     AllocLocalStr( buf, size.x );
-    strncpy( buf, data+firstPos, size.x - 2 );
-    buf[size.x - 2 ] = EOS;
-    b.moveStr( 1, buf, color );
+    if( hideContent )
+        {
+        int rest = strlen( data ) - firstPos;
+        if( rest > 0 )
+            b.moveChar( 1, '*', color, min( size.x - 2, rest) );
+        }
+    else
+        {
+        strncpy( buf, data+firstPos, size.x - 2 );
+        buf[size.x - 2 ] = EOS;
+        b.moveStr( 1, buf, color );
+        }
 
     if( canScroll(1) )
         b.moveChar( size.x-1, rightArrow, getColor(4), 1 );
