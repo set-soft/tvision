@@ -77,6 +77,7 @@ public:
  int firstPos, oldFirstPos;
  int selStart, oldSelStart;
  int selEnd, oldSelEnd;
+ Boolean hideContent;
 
  static char rightArrow;
  static char leftArrow;
