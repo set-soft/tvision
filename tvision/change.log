@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.295  2005/12/27 13:53:36  set
+* Modified: Restored the code to honor the ilValidatorBlocks flag in
+TInputLineBase::setState. I don't know why I removed it when I added BTV
+2.0 stuff.
+
 Revision 2.399.2.294  2005/12/06 18:21:50  set
 * Fixed: Wrong computation in last patch to TInputLine::setData.
 
