@@ -74,7 +74,7 @@ TDialog * ConstInputDlg(TValidator * aValid)
    TDialog * d = new TDialog( TRect(0, 0, 50, 8), __("Values editor") );
    TInputLine * ip_id = new TInputLine(TRect (10, 2, 48, 3), 50);
    TInputLine * ip_vl = new TInputLine(TRect (10, 3, 17, 4), 5);
-   if (aValid) ip_vl->SetValidator(aValid);
+   if (aValid) ip_vl->setValidator(aValid);
    d->insert(new TLabel( TRect(1, 2, 10, 3), _("~I~dent:"), ip_id ) );
    d->insert(ip_id);
    d->insert(new TLabel( TRect(1, 3, 10, 4), _("~V~alue:"), ip_id ) );

@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.676  2006/01/18 14:00:26  set
+* Added: A methode to make input lines hide their content.
+.
 Revision 2.675  2005/12/27 14:18:30  set
 * Modified: Restored the code to honor the ilValidatorBlocks flag in
 TInputLineBase::setState. I don't know why I removed it when I added BTV
