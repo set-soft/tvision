@@ -40,6 +40,7 @@
 #define Uses_TInputLine
 #define Uses_TPalette
 #define Uses_TValidator
+#define Uses_TFilterValidator
 
 #include <tv.h>
 
@@ -434,7 +435,7 @@ TLinkList * ObjectLinker() { return ObjLink; }
 TInPlaceEdit::TInPlaceEdit(const TRect& bounds, ushort aMaxLen,
                            TValidator * aValidator):
                            TInputLine(bounds, aMaxLen)
-                           { SetValidator(aValidator); }
+                           { setValidator(aValidator); }
                            
 void TInPlaceEdit::handleEvent(TEvent& event)
 {
