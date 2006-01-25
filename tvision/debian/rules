@@ -49,11 +49,8 @@ clean: clean-debian debianbackup.tar
 	test -e debianbackup.tar && tar -xf debianbackup.tar
 	rm -f debianbackup.tar
 # FIXME: ask upstream about adding the next files to his clean target:
-	rm -f linuxso/gkeyli.cc linuxso/instlib linuxso/rhide.env \
-		Makefile compat/rhide.env examples/rhide.env include/tv/configtv.h \
-		linux/rhide.env linuxso/Makefile linuxso/compat.mak \
-		intl/es_iso.mo intl/es_iso.po intl/es.mo intl/ru.mo intl/pl.mo \
-		makes/rhide.env makes/libtvfintl.a redhat/librhtv-*.spec
+	rm -f compat/rhide.env examples/rhide.env include/tv/configtv.h Makefile \
+		makes/rhide.env redhat/librhtv-*.spec makes/libtvfintl.a
 	rm -f build-stamp
 
 # Use the following target when you just want for example to rebuild the

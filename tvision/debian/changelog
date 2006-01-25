@@ -1,3 +1,14 @@
+rhtvision (2.1.0-2) unstable; urgency=low
+
+  * No longer delete these files because they no longer exist or are deleted
+    by the upstream now: linuxso/gkeyli.cc, linuxso/instlib,
+    linuxso/rhide.env, linux/rhide.env, linuxso/Makefile, linuxso/compat.mak,
+    intl/es_iso.mo, intl/es_iso.po, intl/es.mo, intl/ru.mo, intl/pl.mo.
+  * If you want to compile with GCC 4.0.3 comment out #undef  _LIBINTL_H and
+    #define _LIBINTL_H 1 in include/compatlayer.h.
+
+ -- Ivan Baldo <ibaldo@adinet.com.uy>  Wed, 25 Jan 2006 20:21:46 -0200
+
 rhtvision (2.1.0-1) unstable; urgency=low
 
   * New upstream version, still unstable so we cannot guarantee that nothing

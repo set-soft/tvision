@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.677  2006/01/24 17:38:08  set
+* Fixed: BTV 1.x calls to setValidator in examples. Patch by Frank Taffelt
+frank.taffelt/web/de.
+
 Revision 2.676  2006/01/18 14:00:26  set
 * Added: A methode to make input lines hide their content.
 .
