@@ -17,6 +17,7 @@
 #define Uses_TEvent
 #define Uses_TGKey
 #define Uses_TVCodePage
+#define Uses_alloca
 #include <tv.h>
 
 #if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver)
@@ -308,7 +309,7 @@ uchar TScreenWinGr::shapeFont10x20[]=
  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x33,0x00,0x33,0x00,0x00,0x00,0x61,0x80,0x61,0x80,0x61,0x80,0x61,0x80,0x61,0x80,0x61,0x80,0x33,0x80,0x1D,0x80,0x01,0x80,0x61,0x80,0x33,0x00,0x1E,0x00,
 };
 
-ushort TScreenWinGr::shapeFont8x16[]=
+uchar TScreenWinGr::shapeFont8x16[]=
 {
  0x00,0x00,0x7E,0xC3,0x99,0x99,0xF3,0xE7,0xE7,0xFF,0xE7,0xE7,0x7E,0x00,0x00,0x00, // 0
  0x00,0x00,0x00,0x00,0x00,0x76,0xDC,0x00,0x76,0xDC,0x00,0x00,0x00,0x00,0x00,0x00, // 
@@ -571,6 +572,7 @@ ushort TScreenWinGr::shapeFont8x16[]=
 TScreenFont256  TScreenWinGr::font8x16 ={ 8,  16, (uchar *)shapeFont8x16  };
 TScreenFont256  TScreenWinGr::font10x20={ 10, 20, shapeFont10x20 };
 
+TScreenFont256 * TScreenWinGr::defaultFont= &TScreenWinGr::font8x16;
 
 
 /*
@@ -586,7 +588,24 @@ int TScreenWinGr::selectFont( bitmapFontRec  & fontResource
   if ( fontResource.bitmapRaster )
   { DeleteObject( fontResource.bitmapRaster );  /* Free rersources */
   }    
-      
+  
+/*
+ * Bitmaps are word aligned but fonts are byte aligned Aghh... 
+ */  
+ 
+  ushort * data= (ushort *)fontData->data;
+  ushort * dst= (ushort *) alloca( 256 * sizeof( ushort ) * fontData->h );
+  
+  if ( fontData->w == 8 )  /* !!! 24 etc .. */
+  { int sz= 256 * fontData->h ;   /* Iterate whole chars     */
+    uchar * src= fontData->data;
+    data= dst;                    /* Point to the new buffer */
+         
+     while ( sz -- )
+     { *dst ++ =  *src ++;  // *src ++;
+     }
+  }       
+        
 /*
  *  Arrange all 256 chars in a single row
  */      
@@ -598,7 +617,7 @@ int TScreenWinGr::selectFont( bitmapFontRec  & fontResource
     CreateBitmap( fontData->w
                 , fontData->h * 256   /* 256 chars        */
                 , 1 ,  1              /* Monochome bitmap */
-                , fontData->data );   /* font data        */ 
+                , data );             /* font data        */ 
 
                                 
   fontResource.bitmapObject= 
@@ -608,6 +627,7 @@ int TScreenWinGr::selectFont( bitmapFontRec  & fontResource
                             
 
 /*
+ *
  */
 
 int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
@@ -616,12 +636,19 @@ int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
 { if (!changeP && !changeS) 
   { return 1;
   }
+  
+  if ( !fontP )
+  { fontP= defaultFont; 
+  }
                          
-  if ( fontP && changeP )
+  if ( !fontS )
+  { fontS= defaultFont;  
+  }
+  if ( changeP )
   { selectFont( primary, fontP );
   }
 
-  if ( fontS && changeS )
+  if ( changeS )
   { selectFont( secondary, fontS );
   }
 
@@ -637,7 +664,45 @@ int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
   return( 1 );
 }                         
 
+/*
+ *
+ */
 
+void TScreenWinGr::RestoreFonts()
+{ SetFont( 1, NULL
+         , 1, NULL
+         , TVCodePage::ISOLatin1Linux
+         , TVCodePage::ISOLatin1Linux);
+}
+
+
+/*
+ *
+ */
+
+int TScreenWinGr::GetFontGeometry(unsigned &w, unsigned &h)
+{
+ w= primary.w;
+ h= primary.h;
+ return 1;
+}
+
+/*
+ *
+ */
+
+int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
+                                      , unsigned &wmax, unsigned &hmax )
+{ const unsigned foWmin=5
+               , foHmin=7
+               , foWmax=20
+               , foHmax=32;                      
+  wmin=foWmin;
+  hmin=foHmin;
+  wmax=foWmax;
+  hmax=foHmax;
+  return 1;
+}
 
 
 /* ------------------------------------------------------------------------- */
@@ -678,7 +743,6 @@ int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
  int maxY=25;
  int fontW=10; 
  int fontH=20;
- TScreenFont256 * defaultFont= &font8x16;
 
  /* Look for defaults */
 
@@ -791,7 +855,18 @@ int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
 
 
   flags0= CodePageVar
-        | CursorShapes;
+        | CursorShapes
+        | CanSetBFont   
+        | CanSetSBFont
+        | NoUserScreen
+        | CanSetFontSize;
+ 
+/* flags0= CanSetPalette | CanReadPalette 
+    | PalNeedsRedraw
+         | CanSetVideoSize |
+        NoUserScreen;
+*/        
+
 
   screenMode=
      startupMode=
@@ -824,14 +899,20 @@ int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
 /* ------------------------------------------------------------------------- */
    void TScreenWinGr::Init()
 /* ------------------------------------------------------------------------- */
-{ TScreen::System_p=        System;
-  TScreen::Resume=          Resume;
-  TScreen::Suspend=         Suspend;
-  TScreen::clearScreen=     clearScreen;
-  TScreen::setCharacter=    setCharacter;
-  TScreen::setCharacters=   setCharacters; 
-  TScreen::setVideoMode=    setVideoMode;
-  TScreen::setVideoModeExt= setVideoModeExt; }
+{ TScreen::System_p=             System;
+  TScreen::Resume=               Resume;
+  TScreen::Suspend=              Suspend;
+  TScreen::clearScreen=          clearScreen;
+  TScreen::setCharacter=         setCharacter;
+  TScreen::setCharacters=        setCharacters; 
+  TScreen::setVideoMode=         setVideoMode;
+  TScreen::setVideoModeExt=      setVideoModeExt; 
+  TScreen::getFontGeometry=      GetFontGeometry;
+  TScreen::getFontGeometryRange= GetFontGeometryRange;
+  
+  TScreen::setFont_p      = SetFont;
+  TScreen::restoreFonts   = RestoreFonts;
+}
 
 /* ------------------------------------------------------------------------- */
    void TScreenWinGr::Done()
