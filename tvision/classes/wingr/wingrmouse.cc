@@ -33,7 +33,7 @@
 
 /* ------------------------------------------------------------------------- */
    int THWMouseWinGr::setMouse( LPARAM lParam
-                                , int ev )
+                              , int ev )
 /* ------------------------------------------------------------------------- */
 { static bool pressed= false; 
   RECT  wSize;
@@ -44,10 +44,10 @@
   storedEvent.mouse.doubleClick= False;
   
   storedEvent.mouse.where.x = (short)LOWORD( lParam );
-  storedEvent.mouse.where.x/= tm.tmMaxCharWidth;
+  storedEvent.mouse.where.x/= primary.w;
 
   storedEvent.mouse.where.y = (short)HIWORD( lParam );
-  storedEvent.mouse.where.y/= tm.tmHeight;
+  storedEvent.mouse.where.y/= primary.h;
 
   switch( ev )
   { case evMouseUp:
@@ -69,28 +69,15 @@
 
 	if ( TScreen::screenWidth  == storedEvent.mouse.where.x
 	  && TScreen::screenHeight == storedEvent.mouse.where.y )
-	{ break; }                        /* No resizing needed */
+	{ break;                         /* No resizing needed */
+    }
 
-
-	TScreen::screenWidth=  storedEvent.mouse.where.x;    /* Recalc new window size */
+	TScreen::screenWidth = storedEvent.mouse.where.x;
 	TScreen::screenHeight= storedEvent.mouse.where.y;
+    winRecalc(  );    /* Recalc new window size */
 
-	GetWindowRect( hwnd,  &wSize );  /* acquire wondow size */
-
-	wSize.right = TScreen::screenWidth  * tm.tmMaxCharWidth;
-	wSize.bottom= TScreen::screenHeight * tm.tmHeight;
-
-	wSize.right += mSize.right + mSize.left  ; /* Add title and borders*/
-	wSize.bottom+= mSize.top   + mSize.bottom;
-
-        TDisplayWinGr::sizeChanged ++;
-	MoveWindow( hwnd
-                  , wSize.left
-                  , wSize.top
-                  , wSize.right
-	          , wSize.bottom
-		  , true );          // repaintin soon
-	break; }
+	break; 
+  }
 
 
       if ( ! storedEvent.mouse.where.y  )

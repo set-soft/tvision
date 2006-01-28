@@ -24,11 +24,11 @@
 
 
 typedef struct
-{ short font;
-  short mode;
-} dialogModeRec;
-
-
+{ HBITMAP bitmapRaster;
+  HGDIOBJ bitmapObject;
+  HDC     bitmapMemo;
+  unsigned w, h;
+} bitmapFontRec;
 
 struct TDisplayWinGr :  public virtual TDisplay // virtual to avoid problems with multiple inheritance
 { static bool processEvent(  );
@@ -40,17 +40,16 @@ struct TDisplayWinGr :  public virtual TDisplay // virtual to avoid problems wit
                        , WPARAM wParam
 		       , LPARAM lParam );
 
- static unsigned xPos;        /* Cursor pos        */
- static unsigned yPos;        /* Cursor pos        */
- static unsigned zPos;        /* Cursor size       */
- static HDC        hdc;  /* A device context used for drawing */
- static LOGFONTA * fonts; // To hold available fonts
+ static unsigned xPos;       /* Cursor pos        */
+ static unsigned yPos;       /* Cursor pos        */
+ static unsigned zPos;       /* Cursor size       */
+ static HDC       hdc;       /* A device context used for drawing */
 
- static void   Init();        // This sets the pointers of TDisplay to point to this class
+ static void   Init();   /* Sets pointers of TDisplay to point to this class */
 
  static void lowSetCursor( int x
                          , int y
-			 , bool dir );
+                         , bool dir );
 
 
 protected:
@@ -80,8 +79,7 @@ protected:
 // Support functions
  
 
- static void winRecalc( int w
-		      , int h  );
+ static void winRecalc(  );
 
  static void SetCrtMode( const char * );
 
@@ -91,26 +89,26 @@ protected:
  static int        forceRedraw; /* Used to force setCharacters to unconditionally draw */
 
  static TEvent storedEvent; /* Correctly processes message queue */
- static HFONT      hFont;
 
 public:
  static HWND       hwnd;
 
  static COLORREF   colorMap[ 16 ];
- static TEXTMETRIC tm;
 
  static HCURSOR normCursor;
  static HCURSOR sizeCursor;
  static HCURSOR handCursor;
 
- static RECT mSize;             /* Windows resizing calculations */
+/* static RECT mSize;       ( now local ) Windows resizing calculations */
 
  static char cShapeFr;
  static char cShapeTo;
 
- static dialogModeRec mode;
-
-
+/* 
+ *  28/1/2006, new bitmap fonts  
+ */ 
+ static bitmapFontRec primary;
+ static bitmapFontRec secondary;
 
 };
 
@@ -151,18 +149,25 @@ protected:
 			    , ushort  *src
 			    , unsigned len );
 
- static int    System(const char *command
-                            , pid_t *pidChild
-                            , int in
-                            , int out
-                            , int err);
+  static int   System(const char *command
+                     , pid_t *pidChild
+                     , int in
+                     , int out
+                     , int err);
 
- // Support functions
+  static int   SetFont( int changeP, TScreenFont256 *fontP
+                      , int changeS, TScreenFont256 *fontS
+                      , int fontCP, int appCP );
  
- static void  SaveScreen();
- static void  SaveScreenReleaseMemory();
- static void  RestoreScreen();
- static void  Done();
+ // Support functions
+
+  static int TScreenWinGr::selectFont( bitmapFontRec  & fontResource 
+                                     , TScreenFont256 * fontData );
+ 
+  static void  SaveScreen();
+  static void  SaveScreenReleaseMemory();
+  static void  RestoreScreen();
+  static void  Done();
 
  public:
  static void  writeLine( unsigned x
@@ -173,6 +178,18 @@ protected:
 
 
 // Support variables
+
+protected: 
+
+/* 
+ *  28/1/2006, new bitmap fonts  
+ */ 
+ 
+ static          ushort shapeFont8x16[];
+ static          uchar shapeFont10x20[];
+  
+ static TScreenFont256 font8x16;  
+ static TScreenFont256 font10x20;
  
 
 };
