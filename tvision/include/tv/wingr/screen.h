@@ -159,6 +159,13 @@ protected:
                       , int changeS, TScreenFont256 *fontS
                       , int fontCP, int appCP );
  
+  static void  RestoreFonts();
+  
+  static int GetFontGeometry(unsigned &w, unsigned &h);
+  static int GetFontGeometryRange( unsigned &wmin, unsigned &hmin
+                                 , unsigned &wmax, unsigned &hmax );
+ 
+ 
  // Support functions
 
   static int TScreenWinGr::selectFont( bitmapFontRec  & fontResource 
@@ -185,12 +192,12 @@ protected:
  *  28/1/2006, new bitmap fonts  
  */ 
  
- static          ushort shapeFont8x16[];
+ static          uchar shapeFont8x16[];
  static          uchar shapeFont10x20[];
   
  static TScreenFont256 font8x16;  
  static TScreenFont256 font10x20;
- 
+ static TScreenFont256 * defaultFont;
 
 };
 
