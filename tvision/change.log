@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.299  2006/01/26 19:09:49  set
+* Modified: The old workaround for bintextdomain prototype missmatch (dated
+december 2002) now gives troubles for gcc 4.0.3. I'm removing it to find if
+it is needed for modern gcc versions. I tried 3.3.5 without problems.
+
 Revision 2.399.2.298  2006/01/26 18:50:26  terrible
 * Updated: [Debian] Packaging to version 2.1.0-2, cosmetic changes.
 
