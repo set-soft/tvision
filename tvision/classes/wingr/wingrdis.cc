@@ -70,12 +70,12 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
 { ushort * dst;
   char fg, bg;
   char letra;
-  RECT rect;
+  int to, fr;
 
-  if ( sizeChanged )             // Don't draw on resizing
+/*  if ( sizeChanged )             // Don't draw on resizing
   { return; 
   }
-
+*/
   if ( !TScreen::screenBuffer )
   { return; 
   }
@@ -85,43 +85,44 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
   }
   
   if ((unsigned) x >= (unsigned)getCols() ) // JASC, this tests both bounds
-  { return; }
+  { return; 
+  }
   
   if ((unsigned) y >= (unsigned)getRows() ) // JASC, this tests both bounds 
-  { return; }
+  { return; 
+  }
 
   dst = TScreen::screenBuffer    // Calc new cursor position
       + x
       + y*TScreen::screenWidth;   
 
   if ( dir )
-  { fg= attrColor(*dst) >>  4;   // Normal  
-    bg= attrColor(*dst) & 0xF; 
-  }
-  else
   { bg= attrColor(*dst) >>  4;   // Swap colors (reverse)
     fg= attrColor(*dst) & 0xF; 
+  }
+  else
+  { fg= attrColor(*dst) >>  4;   // Normal  
+    bg= attrColor(*dst) & 0xF; 
   }
 
   letra= attrChar( *dst );
        
   SetBkColor  ( hdc, colorMap[(int)bg] );  // Background color
   SetTextColor( hdc, colorMap[(int)fg] );  // Foreground color
+  
+  fr= dir ? cShapeFr:0;
+  to= dir ? cShapeTo:primary.h;
 
-  rect.top=    y * primary.h + cShapeFr;
-  rect.bottom= y * primary.h + cShapeTo;
-  rect.left=   x * primary.w + 0;
-  rect.right=  x * primary.w + 8;
+  BitBlt( hdc
+        , x * primary.w
+        , y * primary.h + fr
+        , primary.w
+        , to - fr - 1
+        , primary.bitmapMemo
+        , 0, letra * primary.h
+        , SRCCOPY );
 
-
-/*  DrawText( hdc                           // Output text
-   	      , &letra, 1
-          , &rect
-          , DT_NOPREFIX
-          | DT_SINGLELINE
-          | DT_BOTTOM ); */
-          
-          }
+  }
   
 
 /* -------------------------------------------------------------------------- */
@@ -306,10 +307,10 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
    || ( y != (unsigned)yPos ))
   { lowSetCursor( xPos         // Remove old cursor
                 , yPos
-		, false ); }
+                , false ); 
+  }
 
   xPos= x; yPos= y;                // Update cursor position
-
   lowSetCursor( x
 	      , y
 	      , true ); }
@@ -319,7 +320,8 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
                                    , unsigned & y )
 /* ------------------------------------------------------------------------- */
 { x= xPos;
-  y= yPos; }
+  y= yPos; 
+}
 
 
 
