@@ -22,6 +22,7 @@
   #define attrColor(a)  ((a) >> 0x08)
 #endif
 
+#include <tv/win32/win32clip.h>
 
 typedef struct
 { HBITMAP bitmapRaster;
@@ -34,11 +35,11 @@ struct TDisplayWinGr :  public virtual TDisplay // virtual to avoid problems wit
 { static bool processEvent(  );
 
   static void testCreate( HWND hw
-			, LPARAM lParam );
+                        , LPARAM lParam );
 
   static int testEvents( UINT   message
                        , WPARAM wParam
-		       , LPARAM lParam );
+                       , LPARAM lParam );
 
  static unsigned xPos;       /* Cursor pos        */
  static unsigned yPos;       /* Cursor pos        */
@@ -122,7 +123,8 @@ public:
 // TScreen, TDisplayWin32 and finally TDisplay.
 
 struct TScreenWinGr: public virtual TDisplayWinGr
-		   , public         TScreen
+                   , public         TScreen
+                   , public         TVWin32Clipboard
 { TScreenWinGr();                    // We will use casts to base classes, destructors must be pointers
 
   static void  Init();
@@ -143,13 +145,13 @@ protected:
  static void   Suspend();
  static void   clearScreen();
  static void   setCharacter( unsigned offset
-			   , ushort value );
+                           , ushort value );
 
  static void   setCharacters( unsigned dst
-			    , ushort  *src
-			    , unsigned len );
+                            , ushort  *src
+                            , unsigned len );
 
-  static int   System(const char *command
+  static int   System( const char *command
                      , pid_t *pidChild
                      , int in
                      , int out
@@ -165,6 +167,10 @@ protected:
   static int GetFontGeometryRange( unsigned &wmin, unsigned &hmin
                                  , unsigned &wmax, unsigned &hmax );
  
+  static int SetCrtModeRes( unsigned w
+                          , unsigned h
+                          , int fW
+                          , int fH );
  
  // Support functions
 
@@ -202,9 +208,9 @@ protected:
 };
 
    LRESULT CALLBACK WindowProcedure( HWND hwnd           /* This function is called by the Windowsfunction DispatchMessage( ) */
-				   , UINT message
+                                   , UINT message
                                    , WPARAM wParam
-				   , LPARAM lParam );
+                                   , LPARAM lParam );
 
 
 #endif // WINDOWSSCR_HEADER_INCLUDED

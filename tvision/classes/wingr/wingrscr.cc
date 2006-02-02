@@ -20,6 +20,7 @@
 #define Uses_alloca
 #include <tv.h>
 
+
 #if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver)
 
 #define WIN32_LEAN_AND_MEAN
@@ -715,13 +716,17 @@ int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
   { TScreenWinGr::zPos ^= 0x80;         /* Toggle phase (turn 180 degrees) */
 
     if ( TScreenWinGr::xPos >= 0 )
-    TScreenWinGr::lowSetCursor( TScreenWinGr::xPos /* Show or hide cursor */
+    { TScreenWinGr::lowSetCursor( TScreenWinGr::xPos /* Show or hide cursor */
                                 , TScreenWinGr::yPos
-				, true ); } 
+                                , true ); 
+    }                                 
+  }
+  
   SetTimer( hwnd                              /* Reload timer        */ 
-	  , idEvent
-	  , cursorDelay / 1000                /* from usecs to msecs */
-	  , cursorProc ); }
+          , idEvent
+          , cursorDelay / 1000                /* from usecs to msecs */
+          , cursorProc );
+}
 
 
 /* ------------------------------------------------------------------------- */
@@ -739,10 +744,10 @@ int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
  *  JASC, ene 2006, now bitmap fonts 
  */  
  
- int maxX=80; 
- int maxY=25;
- int fontW=10; 
- int fontH=20;
+  int maxX=80; 
+  int maxY=25;
+  int fontW=10; 
+  int fontH=20;
 
  /* Look for defaults */
 
@@ -859,12 +864,11 @@ int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
         | CanSetBFont   
         | CanSetSBFont
         | NoUserScreen
+        | CanSetVideoSize
         | CanSetFontSize;
  
 /* flags0= CanSetPalette | CanReadPalette 
     | PalNeedsRedraw
-         | CanSetVideoSize |
-        NoUserScreen;
 */        
 
 
@@ -899,19 +903,21 @@ int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
 /* ------------------------------------------------------------------------- */
    void TScreenWinGr::Init()
 /* ------------------------------------------------------------------------- */
-{ TScreen::System_p=             System;
-  TScreen::Resume=               Resume;
-  TScreen::Suspend=              Suspend;
-  TScreen::clearScreen=          clearScreen;
-  TScreen::setCharacter=         setCharacter;
-  TScreen::setCharacters=        setCharacters; 
-  TScreen::setVideoMode=         setVideoMode;
-  TScreen::setVideoModeExt=      setVideoModeExt; 
-  TScreen::getFontGeometry=      GetFontGeometry;
+{ TScreen::System_p            = System;
+  TScreen::Resume              = Resume;
+  TScreen::Suspend             = Suspend;
+  TScreen::setFont_p           = SetFont;
+  TScreen::clearScreen         = clearScreen;
+  TScreen::setCharacter        = setCharacter;
+  TScreen::setCharacters       = setCharacters;
+  TScreen::setVideoMode        = setVideoMode;
+  TScreen::setVideoModeExt     = setVideoModeExt;
+  TScreen::getFontGeometry     = GetFontGeometry;
+  TScreen::setCrtModeRes_p     = SetCrtModeRes; 
+  TScreen::restoreFonts        = RestoreFonts;
   TScreen::getFontGeometryRange= GetFontGeometryRange;
-  
-  TScreen::setFont_p      = SetFont;
-  TScreen::restoreFonts   = RestoreFonts;
+
+  TVWin32Clipboard::Init();  /* compatible clipboard */
 }
 
 /* ------------------------------------------------------------------------- */
@@ -934,7 +940,9 @@ TScreenWinGr::~TScreenWinGr()
 /* ------------------------------------------------------------------------- */
 { if (screenBuffer)
   { delete screenBuffer;
-    screenBuffer= NULL; }}
+    screenBuffer= NULL; 
+  }
+}
 
 /* ------------------------------------------------------------------------- */
    void TScreenWinGr::clearScreen()
@@ -977,13 +985,17 @@ TScreenWinGr::~TScreenWinGr()
     { if ( xPos<= x+w )
       { lowSetCursor( xPos
                     , yPos
-                    , true ); }}}}
+                    , true ); 
+      }
+    }
+  }
+}
            
               
 /* ------------------------------------------------------ [ JASC jul/2002] -- */
    void TScreenWinGr::setCharacters( unsigned  offset
-		                   , ushort  * src
-	                           , unsigned  len )
+                                   , ushort  * src
+                                   , unsigned  len )
 /* -------------------------------------------------------------------------- */
 { uchar letra;
   uchar color;
@@ -1015,8 +1027,8 @@ TScreenWinGr::~TScreenWinGr()
   dst= tmp; add= 0; last= -1;
 
   memcpy( old                /* Copy to screen buffer */     
-	, src
-	, len*2 );
+        , src
+        , len*2 );
 
   while(len--)              /* Iterate                             */
   { letra= attrChar(*src);  /* JASC, are macros (endian dependent) */
@@ -1072,6 +1084,27 @@ TScreenWinGr::~TScreenWinGr()
  buffer = NULL; */ }
 
 
+/*
+ *
+ */
+
+int TScreenWinGr::SetCrtModeRes( unsigned w
+                               , unsigned h
+                               , int      fW
+                               , int      fH )
+{ if (fW==-1) { fW= primary.w; }
+  if (fH==-1) { fH= primary.h; }
+  
+  TScreen::screenWidth= w;
+  TScreen::screenHeight= h;
+  
+  setVideoMode( 0 );
+
+  winRecalc( );
+ 
+  return( 1 );
+}
+
 /* ------------------------------------------------------------------------- */
    void TScreenWinGr::setVideoMode( ushort mode )
 /* ------------------------------------------------------------------------- */
@@ -1079,14 +1112,14 @@ TScreenWinGr::~TScreenWinGr()
 
   if (screenBuffer)
   { free( screenBuffer);
-    screenBuffer= NULL; 
   }
                         
   screenBuffer= ( ushort *) calloc( sizeof(ushort)
                                   , sz ); // This zeroes memory
 
   setCrtMode( fixCrtMode( mode ) );
-  setCrtData(); }
+  setCrtData(); 
+}
 
 
 /* ------------------------------------------------------------------------- */
@@ -1096,35 +1129,36 @@ TScreenWinGr::~TScreenWinGr()
                            , int out
                            , int err)
 /* ------------------------------------------------------------------------- */
-
+{
 #ifndef TVCompf_Cygwin
-{ if (pidChild)     // fork mechanism not implemented, indicate the child finished
-  { *pidChild=0; }
+ if ( pidChild )     // fork mechanism not implemented, indicate the child finished
+  { *pidChild=0;
+  }
+#endif
+
   // If the caller asks for redirection replace the requested handles
-  if (in!=-1)
-     dup2(in,STDIN_FILENO);
-  if (out!=-1)
-     dup2(out,STDOUT_FILENO);
-  if (err!=-1)
-     dup2(err,STDERR_FILENO);
-  return system(command); }
-#else
+  if (!pidChild) // If the caller asks for redirection replace the requested handles
+  { if (in!=-1)
+    { dup2(in,STDIN_FILENO);
+    }
+  
+    if (out!=-1)
+    { dup2(out,STDOUT_FILENO);
+    }
+  
+    if (err!=-1)
+    { dup2(err,STDERR_FILENO);
+    }
+  
+    return system(command); 
+  }  
+
+#ifdef TVCompf_Cygwin
 
 /*
  *  fork mechanism is implemented in Cygwin, so linux code should work -- OH!
  *   SET: Call to an external program, optionally forking
  */
-
-{ if (!pidChild)
-  {
-   // If the caller asks for redirection replace the requested handles
-   if (in!=-1)
-      dup2(in,STDIN_FILENO);
-   if (out!=-1)
-      dup2(out,STDOUT_FILENO);
-   if (err!=-1)
-      dup2(err,STDERR_FILENO);
-   return system(command); }
 
   pid_t cpid=fork();
 
@@ -1140,36 +1174,46 @@ TScreenWinGr::~TScreenWinGr()
 
   if ( !cpid )
   { if ( setsid()==-1 )
-    { _exit(127); }
+    { _exit(127); 
+    }
 
     char *argv[4];
 
     // If the caller asks for redirection replace the requested handles
     if (in!=-1)
-       dup2(in,STDIN_FILENO);
+    { dup2(in,STDIN_FILENO);
+    }
+    
     if (out!=-1)
-       dup2(out,STDOUT_FILENO);
+    { dup2(out,STDOUT_FILENO);
+    }
+    
     if (err!=-1)
-       dup2(err,STDERR_FILENO);
+    { dup2(err,STDERR_FILENO);
+    }
 
     argv[0]=getenv("SHELL");
     if (!argv[0])
-    { argv[0]="/usr/bin/sh"; }
+    { argv[0]="/usr/bin/sh"; 
+    }
 
     argv[1]="-c";
     argv[2]=(char *)command;
     argv[3]=0;
     execvp( argv[0]
           , argv );
-    _exit(127); }    // We get here only if exec failed
+    _exit(127);     // We get here only if exec failed
+  }  
 
   if (cpid==-1)      // Fork failed do it manually
   { *pidChild=0;
-    return system(command); }
+    return system(command); 
+  }
 
  *pidChild=cpid;
- return(0); }
+ return(0);
 #endif
+}
 
 /* ------------------------------------------------------------------------- */
    TScreen * TV_WinGrDriverCheck()

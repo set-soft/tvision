@@ -11,18 +11,23 @@
     && !defined(WINGRKEY_HEADER_INCLUDED)
 #define WINGRKEY_HEADER_INCLUDED
 
+typedef struct
+{ int   win;
+  short key;
+} ConvKeyRec;
+
+
 struct TEvent;
 
-
 struct TGKeyWinGr: virtual public TDisplayWinGr // Access to display attributes
-		 , virtual public TGKey         // A class to encapsulate the globals, all is static!
+		         , virtual public TGKey         // A class to encapsulate the globals, all is static!
                  , virtual public TVCodePage    // Trick to access codepage mappings
-{ TGKeyWinGr(): TVCodePage(0,0,0) {};               // Only need access to protected members of TVCodePage
+{ TGKeyWinGr(): TVCodePage(0,0,0) {};          // Only need access to protected members of TVCodePage
 
   static void init();
   static int testEvents( UINT   message
                        , WPARAM wParam
-		       , LPARAM lParam );
+                       , LPARAM lParam );
 
 
 // Function replacements
@@ -54,7 +59,8 @@ private:
 
 // Support methods
 
- static int setKey( int vcode );
+ static int setKey( const ConvKeyRec * xlate 
+                  , int vcode );
 
 
 };
