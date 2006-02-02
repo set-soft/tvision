@@ -164,11 +164,12 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
 
 
 
-/* ------------------------------------------------------------------------- */
-   int TDisplayWinGr::testEvents( UINT   message
-                                  , WPARAM wParam
-                                  , LPARAM lParam )
-/* ------------------------------------------------------------------------- */
+/*
+ *
+ */
+int TDisplayWinGr::testEvents( UINT   message
+                             , WPARAM wParam
+                             , LPARAM lParam )
 { PAINTSTRUCT ps;        /* Also used during window drawing   */
 
   switch( message )
@@ -312,30 +313,36 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
 
   xPos= x; yPos= y;                // Update cursor position
   lowSetCursor( x
-	      , y
-	      , true ); }
+	          , y
+	          , true ); 
+  }
 
-/* ------------------------------------------------------------------------- */
-   void TDisplayWinGr::GetCursorPos( unsigned & x
-                                   , unsigned & y )
-/* ------------------------------------------------------------------------- */
+/*
+ *
+ */
+void TDisplayWinGr::GetCursorPos( unsigned & x
+                                , unsigned & y )
 { x= xPos;
   y= yPos; 
 }
 
 
-
-/* ------------------------------------------------------------------------- */
-   void TDisplayWinGr::GetCursorShape( unsigned & start  // From SET code
-                                     , unsigned & end )
+/*
+ *
+ */
+ void TDisplayWinGr::GetCursorShape( unsigned & start  // From SET code
+                                   , unsigned & end )
 /* ------------------------------------------------------------------------- */
 { start= cShapeFr; start*= 100; start/= primary.h;    // Force integer aritmethic
-  end  = cShapeTo; end  *= 100; end  /= primary.h; }
+  end  = cShapeTo; end  *= 100; end  /= primary.h; 
+}
 
 
-/* ------------------------------------------------------------------------- */
-   void TDisplayWinGr::SetCursorShape( unsigned start    // From SET code
-                                     , unsigned end )
+/*
+ *
+ */
+void TDisplayWinGr::SetCursorShape( unsigned start    // From SET code
+                                  , unsigned end )
 /* ------------------------------------------------------------------------- */
 { lowSetCursor( xPos       // First of all, remove old cursor
               , yPos
@@ -345,42 +352,54 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
   cShapeTo= (   end*primary.h ) / 100;
 
   if ( start>=end && getShowCursorEver() )
-  { return; }
+  { return; 
+  }
 
   if ((unsigned)cShapeFr > (unsigned)primary.h )  // Pretty range test  ( 1 test 2 comprobations )
-  { cShapeFr= primary.h; }
+  { cShapeFr= primary.h; 
+  }
 
   if ((unsigned)cShapeTo > (unsigned)primary.h )  // Pretty range test  ( 1 test 2 comprobations )
-  { cShapeTo= primary.h; }
+  { cShapeTo= primary.h; 
+  }
 
   if ( start >= end )
-  { zPos |=  1; }        /* Disable cursor */
+  { zPos |=  1;         /* Disable cursor */
+  }
   else
-  { zPos &= ~1; }
+  { zPos &= ~1; 
+  }
 
   lowSetCursor( xPos
               , yPos
-              , true ); }
+              , true ); 
+}
 
 
-/* ------------------------------------------------------------------------- */
-   ushort TDisplayWinGr::GetRows()
-/* ------------------------------------------------------------------------- */
-{ return( TScreen::screenHeight ); }
+/*
+ *
+ */
+ushort TDisplayWinGr::GetRows()
+{ return( TScreen::screenHeight ); 
+}
 
-/* ------------------------------------------------------------------------- */
-   ushort TDisplayWinGr::GetCols() 
-/* ------------------------------------------------------------------------- */
-{ return( TScreen::screenWidth ); }
+/*
+ *
+ */
+ushort TDisplayWinGr::GetCols() 
+{ return( TScreen::screenWidth ); 
+}
 
 
-/* ------------------------------------------------------------------------- */
-   int TDisplayWinGr::CheckForWindowSize()
-/* ------------------------------------------------------------------------- */
+/*
+ *
+ */
+int TDisplayWinGr::CheckForWindowSize()
 { int ret= sizeChanged;
 
   sizeChanged= 0;
-  return( ret ); }
+  return( ret ); 
+}
 
 /* ------------------------------------------------------------------------- */
    void TDisplayWinGr::SetCrtMode( ushort )
@@ -407,7 +426,8 @@ bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
    void TDisplayWinGr::SetCrtModeExt( char * modeName )
 /* ------------------------------------------------------------------------- */
 { SetCursorShape( 0x58
-                , 0x64 ); }
+                , 0x64 ); 
+}
 
 
 /* ------------------------------------------------------------------------- */

@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.399.2.302  2006/01/30 15:24:05  set
+multiple fonts managed now
+.
 Revision 2.399.2.301  2006/01/30 15:23:32  set
 now draws cursor
 .
