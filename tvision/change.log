@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.304  2006/02/03 12:56:51  domatlantida
+WinGr: systems keys conflict resolved (Alt Gr for ALT-function keys). No mappings at this moment
+
 Revision 2.399.2.303  2006/02/02 16:32:56  domatlantida
 WinGr: keys working now
 
