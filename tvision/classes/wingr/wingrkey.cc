@@ -140,7 +140,7 @@ CodePage   * TGKeyWinGr::remapKey= NULL;  // Multilingual keyboard support
  * , { ']'         , kbCloseBrace , ']', 0 }   0x001D 
  * , { '^'         , kbCaret      , '^', 0 }   0x004f 
  * , { '_'         , kbUnderLine  , '_', 0 }   0x005e 
-  
+*/
 /*, { '0'               , kb0          , '0', 0x45 }
 , { '1'         , kb1          , '1', 0x16 }
 , { '2'         , kb2          , '2', 0x1E }
