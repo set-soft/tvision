@@ -141,7 +141,7 @@ CodePage   * TGKeyWinGr::remapKey= NULL;  // Multilingual keyboard support
  * , { '^'         , kbCaret      , '^', 0 }   0x004f 
  * , { '_'         , kbUnderLine  , '_', 0 }   0x005e 
   
-/*, { '0'	        , kb0          , '0', 0x45 }
+/*, { '0'               , kb0          , '0', 0x45 }
 , { '1'         , kb1          , '1', 0x16 }
 , { '2'         , kb2          , '2', 0x1E }
 , { '3'         , kb3          , '3', 0x26 }
@@ -235,7 +235,17 @@ ConvKeyRec xlateTableKeys[]=
 ,{   0         , 0            }}; /* Terminator */
 
 ConvKeyRec xlateTableChars[]=
-{{ 'A'        , kbA           }
+{{ '0'        , kb0           }     
+,{ '1'        , kb1           }     
+,{ '2'        , kb2           }     
+,{ '3'        , kb3           }     
+,{ '4'        , kb4           }     
+,{ '5'        , kb5           }     
+,{ '6'        , kb6           }     
+,{ '7'        , kb7           }     
+,{ '8'        , kb8           }     
+,{ '9'        , kb9           }     
+,{ 'A'        , kbA           }
 ,{ 'B'        , kbB           }     
 ,{ 'C'        , kbC           }     
 ,{ 'D'        , kbD           }     
@@ -271,36 +281,39 @@ ConvKeyRec xlateTableChars[]=
  *  those are not totally implemeted on TVISION
  *
  *
- *  GetKeyState( VK_CAPITAL	 ) & TOGGLED_KEY ? kbCapsLockToggle   : 0 
- *  GetKeyState( VK_INSERT	 ) & TOGGLED_KEY ? kbInsertToggle     : 0 
+ *  GetKeyState( VK_CAPITAL      ) & TOGGLED_KEY ? kbCapsLockToggle   : 0 
+ *  GetKeyState( VK_INSERT       ) & TOGGLED_KEY ? kbInsertToggle     : 0 
  * 
- *  GetKeyState( VK_SCROLL	  ) & PRESSED_KEY ? kbScrollLockDown  : 0
+ *  GetKeyState( VK_SCROLL        ) & PRESSED_KEY ? kbScrollLockDown  : 0
  *  GetKeyState( VK_CAPITAL  ) & PRESSED_KEY ? kbCapsLockDown     : 0 
  *  GetKeyState( VK_NUMLOCK  ) & PRESSED_KEY ? kbNumLockDown      : 0 
  *  GetKeyState( VK_SNAPSHOT ) & PRESSED_KEY ? kbSysReqPress      : 0 
  * 
- *  GetKeyState( VK_SCROLL	 ) & TOGGLED_KEY ? kbScrollLockToggle : 0
+ *  GetKeyState( VK_SCROLL       ) & TOGGLED_KEY ? kbScrollLockToggle : 0
  * 
- *  GetKeyState( VK_NUMLOCK	 ) & TOGGLED_KEY ? kbNumLockToggle    : 0  
+ *  GetKeyState( VK_NUMLOCK      ) & TOGGLED_KEY ? kbNumLockToggle    : 0  
  */     
 
 
 #define TOGGLED_KEY 0x01 /* The key is toggled */ 
 #define PRESSED_KEY 0x80 /* The key is pressed */
 
-unsigned TGKeyWinGr::GetShiftState()
+unsigned ShiftState()
 {  return
-  ( GetKeyState( VK_SHIFT	) & PRESSED_KEY ? kbShiftCode : 0
+  ( GetKeyState( VK_LSHIFT  ) & PRESSED_KEY ? kbShiftCode : 0
   | GetKeyState( VK_RSHIFT  ) & PRESSED_KEY ? kbShiftCode : 0
   | GetKeyState( VK_SHIFT   ) & PRESSED_KEY ? kbShiftCode : 0
   | GetKeyState( VK_LCONTROL) & PRESSED_KEY ? kbCtrlCode  : 0
   | GetKeyState( VK_RCONTROL) & PRESSED_KEY ? kbCtrlCode  : 0
   | GetKeyState( VK_CONTROL ) & PRESSED_KEY ? kbCtrlCode  : 0
-  | GetKeyState( VK_LMENU	) & PRESSED_KEY ? kbAltDown   : 0
-  | GetKeyState( VK_RMENU   ) & PRESSED_KEY ? kbAltDown   : 0 
-  | GetKeyState( VK_MENU    ) & PRESSED_KEY ? kbAltDown   : 0 );
+  | GetKeyState( VK_LMENU   ) & PRESSED_KEY ? kbAltLCode  : 0
+  | GetKeyState( VK_RMENU   ) & PRESSED_KEY ? kbAltRCode  : 0 ); 
 }  
 
+
+unsigned TGKeyWinGr::GetShiftState()
+{  return( ShiftState() );
+}  
 
 
 int TGKeyWinGr::setKey( const ConvKeyRec * xlate
@@ -333,12 +346,11 @@ int TGKeyWinGr::testEvents( UINT   message
   storedEvent.what= evNothing; 
   storedEvent.keyDown.charScan.scanCode=
   storedEvent.keyDown.raw_scanCode= ( lParam >> 16 ) & 0xFF;
-  storedEvent.keyDown.shiftState= keyMask= GetShiftState();
+  storedEvent.keyDown.shiftState= keyMask= ShiftState();
          
   switch( message )
   {  case WM_SYSKEYDOWN:
      case WM_KEYDOWN:
-       
        if ( keyMask )                  /* key + alt or ctrl */
        { if ( setKey( xlateTableChars
                     , wParam ))
@@ -348,10 +360,27 @@ int TGKeyWinGr::testEvents( UINT   message
        
        if ( setKey( xlateTableKeys
                   , wParam ))
-       { return( 1 );  /* good event */
+       { if ( GetKeyState( VK_RMENU ) & PRESSED_KEY )  // Emulate alt for system keys
+         { keyMask &= ~kbCtrlCode;
+           keyMask |=  kbAltLCode;
+           storedEvent.keyDown.keyCode&= ~kbCtrlCode;
+           storedEvent.keyDown.keyCode|=  kbAltLCode;
+           storedEvent.keyDown.shiftState= keyMask;
+         }
+         else
+         { if ( GetKeyState( VK_LMENU ) & PRESSED_KEY )  // Windows event ?
+           { storedEvent.what= evNothing;                // Give event to win
+             return( 0 );
+           }  
+         }
+       
+         return( 1 );  /* good event */
        }
     break; 
 
+    case WM_SYSCHAR:  /* (fixme) Block windows system keys, fix: not all of then must be blocked */
+    return( 1 );
+    
     case WM_CHAR:      
        if( wParam >= 32 )                                          
        { storedEvent.what= evKeyDown;
@@ -372,7 +401,6 @@ int TGKeyWinGr::testEvents( UINT   message
   return(0); 
 }
 
-   // case WM_SYSCHAR:  /* (fixme) Block windows system keys, fix: not all of then must be blocked */
 
 
 /* 
@@ -403,6 +431,8 @@ int TGKeyWinGr::KbHit(void)
 
 void TGKeyWinGr::FillTEvent( TEvent &me )
 { me.what= evNothing;                /* The default is no message  */
+
+  char buff[ 256 ];
 
   do
   { switch( storedEvent.what )       /* Is there a previous event? */
