@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.678  2006/01/25 22:33:06  terrible
+* Updated: [Debian] Packaging to version 2.1.0-2, cosmetic changes.
+
 Revision 2.677  2006/01/24 17:38:08  set
 * Fixed: BTV 1.x calls to setValidator in examples. Patch by Frank Taffelt
 frank.taffelt/web/de.
