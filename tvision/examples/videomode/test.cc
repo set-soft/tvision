@@ -32,20 +32,25 @@ different.
 
 #include <tv.h>
 
-const int cmTest80x25=100;
-const int cmTest80x28=101;
-const int cmTest80x50=102;
-const int cmTest90x30=103;
-const int cmTest94x34=104;
-const int cmTest132x25=105;
-const int cmTest132x50=106;
-const int cmTest80x25b=107;
-const int cmTest80x28b=108;
-const int cmTest80x50b=109;
-const int cmTest90x30b=110;
-const int cmTest94x34b=111;
-const int cmTest132x25b=112;
-const int cmTest132x50b=113;
+enum  {
+  cmTest80x25= 100
+, cmTest80x28
+, cmTest80x50
+, cmTest90x30
+, cmTest94x34
+, cmTest132x25
+, cmTest132x50
+, cmTest80x25b
+, cmTest80x28b
+, cmTest80x50b
+, cmTest90x30b
+, cmTest94x34b
+, cmTest132x25b
+, cmTest132x50b
+, cmTestCO80     // JASC, color modes
+, cmTestBW80     // JASC, color modes
+, cmTestMono     // JASC, color modes
+};
 
 class TMyApp : public TApplication
 {
@@ -81,7 +86,19 @@ void TMyApp::handleEvent(TEvent &event)
  if (event.what==evCommand)
    {
     switch (event.message.command)
-      {
+      { case cmTestCO80:
+          setScreenMode( TDisplay::smCO80 );
+        break;
+        
+        case cmTestBW80:
+          setScreenMode( TDisplay::smBW80 );
+        break;
+        
+        case cmTestMono:
+          setScreenMode( TDisplay::smMono );
+        break;
+
+
        case cmTest80x25:
             testMode(TScreen::smCO80x25,80,25);
             break;
@@ -156,27 +173,32 @@ void TMyApp::handleEvent(TEvent &event)
 TMenuBar *TMyApp::initMenuBar(TRect r)
 {
  r.b.y=r.a.y+1;
- return new TMenuBar(r,
-     *new TSubMenu("~S~ystem",kbAltS)+
-       *new TMenuItem("S~h~ell",cmCallShell,kbNoKey,hcNoContext)+
-       *new TMenuItem("E~x~it",cmQuit,kbNoKey,hcNoContext,"Alt-X")+
-     *new TSubMenu("~M~ode",kbAltM)+
-       *new TMenuItem("~8~0x25",cmTest80x25,kbNoKey,hcNoContext)+
-       *new TMenuItem("80x~2~8",cmTest80x28,kbNoKey,hcNoContext)+
-       *new TMenuItem("80x~5~0",cmTest80x50,kbNoKey,hcNoContext)+
-       *new TMenuItem("~9~0x30",cmTest90x30,kbNoKey,hcNoContext)+
-       *new TMenuItem("9~4~x34",cmTest94x34,kbNoKey,hcNoContext)+
-       *new TMenuItem("~1~32x25",cmTest132x25,kbNoKey,hcNoContext)+
-       *new TMenuItem("1~3~2x50",cmTest132x50,kbNoKey,hcNoContext)+
-     *new TSubMenu("~R~esolution",kbAltR)+
-       *new TMenuItem("~8~0x25",cmTest80x25b,kbNoKey,hcNoContext)+
-       *new TMenuItem("80x~2~8",cmTest80x28b,kbNoKey,hcNoContext)+
-       *new TMenuItem("80x~5~0",cmTest80x50b,kbNoKey,hcNoContext)+
-       *new TMenuItem("~9~0x30",cmTest90x30b,kbNoKey,hcNoContext)+
-       *new TMenuItem("9~4~x34",cmTest94x34b,kbNoKey,hcNoContext)+
-       *new TMenuItem("~1~32x25",cmTest132x25b,kbNoKey,hcNoContext)+
-       *new TMenuItem("1~3~2x50",cmTest132x50b,kbNoKey,hcNoContext)
-     );
+ return new TMenuBar
+ ( r
+ , *new TSubMenu("~S~ystem",kbAltS)
+   + *new TMenuItem("S~h~ell",cmCallShell,kbNoKey,hcNoContext)
+   + *new TMenuItem("E~x~it",cmQuit,kbNoKey,hcNoContext,"Alt-X")
+ + *new TSubMenu("~M~ode",kbAltM)
+   + *new TMenuItem("~8~0x25",cmTest80x25,kbNoKey,hcNoContext)
+   + *new TMenuItem("80x~2~8",cmTest80x28,kbNoKey,hcNoContext)
+   + *new TMenuItem("80x~5~0",cmTest80x50,kbNoKey,hcNoContext)
+   + *new TMenuItem("~9~0x30",cmTest90x30,kbNoKey,hcNoContext)
+   + *new TMenuItem("9~4~x34",cmTest94x34,kbNoKey,hcNoContext)
+   + *new TMenuItem("~1~32x25",cmTest132x25,kbNoKey,hcNoContext)
+   + *new TMenuItem("1~3~2x50",cmTest132x50,kbNoKey,hcNoContext)
+ + *new TSubMenu("~R~esolution",kbAltR)
+   + *new TMenuItem("~8~0x25",cmTest80x25b,kbNoKey,hcNoContext)
+   + *new TMenuItem("80x~2~8",cmTest80x28b,kbNoKey,hcNoContext)
+   + *new TMenuItem("80x~5~0",cmTest80x50b,kbNoKey,hcNoContext)
+   + *new TMenuItem("~9~0x30",cmTest90x30b,kbNoKey,hcNoContext)
+   + *new TMenuItem("9~4~x34",cmTest94x34b,kbNoKey,hcNoContext)
+   + *new TMenuItem("~1~32x25",cmTest132x25b,kbNoKey,hcNoContext)
+   + *new TMenuItem("1~3~2x50",cmTest132x50b,kbNoKey,hcNoContext)
+ + *new TSubMenu("~C~olor",kbAltC)
+   + *new TMenuItem("Color"        , cmTestCO80, kbNoKey,hcNoContext)
+   + *new TMenuItem("Black & White", cmTestBW80, kbNoKey,hcNoContext)
+   + *new TMenuItem("Mono"         , cmTestMono, kbNoKey,hcNoContext)
+ );
 }
 
 TStatusLine *TMyApp::initStatusLine(TRect r)
