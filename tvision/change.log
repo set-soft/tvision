@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.399.2.308  2006/02/06 18:25:04  set
+can test color change mode
+.
 Revision 2.399.2.307  2006/02/06 18:24:13  set
 Windows meta keys conflict (Now alt-G). resolutions
 .

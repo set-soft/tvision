@@ -169,11 +169,12 @@ protected:
  // Default: static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
  // Default: static ushort getCharacter(unsigned dst);
  
-  static int    SetVideoModeRes( unsigned w, unsigned h, int fW, int fH );
-  static void   setVideoMode(ushort mode);
-  static void   Resume();
-  static void   Suspend();
-  static void   setCharacter( unsigned offset
+  static int   SetDisPaletteColors( int f, int n, TScreenColor *  );
+  static int   SetVideoModeRes( unsigned w, unsigned h, int fW, int fH );
+  static void  setVideoMode(ushort mode);
+  static void  Resume();
+  static void  Suspend();
+  static void  setCharacter( unsigned offset
                            , ushort value );
 
   static void   setCharacters( unsigned dst
