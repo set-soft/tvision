@@ -63,6 +63,8 @@ HCURSOR    TDisplayWinGr::handCursor;
 bitmapFontRec TDisplayWinGr::primary  = {0,0,0,0,0};
 bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
 
+         RECT TDisplayWinGr::wGeo= { 0, 0, 0, 0 };
+
 
 uchar TDisplayWinGr::shapeFont10x20[]=
 { 0x00,0x00,0x00,0x00,0x00,0x00,0x3F,0x00,0x61,0x80,0x4C,0x80,0x4C,0x80,0x7C,0x80,0x79,0x80,0x73,0x80,0x73,0x80,0x73,0x80,0x7F,0x80,0x73,0x80,0x73,0x80,0x3F,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
@@ -805,10 +807,10 @@ void TDisplayWinGr::lowSetCursor( int x
   char letra;
   int to, fr;
 
-/*  if ( sizeChanged )             // Don't draw on resizing
-  { return; 
+  if ( THWMouseWinGr::lastCursor == sizeCursor )   /* Resizing window */
+  { return;
   }
-*/
+
   if ( !TScreen::screenBuffer )
   { return; 
   }
@@ -862,39 +864,41 @@ void TDisplayWinGr::lowSetCursor( int x
  *
  */
 void TDisplayWinGr::winRecalc( )
-{ RECT  wSize, cSize;
-  int w, h;
+{ RECT windowArea;
+  int w= wGeo.right ;
+  int h= wGeo.bottom;
 
-  TScreen::screenWidth = TScreen::screenWidth < 10 ? 10 : TScreen::screenWidth;
-  TScreen::screenHeight= TScreen::screenHeight<  3 ?  3 : TScreen::screenHeight;
+  if ( w && h )
+  { TScreen::screenWidth = TScreen::screenWidth < 10 ? 10 : TScreen::screenWidth;
+    TScreen::screenHeight= TScreen::screenHeight<  3 ?  3 : TScreen::screenHeight;
 
-  GetWindowRect ( hwnd, &wSize );     /* acquire window size */
-  GetClientRect ( hwnd, &cSize );     /* acquire client size */
-  
-  cSize.right-=  cSize.left;  /* calc increments */
-  cSize.bottom-= cSize.top;  
+    wGeo.right=  getCols() * primary.w;  /* quantize width   */
+    wGeo.bottom= getRows() * primary.h;  /* quantize height  */
 
-  if ( ! ( cSize.right + cSize.bottom ))   /* Window not created */
-  { return; 
-  }
+    if (( wGeo.right  == w )             /* No changes, all done */
+     && ( wGeo.bottom == h ))
+    { return;
+    }
 
-  wSize.right-=  wSize.left;      /* calc increments */
-  wSize.bottom-= wSize.top;  
-  
-  w= getCols() * primary.w;       /* quantize width    */
-  h= getRows() * primary.h;       /* quantize height   */
-  
-  if (( cSize.right  == w )       /* No changes, all done */
-   && ( cSize.bottom == h ))
-  { return;
-  } 
+    windowArea= wGeo;          /* Desired client size and pos */  
+    AdjustWindowRectEx( &windowArea               /* IN/OUT variable  */
+                      , TScreenWinGr::style
+                      , 0                         /* No windows menu  */
+                      , TScreenWinGr::exStyle );  /* Extended styles  */
+
+/*
+ * Windows does not have the same criteria in giving and demanding
+ */
+    windowArea.right += wGeo.left - windowArea.left;
+    windowArea.bottom+= wGeo.top   - windowArea.top;
     
-  MoveWindow( hwnd
-            , wSize.left
-            , wSize.top
-            , wSize.right  - cSize.right  + w 
-            , wSize.bottom - cSize.bottom + h
-            , true );            // repaintin soon
+    MoveWindow( hwnd
+              , windowArea.left
+              , windowArea.top
+              , windowArea.right
+              , windowArea.bottom
+              , true );            /* repaintin soon */
+  }
 }
 
 
@@ -911,6 +915,10 @@ int TDisplayWinGr::testEvents( UINT   message
 
   switch( message )
   { int w, h;
+
+    case WM_PASTE:
+      Beep();
+    return( 1 );
   
     case WM_QUIT:
       storedEvent.what= evCommand;
@@ -918,12 +926,17 @@ int TDisplayWinGr::testEvents( UINT   message
       DestroyWindow( hwnd );
     return( 1 );
 
-    case WM_DESTROY:          /* send a WM_QUIT to the messagequeue */
+    case WM_DESTROY:                 /* send a WM_QUIT to the messagequeue */
       PostQuitMessage(0);
     exit( 0 );
 
+    case WM_MOVE:                    /* Catch the window position */
+      wGeo.left= LOWORD( lParam );
+      wGeo.top = HIWORD( lParam );
+    return( 0 );
 
     case WM_SIZE:
+      sizeChanged++;
       if (  primary.w )
       { switch( wParam )
         { case SIZE_MINIMIZED:
@@ -947,25 +960,24 @@ int TDisplayWinGr::testEvents( UINT   message
           break;
         }
       }
-      sizeChanged++;
-    return(4);
+    return( 4 );
 
     case WM_PAINT: /* The window needs to be painted (redrawn). */
       BeginPaint( hwnd, &ps );
 
-      if ( !sizeChanged )      /* if size changed, later repainting. crash repaninting now */
+      if ( !sizeChanged )                       /* if size changed, later repainting. crash repaninting now */
       { if ( TScreen::screenBuffer )
         { int x= ps.rcPaint.left  / primary.w;
           int y= ps.rcPaint.top   / primary.h;
           int w= ps.rcPaint.right / primary.w;
           int h= ps.rcPaint.bottom/ primary.h;
 
-              w-= x; h -= y;
+          w-= x; h -= y;
 
-              unsigned ofs= getCols()*y+x;
-              ushort  *src= TScreen::screenBuffer+ofs;
+          unsigned ofs= getCols()*y+x;
+          ushort  *src= TScreen::screenBuffer+ofs;
 
-              forceRedraw=1;
+          forceRedraw++ ;
               
           while (h>=0)
           { TScreen::setCharacters( ofs
@@ -1048,10 +1060,12 @@ LRESULT CALLBACK WindowProcedure( HWND hwnd    /* This function is called by the
   return( false ); }
 
 
-/* ------------------------------------------------------- JASC, jul 2002 -- */
-   void TDisplayWinGr::SetCursorPos( unsigned x
-                                   , unsigned y )
-/* ------------------------------------------------------------------------- */
+/*
+ *  JASC, jul 2002
+ *
+ */
+void TDisplayWinGr::SetCursorPos( unsigned x
+                                , unsigned y )
 { if (( x != (unsigned)xPos )
    || ( y != (unsigned)yPos ))
   { lowSetCursor( xPos         // Remove old cursor
@@ -1080,7 +1094,6 @@ void TDisplayWinGr::GetCursorPos( unsigned & x
  */
  void TDisplayWinGr::GetCursorShape( unsigned & start  // From SET code
                                    , unsigned & end )
-/* ------------------------------------------------------------------------- */
 { start= cShapeFr; start*= 100; start/= primary.h;    // Force integer aritmethic
   end  = cShapeTo; end  *= 100; end  /= primary.h; 
 }
@@ -1091,7 +1104,6 @@ void TDisplayWinGr::GetCursorPos( unsigned & x
  */
 void TDisplayWinGr::SetCursorShape( unsigned start    // From SET code
                                   , unsigned end )
-/* ------------------------------------------------------------------------- */
 { lowSetCursor( xPos       // First of all, remove old cursor
               , yPos
               , false );
@@ -1221,7 +1233,6 @@ void TDisplayWinGr::SetCrtMode( ushort newMode )
       }
 
       TScreen::screenMode= newMode;
-      forceRedraw ++;                  /* Need to redraw */
     break;
     
     default:         /* Windows fonts */
@@ -1317,7 +1328,6 @@ TDisplayWinGr::~TDisplayWinGr()
 void TDisplayWinGr::Beep()
 {  MessageBeep(0xFFFFFFFF); 
 }
-
 
 /* 
  *  Links funnction pointers

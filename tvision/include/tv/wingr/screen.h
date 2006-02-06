@@ -9,12 +9,12 @@
  *  Covered by the GPL license. 
  */
  
-#if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver) \
-    && !defined(WINGRSCR_HEADER_INCLUDED)
+#if    defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver) \
+   && !defined(WINGRSCR_HEADER_INCLUDED)
 #define WINGRSCR_HEADER_INCLUDED
 
 
-#if    defined( TV_BIG_ENDIAN )         /* Intel machines */
+#ifdef TV_BIG_ENDIAN          /* Intel machines */
   #define attrChar(a)   ((a) >> 0x08)
   #define attrColor(a)  ((a) &  0xFF)
 #else
@@ -22,7 +22,15 @@
   #define attrColor(a)  ((a) >> 0x08)
 #endif
 
-#include <tv/win32/win32clip.h>
+#ifdef DEBUG
+  #define PRINTDEBUG( w ) \
+  { std::cout \
+  << #w << " --> " << w  \
+  << " ( " << __FILE__ <<  " : " << __LINE__ << " )\n";\
+  std::cout.flush(); }
+#else
+  #define PRINTDEBUG( w )
+#endif
 
 typedef struct
 { HBITMAP bitmapRaster;
@@ -40,11 +48,12 @@ typedef struct
 } VideoModeData;
 
 
-struct TDisplayWinGr :  public virtual TDisplay // virtual to avoid problems with multiple inheritance
-{ static unsigned xPos;             /* Cursor pos        */
-  static unsigned yPos;             /* Cursor pos        */
-  static unsigned zPos;             /* Cursor size       */
-  static HDC       hdc;             /* A device context used for drawing */
+struct TDisplayWinGr : public virtual TDisplay // virtual to avoid problems with multiple inheritance
+{ static unsigned xPos;          /* Cursor pos                */
+  static unsigned yPos;          /* Cursor pos                */
+  static unsigned zPos;          /* Cursor size               */
+  static HDC       hdc;          /* Context used for drawing  */
+  static RECT     wGeo;          /* Window position and size  */
 
  static void   Init();   /* Sets pointers of TDisplay to point to this class */
 
@@ -151,10 +160,12 @@ public:
 
 struct TScreenWinGr: public virtual TDisplayWinGr
                    , public         TScreen
-                   , public         TVWin32Clipboard
-{ static int amountOfCells;    /* Allocated screen cells  */
+{ static   int amountOfCells;    /* Allocated screen cells */
+  static DWORD style;            /* Window style           */
+  static DWORD exStyle;          /* Window new styles      */
+  
 
-  TScreenWinGr();                    // We will use casts to base classes, destructors must be pointers
+  TScreenWinGr();                /* We will use casts to base classes, destructors must be pointers */
 
   static void  Init();
 

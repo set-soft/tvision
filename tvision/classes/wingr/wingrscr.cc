@@ -22,7 +22,10 @@
 #define Uses_TGKey
 #define Uses_TVCodePage
 #define Uses_alloca
+#define Uses_TVOSClipboard
 #include <tv.h>
+
+#include <tv/win32/win32clip.h>
 
 
 #if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver)
@@ -54,6 +57,13 @@ const int fullCOLOR= 0xFF;
 static char * className= "TVISION for windows"; /* Make the classname into a global variable */
 
 int TScreenWinGr::amountOfCells= 0;    /* Allocated screen cells  */
+
+DWORD TScreenWinGr::style= WS_CAPTION       /* Window style  */
+                         | WS_SYSMENU
+                         | WS_MAXIMIZEBOX
+                         | WS_MINIMIZEBOX;
+
+DWORD TScreenWinGr::exStyle= 0;                  /* Window new styles  */
 
 
 /*
@@ -162,30 +172,26 @@ VOID CALLBACK cursorProc( HWND hwnd      // handle of window for timer messages
  *  Make a windows screen
  */
 
- void xxx()
- {      int i;
-  i ++;
- }
-
- 
-
 TScreenWinGr::TScreenWinGr()
-{ FreeConsole();
-  WNDCLASSEX  wincl;            /* Datastructure for the windowclass */
+{ WNDCLASSEX  wincl;            /* Datastructure for the windowclass */
   STARTUPINFO startinfo;  
   HINSTANCE   TvWinThisInstance= GetModuleHandle (NULL); 
-  long aux;                       /* User data retrieval */
-  
+  long aux;                     /* User data retrieval */
+
+#ifndef DEBUG                   /* Use the console to debug messages */
+  FreeConsole();
+#endif
+
   GetStartupInfoA (&startinfo);   /* Get the command line passed to the process. */
   
 /*
  *  JASC, ene 2006, now bitmap fonts 
  */  
  
-  int maxX=80; 
-  int maxY=25;
-  int fontW=10; 
-  int fontH=20;
+  int maxX=  80;
+  int maxY=  25;
+  int fontW= 10;
+  int fontH= 20;
 
  /* Look for defaults */
 
@@ -197,18 +203,20 @@ TScreenWinGr::TScreenWinGr()
   optSearch("InpCP", forcedInpCP );
 
   codePage=
-    new TVCodePage( forcedAppCP!=-1 ? forcedAppCP : TVCodePage::ISOLatin1Linux
-                  , forcedScrCP!=-1 ? forcedScrCP : TVCodePage::ISOLatin1Linux
-                  , forcedInpCP!=-1 ? forcedInpCP : TVCodePage::ISOLatin1Linux );
+    new TVCodePage( forcedAppCP != -1 ? forcedAppCP : TVCodePage::ISOLatin1Linux
+                  , forcedScrCP != -1 ? forcedScrCP : TVCodePage::ISOLatin1Linux
+                  , forcedInpCP != -1 ? forcedInpCP : TVCodePage::ISOLatin1Linux );
                  
   SetDefaultCodePages( TVCodePage::ISOLatin1Linux
                      , TVCodePage::ISOLatin1Linux
                      , TVCodePage::ISOLatin1Linux );
 
-  if (optSearch("ScreenWidth" , aux)) { maxX=  aux; }
-  if (optSearch("ScreenHeight", aux)) { maxY=  aux; }
-  if (optSearch("FontWidth"   , aux)) { fontW= aux; }
-  if (optSearch("FontHeight"  , aux)) { fontH= aux; }
+  if ( optSearch("ScreenWidth" , aux )) { maxX=  aux; }
+  if ( optSearch("ScreenHeight", aux )) { maxY=  aux; }
+  if ( optSearch("FontWidth"   , aux )) { fontW= aux; }
+  if ( optSearch("FontHeight"  , aux )) { fontH= aux; }
+
+  PRINTDEBUG( maxX  );
  
   if ( optSearch( "Font10x20", aux ) && aux )
   { fontW=10, fontH=20; 
@@ -248,32 +256,54 @@ TScreenWinGr::TScreenWinGr()
   { return; 
   }
 
+/*
+ * Get the starting window size in pixels
+ */
+
+  RECT clientArea;
+
+  clientArea.top   =          /* Desired client size, 0 based */
+  clientArea.left  = 0;
+  clientArea.right = maxX * fontW;
+  clientArea.bottom= maxY * fontH;
+
+  AdjustWindowRectEx( &clientArea  /* IN/OUT variable */
+                    , style
+                    , 0            /* No windows menu */
+                    , exStyle );   /* Extended styles */
+
+  clientArea.right -= clientArea.left;  /* get increments */
+  clientArea.bottom-= clientArea.top ;
+
 /* 
  * The class is registered, lets create a program 
  */
-              xxx();
-              
   hwnd= CreateWindowEx
-  ( 0                        /* Possible styles */
-  , className               /* Classname ("MyLittleWindow")           */
-  , className               /* Title Text                             */
-  , WS_CAPTION                /* defaultwindow                          */
-  | WS_SYSMENU
-  | WS_MAXIMIZEBOX
-  | WS_MINIMIZEBOX
-  , CW_USEDEFAULT             /* Windows decides the position           */
-  , CW_USEDEFAULT             /* where the window end up on the screen  */
-  , maxX * fontW
-  , maxY * fontH
+  ( exStyle                   /* Possible styles                        */
+  , className                 /* Classname ("MyLittleWindow")           */
+  , className                 /* Title Text                             */
+  , style                     /* defaultwindow                          */
+  , CW_USEDEFAULT             /* Window dimensions                      */
+  , CW_USEDEFAULT
+  , clientArea.right
+  , clientArea.bottom
   , HWND_DESKTOP              /* The window is a childwindow to desktop */
   , NULL                      /* No menu                                */
   , TvWinThisInstance         /* Program Instance handler               */
   , NULL );                   /* No Window Creation data                */
   
-
   if ( ! hwnd )               /* Fails to create (font creation assigns) */
   { return; 
   }
+
+/*
+ * Store the window geometry and client size
+ */
+
+/*  GetWindowRect( hwnd, &wGeo ); */
+  wGeo.right = clientArea.right;
+  wGeo.bottom= clientArea.bottom;
+  
   
   hdc= GetDC( hwnd );
 
@@ -342,11 +372,8 @@ void TScreenWinGr::Init()
   TScreen::setDisPaletteColors = SetDisPaletteColors;
   TScreen::getFontGeometryRange= GetFontGeometryRange;
 
-  TVWin32Clipboard::Init();  /* compatible clipboard */
-
+  TVWin32Clipboard::Init();           /* Use the windows clipboard */
   setVideoMode( startupMode= smCO80 );
-
-
 }
 
 /*
@@ -417,9 +444,11 @@ void TScreenWinGr::writeLine( unsigned x
   if ( y==yPos )
   { if ( xPos >= x)
     { if ( xPos<= x+w )
-      { lowSetCursor( xPos
-                    , yPos
-                    , true ); 
+      { if ( xPos >= 0 )
+        { lowSetCursor( xPos
+                      , yPos
+                      , true );
+        }
       }
     }
   }

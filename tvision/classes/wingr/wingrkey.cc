@@ -202,7 +202,8 @@ CodePage   * TGKeyWinGr::remapKey= NULL;  // Multilingual keyboard support
 
 
 ConvKeyRec xlateTableKeys[]=
-{{ VK_UP       , kbUp         }  /* Move up, up arrow       */
+{{ ' '        , kbSpace       }
+,{ VK_UP       , kbUp         }  /* Move up, up arrow       */
 ,{ VK_ESCAPE   , kbEsc        }
 ,{ VK_TAB      , kbTab        }
 ,{ VK_HOME     , kbHome       }
@@ -235,7 +236,8 @@ ConvKeyRec xlateTableKeys[]=
 ,{   0         , 0            }}; /* Terminator */
 
 ConvKeyRec xlateTableChars[]=
-{{ '0'        , kb0           }     
+{{ ' '        , kbSpace       }
+,{ '0'        , kb0           }     
 ,{ '1'        , kb1           }     
 ,{ '2'        , kb2           }     
 ,{ '3'        , kb3           }     
@@ -298,21 +300,8 @@ ConvKeyRec xlateTableChars[]=
 #define TOGGLED_KEY 0x01 /* The key is toggled */ 
 #define PRESSED_KEY 0x80 /* The key is pressed */
 
-unsigned ShiftState()
-{  return
-  ( GetKeyState( VK_LSHIFT  ) & PRESSED_KEY ? kbShiftCode : 0
-  | GetKeyState( VK_RSHIFT  ) & PRESSED_KEY ? kbShiftCode : 0
-  | GetKeyState( VK_SHIFT   ) & PRESSED_KEY ? kbShiftCode : 0
-  | GetKeyState( VK_LCONTROL) & PRESSED_KEY ? kbCtrlCode  : 0
-  | GetKeyState( VK_RCONTROL) & PRESSED_KEY ? kbCtrlCode  : 0
-  | GetKeyState( VK_CONTROL ) & PRESSED_KEY ? kbCtrlCode  : 0
-  | GetKeyState( VK_LMENU   ) & PRESSED_KEY ? kbAltLCode  : 0
-  | GetKeyState( VK_RMENU   ) & PRESSED_KEY ? kbAltRCode  : 0 ); 
-}  
-
-
 unsigned TGKeyWinGr::GetShiftState()
-{  return( ShiftState() );
+{ return( keyMask );
 }  
 
 
@@ -341,34 +330,53 @@ int TGKeyWinGr::setKey( const ConvKeyRec * xlate
 int TGKeyWinGr::testEvents( UINT   message
                           , WPARAM wParam
                           , LPARAM lParam )
-{ //char buff[ 256 ];
-                                               
-  storedEvent.what= evNothing; 
-  storedEvent.keyDown.charScan.scanCode=
-  storedEvent.keyDown.raw_scanCode= ( lParam >> 16 ) & 0xFF;
-  storedEvent.keyDown.shiftState= keyMask= ShiftState();
-         
+{ storedEvent.what= evNothing;
+
+  switch( message )
+  { case WM_CHAR:      
+    case WM_KEYDOWN:
+    case WM_SYSCHAR:
+    case WM_SYSKEYDOWN:
+      keyMask=                  /* Adapt keymask to TVISION */
+       (( GetKeyState( VK_LSHIFT  ) & PRESSED_KEY ? kbShiftCode : 0 )
+       |( GetKeyState( VK_RSHIFT  ) & PRESSED_KEY ? kbShiftCode : 0 )
+       |( GetKeyState( VK_SHIFT   ) & PRESSED_KEY ? kbShiftCode : 0 )
+       |( GetKeyState( VK_LCONTROL) & PRESSED_KEY ? kbCtrlCode  : 0 )
+       |( GetKeyState( VK_RCONTROL) & PRESSED_KEY ? kbCtrlCode  : 0 )
+       |( GetKeyState( VK_CONTROL ) & PRESSED_KEY ? kbCtrlCode  : 0 )
+       |( GetKeyState( VK_LMENU   ) & PRESSED_KEY ? kbAltLCode  : 0 )
+       |( GetKeyState( VK_RMENU   ) & PRESSED_KEY ? kbAltRCode  : 0 ));
+
+       if ( keyMask & kbAltRCode )
+       { keyMask&= ~kbCtrlCode;
+       }
+       storedEvent.keyDown.shiftState= keyMask;
+       storedEvent.keyDown.charScan.scanCode=
+       storedEvent.keyDown.raw_scanCode= ( lParam >> 16 ) & 0xFF;
+  }
+     
+
   switch( message )
   {  case WM_SYSKEYDOWN:
      case WM_KEYDOWN:
+
        if ( keyMask )                  /* key + alt or ctrl */
        { if ( setKey( xlateTableChars
                     , wParam ))
          { return( 1 );
          }                  
-       } 
+       }
        
        if ( setKey( xlateTableKeys
                   , wParam ))
-       { if ( GetKeyState( VK_RMENU ) & PRESSED_KEY )  // Emulate alt for system keys
-         { keyMask &= ~kbCtrlCode;
-           keyMask |=  kbAltLCode;
-           storedEvent.keyDown.keyCode&= ~kbCtrlCode;
+       { if ( keyMask & kbAltRCode )  // Emulate alt for system keys
+         { keyMask                    &= ~kbAltRCode;
+           storedEvent.keyDown.keyCode&= ~kbAltRCode;
+           keyMask                    |=  kbAltLCode;
            storedEvent.keyDown.keyCode|=  kbAltLCode;
-           storedEvent.keyDown.shiftState= keyMask;
          }
          else
-         { if ( GetKeyState( VK_LMENU ) & PRESSED_KEY )  // Windows event ?
+         { if ( keyMask & kbAltLCode )  // Windows event ?
            { storedEvent.what= evNothing;                // Give event to win
              return( 0 );
            }  
