@@ -339,6 +339,7 @@ void TScreenWinGr::Init()
   TScreen::setVideoModeRes_p   = SetVideoModeRes;
   TScreen::getFontGeometry     = GetFontGeometry;
   TScreen::restoreFonts        = RestoreFonts;
+  TScreen::setDisPaletteColors = SetDisPaletteColors;
   TScreen::getFontGeometryRange= GetFontGeometryRange;
 
   TVWin32Clipboard::Init();  /* compatible clipboard */
@@ -526,6 +527,30 @@ void TScreenWinGr::RestoreScreen()
 /*
  *
  */
+int TScreenWinGr::SetDisPaletteColors( int from
+                                     , int number
+                                     , TScreenColor *colors )
+{ int to;
+
+/*
+ *  Some boundaries cheching
+ */
+  from= from <  0 ? 0 : from;
+  to  = from+number;
+  to  = to   > 16 ? 16: to;
+  number= 0;                 /* Now is a counter */
+
+  while( from < to )
+  { colorMap[ from++ ]= RGB( colors[ from ].R
+                           , colors[ from ].G
+                           , colors[ from ].B );
+    number ++;
+  }
+
+ return( number );
+}
+
+
 
 /*
  *  JASC, 2002
