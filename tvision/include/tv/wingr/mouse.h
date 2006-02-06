@@ -11,15 +11,20 @@
 #define WINGRMOUSE_HEADER_INCLUDED
 
 struct THWMouseWinGr: virtual public TDisplayWinGr  // Access to display attributes
-		    ,                THWMouse
-{ THWMouseWinGr();
+                    ,                THWMouse
+{ static    bool pressed;
+  static HCURSOR lastCursor;
+
+  
+  
+  THWMouseWinGr();
   static void Init();
   
   static void GetEvent( MouseEventType &me );
 
   static int testEvents( UINT   message
                        , WPARAM wParam
-		       , LPARAM lParam );
+                       , LPARAM lParam );
 
   static void init();
 
@@ -37,7 +42,7 @@ static unsigned mouseY; */
 // Support methods
 
 static int setMouse( LPARAM lParam
-		   , int ev );
+                   , int ev );
 
 
 };
