@@ -915,13 +915,12 @@ int TDisplayWinGr::testEvents( UINT   message
     case WM_QUIT:
       storedEvent.what= evCommand;
       storedEvent.message.command= cmQuit;
+      DestroyWindow( hwnd );
     return( 1 );
 
     case WM_DESTROY:          /* send a WM_QUIT to the messagequeue */
       PostQuitMessage(0);
-      storedEvent.what= evCommand;
-      storedEvent.message.command= cmQuit;
-    return( 2 );
+    exit( 0 );
 
 
     case WM_SIZE:
