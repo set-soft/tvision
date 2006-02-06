@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.305  2006/02/03 14:49:58  set
+* Fixed: Last patch to WinGr prevented compilation using gcc (/* inside a
+comment).
+
 Revision 2.399.2.304  2006/02/03 12:56:51  domatlantida
 WinGr: systems keys conflict resolved (Alt Gr for ALT-function keys). No mappings at this moment
 

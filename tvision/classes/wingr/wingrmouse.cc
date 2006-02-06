@@ -31,13 +31,12 @@
 
 
 
-/* ------------------------------------------------------------------------- */
-   int THWMouseWinGr::setMouse( LPARAM lParam
-                              , int ev )
-/* ------------------------------------------------------------------------- */
+/* 
+ * 
+ */
+int THWMouseWinGr::setMouse( LPARAM lParam
+                           , int ev )
 { static bool pressed= false; 
-  RECT  wSize;
-
   static HCURSOR lastCursor= NULL;
 
   storedEvent.what= ev;
@@ -61,45 +60,49 @@
     case evMouseMove:
       if ( pressed )                     /* Mouse is down */
       { if ( lastCursor != sizeCursor )  /* Not in the resizing area   */
-        { break; }
+        { break; 
+        }
 
-	storedEvent.what= evNothing;    /* Not a system event */
-	storedEvent.mouse.where.x += 1;
-	storedEvent.mouse.where.y += 1;
+        storedEvent.what= evNothing;    /* Not a system event */
+        storedEvent.mouse.where.x += 1;
+        storedEvent.mouse.where.y += 1;
 
-	if ( TScreen::screenWidth  == storedEvent.mouse.where.x
-	  && TScreen::screenHeight == storedEvent.mouse.where.y )
-	{ break;                         /* No resizing needed */
-    }
+        if ( TScreen::screenWidth  == storedEvent.mouse.where.x
+          && TScreen::screenHeight == storedEvent.mouse.where.y )
+        { break;                         /* No resizing needed */
+        }
 
-	TScreen::screenWidth = storedEvent.mouse.where.x;
-	TScreen::screenHeight= storedEvent.mouse.where.y;
-    winRecalc(  );    /* Recalc new window size */
-
-	break; 
-  }
+        TScreen::screenWidth = storedEvent.mouse.where.x < 0x100 ? storedEvent.mouse.where.x : 0xFF; ;
+        TScreen::screenHeight= storedEvent.mouse.where.y < 0x100 ? storedEvent.mouse.where.y : 0xFF;;
+        winRecalc(  );    /* Recalc new window size */
+      break;
+      }
 
 
       if ( ! storedEvent.mouse.where.y  )
       { lastCursor= handCursor; }
       else
       { if ( storedEvent.mouse.where.y > ( TScreen::screenHeight-2 ))
-	{ lastCursor= storedEvent.mouse.where.x > ( TScreen::screenWidth-2 )
-	            ? sizeCursor
-	            : handCursor; }
+        { lastCursor= storedEvent.mouse.where.x > ( TScreen::screenWidth-2 )
+                    ? sizeCursor
+                    : handCursor; }
         else
-	{ lastCursor= normCursor; }}
+        { lastCursor= normCursor;
+        }
+      }
     break; }
 
   SetCursor( lastCursor );
-  return(0);}
+  return(0);
+}
 
 
-/* ------------------------------------------------------------------------- */
-   int THWMouseWinGr::testEvents( UINT   message
-                                , WPARAM wParam
-			        , LPARAM lParam )
-/* ------------------------------------------------------------------------- */
+/*
+ *
+ */
+int THWMouseWinGr::testEvents( UINT   message
+                             , WPARAM wParam
+                             , LPARAM lParam )
 { switch( message )   
   { case WM_MOUSEMOVE:   setMouse( lParam, evMouseMove ); break;
     case WM_LBUTTONUP:   setMouse( lParam, evMouseUp   ); break;
@@ -112,7 +115,7 @@
 
   storedEvent.mouse.buttons= ( wParam & MK_LBUTTON ) ? mbLeftButton   : 0
                            | ( wParam & MK_MBUTTON ) ? mbMiddleButton : 0
-			   | ( wParam & MK_RBUTTON ) ? mbRightButton  : 0 ;
+                           | ( wParam & MK_RBUTTON ) ? mbRightButton  : 0 ;
 
   
   return( message ); }  /* Was a mouse event */
@@ -136,11 +139,11 @@
     { case evMouseUp:
       case evMouseDown:
       case evMouseMove:
-	me= storedEvent.mouse;  /* Give stored event          */
+        me= storedEvent.mouse;  /* Give stored event          */
         bOld= me.buttons;       /* The default is no message  */
-	xOld= me.where.x;
-	yOld= me.where.y;
-	storedEvent.what=       /* Mark as exhausted          */
+        xOld= me.where.x;
+        yOld= me.where.y;
+        storedEvent.what=       /* Mark as exhausted          */
            evNothing;
 
       case evKeyDown:           /* Key event pending          */ 
