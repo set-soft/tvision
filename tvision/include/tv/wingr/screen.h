@@ -31,20 +31,20 @@ typedef struct
   unsigned w, h;
 } bitmapFontRec;
 
+typedef struct
+{ TDisplay::videoModes mode;
+  ushort wScreen
+       , hScreen
+       , wFont
+       , hFont;
+} VideoModeData;
+
+
 struct TDisplayWinGr :  public virtual TDisplay // virtual to avoid problems with multiple inheritance
-{ static bool processEvent(  );
-
-  static void testCreate( HWND hw
-                        , LPARAM lParam );
-
-  static int testEvents( UINT   message
-                       , WPARAM wParam
-                       , LPARAM lParam );
-
- static unsigned xPos;       /* Cursor pos        */
- static unsigned yPos;       /* Cursor pos        */
- static unsigned zPos;       /* Cursor size       */
- static HDC       hdc;       /* A device context used for drawing */
+{ static unsigned xPos;             /* Cursor pos        */
+  static unsigned yPos;             /* Cursor pos        */
+  static unsigned zPos;             /* Cursor size       */
+  static HDC       hdc;             /* A device context used for drawing */
 
  static void   Init();   /* Sets pointers of TDisplay to point to this class */
 
@@ -52,8 +52,19 @@ struct TDisplayWinGr :  public virtual TDisplay // virtual to avoid problems wit
                          , int y
                          , bool dir );
 
+  static int testEvents( UINT   message
+                       , WPARAM wParam
+                       , LPARAM lParam );
+
 
 protected:
+
+  static bool processEvent(  );
+
+  static void testCreate( HWND hw
+                        , LPARAM lParam );
+
+ 
  TDisplayWinGr() {};
  virtual ~TDisplayWinGr();  // We will use casts to base classes, destructors must be pointers
 
@@ -67,22 +78,28 @@ protected:
  static ushort GetRows();
  static ushort GetCols();
  
- static ushort      GetCrtMode();
- static void        SetCrtMode(ushort);
- static void        SetCrtModeExt(char *);
+ static ushort GetCrtMode();
+ static void   SetCrtMode(ushort);
+ static int    SetCrtModeRes( unsigned w, unsigned h, int fW, int fH );
  static const char *GetWindowTitle(void);
  static int         SetWindowTitle(const char *name);
  static int         CheckForWindowSize(void);
- static void        SetFontMode( int fontIdx );
  static void        Beep();
 
 
 // Support functions
  
 
- static void winRecalc(  );
+  static int SetFontCrt( bitmapFontRec & fontResource
+                       , ushort w, ushort h );
+                       
+  static int SetFontMode( bitmapFontRec  & fr, ushort newMode );
 
- static void SetCrtMode( const char * );
+  static int selectFont( bitmapFontRec  & fontResource 
+                       , TScreenFont256 * fontData );
+ 
+  static void winRecalc(  );
+  static void SetCrtMode( const char * );
 
 // Support variables
 
@@ -111,10 +128,20 @@ public:
  static bitmapFontRec primary;
  static bitmapFontRec secondary;
 
+ static          uchar shapeFont8x16[];
+ static          uchar shapeFont10x20[];
+  
+ static TScreenFont256 font8x16;  
+ static TScreenFont256 font10x20;
+ static TScreenFont256 * defaultFont;
+
+/* 
+ *  28/1/2006, new bitmap fonts  
+ */ 
+ 
+  static VideoModeData videoModes[];
+
 };
-
-
-
 
 
 
@@ -125,7 +152,9 @@ public:
 struct TScreenWinGr: public virtual TDisplayWinGr
                    , public         TScreen
                    , public         TVWin32Clipboard
-{ TScreenWinGr();                    // We will use casts to base classes, destructors must be pointers
+{ static int amountOfCells;    /* Allocated screen cells  */
+
+  TScreenWinGr();                    // We will use casts to base classes, destructors must be pointers
 
   static void  Init();
 
@@ -140,16 +169,16 @@ protected:
  // Default: static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
  // Default: static ushort getCharacter(unsigned dst);
  
- static void   setVideoMode(ushort mode);
- static void   Resume();
- static void   Suspend();
- static void   clearScreen();
- static void   setCharacter( unsigned offset
+  static int    SetVideoModeRes( unsigned w, unsigned h, int fW, int fH );
+  static void   setVideoMode(ushort mode);
+  static void   Resume();
+  static void   Suspend();
+  static void   setCharacter( unsigned offset
                            , ushort value );
 
- static void   setCharacters( unsigned dst
-                            , ushort  *src
-                            , unsigned len );
+  static void   setCharacters( unsigned dst
+                             , ushort  *src
+                             , unsigned len );
 
   static int   System( const char *command
                      , pid_t *pidChild
@@ -167,50 +196,34 @@ protected:
   static int GetFontGeometryRange( unsigned &wmin, unsigned &hmin
                                  , unsigned &wmax, unsigned &hmax );
  
-  static int SetCrtModeRes( unsigned w
-                          , unsigned h
-                          , int fW
-                          , int fH );
- 
  // Support functions
 
-  static int TScreenWinGr::selectFont( bitmapFontRec  & fontResource 
-                                     , TScreenFont256 * fontData );
- 
   static void  SaveScreen();
-  static void  SaveScreenReleaseMemory();
   static void  RestoreScreen();
-  static void  Done();
 
- public:
- static void  writeLine( unsigned x
-                       , unsigned y
-                       , int w
-                       , char * str
-                       , uchar color );
+public:
+
+  static void  writeLine( unsigned x
+                        , unsigned y
+                        , int w
+                        , char * str
+                        , uchar color );
 
 
 // Support variables
 
 protected: 
 
-/* 
- *  28/1/2006, new bitmap fonts  
- */ 
- 
- static          uchar shapeFont8x16[];
- static          uchar shapeFont10x20[];
-  
- static TScreenFont256 font8x16;  
- static TScreenFont256 font10x20;
- static TScreenFont256 * defaultFont;
-
 };
 
-   LRESULT CALLBACK WindowProcedure( HWND hwnd           /* This function is called by the Windowsfunction DispatchMessage( ) */
-                                   , UINT message
-                                   , WPARAM wParam
-                                   , LPARAM lParam );
+/*
+ * This function is called by the Windowsfunction DispatchMessage( )
+ */
+
+LRESULT CALLBACK WindowProcedure( HWND hwnd
+                                , UINT message
+                                , WPARAM wParam
+                                , LPARAM lParam );
 
 
 #endif // WINDOWSSCR_HEADER_INCLUDED
