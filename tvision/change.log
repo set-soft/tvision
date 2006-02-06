@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.399.2.311  2006/02/06 18:27:23  set
+ALT-GR keys, resizing, bugs
+.
 Revision 2.399.2.310  2006/02/06 18:26:28  set
 not hangs on windows exit
 .
