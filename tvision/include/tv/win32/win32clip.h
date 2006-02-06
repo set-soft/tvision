@@ -33,6 +33,7 @@ protected:
 
  friend class TScreenWin32;
  friend class TScreenWinNT;
+ friend class TScreenWinGr;  /* JASC, feb 2006, also compatible */
 };
 
 #endif // WIN32CLIP_HEADER_INCLUDED
