@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.399.2.306  2006/02/06 18:22:43  set
+Fixed resolutions stuff
+.
 Revision 2.399.2.305  2006/02/03 14:49:58  set
 * Fixed: Last patch to WinGr prevented compilation using gcc (/* inside a
 comment).

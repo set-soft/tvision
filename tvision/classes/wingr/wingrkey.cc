@@ -139,8 +139,8 @@ CodePage   * TGKeyWinGr::remapKey= NULL;  // Multilingual keyboard support
  * , { '['         , kbOpenBrace  , '[', 0 }   0x001B 
  * , { ']'         , kbCloseBrace , ']', 0 }   0x001D 
  * , { '^'         , kbCaret      , '^', 0 }   0x004f 
- * , { '_'         , kbUnderLine  , '_', 0 }   0x005e 
-*/
+ * , { '_'         , kbUnderLine  , '_', 0 }   0x005e */
+  
 /*, { '0'               , kb0          , '0', 0x45 }
 , { '1'         , kb1          , '1', 0x16 }
 , { '2'         , kb2          , '2', 0x1E }
@@ -341,7 +341,7 @@ int TGKeyWinGr::setKey( const ConvKeyRec * xlate
 int TGKeyWinGr::testEvents( UINT   message
                           , WPARAM wParam
                           , LPARAM lParam )
-{ char buff[ 256 ];
+{ //char buff[ 256 ];
                                                
   storedEvent.what= evNothing; 
   storedEvent.keyDown.charScan.scanCode=
@@ -432,7 +432,7 @@ int TGKeyWinGr::KbHit(void)
 void TGKeyWinGr::FillTEvent( TEvent &me )
 { me.what= evNothing;                /* The default is no message  */
 
-  char buff[ 256 ];
+//  char buff[ 256 ];
 
   do
   { switch( storedEvent.what )       /* Is there a previous event? */
@@ -507,4 +507,5 @@ void TGKeyWinGr::FillTEvent( TEvent &me )
 #include <tv/wingr/mouse.h>
 
 #endif // TVOS_Win32
+
 
