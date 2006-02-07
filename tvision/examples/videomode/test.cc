@@ -195,9 +195,9 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
    + *new TMenuItem("~1~32x25",cmTest132x25b,kbNoKey,hcNoContext)
    + *new TMenuItem("1~3~2x50",cmTest132x50b,kbNoKey,hcNoContext)
  + *new TSubMenu("~C~olor",kbAltC)
-   + *new TMenuItem("Color"        , cmTestCO80, kbNoKey,hcNoContext)
-   + *new TMenuItem("Black & White", cmTestBW80, kbNoKey,hcNoContext)
-   + *new TMenuItem("Mono"         , cmTestMono, kbNoKey,hcNoContext)
+   + *new TMenuItem("~C~olor"        , cmTestCO80, kbNoKey,hcNoContext)
+   + *new TMenuItem("~B~lack & White", cmTestBW80, kbNoKey,hcNoContext)
+   + *new TMenuItem("~M~ono"         , cmTestMono, kbNoKey,hcNoContext)
  );
 }
 
