@@ -42,6 +42,9 @@
 
 const int maxTitleSize= 256;
 
+char *     TDisplayWinGr::className= "TVISION for windows"; /* Make the classname into a global variable */
+HINSTANCE TDisplayWinGr::TvWinInstance;
+
 char       TDisplayWinGr::cShapeFr;
 char       TDisplayWinGr::cShapeTo;
 
@@ -60,10 +63,25 @@ HCURSOR    TDisplayWinGr::normCursor;
 HCURSOR    TDisplayWinGr::sizeCursor;
 HCURSOR    TDisplayWinGr::handCursor;
 
-bitmapFontRec TDisplayWinGr::primary  = {0,0,0,0,0};
-bitmapFontRec TDisplayWinGr::secondary= {0,0,0,0,0};
+bitmapFontRec TDisplayWinGr::primary  = { 0,0,0,0,0 };
+bitmapFontRec TDisplayWinGr::secondary= { 0,0,0,0,0 };
 
          RECT TDisplayWinGr::wGeo= { 0, 0, 0, 0 };
+
+
+/*
+ *  At least font limits have the hardcoded fonts
+ */
+ 
+int TDisplayWinGr::foWmin=  8;
+int TDisplayWinGr::foHmin= 16;
+int TDisplayWinGr::foWmax= 10;
+int TDisplayWinGr::foHmax= 20;
+         
+unsigned  TDisplayWinGr::dmPelsWidth ;
+unsigned  TDisplayWinGr::dmPelsHeight;
+
+         
 
 
 uchar TDisplayWinGr::shapeFont10x20[]=
@@ -595,7 +613,11 @@ TScreenFont256 * TDisplayWinGr::defaultFont= &TDisplayWinGr::font8x16;
 
 int TDisplayWinGr::selectFont( bitmapFontRec  & fontResource 
                              , TScreenFont256 * fontData )
-{ if ( !fontData )
+{ if ( !hdc )      /* No resources now */
+  { return( -1 );
+  }
+
+  if ( !fontData )
   { fontData= TDisplayWinGr::defaultFont;
   }
 
@@ -612,7 +634,7 @@ int TDisplayWinGr::selectFont( bitmapFontRec  & fontResource
  */  
  
   ushort * data= (ushort *)fontData->data;
-  ushort * dst= (ushort *) alloca( 256 * sizeof( ushort ) * fontData->h );
+  ushort *  dst= (ushort *) alloca( 256 * sizeof( ushort ) * fontData->h );
   
   if ((( fontData->w - 8 ) % 16 ) == 0 )   /* 8, 24, 40 etc ... (byte aligned) */
   { int sz= 256 * fontData->h ;   /* Iterate whole chars     */
@@ -706,6 +728,10 @@ int TDisplayWinGr::SetFontCrt( bitmapFontRec & fontResource
   RECT    celda;
   char    letra;
   
+  if ( !hdc )      /* No resources now */
+  { return( -1 );
+  }
+
   HFONT hFont= CreateFont( h                     /* Font height        */
                          , w                     /* Font width         */
                          , 0                     /* Escapement         */
@@ -860,39 +886,80 @@ void TDisplayWinGr::lowSetCursor( int x
   }
   
 
+  
 /*
+ *   JASC, feb 2006
  *
+ *  Those functions assure that the screen size have suitable values
  */
-void TDisplayWinGr::winRecalc( )
-{ RECT windowArea;
-  int w= wGeo.right ;
+int TDisplayWinGr::CheckWindowSize( RECT & windowArea )
+{ int w= wGeo.right ;
   int h= wGeo.bottom;
+  int recalcFlag;
 
-  if ( w && h )
-  { TScreen::screenWidth = TScreen::screenWidth < 10 ? 10 : TScreen::screenWidth;
-    TScreen::screenHeight= TScreen::screenHeight<  3 ?  3 : TScreen::screenHeight;
+/*
+ * Check a reasonable minimun size
+ */
+ 
+  TScreen::screenWidth = TScreen::screenWidth < 10 ? 10 : TScreen::screenWidth;
+  TScreen::screenHeight= TScreen::screenHeight<  3 ?  3 : TScreen::screenHeight;
 
-    wGeo.right=  getCols() * primary.w;  /* quantize width   */
-    wGeo.bottom= getRows() * primary.h;  /* quantize height  */
+  wGeo.right=  TScreen::screenWidth  * primary.w;  /* quantize width   */
+  wGeo.bottom= TScreen::screenHeight * primary.h;  /* quantize height  */
 
-    if (( wGeo.right  == w )             /* No changes, all done */
-     && ( wGeo.bottom == h ))
-    { return;
-    }
 
-    windowArea= wGeo;          /* Desired client size and pos */  
+  if (( wGeo.right  == w )             /* No changes, all done */
+   && ( wGeo.bottom == h ))
+  { return( 0 );
+  }
+
+  
+  do
+  { windowArea= wGeo;                   /* Desired client size and pos */
     AdjustWindowRectEx( &windowArea               /* IN/OUT variable  */
                       , TScreenWinGr::style
                       , 0                         /* No windows menu  */
                       , TScreenWinGr::exStyle );  /* Extended styles  */
+  
+  
+  /*
+   * Windows don´t have the same criteria in about ofsets in giving and demanding
+   */
+    windowArea.right += wGeo.left - windowArea.left;
+    windowArea.bottom+= wGeo.top  -  windowArea.top;
+  
+  /*
+   *  Check out of boundaries (Bigger than device size)
+   */
+
+    recalcFlag= 0;
+  
+    if ( windowArea.right > (ushort)dmPelsWidth )   /* Too wide           */
+    { TScreen::screenWidth --;                      /* Reduce width       */
+      wGeo.right-= primary.w;
+      recalcFlag ++;                                /* Request a new step */
+    }
+  
+    if ( windowArea.bottom > (ushort)dmPelsHeight ) /* Too tall           */
+    { TScreen::screenWidth --;                      /* Reduce height      */
+      wGeo.bottom-= primary.h;                      /* quantize height  */
+      recalcFlag ++;                                /* Request a new step */
+    }
+  }
+  while( recalcFlag );
+
+  return( 1 );                              /* Must be resized      */
+}
 
 /*
- * Windows does not have the same criteria in giving and demanding
+ *
  */
-    windowArea.right += wGeo.left - windowArea.left;
-    windowArea.bottom+= wGeo.top   - windowArea.top;
-    
-    MoveWindow( hwnd
+
+void TDisplayWinGr::winRecalc( )
+{ RECT windowArea;
+
+  if ( CheckWindowSize( windowArea ) )
+  { MoveWindow( hwnd
               , windowArea.left
               , windowArea.top
               , windowArea.right
@@ -1037,9 +1104,11 @@ LRESULT CALLBACK WindowProcedure( HWND hwnd    /* This function is called by the
                        , lParam )); 
 }
 
-/* ------------------------------------------------------------------------- */
-   bool TDisplayWinGr::processEvent(  )
-/* ------------------------------------------------------------------------- */
+/*
+ *  JASC 2002
+ *
+ */
+bool TDisplayWinGr::processEvent(  )
 { MSG message;                  /* Here messages to the application is saved */
 
   if ( PeekMessage( &message
@@ -1269,8 +1338,6 @@ int CALLBACK checkFonts( const LOGFONTA   * lplf   // address of logical-font da
                        , long unsigned int         // type of font
                        , LPARAM lpData )           // address of application-defined data
 { fontData * data= (fontData *) lpData;
-  LONG error= ( lpntm->tmMaxCharWidth - data->desiredW )
-            * ( lpntm->tmHeight       - data->desiredH );
 
   if ( lplf->lfItalic )                  // No italics (bad box drawings)
   { return( 2 ); 
@@ -1285,35 +1352,120 @@ int CALLBACK checkFonts( const LOGFONTA   * lplf   // address of logical-font da
   { return( 4 ); 
   }
 
+/*
+ *  Estimate the average error as sum of sqares
+ */
+  int ew= lpntm->tmMaxCharWidth - data->desiredW; ew *= ew;
+  int eh= lpntm->tmHeight       - data->desiredH; eh *= eh;
+
+  long error= ew + eh;
+
+  TDisplayWinGr::foWmin= lpntm->tmMaxCharWidth
+                       < TDisplayWinGr::foWmin
+                       ? lpntm->tmMaxCharWidth
+                       : TDisplayWinGr::foWmin;
+                       
+  TDisplayWinGr::foWmax= lpntm->tmMaxCharWidth
+                       > TDisplayWinGr::foWmax
+                       ? lpntm->tmMaxCharWidth
+                       : TDisplayWinGr::foWmax;
+                       
+  TDisplayWinGr::foHmin= lpntm->tmHeight
+                       < TDisplayWinGr::foHmin
+                       ? lpntm->tmHeight
+                       : TDisplayWinGr::foHmin;
+                       
+  TDisplayWinGr::foHmax= lpntm->tmHeight
+                       > TDisplayWinGr::foHmax
+                       ? lpntm->tmHeight
+                       : TDisplayWinGr::foHmax;
+
   if ( error < data->minError )
   { data->minError= error;
     data->fontW   = lpntm->tmMaxCharWidth;
     data->fontH   = lpntm->tmHeight;
   }
 
-  return( error );  /* This stops if the font matchs */
+  return( 1 /* error */ );  /* rerunrning "error" stops if the font matchs */
 }
-  
 
-int TDisplayWinGr::SetCrtModeRes( unsigned w
-                                , unsigned h
-                                , int fW
-                                , int fH )
+
+/*
+ *
+ *
+ */
+int TDisplayWinGr::SetCrtModeRes( unsigned fW
+                                , unsigned fH )
 { fontData suitable;
 
   suitable.minError= 0x7FFF;
+  suitable.desiredW= fW;
+  suitable.desiredH= fH;
 
   EnumFontFamilies( hdc           /* Iterate font list */
                   , "Terminal"
                   , checkFonts
                   , (LPARAM)&suitable );
 
-  SetFontCrt( primary,    suitable.fontW, suitable.fontW );
-  SetFontCrt( secondary,  suitable.fontW, suitable.fontW );
+  if (( fW == 8 ) &&  ( fH == 16 ))
+  { selectFont(   primary, &TDisplayWinGr::font8x16 );
+    selectFont( secondary, &TDisplayWinGr::font8x16 );
+    return( 1 );
+  }
+
+  if (( fW == 10 ) && ( fH == 20 ))
+  { selectFont(   primary, &TDisplayWinGr::font10x20 );
+    selectFont( secondary, &TDisplayWinGr::font10x20 );
+    return( 1 );
+  }
+
+  SetFontCrt( primary,    suitable.fontW, suitable.fontH );
+  SetFontCrt( secondary,  suitable.fontW, suitable.fontH );
 
   sizeChanged++;
   return( 0 );
 }
+
+/*
+ *
+ *
+ */
+void TDisplayWinGr::TestAllFonts( unsigned fW
+                                , unsigned fH )
+
+{ fontData suitable;
+
+  HDC hdc= CreateIC( "DISPLAY"
+                   , ""
+                   , NULL
+                   , NULL );
+
+  suitable.minError= 0x7FFF;
+  suitable.desiredW= fW;
+  suitable.desiredH= fH;
+
+  EnumFontFamilies( hdc                    /* Iterate font list */
+                  , "Terminal"
+                  , checkFonts
+                  , (LPARAM)&suitable );
+  DeleteDC( hdc );                         /* Free resources */
+
+  if (( fW == 8 ) &&  ( fH == 16 ))
+  { primary.w= secondary.w= fW;
+    primary.h= secondary.h= fH;
+    return;
+  }
+
+  if (( fW == 10 ) && ( fH == 20 ))
+  { primary.w= secondary.w= fW;
+    primary.h= secondary.h= fH;
+    return;
+  }
+
+  primary.w= secondary.w= suitable.fontW;  /* Best fitting    */
+  primary.h= secondary.h= suitable.fontH;
+}
+
 
 /* 
  *   Free resources

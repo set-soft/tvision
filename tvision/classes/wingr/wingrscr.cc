@@ -10,6 +10,23 @@
   Description:
   Windows Screen routines.
 
+
+  Defaults loaded from resource file tvrc or .tvrc
+
+    HalfColor     ->  Palette brightness
+    FullColor
+    
+    ScreenWidth   -> Screen font and size
+    ScreenHeight
+    FontWidth
+    FontHeight
+    Font10x20
+    
+    optSearch
+    optSearch
+    optSearch
+
+
 ***************************************************************************/
 #include <tv/configtv.h>
 
@@ -48,13 +65,6 @@
  #define IDC_SIZENWSE MAKEINTRESOURCE(32642)
 #endif
 
-const int cursorDelay= 300000;
-
-const int halfCOLOR= 0xC0;
-const int fullCOLOR= 0xFF;
-
-
-static char * className= "TVISION for windows"; /* Make the classname into a global variable */
 
 int TScreenWinGr::amountOfCells= 0;    /* Allocated screen cells  */
 
@@ -64,6 +74,10 @@ DWORD TScreenWinGr::style= WS_CAPTION       /* Window style  */
                          | WS_MINIMIZEBOX;
 
 DWORD TScreenWinGr::exStyle= 0;                  /* Window new styles  */
+
+long TScreenWinGr::cursorDelay= 300000;
+long TScreenWinGr::HalfColor= 0xB0;
+long TScreenWinGr::FullColor= 0xFF;
 
 
 /*
@@ -132,11 +146,7 @@ int TScreenWinGr::GetFontGeometry(unsigned &w, unsigned &h)
 
 int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
                                       , unsigned &wmax, unsigned &hmax )
-{ const unsigned foWmin=4
-               , foHmin=6
-               , foWmax=10
-               , foHmax=20;                      
-  wmin= foWmin;
+{ wmin= foWmin;
   hmin= foHmin;
   wmax= foWmax;
   hmax= foHmax;
@@ -147,9 +157,9 @@ int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
 /*
  *  Time callback to blink the cursor
  */ 
-VOID CALLBACK cursorProc( HWND hwnd      // handle of window for timer messages
-                        , UINT uMsg      // WM_TIMER message
-                        , UINT idEvent    // timer identifier
+VOID CALLBACK cursorProc( HWND hwnd          // handle of window for timer messages
+                        , UINT uMsg          // WM_TIMER message
+                        , UINT idEvent       // timer identifier
                         , DWORD /*dwTime*/ ) // current system time
 { if ( uMsg )
   { TScreenWinGr::zPos ^= 0x80;         /* Toggle phase (turn 180 degrees) */
@@ -163,38 +173,72 @@ VOID CALLBACK cursorProc( HWND hwnd      // handle of window for timer messages
   
   SetTimer( hwnd                 /* Reload timer        */ 
           , idEvent
-          , cursorDelay / 1000   /* from usecs to msecs */
+          , TScreenWinGr::cursorDelay / 1000   /* from usecs to msecs */
           , cursorProc );
 }
 
 
 /*
- *  Make a windows screen
+ *  JASC, 2002
+ *
+ *   Make a windows screen
  */
-
 TScreenWinGr::TScreenWinGr()
 { WNDCLASSEX  wincl;            /* Datastructure for the windowclass */
-  STARTUPINFO startinfo;  
-  HINSTANCE   TvWinThisInstance= GetModuleHandle (NULL); 
-  long aux;                     /* User data retrieval */
+  STARTUPINFO startinfo;
+  RECT windowArea;
+
+  TvWinInstance= GetModuleHandle (NULL);
 
 #ifndef DEBUG                   /* Use the console to debug messages */
   FreeConsole();
 #endif
 
   GetStartupInfoA (&startinfo);   /* Get the command line passed to the process. */
-  
+
 /*
  *  JASC, ene 2006, now bitmap fonts 
  */  
- 
-  int maxX=  80;
-  int maxY=  25;
-  int fontW= 10;
-  int fontH= 20;
 
- /* Look for defaults */
 
+/* Look for defaults */
+
+  optSearch("HalfColor", HalfColor );  /* Palette brightness */
+  optSearch("FullColor", FullColor );
+
+/*
+ *  Screen font and size
+ */
+
+  long maxX=  80; optSearch("ScreenWidth" , maxX  );
+  long maxY=  25; optSearch("ScreenHeight", maxY  );
+  long fontW=  8; optSearch("FontWidth"   , fontW );
+  long fontH= 16; optSearch("FontHeight"  , fontH );
+
+  long aux; if ( optSearch( "Font10x20", aux ) && aux )
+  { fontW= 10, fontH= 20;
+  }
+
+/*
+ *  Get and store the device size
+ *
+ */
+
+  DEVMODE ret;
+  ret.dmSize= sizeof( ret );
+  EnumDisplaySettings( NULL
+                     , ENUM_CURRENT_SETTINGS
+                     , &ret );
+
+  dmPelsWidth = ret.dmPelsWidth ;
+  dmPelsHeight= ret.dmPelsHeight;
+  screenWidth = maxX;
+  screenHeight= maxY;
+
+  TestAllFonts( fontW      /* Try the best fit */
+              , fontH );
+  CheckWindowSize( windowArea );
+  
 /* 
  * Code page, User settings have more priority than detected settings 
  */
@@ -211,23 +255,11 @@ TScreenWinGr::TScreenWinGr()
                      , TVCodePage::ISOLatin1Linux
                      , TVCodePage::ISOLatin1Linux );
 
-  if ( optSearch("ScreenWidth" , aux )) { maxX=  aux; }
-  if ( optSearch("ScreenHeight", aux )) { maxY=  aux; }
-  if ( optSearch("FontWidth"   , aux )) { fontW= aux; }
-  if ( optSearch("FontHeight"  , aux )) { fontH= aux; }
-
-  PRINTDEBUG( maxX  );
- 
-  if ( optSearch( "Font10x20", aux ) && aux )
-  { fontW=10, fontH=20; 
-    defaultFont= &font10x20;
-  }
- 
-  normCursor= LoadCursor( NULL, IDC_ARROW    );
-  handCursor= LoadCursor( NULL, IDC_HAND     );
+  normCursor= LoadCursor( NULL, IDC_ARROW   );
+  handCursor= LoadCursor( NULL, IDC_HAND    );
   
   if( handCursor==NULL )                        /* Not available in 95 and NT */
-  { handCursor= LoadCursor(NULL, IDC_ARROW  ); 
+  { handCursor= LoadCursor(NULL, IDC_ARROW  );
   }
   sizeCursor= LoadCursor(NULL, IDC_SIZENWSE );
 
@@ -237,14 +269,14 @@ TScreenWinGr::TScreenWinGr()
   wincl.hIconSm= LoadIcon( NULL
                          , IDI_APPLICATION);
 
-  wincl.style        = /* CS_DBLCLKS */ 0;  /* don´t Catch double-clicks */
+  wincl.style        = 0;                 /* no CS_DBLCLKS (Catch dbl-clicks) */
   wincl.cbSize       = sizeof(WNDCLASSEX);
   wincl.hCursor      = normCursor;
-  wincl.hInstance    = TvWinThisInstance;
-  wincl.cbClsExtra   = 0;                /* No extra bytes after window class */
-  wincl.cbWndExtra   = 0;                /* structure or the window instance  */
-  wincl.lpfnWndProc  = WindowProcedure;  /* This function is called by windows*/
-  wincl.lpszMenuName = NULL;             /* No menu                           */
+  wincl.hInstance    = TvWinInstance;
+  wincl.cbClsExtra   = 0;                /* No extra bytes after window class  */
+  wincl.cbWndExtra   = 0;                /* structure or the window instance   */
+  wincl.lpfnWndProc  = WindowProcedure;  /* This function is called by windows */
+  wincl.lpszMenuName = NULL;             /* No menu                            */
   wincl.lpszClassName= className;
   wincl.hbrBackground= NULL;
 
@@ -252,47 +284,29 @@ TScreenWinGr::TScreenWinGr()
  * Register the window class, if fail quit the program 
  */
  
-  if( !RegisterClassEx(&wincl) ) 
+  if( !RegisterClassEx( &wincl ) )
   { return; 
   }
 
-/*
- * Get the starting window size in pixels
- */
-
-  RECT clientArea;
-
-  clientArea.top   =          /* Desired client size, 0 based */
-  clientArea.left  = 0;
-  clientArea.right = maxX * fontW;
-  clientArea.bottom= maxY * fontH;
-
-  AdjustWindowRectEx( &clientArea  /* IN/OUT variable */
-                    , style
-                    , 0            /* No windows menu */
-                    , exStyle );   /* Extended styles */
-
-  clientArea.right -= clientArea.left;  /* get increments */
-  clientArea.bottom-= clientArea.top ;
 
 /* 
  * The class is registered, lets create a program 
  */
   hwnd= CreateWindowEx
-  ( exStyle                   /* Possible styles                        */
-  , className                 /* Classname ("MyLittleWindow")           */
-  , className                 /* Title Text                             */
-  , style                     /* defaultwindow                          */
-  , CW_USEDEFAULT             /* Window dimensions                      */
+  ( exStyle               /* Possible styles                        */
+  , className             /* Classname ("MyLittleWindow")           */
+  , className             /* Title Text                             */
+  , style                 /* defaultwindow                          */
+  , CW_USEDEFAULT         /* Window dimensions                      */
   , CW_USEDEFAULT
-  , clientArea.right
-  , clientArea.bottom
-  , HWND_DESKTOP              /* The window is a childwindow to desktop */
-  , NULL                      /* No menu                                */
-  , TvWinThisInstance         /* Program Instance handler               */
-  , NULL );                   /* No Window Creation data                */
+  , windowArea.right
+  , windowArea.bottom
+  , HWND_DESKTOP          /* The window is a childwindow to desktop */
+  , NULL                  /* No menu                                */
+  , TvWinInstance         /* Program Instance handler               */
+  , NULL );               /* No Window Creation data                */
   
-  if ( ! hwnd )               /* Fails to create (font creation assigns) */
+  if ( ! hwnd )           /* Fails to create (font creation assigns) */
   { return; 
   }
 
@@ -300,11 +314,6 @@ TScreenWinGr::TScreenWinGr()
  * Store the window geometry and client size
  */
 
-/*  GetWindowRect( hwnd, &wGeo ); */
-  wGeo.right = clientArea.right;
-  wGeo.bottom= clientArea.bottom;
-  
-  
   hdc= GetDC( hwnd );
 
   /*
@@ -322,9 +331,9 @@ TScreenWinGr::TScreenWinGr()
   for ( int col= 0
       ; col<16
       ; col++ )
-  { colorMap[ col ]= RGB( (col&4) ? (col&8) ? fullCOLOR:halfCOLOR:0
-                        , (col&2) ? (col&8) ? fullCOLOR:halfCOLOR:0
-                        , (col&1) ? (col&8) ? fullCOLOR:halfCOLOR:0 ); 
+  { colorMap[ col ]= RGB( (col&4) ? (col&8) ? FullColor:HalfColor:0
+                        , (col&2) ? (col&8) ? FullColor:HalfColor:0
+                        , (col&1) ? (col&8) ? FullColor:HalfColor:0 );
   }
 
   flags0= CodePageVar
@@ -334,13 +343,17 @@ TScreenWinGr::TScreenWinGr()
         | NoUserScreen
         | CanSetVideoSize
         | CanSetFontSize
-   /*     | CanSetPalette 
-        | CanReadPalette */;
+        | CanSetPalette
+        | CanReadPalette;
  
      
   cursorLines=
     startupCursor=
      getCursorType();
+
+
+  screenMode= startupMode= smCO80;
+
 
 /*
  * Start cursor blinking handler  
@@ -356,7 +369,9 @@ TScreenWinGr::TScreenWinGr()
 
 
 /* 
- * 
+ *    JASC, 2002
+ *
+ *  Link the driver by loading the static method pointers
  */ 
 void TScreenWinGr::Init()
 { TScreen::System_p            = System;
@@ -373,7 +388,9 @@ void TScreenWinGr::Init()
   TScreen::getFontGeometryRange= GetFontGeometryRange;
 
   TVWin32Clipboard::Init();           /* Use the windows clipboard */
-  setVideoMode( startupMode= smCO80 );
+  setVideoModeRes( 0xFFFF
+                 , 0xFFFF
+                 , -1, -1 );
 }
 
 /*
@@ -394,20 +411,18 @@ void TScreenWinGr::Suspend()
  *  Free screen resources
  */
 TScreenWinGr::~TScreenWinGr()
-{ if ( screenBuffer )
+{ UnregisterClass( className         /* Free class resources */
+                 , TvWinInstance );
+  DestroyWindow  ( hwnd   );         /* Free the window      */
+
+  if ( screenBuffer )
   { delete screenBuffer;
     screenBuffer= NULL; 
   }
 }
 
 /*
- *
- */
-/*void TScreenWinGr::clearScreen()
-{ 
-} */
 
-/*
  *  JASC jul/2002, write a unique colored line
  */
 void TScreenWinGr::writeLine( unsigned x
@@ -456,7 +471,9 @@ void TScreenWinGr::writeLine( unsigned x
            
               
 /*
- *  JASC jul/2002, write a unique colored line to memory and screen
+ *  JASC jul/2002
+ *
+ *  Write a unique colored line to memory and screen
  */
 void TScreenWinGr::setCharacters( unsigned  offset
                                 , ushort  * src
@@ -582,22 +599,15 @@ int TScreenWinGr::SetDisPaletteColors( int from
 
 
 /*
- *  JASC, 2002
+ *    JASC, 2006
  *
- *    Changes the video mode, both hardware ( resolution ) and software
- *  ( resources ) layers. Only realocates memory on growing, avoiding heap
- *  fragmentation.
+ *    Change the amount of memory for cells. Avoid heap fragmentation, only
+ *  realloqing if more memory requested.
  */
-void TScreenWinGr::setVideoMode( ushort mode )
-{ int newAmountOfCells;
+void TScreenWinGr::resizeMemoryBuffer()
+{ int newAmountOfCells= getRows()*getCols();
 
-  setCrtMode( mode );  /* Class name ??? */
-  
-/*
- * Try if more memory needed, and realloc or clear memory depending
- */
- 
-  if (( newAmountOfCells= getRows()*getCols()) > amountOfCells )
+  if ( newAmountOfCells > amountOfCells )
   { if ( screenBuffer )
     { free( screenBuffer );
     }
@@ -608,8 +618,20 @@ void TScreenWinGr::setVideoMode( ushort mode )
   else
   { memset( screenBuffer, 0, sizeof(ushort)*amountOfCells );
   }
-  
-  setCrtData();   /* Do the hardware layer */
+}
+
+
+/*
+ *  JASC, 2002
+ *
+ *    Changes the video mode, both hardware ( resolution ) and software
+ *  ( resources ) layers. Only realocates memory on growing, avoiding heap
+ *  fragmentation.
+ */
+void TScreenWinGr::setVideoMode( ushort mode )
+{ setCrtMode( mode );
+  resizeMemoryBuffer();
+  setCrtData();                                 /* Do the hardware layer */
   winRecalc();
 }
 
@@ -617,17 +639,24 @@ int TScreenWinGr::SetVideoModeRes( unsigned w
                                  , unsigned h
                                  , int fW
                                  , int fH )
-{ if (( fW == -1 )
-   && ( fH == -1 ))
-  { TScreenWinGr::screenWidth=  w;
-    TScreenWinGr::screenHeight= h;
+{ if ( w != 0xFFFF )
+  { screenWidth=  w;
   }
-  else
-  { SetCrtModeRes( w, h
-                 , fW, fH );
-    setVideoMode( 0xFFFF );     /* Alloc memory */
+
+  if ( h != 0xFFFF )
+  { screenHeight= h;
   }
-  
+
+  if ( fW == -1 )
+  { fW=  primary.w;
+  }
+
+  if ( fH == -1 )
+  { fH=  primary.h;
+  }
+
+  SetCrtModeRes( fW, fH );
+  resizeMemoryBuffer();
   winRecalc();
   return( 1 );
 }
@@ -742,7 +771,6 @@ TScreen * TV_WinGrDriverCheck()
     TGKeyWinGr::init();
   TScreenWinGr::Init();
  THWMouseWinGr::init();
-
 
  return( drv );
 }
