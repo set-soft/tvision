@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.399.2.313  2006/02/07 11:48:57  set
+reads config file, video modes, bugfixes
+.
 Revision 2.399.2.312  2006/02/06 18:28:12  domatlantida
 WinGr: winGr also uses it
 
