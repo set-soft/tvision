@@ -49,17 +49,35 @@ typedef struct
 
 
 struct TDisplayWinGr : public virtual TDisplay // virtual to avoid problems with multiple inheritance
-{ static unsigned xPos;          /* Cursor pos                */
-  static unsigned yPos;          /* Cursor pos                */
-  static unsigned zPos;          /* Cursor size               */
-  static HDC       hdc;          /* Context used for drawing  */
-  static RECT     wGeo;          /* Window position and size  */
+{ static  unsigned xPos;        /* Cursor pos                */
+  static  unsigned yPos;        /* Cursor pos                */
+  static  unsigned zPos;        /* Cursor size               */
+  static       HDC hdc;         /* Context used for drawing  */
+  static      RECT wGeo;        /* Window position and size  */
+  static    char * className;   /* Make the classname into a global variable */
+  static HINSTANCE TvWinInstance;
 
- static void   Init();   /* Sets pointers of TDisplay to point to this class */
+/*
+ * To store display limits
+ */
 
- static void lowSetCursor( int x
-                         , int y
-                         , bool dir );
+  static  unsigned  dmPelsWidth ;
+  static  unsigned  dmPelsHeight;
+
+/*
+ * To store font limits
+ */
+
+  static int foWmin;
+  static int foHmin;
+  static int foWmax;
+  static int foHmax;
+
+  static void   Init();   /* Sets pointers of TDisplay to point to this class */
+
+  static void lowSetCursor( int x
+                          , int y
+                          , bool dir );
 
   static int testEvents( UINT   message
                        , WPARAM wParam
@@ -87,27 +105,30 @@ protected:
  static ushort GetRows();
  static ushort GetCols();
  
- static ushort GetCrtMode();
- static void   SetCrtMode(ushort);
- static int    SetCrtModeRes( unsigned w, unsigned h, int fW, int fH );
+ static ushort      GetCrtMode();
+ static void        SetCrtMode(ushort);
+ static int         SetCrtModeRes( unsigned w, unsigned h );
  static const char *GetWindowTitle(void);
  static int         SetWindowTitle(const char *name);
- static int         CheckForWindowSize(void);
+ static int         CheckForWindowSize( );
  static void        Beep();
 
 
 // Support functions
  
+  static void TestAllFonts( unsigned fW
+                          , unsigned fH );
 
-  static int SetFontCrt( bitmapFontRec & fontResource
+  static  int SetFontCrt( bitmapFontRec & fontResource
                        , ushort w, ushort h );
                        
-  static int SetFontMode( bitmapFontRec  & fr, ushort newMode );
+  static  int SetFontMode( bitmapFontRec  & fr, ushort newMode );
 
-  static int selectFont( bitmapFontRec  & fontResource 
+  static  int selectFont( bitmapFontRec  & fontResource
                        , TScreenFont256 * fontData );
  
-  static void winRecalc(  );
+  static  int CheckWindowSize(  RECT & windowArea  );
+  static void winRecalc();
   static void SetCrtMode( const char * );
 
 // Support variables
@@ -163,7 +184,10 @@ struct TScreenWinGr: public virtual TDisplayWinGr
 { static   int amountOfCells;    /* Allocated screen cells */
   static DWORD style;            /* Window style           */
   static DWORD exStyle;          /* Window new styles      */
-  
+  static long HalfColor;
+  static long FullColor;
+  static long cursorDelay;
+
 
   TScreenWinGr();                /* We will use casts to base classes, destructors must be pointers */
 
@@ -210,8 +234,9 @@ protected:
  
  // Support functions
 
-  static void  SaveScreen();
-  static void  RestoreScreen();
+  static void SaveScreen();
+  static void RestoreScreen();
+  static void resizeMemoryBuffer();
 
 public:
 
