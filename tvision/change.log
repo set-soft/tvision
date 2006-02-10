@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.679  2006/02/03 15:57:50  set
+* Fixed: Last patch to WinGr prevented compilation using gcc (/* inside a
+comment).
+.
 Revision 2.678  2006/01/25 22:33:06  terrible
 * Updated: [Debian] Packaging to version 2.1.0-2, cosmetic changes.
 
