@@ -210,8 +210,9 @@ const char *TDisplayLinux::GetWindowTitle(void)
 
 void TDisplayLinux::setUpEnviron()
 {
- if (!argv ||   // The application didn't provide argv or
-     newEnvir)  // we already initialized
+ if (!argv ||       // The application didn't provide argv or
+     environment || // no environment available (gdb can do it!) or
+     newEnvir)      // we already initialized
     return;
  // Linux argv is before the environment and in one chunck.
  // Do some check

@@ -1,7 +1,10 @@
 $Log$.
-Revision 2.399.2.313  2006/02/07 11:48:57  set
-reads config file, video modes, bugfixes
-.
+Revision 2.399.2.314  2006/02/07 11:50:07  domatlantida
+* Added: colored menu to the video mode example.
+
+Revision 2.399.2.313  2006/02/07 11:48:57  domatlantida
+WinGr: reads config file, video modes, bugfixes
+
 Revision 2.399.2.312  2006/02/06 18:28:12  domatlantida
 WinGr: winGr also uses it
 
@@ -53,7 +56,7 @@ Revision 2.399.2.298  2006/01/26 18:50:26  terrible
 Revision 2.399.2.297  2006/01/24 18:19:22  set
 * Fixed: BTV 1.x calls to setValidator in examples. Patch by Frank Taffelt
 frank.taffelt/web/de.
-.
+
 Revision 2.399.2.296  2006/01/18 14:15:46  set
 * Added: A methode to make input lines hide their content.
 
