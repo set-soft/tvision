@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.315  2006/02/10 16:09:55  set
+* Added: Workaround for a gdb bug, seen on Debian Sarge.
+
 Revision 2.399.2.314  2006/02/07 11:50:07  domatlantida
 * Added: colored menu to the video mode example.
 

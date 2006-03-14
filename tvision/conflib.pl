@@ -261,7 +261,7 @@ sub LookForPrefix
    {
     if ($Compf eq 'MinGW')
       {
-       @lista=split(/;/,@ENV{'PATH'});
+       @lista=(split(/;/,@ENV{'PATH'}),split(/:/,@ENV{'PATH'}));
        $found=0;
        foreach $i (@lista)
          {
@@ -357,7 +357,8 @@ int main(void)
 }
 ';
  $test=RunGCCTest($cc,'c',$test,'');
- if ($test ne "OK\n")
+ $test=~s/\W//g;
+ if ($test ne "OK")
    {
     CreateCache();
     die 'Not working gcc found';
@@ -397,7 +398,8 @@ int main(void)
  return 0;
 }';
  $test=RunGCCTest($cc,'cc',$test,$stdcxx);
- if ($test eq "OK\n")
+ $test=~s/\W//g;
+ if ($test eq "OK")
    {
     print "yes\n";
     $ret=1;
@@ -477,7 +479,8 @@ int main(void)
  foreach $i (@list)
    {
     $res=RunGCCTest($i,'cc',$test,$stdcxx);
-    if ($res eq "OK\n")
+    $res=~s/\W//g;
+    if ($res eq "OK")
       {
        print "$i\n";
        return $i;
@@ -837,7 +840,7 @@ sub DetectOS
        $defaultCXX='qcc -Y_gpp';
        $supportDir='linux';
       }
-    else
+      else
       {
        $OS='UNIX';
        $OSf='QNX4';
@@ -1343,7 +1346,7 @@ int main(void)
 }
 ';
  $test=RunGCCTest($GCC,'c',$test,'');
- chop($test);
+ $test=~s/\W//g;
  $CPU=$conf{'TV_CPU'}=$test;
  print "$test\n";
 }
