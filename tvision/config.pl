@@ -536,7 +536,7 @@ int main(void)
 }
 ';
  $test=RunGCCTest($GCC,'c',$test,'');
- chop($test);
+ $test=~s/\W//g;
  $conf{'TV_BIG_ENDIAN'}=($test eq "big") ? 'yes' : 'no';
  print "$test endian\n";
 }
@@ -596,12 +596,14 @@ int main(void)
  $libdir=$LDExtraDirs;
  $libdir=~s/(\S+)/-L$1/g;
  $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$libdir.' '.$intllib);
- if ($test ne "OK\n")
+ $test=~s/\W//g;
+ if ($test ne "OK")
    {
     print "no, additional check required.\n";
     print "Checking for extra libs for international support: ";
     $test=RunGCCTest($GCC,'c',$intltest,'-Iinclude/ '.$intllib.' -liconv');
-    if ($test ne "OK\n")
+    $test=~s/\W//g;
+    if ($test ne "OK")
       {
        print "none found\n";
        print "International support absent or non-working\n";
@@ -644,7 +646,8 @@ int main(void)
 }
 ';
  $test=RunGCCTest($GCC,'c',$test,'');
- if ($test eq "OK\n")
+ $test=~s/\W//g;
+ if ($test eq "OK")
    {
     $conf{'HAVE_KEYSYMS'}='yes';
     print " yes OK\n";
@@ -742,7 +745,8 @@ int main(void)
 }
 ';
  $test=RunGCCTest($GCC,'c',$test,'');
- $conf{'HAVE_OUTB_IN_SYS'}=($test eq "OK\n") ? 'yes' : 'no';
+ $test=~s/\W//g;
+ $conf{'HAVE_OUTB_IN_SYS'}=($test eq "OK") ? 'yes' : 'no';
  print "@conf{'HAVE_OUTB_IN_SYS'}\n";
  #print ">$test<\n";
 }
@@ -862,7 +866,7 @@ int main(void)
 }
 ';
  $result=RunGCCTest($GCC,'c',$test,'-l'.$conf{'NameCurses'});
- chop($result);
+ $test=~s/\W//g;
  if ($result eq 'Ok')
    {
     print "yes\n";
@@ -1007,7 +1011,7 @@ int main(void)
 }
 ';
  $test=RunGCCTest($GCC,'c',$test,'');
- chop($test);
+ $test=~s/\W//g;
  if ($test eq '8')
    {
     $conf{'HAVE_64BITS_POINTERS'}='yes';
