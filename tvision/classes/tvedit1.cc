@@ -130,7 +130,13 @@ void TEditorApp::handleEvent( TEvent& event )
         switch( event.message.command )
             {
             case cmOpen:
-                fileOpen();
+                if ( event.message.infoPtr )         // JASC 2006, drag 'n' drop support
+                { openEditor( (char *)event.message.infoPtr
+                            , true );
+                }
+                else
+                { fileOpen();
+                }
                 break;
 
             case cmNew:
