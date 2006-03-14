@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.680  2006/02/10 18:12:30  set
+* Added: Workaround for a gdb bug, seen on Debian Sarge.
+.
 Revision 2.679  2006/02/03 15:57:50  set
 * Fixed: Last patch to WinGr prevented compilation using gcc (/* inside a
 comment).
