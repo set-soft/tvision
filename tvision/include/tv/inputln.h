@@ -78,6 +78,7 @@ public:
     static char rightArrow;
     static char leftArrow;
     static char orightArrow;
+ void setHide(Boolean val) { hideContent=val; }
     static char oleftArrow;
 
 protected:
