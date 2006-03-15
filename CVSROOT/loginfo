@@ -36,3 +36,5 @@ DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} tvision-checkins@lists.sourceforge.net
 #
 #DEFAULT chmod +x /cvsroot/tvision/tvision/configure,v /cvsroot/tvision/tvision/configset,v
 #DEFAULT whoami; ls -la /cvsroot/tvision/tvision; ls -la /cvsroot/tvision
+DEFAULT rm -rf /cvsroot/tvision/tvision/classes/wingr/#cvs.lock/
+
