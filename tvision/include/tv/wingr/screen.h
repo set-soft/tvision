@@ -171,6 +171,14 @@ public:
  
   static VideoModeData videoModes[];
 
+/* 
+ *  10/3/2006, draw 'n' drop support
+ */ 
+  static char   dragDropName[ PATH_MAX ];
+  static int    dragDropIdx;
+  static void * dragDropHnd;
+  
+
 };
 
 

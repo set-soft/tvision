@@ -1,4 +1,8 @@
 $Log$
+Revision 2.399.2.316  2006/03/14 17:28:22  set
+* Fixed: Problems using current Perl interpreter shipped with MSys (MinGW).
+Based on a patch by JASC.
+.
 Revision 2.399.2.315  2006/02/10 16:09:55  set
 * Added: Workaround for a gdb bug, seen on Debian Sarge.
 
