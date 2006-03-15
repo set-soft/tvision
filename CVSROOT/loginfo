@@ -27,7 +27,7 @@
 #CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
 #
 CVSROOT /bin/rm -rf $CVSROOT/tvision/classes/wingr/#* ; /bin/ls -la $CVSROOT/tvision/classes/wingr/
-#CVSROOT cp /cvsroot/tvision/tvision/examples/demo/helpbase.cc,v /cvsroot/tvision/tvision/classes; cp /cvsroot/tvision/tvision/examples/demo/helpbase.h,v /cvsroot/tvision/tvision/include/tv; cp /cvsroot/tvision/tvision/examples/demo/help.cc,v /cvsroot/tvision/tvision/classes; cp /cvsroot/tvision/tvision/examples/demo/help.h,v /cvsroot/tvision/tvision/include/tv
+# CVSROOT cp /cvsroot/tvision/tvision/examples/demo/helpbase.cc,v /cvsroot/tvision/tvision/classes; cp /cvsroot/tvision/tvision/examples/demo/helpbase.h,v /cvsroot/tvision/tvision/include/tv; cp /cvsroot/tvision/tvision/examples/demo/help.cc,v /cvsroot/tvision/tvision/classes; cp /cvsroot/tvision/tvision/examples/demo/help.h,v /cvsroot/tvision/tvision/include/tv
 #CVSROOT ls -la /cvsroot/tvision/tvision/; ls -la /cvsroot/tvision/tvision/WinNT; ls -la /cvsroot/tvision/tvision/WinNT/compat
 #CVSROOT rm -fR /cvsroot/tvision/tvision/WinNT
 #CVSROOT cp /cvsroot/tvision/tvision/classes/winnt/tdisplay.cc,v /cvsroot/tvision/tvision/classes/winnt/winntdis.cc,v ; cp /cvsroot/tvision/tvision/classes/winnt/tscreen.cc,v /cvsroot/tvision/tvision/classes/winnt/winntscr.cc,v ; cp /cvsroot/tvision/tvision/classes/winnt/thwmouse.cc,v /cvsroot/tvision/tvision/classes/winnt/winntmouse.cc,v ; cp /cvsroot/tvision/tvision/winnt/gkeyw32.cc,v /cvsroot/tvision/tvision/classes/winnt/winntkey.cc,v
