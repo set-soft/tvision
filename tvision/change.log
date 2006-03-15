@@ -1,11 +1,16 @@
 $Log$
+Revision 2.399.2.318  2006/03/15 16:36:59  set
+* Fixed: Some potential leaks in the X11 driver. Lamentably valgrind
+reports tons of them from inside X11.
+* Added: TInputLine::setHide(Boolean val) shortcut.
+
 Revision 2.399.2.317  2006/03/15 16:29:35  domatlantida
 WinGr: drag n drop
 
 Revision 2.399.2.316  2006/03/14 17:28:22  set
 * Fixed: Problems using current Perl interpreter shipped with MSys (MinGW).
 Based on a patch by JASC.
-.
+
 Revision 2.399.2.315  2006/02/10 16:09:55  set
 * Added: Workaround for a gdb bug, seen on Debian Sarge.
 
