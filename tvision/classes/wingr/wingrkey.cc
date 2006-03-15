@@ -417,7 +417,8 @@ int TGKeyWinGr::testEvents( UINT   message
 
 int TGKeyWinGr::KbHit(void)
 { do
-  { switch( storedEvent.what )    /* Is there a previous event?        */
+  {  
+    switch( storedEvent.what )    /* Is there a previous event?        */
     { case evCommand:             /* Windows says "exit"               */
       case evKeyDown:             /* Key event pending                 */
         return( evKeyDown );      /* There is a key event waiting      */
@@ -439,8 +440,6 @@ int TGKeyWinGr::KbHit(void)
 
 void TGKeyWinGr::FillTEvent( TEvent &me )
 { me.what= evNothing;                /* The default is no message  */
-
-//  char buff[ 256 ];
 
   do
   { switch( storedEvent.what )       /* Is there a previous event? */
@@ -515,5 +514,4 @@ void TGKeyWinGr::FillTEvent( TEvent &me )
 #include <tv/wingr/mouse.h>
 
 #endif // TVOS_Win32
-
 
