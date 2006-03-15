@@ -9,7 +9,7 @@ Modified by Robert H”hne to be used for RHIDE.
 Modified by Salvador E. Tropea (added insertChar, middle button paste and
 other stuff).
 This class was reworked to support Unicode 16 by Salvador E. Tropea
-Copyright (c) 2003
+Copyright (c) 2003-2006
 I basically created a new class TInputLineBase that's pure virtual and
 contains code that can be used for any cell size.
 Then I moved the cell size dependent code to TInputLine and created another
