@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.682  2006/03/15 16:46:03  set
+* Fixed: Some potential leaks in the X11 driver. Lamentably valgrind
+reports tons of them from inside X11.
+* Added: TInputLine::setHide(Boolean val) shortcut.
+.
 Revision 2.681  2006/03/14 17:50:42  set
 * Fixed: Problems using current Perl interpreter shipped with MSys (MinGW).
 Based on a patch by JASC.
