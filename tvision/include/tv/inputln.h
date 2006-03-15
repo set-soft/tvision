@@ -78,6 +78,7 @@ public:
  int selStart, oldSelStart;
  int selEnd, oldSelEnd;
  Boolean hideContent;
+ void setHide(Boolean val) { hideContent=val; }
 
  static char rightArrow;
  static char leftArrow;

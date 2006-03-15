@@ -158,6 +158,12 @@ TScreenX11::~TScreenX11()
 
  if (disp)
    {
+    if (TScreen::showBusyState==ShowBusyState)
+      {
+       XFreeCursor(disp,busyCursor);
+       XFreeCursor(disp,leftPtr);
+      }
+
     if (cursorGC)
        XFreeGC(disp,cursorGC);
     XDestroyWindow(disp,mainWin);
@@ -165,6 +171,7 @@ TScreenX11::~TScreenX11()
    }
 
  delete[] screenBuffer;
+
 }
 
 void TScreenX11::clearScreen()
@@ -2615,38 +2622,31 @@ Boolean TScreenX11::createCursors()
                                                      busyCursorWidth,busyCursorHeight,
                                                      BlackPixel(disp,screen),
                                                      WhitePixel(disp,screen),1);
-    if (busyCursorPixmapMask==None)
+    int ok=0;
+    if (busyCursorPixmapMask!=None)
       {
-       XFreePixmap(disp,busyCursorPixmap);
-       return False;
-      }
-   
-    XColor busyCursorFg, busyCursorBg;
-    Status status;
-    
-    status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
-                            "black",&busyCursorFg,&busyCursorFg);
-    if (!status)
-      {
-       XFreePixmap(disp,busyCursorPixmap);
+       XColor busyCursorFg, busyCursorBg;
+       Status status;
+       
+       status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
+                               "black",&busyCursorFg,&busyCursorFg);
+       if (status)
+         {
+          status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
+                                  "white",&busyCursorBg,&busyCursorBg);
+          if (status)
+            {
+             busyCursor=XCreatePixmapCursor(disp,busyCursorPixmap,busyCursorPixmapMask,
+                                            &busyCursorFg,&busyCursorBg,1,1);
+             ok=1;
+            }
+         }
        XFreePixmap(disp,busyCursorPixmapMask);
-       return False;
       }
-   
-    status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
-                            "white",&busyCursorBg,&busyCursorBg);
-    if (!status)
-      {
-       XFreePixmap(disp,busyCursorPixmap);
-       XFreePixmap(disp,busyCursorPixmapMask);
-       return False;
-      }
-   
-    busyCursor=XCreatePixmapCursor(disp,busyCursorPixmap,busyCursorPixmapMask,
-                                   &busyCursorFg,&busyCursorBg,1,1);
-   
     XFreePixmap(disp,busyCursorPixmap);
-    XFreePixmap(disp,busyCursorPixmapMask);
+
+    if (!ok)
+       return False;
    }
  else
     busyCursor=XCreateFontCursor(disp,XC_watch);
