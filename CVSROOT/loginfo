@@ -26,7 +26,7 @@
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 #CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} salvador@inti.gov.ar
 #
-CVSROOT ls -la $CVSROOT/CVSROOT/
+CVSROOT /bin/ls -la $CVSROOT/CVSROOT/
 #CVSROOT cp /cvsroot/tvision/tvision/examples/demo/helpbase.cc,v /cvsroot/tvision/tvision/classes; cp /cvsroot/tvision/tvision/examples/demo/helpbase.h,v /cvsroot/tvision/tvision/include/tv; cp /cvsroot/tvision/tvision/examples/demo/help.cc,v /cvsroot/tvision/tvision/classes; cp /cvsroot/tvision/tvision/examples/demo/help.h,v /cvsroot/tvision/tvision/include/tv
 #CVSROOT ls -la /cvsroot/tvision/tvision/; ls -la /cvsroot/tvision/tvision/WinNT; ls -la /cvsroot/tvision/tvision/WinNT/compat
 #CVSROOT rm -fR /cvsroot/tvision/tvision/WinNT
