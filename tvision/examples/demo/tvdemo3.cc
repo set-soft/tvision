@@ -30,6 +30,7 @@
 #define Uses_TStaticText
 #define Uses_TDialog
 #define Uses_TEventQueue
+#define Uses_TEditor  // JASC 2006 cmOpen
 // Needed to remap the "system" menu character
 #define Uses_TVCodePage
 

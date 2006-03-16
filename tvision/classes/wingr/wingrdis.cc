@@ -16,18 +16,14 @@
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_TEvent
+#define Uses_TEditor
 #define Uses_TGKey
 #define Uses_TMouse
-#define Uses_TProgram
+#define Uses_TGroup
 #define Uses_TVCodePage
-#define Uses_TDeskTop
+#define Uses_TProgram
 #define Uses_TRect
-#define Uses_TDialog
-#define Uses_TSItem          // JASC, ago 2002
-#define Uses_TCheckBoxes     // JASC, ago 2002
-#define Uses_TRadioButtons   // JASC, ago 2002
-#define Uses_TButton         // JASC, ago 2002
-#define Uses_TLabel          // JASC, ago 2002
+#define Uses_TEvent
 #define Uses_alloca
 #include <tv.h>
 
@@ -35,6 +31,8 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <shellapi.h>
+
 
 #include <tv/wingr/screen.h>
 #include <tv/wingr/key.h>
@@ -67,6 +65,16 @@ bitmapFontRec TDisplayWinGr::primary  = { 0,0,0,0,0 };
 bitmapFontRec TDisplayWinGr::secondary= { 0,0,0,0,0 };
 
          RECT TDisplayWinGr::wGeo= { 0, 0, 0, 0 };
+
+/*
+ *    JASC, marz 2006
+ *
+ *   drag 'n' drop support
+ */
+ 
+char   TDisplayWinGr::dragDropName[ PATH_MAX ];
+int    TDisplayWinGr::dragDropIdx= 0;
+void * TDisplayWinGr::dragDropHnd= NULL;
 
 
 /*
@@ -971,9 +979,10 @@ void TDisplayWinGr::winRecalc( )
 
 
 
-
 /*
+ *    JASC 2002
  *
+ *    10/3/2006 --> Draq 'n' drop support
  */
 int TDisplayWinGr::testEvents( UINT   message
                              , WPARAM wParam
@@ -982,6 +991,32 @@ int TDisplayWinGr::testEvents( UINT   message
 
   switch( message )
   { int w, h;
+
+    case WM_DROPFILES:                         // JASC, mar 2006, drag 'n' drop support
+      dragDropHnd= (void *)wParam;
+      dragDropIdx= DragQueryFile( (HDROP)dragDropHnd  // DragQueryFile is very overloaded
+                                , 0xFFFFFFFF
+                                , NULL
+                                , 0 );
+
+/*
+ *  JASC 2006
+ *
+ *    Enable this block to make dragging a directory opens a file dialog
+ *  is not a good idea since windows file manages is better
+ *
+ *    if ( dragDropIdx == 1 )             // Test posibility of a directory
+ *    { DragQueryFile( (HDROP)dragDropHnd  // DragQueryFile is very overloaded
+ *                   , 1
+ *                   , dragDropName
+ *                   , sizeof( dragDropName ));
+ *
+ *      if ( GetFileAttributes( dragDropName ) & FILE_ATTRIBUTE_DIRECTORY )
+ *      { dragDropIdx= -1;                 // Mark as directory
+ *      }
+ *    }
+ */
+    return( 7 );
 
     case WM_PASTE:
       Beep();
@@ -1073,7 +1108,9 @@ LRESULT CALLBACK WindowProcedure( HWND hwnd    /* This function is called by the
                                 , UINT message
                                 , WPARAM wParam
                                 , LPARAM lParam )
-{ if ( THWMouseWinGr::hwnd ) 
+{ int res;
+
+  if ( THWMouseWinGr::hwnd )
 
   { if ( TDisplayWinGr::primary.h )             /* Cells on screen      */
     { if ( THWMouseWinGr::testEvents( message   /* Try for mouse envens */
@@ -1098,35 +1135,107 @@ LRESULT CALLBACK WindowProcedure( HWND hwnd    /* This function is called by the
     }
   }
 
-  return( DefWindowProc( hwnd           // Other events must be forwardwed
-                       , message
-                       , wParam
-                       , lParam )); 
+  res= DefWindowProc( hwnd           // Other events must be forwardwed
+                    , message
+                    , wParam
+                    , lParam );
+/*
+ *  JASC, from WIN32 app reference:
+ *
+ *    Threads that do not contain windows should use the Sleep function
+ *  with a sleep time of zero milliseconds
+ *  to give up the remainder of their current time slice.
+ */
+
+
+ return( res );
+                       
 }
 
 /*
  *  JASC 2002
  *
+ *    Main windows queue
+ *
+ *  first feeds drag 'n' drop files to the caller
+ *  Processes windows messages
+ *  releases CPU inan adaptative way.
+ *
  */
+
+
 bool TDisplayWinGr::processEvent(  )
-{ MSG message;                  /* Here messages to the application is saved */
+{ static int timer= 1;
 
-  if ( PeekMessage( &message
-                  , NULL          /* Default window              */
-                  , 0, 0          /* All messages                */
-                  , PM_REMOVE ))  /* Remove mensagges from queue */
-  { switch( message.message )     /* Catch some keys             */
-    { case WM_KEYUP:
-      case WM_KEYDOWN:
-        TGKeyWinGr::testEvents( message.message    /* Try for key envens */
-                              , message.wParam 
-                              , message.lParam ); } 
+  MSG message;                  /* Here messages to the application is saved */
+  
+  switch ( dragDropIdx )                           // Pending drag ´n´ drop
+  { case  0: break;
+/*
+ *  For dragging directories, not a good idea
+ *  case -1:
+ *     SetCurrentDirectory( dragDropName );
+ *     storedEvent.what= evCommand;
+ *     storedEvent.message.command= cmOpen;       // Use this old editor command
+ *     storedEvent.message.infoPtr= NULL;         // Opens a file dialog
+ *     dragDropIdx= 0;
+ *   return( true );
+ */
+    default:
+      storedEvent.what= evCommand;
+      storedEvent.message.command= cmOpen;       // Use this old editor command
+      storedEvent.message.infoPtr= dragDropName; // Point to the file name
 
-    TranslateMessage( &message );   /* Arrange key events              */
-    DispatchMessage ( &message );   /* Send message to WindowProcedure */
-    return( true ); }
+      DragQueryFile( (HDROP)dragDropHnd                 // Load name
+                   , -- dragDropIdx
+                   , dragDropName
+                   , sizeof( dragDropName ));
 
-  return( false ); }
+      if ( GetFileAttributes( dragDropName )
+         & ( FILE_ATTRIBUTE_DIRECTORY
+           | FILE_ATTRIBUTE_TEMPORARY
+           | FILE_ATTRIBUTE_OFFLINE ))
+      { storedEvent.what= evNothing;
+      }
+
+      if ( !dragDropIdx )                       // Free resources last time
+      { DragFinish( (HDROP) dragDropHnd );
+        dragDropHnd= 0;
+      }
+    return( true );
+  }
+
+  if ( timer > 100 )  // Adaptative timer
+  { timer= 100 ;
+  }
+
+  if ( MsgWaitForMultipleObjects
+       ( 0                                // Handles in the object array
+       , NULL                             // Handle array
+       , false                            // D'ont care
+       , timer ++
+       , QS_ALLINPUT ) == WAIT_OBJECT_0 ) // Wait for every message
+  { if ( GetMessage( &message
+                    , NULL                // Default window
+                    , 0, 0  ))            // All messages
+      switch( message.message )           // Catch some keys
+      { case WM_KEYUP:
+        case WM_KEYDOWN:
+          TGKeyWinGr::testEvents( message.message    /* Try for key envens */
+                                , message.wParam
+                                , message.lParam );
+      }
+
+      if ( message.message != WM_TIMER )
+      { timer= 0;                     /* Reset adaptative counter    */
+      }
+      
+      TranslateMessage( &message );   /* Arrange key events              */
+      DispatchMessage ( &message );   /* Send message to WindowProcedure */
+      return( true );
+  }
+  return( false );
+}
 
 
 /*
@@ -1498,7 +1607,8 @@ void TDisplayWinGr::Init()
   checkForWindowSize= CheckForWindowSize;
   beep=               Beep;
 
-  TProgram::doNotReleaseCPU= true;    // annoys windows loop, implemented here
+// TProgram::doNotReleaseCPU= true;    // annoys windows loop, implemented here
+
 }  
 
 
@@ -1509,4 +1619,5 @@ void TDisplayWinGr::Init()
 #include <tv/wingr/mouse.h>
 
 #endif // TVOS_Win32
+
 

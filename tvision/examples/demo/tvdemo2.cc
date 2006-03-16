@@ -39,9 +39,11 @@
 #define Uses_MsgBox
 #define Uses_TPXPictureValidator
 
+#define Uses_TEditor     // JASC 2006, cmOpen
 #include <tv.h>
 
 #include "tvdemo.h"
+#include "fileview.h"
 #include "tvcmds.h"
 #include "demohelp.h"
 #include "ascii.h"
@@ -126,7 +128,15 @@ void TVDemo::handleEvent(TEvent &event)
 
             case cmOpenCmd:             //  View a file
                 // SET: Even DOS port needs it.
-                openFile("*");
+                if ( event.message.infoPtr )  // JASC, drag 'n' drop
+                { TView *w= validView( new TFileWindow( (char *)event.message.infoPtr ) );
+                  if( w != 0 )
+                  { deskTop->insert(w);
+                  }
+                }
+                else
+                { openFile("*");
+                }
                 break;
 
             case cmChDirCmd:            //  Change directory
