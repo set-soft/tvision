@@ -83,6 +83,6 @@ public:
 
 };
 
-const int maxLineLength = 256;
+// const int maxLineLength = 256; JASC, defined in editors.h
 
 #endif
