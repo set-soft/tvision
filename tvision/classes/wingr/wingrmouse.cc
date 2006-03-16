@@ -148,8 +148,12 @@ void THWMouseWinGr::GetEvent( MouseEventType & me )
   me.where.y= yOld;
 
   do
-  { switch( storedEvent.what )  /* Is there a previous event? */
-    { case evMouseUp:
+  { 
+     switch( storedEvent.what )  /* Is there a previous event? */
+    { case evCommand:                /* Windows says "exit"        */
+      return;
+
+      case evMouseUp:
       case evMouseDown:
       case evMouseMove:
         me= storedEvent.mouse;  /* Give stored event          */
@@ -158,6 +162,7 @@ void THWMouseWinGr::GetEvent( MouseEventType & me )
         yOld= me.where.y;
         storedEvent.what=       /* Mark as exhausted          */
            evNothing;
+                 
 
       case evKeyDown:         /* Key event pending          */
       return; }}              /* All done, exit function    */

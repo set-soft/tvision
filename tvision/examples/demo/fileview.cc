@@ -31,6 +31,7 @@
 #define Uses_TProgram
 #define Uses_TDeskTop
 #define Uses_TStreamableClass
+#define Uses_TEditor          // JASC, cmOpen
 #include <tv.h>
 __link(RScroller)
 __link(RScrollBar)

@@ -28,6 +28,10 @@
 
 
 ***************************************************************************/
+
+
+//#define DEBUG
+
 #include <tv/configtv.h>
 
 #define Uses_string
@@ -73,7 +77,11 @@ DWORD TScreenWinGr::style= WS_CAPTION       /* Window style  */
                          | WS_MAXIMIZEBOX
                          | WS_MINIMIZEBOX;
 
-DWORD TScreenWinGr::exStyle= 0;                  /* Window new styles  */
+/* Window new styles  */
+
+DWORD TScreenWinGr::exStyle= WS_EX_ACCEPTFILES  // Drag 'n' drop files
+//                           | WS_EX_CLIENTEDGE  // Raised edge
+                           ;
 
 long TScreenWinGr::cursorDelay= 300000;
 long TScreenWinGr::HalfColor= 0xB0;
@@ -661,103 +669,80 @@ int TScreenWinGr::SetVideoModeRes( unsigned w
   return( 1 );
 }
 
-/*
- *   ( From SET code ), execute an external program in a syncronous way,
- *  redirecting input, output and error
- */ 
+/*                                                                         #####
+ *    JASC, feb 2006                                                          ##
+ *                                                                            ##
+ *      Execute an external program in a syncronous way redirecting input,    ##
+ *  output and error.                                                         ##
+ *                                                                            ##
+ *   Originally, From SET code, in a MSDOS or UNIX way.                       ##
+ *  Now in a windows way.                                                  #####
+ */
 int TScreenWinGr::System( const char * command
                         , pid_t      * pidChild
                         , int in
                         , int out
-                        , int err)
-{
-#ifndef TVCompf_Cygwin
- if ( pidChild )     // fork mechanism not implemented, indicate the child finished
-  { *pidChild=0;
-  }
-#endif
+                        , int err )
+{ PROCESS_INFORMATION pi;
+  STARTUPINFO si;
+  char cmdLine[ 4096 ];
 
-  // If the caller asks for redirection replace the requested handles
-  if (!pidChild) // If the caller asks for redirection replace the requested handles
-  { if (in!=-1)
-    { dup2(in,STDIN_FILENO);
+  memset(&si, 0, sizeof(si));
+  memset(&pi, 0, sizeof(pi));
+  si.cb = sizeof(si);
+
+// If the caller asks for redirection replace the requested handles
+
+  if ( pidChild )
+  { si.hStdInput = GetStdHandle( STD_INPUT_HANDLE  );  // Default values
+    si.hStdOutput= GetStdHandle( STD_OUTPUT_HANDLE );
+    si.hStdError = GetStdHandle( STD_ERROR_HANDLE  );
+
+    if ( in != -1 )
+    { si.dwFlags|= STARTF_USESTDHANDLES; // Use new handles
+      si.hStdInput = (HANDLE)_get_osfhandle( in  );
     }
   
-    if (out!=-1)
-    { dup2(out,STDOUT_FILENO);
+    if ( out != -1 )
+    { si.dwFlags|= STARTF_USESTDHANDLES; // Use new handles
+      si.hStdOutput= (HANDLE)_get_osfhandle( out );
     }
   
-    if (err!=-1)
-    { dup2(err,STDERR_FILENO);
+    if ( err != -1 )
+    { si.dwFlags|= STARTF_USESTDHANDLES; // Use new handles
+      si.hStdError = (HANDLE)_get_osfhandle( err );
     }
-  
-    return system(command); 
-  }  
-
-#ifdef TVCompf_Cygwin
-
-/*
- *  fork mechanism is implemented in Cygwin, so linux code should work -- OH!
- *   SET: Call to an external program, optionally forking
- */
-
-  pid_t cpid=fork();
-
-/*
- * Ok, we are the child
- *   I'm not sure about it, but is the best I have right now.
- *   Doing it we can kill this child and all the subprocesses
- *   it creates by killing the group. It also have an interesting
- *   effect that I must evaluate: By doing it this process lose
- *   the controlling terminal and won't be able to read/write
- *   to the parents console. I think that's good.
- */
-
-  if ( !cpid )
-  { if ( setsid()==-1 )
-    { _exit(127); 
-    }
-
-    char *argv[4];
-
-    // If the caller asks for redirection replace the requested handles
-    if (in!=-1)
-    { dup2(in,STDIN_FILENO);
-    }
-    
-    if (out!=-1)
-    { dup2(out,STDOUT_FILENO);
-    }
-    
-    if (err!=-1)
-    { dup2(err,STDERR_FILENO);
-    }
-
-    argv[0]=getenv("SHELL");
-    if (!argv[0])
-    { argv[0]="/usr/bin/sh"; 
-    }
-
-    argv[1]="-c";
-    argv[2]=(char *)command;
-    argv[3]=0;
-    execvp( argv[0]
-          , argv );
-    _exit(127);     // We get here only if exec failed
-  }  
-
-  if (cpid==-1)      // Fork failed do it manually
-  { *pidChild=0;
-    return system(command); 
   }
 
- *pidChild=cpid;
-#endif
- return(0);
+  sprintf( cmdLine
+         , "/C %s"
+         , command );
+
+  if ( !CreateProcess( getenv( "COMSPEC" ) // Do it trough a shell (scrips, etc)
+                     , cmdLine             // pointer to command line string
+                     , NULL                // pointer to process security attributes
+                     , NULL                // pointer to thread security attributes
+                     , true                // handle inheritance flag
+                     , 0                   // creation flags
+                     , NULL                // pointer to new environment block
+                     , NULL                // pointer to current directory name
+                     , &si
+                     , &pi ))
+  { return( -1 );                          // Error
+  }
+
+  WaitForSingleObject   // DO NOT leave in the background
+  ( pi.hProcess
+  , INFINITE );
+
+
+ return( *pidChild=0 ); // Child finished ( WaitForsingleObject )
 }
 
-/*
- *
+/*                                                                        #####
+ *   JASC 2002                                                               ##
+ *                                                                           ##
+ *                                                                        #####
  */
 TScreen * TV_WinGrDriverCheck()
 { TScreenWinGr *drv=new TScreenWinGr();
