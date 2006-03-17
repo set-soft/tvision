@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.320  2006/03/16 17:16:47  domatlantida
+WinGr: Drag and drop support, CPU usage, windows exec, bugfixes
+
 Revision 2.399.2.319  2006/03/15 17:04:48  set
 * Fixed: Indentation and data type in tvedit1.cc patch from domatlantida.
 
