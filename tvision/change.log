@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.684  2006/03/17 13:58:55  set
+* Fixed: [Linux] Current versions of glibc (i.e. 2.3.2) doesn't provide
+the real argv/environ vector, just a copy. The methode to set the title
+corrupted the environment.
+.
 Revision 2.683  2006/03/15 17:14:39  set
 * Fixed: Indentation and data type in tvedit1.cc patch from domatlantida.
 .
