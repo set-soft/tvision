@@ -31,6 +31,7 @@ class TVPartitionTree556;
 #include <tv/codepage.h>
 
 // Prototypes, we know they exists
+#ifndef _LIBINTL_H
 extern "C" {
 char *textdomain(const char *domainname);
 char *bindtextdomain(const char *domainname, const char *dirname);
@@ -39,6 +40,7 @@ char *dgettext(const char *domain, const char *msgid);
 char *gettext__(const char *msgid);
 char *__gettext(const char *msgid);
 }
+#endif
 
 // Small mess to determine which function provides "gettext"
 // Must use __DJGPP__ here
