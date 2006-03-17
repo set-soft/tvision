@@ -210,37 +210,15 @@ const char *TDisplayLinux::GetWindowTitle(void)
 
 void TDisplayLinux::setUpEnviron()
 {
- if (!argv ||       // The application didn't provide argv or
-     environment || // no environment available (gdb can do it!) or
-     newEnvir)      // we already initialized
-    return;
- // Linux argv is before the environment and in one chunck.
- // Do some check
- if (environment[0]==NULL || argv[0]>environment[0])
+ // Note: The old glibc provided the real environment/argv vector, now that's
+ // a copy :-(
+
+ if (!argv ||        // The application didn't provide argv or
+     newEnvir)       // we already initialized
     return;
 
- // Meassure the chunck
- int i;
  origEnvir=argv[0];
- for (i=0; environment[i]; i++); i--;
- maxLenTit=(environment[i]+strlen(environment[i]))-origEnvir+1;
-
- // Allocate a copy
- newEnvir=(char *)malloc(maxLenTit);
- memcpy(newEnvir,origEnvir,maxLenTit);
-
- // Adjust all the argv pointers
- long diff=newEnvir-origEnvir;
- for (i=0; i<argc; i++)
-     argv[i]+=diff;
-
- // Adjust the environment pointers
- for (i=0; environment[i]; i++)
-     environment[i]+=diff;
-
- // Clear the old environment, but let argv[0]
- int len0=strlen(argv[0]);
- memset(origEnvir+len0,0,maxLenTit-len0);
+ maxLenTit=strlen(argv[0]);
 }
 
 int TDisplayLinux::SetWindowTitle(const char *name)
