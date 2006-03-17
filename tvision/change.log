@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.683  2006/03/15 17:14:39  set
+* Fixed: Indentation and data type in tvedit1.cc patch from domatlantida.
+.
 Revision 2.682  2006/03/15 16:46:03  set
 * Fixed: Some potential leaks in the X11 driver. Lamentably valgrind
 reports tons of them from inside X11.
