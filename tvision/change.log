@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.321  2006/03/17 13:54:25  set
+* Fixed: [Linux] Current versions of glibc (i.e. 2.3.2) doesn't provide
+the real argv/environ vector, just a copy. The methode to set the title
+corrupted the environment.
+
 Revision 2.399.2.320  2006/03/16 17:16:47  domatlantida
 WinGr: Drag and drop support, CPU usage, windows exec, bugfixes
 
