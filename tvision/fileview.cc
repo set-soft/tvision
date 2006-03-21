@@ -142,7 +142,7 @@ void TFileViewer::readFile( const char *fName )
 
   limit.x = 0;
   fileName = newStr( fName );
-  int fileToView = open(fName, O_RDONLY | O_TEXT);
+  int fileToView = open(fName, O_RDONLY | O_TEXT, 0);
   if (fileToView <= 0)
   {
     messageBox(mfError | mfOKButton ,
