@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.322  2006/03/17 14:37:42  set
+* Fixed: [Linux] The patch to avoid gcc 4.0.3 problems generated problems
+in tvintl.cc. Now I moved the workaround from compatlayer to this source.
+This should avoid both problems.
+
 Revision 2.399.2.321  2006/03/17 13:54:25  set
 * Fixed: [Linux] Current versions of glibc (i.e. 2.3.2) doesn't provide
 the real argv/environ vector, just a copy. The methode to set the title

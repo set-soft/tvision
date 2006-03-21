@@ -13,7 +13,9 @@ CFLAGS   = /nologo -D_WIN32 -DFOR_EDITOR /GX /Zi
 LDFLAGS  = /DEBUG
 !else
 # Options for optimization (production)
-CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GX -D_USE_32BIT_TIME_T
+CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /EHsc -D_USE_32BIT_TIME_T -D_CRT_SECURE_NO_DEPRECATE
+# Note: /GX is deprecated, not sure if needed for old versions
+#CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GX -D_USE_32BIT_TIME_T
 #CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GR- /GX-
 LDFLAGS  = /verbose
 !endif
