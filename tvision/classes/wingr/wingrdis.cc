@@ -838,7 +838,7 @@ void TDisplayWinGr::lowSetCursor( int x
                                 , bool dir )
 { ushort * dst;
   char fg, bg;
-  char letra;
+  uchar letra;
   int to, fr;
 
   if ( THWMouseWinGr::lastCursor == sizeCursor )   /* Resizing window */
