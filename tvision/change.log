@@ -1,4 +1,16 @@
 $Log$.
+Revision 2.686  2006/03/21 18:56:01  set
+* Modified: [MSVC] The /GX command line option is deprecated. Using /EHsc
+instead.
+* Modified: [MSVC] v8.0 doesn't like strcpy, strncpy, sprintf, etc. Added
+option to disabling those warnings.
+* Modified: [MSVC] v8.0 seems to be unable to handle open(const char *,
+int):
+./fileview.cc(145) : error C2668: '_open' : ambiguous call to overloaded function
+        E:\MVS8\VC\INCLUDE\io.h(328): could be 'int _open(const char *,int,...)'
+        E:\MVS8\VC\INCLUDE\io.h(254): or 'int _open(const char *,int,int)'
+        while trying to match the argument list '(const char *, int)'
+.
 Revision 2.685  2006/03/17 14:40:36  set
 * Fixed: [Linux] The patch to avoid gcc 4.0.3 problems generated problems
 in tvintl.cc. Now I moved the workaround from compatlayer to this source.
