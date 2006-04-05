@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.324  2006/03/27 19:54:42  set
+Cursor now displays on ASCII greater than 127
+
 Revision 2.399.2.323  2006/03/21 18:53:42  set
 * Modified: [MSVC] The /GX command line option is deprecated. Using /EHsc
 instead.

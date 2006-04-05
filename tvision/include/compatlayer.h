@@ -1478,6 +1478,7 @@ when compiler version 7.0 was released.
       12.00             6.0
       13.00             7.0
       13.10             7.1 (.NET 2003 Architect)
+      14.00             8.0 (Visual C++ 2005)
 */
 #ifdef TVComp_MSC
  // Note: snprintf and vsnprintf seems to be available in some versions but not in others.
@@ -1509,6 +1510,10 @@ when compiler version 7.0 was released.
  #if _MSC_VER >= 1310
    #pragma warning( disable : 4311 )
    #pragma warning( disable : 4312 )
+ #endif
+ /* Avoid warnings for most C standard library */
+ #if _MSC_VER >= 1400
+   #define _CRT_SECURE_NO_DEPRECATE
  #endif
  #if _MSC_VER <= 1000
    // MSVC 4.0 reports version 10.0
