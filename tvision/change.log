@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.325  2006/04/05 14:38:03  set
+* Added: [MSVC] Information about MSVC 8.0 to the compatlayer header.
+
 Revision 2.399.2.324  2006/03/27 19:54:42  set
 Cursor now displays on ASCII greater than 127
 

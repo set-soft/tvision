@@ -1536,10 +1536,18 @@ when compiler version 7.0 was released.
  #ifdef Uses_string
   #undef  Include_string
   #define Include_string 1
-  #undef  strncasecmp
-  #define strncasecmp strnicmp
-  #undef  strcasecmp
-  #define strcasecmp  stricmp
+  #if _MSC_VER >= 1400
+   // ISO C++ version of the POSIX name
+   #undef  strncasecmp
+   #define strncasecmp _strnicmp
+   #undef  strcasecmp
+   #define strcasecmp  _stricmp
+  #else
+   #undef  strncasecmp
+   #define strncasecmp strnicmp
+   #undef  strcasecmp
+   #define strcasecmp  stricmp
+  #endif
  #endif
  #ifdef Uses_chdir
   #undef  Include_direct
