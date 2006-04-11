@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.687  2006/04/05 15:39:57  set
+* Added: [MSVC] Information about MSVC 8.0 to the compatlayer header.
+.
 Revision 2.686  2006/03/21 18:56:01  set
 * Modified: [MSVC] The /GX command line option is deprecated. Using /EHsc
 instead.
