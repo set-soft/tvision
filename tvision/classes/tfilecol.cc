@@ -102,15 +102,17 @@ TStreamable *TFileCollection::build()
 void TFileCollection::writeItem( void *obj, opstream& os )
 {
     TSearchRec *item = (TSearchRec *)obj;
-    os << item->attr << item->time << item->size;
+    os << item->attr << (unsigned long)item->time << item->size;
     os.writeString( item->name );
 }
 
 void *TFileCollection::readItem( ipstream& is )
 {
     TSearchRec *item = new TSearchRec;
-    is >> item->attr >> item->time >> item->size;
+    unsigned long aux;
+    is >> item->attr >> aux >> item->size;
     is.readString( item->name, sizeof(item->name) );
+    item->time = (time_t)aux;
     return item;
 }
 #endif // NO_STREAM
