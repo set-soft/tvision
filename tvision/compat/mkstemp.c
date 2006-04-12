@@ -15,6 +15,11 @@
  #define mktemp(a) _mktemp(a)
 #endif
 
+#if _MSC_VER >= 1400
+ #define mktemp(a) _mktemp(a)
+ #define open(a,b,c) _open(a,b,c)
+#endif
+
 int mkstemp (char *_template)
 {
   char tmp_name[FILENAME_MAX];

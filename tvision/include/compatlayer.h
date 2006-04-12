@@ -1512,7 +1512,7 @@ when compiler version 7.0 was released.
    #pragma warning( disable : 4312 )
  #endif
  /* Avoid warnings for most C standard library */
- #if _MSC_VER >= 1400
+ #if _MSC_VER >= 1400 && !defined(_CRT_SECURE_NO_DEPRECATE)
    #define _CRT_SECURE_NO_DEPRECATE
  #endif
  #if _MSC_VER <= 1000
@@ -1542,6 +1542,8 @@ when compiler version 7.0 was released.
    #define strncasecmp _strnicmp
    #undef  strcasecmp
    #define strcasecmp  _stricmp
+   #undef  strdup
+   #define strdup(a)   _strdup(a)
   #else
    #undef  strncasecmp
    #define strncasecmp strnicmp
@@ -1558,6 +1560,10 @@ when compiler version 7.0 was released.
  #ifdef Uses_getcwd
   #undef  Include_direct
   #define Include_direct 1
+  #if _MSC_VER >= 1400
+   #undef  getcwd
+   #define getcwd _getcwd
+  #endif
  #endif
  #ifdef Uses_stdlib
   #undef  Include_stdlib
@@ -1624,6 +1630,7 @@ when compiler version 7.0 was released.
  #ifdef Uses_access
   #undef  Include_io
   #define Include_io 1
+  #undef  access
   #define access(a,b) _access(a,b)
   #undef  R_OK
   #define R_OK 4
