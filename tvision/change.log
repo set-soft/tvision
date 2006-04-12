@@ -1,4 +1,12 @@
 $Log$.
+Revision 2.688  2006/04/11 13:24:06  set
+* Fixed: TFileCollection::writeItem writes a time_t to disk. This isn't
+safe at all. MSVC reports it as an error. As a workaround I casted it to
+an unsigned long. It will work for most platforms and won't make old files
+invalid.
+* Fixed: [MSVC] Debug options used some old flags.
+* Modified: [MSVC] stricmp and strnicmp to be _*. From a report by Eddie.
+.
 Revision 2.687  2006/04/05 15:39:57  set
 * Added: [MSVC] Information about MSVC 8.0 to the compatlayer header.
 .
