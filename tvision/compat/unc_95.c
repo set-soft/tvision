@@ -15,6 +15,11 @@
  #define alloca __builtin_alloca
 #endif
 
+#if _MSC_VER >= 1400
+ #undef  strupr
+ #define strupr(a)   _strupr(a)
+#endif
+
 static HMODULE hLib;
 static API_RET_TYPE 
 (APIENTRY *pNetShareGetInfo) (
