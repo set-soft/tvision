@@ -1511,6 +1511,20 @@ when compiler version 7.0 was released.
    #pragma warning( disable : 4311 )
    #pragma warning( disable : 4312 )
  #endif
+ /*
+   I'm disabling warning 4996 that generates:
+      warning C4996: '_access' was declared deprecated
+      E:\MVS8\VC\INCLUDE\io.h(193) : see declaration of '_access'
+      Message: 'The POSIX name for this item is deprecated. Instead, use the ISO C++
+      conformant name: _access. See online help for details.'
+   This is a nonsense, POSIX is an standard and changing the names of the functions makes
+   the code incompatible with POSIX compliant compilers.
+   I don't think that's a solution to make the compiler ISO C++ compliant. It could be a
+   command line option (i.e. deprecate POSIX functions).
+ */
+ #if _MSC_VER >= 1400
+   #pragma warning( disable : 4996 )
+ #endif
  /* Avoid warnings for most C standard library */
  #if _MSC_VER >= 1400 && !defined(_CRT_SECURE_NO_DEPRECATE)
    #define _CRT_SECURE_NO_DEPRECATE
