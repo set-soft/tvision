@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.327  2006/04/12 16:17:57  set
+* Fixed: [MSVC] Some warnings from MSVC 8. From info by Eddie.
+
 Revision 2.399.2.326  2006/04/11 13:14:20  set
 * Fixed: TFileCollection::writeItem writes a time_t to disk. This isn't
 safe at all. MSVC reports it as an error. As a workaround I casted it to

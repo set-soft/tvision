@@ -17,6 +17,10 @@ library with all of them.
 #include <stdlib.h>
 #include <string.h>
 
+#if _MSC_VER >= 1400
+ #define unlink(a) _unlink(a)
+#endif
+
 #define MAX_FILE 256
 
 int main(int argc, char *argv[])
