@@ -1,7 +1,11 @@
-$Log$.
+$Log$
+Revision 2.690  2006/04/17 13:12:15  set
+* Modified: [MSVC] Disabled warning 4996 for v8.0+. It deprecates the POSIX
+names and suggests to use _name.
+
 Revision 2.689  2006/04/12 16:21:16  set
 * Fixed: [MSVC] Some warnings from MSVC 8. From info by Eddie.
-.
+
 Revision 2.688  2006/04/11 13:24:06  set
 * Fixed: TFileCollection::writeItem writes a time_t to disk. This isn't
 safe at all. MSVC reports it as an error. As a workaround I casted it to
@@ -9,10 +13,10 @@ an unsigned long. It will work for most platforms and won't make old files
 invalid.
 * Fixed: [MSVC] Debug options used some old flags.
 * Modified: [MSVC] stricmp and strnicmp to be _*. From a report by Eddie.
-.
+
 Revision 2.687  2006/04/05 15:39:57  set
 * Added: [MSVC] Information about MSVC 8.0 to the compatlayer header.
-.
+
 Revision 2.686  2006/03/21 18:56:01  set
 * Modified: [MSVC] The /GX command line option is deprecated. Using /EHsc
 instead.
@@ -24,36 +28,36 @@ int):
         E:\MVS8\VC\INCLUDE\io.h(328): could be 'int _open(const char *,int,...)'
         E:\MVS8\VC\INCLUDE\io.h(254): or 'int _open(const char *,int,int)'
         while trying to match the argument list '(const char *, int)'
-.
+
 Revision 2.685  2006/03/17 14:40:36  set
 * Fixed: [Linux] The patch to avoid gcc 4.0.3 problems generated problems
 in tvintl.cc. Now I moved the workaround from compatlayer to this source.
 This should avoid both problems.
-.
+
 Revision 2.684  2006/03/17 13:58:55  set
 * Fixed: [Linux] Current versions of glibc (i.e. 2.3.2) doesn't provide
 the real argv/environ vector, just a copy. The methode to set the title
 corrupted the environment.
-.
+
 Revision 2.683  2006/03/15 17:14:39  set
 * Fixed: Indentation and data type in tvedit1.cc patch from domatlantida.
-.
+
 Revision 2.682  2006/03/15 16:46:03  set
 * Fixed: Some potential leaks in the X11 driver. Lamentably valgrind
 reports tons of them from inside X11.
 * Added: TInputLine::setHide(Boolean val) shortcut.
-.
+
 Revision 2.681  2006/03/14 17:50:42  set
 * Fixed: Problems using current Perl interpreter shipped with MSys (MinGW).
 Based on a patch by JASC.
-.
+
 Revision 2.680  2006/02/10 18:12:30  set
 * Added: Workaround for a gdb bug, seen on Debian Sarge.
-.
+
 Revision 2.679  2006/02/03 15:57:50  set
 * Fixed: Last patch to WinGr prevented compilation using gcc (/* inside a
 comment).
-.
+
 Revision 2.678  2006/01/25 22:33:06  terrible
 * Updated: [Debian] Packaging to version 2.1.0-2, cosmetic changes.
 
