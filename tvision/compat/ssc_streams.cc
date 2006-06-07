@@ -67,7 +67,7 @@ SSC_filebuf *SSC_filebuf::open(const char *name, SSC_OpenModeT aMode, int prot)
  int fh=::open(name,flags,prot);
  if (fh==-1)
    {
-    printf("Error en open\n");
+    //printf("Error en open\n");
     return NULL;
    }
  if (mode & SSC_ios::ate)
