@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.692  2006/06/07 19:08:37  set
+* Fixed: printf in SSC streams code when open returned error.
+.
 Revision 2.691  2006/04/18 12:20:49  set
 * Modified: The old workaround for bintextdomain prototype missmatch (dated
 december 2002) now gives troubles for gcc 4.0.3. I'm removing it to find if
