@@ -499,6 +499,7 @@ int TVConfigFile::Add(const char *key, TVConfigFileTreeNode *node)
     if (p->priority>node->priority) return 0;
     if (p->type==tString)
        delete[] p->string;
+    node->next=p->next;
     memcpy(p,node,sizeof(TVConfigFileTreeNode));
    }
  else
