@@ -816,6 +816,11 @@ typedef unsigned long  ulong;
   // This is a temporal workaround.
   //#undef  _LIBINTL_H
   //#define _LIBINTL_H 1
+  // Needed to successfully compile with g++ 4.0.3
+  // Donald R. Ziesig 2006-11-02
+  #if __GNUC__ >= 4
+   #include <libintl.h>
+  #endif
  #endif
 
  /* Solaris using gcc but not glibc */

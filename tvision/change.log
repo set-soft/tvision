@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.399.2.330  2006/08/18 14:22:12  set
+* Fixed: When adding a variable to a TVConfigFile and this variable already
+existed it could break the tree.
+
 Revision 2.399.2.329  2006/06/07 18:05:03  set
 * Fixed: printf in SSC streams code when open returned error.
 
