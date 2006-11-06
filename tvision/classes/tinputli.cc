@@ -75,9 +75,6 @@ TInputLineBase::TInputLineBase(const TRect& bounds, int aMaxLen, TValidator *aVa
  modeOptions=defaultModeOptions;
 }
 
-template class TInputLineBaseT<char,TDrawBuffer>;
-template class TInputLineBaseT<uint16,TDrawBufferU16>;
-
 template <typename T, typename D>
 TInputLineBaseT<T,D>::TInputLineBaseT(const TRect& bounds, int aMaxLen, TValidator *aValid) :
   TInputLineBase(bounds,aMaxLen,aValid)
@@ -685,4 +682,10 @@ Boolean TInputLineBase::valid(ushort cmd)
    }
  return True;
 }
+
+// Moved after all the declarations. gcc 4.0.3 seems to have a bug that
+// produces link errors when this instantiation is done before all the
+// members are defined. Pointed out by Donald R. Ziesig.
+template class TInputLineBaseT<char,TDrawBuffer>;
+template class TInputLineBaseT<uint16,TDrawBufferU16>;
 
