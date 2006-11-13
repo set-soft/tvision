@@ -151,10 +151,13 @@ DefineRead(64,uint64);
 
 void ipstream::readBytes( void *data, size_t sz )
 {
-    // Added modified code by V. Bugrov here.
     size_t i = bp->sgetn( (char *)data, sz );
     if (i < sz)
+      {
        setstate(CLY_IOSEOFBit);
+       // SET: Fill with 0s. Avoid using unitialized memory.
+       memset( ((char *)data) + i, 0, sz - i);
+      }
 }
 
 char *ipstream::readString()
@@ -242,7 +245,9 @@ const TStreamableClass *ipstream::readPrefix()
 
     char name[128];
     readString( name, sizeof name );
-    return types->lookup( name );
+    const TStreamableClass *ret = types->lookup( name );
+    assert( ret != NULL );
+    return ret;
 }
 
 void *ipstream::readData( const TStreamableClass *c, TStreamable *mem )

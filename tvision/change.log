@@ -1,4 +1,10 @@
-$Log$
+$Log$.
+Revision 2.694  2006/11/06 13:11:33  set
+* Added: A workaround for Ubuntu's glibc, it looks like an explicit
+inclusion of libintl.h is needed. The code is experimental and could break
+other gcc 4.x Linux distros. Reported by Donald R. Ziesig
+<Donald/Ziesig/org>.
+
 Revision 2.693  2006/08/18 14:42:42  set
 * Fixed: When adding a variable to a TVConfigFile and this variable already
 existed it could break the tree.
