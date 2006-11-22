@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.695  2006/11/13 19:33:55  set
+* Modified: ipstream now aborts when trying to load an unknown class.
+* Added: Initialization of the rest of the buffer when hiting the end of
+file.
+.
 Revision 2.694  2006/11/06 13:11:33  set
 * Added: A workaround for Ubuntu's glibc, it looks like an explicit
 inclusion of libintl.h is needed. The code is experimental and could break
