@@ -553,7 +553,7 @@ int main(void)
 
 sub FindCFLAGS
 {
- my $ret;
+ my ($ret,$ver);
 
  print 'C flags: ';
  $ret=@conf{'CFLAGS'};
@@ -577,6 +577,8 @@ sub FindCFLAGS
     # QNX4 X11 is in /usr/X11R6
     # This should be automatic now. (EXTRA_INCLUDE_DIRS).
     #$ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
+    $ver=RunRedirect("$GCC -dumpversion");
+    $ret.=' -Wno-packed' if $ver>=4;
    }
  print "$ret\n";
  $conf{'CFLAGS'}=$ret;
