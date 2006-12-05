@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.332  2006/11/13 15:54:20  set
+* Modified: ipstream now aborts when trying to load an unknown class.
+* Added: Initialization of the rest of the buffer when hiting the end of
+file.
+
 Revision 2.399.2.331  2006/11/06 13:06:07  set
 * Added: Workaround for Ubuntu's gcc 4.0.3. It seems to expand templates
 as soon as the declaration is found and if the member bodies aren't yet

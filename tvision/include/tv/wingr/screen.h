@@ -218,7 +218,7 @@ protected:
   static void  Resume();
   static void  Suspend();
   static void  setCharacter( unsigned offset
-                           , ushort value );
+                           , uint32 value );
 
   static void   setCharacters( unsigned dst
                              , ushort  *src
