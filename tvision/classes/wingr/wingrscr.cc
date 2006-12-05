@@ -558,9 +558,9 @@ void TScreenWinGr::setCharacters( unsigned  offset
 /*
  *
  */
-void TScreenWinGr::setCharacter(unsigned offset, ushort value)
+void TScreenWinGr::setCharacter(unsigned offset, uint32 value)
 { setCharacters( offset
-               , &value
+               , (ushort *)&value
                , 1 );
 }
 
