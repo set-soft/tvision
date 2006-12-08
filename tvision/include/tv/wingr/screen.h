@@ -218,7 +218,7 @@ protected:
   static void  Resume();
   static void  Suspend();
   static void  setCharacter( unsigned offset
-                           , uint32 value );
+                           , ushort value );   // JASC, change from uint32. New interace ?
 
   static void   setCharacters( unsigned dst
                              , ushort  *src

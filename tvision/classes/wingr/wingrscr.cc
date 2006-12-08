@@ -558,9 +558,10 @@ void TScreenWinGr::setCharacters( unsigned  offset
 /*
  *
  */
-void TScreenWinGr::setCharacter(unsigned offset, uint32 value)
+void TScreenWinGr::setCharacter( unsigned offset
+                               , ushort value )   // JASC dic 2006, change from uint32. New interace ?
 { setCharacters( offset
-               , (ushort *)&value
+               , &value
                , 1 );
 }
 
