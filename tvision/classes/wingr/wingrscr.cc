@@ -732,12 +732,17 @@ int TScreenWinGr::System( const char * command
   { return( -1 );                          // Error
   }
 
-  WaitForSingleObject   // DO NOT leave in the background
-  ( pi.hProcess
-  , INFINITE );
+  if ( pidChild )                      // Leave in the background
+  { return( *pidChild= (int)pi.hProcess );  // Give process identifier
+  }
+  else
+  { WaitForSingleObject                // DO NOT leave in the background
+    ( pi.hProcess
+    , INFINITE );
+    return( NULL );                    // Return task done
+  }
 
 
- return( *pidChild=0 ); // Child finished ( WaitForsingleObject )
 }
 
 /*                                                                        #####
