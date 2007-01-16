@@ -33,14 +33,14 @@ if ($JustSpec)
 print "Configuring Turbo Vision v$Version library\n\n";
 # Determine the OS
 $OS=DetectOS();
+# Test for a working gcc
+$GCC=CheckGCC();
 # Determine C flags
 $CFLAGS=FindCFLAGS();
 # Determine C++ flags
 $CXXFLAGS=FindCXXFLAGS();
 # Extra lib directories
 $LDExtraDirs=FindLDExtraDirs();
-# Test for a working gcc
-$GCC=CheckGCC();
 # Check if gcc can compile C++
 $GXX=CheckGXX();
 # Which architecture are we using?
@@ -205,7 +205,8 @@ else
    $MakeDefsRHIDE[5]='SHARED_CODE_OPTION=-fno-common';
   }
 # Flags to link as a dynamic lib
-$MakeDefsRHIDE[6]='RHIDE_LDFLAGS=';
+$ldflags1='RHIDE_LDFLAGS=';
+$ldflags2=$ldflags1;
 if ($OS eq 'UNIX')
   {
    if ($OSf ne 'Darwin')
@@ -219,28 +220,34 @@ if ($OS eq 'UNIX')
          # Why?! I think gcc should translate it when using the native ld.
          $soname='-h' if $test=~'ccs/bin/ld';
         }
-      $MakeDefsRHIDE[6].='-L/lib' if ($OSf eq 'QNXRtP');
-      $MakeDefsRHIDE[6].=' -shared -Wl,'.$soname.',librhtv.so.'.$Version;
+      $ldflags1.='-L/lib' if ($OSf eq 'QNXRtP');
+      $ldflags1.=' -shared -Wl,'.$soname.',librhtv.so.'.$Version;
      }
    else
      {# Darwin semantic for dynamic libs is quite different
-      $MakeDefsRHIDE[6].='-dynamiclib -install_name '.$realPrefix.'/lib/librhtv.'.$Version.'.dylib';
-      $MakeDefsRHIDE[6].=' -compatibility_version '.$Version.' -current_version '.$Version;
+      $ldflags1.='-dynamiclib -install_name '.$realPrefix.'/lib/librhtv.'.$Version.'.dylib';
+      $ldflags1.=' -compatibility_version '.$Version.' -current_version '.$Version;
      }
    $libs=$conf{'X11Lib'};
    $libs=~s/(\S+)/-l$1/g;
-   $MakeDefsRHIDE[6].=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
-   $MakeDefsRHIDE[6].=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
-   $MakeDefsRHIDE[6].=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
-   $MakeDefsRHIDE[6].=" $stdcxx -lm -lc";
-   $MakeDefsRHIDE[6].=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
-   $MakeDefsRHIDE[6].=' libtvfintl.a' if ($OSf eq 'Darwin') && $UseDummyIntl;
+   $aux='';
+   $aux.=" -L".$conf{'X11LibPath'}." $libs" if @conf{'HAVE_X11'} eq 'yes';
+   $aux.=' -lgpm' if @conf{'HAVE_GPM'} eq 'yes';
+   $aux.=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
+   $aux.=" $stdcxx -lm -lc";
+   $aux.=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
+   $aux.=' libtvfintl.a' if ($OSf eq 'Darwin') && $UseDummyIntl;
+   $ldflags1.=$aux;
+   $ldflags2.=$aux;
   }
 $MakeDefsRHIDE[7]="LIB_VER=$Version";
 $MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
 
 ModifyMakefiles('intl/dummy/Makefile');
-CreateRHIDEenvs('examples/rhide.env','makes/rhide.env','compat/rhide.env');
+$MakeDefsRHIDE[6]=$ldflags1;
+CreateRHIDEenvs('makes/rhide.env','compat/rhide.env');
+$MakeDefsRHIDE[6]=$ldflags2;
+CreateRHIDEenvs('examples/rhide.env');
 
 # Repeated later for other targets
 CreateConfigH();

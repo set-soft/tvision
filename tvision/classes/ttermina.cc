@@ -233,7 +233,7 @@ uint32 TTerminal::prevLines(uint32 posStart, uint32 Lines)
          }
       }
    }
- while (pos-->=queBack);
+ while (--pos>=queBack);
 
  return queBack;
 }

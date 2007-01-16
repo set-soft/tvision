@@ -577,7 +577,7 @@ sub FindCFLAGS
     # QNX4 X11 is in /usr/X11R6
     # This should be automatic now. (EXTRA_INCLUDE_DIRS).
     #$ret.=' -I/usr/X11R6/include' if ($OSf eq 'QNX4');
-    $ver=RunRedirect("$GCC -dumpversion");
+    $ver=RunRedirect("$GCC -dumpversion",$ErrorLog);
     $ret.=' -Wno-packed' if $ver>=4;
    }
  print "$ret\n";

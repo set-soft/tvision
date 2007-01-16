@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.697  2006/12/05 15:02:55  set
+* Fixed(?): Compilation issue in the Win32 code. The WinGr driver wrongly
+declared setCharacter. Bug tracker: SF #1607447.
+
 Revision 2.696  2006/11/22 15:11:38  set
 * Modified: The configuration script to use -Wno-packed when gcc 4.x is
 detected (untested). Needed to eliminate a silly warning.
