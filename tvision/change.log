@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.399.2.335  2007/01/16 17:22:06  set
+* Fixed: TTerminal::prevLines wrongly checked the pos while going back
+reading out of bounds. Patch by dou9st3r (SF user). Closes bug report
+SF #1618614.
+* Fixed: [config] examples/rhide.env definde RHIDE_LDFLAGS in the same eay
+used to dynamically link the library, not really good for executables ;-)
+* Fixed: [config] the test for gcc 4.x was executed before detecting gcc.
+
 Revision 2.399.2.334  2007/01/16 15:06:07  domatlantida
 * Fixed: [WinGr] external command execution fixed
 
