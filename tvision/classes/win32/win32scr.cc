@@ -106,6 +106,10 @@ TScreenWin32::TScreenWin32()
 
 int TScreenWin32::InitConsole()
 {
+ DWORD flags;
+ // Check if we are running in a console
+ if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),&flags))
+    return 0;
  // Get handles to access Standard Input and Output
  hIn    =GetStdHandle(STD_INPUT_HANDLE);
  hStdOut=GetStdHandle(STD_OUTPUT_HANDLE);

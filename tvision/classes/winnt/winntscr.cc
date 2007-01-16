@@ -106,6 +106,10 @@ void TScreenWinNT::ensureOutBufCapacity(unsigned count)
 
 int TScreenWinNT::InitOnce()
 {
+ DWORD flags;
+ // Check if we are running in a console
+ if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),&flags))
+    return 0;
  // SET: On Win32 this value is symbolic, just a number that can't be a
  // malloced pointer, the screenBuffer isn't used to access the screen.
  screenBuffer=(ushort *)-1;
