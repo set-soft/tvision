@@ -77,7 +77,7 @@ if ($OS eq 'UNIX')
    # glibc I use but the fact is that the needed tricks make it very Linux
    # dependent.
    LookForPThread() if $OSf eq 'Linux';
-   #LookForOutB();
+   LookForOutB();
   }
 if ($Compf eq 'Cygwin')
   {# Cygwin incorporates a XFree86 port

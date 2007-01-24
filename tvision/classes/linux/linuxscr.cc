@@ -123,7 +123,11 @@ are just broken.
 #include <tv/linux/log.h>
 
 #ifdef h386LowLevel
- #include <asm/io.h>
+ #if HAVE_OUTB_IN_SYS
+  #include <sys/io.h>
+ #else
+  #include <asm/io.h>
+ #endif
 #endif
 
 // What a hell is that?!

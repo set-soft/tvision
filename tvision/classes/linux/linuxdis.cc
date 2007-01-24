@@ -300,7 +300,11 @@ void TDisplayLinux::GetCursorPosVCS(unsigned &x, unsigned &y)
 *****************************************************************************/
 
 #ifdef h386LowLevel
-#include <asm/io.h>
+#if HAVE_OUTB_IN_SYS
+ #include <sys/io.h>
+#else
+ #include <asm/io.h>
+#endif
 
 static inline
 unsigned char I(unsigned char i)

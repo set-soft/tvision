@@ -1,9 +1,16 @@
-$Log$.
+$Log$
+Revision 2.399.2.336  2007/01/16 18:14:19  set
+* Fixed: [Win32] The Win32 and WinNT drivers failed to work when a TV a
+application was executed from the MinGW console. Now the code checks if
+it have a working console before using the Win32 and WinNT drivers.
+The idea and bug report was submitted by domatlantida (JASC). Closes
+S.F. bug report SF #1611485.
+
 Revision 2.399.2.335  2007/01/16 17:22:06  set
 * Fixed: TTerminal::prevLines wrongly checked the pos while going back
 reading out of bounds. Patch by dou9st3r (SF user). Closes bug report
 SF #1618614.
-* Fixed: [config] examples/rhide.env definde RHIDE_LDFLAGS in the same eay
+* Fixed: [config] examples/rhide.env defined RHIDE_LDFLAGS in the same way
 used to dynamically link the library, not really good for executables ;-)
 * Fixed: [config] the test for gcc 4.x was executed before detecting gcc.
 
