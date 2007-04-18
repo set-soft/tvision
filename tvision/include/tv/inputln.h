@@ -203,7 +203,7 @@ public:
      { return name; }
 
 protected:
- TInputLine::TInputLine(StreamableInit) :
+ TInputLine(StreamableInit) :
    TInputLineBaseT<char,TDrawBuffer>(streamableInit) {}
 
 public:

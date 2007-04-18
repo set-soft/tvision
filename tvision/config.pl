@@ -1108,8 +1108,8 @@ sub GenerateMakefile
       }
     # Note: -sf should work for Solaris 9 but at least in the machines at S.F.
     # it doesn't. So we just delete the file and do the link.
-    $rep.="\t-cd $makeDir; rm $nameSO; ln -s $nameSOV $nameSO\n";
-    $rep.="\t-cd $makeDir; rm $nameSOM; ln -s $nameSOV $nameSOM\n";
+    $rep.="\t-cd $makeDir; rm -f $nameSO; ln -s $nameSOV $nameSO\n";
+    $rep.="\t-cd $makeDir; rm -f $nameSOM; ln -s $nameSOV $nameSOM\n";
    }
  if ($internac)
    {

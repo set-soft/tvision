@@ -237,7 +237,7 @@ struct stCodePageLang TScreenLinux::langCodePages[]=
 // dependent.
 typedef struct
 {
- char service    __attribute__((packed));
+ char service;//    __attribute__((packed));
  ushort xs       __attribute__((packed));
  ushort ys       __attribute__((packed));
  ushort xe       __attribute__((packed));
