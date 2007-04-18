@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.337  2007/01/24 16:26:41  set
+* Fixed(?): New Linux kernels seems to omit asm/io.h and we must use
+sys/io.h. SF Patch #1642839 (anonymous).
+
 Revision 2.399.2.336  2007/01/16 18:14:19  set
 * Fixed: [Win32] The Win32 and WinNT drivers failed to work when a TV a
 application was executed from the MinGW console. Now the code checks if
