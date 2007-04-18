@@ -14,14 +14,6 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TView ) && !defined( __TView )
 #define __TView
 
-struct write_args
-{
-    void *self;
-    void *target;
-    void *buf;
-    ushort offset;
-};
-
 class TRect;
 struct TEvent;
 class TGroup;
@@ -173,7 +165,6 @@ private:
                    uchar mode
                  );
     void change( uchar, TPoint delta, TPoint& p, TPoint& s, int grow=0 );
-    static void writeView( write_args );
 
 #if !defined( NO_STREAM )
     virtual const char *streamableName() const

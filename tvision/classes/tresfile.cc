@@ -45,9 +45,9 @@ struct THeader
  ushort signature  CLY_Packed;
  union
  {
-  Count_type count CLY_Packed;
-  Info_type  info  CLY_Packed;
- };
+  Count_type count;
+  Info_type  info;
+ } CLY_Packed;
 };
 
 #pragma pack()

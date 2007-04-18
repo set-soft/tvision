@@ -1,11 +1,15 @@
-$Log$.
+$Log$
+Revision 2.700  2007/01/24 16:44:25  set
+* Fixed(?): New Linux kernels seems to omit asm/io.h and we must use
+sys/io.h. SF Patch #1642839 (anonymous).
+
 Revision 2.699  2007/01/16 18:17:14  set
 * Fixed: [Win32] The Win32 and WinNT drivers failed to work when a TV a
 application was executed from the MinGW console. Now the code checks if
 it have a working console before using the Win32 and WinNT drivers.
 The idea and bug report was submitted by domatlantida (JASC). Closes
 S.F. bug report SF #1611485.
-.
+
 Revision 2.698  2007/01/16 17:31:39  set
 * Fixed: TTerminal::prevLines wrongly checked the pos while going back
 reading out of bounds. Patch by dou9st3r (SF user). Closes bug report
@@ -13,7 +17,7 @@ SF #1618614.
 * Fixed: [config] examples/rhide.env definde RHIDE_LDFLAGS in the same eay
 used to dynamically link the library, not really good for executables ;-)
 * Fixed: [config] the test for gcc 4.x was executed before detecting gcc.
-.
+
 Revision 2.697  2006/12/05 15:02:55  set
 * Fixed(?): Compilation issue in the Win32 code. The WinGr driver wrongly
 declared setCharacter. Bug tracker: SF #1607447.

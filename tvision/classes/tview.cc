@@ -1199,14 +1199,6 @@ lab20:
   goto lab10;
 }
 
-struct MYARGS {
-  ushort ax;
-  ushort bx;
-  ushort cx;
-  void * Buffer;
-  TView * view;
-};
-
 #define WRITEVIEW(b,a,c,B)\
 do\
 {\
@@ -1217,17 +1209,6 @@ do\
   _view = this;\
   _call(00);\
 } while (0)
-
-void TView::writeView(write_args wa)
-{
-  MYARGS * WA = (MYARGS *)&wa;
-  x_pos_start = WA->bx;
-  y_pos = WA->ax;
-  x_pos_end = WA->cx;
-  _Buffer = WA->Buffer;
-  _view = WA->view;
-  _call(00);
-}
 
 void TView::writeBuf(short x,short y,short w,short h,const void * Buffer)
 {
