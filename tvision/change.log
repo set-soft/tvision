@@ -1,4 +1,15 @@
-$Log$.
+$Log$
+Revision 2.399.2.338  2007/04/18 16:36:35  set
+* Fixed: [Makefile] added -f to the rm command to remove the old symblinks
+to avoid messages from rm.
+* Fixed: [tresfile.cc] the THeader structure requested packed attibute for
+the members of a union instead of the union itself. Reported by gcc 4.1.1.
+* Fixed: [tview.cc] code that violated the C99 aliasing rules. Not fully
+tested.
+* Fixed: [linuxscr.cc] removed request for the first element in the setSel
+structure.
+* Fixed: [inputln.h] redundant qualification for TInputLine(StreamableInit)
+
 Revision 2.399.2.337  2007/01/24 16:26:41  set
 * Fixed(?): New Linux kernels seems to omit asm/io.h and we must use
 sys/io.h. SF Patch #1642839 (anonymous).
