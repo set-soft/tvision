@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer: Ivan Baldo <ibaldo@adinet.com.uy>
 Build-Depends: perl | perl5, libncurses-dev, libgpmg1-dev, debhelper (>=2.0.40), libx11-dev | xlibs-dev | xlib6g-dev, libxmu-dev | xlibs-dev | xlib6g-dev, gettext, file
-Standards-Version: 3.6.2.0
+Standards-Version: 3.7.2.2
 
 Package: rhtvision2.1.0-dev
 Architecture: any
@@ -12,6 +12,7 @@ Depends: rhtvision2.1.0, libncurses-dev, libgpmg1-dev, libx11-dev | xlibs-dev | 
 Provides: rhtvision-dev
 Conflicts: rhtvision-dev
 Replaces: rhtvision-dev
+XB-Bugs: mailto:ibaldo@adinet.com.uy
 Description: Development files for the RHTVision library - a TUI interface
  This is the statically linked library and header files for the development
  of applications using the RHTVision library. You need to install this package
@@ -24,6 +25,7 @@ Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
 Conflicts: rhtvision1
+XB-Bugs: mailto:ibaldo@adinet.com.uy
 Description: The RHTVision library - TUI interface for console applications
  This is the shared library for programs using the RHTVision library.
  .

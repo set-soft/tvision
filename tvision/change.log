@@ -1,4 +1,14 @@
 $Log$
+Revision 2.701  2007/04/18 15:45:11  set
+* Fixed: [Makefile] added -f to the rm command to remove the old symblinks
+to avoid messages from rm.
+* Fixed: [tresfile.cc] the THeader structure requested packed attibute for
+the members of a union instead of the union itself. Reported by gcc 4.1.1.
+* Fixed: [tview.cc, view.h] removed unused writeView member and associated
+structures. This code wasn't used and did a wrong cast.
+* Fixed: [linuxscr.cc] removed request for the first element in the setSel
+structure.
+
 Revision 2.700  2007/01/24 16:44:25  set
 * Fixed(?): New Linux kernels seems to omit asm/io.h and we must use
 sys/io.h. SF Patch #1642839 (anonymous).
@@ -661,7 +671,7 @@ MAINTAINER_MODE.
 .
 Revision 2.570  2004/09/20 14:47:45  set
 * Fixed: [gcc 3.x] Warning in compat/snprintf.c. Reported by Nicola Asuni.
-.
+
 Revision 2.569  2004/09/20 14:18:34  set
 * Added: [Config] A command line option to specify a path for includes.
 This path is used for the configuration tests and for the library.
