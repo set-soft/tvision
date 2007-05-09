@@ -48,7 +48,7 @@ void CLY_YieldProcessor(int micros)
  void CLY_YieldProcessor(int micros)
  {
   if (micros<0)
-     micros=10;
+     micros=10000; // 10 ms
   usleep(micros);
  }
  #endif

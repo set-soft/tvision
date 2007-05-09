@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.702  2007/05/08 19:43:52  terrible
+* Updated: [Debian] Packaging to version 2.1.0-3, small things.
+
 Revision 2.701  2007/04/18 15:45:11  set
 * Fixed: [Makefile] added -f to the rm command to remove the old symblinks
 to avoid messages from rm.
