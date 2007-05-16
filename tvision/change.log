@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.703  2007/05/09 12:55:57  set
+* Modified: The default time to sleep when no events are available. It was
+10 µs, good for most Linux kernels, but 2.6.21 reduces the granularity and
+really sleeps for a small ammount of time. Now we sleep for 10 ms. From a
+report and test by Ivan Baldo.
+.
 Revision 2.702  2007/05/08 19:43:52  terrible
 * Updated: [Debian] Packaging to version 2.1.0-3, small things.
 
