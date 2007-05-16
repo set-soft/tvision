@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.704  2007/05/16 18:16:12  set
+* Fixed: TFileInfoPane::draw() didn't protect a temporal buffer from
+overruns. Under some situations it could be overflowed.
+.
 Revision 2.703  2007/05/09 12:55:57  set
 * Modified: The default time to sleep when no events are available. It was
 10 µs, good for most Linux kernels, but 2.6.21 reduces the granularity and
