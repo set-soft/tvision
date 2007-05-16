@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2005 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2007 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -112,6 +112,7 @@ $MakeDefsRHIDE[1].=$realPrefix.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Extra path for the includes, used for the library
 $MakeDefsRHIDE[9]='EXTRA_INCLUDE_DIRS=';
+$MakeDefsRHIDE[7]='RHIDE_LIBS=';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
 # RHIDE doesn't know about anything different than DJGPP and Linux so -lstdc++ must
@@ -237,11 +238,11 @@ if ($OS eq 'UNIX')
    $aux.=" $stdcxx -lm -lc";
    $aux.=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
    $aux.=' libtvfintl.a' if ($OSf eq 'Darwin') && $UseDummyIntl;
-   $ldflags1.=$aux;
-   $ldflags2.=$aux;
+   $MakeDefsRHIDE[7].=$aux;
   }
-$MakeDefsRHIDE[7]="LIB_VER=$Version";
-$MakeDefsRHIDE[8]="LIB_VER_MAJOR=$VersionMajor";
+
+$MakeDefsRHIDE[8]="LIB_VER=$Version";
+$MakeDefsRHIDE[10]="LIB_VER_MAJOR=$VersionMajor";
 
 ModifyMakefiles('intl/dummy/Makefile');
 $MakeDefsRHIDE[6]=$ldflags1;
