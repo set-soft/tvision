@@ -101,6 +101,21 @@ void THWMouseGPM::GetEvent(MouseEventType &me)
        me.buttons|= mbRightButton;
     else
        me.buttons&= ~mbRightButton;
+    if (mev.wdy<0)
+      {
+       if (me.buttons==mbButton5)
+          me.buttons=0;
+       else
+          me.buttons=mbButton5;
+      }
+    else
+       if (mev.wdy>0)
+         {
+          if (me.buttons==mbButton4)
+             me.buttons=0;
+          else
+             me.buttons=mbButton4;
+         }
     me.where.x=range(mev.x,0,TScreen::screenWidth-1);
     me.where.y=range(mev.y,0,TScreen::screenHeight-1);
     DrawMouse(me.where.x,me.where.y);
