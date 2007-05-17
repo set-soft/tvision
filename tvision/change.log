@@ -1,4 +1,12 @@
 $Log$.
+Revision 2.706  2007/05/16 20:19:23  set
+* Modified: The way LDFLAGS and libraries are used to link the final
+library. Now the libraries goes at the end of the line and not mixed with
+RHIDE_LDFLAGS. This is needed to use the --as-needed linker flag. I don't
+see the point using it for this library because we carefully chose which
+libraries are listed, but could help in the future. This patch is based on
+the SF patch #1642841.
+.
 Revision 2.705  2007/05/16 18:32:43  set
 * Added: Support for mouse wheel in Linux console. Partially tested, needs
 a patched gpm. Patch from Witold Filipczyk witekfl/poczta/onet/pl.
