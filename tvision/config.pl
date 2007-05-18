@@ -874,7 +874,7 @@ int main(void)
 }
 ';
  $result=RunGCCTest($GCC,'c',$test,'-l'.$conf{'NameCurses'});
- $test=~s/\W//g;
+ $result=~s/\W//g;
  if ($result eq 'Ok')
    {
     print "yes\n";
