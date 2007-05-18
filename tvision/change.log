@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.707  2007/05/17 18:07:23  set
+* Modified: The gpm mouse wheel support. Now it works better, tested.
+.
 Revision 2.706  2007/05/16 20:19:23  set
 * Modified: The way LDFLAGS and libraries are used to link the final
 library. Now the libraries goes at the end of the line and not mixed with
