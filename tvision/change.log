@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.709  2007/05/29 11:24:37  set
+* Fixed: [config] the way --include option is processed. From a patch sent
+by Witek.
+.
 Revision 2.708  2007/05/18 10:54:54  set
 * Fixed: [Config] the ncurses' define_key test. Patch from Witek (Witold
 Filipczyk)
