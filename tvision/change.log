@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.708  2007/05/18 10:54:54  set
+* Fixed: [Config] the ncurses' define_key test. Patch from Witek (Witold
+Filipczyk)
+.
 Revision 2.707  2007/05/17 18:07:23  set
 * Modified: The gpm mouse wheel support. Now it works better, tested.
 .

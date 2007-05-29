@@ -111,7 +111,7 @@ $MakeDefsRHIDE[1].=$here.'/include ' unless $conf{'libs-here'} eq 'no';
 $MakeDefsRHIDE[1].=$realPrefix.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Extra path for the includes, used for the library
-$MakeDefsRHIDE[9]='EXTRA_INCLUDE_DIRS=';
+$MakeDefsRHIDE[9]='EXTRA_INCLUDE_DIRS='.$conf{'EXTRA_INCLUDE_DIRS'};
 $MakeDefsRHIDE[7]='RHIDE_LIBS=';
 # Libraries needed
 $MakeDefsRHIDE[2]='RHIDE_OS_LIBS=';
@@ -151,7 +151,7 @@ if ($OS eq 'UNIX')
      {
       $aux=$conf{'X11IncludePath'} ? ' '.$conf{'X11IncludePath'} : ' /usr/X11R6/include';
       $MakeDefsRHIDE[0].=$aux;
-      $MakeDefsRHIDE[9].=$conf{'EXTRA_INCLUDE_DIRS'}.$aux;
+      $MakeDefsRHIDE[9].=$aux;
      }
    $MakeDefsRHIDE[3]='TVOBJ='.$LDExtraDirs.' ';
    # QNX 6.2 beta 3 workaround
