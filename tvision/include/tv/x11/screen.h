@@ -1,5 +1,5 @@
 /* X11 screen routines header.
-   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2007 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // X headers are needed to include it
 #if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11) && !defined(X11SCR_HEADER_INCLUDED)
@@ -7,6 +7,7 @@
 
 class TVX11Clipboard;
 class TVX11UpdateThread;
+class TNSCollection;
 
 // virtual to avoid problems with multiple inheritance
 class TDisplayX11 : virtual public TDisplay
@@ -93,6 +94,10 @@ protected:
  static int    SetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
  static Boolean ShowBusyState(Boolean state);
  static void    Beep();
+ static appHelperHandler OpenHelperApp(AppHelper kind);
+ static Boolean CloseHelperApp(appHelperHandler id);
+ static Boolean SendFileToHelper(appHelperHandler id, const char *file, void *extra);
+ static const char *GetHelperAppError();
  
 protected:
  // Blinking cursor emulation
@@ -200,6 +205,10 @@ protected:
  char *SearchX11Font(const char *foundry, const char *family, int w, int h);
  char *SearchX11Font(const char *foundry, const char *family);
  char *SearchX11Font(const char *pattern);
+ // Application Helpers stuff
+ static const char *appHelperNameError[];
+ static int appHelperError;
+ static TNSCollection *appHelperHandlers;
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

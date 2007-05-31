@@ -364,6 +364,14 @@ public:
                 *getDriverShortName() { return currentDriverShortName; }
  static void     beep() { TDisplay::beep(); };
  static void     bell() { TDisplay::beep(); };
+ // SET: Application Helpers
+ enum AppHelper { FreeHandler, ImageViewer, PDFViewer };
+ typedef ccIndex appHelperHandler;
+ static appHelperHandler (*openHelperApp)(AppHelper kind);
+ static Boolean (*closeHelperApp)(appHelperHandler id);
+ static Boolean (*sendFileToHelper)(appHelperHandler id, const char *file, void *extra);
+ static const char *(*getHelperAppError)();
+ static int maxAppHelperHandlers;
 
  // SET: flags capabilities flags
  enum Capabilities1
@@ -438,6 +446,10 @@ protected:
                               int changeS, TScreenFont256 *fontS,
                               int fontCP=-1, int appCP=-1);
  static void   defaultRestoreFonts();
+ static appHelperHandler defaultOpenHelperApp(AppHelper kind);
+ static Boolean defaultCloseHelperApp(appHelperHandler id);
+ static Boolean defaultSendFileToHelper(appHelperHandler id, const char *file, void *extra);
+ static const char *defaultGetHelperAppError();
 
  // The following members are used to implement a tricky initialization
  // process.

@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.348  2007/05/29 12:16:46  set
+* Updated: [Debian] Packaging to version 2.1.0-4.
+
 Revision 2.399.2.347  2007/05/29 11:22:24  set
 * Fixed: [config] the way --include option is processed. From a patch sent
 by Witek.
