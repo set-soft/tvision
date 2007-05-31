@@ -1,4 +1,4 @@
-# Copyright (C) 2001-2003 by Salvador E. Tropea (SET),
+# Copyright (C) 2001-2007 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # This file is mostly used to clean the examples directories, but can be
@@ -19,7 +19,7 @@ examples=demo/demo desklogo/desklogo desklogo/set-logo \
 	tvedit/tvedit tvhc/tvhc clipboard/test fonts/test \
 	helpdemo/helpdemo fonts/genraw videomode/test \
 	cyrillic/linuxkoi8/test cyrillic/x11koi8/test \
-	bhelp/thelp i18n/test
+	bhelp/thelp i18n/test viewers/test
 
 all: $(addsuffix .exe,$(examples))
 
@@ -106,6 +106,8 @@ tvedit/tvedit.exe: tvedit/tvedit.gpr
 tvhc/tvhc.exe: tvhc/tvhc.gpr
 
 videomode/test.exe: videomode/test.gpr
+
+viewers/test.exe: viewers/test.gpr
 
 %.exe: %.gpr
 	$(MAKE) -C $(dir $<) -f $(addsuffix .mkf,$(basename $(notdir $<)))
