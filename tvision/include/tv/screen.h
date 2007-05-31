@@ -1,5 +1,5 @@
 /* TDisplay/TScreen header.
-   Copyright (c) 2002 by Salvador E. Tropea (SET)
+   Copyright (c) 2002-2007 by Salvador E. Tropea (SET)
    Covered by the GPL license.
 
    This driver defines a class compatible with original Turbo Vision but
@@ -143,6 +143,14 @@ public:
  // SET: The bell/beep is something really tied to the terminal
  static void   (*beep)();
  static void     bell() { beep(); };
+ // SET: Application Helpers
+ enum AppHelper { FreeHandler, ImageViewer, PDFViewer };
+ typedef ccIndex appHelperHandler;
+ static appHelperHandler (*openHelperApp)(AppHelper kind);
+ static Boolean (*closeHelperApp)(appHelperHandler id);
+ static Boolean (*sendFileToHelper)(appHelperHandler id, const char *file, void *extra);
+ static const char *(*getHelperAppError)();
+ static int maxAppHelperHandlers;
  // This should be called before initialization.
  // Isn't mandatory but helps some drivers.
  static void     setArgv(int aArgc, char **aArgv, char **aEnvir);
@@ -240,6 +248,10 @@ protected:
  static int         defaultSetCrtModeRes(unsigned w, unsigned h, int fW=-1, int fH=-1);
  static Boolean     defaultShowBusyState(Boolean state);
  static void        defaultBeep();
+ static appHelperHandler defaultOpenHelperApp(AppHelper kind);
+ static Boolean defaultCloseHelperApp(appHelperHandler id);
+ static Boolean defaultSendFileToHelper(appHelperHandler id, const char *file, void *extra);
+ static const char *defaultGetHelperAppError();
 
 private:
  // From original TV 2.0.

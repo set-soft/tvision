@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 2001-2002 by Salvador E. Tropea
+  Copyright 2001-2007 by Salvador E. Tropea
   This file is covered by the GPL license.
   
   Module: Screen
@@ -55,6 +55,7 @@ TVScreenFontRequestCallBack
 long     TScreen::forcedAppCP=-1,
          TScreen::forcedScrCP=-1,
          TScreen::forcedInpCP=-1;
+int      TScreen::maxAppHelperHandlers=8;
 
 /*****************************************************************************
   Function pointer members initialization
@@ -89,6 +90,14 @@ int    (*TScreen::setFont_p)(int changeP, TScreenFont256 *fontP,
 void   (*TScreen::restoreFonts)()               =TScreen::defaultRestoreFonts;
 int    (*TScreen::setVideoModeRes_p)(unsigned w, unsigned h, int fW, int fH)
                                                 =TScreen::defaultSetVideoModeRes;
+TScreen::appHelperHandler (*TScreen::openHelperApp)(AppHelper kind)
+                                                =TScreen::defaultOpenHelperApp;
+Boolean (*TScreen::closeHelperApp)(appHelperHandler id)
+                                                =TScreen::defaultCloseHelperApp;
+Boolean (*TScreen::sendFileToHelper)(appHelperHandler id, const char *file, void *extra)
+                                                =TScreen::defaultSendFileToHelper;
+const char *(*TScreen::getHelperAppError)()     =TScreen::defaultGetHelperAppError;
+
 
 /*****************************************************************************
   Default behaviors for the members
@@ -179,6 +188,16 @@ int  TScreen::defaultGetFontGeometryRange(unsigned &, unsigned &,
 int  TScreen::defaultSetFont(int , TScreenFont256 *, int , TScreenFont256 *,
                              int, int) { return 0; }
 void TScreen::defaultRestoreFonts() {}
+
+TScreen::appHelperHandler TScreen::defaultOpenHelperApp(TScreen::AppHelper)
+{ return -1; }
+Boolean TScreen::defaultCloseHelperApp(appHelperHandler) { return False; }
+Boolean TScreen::defaultSendFileToHelper(appHelperHandler, const char *, void *)
+{ return False; }
+const char *TScreen::defaultGetHelperAppError()
+{
+ return __("This feature isn't implemented by the current driver.");
+}
 
 /*****************************************************************************
   Real members

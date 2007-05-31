@@ -1,5 +1,5 @@
 /* X11 screen routines.
-   Copyright (c) 2001-2003 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2007 by Salvador E. Tropea (SET)
    Covered by the GPL license.
     Thanks to José Ángel Sánchez Caso (JASC). He implemented a first X11
    driver.
@@ -45,6 +45,8 @@
 #define Uses_string
 #define Uses_unistd   // TScreenX11::System
 #define Uses_signal
+#define Uses_fcntl // open
+#define Uses_snprintf
 #define Uses_AllocLocal
 #define Uses_TDisplay
 #define Uses_TScreen
@@ -952,6 +954,10 @@ TScreenX11::TScreenX11()
  TScreen::restoreFonts=RestoreFonts;
  TScreen::setCrtModeRes_p=SetCrtModeRes;
  TDisplay::beep=Beep;
+ TScreen::openHelperApp=OpenHelperApp;
+ TScreen::closeHelperApp=CloseHelperApp;
+ TScreen::sendFileToHelper=SendFileToHelper;
+ TScreen::getHelperAppError=GetHelperAppError;
 
  TVX11Clipboard::Init();
  TGKeyX11::Init();
@@ -2083,6 +2089,252 @@ void TScreenX11::Beep()
  XBell(disp,50);
  SEMAPHORE_OFF;
 }
+
+/*****************************************************************************
+  Application Helpers
+*****************************************************************************/
+
+const char *TScreenX11::appHelperNameError[]=
+{
+ __("No error"), // 0
+ __("Only one helper of this kind can be opened at the same time"), // 1
+ __("Please install gqview application in order to display images"), // 2
+ __("Please install xpdf application in order to display PDF files"), // 3
+ __("Invalid application helper handler"), // 4
+ __("Failed to open /dev/null"), // 5
+ __("No more handlers") // 6
+};
+int TScreenX11::appHelperError=0;
+TNSCollection *TScreenX11::appHelperHandlers=NULL;
+struct helperHandler
+{
+ TScreen::AppHelper kind;
+};
+static int allocatedHandlers;
+
+static
+Boolean CheckInstalled(const char *command, const char *response,
+                       Boolean installed)
+{
+ if (installed)
+    return installed;
+ // Redirect stderr and stdout to a file
+ char name[14]="/tmp/tvXXXXXX";
+ int handler=mkstemp(name);
+ if (handler==-1)
+    return False;
+ unlink(name);
+ int h_errbak=dup(STDERR_FILENO);
+ int h_outbak=dup(STDOUT_FILENO);
+ dup2(handler,STDERR_FILENO);
+ dup2(handler,STDOUT_FILENO);
+ // Run the command
+ TScreen::System(command);
+ // Restore stderr and stdout
+ dup2(h_errbak,STDERR_FILENO);
+ dup2(h_outbak,STDOUT_FILENO);
+ close(h_errbak);
+ close(h_outbak);
+ // Read the result
+ lseek(handler,0,SEEK_SET);
+ char resp[80];
+ read(handler,resp,80);
+ close(handler);
+ // Is that ok?
+ return Boolean(strstr(resp,response)!=NULL);
+}
+
+TScreen::appHelperHandler TScreenX11::OpenHelperApp(TScreen::AppHelper kind)
+{
+ static Boolean gqviewInstalled=False;
+ static Boolean xpdfInstalled=False;
+
+ if (kind==FreeHandler)
+   {
+    appHelperError=4;
+    return -1;
+   }
+
+ if (kind==ImageViewer && appHelperHandlers)
+   {// Only one image viewer (gqview limitation)
+    ccIndex i, c=appHelperHandlers->getCount();
+    for (i=0; i<c; i++)
+       {
+        helperHandler *p=(helperHandler *)appHelperHandlers->at(i);
+        if (p->kind==ImageViewer)
+          {
+           appHelperError=1;
+           return -1;
+          }
+       }
+   }
+
+ // Ensure we have a collection
+ if (!appHelperHandlers)
+   {
+    appHelperHandlers=new TNSCollection(maxAppHelperHandlers,2);
+    allocatedHandlers=maxAppHelperHandlers;
+   }
+ if (!appHelperHandlers)
+    return -1;
+
+ // Do we have available handlers?
+ ccIndex hNum=-1;
+ if (appHelperHandlers->getCount()>=allocatedHandlers)
+   {
+    ccIndex i, c=appHelperHandlers->getCount();
+    for (i=0; i<c; i++)
+       {
+        helperHandler *p=(helperHandler *)appHelperHandlers->at(i);
+        if (p->kind==FreeHandler)
+          {
+           hNum=i;
+           break;
+          }
+       }
+    if (i==c)
+      {
+       appHelperError=6;
+       return -1;
+      }
+   }
+
+ // Create/Recycle the structure
+ helperHandler *h;
+
+ if (hNum==-1)
+   {// Create a struct for it
+    h=(helperHandler *)(new char[sizeof(helperHandler)]); // To match the delete[]
+    h->kind=FreeHandler;
+    // Insert it
+    hNum=appHelperHandlers->insert(h);
+   }
+ else
+    // Recycle
+    h=(helperHandler *)appHelperHandlers->at(hNum);
+
+ // Open the remote server
+ int nullH=open("/dev/null",O_WRONLY|O_BINARY|O_CREAT|O_TRUNC,S_IREAD|S_IWRITE);
+ if (nullH==-1)
+   {
+    appHelperError=5;
+    return -1;
+   }
+ switch (kind)
+   {
+    case ImageViewer:
+         gqviewInstalled=CheckInstalled("gqview -v","GQview",gqviewInstalled);
+         if (!gqviewInstalled)
+           {
+            appHelperError=2;
+            return -1;
+           }
+         break;
+    case PDFViewer:
+         xpdfInstalled=CheckInstalled("xpdf -v","xpdf version",xpdfInstalled);
+         if (!xpdfInstalled)
+           {
+            appHelperError=3;
+            return -1;
+           }
+         break;
+    case FreeHandler:
+         break;
+   }
+ close(nullH);
+ h->kind=kind;
+
+ return hNum;
+}
+
+Boolean TScreenX11::CloseHelperApp(appHelperHandler id)
+{
+ if (!appHelperHandlers || id<0 || id>=appHelperHandlers->getCount())
+   {
+    appHelperError=4;
+    return False;
+   }
+
+ pid_t pid;
+ char buf[80];
+ int nullH=open("/dev/null",O_WRONLY|O_BINARY|O_CREAT|O_TRUNC,S_IREAD|S_IWRITE);
+ if (nullH==-1)
+   {
+    appHelperError=5;
+    return -1;
+   }
+
+ helperHandler *p=(helperHandler *)appHelperHandlers->at(id);
+ switch (p->kind)
+   {
+    case ImageViewer:
+         System("gqview -r -q",&pid,-1,nullH,nullH);
+         break;
+    case PDFViewer:
+         CLY_snprintf(buf,80,"xpdf -remote SETEdit_%d_%d -quit",(int)getpid(),id);
+         System(buf,&pid,-1,nullH,nullH);
+         break;
+    case FreeHandler:
+         appHelperError=4;
+         return False;
+   }
+
+ close(nullH);
+ p->kind=FreeHandler;
+
+ return True;
+}
+
+Boolean TScreenX11::SendFileToHelper(appHelperHandler id, const char *file,
+                                     void *extra)
+{
+ if (!appHelperHandlers || id<0 || id>=appHelperHandlers->getCount())
+   {
+    appHelperError=4;
+    return False;
+   }
+
+ pid_t pid;
+ int len=160+strlen(file);
+ int page;
+ AllocLocalStr(buf,len);
+ int nullH=open("/dev/null",O_WRONLY|O_BINARY|O_CREAT|O_TRUNC,S_IREAD|S_IWRITE);
+ if (nullH==-1)
+   {
+    appHelperError=5;
+    return -1;
+   }
+
+ helperHandler *p=(helperHandler *)appHelperHandlers->at(id);
+ switch (p->kind)
+   {
+    case ImageViewer:
+         CLY_snprintf(buf,len,"gqview -r \"file:%s\"",file);
+         System(buf,&pid,-1,nullH,nullH);
+         break;
+    case PDFViewer:
+         page=0;
+         if (extra)
+            page=*((int *)extra);
+         CLY_snprintf(buf,len,"xpdf -remote SETEdit_%d_%d -raise \"%s\" %d",
+                      (int)getpid(),id,file,page);
+         System(buf,&pid,-1,nullH,nullH);
+         break;
+    case FreeHandler:
+         appHelperError=4;
+         return False;
+   }
+
+ close(nullH);
+
+ return True;
+}
+
+const char *TScreenX11::GetHelperAppError()
+{
+ return appHelperNameError[appHelperError];
+}
+
 
 /*****************************************************************************
 

@@ -1,15 +1,18 @@
-$Log$.
+$Log$
+Revision 2.710  2007/05/29 13:05:16  set
+* Updated: [Debian] Packaging to version 2.1.0-4.
+
 Revision 2.709  2007/05/29 11:24:37  set
 * Fixed: [config] the way --include option is processed. From a patch sent
 by Witek.
-.
+
 Revision 2.708  2007/05/18 10:54:54  set
 * Fixed: [Config] the ncurses' define_key test. Patch from Witek (Witold
 Filipczyk)
-.
+
 Revision 2.707  2007/05/17 18:07:23  set
 * Modified: The gpm mouse wheel support. Now it works better, tested.
-.
+
 Revision 2.706  2007/05/16 20:19:23  set
 * Modified: The way LDFLAGS and libraries are used to link the final
 library. Now the libraries goes at the end of the line and not mixed with
@@ -17,21 +20,21 @@ RHIDE_LDFLAGS. This is needed to use the --as-needed linker flag. I don't
 see the point using it for this library because we carefully chose which
 libraries are listed, but could help in the future. This patch is based on
 the SF patch #1642841.
-.
+
 Revision 2.705  2007/05/16 18:32:43  set
 * Added: Support for mouse wheel in Linux console. Partially tested, needs
 a patched gpm. Patch from Witold Filipczyk witekfl/poczta/onet/pl.
-.
+
 Revision 2.704  2007/05/16 18:16:12  set
 * Fixed: TFileInfoPane::draw() didn't protect a temporal buffer from
 overruns. Under some situations it could be overflowed.
-.
+
 Revision 2.703  2007/05/09 12:55:57  set
 * Modified: The default time to sleep when no events are available. It was
 10 µs, good for most Linux kernels, but 2.6.21 reduces the granularity and
 really sleeps for a small ammount of time. Now we sleep for 10 ms. From a
 report and test by Ivan Baldo.
-.
+
 Revision 2.702  2007/05/08 19:43:52  terrible
 * Updated: [Debian] Packaging to version 2.1.0-3, small things.
 
