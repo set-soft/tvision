@@ -54,6 +54,7 @@
 #define Uses_TEvent   // For THWMouseX11
 #define Uses_TVCodePage
 #define Uses_TVOSClipboard
+#define Uses_TNSCollection
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible

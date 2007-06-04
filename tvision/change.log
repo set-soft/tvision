@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.711  2007/05/31 14:27:33  set
+* Added: [TScreen] a mechanism to start external image and pdf viewers.
+Currently implemented only by the X11 driver. An example is included in
+examples/viewers.
+
 Revision 2.710  2007/05/29 13:05:16  set
 * Updated: [Debian] Packaging to version 2.1.0-4.
 
