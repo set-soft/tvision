@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.712  2007/06/04 13:53:31  set
+* Fixed: [TScreen] The last patch was wrongly applied and some members
+were declared inside TDisplay class. Reported by Witek.
+.
 Revision 2.711  2007/05/31 14:27:33  set
 * Added: [TScreen] a mechanism to start external image and pdf viewers.
 Currently implemented only by the X11 driver. An example is included in
