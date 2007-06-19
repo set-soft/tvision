@@ -10,6 +10,8 @@ Modified by Vadim Beloborodov to be used on WIN32 console
 Modified to compile with gcc v3.x by Salvador E. Tropea, with the help of
 Andris Pavenis and Christoph Bauer.
 Added filelength member by Salvador E. Tropea (SET)
+Added fpstream( CLY_OpenModeT omode, const char* name, int prot ) to avoid
+the CLY_IOSOut | CLY_IOSBin addition.
 
  *
  *
@@ -29,6 +31,11 @@ fpstream::fpstream()
 
 fpstream::fpstream( const char* name, CLY_OpenModeT omode, int prot ) :
         fpbase( name, omode | CLY_IOSOut | CLY_IOSBin, prot )
+{
+}
+
+fpstream::fpstream( CLY_OpenModeT omode, const char* name, int prot ) :
+        fpbase( name, omode, prot )
 {
 }
 

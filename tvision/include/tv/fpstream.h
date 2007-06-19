@@ -30,6 +30,7 @@ class CLY_EXPORT fpstream : public fpbase, public iopstream
 public:
     fpstream();
     fpstream( const char *, CLY_OpenModeT, int = CLY_FBOpenProtDef );
+    fpstream( CLY_OpenModeT, const char* , int = CLY_FBOpenProtDef );
     fpstream( int );
     fpstream( int, char *, int );
     ~fpstream();
