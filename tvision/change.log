@@ -1,4 +1,11 @@
-$Log$.
+$Log$
+Revision 2.399.2.350  2007/06/19 13:32:39  set
+* Added: A new fpstream constructor. The original constructor enforces the
+binary flag (to avoid problems with binary data) but also adds the ios::out
+flag. This is bad when you open a read-only file. The new constructor
+doesn't add any flag (not even binary). From a problem seen on SETEdit and
+reported by Witek.
+
 Revision 2.399.2.349  2007/05/31 14:10:04  set
 * Added: [TScreen] a mechanism to start external image and pdf viewers.
 Currently implemented only by the X11 driver. An example is included in

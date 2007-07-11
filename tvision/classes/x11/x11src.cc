@@ -82,6 +82,7 @@
 
 #include <locale.h>
 #include <sys/time.h>
+#include <sys/wait.h>
 #ifdef HAVE_LINUX_PTHREAD
  #include <pthread.h>
 #endif
@@ -2700,6 +2701,7 @@ TNSCollection *TScreenX11::appHelperHandlers=NULL;
 struct helperHandler
 {
  TScreen::AppHelper kind;
+ pid_t pid;
 };
 static int allocatedHandlers;
 
@@ -2834,6 +2836,7 @@ TScreen::appHelperHandler TScreenX11::OpenHelperApp(TScreen::AppHelper kind)
    }
  close(nullH);
  h->kind=kind;
+ h->pid=0;
 
  return hNum;
 }
@@ -2846,7 +2849,6 @@ Boolean TScreenX11::CloseHelperApp(appHelperHandler id)
     return False;
    }
 
- pid_t pid;
  char buf[80];
  int nullH=open("/dev/null",O_WRONLY|O_BINARY|O_CREAT|O_TRUNC,S_IREAD|S_IWRITE);
  if (nullH==-1)
@@ -2856,14 +2858,17 @@ Boolean TScreenX11::CloseHelperApp(appHelperHandler id)
    }
 
  helperHandler *p=(helperHandler *)appHelperHandlers->at(id);
+ int status;
+ if (p->pid && waitpid(p->pid,&status,WNOHANG)==p->pid)
+    p->pid=0;
  switch (p->kind)
    {
     case ImageViewer:
-         System("gqview -r -q",&pid,-1,nullH,nullH);
+         System("gqview -r -q",&p->pid,-1,nullH,nullH);
          break;
     case PDFViewer:
          CLY_snprintf(buf,80,"xpdf -remote SETEdit_%d_%d -quit",(int)getpid(),id);
-         System(buf,&pid,-1,nullH,nullH);
+         System(buf,&p->pid,-1,nullH,nullH);
          break;
     case FreeHandler:
          appHelperError=4;
@@ -2872,6 +2877,7 @@ Boolean TScreenX11::CloseHelperApp(appHelperHandler id)
 
  close(nullH);
  p->kind=FreeHandler;
+ p->pid=0;
 
  return True;
 }
@@ -2885,7 +2891,6 @@ Boolean TScreenX11::SendFileToHelper(appHelperHandler id, const char *file,
     return False;
    }
 
- pid_t pid;
  int len=160+strlen(file);
  int page;
  AllocLocalStr(buf,len);
@@ -2897,11 +2902,14 @@ Boolean TScreenX11::SendFileToHelper(appHelperHandler id, const char *file,
    }
 
  helperHandler *p=(helperHandler *)appHelperHandlers->at(id);
+ int status;
+ if (p->pid && waitpid(p->pid,&status,WNOHANG)==p->pid)
+    p->pid=0;
  switch (p->kind)
    {
     case ImageViewer:
          CLY_snprintf(buf,len,"gqview -r \"file:%s\"",file);
-         System(buf,&pid,-1,nullH,nullH);
+         System(buf,&p->pid,-1,nullH,nullH);
          break;
     case PDFViewer:
          page=0;
@@ -2909,7 +2917,7 @@ Boolean TScreenX11::SendFileToHelper(appHelperHandler id, const char *file,
             page=*((int *)extra);
          CLY_snprintf(buf,len,"xpdf -remote SETEdit_%d_%d -raise \"%s\" %d",
                       (int)getpid(),id,file,page);
-         System(buf,&pid,-1,nullH,nullH);
+         System(buf,&p->pid,-1,nullH,nullH);
          break;
     case FreeHandler:
          appHelperError=4;
