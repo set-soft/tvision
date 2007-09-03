@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.351  2007/07/11 11:53:24  set
+* Fixed: [TScreen] The image/pdf viewer mechanism to collect zombie
+children when the user manually closes the application helper.
+
 Revision 2.399.2.350  2007/06/19 13:32:39  set
 * Added: A new fpstream constructor. The original constructor enforces the
 binary flag (to avoid problems with binary data) but also adds the ios::out
