@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.715  2007/09/03 13:18:44  set
+* Fixed: incorrect delete in TPalette::operator=. SF #1786428. Submitted
+by Baurzhan Ismagulov - ibr.
+
 Revision 2.714  2007/07/11 12:00:44  set
 * Fixed: [TScreen] The image/pdf viewer mechanism to collect zombie
 children when the user manually closes the application helper.
