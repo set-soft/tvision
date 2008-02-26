@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.717  2008/02/26 14:22:41  set
+* Modified: The rhtv-config tool to report only the installation directory
+for the --include option.
+
 Revision 2.716  2008/02/26 11:54:08  set
 * Fixed: Access violation in TStringCollectionCIntl::freeItem() when
 HAVE_INTL_SUPPORT wasn't defined. Closes SF #1891237, reported by Peter
