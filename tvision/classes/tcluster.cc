@@ -45,7 +45,8 @@ void TStringCollectionCIntl::freeItem( void* item )
     if( item )
        {
        stTVIntl *p = (stTVIntl *)item;
-       delete[] p->translation;
+       if( p->translation )
+           delete[] p->translation;
        delete p;
        }
 }
