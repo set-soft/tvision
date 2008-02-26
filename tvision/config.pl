@@ -110,6 +110,9 @@ $MakeDefsRHIDE[1]='TVSRC=../../include ';
 $MakeDefsRHIDE[1].=$here.'/include ' unless $conf{'libs-here'} eq 'no';
 $MakeDefsRHIDE[1].=$realPrefix.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
+# Path reported by rhtv-config --include
+$MakeDefsRHIDE[11]='INCLUDE='.$realPrefix.'/include/rhtvision';
+$MakeDefsRHIDE[11].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Extra path for the includes, used for the library
 $MakeDefsRHIDE[9]='EXTRA_INCLUDE_DIRS='.$conf{'EXTRA_INCLUDE_DIRS'};
 $MakeDefsRHIDE[7]='RHIDE_LIBS=';

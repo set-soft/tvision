@@ -48,7 +48,7 @@ char *FixRelative(const char *s)
 static
 void Include(void)
 {
- char *copy=strdup(TVCONFIG_TVSRC);
+ char *copy=strdup(TVCONFIG_INCLUDE);
  char *s=strtok(copy," ");
 
  while (s)
