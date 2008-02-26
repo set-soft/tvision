@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.716  2008/02/26 11:54:08  set
+* Fixed: Access violation in TStringCollectionCIntl::freeItem() when
+HAVE_INTL_SUPPORT wasn't defined. Closes SF #1891237, reported by Peter
+Remmers.
+
 Revision 2.715  2007/09/03 13:18:44  set
 * Fixed: incorrect delete in TPalette::operator=. SF #1786428. Submitted
 by Baurzhan Ismagulov - ibr.
