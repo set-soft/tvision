@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.355  2008/02/26 14:26:39  set
+* Modified: [SSC] Enabled TTextDevice and most of TTerminal stuff when
+using SSC. Only otstream isn't supported.
+
 Revision 2.399.2.354  2008/02/26 14:21:36  set
 * Modified: The rhtv-config tool to report only the installation directory
 for the --include option.

@@ -203,9 +203,16 @@ void TScreenX11::drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAtt
     XPutImage(disp,mainWin,gc,ximgFont[aChar],0,0,x,y,fontW,fontH);
 }
 
+static unsigned statSCt=0, statSCs=0;
+
 void TScreenX11::setCharacter(unsigned offset, uint32 value)
 {
- SEMAPHORE_ON;
+ statSCt++;
+ if (screenBuffer[offset]==value)
+   {
+    statSCs++;
+    return;
+   }
  screenBuffer[offset]=value;
 
  unsigned x,y;
@@ -215,6 +222,8 @@ void TScreenX11::setCharacter(unsigned offset, uint32 value)
  uchar *theChar=(uchar *)(screenBuffer+offset);
  uchar newChar=theChar[charPos];
  uchar newAttr=theChar[attrPos];
+
+ SEMAPHORE_ON;
  XSetBgFg(newAttr);
  UnDrawCursor();
  drawChar(gc,x,y,newChar,newAttr);
@@ -223,9 +232,21 @@ void TScreenX11::setCharacter(unsigned offset, uint32 value)
  SEMAPHORE_OFF;
 }
 
+static unsigned statSCSt=0, statSCSs=0;
+
 void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
 {
- SEMAPHORE_ON;
+ statSCSt++;
+ // Skip repeated characters at the left
+ for (; count && screenBuffer[offset]==*values; count--, offset++, values++);
+ // Skip repeated characters at the right
+ for (; count && screenBuffer[offset+count-1]==values[count-1]; count--);
+ if (!count)
+   {// All skipped
+    statSCSs++;
+    return;
+   }
+
  unsigned x,y;
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
@@ -233,6 +254,8 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
  uchar *b=(uchar *)values,newChar,newAttr;
  uchar *sb=(uchar *)(screenBuffer+offset);
  unsigned oldAttr=0x100;
+
+ SEMAPHORE_ON;
  UnDrawCursor();
  while (count--)
    {
@@ -1049,14 +1072,31 @@ void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
 
 void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned count)
 {
- SEMAPHORE_ON;
+ statSCSt++;
+ uint32 *b32=(uint32 *)values;
+ uint32 *sb32=(uint32 *)(screenBuffer+offset*2);
+ unsigned i;
+ // Skip repeated characters at the left
+ for (i=0; count && b32[i]==sb32[i]; count--, i++);
+ offset+=i;
+ // Skip repeated characters at the right
+ for (i=count-1; count && b32[i]==sb32[i]; count--, i--);
+ if (!count)
+   {// All skipped
+    statSCSs++;
+    return;
+   }
+
  unsigned x,y;
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
 
  uint16 *b=(uint16 *)values,newChar,newAttr;
  uint16 *sb=screenBuffer+offset*2;
+
  unsigned oldAttr=0x10000;
+
+ SEMAPHORE_ON;
  UnDrawCursor();
  while (count--)
    {
@@ -1083,10 +1123,17 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
 
 void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
 {
- SEMAPHORE_ON;
  uint16 newChar=value;
  uint16 newAttr=value>>16;
  offset*=2;
+
+ statSCt++;
+ if (screenBuffer[offset]==newChar && screenBuffer[offset+1]==newAttr)
+   {
+    statSCs++;
+    return;
+   }
+
  screenBuffer[offset]=newChar;
  screenBuffer[offset+1]=newAttr;
 
@@ -1094,6 +1141,7 @@ void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
 
+ SEMAPHORE_ON;
  XSetBgFg(newAttr);
  UnDrawCursor();
  drawCharU16(gc,x,y,newChar);
@@ -1132,6 +1180,21 @@ void TScreenX11::writeLineX11U16(int x, int y, int w, void *str, unsigned color)
 
 void TScreenX11::setCharactersX11U16(unsigned offset, ushort *values, unsigned w)
 {
+ statSCSt++;
+ uint32 *b32=(uint32 *)values;
+ uint32 *sb32=(uint32 *)(screenBuffer+offset*2);
+ unsigned i;
+ // Skip repeated characters at the left
+ for (i=0; w && b32[i]==sb32[i]; w--, i++);
+ offset+=i;
+ // Skip repeated characters at the right
+ for (i=w-1; w && b32[i]==sb32[i]; w--, i--);
+ if (!w)
+   {// All skipped
+    statSCSs++;
+    return;
+   }
+
  SEMAPHORE_ON;
  int len   = 0;         /* longitud a escribir */
  int letra = 0;
@@ -3016,6 +3079,9 @@ void TVX11UpdateThread::UpdateThread(int signum)
     if (updates>250)
       {
        printf("Tic (%d)\n",getpid());
+       // Dump stats about fully skipped draws
+       printf("setCharacter: %d/%d\n",statSCs,statSCt);
+       printf("setCharacters: %d/%d\n",statSCSs,statSCSt);
        updates=0;
       }
    }
