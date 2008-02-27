@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.719  2008/02/27 14:20:28  set
+* Modified: [X11] To fully skip request to draw areas with the same
+content. Previous code did some work even if nothing was actually drawn.
+
 Revision 2.718  2008/02/26 14:28:40  set
 * Modified: [SSC] Enabled TTextDevice and most of TTerminal stuff when
 using SSC. Only otstream isn't supported.
