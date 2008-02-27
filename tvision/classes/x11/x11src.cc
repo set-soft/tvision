@@ -1823,6 +1823,8 @@ void TScreenX11::XSetBgFgC(uint16 attr)
 {
  int bg=attr>>4;
  int fg=attr & 0xF;
+ if (bg==fg)
+    fg=~bg & 0xF;
  XSetBackground(disp,cursorGC,colorMap[bg]);
  XSetForeground(disp,cursorGC,colorMap[fg]);
 }
