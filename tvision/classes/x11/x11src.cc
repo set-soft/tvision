@@ -197,7 +197,8 @@ void TScreenX11::drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAtt
 
 void TScreenX11::setCharacter(unsigned offset, ushort value)
 {
- SEMAPHORE_ON;
+ if (screenBuffer[offset]==value)
+    return;
  screenBuffer[offset]=value;
 
  unsigned x,y;
@@ -207,6 +208,8 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
  uchar *theChar=(uchar *)(screenBuffer+offset);
  uchar newChar=theChar[charPos];
  uchar newAttr=theChar[attrPos];
+
+ SEMAPHORE_ON;
  XSetBgFg(newAttr);
  UnDrawCursor();
  drawChar(gc,x,y,newChar,newAttr);
@@ -217,7 +220,13 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
 
 void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
 {
- SEMAPHORE_ON;
+ // Skip repeated characters at the left
+ for (; count && screenBuffer[offset]==*values; count--, offset++, values++);
+ // Skip repeated characters at the right
+ for (; count && screenBuffer[offset+count-1]==values[count-1]; count--);
+ if (!count) // All skipped
+    return;
+
  unsigned x,y;
  x=(offset%maxX)*fontW;
  y=(offset/maxX)*fontH;
@@ -225,6 +234,8 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
  uchar *b=(uchar *)values,newChar,newAttr;
  uchar *sb=(uchar *)(screenBuffer+offset);
  unsigned oldAttr=0x100;
+
+ SEMAPHORE_ON;
  UnDrawCursor();
  while (count--)
    {
