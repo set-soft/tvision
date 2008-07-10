@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.722  2008/07/10 19:07:31  set
+* Added: Some equivalences to the Unicode table.
+.
 Revision 2.721  2008/07/10 18:55:20  set
 * Modified: Libraries named to create the library (exclude itself).
 .
