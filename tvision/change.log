@@ -1,4 +1,8 @@
 $Log$.
+Revision 2.720  2008/02/27 20:09:25  set
+* Fixed: [X11] The cursor became invisible if it was over a character with
+background color = foreground color.
+.
 Revision 2.719  2008/02/27 14:20:28  set
 * Modified: [X11] To fully skip request to draw areas with the same
 content. Previous code did some work even if nothing was actually drawn.
