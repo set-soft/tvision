@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.721  2008/07/10 18:55:20  set
+* Modified: Libraries named to create the library (exclude itself).
+.
 Revision 2.720  2008/02/27 20:09:25  set
 * Fixed: [X11] The cursor became invisible if it was over a character with
 background color = foreground color.

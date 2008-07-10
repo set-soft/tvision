@@ -2500,6 +2500,7 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0x2022,    7 },
  { 0x2024,    7 },
  { 0x2026,  430 },
+ { 0x2027,  249 },
  { 0x2030,  433 },
  { 0x203c,   19 },
  { 0x207f,  252 },
@@ -2628,8 +2629,10 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0x266a,   13 },
  { 0x266b,   14 },
  { 0x2764,    3 },
+ { 0xf800,  451 }, // Approximation
  { 0xf801,  451 },
  { 0xf803,  456 },
+ { 0xf804,  456 }, // Approximation
  { 0xfffd,  439 }
 };
 
