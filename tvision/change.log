@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.723  2008/07/10 19:08:01  set
+* Modified: [Debian] To also support libgm-dev as a builing package.
+
 Revision 2.722  2008/07/10 19:07:31  set
 * Added: Some equivalences to the Unicode table.
 .
