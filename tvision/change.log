@@ -1,4 +1,7 @@
 $Log$
+Revision 2.724  2008/08/27 03:48:59  terrible
+* Updated: [Debian] Version to 2.1.0-4 (small correction).
+
 Revision 2.723  2008/07/10 19:08:01  set
 * Modified: [Debian] To also support libgm-dev as a builing package.
 
