@@ -12,6 +12,7 @@ $Id$
 2. HOW TO COMPILE
 3. INSTALLING
 4. MSVC TARGET CONTRIBUTORS
+5. USING VISUAL STUDIO AND NOT NMAKE
 
 
 
@@ -22,6 +23,8 @@ find any problem just do the same the other users did: help to fix them.
   You can also create Win32 versions of this package using BorlandC Builder,
 Cygwin, Open Watcom or MinGW.
   Versions 5.0, 6.0, 7.0 and 7.1 compiled the code.
+  Modern versions of Visual Studio doesn't seem to include nmake tool. A quick
+and incomplete, but useful, method to compile the code is in the section 5.
 
 
 2. HOW TO COMPILE
@@ -67,8 +70,36 @@ Arnold Wiegert <awiegert/telus/net>
   Adaptation to MSVC 6.0.
   Hints about MSVC 4.0.
 Christian Kirches <christian/kirches/gmx/de>.
-  Compilation issues related to Visual Studio .NET 2005 Express Beta
+  Compilation issues related to Visual Studio .NET 2005 Express Beta.
 Eddie (K.Blacha) <one_eddie/tenbit/pl>
-  Compilation issues related to MSVC 7.1
+  Compilation issues related to MSVC 7.1.
+Harry Sack <tranzedude/gmail/com>
+  Compilation using Visual Studio 2008 without nmake.
 
+
+5. USING VISUAL STUDIO AND NOT NMAKE
+
+1) create a new project: 'Visual C++' -> 'General' -> 'Empty Project'
+
+2) add to 'Source Files' folder in your VS Project:
+
+\tvision => *.cc
+\tvision\classes => *.cc and *.cc of all its subdirs
+\tvision\compat => *.cc and *.c
+\tvision\names => *.cc
+\tvision\stream => *.cc
+
+3) go to 'Project' -> 'Properties'. Choose 'All Configurations'. Go to
+'C/C++' -> 'General' -> 'Additional Include Directories'. Add the following
+directories there:
+
+\tvision\include and all its subdirs
+\tvision\winnt\include\msvc
+
+4) copy the file \tvision\winnt\include\tv\configtv.h to \tvision\include\tv
+
+5) now you can build the library in Debug and Release mode
+
+6) now just add your source file with your main() function to your VS project
+and compile it.
 
