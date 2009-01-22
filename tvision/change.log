@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.362  2009/01/05 16:29:22  set
+* Added: [doc] Visual Studio 2008 compilation procedure. Contributed by
+Harry Sack <tranzedude/gmail/com>
+
 Revision 2.399.2.361  2008/08/28 11:29:46  set
 [Updated] Debian version to 2.1.0-4.
 
