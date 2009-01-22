@@ -106,7 +106,7 @@ class CLY_EXPORT TCalculator : public TDialog
 public:
 
     TCalculator();
-    static char *keyChar[20];
+    static const char *keyChar[20];
     
 #if !defined( NO_STREAM )
     TCalculator( StreamableInit ) :

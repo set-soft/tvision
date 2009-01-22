@@ -26,7 +26,7 @@
 #include <tv.h>
 
 // SET: Moved to the class, made ASCII
-char *TCalculator::keyChar[20] =
+const char *TCalculator::keyChar[20] =
     {    "C",   "<-",    "%",   "+-",
          "7",    "8",    "9",    "/",
          "4",    "5",    "6",    "*",
