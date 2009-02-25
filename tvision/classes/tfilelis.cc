@@ -202,7 +202,7 @@ struct DirSearchRec : public TSearchRec
 struct DirSearchRec : public TSearchRec
 {
   /* SS: changed */
-  void readFf_blk(char *filename, struct stat &s)
+  void readFf_blk(const char *filename, struct stat &s)
   {
     attr = FA_ARCH;
     if (S_ISDIR(s.st_mode)) attr |= FA_DIREC;

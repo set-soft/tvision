@@ -1542,14 +1542,19 @@ int TScreenLinux::System(const char *command, pid_t *pidChild, int in,
        dup2(out,STDOUT_FILENO);
     if (err!=-1)
        dup2(err,STDERR_FILENO);
-   
-    argv[0]=getenv("SHELL");
+
+    // Note: execvp takes a char * const argument, but I think it should
+    // take a const char *
+    argv[0]=newStr(getenv("SHELL"));
     if (!argv[0])
-       argv[0]="/bin/sh";
-    argv[1]="-c";
-    argv[2]=(char *)command;
-    argv[3]=0;
+       argv[0]=newStr("/bin/sh");
+    argv[1]=newStr("-c");
+    argv[2]=newStr(command);
+    argv[3]=NULL;
     execvp(argv[0],argv);
+    delete[] argv[0];
+    delete[] argv[1];
+    delete[] argv[2];
     // We get here only if exec failed
     _exit(127);
    }

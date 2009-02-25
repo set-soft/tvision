@@ -27,7 +27,7 @@ have such a class.
 char   TGKey::suspended=1;
 ushort TGKey::AltSet=0;    // Default: Left and right key are different ones
 int    TGKey::Mode=0;
-char  *TGKey::KeyNames[]=
+const char *TGKey::KeyNames[]=
 {
 "Unknown",
 "A","B","C","D","E","F","G","H","I","J","K",

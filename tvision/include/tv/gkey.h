@@ -188,7 +188,7 @@ protected:
  static int   Generic_AltInternat2ASCII(TEvent &e);
 
  // Needed for configuration.
- static char    *KeyNames[];
+ static const char *KeyNames[];
  // 0 => Left alt is used
  // 1 => Right alt is used
  // 2 => Both alts are the same

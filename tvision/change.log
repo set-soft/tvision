@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.727  2009/01/22 14:58:09  set
+* Modified: TCalculator::keyChar to be constant. SF #2526590 patch
+submitted by Larry Ziegenbein (SF larryzie)
+
 Revision 2.726  2009/01/06 12:39:22  set
 * Added: [doc] Visual Studio 2008 compilation procedure. Contributed by
 Harry Sack <tranzedude/gmail/com>
