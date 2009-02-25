@@ -16,8 +16,8 @@ Modified by Robert H”hne to be used for RHIDE.
 
 char *newStr( const char *s )
 {
-    if( s == 0 )
-        return 0;
+    if( s == NULL )
+        return NULL;
     char *temp = new char[ strlen(s)+1 ];
     strcpy( temp, s );
     return temp;

@@ -238,7 +238,7 @@ unsigned char TGKeyXTerm::kbExtraFlags[128] =
 };
 
 /************************** Escape sequences tree **************************/
-typedef struct node
+struct node
 {
  union
  {

@@ -41,7 +41,7 @@ TMenuItem::TMenuItem(   const char *aName,
                         ushort aCommand,
                         ushort aKeyCode,
                         ushort aHelpCtx,
-                        char *p,
+                        const char *p,
                         TMenuItem *aNext
              )
 {
@@ -51,8 +51,8 @@ TMenuItem::TMenuItem(   const char *aName,
     disabled = Boolean(!TView::commandEnabled(command));
     keyCode = aKeyCode;
     helpCtx = aHelpCtx;
-    if( p == 0 )
-        param = 0;
+    if( p == NULL )
+        param = NULL;
     else
         param = newStr( p );
     next = aNext;
