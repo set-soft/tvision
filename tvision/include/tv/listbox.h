@@ -19,11 +19,13 @@ class TRect;
 class TScrollBar;
 class TCollection;
 
+#pragma pack(1)
 struct TListBoxRec
 {
-    TCollection *items;
-    ccIndex selection;
+    TCollection *items   CLY_Packed;
+    ccIndex selection    CLY_Packed;
 };
+#pragma pack()
 
 class TListBox : public TListViewer
 {
