@@ -747,7 +747,7 @@ sub LookForOutB
 #include <stdio.h>
 #include <sys/io.h>
 #ifdef __i386__
-static volatile void Test(void) { outb(10,0x300); }
+void Test(void) { outb(10,0x300); }
 #endif
 int main(void)
 {
