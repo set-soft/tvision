@@ -292,6 +292,7 @@ void TEditor::convertEvent( TEvent& event )
         key = scanKeyMap(keyMap[keyState], key);
         keyState = 0;
         if( key != 0 )
+            {
             if( (key & 0xFF00) == 0xFF00 )
                 {
                 keyState = (key & 0xFF);
@@ -302,6 +303,7 @@ void TEditor::convertEvent( TEvent& event )
                 event.what = evCommand;
                 event.message.command = key;
                 }
+            }
         }
 }
 
@@ -723,11 +725,13 @@ Boolean TEditor::insertBuffer( char *p,
 
     uint32 delLen = 0;
     if( allowUndo == True )
+        {
         if( curPtr == selStart )
             delLen = selLen;
         else
             if( selLen > insCount )
                 delLen = selLen - insCount;
+        }
 
     uint32 newSize = uint32(bufLen + delCount - selLen + delLen) + length;
 
