@@ -1,4 +1,18 @@
 $Log$.
+Revision 2.728  2009/02/25 16:25:37  set
+* Modified: [newstr.cc tmenuvie.cc] Use of NULL instead of 0.
+* Modified: [tfileinp.cc tfilelis.cc tgkey.cc codepage.h gkey.h menuitem.h
+screen.h tmenuvie.cc] Use of const char * for some functions/values taking
+string constants.
+* Fixed: [tpxvalid.cc] TPXPictureValidator passed a const char * to picture
+* Modified: [linuxkey.cc xtermkey.cc] Useless typedef keyword.
+* Modified: [linuxscr.cc qnx4scr.cc unixscr.cc xtermscr.cc x11src.cc]
+execvp takes a char *const and not const char *, so now we allocate copies.
+* Modified: [x11src.cc] classHint members are declared a char * and not
+const char *.
+* Fixed(?): [listbox.h] TListBoxRec should be packed for 64 bits
+architectures.
+.
 Revision 2.727  2009/01/22 14:58:09  set
 * Modified: TCalculator::keyChar to be constant. SF #2526590 patch
 submitted by Larry Ziegenbein (SF larryzie)

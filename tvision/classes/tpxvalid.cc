@@ -341,10 +341,12 @@ TPicResult TPXPictureValidator::scan(char* input, int termCh)
           if (pic[index] == ';')
           index++;
           if (TVCodePage::toUpper(pic[index]) != TVCodePage::toUpper(ch))
+            {
             if (ch == ' ')
              ch = pic[index];
-            else 
-            return rScan;
+            else
+             return rScan;
+            }
 
           consume(pic[index], input);
     }

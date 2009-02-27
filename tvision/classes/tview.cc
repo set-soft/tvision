@@ -647,6 +647,7 @@ void TView::putInFrontOf( TView *Target )
     if( owner != 0 && Target != this && Target != nextView() &&
          ( Target == 0 || Target->owner == owner)
       )
+        {
         if( (state & sfVisible) == 0 )
             {
             owner->removeView(this);
@@ -671,6 +672,7 @@ void TView::putInFrontOf( TView *Target )
             if( (options & ofSelectable) != 0 )
                 owner->resetCurrent();
             }
+        }
 }
 
 void TView::select()

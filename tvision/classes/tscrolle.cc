@@ -168,10 +168,12 @@ void TScroller::setLimit( int32 x, int32 y )
 void TScroller::showSBar( TScrollBar *sBar )
 {
     if( sBar != 0 )
+        {
         if( getState(sfActive | sfSelected) != 0 )
             sBar->show();
         else
             sBar->hide();
+        }
 }
 
 void TScroller::setState( ushort aState, Boolean enable )
