@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.730  2009/03/17 12:38:35  set
+* Modified: [tlistvie.cc] To avoid ambiguous if/else.
+* Modified: [Debian] Package version to 5 for Lenny.
+* Fixed: [WWW] Link to CVS source code.
+* Modified: [WWW] Script to upload htmls to SF.
+
 Revision 2.729  2009/02/27 11:32:27  set
 * Fixed: [config.pl] sys/io.h detection. The code didn't compile with gcc
 4.3.x.
