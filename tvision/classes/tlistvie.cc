@@ -257,10 +257,12 @@ void TListViewer::focusItemNum( ccIndex item )
             item = range - 1;
 
     if( range !=  0 )
+        {
         if( center )
             focusItemCentered( item );
         else
             focusItem( item );
+        }
 }
 
 TPalette& TListViewer::getPalette() const
@@ -475,15 +477,19 @@ void TListViewer::setState( ushort aState, Boolean enable)
     if( (aState & (sfSelected | sfActive)) != 0 )
         {
         if( hScrollBar != 0 )
+            {
             if( getState(sfActive) )
                 hScrollBar->show();
             else
                 hScrollBar->hide();
+            }
         if( vScrollBar != 0 )
+            {
             if( getState(sfActive) )
                 vScrollBar->show();
             else
                 vScrollBar->hide();
+            }
         drawView();
         }
 }

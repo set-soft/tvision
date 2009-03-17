@@ -1,3 +1,9 @@
+rhtvision (2.1.0-5) unstable; urgency=low
+
+  * Modified to compile with Lenny (now stable)
+
+ -- Salvador E. Tropea <set@ieee.org>  Thu, 26 Feb 2009 16:15:23 -0200
+
 rhtvision (2.1.0-4) unstable; urgency=low
 
   * Accept Salvador changes in his 2.1.0-4 but fixed to depend first in the
