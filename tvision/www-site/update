@@ -1,2 +1,2 @@
 #!/bin/sh
-scp *.html set@tvision.sourceforge.net:/home/groups/t/tv/tvision/htdocs/
+scp *.html set,tvision@web.sourceforge.net:htdocs

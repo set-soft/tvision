@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.729  2009/02/27 11:32:27  set
+* Fixed: [config.pl] sys/io.h detection. The code didn't compile with gcc
+4.3.x.
+* Modified: [tbutton.cc teditor.cc tmenuvie.cc tpxvalid.cc tscrolle.cc
+tstatict.cc tview.cc] To avoid gcc warnings about ambiguous else statements
+.
 Revision 2.728  2009/02/25 16:25:37  set
 * Modified: [newstr.cc tmenuvie.cc] Use of NULL instead of 0.
 * Modified: [tfileinp.cc tfilelis.cc tgkey.cc codepage.h gkey.h menuitem.h
