@@ -1,4 +1,10 @@
-$Log$.
+$Log$
+Revision 2.399.2.365  2009/03/17 12:20:44  set
+* Modified: [tlistvie.cc] To avoid ambiguous if/else.
+* Modified: [Debian] Package version to 5 for Lenny.
+* Fixed: [WWW] Link to CVS source code.
+* Modified: [WWW] Script to upload htmls to SF.
+
 Revision 2.399.2.364  2009/02/25 13:32:30  set
 * Modified: [newstr.cc tmenuvie.cc] Use of NULL instead of 0.
 * Modified: [tfileinp.cc tfilelis.cc tgkey.cc codepage.h gkey.h menuitem.h
