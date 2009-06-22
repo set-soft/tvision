@@ -63,7 +63,7 @@ int TParamText::getTextLen()
     return (str != 0) ? strlen( str ) : 0;
 }
 
-void TParamText::setText( char *fmt, ... )
+void TParamText::setText( const char *fmt, ... )
 {
     va_list ap;
 
