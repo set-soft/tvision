@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.731  2009/03/17 13:04:09  set
+* Modified: [WWW] SF Logo according to the new policy.
+* Fixed: [WWW] Some HTML errors.
+
 Revision 2.730  2009/03/17 12:38:35  set
 * Modified: [tlistvie.cc] To avoid ambiguous if/else.
 * Modified: [Debian] Package version to 5 for Lenny.
