@@ -30,7 +30,7 @@ public:
  ~TParamText();
 
  virtual void getText( char *str, int maxLen );
- virtual void setText( char *fmt, ... );
+ virtual void setText( const char *fmt, ... );
  virtual int  getTextLen();
 
 protected:
