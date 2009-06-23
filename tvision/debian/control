@@ -5,10 +5,10 @@ Maintainer: Ivan Baldo <ibaldo@adinet.com.uy>
 Build-Depends: perl | perl5, libncurses-dev, libgpm-dev | libgpmg1-dev, debhelper (>=2.0.40), libx11-dev | xlibs-dev | xlib6g-dev, libxmu-dev | xlibs-dev | xlib6g-dev, gettext, file
 Standards-Version: 3.7.2.2
 
-Package: rhtvision2.1.0-dev
+Package: rhtvision2.2.0-dev
 Architecture: any
 Section: devel
-Depends: rhtvision2.1.0, libncurses-dev, libgpm-dev | libgpmg1-dev, libx11-dev | xlibs-dev | xlib6g-dev, libxmu-dev | xlibs-dev | xlib6g-dev
+Depends: rhtvision2.2.0, libncurses-dev, libgpm-dev | libgpmg1-dev, libx11-dev | xlibs-dev | xlib6g-dev, libxmu-dev | xlibs-dev | xlib6g-dev
 Provides: rhtvision-dev
 Conflicts: rhtvision-dev
 Replaces: rhtvision-dev
@@ -20,7 +20,7 @@ Description: Development files for the RHTVision library - a TUI interface
  .
  THIS IS NOT AN OFFICIAL PACKAGE AND IS NOT PART OF THE DEBIAN DISTRIBUTION.
 
-Package: rhtvision2.1.0
+Package: rhtvision2.2.0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
