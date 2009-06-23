@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.733  2009/06/23 16:48:25  set
+* Added: AlCon driver, this is the conio emulation code on top of Allegro.
+From the alcon branch and contributed by Grzegorz Adam Hankiewicz.
+* Fixed: TVConfigFile::GetString() leaked memory and returned an
+unprocessed string.
+* Fixed: Memory leaks in X11 driver.
+
 Revision 2.732  2009/06/22 15:14:45  set
 * Modified: TParamText::setText to take a constant string as first argument
 (not modified).
