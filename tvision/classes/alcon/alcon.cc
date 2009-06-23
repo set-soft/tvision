@@ -1,350 +1,988 @@
-/* X11 screen routines.
-   Copyright (c) 2001-2007 by Salvador E. Tropea (SET)
-   Covered by the GPL license.
-    Thanks to José Ángel Sánchez Caso (JASC). He implemented a first X11
-   driver.
-    This implementation is completly different but JASC's code gave me the
-   first notions about how an X11 application works.
+/*
+  Copyright (c) 2001-2009 by Salvador E. Tropea (SET) <set@ieee.org>
+  Copyright (c) 2003-2004 by Grzegorz Adam Hankiewicz
+  
+  This code is covered by the GPL license. A copy of the license should
+  be provided in the same package.
 
-   ToDo:
-   * The SetDisPaletteColors does a redraw, it should be avoided, at least
-   for 8 bpp modes, BTW they are untested.
+  Modified by Grzegorz Adam Hankiewicz <gradha@hankiewicz.datanet.co.uk>
+  to be used as a Turbo Vision driver.
 
-   Configuration variables:
-   Font10x20=0 Selects the 10x20 font instead of 8x16
-   ScreenWidth
-   ScreenHeight
-   ScreenPalette
-   FontWidth
-   FontHeight
-   LoadSecondaryFont
-   AppCP
-   ScrCP
-   InpCP
-   HideCursorWhenNoFocus
-   DontResizeToCells     Don't resize the window to a cells multiple size if the WM
-                         fails to follow the hints. This helps to avoid problems found
-                         in KDE 3.1 alpha.
-   InternalBusyCursor    When enabled we use our own mouse cursor for it
-   UseUpdateThread       Uses a separated thread to update the window content.
-
+  conio.h emulation library on top of Allegro
 */
-#ifndef _GNU_SOURCE
- #define _GNU_SOURCE
-#endif
 
 #include <tv/configtv.h>
 
-// That's a nasty side effect: X defines Boolean!
-#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11)
- #include <X11/Xmu/Atoms.h>
-#endif
-
 #define Uses_stdio
-#define Uses_stdlib
 #define Uses_string
-#define Uses_unistd   // TScreenX11::System
-#define Uses_signal
-#define Uses_fcntl // open
-#define Uses_snprintf
-#define Uses_AllocLocal
-#define Uses_TDisplay
 #define Uses_TScreen
-#define Uses_TGKey    // For TGKeyX11
-#define Uses_TEvent   // For THWMouseX11
-#define Uses_TVCodePage
-#define Uses_TVOSClipboard
-#define Uses_TNSCollection
+#define Uses_TEvent
+#define Uses_TGKey
 #include <tv.h>
+#include <tv/gkey.h>
+#include <tv/alcon/alcon.h>
 
-// I delay the check to generate as much dependencies as possible
-#if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11)
+#ifdef HAVE_ALLEGRO
 
-// X11 defines their own values
-#undef True
-#undef False
-#define True  1
-#define False 0
+#include <allegro/internal/aintern.h>
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/keysym.h>
-#include <X11/Xatom.h>
-#include <X11/cursorfont.h>
+// Forward declarations.
+static void AlCon_LoadCustomFont(const char *filename, uchar *fdata, unsigned fw, unsigned fh);
+static void AlCon_AllocateMemoryBuffer(void);
 
-#include <tv/x11/screen.h>
-#include <tv/x11/key.h>
-#include <tv/x11/mouse.h>
+// Globals internal to AlCon.
+static FONT *Alcon_CurrentFont=NULL;
 
-#include <locale.h>
-#include <sys/time.h>
-#include <sys/wait.h>
-#ifdef HAVE_LINUX_PTHREAD
- #include <pthread.h>
-#endif
+static FONT Alcon_PrimaryFont;
+static FONT_GLYPH *Alcon_ASCIIDataP[256];
+static FONT_MONO_DATA Alcon_ASCIIMonoFontP =
+{
+ 0x0, 0x100,                 /* begin, end characters */
+ Alcon_ASCIIDataP,           /* the data set */
+ 0                           /* next */
+};
 
-#ifdef TVOSf_Solaris
- // At least in the Solaris 7 box I tested looks like ITIMER_REAL is broken
- // and behaves like ITIMER_VIRTUAL
- #define ITIMER_USED ITIMER_REALPROF
- #define TIMER_ALARM SIGPROF
-#else
- #define ITIMER_USED ITIMER_REAL
- #define TIMER_ALARM SIGALRM
-#endif
+static FONT Alcon_SecondaryFont;
+static FONT_GLYPH *Alcon_ASCIIDataS[256];
+static FONT_MONO_DATA Alcon_ASCIIMonoFontS =
+{
+ 0x0, 0x100,                 /* begin, end characters */
+ Alcon_ASCIIDataS,           /* the data set */
+ 0                           /* next */
+};
 
-const unsigned foWmin=5, foHmin=7, foWmax=20, foHmax=32;
-const int cursorDelay=300000;
+static FONT Alcon_CursorFont;
+static FONT_GLYPH *Alcon_CursorData[2];
+static FONT_MONO_DATA Alcon_CursorMonoFont =
+{
+ 0x0, 0x2,                   /* begin, end characters */
+ Alcon_CursorData,           /* the data set */
+ 0                           /* next */
+};
+
+static
+AlCon_Color BIOSPalette[16]={
+{ 0x00, 0x00, 0x00, 0 },
+{ 0x00, 0x00, 0xA8, 0 },
+{ 0x00, 0xA8, 0x00, 0 },
+{ 0x00, 0xA8, 0xA8, 0 },
+{ 0xA8, 0x00, 0x00, 0 },
+{ 0xA8, 0x00, 0xA8, 0 },
+{ 0xA8, 0x54, 0x00, 0 },
+{ 0xA8, 0xA8, 0xA8, 0 },
+{ 0x54, 0x54, 0x54, 0 },
+{ 0x54, 0x54, 0xFC, 0 },
+{ 0x54, 0xFC, 0x54, 0 },
+{ 0x54, 0xFC, 0xFC, 0 },
+{ 0xFC, 0x54, 0x54, 0 },
+{ 0xFC, 0x54, 0xFC, 0 },
+{ 0xFC, 0xFC, 0x54, 0 },
+{ 0xFC, 0xFC, 0xFC, 0 }};
+AlCon_Color AlCon_CurPalette[16];
+
+static int cursorX, cursorY;
+static int cursorPX, cursorPY;
+
+/*
+   The variables AlCon_ScreenWidth, AlCon_ScreenHeight,
+   AlCon_FontWidth and AlCon_FontHeight are read only. They are
+   modified ONLY when the font is changed. The first two tell the
+   number of text characters that fit into the physical screen. The
+   last two tell the number of screen pixels a text cell has in
+   Allegro. The font size is initialised by default to a 8x16 font so
+   the AlCon_Init function can set a reasonable default screen size.
+*/
+static int AlCon_ScreenWidth, AlCon_ScreenHeight;
+static int AlCon_FontWidth=8, AlCon_FontHeight=16;
+
+static int colors[16];
+static int fg,bg;
+static char cursorEnabled=1, cursorInScreen=0;
+static char AlCon_UseSecFont=0;
+static unsigned char *chars, *attrs;
+static unsigned char curAttr;
+static char AlCon_CursorShapeFrom, AlCon_CursorShapeTo;
+//static int al_text_mode;
+static int al_mouse_buttons = 0;
+static int al_mouse_wheel;
+
+/* Extra flags reserved for silly cursor effects */
+int AlCon_CursorBits = 0;
+char AlCon_ForcedKeyboard[4] = "";
+
+void AlCon_EnableSecFont()
+{
+ AlCon_UseSecFont=1;
+}
+
+void AlCon_DisableSecFont()
+{
+ AlCon_UseSecFont=0;
+}
 
 /*****************************************************************************
 
-  TScreenX11 screen stuff.
-
+  Functions to hide/unhide the mouse and text cursors.
+  I use the scare_mouse() stuff and also implemented the same concept for the
+text cursor.
+    
 *****************************************************************************/
 
-Display  *TScreenX11::disp;
-ulong     TScreenX11::screen;
-Visual   *TScreenX11::visual;
-Window    TScreenX11::rootWin;
-Window    TScreenX11::mainWin;
-Colormap  TScreenX11::cMap;
-GC        TScreenX11::gc;
-GC        TScreenX11::cursorGC=NULL;
-XIC       TScreenX11::xic=NULL;
-XIM       TScreenX11::xim=NULL;
-Atom      TScreenX11::theProtocols;
-ulong     TScreenX11::colorMap[16];
-XImage   *TScreenX11::ximgFont[256];    /* Our "font" is just a collection of images */
-XImage   *TScreenX11::ximgSecFont[256];
-XImage   *TScreenX11::cursorImage=NULL;
-int       TScreenX11::fg;
-int       TScreenX11::bg;
-char      TScreenX11::cursorEnabled=1;
-char      TScreenX11::cursorInScreen=0;
-uchar     TScreenX11::curAttr;
-uchar     TScreenX11::primaryFontChanged=0;
-char     *TScreenX11::cursorData=NULL;
-char      TScreenX11::hideCursorWhenNoFocus=1;
-char      TScreenX11::dontResizeToCells=0;
-struct
-timeval   TScreenX11::refCursorTime,
-          TScreenX11::curCursorTime;
-XSizeHints *TScreenX11::sizeHints=NULL;
-XClassHint *TScreenX11::classHint=NULL;
 
-TScreenX11::~TScreenX11()
+void AlCon_UnDrawCursor(int *aFgCol);
+
+#define maxCurMode 32
+char CursorMode[maxCurMode];
+int CursorModeIndex=0;
+
+static
+void PushCursorMode()
 {
- STOP_UPDATE_THREAD;
-
- if (sizeHints)
-    XFree(sizeHints);
- if (classHint)
-   {
-    delete[] classHint->res_name;
-    delete[] classHint->res_class;
-    classHint->res_name=NULL;
-    classHint->res_class=NULL;
-    XFree(classHint);
-   }
-
- if (xic)
-    XDestroyIC(xic);
- if (xim)
-    XCloseIM(xim);
-
- DestroyXImageFont(0);
- DestroyXImageFont(1);
- if (cursorImage)
-    XDestroyImage(cursorImage);
-
- if (disp)
-   {
-    if (TScreen::showBusyState==ShowBusyState)
-      {
-       XFreeCursor(disp,busyCursor);
-       XFreeCursor(disp,leftPtr);
-      }
-
-    if (cursorGC)
-       XFreeGC(disp,cursorGC);
-    XDestroyWindow(disp,mainWin);
-    XCloseDisplay(disp); //This could do all of the above for us, but anyway...
-   }
-
- delete[] screenBuffer;
-
+ if (CursorModeIndex<maxCurMode)
+    CursorMode[CursorModeIndex++]=cursorEnabled;
 }
 
-void TScreenX11::clearScreen()
+static
+void PullCursorMode()
 {
- SEMAPHORE_ON;
- XSetForeground(disp,gc,colorMap[bg]);
- XFillRectangle(disp,mainWin,gc,0,0,maxX*fontW,maxY*fontH);
- XSetForeground(disp,gc,colorMap[fg]);
+ if (CursorModeIndex)
+    cursorEnabled=CursorMode[--CursorModeIndex];
+}
 
- char space[2];
- space[charPos]=' ';
- space[attrPos]=curAttr;
+void AlCon_ScareCursor()
+{
+ PushCursorMode();
+ if (!cursorEnabled)
+    return;
+ cursorEnabled=0;
+ if (cursorInScreen)
+   {
+    int color;
+    scare_mouse(); /* Could be necesary. i.e. gotoxy */
+    AlCon_UnDrawCursor(&color);
+    unscare_mouse();
+    cursorInScreen=0;
+   }
+}
 
- unsigned c=maxX*maxY;
- while (c--)
-   screenBuffer[c]=*((ushort *)space);
- SEMAPHORE_OFF;
+void AlCon_UnScareCursor()
+{
+ PullCursorMode();
+}
+
+void AlCon_DisableAsync()
+{
+ scare_mouse();
+ AlCon_ScareCursor();
+}
+
+void AlCon_EnableAsync()
+{
+ AlCon_UnScareCursor();
+ unscare_mouse();
+}
+
+/*****************************************************************************
+
+  Cursor positioning routines.
+  They take care of the text cursor.
+    
+*****************************************************************************/
+
+
+void AlCon_CursorHome()
+{
+ AlCon_GotoXY(1, 1);
+}
+
+void AlCon_GotoXY(int x, int y)
+{
+ ASSERT(x > 0 && x <= AlCon_ScreenWidth);
+ ASSERT(y > 0 && y <= AlCon_ScreenHeight);
+ AlCon_ScareCursor();
+ cursorX = x; cursorY = y;
+ cursorPX = (x - 1) * AlCon_FontWidth;
+ cursorPY = (y - 1) * AlCon_FontHeight;
+ AlCon_UnScareCursor();
+}
+
+int AlCon_WhereX()
+{
+ return cursorX;
+}
+
+int AlCon_WhereY()
+{
+ return cursorY;
+}
+
+int AlCon_ScreenCols()
+{
+ return AlCon_ScreenWidth;
+}
+
+int AlCon_ScreenRows()
+{
+ return AlCon_ScreenHeight;
+}
+
+
+/*****************************************************************************
+
+  Color selection routines
+    
+*****************************************************************************/
+
+void AlCon_SetColors(int aFg, int aBg)
+{
+ fg=aFg; bg=aBg;
+ curAttr=(bg<<4) | (fg & 0xF);
+}
+
+void AlCon_TextAttr(int attr)
+{
+ unsigned char aBg=attr>>4;
+ unsigned char aFg=attr & 0xF;
+ curAttr=attr;
+ fg=aFg; bg=aBg;
+}
+
+void AlCon_TextBackground(int aBg)
+{
+ AlCon_SetColors(fg,aBg);
+}
+
+void AlCon_TextColor(int aFg)
+{
+ AlCon_SetColors(aFg,bg);
+}
+
+/*****************************************************************************
+
+  Clear routines
+    
+*****************************************************************************/
+
+void AlCon_Clear()
+{
+ AlCon_DisableAsync();
+ clear_to_color(screen,bg);
+ AlCon_EnableAsync();
+ memset(chars,' ', AlCon_ScreenWidth * AlCon_ScreenHeight);
+ memset(attrs,curAttr, AlCon_ScreenWidth * AlCon_ScreenHeight);
+}
+
+void AlCon_ClrScr()
+{
+ AlCon_Clear();
+ AlCon_CursorHome();
+}
+
+/*****************************************************************************
+
+ Text output routines, including newline and tab management
+    
+*****************************************************************************/
+
+void AlCon_NewLine()
+{
+ if (cursorY == AlCon_ScreenHeight)
+   { // Scroll
+    int ybot,xmax;
+    unsigned offset;
+    AlCon_DisableAsync();
+    ybot = (AlCon_ScreenHeight - 1) * AlCon_FontHeight;
+    xmax = AlCon_ScreenWidth * AlCon_FontWidth;
+    blit(screen, screen, 0, AlCon_FontHeight, 0, 0, xmax, ybot);
+    rectfill(screen,0,ybot,xmax, AlCon_ScreenHeight * AlCon_FontHeight, colors[bg]);
+    AlCon_EnableAsync();
+
+    // Same for buffers
+    memcpy(chars, chars + AlCon_ScreenWidth, AlCon_ScreenWidth * (AlCon_ScreenHeight - 1));
+    memcpy(attrs, attrs + AlCon_ScreenWidth, AlCon_ScreenWidth * (AlCon_ScreenHeight - 1));
+    offset = (AlCon_ScreenHeight - 1) * AlCon_ScreenWidth;
+    memset(chars+offset,' ', AlCon_ScreenWidth);
+    memset(attrs+offset,curAttr, AlCon_ScreenWidth);
+
+    AlCon_GotoXY(1,cursorY);
+   }
+ else
+    AlCon_GotoXY(1,cursorY+1);
 }
 
 inline
-void TScreenX11::drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr)
+void AlCon_TextOut(const char *str, unsigned x, unsigned y, int fg, int bg)
 {
- if (useSecondaryFont && (aAttr & 0x8))
-    XPutImage(disp,mainWin,gc,ximgSecFont[aChar],0,0,x,y,fontW,fontH);
+ if (AlCon_UseSecFont && (fg & 8))
+    textout_ex(screen,&Alcon_SecondaryFont,str,x,y,colors[fg],colors[bg]);
  else
-    XPutImage(disp,mainWin,gc,ximgFont[aChar],0,0,x,y,fontW,fontH);
+    textout_ex(screen,Alcon_CurrentFont,str,x,y,colors[fg],colors[bg]);
 }
 
-void TScreenX11::setCharacter(unsigned offset, ushort value)
+void AlCon_PutStr(const char *s)
 {
- if (screenBuffer[offset]==value)
-    return;
- screenBuffer[offset]=value;
+ ASSERT(s);
+ ASSERT(Alcon_CurrentFont);
+ 
+ int l=strlen(s);
+ AlCon_DisableAsync();
+ while (cursorX + l > AlCon_ScreenWidth)
+   {
+    char b[AlCon_ScreenWidth + 1];
+    int count = AlCon_ScreenWidth - cursorX + 1;
+    unsigned offset;
+    strncpy(b,s,count);
+    b[count]=0;
+    AlCon_TextOut(b,cursorPX,cursorPY,fg,bg);
 
- unsigned x,y;
- x=(offset%maxX)*fontW;
- y=(offset/maxX)*fontH;
+    offset = (cursorX - 1) + (cursorY - 1) * AlCon_ScreenWidth;
+    memcpy(chars+offset,b,count);
+    memset(attrs+offset,curAttr,count);
 
- uchar *theChar=(uchar *)(screenBuffer+offset);
- uchar newChar=theChar[charPos];
- uchar newAttr=theChar[attrPos];
+    AlCon_NewLine();
+    s+=count;
+    l-=count;
+   }
+ if (*s)
+   {
+    unsigned offset;
+    AlCon_TextOut(s,cursorPX,cursorPY,fg,bg);
 
- SEMAPHORE_ON;
- XSetBgFg(newAttr);
- UnDrawCursor();
- drawChar(gc,x,y,newChar,newAttr);
- DrawCursor();
- XFlush(disp);
- SEMAPHORE_OFF;
+    offset = (cursorX - 1) + (cursorY - 1) * AlCon_ScreenWidth;
+    memcpy(chars+offset,s,l);
+    memset(attrs+offset,curAttr,l);
+
+    cursorX+=l;
+    cursorPX += l * AlCon_FontWidth;
+   }
+ AlCon_EnableAsync();
 }
 
-void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
+void AlCon_Puts(const char *s)
 {
- // Skip repeated characters at the left
- for (; count && screenBuffer[offset]==*values; count--, offset++, values++);
- // Skip repeated characters at the right
- for (; count && screenBuffer[offset+count-1]==values[count-1]; count--);
- if (!count) // All skipped
-    return;
+ AlCon_PutStr(s);
+ AlCon_NewLine();
+}
 
+void AlCon_Tab()
+{
+ int count=8-(cursorX & 7);
+ char b[9];
+ memset(b,' ',count);
+ b[count]=0;
+ AlCon_PutStr(b);
+}
+
+void AlCon_CPrintf(AL_CONST char *format, ...)
+{
+ char buf[4096];
+ int ret;
+ char *s,*next,aux;
+
+ va_list ap;
+ va_start(ap, format);
+ // TODO: vsnprintf
+ ret=vsprintf(buf, format, ap);
+ if (ret>4090)
+   {
+    set_gfx_mode(GFX_TEXT,0,0,0,0);
+    allegro_message("Buffer overflow in AlCon_CPrintf\n");
+    exit(100);
+   }
+ va_end(ap);
+
+ s=buf;
+ while ((next=strpbrk(s,"\n\t"))!=0 && *next)
+   {
+    aux=*next; *next=0;
+    AlCon_PutStr(s);
+    *next=aux;
+    if (aux=='\n')
+       AlCon_NewLine();
+    else if (aux=='\t')
+       AlCon_Tab();
+    s=next+1;
+   }
+ if (*s)
+    AlCon_PutStr(s);
+}
+
+#if 0
+// Avoiding to redraw characters that didn't change: 2.5 times faster
+void AlCon_PutBuf(unsigned offset, uint16 *values, int count)
+{
  unsigned x,y;
- x=(offset%maxX)*fontW;
- y=(offset/maxX)*fontH;
+ x=(offset%AlCon_ScreenWidth)*AlCon_FontWidth;
+ y=(offset/AlCon_ScreenWidth)*AlCon_FontHeight;
 
  uchar *b=(uchar *)values,newChar,newAttr;
- uchar *sb=(uchar *)(screenBuffer+offset);
- unsigned oldAttr=0x100;
-
- SEMAPHORE_ON;
- UnDrawCursor();
+ uchar *sc=(uchar *)(chars+offset);
+ AlCon_DisableAsync();
+ unsigned char aux[2];
+ aux[1]=0;
  while (count--)
    {
     newChar=b[charPos];
     newAttr=b[attrPos];
-    if (newChar!=sb[charPos] || newAttr!=sb[attrPos])
+    if (newChar!=chars[offset] || newAttr!=attrs[offset])
       {
-       sb[charPos]=newChar;
-       sb[attrPos]=newAttr;
-       if (newAttr!=oldAttr)
-         {
-          XSetBgFg(newAttr);
-          oldAttr=newAttr;
-         }
-       drawChar(gc,x,y,newChar,newAttr);
+       aux[0]=chars[offset]=newChar;
+       attrs[offset]=newAttr;
+       int nBg,nFg;
+       nBg=b[attrPos]>>4;
+       nFg=b[attrPos] & 0xF;
+       AlCon_TextOut((char *)aux,x,y,nFg,nBg);
       }
-    x+=fontW; b+=2; sb+=2;
+    x+=AlCon_FontWidth; b+=2; offset++;
    }
- DrawCursor();
- XFlush(disp);
- SEMAPHORE_OFF;
+ AlCon_EnableAsync();
 }
-
-int TScreenX11::System(const char *command, pid_t *pidChild, int in, int out,
-                       int err)
+#else
+// Avoiding to redraw characters that didn't change: 2.5 times faster
+// Grouping chars of the same colour: 9 to 15% faster
+void AlCon_PutBuf(unsigned offset, uint16 *values, int count)
 {
- if (!pidChild)
+ unsigned x,y,xf;
+ x=(offset%AlCon_ScreenWidth)*AlCon_FontWidth;
+ y=(offset/AlCon_ScreenWidth)*AlCon_FontHeight;
+
+ uchar *b=(uchar *)values,newChar,newAttr,oldAttr;
+ AlCon_DisableAsync();
+ uchar aux[count+1];
+ newChar=b[charPos];
+ newAttr=b[attrPos];
+ while (count)
    {
-    // If the caller asks for redirection replace the requested handles
-    if (in!=-1)
-       dup2(in,STDIN_FILENO);
-    if (out!=-1)
-       dup2(out,STDOUT_FILENO);
-    if (err!=-1)
-       dup2(err,STDERR_FILENO);
-    return system(command);
-   }
-
- pid_t cpid=fork();
- if (cpid==0)
-   {// Ok, we are the child
-    //   I'm not sure about it, but is the best I have right now.
-    //   Doing it we can kill this child and all the subprocesses
-    // it creates by killing the group. It also have an interesting
-    // effect that I must evaluate: By doing it this process lose
-    // the controlling terminal and won't be able to read/write
-    // to the parents console. I think that's good.
-    if (setsid()==-1)
-       _exit(127);
-   
-    // If the caller asks for redirection replace the requested handles
-    if (in!=-1)
-       dup2(in,STDIN_FILENO);
-    if (out!=-1)
-       dup2(out,STDOUT_FILENO);
-    if (err!=-1)
-       dup2(err,STDERR_FILENO);
-
-    if (NO_EXEC_IN_THREAD && IS_SECOND_THREAD_ON)
-      {// That's very Linux specific:
-       // For some (unknown) reason we can't use exec here. If we use exec then
-       // the update thread dies and the "monitoring" thread becomes a Zombie.
-       // The only safe way is to call system(), it have code to stop
-       // multithreading and then call exec. That's the only safe way.
-       //pthread_kill_other_threads_np(); <= Useless
-
-       // Note: this solution is incomplete, if the user tries to kill the
-       // child using pidChild then the update thread will misteriously die.
-       // For this reason I use a watchdog that checks if the thread worked
-       // in the last second. If not we revert to manual screen update.
-
-       system(command);
-       // Here we must exit but without deallocating resources! just exit,
-       // that's all
-       _exit(0);
+    if (newChar!=chars[offset] || newAttr!=attrs[offset])
+      {
+       uchar *ind=aux;
+       oldAttr=newAttr;
+       xf=x;
+       do
+         {
+          *(ind++)=chars[offset]=newChar;
+          attrs[offset]=newAttr;
+          xf+=AlCon_FontWidth;
+          count--;
+          if (!count)
+             break;
+          offset++;
+          b+=2;
+          newChar=b[charPos];
+          newAttr=b[attrPos];
+         }
+       while (newAttr==oldAttr && newChar!=chars[offset] && newAttr!=attrs[offset]);
+       *ind=0;
+       int nBg,nFg;
+       nBg=oldAttr>>4;
+       nFg=oldAttr & 0xF;
+       AlCon_TextOut((char *)aux,x,y,nFg,nBg);
+       x=xf;
       }
     else
-      {// This is much more efficient, but only works if pthreads are off.
-       char *argv[4];
-       argv[0]=newStr(getenv("SHELL"));
-       if (!argv[0])
-          argv[0]=newStr("/bin/sh");
-       argv[1]=newStr("-c");
-       argv[2]=newStr(command);
-       argv[3]=0;
-       execvp(argv[0],argv);
-       delete[] argv[0];
-       delete[] argv[1];
-       delete[] argv[2];
-       // We get here only if exec failed
-       _exit(127);
+      {
+       x+=AlCon_FontWidth;
+       count--;
+       offset++;
+       b+=2;
+       newChar=b[charPos];
+       newAttr=b[attrPos];
       }
    }
- if (cpid==-1)
-   {// Fork failed do it manually
-    *pidChild=0;
-    return system(command);
-   }
- *pidChild=cpid;
- return 0;
+ AlCon_EnableAsync();
+}
+#endif
+
+// TODO: Optimize!!!
+void AlCon_Redraw()
+{
+ ASSERT(Alcon_CurrentFont);
+
+ int nBg,nFg;
+ unsigned offset=0;
+ unsigned mx=AlCon_ScreenWidth*AlCon_FontWidth;
+ unsigned my=AlCon_ScreenHeight*AlCon_FontHeight;
+ unsigned char aux[2];
+ aux[1]=0;
+
+ AlCon_DisableAsync();
+ for (unsigned y=0; y<my; y+=AlCon_FontHeight)
+    {
+     for (unsigned x=0; x<mx; offset++, x+=AlCon_FontWidth)
+        {
+         aux[0]=chars[offset];
+         nBg=attrs[offset]>>4;
+         nFg=attrs[offset] & 0xF;
+         AlCon_TextOut((char *)aux,x,y,nFg,nBg);
+        }
+    }
+ AlCon_EnableAsync();
 }
 
-uchar TScreenX11::shapeFont10x20[]=
+void AlCon_GetScrChars(unsigned offset, uint16 *buffer, unsigned count)
+{
+ unsigned char *b=(unsigned char *)buffer;
+
+ offset/=2;
+ while (count--)
+   {
+    b[charPos]=chars[offset];
+    b[attrPos]=attrs[offset];
+    b+=2;
+    offset++;
+   }
+}
+
+void AlCon_PutChar(unsigned offset, uint16 value)
+{
+ ASSERT(Alcon_CurrentFont);
+ int nBg,nFg;
+ unsigned char *b=(unsigned char *)&value;
+ unsigned char aux[2];
+ unsigned x,y;
+ aux[1]=0;
+
+ offset/=2;
+ x = (offset % AlCon_ScreenWidth) * AlCon_FontWidth;
+ y = (offset / AlCon_ScreenWidth) * AlCon_FontHeight;
+ AlCon_DisableAsync();
+
+ aux[0]=chars[offset]=b[charPos];
+ attrs[offset]=b[attrPos];
+ nBg=b[attrPos]>>4;
+ nFg=b[attrPos] & 0xF;
+ AlCon_TextOut((char *)aux,x,y,nFg,nBg);
+
+ AlCon_EnableAsync();
+}
+
+/*****************************************************************************
+
+  Text cursor routines.
+    
+*****************************************************************************/
+
+void AlCon_UnDrawCursor(int *aFgCol)
+{
+ ASSERT(Alcon_CurrentFont);
+ ASSERT(aFgCol);
+ unsigned offset = (cursorX - 1) + (cursorY - 1) * AlCon_ScreenWidth;
+ int bg=attrs[offset]>>4;
+ int fg=attrs[offset] & 0xF;
+ char b[2];
+ b[0]=chars[offset]; b[1]=0;
+ AlCon_TextOut(b,cursorPX,cursorPY,fg,bg);
+ *aFgCol=colors[fg];
+}
+
+void AlCon_IntCursor()
+{
+ if (cursorEnabled)
+   {
+    int aFg;
+    scare_mouse();
+    cursorInScreen=!cursorInScreen;
+    AlCon_UnDrawCursor(&aFg);
+    if (cursorInScreen)
+      {
+       if (!(AlCon_CursorBits & ALCON_CURSOR_HIDE_NORMAL))
+         textout_ex(screen, &Alcon_CursorFont, "\x1", cursorPX,cursorPY, aFg, -1);
+
+       if (AlCon_CursorBits & ALCON_CURSOR_ON_SQUARE)
+         rect(screen, cursorPX, cursorPY, cursorPX + AlCon_FontWidth - 1,
+              cursorPY + AlCon_FontHeight - 1, aFg);
+
+       if (AlCon_CursorBits & ALCON_CURSOR_ON_CROSS)
+         {
+          line(screen, cursorPX, cursorPY, cursorPX + AlCon_FontWidth - 1,
+               cursorPY + AlCon_FontHeight - 1, aFg);
+          line(screen, cursorPX, cursorPY + AlCon_FontHeight - 1,
+               cursorPX + AlCon_FontWidth - 1, cursorPY, aFg);
+         }
+      }
+    unscare_mouse();
+   }
+}
+
+/**[txh]********************************************************************
+
+  Description: Sets the cursor shape. Pass the start and end lines
+  (inclusive) of the cursor. The lines must be in the range 0 to less than
+  font's height. Since the start and end are inclusive, you cannot set an
+  "invisible" cursor shape. Use AlCon_HideCursor() for that.
+  
+***************************************************************************/
+
+void AlCon_SetCursorShape(int from, int to)
+{
+   ASSERT(from <= to);
+   ASSERT(from >= 0);
+   ASSERT(to < AlCon_FontHeight);
+   
+   unsigned wb=(AlCon_FontWidth+7)/8;
+   memset(Alcon_CursorData[1]->dat, 0, wb*AlCon_FontHeight);
+   memset(Alcon_CursorData[1]->dat + wb*from, 0xFF, wb*(to - from + 1));
+   AlCon_CursorShapeFrom = from;
+   AlCon_CursorShapeTo = to;
+}
+
+void AlCon_GetCursorShape(int *from, int *to)
+{
+   ASSERT(from || to);
+   if (from)
+      *from = AlCon_CursorShapeFrom;
+   if (to)
+      *to = AlCon_CursorShapeTo;
+}
+
+void Alcon_CreateNewCursor()
+{
+   Alcon_CursorData[0] =0;
+   unsigned wb=(AlCon_FontWidth+7)/8;
+   if (Alcon_CursorData[1])
+      free(Alcon_CursorData[1]);
+   Alcon_CursorData[1] =(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+wb*AlCon_FontHeight);
+   Alcon_CursorData[1]->w = AlCon_FontWidth;
+   Alcon_CursorData[1]->h = AlCon_FontHeight;
+   AlCon_SetCursorShape(87 * AlCon_FontHeight / 100, AlCon_FontHeight - 1);
+}
+
+void AlCon_HideCursor()
+{
+   cursorEnabled=0;
+}
+
+void AlCon_ShowCursor()
+{
+   cursorEnabled=1;
+}
+
+int AlCon_IsVisCursor()
+{
+   return cursorEnabled;
+}
+
+/*****************************************************************************
+
+  Initialization routines
+    
+*****************************************************************************/
+
+/**[txh]********************************************************************
+
+  Description: Initialization of the AlCon layer. Pass the number of text
+  characters you want to have with a default 8x16 font.
+  
+  Return: Zero if everything went fine, non zero otherwise.
+  
+***************************************************************************/
+
+int AlCon_Init(int w, int h, int fw, int fh, uchar *fdata, AlCon_Color *pal)
+{
+   if (fw!=-1 && fh!=-1) {
+      AlCon_FontWidth=fw;
+      AlCon_FontHeight=fh;
+   }
+
+   set_uformat(U_ASCII);
+   //set_uformat(U_UTF8);
+  
+   allegro_init();
+
+   /* Maybe force a specific keyboard layout? */
+   if (*AlCon_ForcedKeyboard) {
+      AlCon_ForcedKeyboard[3] = 0;
+      set_config_string("system", "keyboard", AlCon_ForcedKeyboard);
+   }
+   
+   install_keyboard();
+   al_mouse_buttons = install_mouse();
+   al_mouse_wheel = mouse_z;
+   // Clamp allegro return of "no mouse" to TVision interpretation.
+   if (al_mouse_buttons < 0)
+      al_mouse_buttons = 0;
+   // And add "fake wheel buttons" if the mouse has at least two.
+   if (al_mouse_buttons > 1)
+      al_mouse_buttons = 5;
+   install_timer();
+  
+   /* If we are in a graphic mode and we know the depth use it */
+   if (desktop_color_depth()) {
+      set_color_depth(desktop_color_depth());
+   } else {
+      #ifdef BPP
+      set_color_depth(BPP);
+      #else
+      set_color_depth(8);
+      #endif
+   }
+   
+   if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, AlCon_FontWidth * w, AlCon_FontHeight * h,
+         AlCon_FontWidth * w, AlCon_FontHeight * h)) {
+      set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+      allegro_message("Can't initialize graphics mode\n%s\n",allegro_error);
+      return 2;
+   }
+   // Set the size of the font and screen.
+   AlCon_ScreenWidth =w;
+   AlCon_ScreenHeight=h;
+
+   /* Load a binary font. Hack to get the font/screen properties set. */
+   ASSERT(fdata);
+   AlCon_LoadCustomFont(0,fdata,AlCon_FontWidth,AlCon_FontHeight);
+   //AlCon_LoadCustomFont("rom-PC437.016");
+  
+   /* Create default cursor shape */
+   Alcon_CreateNewCursor();
+  
+   /* Create the text mode palette */
+   AlCon_SetDisPaletteColors(0,16,pal ? pal : BIOSPalette);
+  
+   /* Allocate "screen" buffers */
+   AlCon_AllocateMemoryBuffer();
+  
+   install_int(AlCon_IntCursor, 500);
+  
+   AlCon_SetColors(7, 0);
+   AlCon_ClrScr();
+   show_mouse(screen);
+   return 0;
+}
+
+/**[txh]********************************************************************
+
+  Description: Called when you want to change the font size. You
+  can call this first with the font size you would like, and see
+  if AlCon is able to resize the screen to that size.
+  
+  Return: Zero on success. A positive number if the resolution was
+  not set, but AlCon was able to restore the previous screen size
+  using the old parameters. A negative number if the resolution was
+  not set, and trying to set it AlCon lost the previous screen,
+  leaving the whole graphic mode in a mess you can only abort
+  execution.
+  
+***************************************************************************/
+
+int AlCon_Resize(unsigned sW, unsigned sH, int new_font_width,
+                 int new_font_height)
+{
+   ASSERT(screen && "Did you really initialise me properly?");
+   ASSERT(new_font_width > 0);
+   ASSERT(new_font_height > 0);
+   ASSERT(AlCon_ScreenWidth > 0);
+   ASSERT(AlCon_ScreenHeight > 0);
+
+   // Save here the previous parameters...
+   const int old_w = SCREEN_W;
+   const int old_h = SCREEN_H;
+   const int old_card = gfx_driver->id;
+
+   // Hide the mouse during the change. If we don't do it the cursor gets damaged.
+   show_mouse(NULL);
+   int temp;
+   AlCon_UnDrawCursor(&temp);
+   
+   // Be brave and try the new screen resolution.
+   // TODO: Get rid of explicit driver. Maybe use configuration file?
+   int ret = set_gfx_mode(GFX_AUTODETECT_WINDOWED,
+      sW * new_font_width, sH * new_font_height,
+      sW * new_font_width, sH * new_font_height);
+
+   if (ret == 0)
+     {
+      AlCon_ScreenWidth=sW;
+      AlCon_ScreenHeight=sH;
+      // Reallocate internal memory for text video.
+      AlCon_AllocateMemoryBuffer();
+      // Fix up cursor position, it may have ended up outside screen.
+      if (cursorX > AlCon_ScreenWidth || cursorY > AlCon_ScreenHeight)
+         AlCon_GotoXY(1, 1);
+      
+      // Clean up the screen, just in case...
+      clear_to_color(screen, 0);
+      
+      show_mouse(screen);
+      return 0;
+     }
+
+   // Oops, try to fix our mistake.
+   ret = set_gfx_mode(old_card, old_w, old_h, old_w, old_h);
+   if (ret != 0)
+      return -1;  // Bail out completely.
+   show_mouse(screen);
+   return 1;   // At least we kept our head safe...
+}
+
+/**[txh]********************************************************************
+
+  Description: Removes allegro from the system, freeing any internal
+  memory and resetting the graphic mode and other subsystems.
+  
+***************************************************************************/
+
+void AlCon_Exit()
+{
+ ASSERT(chars);
+ ASSERT(attrs);
+ 
+ remove_int(AlCon_IntCursor);
+ set_gfx_mode(GFX_TEXT,0,0,0,0);
+ allegro_exit();
+ free(chars);
+ free(attrs);
+ chars = attrs = 0;
+}
+
+int AlCon_SetDisPaletteColors(int from, int number, AlCon_Color *c)
+{
+ int i;
+
+ for (i=0; i<number; i++)
+    {
+     colors[from+i]=makecol(c[i].R,c[i].G,c[i].B);
+     AlCon_CurPalette[from+i]=c[i];
+    }
+
+ return i;
+}
+
+/*****************************************************************************
+
+  Keyboard input routines
+    
+*****************************************************************************/
+
+int AlCon_GetCh()
+{
+ return readkey();
+}
+
+int AlCon_KbHit()
+{
+ return keypressed();
+}
+
+const char *AlCon_KeyNames[]=
+{
+"Unknown",
+"A","B","C","D","E","F","G","H","I","J","K",
+"L","M","N","O","P","Q","R","S","T","U","V",
+"W","X","Y","Z",
+"OpenBrace","BackSlash","CloseBrace","Pause","Esc",
+"0","1","2","3","4","5","6","7","8","9",
+"BackSpace","Tab","Enter","Colon","Quote","Grave",
+"Comma","Stop","Slash","Asterisk","Space","Minus",
+"Plus","PrnScr","Equal","F1","F2","F3","F4","F5",
+"F6","F7","F8","F9","F10","F11","F12","Home",
+"Up","PgUp","Left","Right","End","Down","PgDn",
+"Insert","Delete","Caret","Admid","DobleQuote",
+"Numeral","Dolar","Percent","Amper","OpenPar",
+"ClosePar","DoubleDot","LessThan","GreaterThan",
+"Question","A_Roba","Or","UnderLine","OpenCurly",
+"CloseCurly","Tilde","Macro","WinLeft","WinRight","WinSel",
+"Mouse"
+};
+
+#define NumKeyNames (sizeof(AlCon_KeyNames)/sizeof(char *))
+
+static
+uchar keyCode[KEY_MAX]=
+{
+ kbUnkNown,kbA,kbB,kbC,kbD,kbE,kbF,kbG,kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,kbP,
+ kbQ,kbR,kbS,kbT,kbU,kbV,kbW,kbX,kbY,kbZ,kb0,kb1,kb2,kb3,kb4,kb5,kb6,kb7,
+ kb8,kb9,kb0,kb1,kb2,kb3,kb4,kb5,kb6,kb7,kb8,kb9,kbF1,kbF2,kbF3,kbF4,kbF5,
+ kbF6,kbF7,kbF8,kbF9,kbF10,kbF11,kbF12,kbEsc,kbGrave,kbMinus,kbEqual,
+ kbBackSpace,kbTab,kbOpenBrace,kbCloseBrace,kbEnter,kbColon,kbQuote,
+ kbBackSlash,kbBackSlash,kbComma,kbStop,kbSlash,kbSpace,kbInsert,kbDelete,
+ kbHome,kbEnd,kbPgUp,kbPgDn,kbLeft,kbRight,kbUp,kbDown,kbSlash,kbAsterisk,
+ kbMinus,kbPlus,kbDelete,kbEnter,kbPrnScr,kbPause,kbUnkNown,kbUnkNown,
+ kbUnkNown,kbUnkNown,kbUnkNown,kbA_Roba,kbCaret,kbColon,kbUnkNown,kbUnkNown,
+ kbUnkNown,kbUnkNown,kbUnkNown,kbUnkNown,kbUnkNown,kbUnkNown,kbWinLeft,
+ kbWinRight,kbWinSel,kbUnkNown,kbUnkNown//,kbUnkNown
+};
+
+static
+uchar KeyCodeByASCII[96]=
+{
+ kbSpace,kbAdmid,kbDobleQuote,kbNumeral,kbDolar,kbPercent,kbAmper,kbQuote,
+ kbOpenPar,kbClosePar,kbAsterisk,kbPlus,kbComma,kbMinus,kbStop,kbSlash,
+ kb0,kb1,kb2,kb3,kb4,kb5,kb6,kb7,
+ kb8,kb9,kbDoubleDot,kbColon,kbLessThan,kbEqual,kbGreaterThan,kbQuestion,
+ kbA_Roba,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
+ kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,
+ kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
+ kbX,kbY,kbZ,kbOpenBrace,kbBackSlash,kbCloseBrace,kbCaret,kbUnderLine,
+ kbGrave,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
+ kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,
+ kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
+ kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbBackSpace
+};
+
+int AlCon_GetKey(unsigned *aSymbol, uchar *aScan, unsigned *aFlags)
+{
+ int key=readkey();
+ int scan=key>>8;
+ int ascii=key & 0xFF;
+ int name,flags;
+
+ //AlCon_CPrintf("key: 0x%04X scan: 0x%02X ascii: 0x%02X ",key,scan,ascii);
+ if (ascii>=32 && ascii<128)
+    name=KeyCodeByASCII[ascii-32];
+ else
+    name=keyCode[scan];
+
+ flags=0;
+ if (key_shifts & KB_SHIFT_FLAG)
+    flags|=kbShiftCode;
+ if (key_shifts & KB_CTRL_FLAG)
+    flags|=kbCtrlCode;
+ if (key_shifts & KB_ALT_FLAG)
+    flags|=kbAltLCode;
+
+ *aSymbol=ascii;
+ *aFlags=flags;
+ *aScan=scan;
+
+ return name|flags;
+}
+
+void AlCon_ClearKeyBuf()
+{
+ clear_keybuf();
+}
+
+/*****************************************************************************
+
+  Mouse input routines
+    
+*****************************************************************************/
+
+// Returns 0 if there is no mouse.
+int AlCon_GetMouseButtons(void)
+{
+ return al_mouse_buttons;
+}
+
+void AlCon_GetMousePos(int *x, int *y, int *buttons)
+{
+   if (al_mouse_buttons == 1)
+      return ;
+      
+   poll_mouse();
+   *x = mouse_x / AlCon_FontWidth;
+   *y = mouse_y / AlCon_FontHeight;
+   *buttons = mouse_b;
+  
+   // Emulate 4th and 5th buttons through wheelmouse control.
+   if (mouse_z > al_mouse_wheel)
+      *buttons |= 1 << 3;
+   if (mouse_z < al_mouse_wheel)
+      *buttons |= 1 << 4;
+   al_mouse_wheel = mouse_z;
+}
+
+uchar AlCon_ShapeFont10x20[]=
 {
  0x00,0x00,0x00,0x00,0x00,0x00,0x3F,0x00,0x61,0x80,0x4C,0x80,0x4C,0x80,0x7C,0x80,0x79,0x80,0x73,0x80,0x73,0x80,0x73,0x80,0x7F,0x80,0x73,0x80,0x73,0x80,0x3F,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x39,0x80,0x6D,0x80,0x67,0x00,0x00,0x00,0x39,0x80,0x6D,0x80,0x67,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -604,7 +1242,8 @@ uchar TScreenX11::shapeFont10x20[]=
  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x33,0x00,0x33,0x00,0x00,0x00,0x61,0x80,0x61,0x80,0x61,0x80,0x61,0x80,0x61,0x80,0x61,0x80,0x33,0x80,0x1D,0x80,0x01,0x80,0x61,0x80,0x33,0x00,0x1E,0x00,
 };
 
-uchar TScreenX11::shapeFont8x16[]=
+// Exported
+uchar AlCon_ShapeFont8x16[]=
 {
  0x00,0x00,0x7E,0xC3,0x99,0x99,0xF3,0xE7,0xE7,0xFF,0xE7,0xE7,0x7E,0x00,0x00,0x00, // 0
  0x00,0x00,0x00,0x00,0x00,0x76,0xDC,0x00,0x76,0xDC,0x00,0x00,0x00,0x00,0x00,0x00, // 
@@ -864,1847 +1503,130 @@ uchar TScreenX11::shapeFont8x16[]=
  0x00,0x00,0x00,0x6C,0x00,0xC6,0xC6,0xC6,0xC6,0xC6,0xC6,0x7E,0x06,0x0C,0xF8,0x00  // 255
 };
 
-TScreenFont256 TScreenX11::font8x16={ 8,16,shapeFont8x16 };
-TScreenFont256 TScreenX11::font10x20={ 10,20,shapeFont10x20 };
-TScreenFont256 *TScreenX11::defaultFont=&font8x16;
-
-void TScreenX11::AdjustCursorImage()
+void AlCon_SetFont(int which, uchar *fnt, unsigned w, unsigned h)
 {
- if (cursorImage)
-    XDestroyImage(cursorImage);
- cursorData=(char *)malloc(fontSz);
- cursorImage=XCreateImage(disp,visual,1,XYBitmap,0,cursorData,fontW,fontH,8,0);
- cursorImage->byte_order=cursorImage->bitmap_bit_order=MSBFirst;
-}
+ unsigned sizeChanged=w!=(unsigned)AlCon_FontWidth ||
+                      h!=(unsigned)AlCon_FontHeight;
+ AlCon_FontWidth =w;
+ AlCon_FontHeight=h;
+ unsigned wb=(w+7)/8;
+ unsigned sizeGlyph=wb*h;
 
-TScreenX11::TScreenX11()
-{
- memset(ximgFont,0,sizeof(XImage *)*256);
- memset(ximgSecFont,0,sizeof(XImage *)*256);
-
- /* Try to connect to the X server */
- disp=XOpenDisplay(NULL);
- /* If we fail just return */
- if (!disp)
-    return;
- /* Allocate memory for these structures. Note that is safer to do it instead
-    of using a static structure because the number of fields can change. */
- sizeHints=XAllocSizeHints();
- classHint=XAllocClassHint();
- if (!sizeHints || !classHint)
-    return;
-
- /* Don't need special rights anymore */
- seteuid(getuid());
- setegid(getgid());
+ FONT_GLYPH **p=which ? Alcon_ASCIIDataS : Alcon_ASCIIDataP;
+ // Copy font from buffer to internal structure.
+ for (int i=0; i<0x100; i++)
+    {// Free previously allocated memory.
+     if (p[i])
+        free(p[i]);
+        
+     p[i]=(FONT_GLYPH *)malloc(sizeof(FONT_GLYPH)+sizeGlyph);
+     p[i]->w=AlCon_FontWidth;
+     p[i]->h=AlCon_FontHeight;
  
- /* Initialize driver */
- initialized=1;
- if (dCB) dCB();
-
- maxX=80; maxY=25;
- fontW=8; fontH=16;
-
- /* Look for defaults */
-
- /* Code page */
- optSearch("AppCP",forcedAppCP);
- optSearch("ScrCP",forcedScrCP);
- optSearch("InpCP",forcedInpCP);
- /* User settings have more priority than detected settings */
- codePage=new TVCodePage(forcedAppCP!=-1 ? forcedAppCP : TVCodePage::ISOLatin1Linux,
-                         forcedScrCP!=-1 ? forcedScrCP : TVCodePage::ISOLatin1Linux,
-                         forcedInpCP!=-1 ? forcedInpCP : TVCodePage::ISOLatin1Linux);
- SetDefaultCodePages(TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux,
-                     TVCodePage::ISOLatin1Linux);
-
- long aux;
- if (optSearch("ScreenWidth",aux))
-    maxX=aux;
- if (optSearch("ScreenHeight",aux))
-    maxY=aux;
- if (optSearch("FontWidth",aux))
-    fontW=aux;
- if (optSearch("FontHeight",aux))
-    fontH=aux;
- if (optSearch("Font10x20",aux) && aux)
-    fontW=10, fontH=20;
-
- if (fontW==10 || fontH==20)
-    defaultFont=&font10x20;
- else
-    defaultFont=&font8x16;
- TScreenFont256 *useFont;
- int freeFontData=1;
- if (!frCB || !(useFont=frCB(0,fontW,fontH)))
-   {
-    useFont=defaultFont;
-    freeFontData=0;
-   }
- fontW=useFont->w;
- fontH=useFont->h;
- fontWb=(useFont->w+7)/8;
- fontSz=fontWb*fontH;
- uchar *fontData=useFont->data;
-
- aux=0;
- TScreenFont256 *secFont=NULL;
- if (frCB && optSearch("LoadSecondaryFont",aux) && aux)
-    secFont=frCB(1,fontW,fontH);
-
- /* Setting to fine tune this driver */
- aux=1;
- if (optSearch("HideCursorWhenNoFocus",aux))
-    hideCursorWhenNoFocus=aux;
- if (optSearch("DontResizeToCells",aux))
-    dontResizeToCells=aux;
-
- TDisplayX11::Init();
-
- TScreen::clearScreen=clearScreen;
- TScreen::getCharacters=getCharacters;
- TScreen::getCharacter=getCharacter;
- TScreen::setCharacter=setCharacter;
- TScreen::setCharacters=setCharacters;
- TScreen::System_p=System;
- TScreen::setWindowTitle=setWindowTitle;
- TScreen::getWindowTitle=getWindowTitle;
- TScreen::setDisPaletteColors=SetDisPaletteColors;
- TScreen::getFontGeometry=GetFontGeometry;
- TScreen::getFontGeometryRange=GetFontGeometryRange;
- TScreen::setFont_p=SetFont;
- TScreen::restoreFonts=RestoreFonts;
- TScreen::setCrtModeRes_p=SetCrtModeRes;
- TDisplay::beep=Beep;
- TScreen::openHelperApp=OpenHelperApp;
- TScreen::closeHelperApp=CloseHelperApp;
- TScreen::sendFileToHelper=SendFileToHelper;
- TScreen::getHelperAppError=GetHelperAppError;
-
- TVX11Clipboard::Init();
- TGKeyX11::Init();
- THWMouseX11::Init();
-
- /* Initialize common variables */
- cShapeFrom=fontH*875/1000;
- cShapeTo=fontH;
- setCrtData();
- startupCursor=cursorLines;
- startupMode=screenMode;
- screenBuffer=new ushort[screenWidth*screenHeight];
-
- /* Get screen and graphic context */
- screen=DefaultScreen(disp);
- gc=DefaultGC(disp,screen);
- visual=DefaultVisual(disp,screen);
-
- /* Create what we'll use as font */
- CreateXImageFont(0,fontData,fontW,fontH);
- if (freeFontData)
-   {/* Provided by the call back */
-    DeleteArray(useFont->data);
-    delete useFont;
-   }
- if (secFont)
-   {
-    CreateXImageFont(1,secFont->data,fontW,fontH);
-    DeleteArray(secFont->data);
-    delete secFont;
-   }
-
- /* Create the cursor image */
- AdjustCursorImage();
-
- /* Set the locales */
- if (setlocale(LC_ALL,"")==NULL)
-    fprintf(stderr,"Error: setlocale()!\n");
-
- /* Create a simple window */
- rootWin=RootWindow(disp,screen);
- mainWin=XCreateSimpleWindow(disp,rootWin,
-         0,0,                             /* win position */
-         maxX*fontW,maxY*fontH,           /* win size */
-         0,                               /* frame width */
-         BlackPixel(disp,screen),   /* Border color */
-         BlackPixel(disp,screen));  /* Background */
-
- /* This is useful if we use subwindows.
- hints.flags=InputHint;
- hints.input=True;
- XSetWMHints(disp,mainWin,&hints);*/
- /* This is how we provide a title for the window.
-    If the application wants it should call setWindowTitle.
- XTextProperty name;
- char *s="Test";
- XStringListToTextProperty(&s,1,&name);*/
-
- classHint->res_name=newStr("tvapp");   /* Take resources for tvapp */
- classHint->res_class=newStr("XTVApp"); /* X Turbo Vision Application */
-
- /* Size hints are just hints, not all WM take care about them */
- sizeHints->flags=PResizeInc | PMinSize | PBaseSize;
- /* Fonts increments */
- sizeHints->width_inc =fontW;
- sizeHints->height_inc=fontH;
- sizeHints->min_width =fontW*40;
- sizeHints->min_height=fontH*20;
- sizeHints->base_width=sizeHints->base_height=0;
-
- XSetWMProperties(disp,mainWin,
-                  NULL,       /* Visible title, i.e. &name */
-                  NULL,       /* Icon title, i.e. &name */
-                  NULL,0,     /* Command line */
-                  sizeHints,  /* Normal size hints, resize increments */
-                  NULL,       /* Window manager hints, nothing (i.e. icon) */
-                  classHint); /* Resource name and class of window */
-
- /* This is needed to release the memory used for the title
- XFree((char *)name.value);*/
-
- /* Ask to be notified when they kill the window */
- theProtocols=XInternAtom(disp,"WM_DELETE_WINDOW",True);
- XSetWMProtocols(disp,mainWin,&theProtocols,1);
-
- /* Initialize the Input Context for international support */
- if ((xim=XOpenIM(disp,NULL,NULL,NULL))==NULL)
-   {
-    printf("Error: XOpenIM()!\n");
-    exit(0);
-   }
- xic=XCreateIC(xim,XNInputStyle,XIMPreeditNothing | XIMStatusNothing,
-               XNClientWindow,mainWin,NULL);
- if (xic==NULL)
-   {
-    printf("Error: XCreateIC()!\n");
-    XCloseIM(xim);
-    exit(0);
-   }
- // This prints which locale was detected for the X Input Methode.
- // It should have a very big impact in the way input is interpreted, but I
- // couldn't verify it. I'm trying using japanese ;-)
- //printf("Locale: %s\n",XLocaleOfIM(xim));
-
- /* We will accept the Input Context default events ... */
- unsigned long mask, fevent;
- XGetICValues(xic,XNFilterEvents,&fevent,NULL);
- /* plus these */
- mask=ExposureMask | KeyPressMask | KeyReleaseMask | FocusChangeMask |
-      StructureNotifyMask | ButtonPressMask | ButtonReleaseMask |
-      ButtonMotionMask/*PointerMotionMask*/;
- XSelectInput(disp,mainWin,mask|fevent);
-
- /* OK, now put the window on the display */
- XMapWindow(disp,mainWin);
-
- /* Map the VGA Text BIOS colors */
- cMap=DefaultColormap(disp,screen);
- XColor query;
- TScreenColor *pal=parseUserPalette() ? UserStartPalette : PC_BIOSPalette;
- for (int col=0; col<16; col++)
-    {
-     query.red  =pal[col].R*256;
-     query.green=pal[col].G*256;
-     query.blue =pal[col].B*256;
-     query.flags= ~0;
-     XAllocColor(disp,cMap,&query);
-     colorMap[col]=query.pixel;
+     memcpy(p[i]->dat,fnt,sizeGlyph);
+     fnt+=sizeGlyph;
     }
- memcpy(ActualPalette,pal,sizeof(ActualPalette));
+ Alcon_PrimaryFont.height  =
+ Alcon_SecondaryFont.height=
+ Alcon_CursorFont.height   =AlCon_FontHeight;
 
- /* A graphics context for the text cursor */
- cursorGC=XCreateGC(disp,mainWin,0,0);
-
- /* Create the cursor timer */
- gettimeofday(&refCursorTime,0);
-
- XSetBackground(disp,gc,colorMap[0]);
- XSetForeground(disp,gc,colorMap[7]);
- clearScreen();
-
- // Setup the driver properties.
- // Our code page isn't fixed.
- // We can change the palette.
- // A redraw is needed after setting the palette. But currently is in the color setting.
- // We can set the fonts and even change their size.
- flags0=CanSetPalette | CanReadPalette | CodePageVar    | CursorShapes /*| PalNeedsRedraw*/ |
-        CanSetBFont   | CanSetSBFont   | CanSetFontSize | CanSetVideoSize |
-        NoUserScreen;
-
- if (createCursors())
-    TScreen::showBusyState=ShowBusyState;
-
- START_UPDATE_THREAD;
-}
-
-void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h)
-{
- char *data;
- int i,bytesLine,bytesShape;
-
- bytesLine=(w+7)/8;
- bytesShape=bytesLine*h;
- XImage **f=which ? ximgSecFont : ximgFont;
- for (i=0; i<256; font+=bytesShape, i++)
-    {/* Load the shape */
-     data=(char *)malloc(bytesShape);
-     memcpy(data,font,bytesShape);
-     /* Create a BitMap Image with this data */
-     f[i]=XCreateImage(disp,visual,1,XYBitmap,0,data,w,h,8,0);
-     /* Set the bit order, this is faster */
-     f[i]->byte_order=f[i]->bitmap_bit_order=MSBFirst;
-    }
- if (which)
-    useSecondaryFont=1;
-}
-
-void TScreenX11::DestroyXImageFont(int which)
-{
- int i;
-
- if (which)
-   {
-    if (useSecondaryFont)
-      {
-       for (i=0; i<256; i++)
-           if (ximgSecFont[i])
-              XDestroyImage(ximgSecFont[i]);
-       useSecondaryFont=0;
-      }
-   }
- else
-   for (i=0; i<256; i++)
-       if (ximgFont[i])
-          XDestroyImage(ximgFont[i]);
-}
-
-int TScreenX11::setWindowTitle(const char *aName)
-{
- SEMAPHORE_ON;
- XTextProperty name;
- char *s=(char *)aName;
- XStringListToTextProperty(&s,1,&name);
- XSetWMName(disp,mainWin,&name);
- XFree((char *)name.value);
- SEMAPHORE_OFF;
-
- return 1;
-}
-
-const char *TScreenX11::getWindowTitle(void)
-{
- SEMAPHORE_ON;
- XTextProperty name;
- const char *ret=NULL;
- if (XGetWMName(disp,mainWin,&name))
-   {
-    char *s=newStr((char *)name.value);
-    XFree((char *)name.value);
-    ret=s;
-   }
- SEMAPHORE_OFF;
-
- return ret;
-}
-
-int TScreenX11::SetDisPaletteColors(int from, int number, TScreenColor *colors)
-{
- SEMAPHORE_ON;
- XColor query;
- int i;
- ulong newMap[16];
-
- for (i=0; i<number; i++)
-    {
-     query.red  =colors[i].R*256;
-     query.green=colors[i].G*256;
-     query.blue =colors[i].B*256;
-     query.flags= ~0;
-     if (!XAllocColor(disp,cMap,&query))
-        break;
-     newMap[i]=query.pixel;
-    }
- if (i>0)
-   {// If we allocated at least one color:
-    // Deallocated the old colors
-    XFreeColors(disp,cMap,colorMap+from,i,0);
-    // Copy the new ones
-    memcpy(colorMap+from,newMap,sizeof(ulong)*i);
-    // Force a redraw. This is not needed for 8 bpp.
-    // Is just a dirty hack.
-    FullRedraw();
-   }
- SEMAPHORE_OFF;
- return i;
-}
-
-void TScreenX11::FullRedraw()
-{
- unsigned y,off;
- for (y=0,off=0; y<(unsigned)maxY; y++,off+=maxX)
-     redrawBuf(0,y,maxX,off);
-}
-
-/*****************************************************************************
- Routines to create a blinking cursor
-*****************************************************************************/
-
-void TScreenX11::UnDrawCursor()
-{
- if (!cursorInScreen)
-    return;
- SEMAPHORE_ON;
- unsigned offset=cursorX+cursorY*maxX;
- uchar *theChar=(uchar *)(screenBuffer+offset);
- uchar newChar=theChar[charPos];
- uchar newAttr=theChar[attrPos];
-
- XSetBgFgC(newAttr);
- drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
- cursorInScreen=0;
- SEMAPHORE_OFF;
- return;
-}
-
-void TScreenX11::XSetBgFgC(uint16 attr)
-{
- int bg=attr>>4;
- int fg=attr & 0xF;
- if (bg==fg)
-    fg=~bg & 0xF;
- XSetBackground(disp,cursorGC,colorMap[bg]);
- XSetForeground(disp,cursorGC,colorMap[fg]);
-}
-
-void TScreenX11::XSetBgFg(uint16 attr)
-{
- int bg=attr>>4;
- int fg=attr & 0xF;
- XSetBackground(disp,gc,colorMap[bg]);
- XSetForeground(disp,gc,colorMap[fg]);
-}
-
-void TScreenX11::DrawCursor()
-{
- //fprintf(stderr,"DrawCursor: cursorEnabled=%d\n",cursorEnabled);
- if (cursorEnabled)
-   {
-    SEMAPHORE_ON;
-    cursorInScreen=!cursorInScreen;
-
-    /* Create an image with the character under cursor */
-    unsigned offset=cursorX+cursorY*maxX;
-    uchar *theChar=(uchar *)(screenBuffer+offset);
-    int attr=theChar[attrPos];
-    XSetBgFgC(attr);
-    memcpy(cursorData,useSecondaryFont && (attr & 8) ?
-           ximgSecFont[theChar[charPos]]->data :
-           ximgFont[theChar[charPos]]->data,fontSz);
-
-    //fprintf(stderr,"DrawCursor: cursorInScreen=%d from/to %d/%d\n",cursorInScreen,cShapeFrom,cShapeTo);
-    /* If the cursor is on draw it over the character */
-    if (cursorInScreen)
-       memset(cursorData+cShapeFrom*fontWb,0xFF,(cShapeTo-cShapeFrom)*fontWb);
-
-    /* Now put it in the screen */
-    XPutImage(disp,mainWin,cursorGC,cursorImage,0,0,cursorPX,cursorPY,fontW,fontH);
-    XFlush(disp);
-    SEMAPHORE_OFF;
-   }
-}
-
-void TScreenX11::DisableCursor()
-{
- cursorEnabled=0;
- UnDrawCursor();
-}
-
-void TScreenX11::EnableCursor()
-{
- cursorEnabled=1;
- //DrawCursor();
-}
-
-static
-void SubstractRef(timeval &curCursorTime, timeval &refCursorTime)
-{
- curCursorTime.tv_sec-=refCursorTime.tv_sec;
- if (curCursorTime.tv_usec<refCursorTime.tv_usec)
-   {
-    curCursorTime.tv_sec--;
-    curCursorTime.tv_usec=curCursorTime.tv_usec-refCursorTime.tv_usec+1000000;
-   }
- else
-    curCursorTime.tv_usec-=refCursorTime.tv_usec;
-}
-
-/*****************************************************************************
- Events processing
-*****************************************************************************/
-
-void TScreenX11::ProcessGenericEvents()
-{
- SEMAPHORE_ON;
- XEvent event;
- unsigned lastW, lastH;
- unsigned newPW, newPH;
-
- // Cursor blinking stuff.
- // Current time
- gettimeofday(&curCursorTime,0);
- // Substract the reference
- curCursorTime.tv_sec-=refCursorTime.tv_sec;
- SubstractRef(curCursorTime,refCursorTime);
-
- if (curCursorTime.tv_sec>0 || curCursorTime.tv_usec>cursorDelay)
-   {
-    DrawCursor();
-    gettimeofday(&refCursorTime,0);
-   }
- while (1)
-   {
-    /* Check if we have generic events in the queue */
-    if (XCheckMaskEvent(disp,~(aMouseEvent|aKeyEvent),&event)!=True)
-      {
-       /* Process message that doesn't have mask */
-       if (XCheckTypedEvent(disp,ClientMessage,&event)==True)
-         {
-          if ((Atom)event.xclient.data.l[0]==theProtocols)
-            {
-             TGKeyX11::sendQuit=1;
-            }
-         }
-       else if (XCheckTypedEvent(disp,SelectionRequest,&event)==True)
-         {// Another application wants the content of our clipboard
-          XEvent respond;
-          XSelectionRequestEvent *req=&(event.xselectionrequest);
-          if (req->target==XA_STRING && TVX11Clipboard::buffer)
-            {
-             XChangeProperty(disp,req->requestor,req->property,XA_STRING,
-                             8/*bits*/,PropModeReplace,
-                             (const uchar *)TVX11Clipboard::buffer,
-                             TVX11Clipboard::length);
-             respond.xselection.property=req->property;
-            }
-          else // Strings only please
-             respond.xselection.property= None;
-          respond.xselection.type=SelectionNotify;
-          respond.xselection.display=req->display;
-          respond.xselection.requestor=req->requestor;
-          respond.xselection.selection=req->selection;
-          respond.xselection.target=req->target;
-          respond.xselection.time=req->time;
-          XSendEvent(disp,req->requestor,0,0,&respond);
-          XFlush(disp);
-         }
-       else if (XCheckTypedEvent(disp,SelectionNotify,&event)==True)
-         {
-          TVX11Clipboard::waiting=0;
-          TVX11Clipboard::property=event.xselection.property;
-         }
-       SEMAPHORE_OFF;
-       return;
-      }
-    /* Not sure if needed, but documentation says it helps if the event
-       should be redirected to another window */
-    if (XFilterEvent(&event,0)==True)
-       continue;
-  
-    switch (event.type)
-      {
-       case Expose:
-            {
-             if (windowSizeChanged) // Ignore them until the application gets
-                break;              // notified about the new size
-             /*printf("Expose: %d %d %d %d\n",event.xexpose.x,event.xexpose.y,
-                    event.xexpose.width,event.xexpose.height);*/
-             int x=event.xexpose.x/fontW;
-             int y=event.xexpose.y/fontH;
-             unsigned src=y*maxX+x;
-
-             newPW=event.xexpose.x+event.xexpose.width;
-             int x2=newPW/fontW;
-             if (newPW%fontW) x2++;
-             if (x2>=maxX) x2=maxX;
-
-             newPW=event.xexpose.y+event.xexpose.height;
-             int y2=newPW/fontH;
-             if (newPW%fontH) y2++;
-             if (y2>=maxY) y2=maxY;
-
-             int w=x2-x;
-             int h=y2-y;
-
-             /*printf("x1,y1 %d,%d x2,y2 %d,%d w,h %d,%d\n",x,y,x2,y2,w,h);*/
-
-             while (h)
-               {
-                redrawBuf(x,y,w,src);
-                src+=maxX;
-                y++; h--;
-               }
-             XFlush(disp);
-            }
-            break;
-
-       case FocusIn:
-            //printf("Focus in\n");
-            if (xic)
-               XSetICFocus(xic);
-            EnableCursor();
-            break;
-
-       case FocusOut:
-            //printf("Focus out\n");
-            if (xic)
-               XUnsetICFocus(xic);
-            if (hideCursorWhenNoFocus)
-               DisableCursor();
-            break;
-
-       case ConfigureNotify:
-            /* Currently masked
-            if (event.xresizerequest.window!=mainWin)
-               break;*/
-
-            lastW=windowSizeChanged ? newX : maxX;
-            lastH=windowSizeChanged ? newY : maxY;
-            newX=event.xconfigure.width /fontW;
-            newY=event.xconfigure.height/fontH;
-
-            /* Minimal size */
-            if (newX<40) newX=40;
-            if (newY<20) newY=20;
-
-            /* If size changed indicate it */
-            if ((newX!=(int)lastW) || (newY!=(int)lastH))
-               windowSizeChanged=1;
-
-            /* KDE 3.1 alpha maximize doesn't use cell sizes and our resize
-               confuses KDE. */
-            if (dontResizeToCells)
-               break;
-
-            /* Force the window to have a size in chars */
-            newPW=fontW*newX;
-            newPH=fontH*newY;
-
-            if ((unsigned)event.xconfigure.width==newPW &&
-                (unsigned)event.xconfigure.height==newPH)
-               break;
-
-            //printf("Nuevo: %d,%d (%d,%d)\n",newX,newY,lastW,lastH);
-            XResizeWindow(disp,mainWin,newPW,newPH);
-            //printf("Nuevo 2: %d,%d\n",newX,newY);
-            break;
-      }
-   }
- SEMAPHORE_OFF;
-}
-
-void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned color)
-{
- if (w<=0)
-    return; // Nothing to do
-
- SEMAPHORE_ON;
- XSetBgFg(color);
- x*=fontW; y*=fontH;
- UnDrawCursor();
- XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
- while (w--)
-   {
-    XPutImage(disp,mainWin,gc,f[*str],0,0,x,y,fontW,fontH);
-    str++;
-    x+=fontW;
-   }
- SEMAPHORE_OFF;
-}
-
-void TScreenX11::redrawBuf(int x, int y, unsigned w, unsigned off)
-{
- int len   = 0;         /* longitud a escribir */
- int letra = 0;
- int color = 0;
- int last  = -1;
- AllocLocalStr(tmp,w*sizeof(char));
- uchar *dst = (uchar *)tmp;
- uchar *b=(uchar *)(screenBuffer+off);
-
- if (y>=maxY)
-   {
-    printf("Y=%d\n",y);
-    return;
-   }
- while (w--)
-   {
-    letra=b[charPos];
-    color=b[attrPos];
-    
-    if (color!=last)
-      {
-       if (last>=0)
-         {
-          writeLine(x,y,len,(uchar *)tmp,last);  // Print last same color block
-          dst=(uchar *)tmp; x+=len; len=0;
-         }
-       last=color;
-      }
-    *dst++=letra; b+=2; len++;
-   }
-  
- writeLine(x,y,len,(uchar *)tmp,color);          // Print last block
-}
-
-TScreen *TV_XDriverCheck()
-{
- TScreenX11 *drv=new TScreenX11();
- if (!TScreen::initialized)
-   {
-    delete drv;
-    return 0;
-   }
- return drv;
-}
-
-/*****************************************************************************
-  X11 clipboard routines
-  This clipboard implementation is heavily based on the
-  X Windows Copy-Paste mini HOWTO by Stelios Xathakis, <axanth@tee.gr>
-*****************************************************************************/
-
-char *TVX11Clipboard::buffer=NULL;
-unsigned TVX11Clipboard::length=0;
-int      TVX11Clipboard::waiting=0;
-Atom     TVX11Clipboard::property=0;
-
-const char *TVX11Clipboard::x11NameError[]=
-{
- NULL,
- __("No available selection"),
- __("Unsupported data type"),
- __("No data"),
- __("X11 error"),
- __("Another application holds the clipboard")
-};
-
-void TVX11Clipboard::Init()
-{
- TVOSClipboard::copy=copy;
- TVOSClipboard::paste=paste;
- TVOSClipboard::destroy=destroy;
- TVOSClipboard::available=2; // We have 2 clipboards
- TVOSClipboard::name="X11";
- TVOSClipboard::errors=x11clipErrors;
- TVOSClipboard::nameErrors=x11NameError;
+ if (sizeChanged)
+    Alcon_CreateNewCursor();
 }
 
 /**[txh]********************************************************************
 
-  Description:
-  Copies the content of the buffer to the X11 clipboard. The id value
-selects which clipboard we will use. As current recommendations says
-applications should use XA_CLIPBOARD that's id==0. For id==1 we use the
-XA_PRIMARY mechanism, this is the one used for "selections".@*
-  The string doesn't have to be null terminated, we ever copy len+1 bytes
-adding a 0 at the end.
-
-  Return: !=0 if ok.
+  Description: Loads the specified binary format font into an internal
+  structure like Allegro's font and then sets the static global font pointer
+  to that. If the font could not be loaded, the previously loaded custom
+  font will be used. If this was the first custom font call, Allegro's
+  default font will be used if everything fails. If the filename is a NULL
+  pointer, the default font will be used.
   
 ***************************************************************************/
 
-int TVX11Clipboard::copy(int id, const char *b, unsigned len)
+static
+void AlCon_LoadCustomFont(const char *filename, uchar *fdata, unsigned fw,
+                          unsigned fh)
 {
- if (id>1) return 0;
- Atom clip=id==0 ? XA_CLIPBOARD(TScreenX11::disp) : XA_PRIMARY;
+   ASSERT(screen && "You have to call set_gfx_mode before.");
+   static bool one_custom_font_loaded = false;
+   unsigned wb=(fw+7)/8;
 
- // First create a copy, in X11 the clipboard is held by the application
- if (buffer)
-    delete[] buffer;
- length=len;
- buffer=new char[length+1];
- memcpy(buffer,b,len);
- buffer[len]=0;
- //printf("Copiando: `%s' %d\n",buffer,length);
- SEMAPHORE_ON;
- XSetSelectionOwner(TScreenX11::disp,clip,TScreenX11::mainWin,CurrentTime);
- XFlush(TScreenX11::disp);
- int ret=0;
- if (XGetSelectionOwner(TScreenX11::disp,clip)==TScreenX11::mainWin)
-    ret=1;
- else
-    TVOSClipboard::error=x11clipAnother;
- SEMAPHORE_OFF;
- // The rest is done by TScreenX11
- return ret;
+   FILE *file = NULL;
+   if (filename)
+      file = fopen(filename, "rb");
+
+   unsigned maxRead=wb*fh*0x100;
+   uchar *font_buffer, buffer[maxRead];
+   int read_bytes=0;
+   if (!file) {
+      if (fdata) {
+         font_buffer=fdata;
+         read_bytes=maxRead;
+      } else {
+         font_buffer=AlCon_ShapeFont8x16;
+         wb=1; fw=8; fh=16;
+         read_bytes=4096;
+      }
+   } else {
+      font_buffer=buffer;
+      int read_bytes=fread(font_buffer, 1, maxRead, file);
+      fclose(file);
+      if (read_bytes < 256) {// Absurd size limit
+         allegro_message("Absurd custom font size (%d bytes)", read_bytes);
+         exit(3);
+      }
+      one_custom_font_loaded = true;
+   }
+
+   // Initialize global variables.
+   Alcon_CurrentFont=&Alcon_PrimaryFont;
+   Alcon_PrimaryFont.vtable=font->vtable;
+   Alcon_PrimaryFont.data=&Alcon_ASCIIMonoFontP;
+   Alcon_SecondaryFont.vtable=font->vtable;
+   Alcon_SecondaryFont.data=&Alcon_ASCIIMonoFontS;
+   Alcon_CursorFont.vtable=font->vtable;
+   Alcon_CursorFont.data=&Alcon_CursorMonoFont;
+
+   AlCon_SetFont(0,font_buffer,fw,read_bytes/(0x100*wb));
 }
 
 /**[txh]********************************************************************
 
-  Description:
-  Returns a newly allocated buffer containing the contents of the indicated
-clipboard. @x{copy}.@*
-  The buffer should be deallocated with delete[]. The string is NULL
-terminated because we ensure it.@*
-  The returned length doesn't include the EOL.
-  
-  Return: NULL if error, a new buffer if ok.
+  Description: Fills in the width and height of a text cell.
   
 ***************************************************************************/
 
-char *TVX11Clipboard::paste(int id, unsigned &lenRet)
+void AlCon_GetFontGeometry(unsigned int *w, unsigned int *h)
 {
- if (id>1) return NULL;
- SEMAPHORE_ON;
- Atom clip=id==0 ? XA_CLIPBOARD(TScreenX11::disp) : XA_PRIMARY;
-
- Window owner;
- int format, result;
- unsigned long len, bytes, dummy;
- unsigned char *data;
-
- owner=XGetSelectionOwner(TScreenX11::disp,clip);
- if (owner==None)
-   {
-    TVOSClipboard::error=x11clipNoSelection;
-    SEMAPHORE_OFF;
-    return NULL;
-   }
- // What a hell should I use as property here? I use XA_STRING because it was
- // used by the example. BTW the example failed with Eterm.
- XConvertSelection(TScreenX11::disp,clip,XA_STRING,XA_STRING,TScreenX11::mainWin,
-                   CurrentTime);
- XFlush(TScreenX11::disp);
- SEMAPHORE_OFF;
- waiting=1;
- while (waiting)
-   if (!IS_SECOND_THREAD_ON)
-      TScreenX11::ProcessGenericEvents();
-
- if (property!=XA_STRING)
-   {
-    TVOSClipboard::error=x11clipWrongType;
-    return NULL;
-   }
- // Check the size
- SEMAPHORE_ON;
- Atom type;
- XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,0,0,0,
-                    AnyPropertyType,&type,&format,&len,&bytes,&data);
- if (bytes<=0)
-   {
-    TVOSClipboard::error=x11clipNoData;
-    SEMAPHORE_OFF;
-    return NULL;
-   }
- result=XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,
-                           0,bytes,0,AnyPropertyType,&type,&format,&len,
-                           &dummy,&data);
- if (result!=Success)
-   {
-    XFree(data);
-    TVOSClipboard::error=x11clipX11Error;
-    SEMAPHORE_OFF;
-    return NULL;
-   }
- char *ret=new char[bytes+1];
- memcpy(ret,data,bytes);
- ret[bytes]=0;
- XFree(data);
- lenRet=bytes;
- SEMAPHORE_OFF;
- //printf("Recibiendo: `%s' %ld\n",ret,bytes);
-
- return ret;
+   ASSERT(w || h);
+   if (w)
+      *w = AlCon_FontWidth;
+   if (h)
+      *h = AlCon_FontHeight;
 }
 
-void TVX11Clipboard::destroy()
+/**[txh]********************************************************************
+
+  Description: Allocates for the chars and attrs global buffers
+  enough memory as specified by the variables AlCon_ScreenWidth
+  and AlCon_ScreenHeight. If these global variables already had
+  something allocated to them (ie: you are resizing the screen),
+  that memory is freed before the new allocation takes place.
+  
+***************************************************************************/
+
+static void AlCon_AllocateMemoryBuffer(void)
 {
- if (buffer)
-   {
-    delete[] buffer;
-    buffer=0;
+   if (chars) {
+      ASSERT(attrs);
+      free(chars);
+      free(attrs);
    }
+   chars = (unsigned char *)malloc(AlCon_ScreenWidth * AlCon_ScreenHeight);
+   attrs = (unsigned char *)malloc(AlCon_ScreenWidth * AlCon_ScreenHeight);
+   ASSERT(chars && attrs);
 }
 
-/*****************************************************************************
-  Fonts routines
-*****************************************************************************/
-
-int TScreenX11::GetFontGeometry(unsigned &w, unsigned &h)
-{
- w=fontW;
- h=fontH;
- return 1;
-}
-
-int TScreenX11::GetFontGeometryRange(unsigned &wmin, unsigned &hmin,
-                                     unsigned &wmax, unsigned &hmax)
-{
- wmin=foWmin;
- hmin=foHmin;
- wmax=foWmax;
- hmax=foHmax;
- return 1;
-}
-
-int TScreenX11::SetFont(int changeP, TScreenFont256 *fontP,
-                        int changeS, TScreenFont256 *fontS,
-                        int fontCP, int appCP)
-{
- if (!changeP && !changeS) return 1;
- // Check for restore fonts
- if (changeP && !fontP && ((!changeS && !useSecondaryFont) || (changeS && !fontS)))
-    fontP=defaultFont;
-
- // Solve the sizes
- unsigned wP, hP, wS, hS;
- if (changeP)
-   {
-    if (fontP)
-      {
-       wP=fontP->w;
-       hP=fontP->h;
-      }
-    else
-      {
-       wP=defaultFont->w;
-       hP=defaultFont->h;
-      }
-   }
- else
-   {
-    wP=fontW;
-    hP=fontH;
-   }
- if (changeS)
-   {
-    if (fontS)
-      {
-       wS=fontS->w;
-       hS=fontS->h;
-      }
-    else
-      {// Disabled
-       wS=wP;
-       hS=hP;
-      }
-   }
- else
-   {
-    if (useSecondaryFont)
-      {
-       wS=fontW;
-       hS=fontH;
-      }
-    else
-      {// Disabled
-       wS=wP;
-       hS=hP;
-      }
-   }
- if (wP!=wS || hP!=hS) return 0;
- // Check if the size is in the range
- if (wP<foWmin || wP>foWmax || hP<foHmin || hP>foHmax)
-    return 0;
-
- // Change the requested fonts
- SEMAPHORE_ON;
- if (changeP)
-   {
-    DestroyXImageFont(0);
-    if (fontP && fontP->data)
-      {
-       CreateXImageFont(0,fontP->data,wP,hP);
-       primaryFontChanged=1;
-      }
-    else
-      {
-       CreateXImageFont(0,defaultFont->data,wP,hP);
-       primaryFontChanged=0;
-      }
-   }
- if (changeS)
-   {
-    DestroyXImageFont(1);
-    if (fontS)
-       CreateXImageFont(1,fontS->data,wP,hP);
-   }
- // Change the code page
- if (changeP && fontCP!=-1)
-   {
-    if (appCP==-1)
-       TVCodePage::SetScreenCodePage(fontCP);
-    else
-       TVCodePage::SetCodePage(appCP,fontCP,-1);
-   }
- // Verify if we need to resize
- if (wP!=fontW || hP!=fontH)
-   {
-    DoResize(wP,hP);
-   }
- else
-   {
-    FullRedraw();
-   }
- SEMAPHORE_OFF;
- return 1;
-}
-
-void TScreenX11::RestoreFonts()
-{
- SetFont(1,NULL,1,NULL,TVCodePage::ISOLatin1Linux,TVCodePage::ISOLatin1Linux);
-}
-
-void TScreenX11::DoResize(unsigned w, unsigned h)
-{
- SEMAPHORE_ON;
- UnDrawCursor();
- if (w!=fontW || h!=fontH)
-   {
-    unsigned start=100*cShapeFrom/fontH;
-    unsigned end  =100*cShapeTo/fontH;
-    fontW=w;
-    fontWb=(w+7)/8;
-    fontH=h;
-    fontSz=fontWb*h;
-    AdjustCursorImage();
-    /* Change the cursor shape */
-    SetCursorShape(start,end);
-    /* Inform the WM about this change*/
-    sizeHints->width_inc =fontW;
-    sizeHints->height_inc=fontH;
-    sizeHints->min_width =fontW*40;
-    sizeHints->min_height=fontH*20;
-    XSetWMNormalHints(disp,mainWin,sizeHints);
-   }
- /* Change the size */
- XResizeWindow(disp,mainWin,maxX*fontW,maxY*fontH);
- /* Compute cursor position and draw it */
- SetCursorPos(cursorX,cursorY);
- DrawCursor();
- SEMAPHORE_OFF;
-}
-
-TScreenFont256 *TScreenX11::ChooseClosestFont(unsigned fW, unsigned fH)
-{
- TScreenFont256 *nFont=NULL;
-
- if (fW==8 || fH==16)
-    nFont=&font8x16;
- else if (fW==10 || fH==20)
-    nFont=&font10x20;
- else
-   {
-    unsigned target=fW*fH;
-    int dif1=abs(8*16-target);
-    int dif2=abs(10*20-target);
-    if (dif1<dif2)
-       nFont=&font8x16;
-    else
-       nFont=&font10x20;
-   }
- return nFont;
-}
-
-int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
-{
- if (fW==-1) fW=fontW;
- if (fH==-1) fH=fontH;
- if (w==(unsigned)maxX && h==(unsigned)maxY &&
-     fontW==(unsigned)fW && fontH==(unsigned)fH) return 0;
-
- unsigned nW=fontW, nH=fontH;
- TScreenFont256 *nFont=NULL,*nsFont=NULL;
- int releaseFont=0, releaseSFont=0, resetFont=0;
-
- // Solve the fonts, don't change them yet.
- if ((unsigned)fW!=fontW || (unsigned)fH!=fontH)
-   {
-    if (primaryFontChanged)
-      {// The application set a font, ask for this new one
-       if (frCB && (nFont=frCB(0,fW,fH)))
-          releaseFont=1;
-       else
-         {// No replacement available, revert to our font.
-          resetFont=1;
-          nFont=ChooseClosestFont(fW,fH);
-         }
-      }
-    else
-      {
-       if (fW==8 && fH==16)
-          resetFont=1, nFont=&font8x16;
-       else if (fW==10 && fH==20)
-          resetFont=1, nFont=&font10x20;
-       else if (frCB && (nFont=frCB(0,fW,fH)))
-          releaseFont=1;
-       else
-          resetFont=1, nFont=ChooseClosestFont(fW,fH);
-      }
-    nW=nFont->w;
-    nH=nFont->h;
-    if ((nW!=fontW || nH!=fontH) && useSecondaryFont)
-      {
-       if (frCB && (nsFont=frCB(1,nW,nH)))
-          releaseSFont=1;
-      }
-   }
-
- SEMAPHORE_ON;
- if (nFont)
-   {
-    DestroyXImageFont(0);
-    CreateXImageFont(0,nFont->data,nW,nH);
-    if (resetFont)
-       primaryFontChanged=0;
-    if (releaseFont)
-      {
-       DeleteArray(nFont->data);
-       delete nFont;
-      }
-   }
- if (useSecondaryFont)
-   {
-    DestroyXImageFont(1);
-    if (nsFont)
-       CreateXImageFont(1,nsFont->data,nW,nH);
-   }
- // Should I check the size?
- maxX=w; maxY=h;
-
- delete[] screenBuffer;
- screenBuffer=new ushort[maxX*maxY];
- memset(screenBuffer,0,maxX*maxY*sizeof(ushort));
-
- DoResize(nW,nH);
- SEMAPHORE_OFF;
-
- return (nW==(unsigned)fW && nH==(unsigned)fH) ? 1 : 2;
-}
-
-/* Busy indicator by Roman Valyushenko <smhs@mail.ru> */
-
-/* These are the bitmaps I created. They show a pointer with watch near.
-   Could be used to indicate some background computations. */
-
-const int busyCursorWidth=28;
-const int busyCursorHeight=20;
-
-Cursor TScreenX11::busyCursor,
-       TScreenX11::leftPtr;
-char   TScreenX11::busyCursorMap[]=
-{
- 0xff, 0xff, 0xff, 0x1f,
- 0xfd, 0xff, 0xff, 0x1f,
- 0xf9, 0xff, 0xff, 0x1f,
- 0xf1, 0xff, 0xff, 0x1f,
- 0xe1, 0x7f, 0xc0, 0x1f,
- 0xc1, 0x7f, 0xc0, 0x1f,
- 0x81, 0x3f, 0x80, 0x1f,
- 0x01, 0x9f, 0x3b, 0x1f,
- 0x01, 0xce, 0x7b, 0x1e,
- 0xc1, 0xef, 0xfb, 0x1e,
- 0xc9, 0xef, 0xf1, 0x18,
- 0x9d, 0xef, 0xf1, 0x18,
- 0x9f, 0xef, 0xfe, 0x18,
- 0x3f, 0x6f, 0xff, 0x1e,
- 0x3f, 0xcf, 0x7f, 0x1e,
- 0xff, 0x9f, 0x3f, 0x1f,
- 0xff, 0x3f, 0x80, 0x1f,
- 0xff, 0x7f, 0xc0, 0x1f,
- 0xff, 0x7f, 0xc0, 0x1f,
- 0xff, 0xff, 0xff, 0x1f
-};
-char TScreenX11::busyCursorMask[]=
-{
- 0xfc, 0xff, 0xff, 0x1f,
- 0xf8, 0xff, 0xff, 0x1f,
- 0xf0, 0xff, 0xff, 0x1f,
- 0xe0, 0x3f, 0x80, 0x1f,
- 0xc0, 0x3f, 0x80, 0x1f,
- 0x80, 0x3f, 0x80, 0x1f,
- 0x00, 0x1f, 0x00, 0x1f,
- 0x00, 0x0e, 0x00, 0x1e,
- 0x00, 0x04, 0x00, 0x1c,
- 0x00, 0x04, 0x00, 0x10,
- 0x80, 0x07, 0x00, 0x10,
- 0x08, 0x07, 0x00, 0x10,
- 0x0c, 0x07, 0x00, 0x10,
- 0x1f, 0x06, 0x00, 0x10,
- 0x1f, 0x06, 0x00, 0x1c,
- 0x3f, 0x0f, 0x00, 0x1e,
- 0xff, 0x1f, 0x00, 0x1f,
- 0xff, 0x3f, 0x80, 0x1f,
- 0xff, 0x3f, 0x80, 0x1f,
- 0xff, 0x3f, 0x80, 0x1f
-};
-
-/* This is the function which creates cursors. On success it return
-   true, otherwise false */
-Boolean TScreenX11::createCursors()
-{
- long useInternal=0;
- optSearch("InternalBusyCursor",useInternal);
-
- if (useInternal)
-   {
-    Pixmap busyCursorPixmap, busyCursorPixmapMask;
-   
-    busyCursorPixmap=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMap,
-                                                 busyCursorWidth,busyCursorHeight,
-                                                 BlackPixel(disp,screen),
-                                                 WhitePixel(disp,screen),1);
-    if (busyCursorPixmap==None)
-       return False;
-    
-    busyCursorPixmapMask=XCreatePixmapFromBitmapData(disp,mainWin,(char*)&busyCursorMask,
-                                                     busyCursorWidth,busyCursorHeight,
-                                                     BlackPixel(disp,screen),
-                                                     WhitePixel(disp,screen),1);
-    int ok=0;
-    if (busyCursorPixmapMask!=None)
-      {
-       XColor busyCursorFg, busyCursorBg;
-       Status status;
-       
-       status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
-                               "black",&busyCursorFg,&busyCursorFg);
-       if (status)
-         {
-          status=XAllocNamedColor(disp,DefaultColormap(disp,DefaultScreen(disp)),
-                                  "white",&busyCursorBg,&busyCursorBg);
-          if (status)
-            {
-             busyCursor=XCreatePixmapCursor(disp,busyCursorPixmap,busyCursorPixmapMask,
-                                            &busyCursorFg,&busyCursorBg,1,1);
-             ok=1;
-            }
-         }
-       XFreePixmap(disp,busyCursorPixmapMask);
-      }
-    XFreePixmap(disp,busyCursorPixmap);
-
-    if (!ok)
-       return False;
-   }
- else
-    busyCursor=XCreateFontCursor(disp,XC_watch);
-              
- leftPtr=XCreateFontCursor(disp,XC_left_ptr);
- return True; /* Success */
-}
-
-/* This is the function to change the cursor. */
-Boolean TScreenX11::ShowBusyState(Boolean busyState)
-{
- SEMAPHORE_ON;
- if (busyState)
-    XDefineCursor(disp,mainWin,busyCursor);
- else
-    XDefineCursor(disp,mainWin,leftPtr);
- XFlush(disp); /* Show it right now */
- SEMAPHORE_OFF;
- return defaultShowBusyState(busyState);
-}
-
-void TScreenX11::Beep()
-{
- SEMAPHORE_ON;
- XBell(disp,50);
- SEMAPHORE_OFF;
-}
-
-/*****************************************************************************
-  Application Helpers
-*****************************************************************************/
-
-const char *TScreenX11::appHelperNameError[]=
-{
- __("No error"), // 0
- __("Only one helper of this kind can be opened at the same time"), // 1
- __("Please install gqview application in order to display images"), // 2
- __("Please install xpdf application in order to display PDF files"), // 3
- __("Invalid application helper handler"), // 4
- __("Failed to open /dev/null"), // 5
- __("No more handlers") // 6
-};
-int TScreenX11::appHelperError=0;
-TNSCollection *TScreenX11::appHelperHandlers=NULL;
-struct helperHandler
-{
- TScreen::AppHelper kind;
- pid_t pid;
-};
-static int allocatedHandlers;
-
-static
-Boolean CheckInstalled(const char *command, const char *response,
-                       Boolean installed)
-{
- if (installed)
-    return installed;
- // Redirect stderr and stdout to a file
- char name[14]="/tmp/tvXXXXXX";
- int handler=mkstemp(name);
- if (handler==-1)
-    return False;
- unlink(name);
- int h_errbak=dup(STDERR_FILENO);
- int h_outbak=dup(STDOUT_FILENO);
- dup2(handler,STDERR_FILENO);
- dup2(handler,STDOUT_FILENO);
- // Run the command
- TScreen::System(command);
- // Restore stderr and stdout
- dup2(h_errbak,STDERR_FILENO);
- dup2(h_outbak,STDOUT_FILENO);
- close(h_errbak);
- close(h_outbak);
- // Read the result
- lseek(handler,0,SEEK_SET);
- char resp[80];
- read(handler,resp,80);
- close(handler);
- // Is that ok?
- return Boolean(strstr(resp,response)!=NULL);
-}
-
-TScreen::appHelperHandler TScreenX11::OpenHelperApp(TScreen::AppHelper kind)
-{
- static Boolean gqviewInstalled=False;
- static Boolean xpdfInstalled=False;
-
- if (kind==FreeHandler)
-   {
-    appHelperError=4;
-    return -1;
-   }
-
- if (kind==ImageViewer && appHelperHandlers)
-   {// Only one image viewer (gqview limitation)
-    ccIndex i, c=appHelperHandlers->getCount();
-    for (i=0; i<c; i++)
-       {
-        helperHandler *p=(helperHandler *)appHelperHandlers->at(i);
-        if (p->kind==ImageViewer)
-          {
-           appHelperError=1;
-           return -1;
-          }
-       }
-   }
-
- // Ensure we have a collection
- if (!appHelperHandlers)
-   {
-    appHelperHandlers=new TNSCollection(maxAppHelperHandlers,2);
-    allocatedHandlers=maxAppHelperHandlers;
-   }
- if (!appHelperHandlers)
-    return -1;
-
- // Do we have available handlers?
- ccIndex hNum=-1;
- if (appHelperHandlers->getCount()>=allocatedHandlers)
-   {
-    ccIndex i, c=appHelperHandlers->getCount();
-    for (i=0; i<c; i++)
-       {
-        helperHandler *p=(helperHandler *)appHelperHandlers->at(i);
-        if (p->kind==FreeHandler)
-          {
-           hNum=i;
-           break;
-          }
-       }
-    if (i==c)
-      {
-       appHelperError=6;
-       return -1;
-      }
-   }
-
- // Create/Recycle the structure
- helperHandler *h;
-
- if (hNum==-1)
-   {// Create a struct for it
-    h=(helperHandler *)(new char[sizeof(helperHandler)]); // To match the delete[]
-    h->kind=FreeHandler;
-    // Insert it
-    hNum=appHelperHandlers->insert(h);
-   }
- else
-    // Recycle
-    h=(helperHandler *)appHelperHandlers->at(hNum);
-
- // Open the remote server
- int nullH=open("/dev/null",O_WRONLY|O_BINARY|O_CREAT|O_TRUNC,S_IREAD|S_IWRITE);
- if (nullH==-1)
-   {
-    appHelperError=5;
-    return -1;
-   }
- switch (kind)
-   {
-    case ImageViewer:
-         gqviewInstalled=CheckInstalled("gqview -v","GQview",gqviewInstalled);
-         if (!gqviewInstalled)
-           {
-            appHelperError=2;
-            return -1;
-           }
-         break;
-    case PDFViewer:
-         xpdfInstalled=CheckInstalled("xpdf -v","xpdf version",xpdfInstalled);
-         if (!xpdfInstalled)
-           {
-            appHelperError=3;
-            return -1;
-           }
-         break;
-    case FreeHandler:
-         break;
-   }
- close(nullH);
- h->kind=kind;
- h->pid=0;
-
- return hNum;
-}
-
-Boolean TScreenX11::CloseHelperApp(appHelperHandler id)
-{
- if (!appHelperHandlers || id<0 || id>=appHelperHandlers->getCount())
-   {
-    appHelperError=4;
-    return False;
-   }
-
- char buf[80];
- int nullH=open("/dev/null",O_WRONLY|O_BINARY|O_CREAT|O_TRUNC,S_IREAD|S_IWRITE);
- if (nullH==-1)
-   {
-    appHelperError=5;
-    return -1;
-   }
-
- helperHandler *p=(helperHandler *)appHelperHandlers->at(id);
- int status;
- if (p->pid && waitpid(p->pid,&status,WNOHANG)==p->pid)
-    p->pid=0;
- switch (p->kind)
-   {
-    case ImageViewer:
-         System("gqview -r -q",&p->pid,-1,nullH,nullH);
-         break;
-    case PDFViewer:
-         CLY_snprintf(buf,80,"xpdf -remote SETEdit_%d_%d -quit",(int)getpid(),id);
-         System(buf,&p->pid,-1,nullH,nullH);
-         break;
-    case FreeHandler:
-         appHelperError=4;
-         return False;
-   }
-
- close(nullH);
- p->kind=FreeHandler;
- p->pid=0;
-
- return True;
-}
-
-Boolean TScreenX11::SendFileToHelper(appHelperHandler id, const char *file,
-                                     void *extra)
-{
- if (!appHelperHandlers || id<0 || id>=appHelperHandlers->getCount())
-   {
-    appHelperError=4;
-    return False;
-   }
-
- int len=160+strlen(file);
- int page;
- AllocLocalStr(buf,len);
- int nullH=open("/dev/null",O_WRONLY|O_BINARY|O_CREAT|O_TRUNC,S_IREAD|S_IWRITE);
- if (nullH==-1)
-   {
-    appHelperError=5;
-    return -1;
-   }
-
- helperHandler *p=(helperHandler *)appHelperHandlers->at(id);
- int status;
- if (p->pid && waitpid(p->pid,&status,WNOHANG)==p->pid)
-    p->pid=0;
- switch (p->kind)
-   {
-    case ImageViewer:
-         CLY_snprintf(buf,len,"gqview -r \"file:%s\"",file);
-         System(buf,&p->pid,-1,nullH,nullH);
-         break;
-    case PDFViewer:
-         page=0;
-         if (extra)
-            page=*((int *)extra);
-         CLY_snprintf(buf,len,"xpdf -remote SETEdit_%d_%d -raise \"%s\" %d",
-                      (int)getpid(),id,file,page);
-         System(buf,&p->pid,-1,nullH,nullH);
-         break;
-    case FreeHandler:
-         appHelperError=4;
-         return False;
-   }
-
- close(nullH);
-
- return True;
-}
-
-const char *TScreenX11::GetHelperAppError()
-{
- return appHelperNameError[appHelperError];
-}
-
-
-/*****************************************************************************
-
-  Update thread stuff:
-
-  Problem: In X11 (and most GUI systems) the contents of the window aren't
-  stored/cached. So when a window is not visible (exposed is the X11 term) its
-  contents aren't stored anywhere. When the window (or a portion) becomes
-  exposed X11 sends an expose event. If the application isn't collecting
-  expose events, because is blocked waiting for a child completion or
-  performing a long computation, the exposed portion of the window is filled
-  with a black rectangle (this color is selected during TScreenX11 creation).
-   This is very bad for applications like RHIDE where the debugger is blocked
-  until the debuggee is stoped. It means that you most probably won't be able
-  to see RHIDE's window content while the debuggee is running. Even when it
-  isn't critical is ugly.
-   The idea is to periodically collect the expose events even when the process
-  is blocked.
-   I (SET) implemented it using two different approaches:
-
-  1) POSIX threads. They seems to be poorly implemented in Linux (i.e. glibc
-  2.2.5 and 2.3.1). This solution is elegant but unstable, at least for
-  SETEdit and RHIDE running in Debian GNU/Linux Woody and Sarge.
-  2) setitimer and SIGALRM. This is really simple and seems to be more stable.
-
-   I keep both so people can experiment with both, each approachs have its
-  advantes and disadvantages.
-
-*****************************************************************************/
-
-#if USE_ALARM_FOR_THREAD
-
-/*****************************************************************************
-
-  Update thread using the setitimer approach.
-
-  This approach uses the timer alarm (SIGALRM for Linux and SIGPROF for
-Solaris, looks like Solaris didn't implement it properly).
-  This mechanism is much more reliable than the POSIX thread mechanism, at
-least for Linux.
-  The use of a signal ensures:
-
-1) The main "thread" can't take the CPU while the signal is executing. And as
-the signal blocks itself by default it doesn't have to be reentrant.
-2) A child process doesn't inherits the timers so there is no risk to
-inherit problems.
-
-Advantages:
-1) The mutex implementation is trivial.
-2) We don't need pthread library.
-
-Disadvantages:
-1) The program can't use this alarm for itself.
-2) Implementations of the alarm mechanism should be POSIX compliant.
-    
-*****************************************************************************/
-
-// Used to print a mark every 250 updates
-#define TIC 0
-// Prints some debug info when the mechanism is dis/enabled
-#define DBG_ALM_STATE 0
-
-int     TVX11UpdateThread::running=0;
-int     TVX11UpdateThread::initialized=0;
-const int refreshTime=10000; // 10 ms
-static sig_atomic_t mutex;
-static int updates=0;
-static volatile int safeToUnHook;
-
-void TVX11UpdateThread::UpdateThread(int signum)
-{
- if (!running)
-   {
-    safeToUnHook=1;
-    return;
-   }
- // Here TIMER_ALARM signal is blocked and the process can take the CPU
- if (!mutex)
-   {// No mutex, we can do our work.
-    TScreenX11::ProcessGenericEvents();
-   }
- if (TIC)
-   {
-    updates++;
-    if (updates>250)
-      {
-       printf("Tic (%d)\n",getpid());
-       updates=0;
-      }
-   }
- microAlarm(refreshTime);
-}
-
-void TVX11UpdateThread::StartUpdateThread()
-{
- long aux;
- if (TScreen::optSearch("UseUpdateThread",aux) && aux==1)
-   {
-    if (DBG_ALM_STATE)
-       printf("Using setitimer for the update stuff (PID=%d)\n",getpid());
-    mutex=0;
-    initialized=1;
-    running=1;
-    safeToUnHook=0;
-    // Trap the alarm signal
-    struct sigaction s;
-    s.sa_handler=UpdateThread;
-    sigemptyset(&s.sa_mask);
-    #if defined(SA_RESTART)
-        s.sa_flags=SA_RESTART;
-    #else
-        s.sa_flags=0;
-    #endif // SA_RESTART
-    sigaction(TIMER_ALARM,&s,NULL);
-    // Set the alarm
-    microAlarm(refreshTime);
-   }
-}
-
-void TVX11UpdateThread::microAlarm(unsigned int usec)
-{
- struct itimerval newV;
- newV.it_interval.tv_usec=0;
- newV.it_interval.tv_sec=0;
- newV.it_value.tv_usec=(long int)usec;
- newV.it_value.tv_sec=0;
- setitimer(ITIMER_USED,&newV,0);
-}
-
-void TVX11UpdateThread::SemaphoreOn()
-{
- mutex++;
- // We will never collide with the signal because the signal is atomic from
- // our point of view.
-}
-
-void TVX11UpdateThread::SemaphoreOff()
-{
- --mutex;
- if (mutex<0)
-    printf("Oh no!!! mutex<0\n");
-}
-
-int TVX11UpdateThread::CheckSecondThread()
-{
- return (initialized && running);
-}
-
-void TVX11UpdateThread::StopUpdateThread()
-{
- if (IS_SECOND_THREAD_ON)
-   {
-    if (DBG_ALM_STATE)
-       printf("Stopping update thread for PID=%d\n",getpid());
-    running=0;
-    while (!safeToUnHook);
-    // Un-Trap the alarm signal
-    struct sigaction s;
-    s.sa_handler=SIG_IGN;
-    sigemptyset(&s.sa_mask);
-    #if defined(SA_RESTART)
-        s.sa_flags=SA_RESTART;
-    #else
-        s.sa_flags=0;
-    #endif // SA_RESTART
-    sigaction(TIMER_ALARM,&s,NULL);
-   }
-}
-#elif HAVE_LINUX_PTHREAD
-/**************************************************************************
-
- Update thread stuff
-
-   This code is under test and for this reason must be enabled manually
- defining the UseUpdateThread configuration variable.
-
- Some important details: [glibc 2.2.5 also 2.3.1]
-
- * Linux threads are implemented using processes (clone kernel syscall).
-   I think that they will never be really POSIX compliant if this mechanism
-   is used. One major flaw is that getpid() will return a different value
-   for each thread exposing the fake implementation.
-
- * Looks like exec can't be reliably called from a multithread program. It
-   works perfectly for small and medium examples but does all kind of nasty
-   things when called from big programs like SETEdit. Looking at the glibc
-   code you can see system() implementation knows it and checks if we have
-   "threads", in this case it first disables all async events. This is done
-   with a macro and I couldn't find any function in glibc to do the same
-   from my code.
-
- * According to POSIX when you do a fork the new process inherits all the
-   threads and calling exec terminates all threads. In this way fork/exec
-   work ok. In Linux implementation it doesn't happend. According to glibc
-   docs:
-     `pthread_kill_other_threads_np' is a non-portable LinuxThreads
-     extension.  It causes all threads in the program to terminate
-     immediately, except the calling thread which proceeds normally. It
-     is intended to be called just before a thread calls one of the
-     `exec' functions, e.g. `execve'.
-     ...
-     According to POSIX 1003.1c, a successful `exec*' in one of the
-     threads should automatically terminate all other threads in the
-     program.  This behavior is not yet implemented in LinuxThreads.
-     Calling `pthread_kill_other_threads_np' before `exec*' achieves
-     much of the same behavior, except that if `exec*' ultimately
-     fails, then all other threads are already killed.
-   But as threads aren't inherited you kill nothing or the parent threads :-(
-   If you call it and then try to create a new thread it is created but
-   your process dies with "Signal Real-time 0".
-
- * The first time you create a "thread" an auxiliar process is created.
-   Looks like this process is the one in charge to coordinate the other
-   processes that emulates threads. This should be transparent, but it
-   isn't. If you fork/create a process group/system and then you kill the
-   group then it kills your threads and the auxiliar process becomes a
-   Zombie. Calling exec from big programs looks like you have chances to
-   get a thread switch and then the exec tries to attach to the "thread"
-   process. This confusion kills the thread, lets the child sleeping and
-   the auxiliar process becomes a Zombie.
-
-   I figure out that implementing POSIX threads is a complex task and that
- I could be doing wrong things, but is also obvious that LinuxThreads as
- implemented by glibc 2.2.5 is a nightmare.
-
-**************************************************************************/
-
-// Linux implementation of POSIX threads
-
-// Here to avoid pulling the headers everywhere
-static pthread_t th;
-static pthread_mutex_t mutex;
-int     TVX11UpdateThread::running=0;
-int     TVX11UpdateThread::initialized=0;
-timeval TVX11UpdateThread::refWatchDog,
-        TVX11UpdateThread::nowWatchDog;
-int     TVX11UpdateThread::watchDogVal=1;
-
-void *TVX11UpdateThread::UpdateThread(void *)
-{
- // I tried it in the hope that could help to kill childs without affecting
- // this thread, but isn't enough.
- if (0)
-   {
-    sigset_t newMask;
-    sigemptyset(&newMask);
-    sigaddset(&newMask,SIGTERM);
-    pthread_sigmask(SIG_BLOCK,&newMask,NULL);
-   }
-
- running=1;
-
- while (running)
-   {
-    usleep(10);
-    watchDogVal=0;
-    TScreenX11::ProcessGenericEvents();
-   }
- return NULL;
-}
-
-void TVX11UpdateThread::SemaphoreOn()
-{
- if (initialized)
-    pthread_mutex_lock(&mutex);
-}
-
-void TVX11UpdateThread::SemaphoreOff()
-{
- if (initialized)
-    pthread_mutex_unlock(&mutex);
-}
-
-int TVX11UpdateThread::CheckSecondThread()
-{
- if (!initialized || !running)
-    return 0;
-
- gettimeofday(&nowWatchDog,0);
- timeval aux=nowWatchDog;
- SubstractRef(nowWatchDog,refWatchDog);
- if (nowWatchDog.tv_sec>=1)
-   {
-    if (watchDogVal)
-      {
-       printf("Oops! looks like the update thread is dead\n");
-       running=0;
-       return 0;
-      }
-    watchDogVal=1;
-    refWatchDog=aux;
-   }
- return 1;
-}
-
-void TVX11UpdateThread::StartUpdateThread()
-{
- long aux;
- if (TScreen::optSearch("UseUpdateThread",aux) && aux==1)
-   {
-    // This initialization needs Unix 98 compliance.
-    // Linux is ok and the Solaris 7 manpages says that's also ok.
-    pthread_mutexattr_t mt_attr;
-    pthread_mutexattr_init(&mt_attr);
-    pthread_mutexattr_settype(&mt_attr,PTHREAD_MUTEX_RECURSIVE);
-    pthread_mutex_init(&mutex,&mt_attr);
-    // Now we can use the mutex
-    initialized=1;
-
-    gettimeofday(&refWatchDog,0);
-    if (pthread_create(&th,NULL,UpdateThread,NULL)==0)
-       printf("Update thread succesfuly created\n");
-    else
-       perror("Error creating update thread");
-   }
-}
-
-void TVX11UpdateThread::StopUpdateThread()
-{
- if (IS_SECOND_THREAD_ON)
-   {
-    void *ret;
-    running=0;
-    printf("Waiting for update thread completion\n");
-    if (pthread_join(th,&ret)==0)
-       printf("Update thread finished OK\n");
-    else
-       perror("Error waiting for update thread completion");
-   }
-}
-#endif
-// End of Linux implementation of POSIX threads
-
-
-#else
-
-#include <tv/x11/screen.h>
-#include <tv/x11/key.h>
-#include <tv/x11/mouse.h>
-
-#endif // defined(TVOS_UNIX) && defined(HAVE_X11)
-
+#endif // HAVE_ALLEGRO

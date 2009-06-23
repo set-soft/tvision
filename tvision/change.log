@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.732  2009/06/22 15:14:45  set
+* Modified: TParamText::setText to take a constant string as first argument
+(not modified).
+
 Revision 2.731  2009/03/17 13:04:09  set
 * Modified: [WWW] SF Logo according to the new policy.
 * Fixed: [WWW] Some HTML errors.

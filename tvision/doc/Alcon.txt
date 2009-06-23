@@ -1,0 +1,112 @@
+Driver: Alcon
+Author: Grzegorz Adam Hankiewicz, Salvador E. Tropea
+Status: Not complete
+Revision: $Revision$
+
+This is the driver used for various platforms using the Allegro
+(a game programming library): http://alleg.sourceforge.net/.
+It has the potential of running under the same platforms supported
+by Allegro, but at the moment it is being tested only under Linux
+(X11 driver precisely).
+
+
+1. INTRODUCTION
+2. FEATURES
+3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
+
+
+1. INTRODUCTION
+
+   You will need a version of Allegro installed on your system. The
+   driver has the potential to work with a stable Allegro release
+   (4.0.x), but on my system I always have the latest unstable
+   branch (4.1.x), so you might need this to build the driver. In
+   the future I'll make sure it works with 4.0.x, at the moment I
+   don't really care as there are not many users (two?).
+
+   Building of the examples/demo seems to work ok. Building of
+   Setedit is at the moment not automatic. In order to have
+   this driver built by TVision, you need to explicitly pass
+   "--with-alcon" to the configure script. And verify that Allegro
+   is OK in the output.
+
+   Also, any TVision programs you build with this driver will now
+   need the END_OF_MAIN() macro at the end of your main entry point,
+   like this:
+
+      #define Uses_TProgram
+      #include <tv.h>
+      
+      int main(int argc, char *argv[])
+      {
+      ...
+      }
+      END_OF_MAIN();
+
+   That's needed for Allegro's internal machinery. In order to have
+   the END_OF_MAIN declaration you have to request TProgram class,
+   but that's usually requested by all sources declaring main.
+
+
+2. FEATURES
+
+   The driver supports (or rather will some day):
+
+   * Fonts.
+   * Palette.
+   * Most keyboard combinations, as long as Allegro's driver allows.
+   * Mouse.
+   * Weird graphic cursor capabilities.
+
+
+3. CONFIGURATION VARIABLES SPECIFIC FOR THIS DRIVER
+
+   Please read the documentation about the configuration file first.
+
+   This driver has by default a very low priority. It is in
+   development, so you will need to bump the priority integer to
+   see it working. If you can't see any graphical difference between
+   X11 and Alcon, that means Alcon might not have been selected as
+   output driver. Ctrl+Alt+End (standard Allegro shutdown keyboard
+   shortcut) to see if the program finishes.
+
+   Example of configuration file ~/.tvrc:
+
+       [TV]
+       {
+           [Alcon]
+           {
+               Priority=220
+               KeyboardMapping="langcode"
+               CursorHideNormal=1
+               CursorOnSquare=10
+               CursorOnCross=15
+           }
+       }
+
+   The priority has to be an integer number. The higher it is, the
+   most likely the AlCon driver will be selected (or rather, tried
+   before others).
+
+   The KeyboardMapping is a string specifying the keyboard mapping
+   that should be used. By default Allegro looks for an allegro.cfg
+   file with the correct keyboard specification. To avoid creating
+   one, you can use this variable, which overrides whatever selection
+   is used later by Allegro. langcode is a two letter string with
+   the iso name of the language. Note that the keyboard mapping
+   datafile (keyboard.dat) has to be available somewhere on your
+   system for this to have any effect at all.
+
+   CursorHideNormal is an integer variable. If it is different than
+   zero, the normal cursor won't be drawn ever.
+
+   CursorOnSquare is an integer variable. If it is different than
+   zero, a square will be drawn bordering the cell the cursor is at.
+
+   CursorOnCross is an integer variable. If it is different than
+   zero, a cross will be drawn through the cell the cursor is at.
+
+   Note: All the integer variables related to the cursor are
+   accumulative.  This means you can set many at the same time and
+   get their combined effect.
+

@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 2001-2007 by Salvador E. Tropea
+  Copyright 2001-2009 by Salvador E. Tropea
   This file is covered by the GPL license.
   
   Module: Screen
@@ -260,6 +260,10 @@ stDriver Drivers[]=
    TV_WinGr_Driver_Entry
    { TV_WinNTDriverCheck,  50, "WinNT" },
   #endif
+ #endif
+
+ #ifdef HAVE_ALLEGRO
+   { TV_AlconDriverCheck,  30, "AlCon" },
  #endif
 };
 

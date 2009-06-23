@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 2002 by Salvador Eduardo Tropea (SET)
+  Copyright 2002-2009 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
   Module: Config File
@@ -173,7 +173,7 @@ char *TVConfigFile::GetString()
      else
        *dest=*ori;
  *dest=0;
- return newStrL(start,s-start-1);
+ return ret;//newStrL(start,s-start-1);
 }
 
 long TVConfigFile::GetInteger()

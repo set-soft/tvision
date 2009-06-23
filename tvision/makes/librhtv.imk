@@ -40,6 +40,11 @@ OBJFILES=\
 	../makes/obj/unc_nt$(ExOBJ) \
 	../makes/obj/validfilename$(ExOBJ) \
 	../makes/obj/yieldpro$(ExOBJ) \
+	obj/alcon$(ExOBJ) \
+	obj/alcondis$(ExOBJ) \
+	obj/alconkey$(ExOBJ) \
+	obj/alconmouse$(ExOBJ) \
+	obj/alconscr$(ExOBJ) \
 	obj/calcdisp$(ExOBJ) \
 	obj/calculat$(ExOBJ) \
 	obj/codepage$(ExOBJ) \
@@ -351,6 +356,11 @@ librhtv$(ExLIB):: \
 	../makes/obj/unc_nt$(ExOBJ) \
 	../makes/obj/validfilename$(ExOBJ) \
 	../makes/obj/yieldpro$(ExOBJ) \
+	obj/alcon$(ExOBJ) \
+	obj/alcondis$(ExOBJ) \
+	obj/alconkey$(ExOBJ) \
+	obj/alconmouse$(ExOBJ) \
+	obj/alconscr$(ExOBJ) \
 	obj/calcdisp$(ExOBJ) \
 	obj/calculat$(ExOBJ) \
 	obj/codepage$(ExOBJ) \
@@ -625,6 +635,69 @@ librhtv$(ExLIB):: \
 	$(RHIDE_COMPILE_ARCHIVE)
 
 INCLUDE00=../compat/compat$(ExIMK)
+
+obj/alcon$(ExOBJ):: ../classes/alcon/alcon.cc \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/alcon/alcon.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/tkeyext.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/alcondis$(ExOBJ):: ../classes/alcon/alcondis.cc \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/alcon/alcon.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/tkeyext.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/alcon/screen.h \
+	$(INCLUDE_DIR)/tv/alcon/mouse.h \
+	$(INCLUDE_DIR)/tv/alcon/key.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/alconkey$(ExOBJ):: ../classes/alcon/alconkey.cc \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/alcon/alcon.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/tkeyext.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/alcon/key.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/alconmouse$(ExOBJ):: ../classes/alcon/alconmouse.cc \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/alcon/alcon.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/tkeyext.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/alcon/mouse.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/alconscr$(ExOBJ):: ../classes/alcon/alconscr.cc \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/alcon/alcon.h \
+	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/tkeyext.h \
+	$(INCLUDE_DIR)/tv/tkeys.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
+	$(INCLUDE_DIR)/tv/alcon/key.h \
+	$(INCLUDE_DIR)/tv/alcon/mouse.h \
+	$(INCLUDE_DIR)/tv/alcon/screen.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
 
 obj/calcdisp$(ExOBJ):: ../classes/calcdisp.cc \
 	$(INCLUDE_DIR)/compatlayer.h \

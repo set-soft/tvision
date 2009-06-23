@@ -40,6 +40,11 @@ OBJFILES=\
 	../makes/obj/unc_nt$(ExOBJ) \
 	../makes/obj/validfilename$(ExOBJ) \
 	../makes/obj/yieldpro$(ExOBJ) \
+	obj/alcon$(ExOBJ) \
+	obj/alcondis$(ExOBJ) \
+	obj/alconkey$(ExOBJ) \
+	obj/alconmouse$(ExOBJ) \
+	obj/alconscr$(ExOBJ) \
 	obj/calcdisp$(ExOBJ) \
 	obj/calculat$(ExOBJ) \
 	obj/codepage$(ExOBJ) \
@@ -351,6 +356,11 @@ librhtv$(ExLIB):: \
 	../makes/obj/unc_nt$(ExOBJ) \
 	../makes/obj/validfilename$(ExOBJ) \
 	../makes/obj/yieldpro$(ExOBJ) \
+	obj/alcon$(ExOBJ) \
+	obj/alcondis$(ExOBJ) \
+	obj/alconkey$(ExOBJ) \
+	obj/alconmouse$(ExOBJ) \
+	obj/alconscr$(ExOBJ) \
 	obj/calcdisp$(ExOBJ) \
 	obj/calculat$(ExOBJ) \
 	obj/codepage$(ExOBJ) \
@@ -625,6 +635,21 @@ librhtv$(ExLIB):: \
 	$(RHIDE_COMPILE_ARCHIVE)
 
 INCLUDE00=../compat/compat$(ExIMK)
+
+obj/alcon$(ExOBJ):: ../classes/alcon/alcon.cc
+	$(RHIDE_COMPILE_CC)
+
+obj/alcondis$(ExOBJ):: ../classes/alcon/alcondis.cc
+	$(RHIDE_COMPILE_CC)
+
+obj/alconkey$(ExOBJ):: ../classes/alcon/alconkey.cc
+	$(RHIDE_COMPILE_CC)
+
+obj/alconmouse$(ExOBJ):: ../classes/alcon/alconmouse.cc
+	$(RHIDE_COMPILE_CC)
+
+obj/alconscr$(ExOBJ):: ../classes/alcon/alconscr.cc
+	$(RHIDE_COMPILE_CC)
 
 obj/calcdisp$(ExOBJ):: ../classes/calcdisp.cc  
 	$(RHIDE_COMPILE_CC)
