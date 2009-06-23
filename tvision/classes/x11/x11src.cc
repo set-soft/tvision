@@ -147,7 +147,13 @@ TScreenX11::~TScreenX11()
  if (sizeHints)
     XFree(sizeHints);
  if (classHint)
+   {
+    delete[] classHint->res_name;
+    delete[] classHint->res_class;
+    classHint->res_name=NULL;
+    classHint->res_class=NULL;
     XFree(classHint);
+   }
 
  if (xic)
     XDestroyIC(xic);
@@ -3073,6 +3079,11 @@ static volatile int safeToUnHook;
 
 void TVX11UpdateThread::UpdateThread(int signum)
 {
+ if (!running)
+   {
+    safeToUnHook=1;
+    return;
+   }
  // Here TIMER_ALARM signal is blocked and the process can take the CPU
  if (!mutex)
    {// No mutex, we can do our work.
@@ -3090,12 +3101,7 @@ void TVX11UpdateThread::UpdateThread(int signum)
        updates=0;
       }
    }
- if (running)
-   {// We still running, set the timer again
-    microAlarm(refreshTime);
-   }
- else
-    safeToUnHook=1;
+ microAlarm(refreshTime);
 }
 
 void TVX11UpdateThread::StartUpdateThread()

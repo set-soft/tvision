@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2007 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2009 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -19,6 +19,7 @@ $GPMVersionNeeded='1.10';
 # That's a test to see if that works:
 $NCursesVersionNeeded='1.8.6';
 $DJGPPVersionNeeded='2.0.2';
+$AllegroVersionNeeded='4';
 unlink $ErrorLog;
 $UseDummyIntl=0;
 
@@ -84,6 +85,7 @@ if ($Compf eq 'Cygwin')
    LookForXlib();
   }
 LookForIntlSupport();
+LookForAllegro($AllegroVersionNeeded);
 LookForEndianess();
 LookForMaintainerTools() if $conf{'MAINTAINER_MODE'} eq 'yes';
 
@@ -147,6 +149,19 @@ $MakeDefsRHIDE[2].=' mss' if @conf{'mss'} eq 'yes';
 $MakeDefsRHIDE[2].=' intl' if ((($OSf eq 'FreeBSD') || ($OSf eq 'QNXRtP')) && ($conf{'intl'} eq 'yes'));
 $MakeDefsRHIDE[2].=' pthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
 $MakeDefsRHIDE[2].=' termlib unix' if ($OSf eq 'QNX4');
+if ($conf{'HAVE_ALLEGRO'} eq 'yes')
+  {
+   $aux=`allegro-config --libs`;
+   $a1=$aux;
+   $aux=~s/\-L(\S+)//g;
+   $AllegroLibs=$aux;
+   $aux=~s/\-l//g;
+   $MakeDefsRHIDE[2].=" $aux";
+   $aux=$a1;
+   $aux=~s/\-l(\S+)//g;
+   $aux=~s/\-L//g;
+   $AllegroPath=$aux;
+  }
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
@@ -165,6 +180,7 @@ if ($OS eq 'UNIX')
    $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
+   $MakeDefsRHIDE[3].=$AllegroPath.' ' if $conf{'HAVE_ALLEGRO'} eq 'yes';
   }
 elsif ($OS eq 'DOS')
   {
@@ -185,6 +201,7 @@ elsif ($OS eq 'DOS')
    $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
+   $MakeDefsRHIDE[3].=$AllegroPath.' ' if $conf{'HAVE_ALLEGRO'} eq 'yes';
   }
 elsif ($OS eq 'Win32')
   {
@@ -195,6 +212,7 @@ elsif ($OS eq 'Win32')
    $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
+   $MakeDefsRHIDE[3].=$AllegroPath.' ' if $conf{'HAVE_ALLEGRO'} eq 'yes';
   }
 $MakeDefsRHIDE[4]='STDCPP_LIB='.$stdcxx;
 # C options for dynamic lib
@@ -240,6 +258,7 @@ if ($OS eq 'UNIX')
    $aux.=(($OSf eq 'QNXRtP') ? ' -lncursesS' : ' -lncurses') unless $conf{'ncurses'} eq 'no';
    $aux.=" $stdcxx -lm -lc";
    $aux.=' -lpthread' if $conf{'HAVE_LINUX_PTHREAD'} eq 'yes';
+   $aux.=' '.$AllegroLibs if ($conf{'HAVE_ALLEGRO'} eq 'yes');
    $aux.=' libtvfintl.a' if ($OSf eq 'Darwin') && $UseDummyIntl;
    $MakeDefsRHIDE[7].=$aux;
   }
@@ -809,6 +828,34 @@ int main(void)
  print "$test OK\n";
 }
 
+sub LookForAllegro
+{
+ my $vNeed=$_[0],$test;
+
+ print 'Looking for allegro library: ';
+ if (@conf{'HAVE_ALLEGRO'})
+   {
+    print "@conf{'HAVE_ALLEGRO'} (cached)\n";
+    return;
+   }
+ $test=`allegro-config --version`;
+ chomp $test;
+ if (!length($test))
+   {
+    $conf{'HAVE_ALLEGRO'}='no';
+    print " no, disabling AlCon\n";
+    return;
+   }
+ if (!CompareVersion($test,$vNeed))
+   {
+    $conf{'HAVE_ALLEGRO'}='no';
+    print " too old, disabling AlCon\n";
+    return;
+   }
+ $conf{'HAVE_ALLEGRO'}='yes';
+ print "$test OK\n";
+}
+
 sub LookForNCurses
 {
  my ($vNeed)=@_;
@@ -1252,6 +1299,7 @@ sub CreateConfigH
  $text.=ConfigIncDef('HAVE_DEFINE_KEY','ncurses 4.2 or better have define_key (In Linux)');
  $text.=ConfigIncDefYes('HAVE_KEYSYMS','The X11 keysyms are there');
  $text.=ConfigIncDefYes('HAVE_X11','X11 library and headers');
+ $text.=ConfigIncDefYes('HAVE_ALLEGRO','Allegro library');
  # Disable i8n only if the user requested, otherwise use gettext or the dummy
  $conf{'HAVE_INTL_SUPPORT'}=@conf{'no-intl'} eq 'yes' ? 'no' : 'yes';
  $text.=ConfigIncDefYes('HAVE_INTL_SUPPORT','International support with gettext');
