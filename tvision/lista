@@ -1,6 +1,11 @@
 borland.txt
 change.log
 change1.log
+classes/alcon/alcon.cc
+classes/alcon/alcondis.cc
+classes/alcon/alconkey.cc
+classes/alcon/alconmouse.cc
+classes/alcon/alconscr.cc
 classes/calcdisp.cc
 classes/calculat.cc
 classes/codepage.cc
@@ -233,6 +238,7 @@ debian/watch.ex
 djgpp/compress.pl
 +djgpp/distlist
 djgpp/tmp/delete.me
+doc/Alcon.txt
 doc/ConfigFile.txt
 doc/CodePages.txt
 doc/DOS.txt
@@ -507,6 +513,10 @@ include/cl/glob.h
 include/cl/utime.h
 include/cl/utsname.h
 include/compatlayer.h
+include/tv/alcon/alcon.h
+include/tv/alcon/key.h
+include/tv/alcon/mouse.h
+include/tv/alcon/screen.h
 include/tv/calc.h
 include/tv/codepage.h
 include/tv/configtv.h
