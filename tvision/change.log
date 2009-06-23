@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.734  2009/06/23 17:15:21  set
+* Modified: Version to 2.2.0.
+
 Revision 2.733  2009/06/23 16:48:25  set
 * Added: AlCon driver, this is the conio emulation code on top of Allegro.
 From the alcon branch and contributed by Grzegorz Adam Hankiewicz.
