@@ -619,7 +619,7 @@ void TGKeyLinux::FillTEvent(TEvent &e)
  GKey();
  e.keyDown.charScan.charCode=lastModifiers & kblAltL ? 0 : ascii;
  e.keyDown.charScan.scanCode=ascii;
- e.keyDown.charScan.charCode=ascii; // Needed for GetAltChar
+ e.keyDown.charCode=ascii; // Needed for GetAltChar
  e.keyDown.raw_scanCode=ascii;
  e.keyDown.keyCode=lastKeyCode;
  e.keyDown.shiftState=lastModifiers;
