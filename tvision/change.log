@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.372  2009/06/24 12:29:46  set
+* Fixed: [Linux] the keyboard driver filled charScan.charCode twice and
+didn't fill charCode members of the keyDown event.
+
 Revision 2.399.2.371  2009/06/23 17:50:31  set
 * Modified: Version in tv.h.
 

@@ -151,7 +151,7 @@ char *TVConfigFile::GetString()
     return 0;
  s++;
  char *ret=new char[len+1], *ori, *dest;
- for (ori=start, dest=ret; *ori; ori++, dest++)
+ for (ori=start, dest=ret; *ori && *ori!='"'; ori++, dest++)
      if (*ori=='\\')
        {
         ori++;
