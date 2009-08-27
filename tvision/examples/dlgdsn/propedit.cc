@@ -220,7 +220,8 @@ void TLinkList::removeMe(TDsgObj * aDsgObj)
       this->free(link);
       switch(aDsgObj->viewType)
       {
-         case vtVScroll...vtHScroll:
+         case vtVScroll:
+         case vtHScroll:
             if (ScrollList->search(&data->thisName, index))
             {
                removeNotify(ScrollList, index);
@@ -256,7 +257,8 @@ void TLinkList::add(TView * aView, TDsgObj * aDsgObj)
    TDsgObjData * data = (TDsgObjData *)aDsgObj->attributes;
    switch(aDsgObj->viewType)
    {
-      case vtVScroll...vtHScroll: ScrollList->insert(&data->thisName); break;
+      case vtVScroll:
+      case vtHScroll: ScrollList->insert(&data->thisName); break;
       case vtStatic: break;
       case vtButton: break;
       case vtLabel:

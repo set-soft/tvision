@@ -158,7 +158,8 @@ const char * getTextParam(TDsgObj * aObj)
       case vtStatic: return ((TDStaticData *)aObj->attributes)->text;
       case vtButton: return ((TDButtonData *)aObj->attributes)->title;
       case vtDialog: return ((TDDialogData *)aObj->attributes)->title;
-      case vtRadioButton...vtCheckBox:
+      case vtRadioButton:
+      case vtCheckBox:
         if ( ((TDClusterData *)aObj->attributes)->items == 0 )
            strcpy(buf, "0");
         else
