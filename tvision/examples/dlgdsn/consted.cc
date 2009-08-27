@@ -325,7 +325,8 @@ void TConstEdit::handleEvent(TEvent& event)
          List->drawView();
          clearEvent(event);
          break;
-      case cmClusterMovedTo...cmClusterPress:
+      case cmClusterMovedTo:
+      case cmClusterPress:
          ((TRadioButtons *)event.message.infoPtr)->getData(&sort);
          cList->sort(sort);
          List->drawView();

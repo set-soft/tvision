@@ -632,7 +632,8 @@ void SaveObject( ofpstream& s, TDsgObj * obj )
         }
         else s << Count;
         break;
-      case vtRadioButton...vtCheckBox:
+      case vtRadioButton:
+      case vtCheckBox:
         items = (TStringCollection *)((TDClusterData *)obj->attributes)->items;
         Count = items->getCount();
         s << Count;
