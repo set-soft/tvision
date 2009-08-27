@@ -1549,8 +1549,17 @@ when compiler version 7.0 was released.
  #endif
  #ifndef CLY_BooleanDefined
   #define CLY_BooleanDefined 1
-  /* Simple Boolean type */
-  enum Boolean { False, True };
+   #if _MSC_VER >= 1500
+     #undef Boolean
+     #undef False
+     #undef True
+     #define Boolean bool
+     #define True true
+     #define False false
+   #else
+    /* Simple Boolean type */
+    enum Boolean { False, True };
+   #endif
  #endif
  #ifdef Uses_string
   #undef  Include_string
