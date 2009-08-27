@@ -16,6 +16,7 @@ different.
 
 #define Uses_stdio
 #define Uses_string
+#define Uses_limits
 #define Uses_TProgram
 #define Uses_TApplication
 #define Uses_TRect

@@ -1,0 +1,356 @@
+# Makefile for MS VC 5.0-2008
+# Modified for use with MS NMAKE 
+# Run: nmake -f Makefile.nmk all
+
+# Add here -IPATH_TO_MSVC_HEADERS (to both variables)
+# example: -ID:\MVS\VC98\Include
+#In order for the makefile to work, you have to start "Visual Studio xxxx Command prompt" 
+#                                                  or "Visual Studio xxxx x64 Cross tools command prompt"
+#I'm not sure about pre 2005 settings. Maybe you need to use them for 2005 as well, please report
+CFLAGS=-O2 -I../winnt/include -I../include -D_WIN32 /GR- /EHs-c-
+
+#VS 2008 64bit: CFLAGS=-O2 -I./include -I../include -D_WIN64 /GR- /EHs-c-
+#VS 2008 32bit: CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHs-c-
+#VS pre 2005  : CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
+
+# The /EHsc options seems to be needed by .NET 2003 compiler.
+# I'm not sure if they interfere with older versions, please report about it.
+CXXFLAGS=-O2 -I../winnt/include -I../include -D_WIN32 /GR- /EHsc
+
+#VC 2008 64bit: CXXFLAGS=-O2 -I./include -I../include -D_WIN64 /GR- /EHsc
+#VC 2008 32bit: CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHsc
+#VS pre 2005  : CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX- /EHsc
+
+OBJDIR=../winnt/obj_ms
+
+#clean default extension list
+.SUFFIXES:
+#append extensions to list
+.SUFFIXES: .cc .cpp .c
+
+
+CC=cl /nologo
+CXX=cl /nologo
+
+
+############### BHELP
+BHELPSRC = bhelp
+BHELPOBJ = $(OBJDIR)/bhelp.o $(OBJDIR)/thelp.o
+BHELPEXE = bhelp.exe
+
+{$(BHELPSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+bhelp.exe: $(BHELPOBJ)
+	link /out:$(BHELPSRC)/$(BHELPEXE) $(BHELPOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+############### CLIPBOARD
+CLIPBOARDSRC = clipboard
+CLIPBOARDOBJ = $(OBJDIR)/test.o
+CLIPBOARDEXE = clipboard.exe
+
+{$(CLIPBOARDSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+clipboard.exe: $(CLIPBOARDOBJ)
+	link /out:$(CLIPBOARDSRC)/$(CLIPBOARDEXE) $(CLIPBOARDOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+	
+############### TVDEMO
+TVDEMOSRC = demo
+TVDEMOOBJ = $(OBJDIR)/ascii.o $(OBJDIR)/calendar.o $(OBJDIR)/fileview.o $(OBJDIR)/gadgets.o\
+            $(OBJDIR)/mousedlg.o $(OBJDIR)/puzzle.o $(OBJDIR)/tvdemo1.o $(OBJDIR)/tvdemo2.o $(OBJDIR)/tvdemo3.o
+TVDEMOEXE = tvdemo.exe
+
+{$(TVDEMOSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+tvdemo.exe: $(TVDEMOOBJ)
+	link /out:$(TVDEMOSRC)/$(TVDEMOEXE) $(TVDEMOOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+	
+############### DESKLOGO
+DESKLOGOSRC = desklogo
+
+{$(DESKLOGOSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+desklogo.exe: $(OBJDIR)/desklogo.o $(OBJDIR)/set-logo.o $(OBJDIR)/tv_logo.o
+	link /out:$(DESKLOGOSRC)/desklogo.exe $(OBJDIR)/desklogo.o libtv.lib user32.lib gdi32.lib
+	link /out:$(DESKLOGOSRC)/set-logo.exe $(OBJDIR)/set-logo.o libtv.lib user32.lib gdi32.lib
+	link /out:$(DESKLOGOSRC)/tv_logo.exe $(OBJDIR)/tv_logo.o libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#!!!tv_logo has a bug. As soon as you activate the menu, it (and the status line) change color
+
+
+############### DLGDSN
+DLGDSNSRC = dlgdsn
+DLGDSNOBJ = $(OBJDIR)/codebldr.o $(OBJDIR)/consted.o $(OBJDIR)/dsgobjs.o $(OBJDIR)/freedsgn.o\
+            $(OBJDIR)/propdlgs.o $(OBJDIR)/propedit.o $(OBJDIR)/strmoper.o $(OBJDIR)/tappwnd.o
+DLGDSNEXE = dlgdsn.exe
+
+{$(DLGDSNSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+dlgdsn.exe: $(DLGDSNOBJ)
+	link /out:$(DLGDSNSRC)/$(DLGDSNEXE) $(DLGDSNOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+############### DYNTXT
+DYNTXTSRC = dyntxt
+DYNTXTOBJ = $(OBJDIR)/dyntext.o $(OBJDIR)/testdyn.o
+DYNTXTEXE = dyntxt.exe
+
+{$(DYNTXTSRC)}.cpp{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+dyntxt.exe: $(DYNTXTOBJ)
+	link /out:$(DYNTXTSRC)/$(DYNTXTEXE) $(DYNTXTOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+############### FONTS
+FONTSSRC = fonts
+FONTSOBJ = $(OBJDIR)/genraw.o $(OBJDIR)/test.o
+FONTSEXE = fonts.exe
+
+{$(FONTSSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+fonts.exe: $(FONTSOBJ)
+	link /out:$(FONTSSRC)/$(FONTSEXE) $(FONTSOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#!!!fonts does not compile because PATH_MAX is not defined
+#Probably the same issue as dlgdsn, since compatlayer has this defined in lines 2102 - 2108
+
+
+############### I18N
+I18NSRC = i18n
+I18NOBJ = $(OBJDIR)/test.o
+I18NEXE = i18n.exe
+
+i18n.exe:
+	$(CXX) -c $(CXXFLAGS) /Tpi18n/test.cc -Fo$(I18NOBJ)
+	link /out:$(I18NSRC)/$(I18NEXE) $(I18NOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#i18n can only be made separately because nmake somehow remembers that test.o was already made
+#So it doesn't do any dependency check and (naturally) because the test.o from clipboard example was deleted
+#the build fails :(
+#Therefore I changed the target so that I manually invoke C++ compiler
+
+
+############### INPLIST
+INPLISSRC = inplis
+INPLISOBJ = $(OBJDIR)/inplist.o $(OBJDIR)/test.o
+INPLISEXE = inplist.exe
+
+inplist.exe:
+	$(CXX) -c $(CXXFLAGS) /Tpinplis/inplist.cpp -Fo$(OBJDIR)/inplist.o
+	$(CXX) -c $(CXXFLAGS) /Tpinplis/test.cpp -Fo$(OBJDIR)/test.o
+	link /out:$(INPLISSRC)/$(INPLISEXE) $(INPLISOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#inplis also has test.cpp and therefore can't be made with dependencies. Changed to invoke compiler directly
+
+
+############### LISTVI
+LISTVISRC = listvi
+LISTVIOBJ = $(OBJDIR)/lst_view.o $(OBJDIR)/listbox2.o
+LISTVIEXE = listvi.exe
+
+{$(LISTVISRC)}.cpp{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+listvi.exe: $(LISTVIOBJ)
+	link /out:$(LISTVISRC)/$(LISTVIEXE) $(LISTVIOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+############### MSGCLS
+MSGCLSSRC = msgcls
+MSGCLSOBJ = $(OBJDIR)/testdyn.o $(OBJDIR)/tlnmsg.o
+MSGCLSEXE = msgcls.exe
+
+msgcls.exe:
+	$(CXX) -c $(CXXFLAGS) /Tpmsgcls/testdyn.cpp -Fo$(OBJDIR)/testdyn.o
+	$(CXX) -c $(CXXFLAGS) /Tpmsgcls/tlnmsg.cpp -Fo$(OBJDIR)/tlnmsg.o
+	link /out:$(MSGCLSSRC)/$(MSGCLSEXE) $(MSGCLSOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#msgcls gas testdyn.cpp as does dyntxt. Changed from dependencies to direct compiler invoke
+
+############### PROGBA
+PROGBASRC = progba
+PROGBAOBJ = $(OBJDIR)/example.o $(OBJDIR)/makerez.o $(OBJDIR)/readrez.o $(OBJDIR)/tprogbar.o
+PROGBAEXE = progba.exe
+
+{$(PROGBASRC)}.cpp{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+progba.exe: $(PROGBAOBJ)
+	link /out:$(PROGBASRC)/$(PROGBAEXE) $(PROGBAOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#!!!does not compile. usleep function non-existent
+
+
+############### SDLG
+SDLGSRC = sdlg
+SDLGOBJ = $(OBJDIR)/main.o $(OBJDIR)/scrldlg.o $(OBJDIR)/scrlgrp.o
+SDLGEXE = sdlg.exe
+
+{$(SDLGSRC)}.cpp{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+sdlg.exe: $(SDLGOBJ)
+	link /out:$(SDLGSRC)/$(SDLGEXE) $(SDLGOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+############### SDLG2
+SDLG2SRC = sdlg2
+SDLG2OBJ = $(OBJDIR)/main.o $(OBJDIR)/scrldlg.o $(OBJDIR)/scrlgrp.o
+SDLG2EXE = sdlg2.exe
+
+sdlg2.exe:
+	$(CXX) -c $(CXXFLAGS) /Tpsdlg2/main.cpp -Fo$(OBJDIR)/main.o
+	$(CXX) -c $(CXXFLAGS) /Tpsdlg2/scrldlg.cpp -Fo$(OBJDIR)/scrldlg.o
+	$(CXX) -c $(CXXFLAGS) /Tpsdlg2/scrlgrp.cpp -Fo$(OBJDIR)/scrlgrp.o
+	link /out:$(SDLG2SRC)/$(SDLG2EXE) $(SDLG2OBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#same sources as sdlg and therefore can't be made with dependencies. Changed to invoke compiler directly
+
+
+############### TCOMBO
+TCOMBOSRC = tcombo
+TCOMBOOBJ = $(OBJDIR)/nmcmbobx.o $(OBJDIR)/nmcmbovw.o $(OBJDIR)/nmcmbown.o $(OBJDIR)/nmsinput.o \
+$(OBJDIR)/scombobx.o $(OBJDIR)/scombovw.o $(OBJDIR)/scombown.o $(OBJDIR)/ssinputl.o $(OBJDIR)/tcmbovwr.o \
+$(OBJDIR)/tcmbowin.o $(OBJDIR)/tcombobx.o $(OBJDIR)/test.o $(OBJDIR)/tsinputl.o
+TCOMBOEXE = tcombo.exe
+
+{$(TCOMBOSRC)}.cpp{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+tcombo.exe: $(TCOMBOOBJ)
+	$(CXX) -c $(CXXFLAGS) /Tptcombo/test.cpp -Fo$(OBJDIR)/test.o
+	link /out:$(TCOMBOSRC)/$(TCOMBOEXE) $(TCOMBOOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#test.cpp as in other samples. Call cl separately for it
+
+
+############### TERMINAL
+TERMINALSRC = terminal
+TERMINALOBJ = $(OBJDIR)/terminal.o
+TERMINALEXE = terminal.exe
+
+{$(TERMINALSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+terminal.exe: $(TERMINALOBJ)
+	link /out:$(TERMINALSRC)/$(TERMINALEXE) $(TERMINALOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+############### TPROGB
+TPROGBSRC = tprogb
+TPROGBOBJ = $(OBJDIR)/calc.o $(OBJDIR)/tprogbar.o
+TPROGBEXE = tprogb.exe
+
+{$(TPROGBSRC)}.cpp{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+tprogb.exe: $(TPROGBOBJ)
+	link /out:$(TPROGBSRC)/$(TPROGBEXE) $(TPROGBOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#!!!does not compile for lack of usleep function
+
+
+############### TUTORIAL
+TUTORIALSRC = tutorial
+
+tutorial.exe:
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid01.cc -Fo$(OBJDIR)/tvguid01.o
+	link /out:$(TUTORIALSRC)/tvguid01.exe $(OBJDIR)/tvguid01.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid02.cc -Fo$(OBJDIR)/tvguid02.o
+	link /out:$(TUTORIALSRC)/tvguid02.exe $(OBJDIR)/tvguid02.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid03.cc -Fo$(OBJDIR)/tvguid03.o
+	link /out:$(TUTORIALSRC)/tvguid03.exe $(OBJDIR)/tvguid03.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid04.cc -Fo$(OBJDIR)/tvguid04.o
+	link /out:$(TUTORIALSRC)/tvguid04.exe $(OBJDIR)/tvguid04.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid05.cc -Fo$(OBJDIR)/tvguid05.o
+	link /out:$(TUTORIALSRC)/tvguid05.exe $(OBJDIR)/tvguid05.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid06.cc -Fo$(OBJDIR)/tvguid06.o
+	link /out:$(TUTORIALSRC)/tvguid06.exe $(OBJDIR)/tvguid06.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid07.cc -Fo$(OBJDIR)/tvguid07.o
+	link /out:$(TUTORIALSRC)/tvguid07.exe $(OBJDIR)/tvguid07.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid08.cc -Fo$(OBJDIR)/tvguid08.o
+	link /out:$(TUTORIALSRC)/tvguid08.exe $(OBJDIR)/tvguid08.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid09.cc -Fo$(OBJDIR)/tvguid09.o
+	link /out:$(TUTORIALSRC)/tvguid09.exe $(OBJDIR)/tvguid09.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid10.cc -Fo$(OBJDIR)/tvguid10.o
+	link /out:$(TUTORIALSRC)/tvguid10.exe $(OBJDIR)/tvguid10.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid11.cc -Fo$(OBJDIR)/tvguid11.o
+	link /out:$(TUTORIALSRC)/tvguid11.exe $(OBJDIR)/tvguid11.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid12.cc -Fo$(OBJDIR)/tvguid12.o
+	link /out:$(TUTORIALSRC)/tvguid12.exe $(OBJDIR)/tvguid12.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid13.cc -Fo$(OBJDIR)/tvguid13.o
+	link /out:$(TUTORIALSRC)/tvguid13.exe $(OBJDIR)/tvguid13.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid14.cc -Fo$(OBJDIR)/tvguid14.o
+	link /out:$(TUTORIALSRC)/tvguid14.exe $(OBJDIR)/tvguid14.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid15.cc -Fo$(OBJDIR)/tvguid15.o
+	link /out:$(TUTORIALSRC)/tvguid15.exe $(OBJDIR)/tvguid15.o libtv.lib user32.lib gdi32.lib
+	$(CXX) -c $(CXXFLAGS) /Tp$(TUTORIALSRC)/tvguid16.cc -Fo$(OBJDIR)/tvguid16.o
+	link /out:$(TUTORIALSRC)/tvguid16.exe $(OBJDIR)/tvguid16.o libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+############### TVEDIT
+TVEDITSRC = tvedit
+TVEDITOBJ = $(OBJDIR)/tvedit.o
+TVEDITEXE = tvedit.exe
+
+{$(TVEDITSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+tvedit.exe: $(TVEDITOBJ)
+	link /out:$(TVEDITSRC)/$(TVEDITEXE) $(TVEDITOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+############### TVHC
+TVHCSRC = tvhc
+TVHCOBJ = $(OBJDIR)/tvhc.o
+TVHCEXE = tvhc.exe
+
+{$(TVHCSRC)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+	
+tvhc.exe: $(TVHCOBJ)
+	link /out:$(TVHCSRC)/$(TVHCEXE) $(TVHCOBJ) libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+############### VIDEOMODE
+VIDEOMODESRC = videomode
+
+videomode.exe:
+	$(CXX) -c $(CXXFLAGS) /Tp$(VIDEOMODESRC)/test.cc -Fo$(OBJDIR)/test.o
+	link /out:$(VIDEOMODESRC)/videomode.exe $(OBJDIR)/test.o libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+#Initially didn't compile because the source was in MAC format. Converted to DOS
+
+
+############### VIEWERS
+VIEWERSSRC = viewers
+
+viewers.exe:
+	$(CXX) -c $(CXXFLAGS) /Tp$(VIEWERSSRC)/test.cc -Fo$(OBJDIR)/test.o
+	link /out:$(VIEWERSSRC)/viewers.exe $(OBJDIR)/test.o libtv.lib user32.lib gdi32.lib
+	del /f /q ..\winnt\obj_ms\*
+
+
+all: bhelp.exe clipboard.exe tvdemo.exe desklogo.exe dyntxt.exe dlgdsn.exe i18n.exe inplist.exe listvi.exe msgcls.exe sdlg.exe \
+sdlg2.exe tcombo.exe terminal.exe tutorial.exe tvedit.exe tvhc.exe videomode.exe viewers.exe
+
+#fonts.exe progba.exe tprogb.exe
+#!!! Don't know what to do with cyrillic samples
