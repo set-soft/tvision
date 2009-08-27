@@ -1,4 +1,12 @@
-$Log$
+$Log$.
+Revision 2.739  2009/08/27 13:14:18  set
+** Patches contributed by Jure Erznoznik <jure.erznoznik@gmail.com>
+* Fixed: [tfilecol.cc] for 64bit size_t (MSVC)
+* Modified: [examples/dlgdsn/*.cc] to avoid using gcc's case extensions.
+* Added: [compatlayer.h] support for MSVC 2008 boolean datatype.
+* Added: [winnt/Makefile.nmk] support new classes + added defines for 64bit
+compile + added support for MSVC 2008
+
 Revision 2.738  2009/06/26 11:35:31  set
 * Fixed: The last change in TVConfigFile::GetString() introduced a bug
 (last " not removed).
