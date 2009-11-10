@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.740  2009/08/27 14:22:37  set
+* Fixed: [examples/fonts/test.cc] Missing Uses_limits request.
+* Added: [examples/Makefile.nmk ] MSVC makefile for the examples,
+contributed by Jure Erznoznik.
+.
 Revision 2.739  2009/08/27 13:14:18  set
 ** Patches contributed by Jure Erznoznik <jure.erznoznik@gmail.com>
 * Fixed: [tfilecol.cc] for 64bit size_t (MSVC)
