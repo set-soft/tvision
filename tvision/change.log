@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.376  2009/11/10 18:15:38  set
+* Modified: Krzysztof's e-mail.
+
 Revision 2.399.2.375  2009/08/27 14:20:05  set
 * Fixed: [examples/fonts/test.cc] Missing Uses_limits request.
 * Added: [examples/Makefile.nmk ] MSVC makefile for the examples,
