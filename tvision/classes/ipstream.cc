@@ -19,6 +19,7 @@
  */
 #include <assert.h>
 #define Uses_string
+#define Uses_stdio // EOF
 #define Uses_TStreamable
 #define Uses_TStreamableClass
 #define Uses_TStreamableTypes

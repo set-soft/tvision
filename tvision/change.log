@@ -1,4 +1,11 @@
-$Log$
+$Log$.
+Revision 2.742  2010/01/27 12:44:36  set
+* Fixed: [alconscr.cc screen.h] setCharacter second argument (from Unicode
+branch)
+* Fixed: [linuxkey.cc] charCode doesn't exist in the trunk (from Unicode
+branch). Closes SF #2940576 reported by fytodent.
+* Added: [index.html] Some CVS snapshots (old).
+
 Revision 2.741  2009/11/10 18:18:35  set
 * Modified: Krzysztof's e-mail.
 

@@ -198,6 +198,7 @@ Modified by Salvador E. Tropea
 #if defined( Uses_TTextDevice )
 #define Uses_TScroller
 #define Uses_iostream
+#define Uses_stdio // EOF
 #define INCLUDE_TEXTVIEW_H
 #endif
 
