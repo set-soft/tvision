@@ -241,7 +241,7 @@ void TScreenAlcon::getCharacters(unsigned offset, ushort *buffer, unsigned count
 }
 
 
-void TScreenAlcon::setCharacter(unsigned offset, uint32 value)
+void TScreenAlcon::setCharacter(unsigned offset, ushort value)
 {
     AlCon_PutChar(offset, value);
 }

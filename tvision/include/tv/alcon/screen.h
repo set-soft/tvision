@@ -125,7 +125,7 @@ protected:
  static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
  static ushort getCharacter(unsigned dst);
  // Sets the char/attribute pairs.
- static void   setCharacter(unsigned offset, uint32 value);
+ static void   setCharacter(unsigned offset, ushort value);
  static void   setCharacters(unsigned dst, ushort *src, unsigned len);
  // Calls an external program, if pidChild pointer is not null the routine
  // should try to do it in background and return the process ID.
