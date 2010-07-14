@@ -1,4 +1,7 @@
 $Log$.
+Revision 2.743  2010/01/27 13:17:40  set
+* Fixed: [DOS] EOF needs stdio.h. Closes SF # 2940568 reported by fytodent.
+.
 Revision 2.742  2010/01/27 12:44:36  set
 * Fixed: [alconscr.cc screen.h] setCharacter second argument (from Unicode
 branch)

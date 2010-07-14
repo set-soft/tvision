@@ -361,6 +361,9 @@ public:
  static Boolean (*sendFileToHelper)(appHelperHandler id, const char *file, void *extra);
  static const char *(*getHelperAppError)();
  static int maxAppHelperHandlers;
+ // SET: Windows class, for drivers that creates windows and can somehow tag them.
+ // The X Windows driver can do it. Applications could overwrite it.
+ static const char *windowClass;
 
  // SET: flags capabilities flags
  enum Capabilities1
