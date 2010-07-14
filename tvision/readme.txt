@@ -57,7 +57,7 @@ compilers.
 1. Introduction:
 ---------------
 
-  That's the Turbo Vision distribution (TV for short) v2.1.0.
+  That's the Turbo Vision distribution (TV for short) v2.2.1.
   The sources are copyrighted by Borland (currently Inprise) and are freely
 available in internet from:
 
