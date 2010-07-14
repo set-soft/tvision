@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.377  2010/01/27 13:18:08  set
+* Fixed: [DOS] EOF needs stdio.h. Closes SF # 2940568 reported by fytodent.
+
 Revision 2.399.2.376  2009/11/10 18:15:38  set
 * Modified: Krzysztof's e-mail.
 
