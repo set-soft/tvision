@@ -45,7 +45,8 @@
 #define Uses_string
 #define Uses_unistd   // TScreenX11::System
 #define Uses_signal
-#define Uses_fcntl // open
+#define Uses_fcntl    // open
+#define Uses_sys_stat // S_IREAD in open
 #define Uses_snprintf
 #define Uses_AllocLocal
 #define Uses_TDisplay

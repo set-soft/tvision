@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.744  2010/07/14 14:46:48  set
+* Modified: [readme.txt version.txt debian/changelog debian/control tv.h
+tvision.qpg] Version to 2.2.1.
+* Added: [tscreen.cc x11src.cc screen.h] TScreen::windowClass to help X11
+window managers.
+.
 Revision 2.743  2010/01/27 13:17:40  set
 * Fixed: [DOS] EOF needs stdio.h. Closes SF # 2940568 reported by fytodent.
 .
