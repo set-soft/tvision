@@ -1,7 +1,7 @@
 /*****************************************************************************
 
   XTerm keyboard routines.
-  Copyright (c) 2002,2003 by Salvador E. Tropea (SET)
+  Copyright (c) 2002-2010 by Salvador E. Tropea (SET)
   Covered by the GPL license.
 
   Module: XTerm Keyboard
@@ -304,7 +304,8 @@ static
 uchar csiFgKeys1[]=
 {
  fgEterm,fgEterm,fgEterm,fgEterm,
- fgOnlyEterm|fgEterm,fgOnlyEterm|fgEterm, // Home & End
+ //fgOnlyEterm|fgEterm,fgOnlyEterm|fgEterm, // PgUp & PgDown
+ fgEterm,fgEterm,
  0,0,0,0,0,0,0,0
 };
 
@@ -535,6 +536,9 @@ void TGKeyXTerm::PopulateTree()
      for (j=0; j<7; j++)
         {
          sprintf(b,"[%d%c",j+2,csiKeys2[i].number);
+         AddKey((uchar *)b,csiKeys2[i].code,xtMods[j]);
+         // Newer versions:
+         sprintf(b,"[1;%d%c",j+2,csiKeys2[i].number);
          AddKey((uchar *)b,csiKeys2[i].code,xtMods[j]);
         }
     }
