@@ -1,4 +1,10 @@
 $Log$.
+Revision 2.745  2010/10/08 17:49:32  set
+* Fixed: [UNIX][X11][x11src.cc] The S_IREAD constant, used for open, is
+defined in sys/stat.h. In GNU/Debian<=5.0 this direct request doesn't seem
+to bee needed. But in Mandriva 2010/1 is mandatory. Reported by gluk47/
+gmail/com.
+.
 Revision 2.744  2010/07/14 14:46:48  set
 * Modified: [readme.txt version.txt debian/changelog debian/control tv.h
 tvision.qpg] Version to 2.2.1.
