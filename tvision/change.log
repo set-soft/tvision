@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.747  2012/03/19 14:09:32  set
+* Fixed: [UNIX compilation] The first time we link the library (on clean
+systems) rhtv doesn't yet exist. It can produce link errors if we include
+the lib in the list.
+
 Revision 2.746  2010/10/12 18:40:27  set
 * Fixed: [UNIX][X11][xtermkey.cc] The SHIFT+arrow_keys and other similar
 key combinations failed on XTerm. They most probably weren't reported when
