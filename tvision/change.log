@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.748  2012/03/19 14:23:20  set
+* Modified: [rhide.env config.pl] The default debug info to be GDB3 (not
+STABS/STABS+)
+
 Revision 2.747  2012/03/19 14:09:32  set
 * Fixed: [UNIX compilation] The first time we link the library (on clean
 systems) rhtv doesn't yet exist. It can produce link errors if we include

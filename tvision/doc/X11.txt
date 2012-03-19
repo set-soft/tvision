@@ -132,9 +132,12 @@ InpCP             Input encoding.
 
 Font10x20              Selects the 10x20 font instead of 8x16.
 HideCursorWhenNoFocus  By default enabled
-DontResizeToCells      Don't resize the window to a cells multiple size if the WM
-                       fails to follow the hints. This helps to avoid problems found
-                       in KDE 3.1 alpha.
+DontResizeToCells      Don't resize the window to a cells multiple size if
+                       the WM fails to follow the hints. First added to avoid
+                       problems found in KDE 3.1 alpha. Now enabled by default.
+                       Compiz also needs it. Disable it if your WM doesn't
+                       pay attention to the hints and you can correct the
+                       window size to be a multiple of the fonts size.
 InternalBusyCursor     When enabled we use our own mouse cursor for it.
 UseUpdateThread        When this option is enabled the driver updates the
                        window content even if the TV application is blocking
