@@ -1,5 +1,5 @@
 /* X11 screen routines.
-   Copyright (c) 2001-2007 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2012 by Salvador E. Tropea (SET)
    Covered by the GPL license.
     Thanks to José Ángel Sánchez Caso (JASC). He implemented a first X11
    driver.
@@ -23,8 +23,8 @@
    InpCP
    HideCursorWhenNoFocus
    DontResizeToCells     Don't resize the window to a cells multiple size if the WM
-                         fails to follow the hints. This helps to avoid problems found
-                         in KDE 3.1 alpha.
+                         fails to follow the hints. First added to avoid problems found
+                         in KDE 3.1 alpha. Now enabled by default. Compiz also needs it.
    InternalBusyCursor    When enabled we use our own mouse cursor for it
    Unicode16             Try using unicode16 mode.
    UnicodeFont           Name of the font to use for unicode16 mode.
@@ -130,7 +130,7 @@ uchar     TScreenX11::curAttr;
 uchar     TScreenX11::primaryFontChanged=0;
 char     *TScreenX11::cursorData=NULL;
 char      TScreenX11::hideCursorWhenNoFocus=1;
-char      TScreenX11::dontResizeToCells=0;
+char      TScreenX11::dontResizeToCells=1;
 struct
 timeval   TScreenX11::refCursorTime,
           TScreenX11::curCursorTime;
@@ -197,7 +197,7 @@ void TScreenX11::clearScreen()
 
  unsigned c=maxX*maxY;
  while (c--)
-   screenBuffer[c]=*((ushort *)space);
+   screenBuffer[c]=space;
  SEMAPHORE_OFF;
 }
 
@@ -1999,7 +1999,7 @@ void TScreenX11::ProcessGenericEvents()
        should be redirected to another window */
     if (XFilterEvent(&event,0)==True)
        continue;
-  
+
     switch (event.type)
       {
        case Expose:
@@ -2071,7 +2071,8 @@ void TScreenX11::ProcessGenericEvents()
                windowSizeChanged=1;
 
             /* KDE 3.1 alpha maximize doesn't use cell sizes and our resize
-               confuses KDE. */
+               confuses KDE.
+               Compiz also tries to force the size again and again. */
             if (dontResizeToCells)
                break;
 
