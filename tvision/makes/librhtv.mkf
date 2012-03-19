@@ -22,6 +22,7 @@ vpath_obj=obj
 INCLUDE_DIR=../include
 CLASSES_DIR=../classes
 EXTRA_SRC_DIR=..
+LIBS=
 COMMON_IMK=common.imk
 
 ##########################################################################################
