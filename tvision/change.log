@@ -1,12 +1,16 @@
 $Log$
+Revision 2.749  2012/03/19 15:52:12  set
+* Modified: [UNIX][X11][x11src.cc] DontResizeToCells to be true by default.
+Modern WMs seems to need it. From a report by Martijn.
+
 Revision 2.748  2012/03/19 14:23:20  set
 * Modified: [rhide.env config.pl] The default debug info to be GDB3 (not
-STABS/STABS+)
+STABS/STABS+). From a report by Martijn.
 
 Revision 2.747  2012/03/19 14:09:32  set
 * Fixed: [UNIX compilation] The first time we link the library (on clean
 systems) rhtv doesn't yet exist. It can produce link errors if we include
-the lib in the list.
+the lib in the list. From a report by Martijn.
 
 Revision 2.746  2010/10/12 18:40:27  set
 * Fixed: [UNIX][X11][xtermkey.cc] The SHIFT+arrow_keys and other similar

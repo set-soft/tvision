@@ -604,6 +604,7 @@ void TGKeyXTerm::PopulateTree()
  AddKey((uchar *)"[34^",kbF10,kblCtrl | kblShift);
  AddKey((uchar *)"[23@",kbF11,kblCtrl | kblShift);
  AddKey((uchar *)"[24@",kbF12,kblCtrl | kblShift);
+ AddKey((uchar *)"]lTerminal", 0, 0); // Suppress the lTerminal escape sequence xterm sends
 
  // The mouse reporting mechanism:
  AddKey((uchar *)"[M",kbMouse,0);
