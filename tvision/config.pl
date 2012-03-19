@@ -426,7 +426,7 @@ sub SeeCommandLine
     elsif ($i eq '--debug')
       {
        $conf{'CFLAGS'}=
-       $conf{'CXXFLAGS'}='-O2 -Wall -Werror -gstabs+3';
+       $conf{'CXXFLAGS'}='-O2 -Wall -Werror -ggdb3';
       }
    # For compatibility with autoconf:
     # LinCS/tiger - ignore some autoconf generated params
