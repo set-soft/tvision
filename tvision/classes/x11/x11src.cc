@@ -195,9 +195,11 @@ void TScreenX11::clearScreen()
  space[charPos]=' ';
  space[attrPos]=curAttr;
 
+ //uint16 space=MAKE_16B(' ',curAttr);
  unsigned c=maxX*maxY;
  while (c--)
-   screenBuffer[c]=space;
+   screenBuffer[c]=*((ushort *)space);
+   //screenBuffer[c]=space;
  SEMAPHORE_OFF;
 }
 
