@@ -48,7 +48,7 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
  return new TMenuBar( r,
      *new TSubMenu("~F~ile",kbAltF)+
          *new TMenuItem("~O~pen",200,kbF3,hcNoContext,"F3")+
-         *new TMenuItem("~N~ew", 200,kbF4,hcNoContext,"F4")+
+         *new TMenuItem("~Y~es", 200,kbF4,hcNoContext,"F4")+
          newLine()+
          *new TMenuItem("E~x~it",cmQuit,kbAltX,hcNoContext,"Alt-X")+
      // This definition doesn't exist in TV, only the plural
@@ -61,10 +61,10 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
 int main()
 {
  // Here I force the use of spanish
- putenv("LANG=es");
+ putenv("LANG=es_AR");
  // Here we tell gettext to use the "domain" test located at the "intl" dir.
  // In real life TVIntl::textDomain("test"); should be enough.
- TVIntl::autoInit("test","intl");
+ //TVIntl::autoInit("setedit");
  TMyApp myApp;
  myApp.run();
  return 0;

@@ -1,11 +1,12 @@
 #!/usr/bin/make
 #
-# Copyright (c) 2003-2004 by Salvador E. Tropea.
+# Copyright (c) 2003-2012 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
 vpath_src=
 vpath_obj=.
 INCLUDE_DIRS=../../include
 COMMON_IMK=../../makes/common.imk
+LIBS=rhtv
 include $(COMMON_IMK)
 include tvguid06$(ExIMK)
