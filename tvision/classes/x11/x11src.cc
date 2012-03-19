@@ -1040,7 +1040,7 @@ TScreenX11::TScreenX11()
  XStringListToTextProperty(&s,1,&name);*/
 
  classHint->res_name=newStr("tvapp");   /* Take resources for tvapp */
- classHint->res_class=newStr("XTVApp"); /* X Turbo Vision Application */
+ classHint->res_class=newStr(windowClass); /* X Turbo Vision Application */
 
  /* Size hints are just hints, not all WM take care about them */
  sizeHints->flags=PResizeInc | PMinSize | PBaseSize;

@@ -56,6 +56,8 @@ long     TScreen::forcedAppCP=-1,
          TScreen::forcedScrCP=-1,
          TScreen::forcedInpCP=-1;
 int      TScreen::maxAppHelperHandlers=8;
+const char
+        *TScreen::windowClass="XTVApp";
 
 /*****************************************************************************
   Function pointer members initialization
