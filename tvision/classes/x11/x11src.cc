@@ -183,13 +183,10 @@ void TScreenX11::clearScreen()
  XFillRectangle(disp,mainWin,gc,0,0,maxX*fontW,maxY*fontH);
  XSetForeground(disp,gc,colorMap[fg]);
 
- char space[2];
- space[charPos]=' ';
- space[attrPos]=curAttr;
-
+ uint16 space=MAKE_16B(' ',curAttr);
  unsigned c=maxX*maxY;
  while (c--)
-   screenBuffer[c]=*((ushort *)space);
+   screenBuffer[c]=space;
  SEMAPHORE_OFF;
 }
 
@@ -1917,7 +1914,7 @@ int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
 
  unsigned nW=fontW, nH=fontH;
  TScreenFont256 *nFont=NULL,*nsFont=NULL;
- int releaseFont=0, releaseSFont=0, resetFont=0;
+ int releaseFont=0, resetFont=0;
 
  // Solve the fonts, don't change them yet.
  if ((unsigned)fW!=fontW || (unsigned)fH!=fontH)
@@ -1947,8 +1944,9 @@ int TScreenX11::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
     nH=nFont->h;
     if ((nW!=fontW || nH!=fontH) && useSecondaryFont)
       {
-       if (frCB && (nsFont=frCB(1,nW,nH)))
-          releaseSFont=1;
+       if (frCB)
+          nsFont=frCB(1,nW,nH);
+          //releaseSFont=1;
       }
    }
 

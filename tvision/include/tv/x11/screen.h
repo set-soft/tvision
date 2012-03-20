@@ -231,6 +231,7 @@ const int x11clipNoSelection=1,
 
 #define charPos 0
 #define attrPos 1
+#define MAKE_16B(ch,attr) ((ch)|((attr)<<8))
 
 #if !HAVE_LINUX_PTHREAD
  #define USE_ALARM_FOR_THREAD 1
