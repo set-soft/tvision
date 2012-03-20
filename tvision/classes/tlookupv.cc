@@ -57,7 +57,7 @@ const char * TStringLookupValidator::errorMsg = __("Input is not in list of vali
 
 void TStringLookupValidator::error()
 {
-  messageBox(mfError | mfOKButton, errorMsg);
+  messageBox(errorMsg, mfError | mfOKButton);
 }
 
 static Boolean stringMatch(void* a1, void* a2)
