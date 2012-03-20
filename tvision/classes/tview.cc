@@ -1403,10 +1403,11 @@ void TView::writeChar(int x, int y, char c, uchar color, int count)
     return;
    }
  // Native mode
- uint8 cell[2];
- cell[0]=c;
- cell[1]=mapColor(color);
- uint16 cell16=*((uint16 *)cell);
+ //uint8 cell[2];
+ //cell[0]=c;
+ //cell[1]=mapColor(color);
+ //uint16 cell16=*((uint16 *)cell);
+ uint16 cell16=c|((mapColor(color))<<8);
 
  int i=0;
  AllocLocalUShort(temp,count*2);
