@@ -1550,7 +1550,7 @@ void AlCon_LoadCustomFont(const char *filename, uchar *fdata, unsigned fw,
                           unsigned fh)
 {
    ASSERT(screen && "You have to call set_gfx_mode before.");
-   static bool one_custom_font_loaded = false;
+   //static bool one_custom_font_loaded = false;
    unsigned wb=(fw+7)/8;
 
    FILE *file = NULL;
@@ -1577,7 +1577,7 @@ void AlCon_LoadCustomFont(const char *filename, uchar *fdata, unsigned fw,
          allegro_message("Absurd custom font size (%d bytes)", read_bytes);
          exit(3);
       }
-      one_custom_font_loaded = true;
+      //one_custom_font_loaded = true;
    }
 
    // Initialize global variables.

@@ -442,7 +442,8 @@ int TScreenAlcon::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
 
  unsigned nW=fontW, nH=fontH;
  TScreenFont256 *nFont=NULL,*nsFont=NULL;
- int releaseFont=0, releaseSFont=0, resetFont=0;
+ int releaseFont=0, resetFont=0;
+ // releaseSFont=0,
 
  // Solve the fonts, don't change them yet.
  if ((unsigned)fW!=fontW || (unsigned)fH!=fontH)
@@ -470,8 +471,9 @@ int TScreenAlcon::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
     nH=nFont->h;
     if ((nW!=fontW || nH!=fontH) && useSecondaryFont)
       {
-       if (frCB && (nsFont=frCB(1,nW,nH)))
-          releaseSFont=1;
+       if (frCB)
+          nsFont=frCB(1,nW,nH);
+//        releaseSFont=1;
       }
    }
 
