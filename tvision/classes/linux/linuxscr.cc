@@ -410,7 +410,6 @@ int TScreenLinux::AnalyzeCodePage()
            fprintf(stderr,"%03d U+%04x\n",i,v);
        }
     fputs("-------------\n",stderr);
-    char SFMCreated=0;
     for (i=0; knownFonts[i].codepage && knownFonts[i].checksum!=cks; i++);
     if (knownFonts[i].codepage)
       {
@@ -421,7 +420,6 @@ int TScreenLinux::AnalyzeCodePage()
       {
        fputs("Unknown code page, creating a custom one\n",stderr);
        CreateSFMFromTable(UnicodeMap);
-       SFMCreated=1;
       }
    }
  else
@@ -538,7 +536,6 @@ int TScreenLinux::AnalyzeCodePage()
     }
  // Compute a good check sum of it
  uint32 cks=adler32(0,(char *)UnicodeMap,256*sizeof(ushort));
- char SFMCreated=0;
  // Find if we know about this one
  for (i=0; knownFonts[i].codepage && knownFonts[i].checksum!=cks; i++);
  if (knownFonts[i].codepage)
@@ -551,7 +548,6 @@ int TScreenLinux::AnalyzeCodePage()
     LOG("Unknown SFM: " << cks);
     // We don't know about it, but we have enough information to try using it
     CreateSFMFromTable(UnicodeMap);
-    SFMCreated=1;
    }
  // Now look for the ACM
  // GIO_UNISCRNMAP: get full Unicode screen mapping

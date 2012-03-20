@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.750  2012/03/19 18:05:31  set
+* Modified: [UNIX][XTerm] To discard "ESC l Terminal" escape sequence.
+Patch by Martijn.
+
 Revision 2.749  2012/03/19 15:52:12  set
 * Modified: [UNIX][X11][x11src.cc] DontResizeToCells to be true by default.
 Modern WMs seems to need it. From a report by Martijn.

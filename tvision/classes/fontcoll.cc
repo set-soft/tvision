@@ -480,12 +480,12 @@ TVBitmapFontDescCol *TVFontCollection::CreateListOfFonts(const char *dir,
                 ReadVersionNum(f,&version,&numfonts);
                 char *name=ReadName(f);
                 TVBitmapFontDesc *d=NULL;
-                int i,j,added;
+                int i,j;
                 ccIndex pos;
                 for (i=0; i<numfonts; i++)
                    {
                     size=ReadFontInfo(f,version,&stF);
-                    for (added=0, j=-1; j<2; j++)
+                    for (j=-1; j<2; j++)
                        {
                         if (stF.width>=wmin && stF.width<=wmax &&
                             (stF.lines+j)>=hmin && (stF.lines+j)<=hmax)
