@@ -1308,28 +1308,28 @@ lab4:
 
 uint32 TEditor::nextChar(uint32 p)
 {
-  uint32 gl=0;
-  if (p == bufLen) return p;
-  p++;
-  if (p == bufLen) return p;
-  if (p >= curPtr) gl = gapLen;
-  #ifdef CLY_UseCrLf
-  if (buffer[gl+p] == '\n' && buffer[gl+p-1] == '\r') return (p+1);
-  #endif
-  return p;
+ if (p==bufLen) return p;
+ p++;
+ if (p==bufLen) return p;
+ #ifdef CLY_UseCrLf
+ uint32 gl=0;
+ if (p>=curPtr) gl=gapLen;
+ if (buffer[gl+p]=='\n' && buffer[gl+p-1]=='\r') return (p+1);
+ #endif
+ return p;
 }
 
 uint32 TEditor::prevChar(uint32 p)
 {
-  uint32 gl=0;
-  if (!p) return p;
-  p--;
-  if (!p) return p;
-  if (p >= curPtr) gl = gapLen;
-  #ifdef CLY_UseCrLf
-  if (buffer[gl+p] == '\n' && buffer[gl+p-1] == '\r') return (p-1);
-  #endif
-  return p;
+ if (!p) return p;
+ p--;
+ if (!p) return p;
+ #ifdef CLY_UseCrLf
+ uint32 gl=0;
+ if (p>=curPtr) gl=gapLen;
+ if (buffer[gl+p]=='\n' && buffer[gl+p-1]=='\r') return (p-1);
+ #endif
+ return p;
 }
 
 // SET: Static members.
