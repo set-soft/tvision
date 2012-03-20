@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.751  2012/03/20 16:42:57  set
+* Fixed: Unused variables. Patches by Martijn.
+
 Revision 2.750  2012/03/19 18:05:31  set
 * Modified: [UNIX][XTerm] To discard "ESC l Terminal" escape sequence.
 Patch by Martijn.
