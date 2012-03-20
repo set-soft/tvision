@@ -1196,7 +1196,8 @@ void TScreenLinux::SaveScreen()
                 else
                   {
                    val[0]=character ? character : ' ';
-                   *(s++)=*((ushort *)val);
+                   //*(s++)=*((ushort *)val);
+                   *(s++)=val[0]|(val[1]<<8);
                    w--;
                    if (!w) w=width; // Auto LF ;-)
                   }
