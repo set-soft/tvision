@@ -2248,11 +2248,16 @@ TScreen::appHelperHandler TScreenX11::OpenHelperApp(TScreen::AppHelper kind)
  switch (kind)
    {
     case ImageViewer:
-         gqviewInstalled=CheckInstalled("gqview -v","GQview",gqviewInstalled);
+         // New name for GQview: Geeqie
+         gqviewInstalled=CheckInstalled("geeqie -v","Geeqie",gqviewInstalled);
          if (!gqviewInstalled)
            {
-            appHelperError=2;
-            return -1;
+            gqviewInstalled=CheckInstalled("gqview -v","GQview",gqviewInstalled);
+            if (!gqviewInstalled)
+              {
+               appHelperError=2;
+               return -1;
+              }
            }
          break;
     case PDFViewer:
