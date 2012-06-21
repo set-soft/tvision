@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.386  2012/03/20 16:53:20  set
+* Fixed: strict aliasing violations.
+
 Revision 2.399.2.385  2012/03/20 16:41:44  set
 * Fixed: Unused variables. Patches by Martijn.
 
