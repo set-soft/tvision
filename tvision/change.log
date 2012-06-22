@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.753  2012/06/22 16:01:05  set
+* Fixed: [UNIX][X11] Now gqview is named geeqie.
+
 Revision 2.752  2012/03/20 16:53:31  set
 * Fixed: strict aliasing violations.
 
