@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2009 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2012 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
@@ -7,6 +7,10 @@
 
 require "miscperl.pl";
 require "conflib.pl";
+
+# This optimization is giving problems and current PCs are quite fast to
+# make a real difference.
+$conf{'HAVE_UNSAFE_MEMCPY'}='yes';
 
 # If the script is newer discard the cache.
 #GetCache() unless (-M 'config.pl' < -M 'configure.cache');
@@ -411,10 +415,10 @@ sub SeeCommandLine
       {
        $conf{'no-dynamic'}='yes';
       }
-    elsif ($i eq '--unsafe-memcpy')
-      {
-       $conf{'HAVE_UNSAFE_MEMCPY'}='yes';
-      }
+#    elsif ($i eq '--unsafe-memcpy')
+#      {
+#       $conf{'HAVE_UNSAFE_MEMCPY'}='yes';
+#      }
     elsif ($i eq '--safe-memcpy')
       {
        $conf{'HAVE_UNSAFE_MEMCPY'}='no';
@@ -481,7 +485,8 @@ sub ShowHelp
  print "                : enables header dependencies and other stuff needed\n";
  print "                  for developement, not just use the editor.\n";
  print "--just-spec     : update RPMs spec file and exit.\n";
- print "--unsafe-memcpy : disable the use of memcpy when memory overlaps\n";
+# print "--unsafe-memcpy : disable the use of memcpy when memory overlaps\n";
+ print "--safe-memcpy   : enable the use of memcpy when memory overlaps\n";
  print "--help          : displays this text.\n";
 }
 

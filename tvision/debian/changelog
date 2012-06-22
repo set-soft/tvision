@@ -1,3 +1,9 @@
+rhtvision (2.2.1-2) unstable; urgency=low
+
+  * Fixed: Squeeze compilation issues (strict aliasing violated)
+
+ -- Salvador E. Tropea <set@ieee.org>  Mon, 06 Jun 2011 09:46:02 -0300
+
 rhtvision (2.2.1-1) unstable; urgency=low
 
   * Fixed: TVConfigFile::GetString not removing trailing "
