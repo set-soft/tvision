@@ -1395,7 +1395,7 @@ sub LookForGNUar
    }
  $conf{'UseRanLib'}=0;
  $test=RunRedirect('ar --version',$ErrorLog);
- if ($test=~/GNU ar/)
+ if (($test=~/GNU ar/) || ($test=~/BSD ar/))
    {
     $conf{'GNU_AR'}='ar';
     print "ar\n";
