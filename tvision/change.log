@@ -1,4 +1,9 @@
-$Log$.
+$Log$
+Revision 2.399.2.388  2012/06/22 15:59:08  set
+* Modified: Now the configure script assumes the system doesn't support
+memory overlaps for memcpy. Fixes problems with newer Linuxes.
+* Modified: Debian version to 2.2.1-2.
+
 Revision 2.399.2.387  2012/06/21 21:27:06  set
 * Fixed: [UNIX][X11] Now gqview is named geeqie.
 
