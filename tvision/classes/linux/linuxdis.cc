@@ -276,7 +276,7 @@ void TDisplayLinux::GetDisPaletteColors(int from, int number, TScreenColor *colo
 
 void TDisplayLinux::SetCursorPosVCS(unsigned x, unsigned y)
 {
- unsigned char where[2]={x,y};
+ unsigned char where[2]={(unsigned char)x,(unsigned char)y};
 
  lseek(vcsWfd,2,SEEK_SET);
  write(vcsWfd,where,sizeof(where));

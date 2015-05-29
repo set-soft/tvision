@@ -538,7 +538,7 @@ sub GiveAdvice
    {
     print "\n";
     print "* No X11 support detected. If X11 is installed make sure you have the\n";
-    print "  development package installed (i.e. xlibs-dev). Also check the options\n";
+    print "  development packages installed (i.e. libxmu-dev). Also check the options\n";
     print "  to specify the paths for X11 libs and headers\n";
    }
 }

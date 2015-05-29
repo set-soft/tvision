@@ -184,8 +184,8 @@ protected:
  static char  dontResizeToCells;
  // Busy cursor stuff
  static Cursor busyCursor, leftPtr;
- static char busyCursorMap[];
- static char busyCursorMask[];
+ static unsigned char busyCursorMap[];
+ static unsigned char busyCursorMask[];
  // Application Helpers stuff
  static const char *appHelperNameError[];
  static int appHelperError;

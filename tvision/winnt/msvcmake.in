@@ -4,10 +4,23 @@
 
 # Add here -IPATH_TO_MSVC_HEADERS (to both variables)
 # example: -ID:\MVS\VC98\Include
-CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
+# In order for the makefile to work, you have to start "Visual Studio xxxx Command prompt"
+#                                                   or "Visual Studio xxxx x64 Cross tools command prompt"
+# I'm not sure about pre 2005 settings. Maybe you need to use them for 2005 as well, please report
+
+CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHs-c-
+
+# VS 2008 64bit: CFLAGS=-O2 -I./include -I../include -D_WIN64 /GR- /EHs-c-
+# VS 2008 32bit: CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHs-c-
+# VS pre 2005  : CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
+
 # The /EHsc options seems to be needed by .NET 2003 compiler.
 # I'm not sure if they interfere with older versions, please report about it.
-CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX- /EHsc
+CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHsc
+
+# VC 2008 64bit: CXXFLAGS=-O2 -I./include -I../include -D_WIN64 /GR- /EHsc
+# VC 2008 32bit: CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHsc
+# VS pre 2005  : CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX- /EHsc
 
 OBJDIR=obj_ms
 
@@ -21,15 +34,16 @@ SRC2 = ../compat
 SRC3 = ../names
 SRC4 = ../stream
 SRC5 = ../classes
-SRC6 = ../classes/dos
-SRC7 = ../classes/win32
-SRC8 = ../classes/winnt
-SRC9 = ../classes/linux
+SRC6 = ../classes/alcon
+SRC7 = ../classes/dos
+SRC8 = ../classes/linux
+SRC9 = ../classes/qnx4
 SRCA = ../classes/qnxrtp
 SRCB = ../classes/unix
-SRCC = ../classes/x11
+SRCC = ../classes/win32
 SRCD = ../classes/wingr
-SRCE = ../classes/qnx4
+SRCE = ../classes/winnt
+SRCF = ../classes/x11
 #SRC7 = ./examples/tutorial
 #SRC3 = ./
 
@@ -46,6 +60,9 @@ tvex: libtv.lib
 
 {$(SRC2)}.cc{$(OBJDIR)}.o:
 	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
+
+{$(SRC2)}.c{$(OBJDIR)}.o:
+	$(CC) $(CFLAGS) -c $? -Fo$*.o
 
 {$(SRC3)}.cc{$(OBJDIR)}.o:
 	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
@@ -83,8 +100,8 @@ tvex: libtv.lib
 {$(SRCE)}.cc{$(OBJDIR)}.o:
 	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
-{$(SRC2)}.c{$(OBJDIR)}.o:
-	$(CC) $(CFLAGS) -c $? -Fo$*.o
+{$(SRCF)}.cc{$(OBJDIR)}.o:
+	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 
 all:: libtv.lib
 

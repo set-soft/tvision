@@ -293,7 +293,19 @@ xterm -xrm "XTerm*VT100.Translations: #override \n\
 -xrm "*VT100*color12: #5454FC" \
 -xrm "*VT100*color13: #FC54FC" \
 -xrm "*VT100*color14: #54FCFC" \
--xrm "*VT100*color15: white"
+-xrm "*VT100*color15: white" \
+-fn 10x20 \
+-geometry 80x25
 # Ctrl  <Key>Prior: string(0x1b) string(\"[5;5~\") \n\
 #       <Key>Prior: string(0x1b) string(\"[5~\") \n \
- 
+# No auto-wraparound
+# +aw
+# 10x20 font
+# -fn 10x20
+# 80x25 size
+# -geometry 80x25
+# A default title, used in combination with -e
+# -title 'XTerm Settings Example'
+# Execute a command
+# -e $1
+
