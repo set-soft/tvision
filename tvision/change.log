@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.389  2013/02/25 12:30:36  set
+* Modified: [BSD] the configuration script to also take BSD's ar as valid
+archiver.
+
 Revision 2.399.2.388  2012/06/22 15:59:08  set
 * Modified: Now the configure script assumes the system doesn't support
 memory overlaps for memcpy. Fixes problems with newer Linuxes.

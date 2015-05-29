@@ -198,8 +198,8 @@ protected:
  static char  dontResizeToCells;
  // Busy cursor stuff
  static Cursor busyCursor, leftPtr;
- static char busyCursorMap[];
- static char busyCursorMask[];
+ static unsigned char busyCursorMap[];
+ static unsigned char busyCursorMask[];
  // For testing purposes should be removed
  void LoadFontAsUnicode();
  char *SearchX11Font(const char *foundry, const char *family, int w, int h);

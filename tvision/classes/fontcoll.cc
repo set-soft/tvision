@@ -176,7 +176,7 @@ specified height.
 uchar *TVFontCollection::GetFont(int width, int height)
 {
  int oneMore=0,oneLess=0;
- SizeFont sz={width,height};
+ SizeFont sz={unsigned(width),unsigned(height)};
 
  TVBitmapFont *p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
  // If we can't find a font of the right size look for 1 more and one less
@@ -225,7 +225,7 @@ uchar *TVFontCollection::GetFontFull(int width, int height, int &first,
                                      int &last)
 {
  int oneMore=0,oneLess=0;
- SizeFont sz={width,height};
+ SizeFont sz={unsigned(width),unsigned(height)};
 
  TVBitmapFont *p=(TVBitmapFont *)firstThat(CheckForLines,&sz);
  // If we can't find a font of the right size look for 1 more and one less

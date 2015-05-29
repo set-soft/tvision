@@ -110,10 +110,10 @@ char TStatusLine::ohintSeparator[] = "\xB3 "; // ³
 char TCheckBoxes::button[] = " [ ] ";
 char TCheckBoxes::obutton[] = " [ ] ";
 
-TScrollChars TScrollBar::vChars = {30, 31, 177, 254, 178}; // ±þ²
-TScrollChars TScrollBar::ovChars = {30, 31, 177, 254, 178}; // ±þ²
-TScrollChars TScrollBar::hChars = {17, 16, 177, 254, 178}; // ±þ²
-TScrollChars TScrollBar::ohChars = {17, 16, 177, 254, 178}; // ±þ²
+TScrollChars TScrollBar::vChars  = {30, 31, char(177), char(254), char(178)}; // ±þ²
+TScrollChars TScrollBar::ovChars = {30, 31, char(177), char(254), char(178)}; // ±þ²
+TScrollChars TScrollBar::hChars  = {17, 16, char(177), char(254), char(178)}; // ±þ²
+TScrollChars TScrollBar::ohChars = {17, 16, char(177), char(254), char(178)}; // ±þ²
 
 char TButton::shadows[] = "\xDC\xDB\xDF"; // ÜÛß
 char TButton::oshadows[] = "\xDC\xDB\xDF"; // ÜÛß

@@ -2634,7 +2634,7 @@ const int busyCursorHeight=20;
 
 Cursor TScreenX11::busyCursor,
        TScreenX11::leftPtr;
-char   TScreenX11::busyCursorMap[]=
+unsigned char TScreenX11::busyCursorMap[]=
 {
  0xff, 0xff, 0xff, 0x1f,
  0xfd, 0xff, 0xff, 0x1f,
@@ -2657,7 +2657,7 @@ char   TScreenX11::busyCursorMap[]=
  0xff, 0x7f, 0xc0, 0x1f,
  0xff, 0xff, 0xff, 0x1f
 };
-char TScreenX11::busyCursorMask[]=
+unsigned char TScreenX11::busyCursorMask[]=
 {
  0xfc, 0xff, 0xff, 0x1f,
  0xf8, 0xff, 0xff, 0x1f,
