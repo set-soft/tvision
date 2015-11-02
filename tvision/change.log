@@ -1,4 +1,20 @@
-$Log$
+$Log$.
+Revision 2.756  2015/05/29 13:17:05  set
+* Modified: [config.pl] The name of the suggested X11 development package.
+The old xlibs-dev is no longer valid. The new suggestion is libxmu-dev, it
+will pull Xmu and also libx11-dev.
+* Added: [classes/fontcoll.cc] Explicit cast in unsigned to int conversion.
+* Added: [classes/tvtext1.cc] Explicit cast in unsigned char to char
+conversion.
+* Added: [classes/linux/linuxdis.cc] Explicit cast in unsigned to unsigned
+char conversion.
+* Modified: [classes/x11/x11src.cc include/tv/x11/screen.h] busyCursorMap
+and busyCursorMask to be unsigned char (not just char).
+* Added: [examples/xterm/Xterm.res] Font size selection and geometry. Also
+no-wrap, title and command. Suggested by Steve Dyson.
+* Modified: [winnt/Makefile.nmk] Indentation details.
+* Modified: [winnt/msvcmake.in] To generate the Makefile.nmk I already had.
+
 Revision 2.755  2013/02/25 12:31:11  set
 * Modified: [BSD] the configuration script to also take BSD's ar as valid
 archiver.

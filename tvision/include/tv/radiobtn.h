@@ -57,6 +57,13 @@ public:
     static char check;
     static char ocheck;
 
+protected:
+
+    uint32 *enableMasks;
+    TView  **enableViews;
+    int enableCViews;
+    void evaluateMasks();
+
 private:
 
 #if !defined( NO_STREAM )
@@ -66,10 +73,6 @@ private:
 protected:
 
     TRadioButtons( StreamableInit );
-    uint32 *enableMasks;
-    TView  **enableViews;
-    int enableCViews;
-    void evaluateMasks();
 
 public:
 
