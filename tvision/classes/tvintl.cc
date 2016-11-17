@@ -65,6 +65,7 @@ char TVIntl::initialized=0;
 char TVIntl::needsRecode=0;
 int  TVIntl::forcedCatalogEncoding=-1;
 int  TVIntl::catalogEncoding=885901;
+const char *TVIntl::catalogEncodingName="8859_1";
 uchar TVIntl::recodeTable[256];
 void *TVIntl::previousCPCallBack=NULL;
 char  TVIntl::packageName[20];
@@ -82,6 +83,13 @@ int TVIntl::defaultEncodings[]=
  885901, // es
  885902, // pl
  100000  // ru
+};
+const char *TVIntl::defaultEncodingsNames[]=
+{
+ "8859_1", // de
+ "8859_1", // es
+ "8859_2", // pl
+ "KOI8R"   // ru
 };
 const int numEncs=3;
 
@@ -132,7 +140,9 @@ const char *TVIntl::textDomain(const char *domainname)
 const char *TVIntl::bindTextDomain(const char *domainname, const char *dirname)
 {
  initialize();
- return (const char *)bindtextdomain(domainname,dirname);
+ const char *ret=bindtextdomain(domainname,dirname);
+ bind_textdomain_codeset(domainname,catalogEncodingName);
+ return ret;
 }
 
 const char *TVIntl::getText(const char *msgid)

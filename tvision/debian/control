@@ -7,6 +7,7 @@ Standards-Version: 3.7.2.2
 
 Package: rhtvision2.2.1-dev
 Architecture: any
+Multi-Arch: same
 Section: devel
 Depends: rhtvision2.2.1, libncurses-dev, libgpm-dev | libgpmg1-dev, libx11-dev | xlibs-dev | xlib6g-dev, libxmu-dev | xlibs-dev | xlib6g-dev
 Provides: rhtvision-dev
@@ -22,6 +23,7 @@ Description: Development files for the RHTVision library - a TUI interface
 
 Package: rhtvision2.2.1
 Architecture: any
+Multi-Arch: same
 Section: libs
 Depends: ${shlibs:Depends}
 Conflicts: rhtvision1

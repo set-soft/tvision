@@ -301,12 +301,12 @@ stCsiKey csiKeys1[cCsiKeys1]=
 };
 
 static
-uchar csiFgKeys1[]=
+uchar csiFgKeys1[cCsiKeys1]=
 {
  fgEterm,fgEterm,fgEterm,fgEterm,
  //fgOnlyEterm|fgEterm,fgOnlyEterm|fgEterm, // PgUp & PgDown
  fgEterm,fgEterm,
- 0,0,0,0,0,0,0,0
+ 0,0,0,0,0,0,0,0,0,0
 };
 
 // CSI Modifiers Letter
