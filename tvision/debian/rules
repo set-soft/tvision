@@ -37,7 +37,8 @@ ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postrm debian/rhtvision$(version).postrm
 endif
 	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" ./configure \
-		--prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr
+		--prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr \
+		--libs-subdir=$(LIB_SUBDIR)
 	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" $(MAKE) -j `nproc`
 	touch build-stamp
 
@@ -45,7 +46,8 @@ endif
 # Clean everything as if nothing happened :) :
 clean: clean-debian debianbackup.tar
 # If we don't configure there is no guarantee that we have a Makefile:
-	./configure --prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr
+	./configure --prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr \
+		--libs-subdir=$(LIB_SUBDIR)
 	$(MAKE) clean
 # Restore upstream provided regenerated files:
 	test -e debianbackup.tar && tar -xf debianbackup.tar
@@ -86,7 +88,7 @@ install: build
 	dh_installdirs -p $(package)$(version) usr/lib usr/share \
 		usr/share/doc/$(package)$(version) \
 		usr/share/doc/$(package)$(version)/eterm
-	$(MAKE) install libdir=$(destdir)/lib/$(LIB_SUBDIR)
+	$(MAKE) install
 # We need to move files for other packages than the first one in the control file:
 	dh_movefiles -p $(package)$(version) usr/lib/$(LIB_SUBDIR)/librhtv.so.$(version) \
 		usr/share/locale/

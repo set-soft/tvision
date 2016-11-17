@@ -10,7 +10,7 @@ ifeq ($(INSTALL),)
   INSTALL=@install@
 endif
 EXE_EXT=@exe_ext@
-libdir=$(prefix)/lib
+libdir=@libdir@
 OS=@OS@
 @maintainer_mode@
 @darwin@
