@@ -70,9 +70,11 @@ protected:
  // Assumed catalog encoding. This is OS independent and is an arbitrary
  // criteria for TV. It makes easier to create portable programs.
  static int  catalogEncoding;
+ static const char *catalogEncodingName;
  // Default encodings used for TV. Defined only for the available translations.
  static const char *defaultEncodingNames[];
  static int defaultEncodings[];
+ static const char *defaultEncodingsNames[];
  static void *previousCPCallBack;
  static uchar recodeTable[256];
  static char  packageName[libPackageNameLen];

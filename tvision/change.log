@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.391  2015/11/02 13:49:03  set
+* Fixed: Compilation error when using NO_STREAM.
+
 Revision 2.399.2.390  2015/05/29 12:20:11  set
 * Modified: [config.pl] The name of the suggested X11 development package.
 The old xlibs-dev is no longer valid. The new suggestion is libxmu-dev, it

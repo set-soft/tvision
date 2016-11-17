@@ -1,8 +1,15 @@
+rhtvision (2.2.1-4) stable; urgency=low
+
+  * Fixed: Wheeze compilation issues (unused variables and some casts)
+  * Fixed: Jessie compilation issues
+
+ -- Salvador Eduardo Tropea <salvador@inti.gov.ar>  Tue, 02 Jun 2015 12:58:30 -0300
+
 rhtvision (2.2.1-3) unstable; urgency=low
 
   * Fixed: gqview issues.
 
- -- Salvador Eduardo Tropea <salvador@aika.inti.gov.ar>  Fri, 22 Jun 2012 13:04:49 -0300
+ -- Salvador Eduardo Tropea <salvador@inti.gov.ar>  Fri, 22 Jun 2012 13:04:49 -0300
 
 rhtvision (2.2.1-2) unstable; urgency=low
 

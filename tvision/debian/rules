@@ -9,6 +9,8 @@ version=$(shell cat version.txt)
 package=rhtvision
 destdir=$(shell pwd)/debian/tmp/usr
 
+LIB_SUBDIR=$(shell dpkg-architecture -qDEB_TARGET_MULTIARCH)
+
 # Uncomment this to turn on verbose mode:
 #export DH_VERBOSE=1
 
@@ -36,7 +38,7 @@ ifneq ($(wildcard debian/rhtvision.postinst),)
 endif
 	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" ./configure \
 		--prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr
-	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" $(MAKE)
+	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" $(MAKE) -j `nproc`
 	touch build-stamp
 
 
@@ -84,9 +86,9 @@ install: build
 	dh_installdirs -p $(package)$(version) usr/lib usr/share \
 		usr/share/doc/$(package)$(version) \
 		usr/share/doc/$(package)$(version)/eterm
-	$(MAKE) install
+	$(MAKE) install libdir=$(destdir)/lib/$(LIB_SUBDIR)
 # We need to move files for other packages than the first one in the control file:
-	dh_movefiles -p $(package)$(version) usr/lib/librhtv.so.$(version) \
+	dh_movefiles -p $(package)$(version) usr/lib/$(LIB_SUBDIR)/librhtv.so.$(version) \
 		usr/share/locale/
 
 
