@@ -117,8 +117,10 @@ $MakeDefsRHIDE[1].=$here.'/include ' unless $conf{'libs-here'} eq 'no';
 $MakeDefsRHIDE[1].=$realPrefix.'/include/rhtvision';
 $MakeDefsRHIDE[1].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Path reported by rhtv-config --include
-$MakeDefsRHIDE[11]='INCLUDE='.$realPrefix.'/include/rhtvision';
-$MakeDefsRHIDE[11].=' '.$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
+$MakeDefsRHIDE[11]='INCLUDE=';
+$MakeDefsRHIDE[11].=$here.'/include ' unless $conf{'libs-here'} eq 'no';
+$MakeDefsRHIDE[11].=$realPrefix.'/include/rhtvision ';
+$MakeDefsRHIDE[11].=$conf{'X11IncludePath'} if (@conf{'HAVE_X11'} eq 'yes');
 # Extra path for the includes, used for the library
 $MakeDefsRHIDE[9]='EXTRA_INCLUDE_DIRS='.$conf{'EXTRA_INCLUDE_DIRS'};
 $MakeDefsRHIDE[7]='RHIDE_LIBS=';
@@ -162,10 +164,13 @@ if ($conf{'HAVE_ALLEGRO'} eq 'yes')
    $aux=~s/\-l//g;
    $MakeDefsRHIDE[2].=" $aux";
    $aux=$a1;
-   $aux=~s/\-l(\S+)//g;
+   $aux=~s/ \-l(\S+)//g;
    $aux=~s/\-L//g;
    $AllegroPath=$aux;
   }
+$MakeDefsRHIDE[3]='TVOBJ=';
+$MakeDefsRHIDE[3].='../../makes '  unless $conf{'libs-here'} eq 'no';
+$MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
 if ($OS eq 'UNIX')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
@@ -175,13 +180,13 @@ if ($OS eq 'UNIX')
       $MakeDefsRHIDE[0].=$aux;
       $MakeDefsRHIDE[9].=$aux;
      }
-   $MakeDefsRHIDE[3]='TVOBJ='.$LDExtraDirs.' ';
+   $MakeDefsRHIDE[3].=$LDExtraDirs.' ';
    # QNX 6.2 beta 3 workaround
    $MakeDefsRHIDE[3].='/lib ' if ($OSf eq 'QNXRtP');
    # Link with installed libraries
-   $MakeDefsRHIDE[3].=$realPrefix.'/lib ';
-   $MakeDefsRHIDE[3].='../../makes ';
-   $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
+   $MakeDefsRHIDE[3].=$realPrefix.'/lib';
+   $MakeDefsRHIDE[3].='/'.$conf{'libs-subdir'} if $conf{'libs-subdir'};
+   $MakeDefsRHIDE[3].=' ';
    $MakeDefsRHIDE[3].='../../intl/dummy ' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$conf{'X11LibPath'}.' ' if ($conf{'HAVE_X11'} eq 'yes');
    $MakeDefsRHIDE[3].=$AllegroPath.' ' if $conf{'HAVE_ALLEGRO'} eq 'yes';
@@ -201,9 +206,9 @@ elsif ($OS eq 'DOS')
       chdir($here);
       $MakeDefsRHIDE[0].=" $a"
      }
-   $MakeDefsRHIDE[3]='TVOBJ=../../makes ';
-   $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
-   $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
+   $MakeDefsRHIDE[3].=$realPrefix.'/lib';
+   $MakeDefsRHIDE[3].='/'.$conf{'libs-subdir'} if $conf{'libs-subdir'};
+   $MakeDefsRHIDE[3].=' '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=$AllegroPath.' ' if $conf{'HAVE_ALLEGRO'} eq 'yes';
   }
@@ -211,9 +216,9 @@ elsif ($OS eq 'Win32')
   {
    $MakeDefsRHIDE[0]='RHIDE_STDINC=';
    $MakeDefsRHIDE[2].=' gdi32'; # Needed for WinGr driver
-   $MakeDefsRHIDE[3]='TVOBJ=../../makes ';
-   $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
-   $MakeDefsRHIDE[3].=$realPrefix.'/lib '.$LDExtraDirs;
+   $MakeDefsRHIDE[3].=$realPrefix.'/lib';
+   $MakeDefsRHIDE[3].='/'.$conf{'libs-subdir'} if $conf{'libs-subdir'};
+   $MakeDefsRHIDE[3].=' '.$LDExtraDirs;
    $MakeDefsRHIDE[3].=' ../../intl/dummy' if $UseDummyIntl;
    $MakeDefsRHIDE[3].=' '.$conf{'X11LibPath'} if ($conf{'HAVE_X11'} eq 'yes');
    $MakeDefsRHIDE[3].=$AllegroPath.' ' if $conf{'HAVE_ALLEGRO'} eq 'yes';
@@ -390,6 +395,10 @@ sub SeeCommandLine
     elsif ($i eq '--no-libs-here')
       {
        $conf{'libs-here'}='no';
+      }
+    elsif ($i=~'--libs-subdir=(.*)')
+      {
+       $conf{'libs-subdir'}=$1;
       }
     elsif ($i eq '--enable-maintainer-mode')
       {
@@ -1130,6 +1139,10 @@ sub GenerateMakefile
  $text=~s/\@install\@/@conf{'GNU_INSTALL'}/;
  $text=~s/\@darwin\@/DARWIN=1/g   if $OSf eq 'Darwin';
  $text=~s/\@darwin\@//g           if $OSf ne 'Darwin';
+ my $libdir='$(prefix)/lib';
+ $libdir.='/'.$conf{'libs-subdir'} if $conf{'libs-subdir'};
+ $text=~s/\@libdir\@/$libdir/g;
+
 
  $makeDir='makes';
 

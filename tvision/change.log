@@ -1,4 +1,13 @@
 $Log$.
+Revision 2.758  2016/11/17 18:56:14  set
+* Fixed: [TVIntl] Modern gettext releases automagically reencodes messages,
+this confuses TV, now we ask gettext to avoid it.
+* Fixed: [XTerm] csiFgKeys1 didn't define 2 values, but the code used them.
+* Added: [Debian] 2.2.1-4 release.
+* Added: [Debian] Multi-arch role.
+* Added: [Debian] Compilation using all available CPUs.
+* Modified: [Debian] To install the library in the architecture subdir.
+.
 Revision 2.757  2015/11/02 13:50:21  set
 * Fixed: Compilation error when using NO_STREAM.
 .
