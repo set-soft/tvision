@@ -1,4 +1,14 @@
-$Log$
+$Log$.
+Revision 2.399.2.393  2016/11/17 21:05:31  set
+* Added: [config] A configuration option to specify the libs subdirectory.
+* Modified: [config] To report the sources directory as the includes dir,
+unless specified.
+* Fixed: [config] The parser of the Allegro dirs, failed with "x86-linux"
+(-l inux)
+* Modified: [config] Excluded ../../make when --no-libs-here is specified.
+* Modified: [Debian] To specify the architecture libs subdirectory during
+the configuration, not during the installation.
+
 Revision 2.399.2.392  2016/11/17 18:47:21  set
 * Fixed: [TVIntl] Modern gettext releases automagically reencodes messages,
 this confuses TV, now we ask gettext to avoid it.
