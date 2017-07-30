@@ -131,6 +131,8 @@ protected:
  inline
  static void   drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr);
  inline
+ static void   putChar(XImage *img, unsigned x, unsigned y);
+ inline
  static void   drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar);
  // Creates the mouse cursors
  static Boolean createCursors();
@@ -167,6 +169,8 @@ protected:
  static Colormap  cMap;
  // Normal graphics context
  static GC        gc;
+ static uint32    gcForeground;
+ static uint32    gcBackground;
  // Cursor graphics context
  static GC        cursorGC;
  // Internationalization stuff
@@ -179,6 +183,8 @@ protected:
  // The images that makes our font
  static XImage   *ximgFont[256];
  static XImage   *ximgSecFont[256];
+ static XImage   *ximgAux32; /* Aux true color template image */
+ static uint32   *aux32data; /* Data for the above XImage */
  // The image for the cursor
  static XImage   *cursorImage;
  // Hints about our size preferences
@@ -196,6 +202,8 @@ protected:
  static char  hideCursorWhenNoFocus;
  // Avoid resizing to a cells multiple if the WM doesn't follow our hints
  static char  dontResizeToCells;
+ // Expand the glyphs to a true-color XImage locally
+ static char  useTrueColorXImage;
  // Busy cursor stuff
  static Cursor busyCursor, leftPtr;
  static unsigned char busyCursorMap[];
@@ -209,6 +217,7 @@ protected:
  static const char *appHelperNameError[];
  static int appHelperError;
  static TNSCollection *appHelperHandlers;
+ static bool isTrueColor;
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen
