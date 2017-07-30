@@ -360,6 +360,12 @@ void TDisplay::setArgv(int aArgc, char **aArgv, char **aEnvir)
  environment=aEnvir;
 }
 
+inline
+static unsigned abs(unsigned v)
+{
+ return unsigned(abs(int(v)));
+}
+
 Boolean TDisplay::searchClosestRes(TScreenResolution *res, unsigned x,
                                    unsigned y, unsigned cant, unsigned &pos)
 {
