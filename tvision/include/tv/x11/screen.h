@@ -129,7 +129,6 @@ protected:
 
  // Helper to set the bacground and foreground in one step
  static void    XSetBgFg(uint16 attr);
- static void    XSetBgFgC(uint16 attr);
 
  // Variables for this driver
  // Foreground and background colors
@@ -157,8 +156,6 @@ protected:
  static GC        gc;
  static uint32    gcForeground;
  static uint32    gcBackground;
- // Cursor graphics context
- static GC        cursorGC;
  // Internationalization stuff
  static XIC       xic;
  static XIM       xim;

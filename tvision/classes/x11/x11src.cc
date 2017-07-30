@@ -113,7 +113,6 @@ Colormap  TScreenX11::cMap;
 GC        TScreenX11::gc;
 uint32    TScreenX11::gcForeground; // Last values used
 uint32    TScreenX11::gcBackground;
-GC        TScreenX11::cursorGC=NULL;
 XIC       TScreenX11::xic=NULL;
 XIM       TScreenX11::xim=NULL;
 Atom      TScreenX11::theProtocols;
@@ -178,8 +177,6 @@ TScreenX11::~TScreenX11()
        XFreeCursor(disp,leftPtr);
       }
 
-    if (cursorGC)
-       XFreeGC(disp,cursorGC);
     XDestroyWindow(disp,mainWin);
     XCloseDisplay(disp); //This could do all of the above for us, but anyway...
    }
@@ -1153,9 +1150,6 @@ TScreenX11::TScreenX11()
     }
  memcpy(ActualPalette,pal,sizeof(ActualPalette));
 
- /* A graphics context for the text cursor */
- cursorGC=XCreateGC(disp,mainWin,0,0);
-
  /* Create the cursor timer */
  gettimeofday(&refCursorTime,0);
 
@@ -1317,33 +1311,27 @@ void TScreenX11::UnDrawCursor()
  uchar newChar=theChar[charPos];
  uchar newAttr=theChar[attrPos];
 
- XSetBgFgC(newAttr);
- drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
+ XSetBgFg(newAttr);
+ drawChar(gc,cursorX*fontW,cursorY*fontH,newChar,newAttr);
  cursorInScreen=0;
  SEMAPHORE_OFF;
  return;
-}
-
-void TScreenX11::XSetBgFgC(uint16 attr)
-{
- int bg=attr>>4;
- int fg=attr & 0xF;
- if (bg==fg)
-    fg=~bg & 0xF;
- gcForeground=(uint32)colorMap[fg];
- gcBackground=(uint32)colorMap[bg];
- XSetBackground(disp,cursorGC,colorMap[bg]);
- XSetForeground(disp,cursorGC,colorMap[fg]);
 }
 
 void TScreenX11::XSetBgFg(uint16 attr)
 {
  int bg=attr>>4;
  int fg=attr & 0xF;
- gcForeground=(uint32)colorMap[fg];
- gcBackground=(uint32)colorMap[bg];
- XSetBackground(disp,gc,colorMap[bg]);
- XSetForeground(disp,gc,colorMap[fg]);
+ if (isTrueColor)
+   {
+    gcForeground=(uint32)colorMap[fg];
+    gcBackground=(uint32)colorMap[bg];
+   }
+ else
+   {
+    XSetBackground(disp,gc,colorMap[bg]);
+    XSetForeground(disp,gc,colorMap[fg]);
+   }
 }
 
 void TScreenX11::DrawCursor()
@@ -1358,7 +1346,7 @@ void TScreenX11::DrawCursor()
     unsigned offset=cursorX+cursorY*maxX;
     uchar *theChar=(uchar *)(screenBuffer+offset);
     int attr=theChar[attrPos];
-    XSetBgFgC(attr);
+    XSetBgFg(attr);
     memcpy(cursorData,useSecondaryFont && (attr & 8) ?
            ximgSecFont[theChar[charPos]]->data :
            ximgFont[theChar[charPos]]->data,fontSz);

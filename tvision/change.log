@@ -1,4 +1,8 @@
-$Log$.
+$Log$
+Revision 2.764  2017/07/30 20:29:35  set
+* Modified: [X11] Eliminated the cursorGC.
+* Modified: [X11] Avoided X11 calls when setting colors in truecolor mode.
+
 Revision 2.763  2017/07/30 20:26:31  set
 * Added: [X11] A new mode where mochrome fonts are expanded to truecolor
 locally. My system performs 100s time slower on Debian 9 (compared to
