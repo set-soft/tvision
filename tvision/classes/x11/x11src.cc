@@ -120,6 +120,9 @@ uint32    TScreenX11::gcBackground;
 XIC       TScreenX11::xic=NULL;
 XIM       TScreenX11::xim=NULL;
 Atom      TScreenX11::theProtocols;
+/* Clipboard properties */
+Atom      TScreenX11::XA_TARGETS;
+Atom      TScreenX11::XA_MULTIPLE;
 ulong     TScreenX11::colorMap[16];
 XImage   *TScreenX11::ximgFont[256];    /* Our "font" is just a collection of images */
 XImage   *TScreenX11::ximgSecFont[256];
@@ -145,7 +148,7 @@ void    (*TScreenX11::writeLine)(int x, int y, int w, void *str, unsigned color)
                 TScreenX11::writeLineCP;
 void    (*TScreenX11::redrawBuf)(int x, int y, unsigned w, unsigned off)=
                 TScreenX11::redrawBufCP;
-bool      TScreenX11::isTrueColor;
+bool      TScreenX11::isTrueColor; /* Indicates we are using truecolor Ximages */
 
 TScreenX11::~TScreenX11()
 {
@@ -1644,6 +1647,9 @@ TScreenX11::TScreenX11()
  theProtocols=XInternAtom(disp,"WM_DELETE_WINDOW",True);
  XSetWMProtocols(disp,mainWin,&theProtocols,1);
 
+ XA_TARGETS=XInternAtom(disp,"TARGETS",False);
+ XA_MULTIPLE=XInternAtom(disp,"MULTIPLE",False);
+
  /* Initialize the Input Context for international support */
  if ((xim=XOpenIM(disp,NULL,NULL,NULL))==NULL)
    {
@@ -1981,6 +1987,48 @@ void SubstractRef(timeval &curCursorTime, timeval &refCursorTime)
  Events processing
 *****************************************************************************/
 
+void TScreenX11::ProcessSelectionRequest(XEvent &event)
+{
+ //printf("SelectionRequest\n");
+ XSelectionRequestEvent *req=&(event.xselectionrequest);
+ // Response to this request
+ XEvent respond;
+ respond.xselection.type=SelectionNotify;
+ respond.xselection.display=req->display;
+ respond.xselection.requestor=req->requestor;
+ respond.xselection.selection=req->selection;
+ respond.xselection.target=req->target;
+ respond.xselection.time=req->time;
+ respond.xselection.property=req->property;
+
+ if (req->target==XA_TARGETS)
+   { // This is a request of the supported formats
+    Atom targets[]={XA_TARGETS,XA_MULTIPLE,XA_STRING};
+    XChangeProperty(disp,req->requestor,req->property,XA_ATOM,32,PropModeReplace,
+                    (const uchar *)targets,3);
+   }
+ else if (req->target==XA_MULTIPLE)
+   {
+    printf("XA_MULTIPLE, please contact author\n");
+    respond.xselection.property=None;
+   }
+ else if (req->target==XA_STRING && TVX11Clipboard::buffer)
+   {
+    XChangeProperty(disp,req->requestor,req->property,XA_STRING,
+                    8/*bits*/,PropModeReplace,
+                    (const uchar *)TVX11Clipboard::buffer,
+                    TVX11Clipboard::length);
+   }
+ else // Strings only please
+   {
+    //printf("Unknown target (%s)\n",XGetAtomName(disp,req->target));
+    // By default reply with a refusal
+    respond.xselection.property=None;
+   }
+ XSendEvent(disp,req->requestor,0,0,&respond);
+ XFlush(disp);
+}
+
 void TScreenX11::ProcessGenericEvents()
 {
  SEMAPHORE_ON;
@@ -2003,10 +2051,11 @@ void TScreenX11::ProcessGenericEvents()
    {
     /* Check if we have generic events in the queue */
     if (XCheckMaskEvent(disp,~(aMouseEvent|aKeyEvent),&event)!=True)
-      {
-       /* Process message that doesn't have mask */
+      {/* No events with mask */
+       /* Process events that doesn't have mask */
        if (XCheckTypedEvent(disp,ClientMessage,&event)==True)
          {
+          //printf("ClientMessage\n");
           if ((Atom)event.xclient.data.l[0]==theProtocols)
             {
              TGKeyX11::sendQuit=1;
@@ -2014,29 +2063,11 @@ void TScreenX11::ProcessGenericEvents()
          }
        else if (XCheckTypedEvent(disp,SelectionRequest,&event)==True)
          {// Another application wants the content of our clipboard
-          XEvent respond;
-          XSelectionRequestEvent *req=&(event.xselectionrequest);
-          if (req->target==XA_STRING && TVX11Clipboard::buffer)
-            {
-             XChangeProperty(disp,req->requestor,req->property,XA_STRING,
-                             8/*bits*/,PropModeReplace,
-                             (const uchar *)TVX11Clipboard::buffer,
-                             TVX11Clipboard::length);
-             respond.xselection.property=req->property;
-            }
-          else // Strings only please
-             respond.xselection.property= None;
-          respond.xselection.type=SelectionNotify;
-          respond.xselection.display=req->display;
-          respond.xselection.requestor=req->requestor;
-          respond.xselection.selection=req->selection;
-          respond.xselection.target=req->target;
-          respond.xselection.time=req->time;
-          XSendEvent(disp,req->requestor,0,0,&respond);
-          XFlush(disp);
+          ProcessSelectionRequest(event);
          }
        else if (XCheckTypedEvent(disp,SelectionNotify,&event)==True)
          {
+          //printf("SelectionNotify\n");
           TVX11Clipboard::waiting=0;
           TVX11Clipboard::property=event.xselection.property;
          }
