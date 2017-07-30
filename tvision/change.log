@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.394  2016/11/18 12:28:11  set
+* Added: [WWW] released files.
+
 Revision 2.399.2.393  2016/11/17 21:05:31  set
 * Added: [config] A configuration option to specify the libs subdirectory.
 * Modified: [config] To report the sources directory as the includes dir,

@@ -3,8 +3,8 @@
 # see copyrigh file for details
 #
 
-require "miscperl.pl";
-require "conflib.pl";
+require "./miscperl.pl";
+require "./conflib.pl";
 
 SeeCommandLine();
 
