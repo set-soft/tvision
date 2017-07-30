@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.397  2017/07/30 16:15:54  set
+* Added: [X11] A new mode where mochrome fonts are expanded to truecolor
+locally. My system performs 100s time slower on Debian 9 (compared to
+Debian 8) using it the problem is just 10s times slower.
+
 Revision 2.399.2.396  2017/07/30 14:50:12  set
 * Fixed: Ambiguous calls to abs using unsigned int as argument.
 
