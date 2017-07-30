@@ -1,4 +1,9 @@
 $Log$.
+Revision 2.399.2.398  2017/07/30 16:43:17  set
+* Modified: [X11] Removed Un/DrawCursor calls that aren't really needed.
+* Modified: [X11] Use of monochrome XImage in DrawCursor (finally good
+performance on my Debian 9)
+
 Revision 2.399.2.397  2017/07/30 16:15:54  set
 * Added: [X11] A new mode where mochrome fonts are expanded to truecolor
 locally. My system performs 100s time slower on Debian 9 (compared to
