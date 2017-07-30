@@ -15,7 +15,7 @@ LIB_SUBDIR=$(shell dpkg-architecture -qDEB_TARGET_MULTIARCH)
 #export DH_VERBOSE=1
 
 # This is the debhelper compatibility version to use:
-export DH_COMPAT=1
+export DH_COMPAT=5
 
 # Set CFLAGS according to the Debian Policy:
 CFLAGS = -D_REENTRANT -g -Wall
@@ -25,7 +25,7 @@ else
 	CFLAGS += -O2
 endif
 CXXFLAGS = $(CFLAGS)
-
+LDFLAGS=
 
 # Compile the beast!:
 build: build-stamp
@@ -36,10 +36,10 @@ ifneq ($(wildcard debian/rhtvision.postinst),)
 	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
 	mv debian/rhtvision.postrm debian/rhtvision$(version).postrm
 endif
-	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" ./configure \
+	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure \
 		--prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr \
 		--libs-subdir=$(LIB_SUBDIR)
-	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" $(MAKE) -j `nproc`
+	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" $(MAKE) -j `nproc`
 	touch build-stamp
 
 
@@ -92,6 +92,7 @@ install: build
 # We need to move files for other packages than the first one in the control file:
 	dh_movefiles -p $(package)$(version) usr/lib/$(LIB_SUBDIR)/librhtv.so.$(version) \
 		usr/share/locale/
+	dh_movefiles -p $(package)$(version)-dev usr/
 
 
 # Build the packages for a specific architecture:
