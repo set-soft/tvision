@@ -5,8 +5,8 @@
 # To specify the compilation flags define the CFLAGS environment variable.
 #
 
-require "miscperl.pl";
-require "conflib.pl";
+require "./miscperl.pl";
+require "./conflib.pl";
 
 # This optimization is giving problems and current PCs are quite fast to
 # make a real difference.
