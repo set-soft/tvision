@@ -137,13 +137,13 @@ TBackground *TDeskTop::initBackground( TRect r )
     return new TBackground( r, defaultBkgrnd );
 }
 
-// SET: made static and used unsigned instead of short.
+// SET: made static and used int instead of short.
 // It calculates the square root truncating the decimals.
 static
 unsigned iSqr( unsigned i )
 {
-    unsigned res1 = 2;
-    unsigned res2 = i/res1;
+    int res1 = 2;
+    int res2 = i/res1;
     while( abs( res1 - res2 ) > 1 )
         {
         res1 = (res1 + res2)/2;
