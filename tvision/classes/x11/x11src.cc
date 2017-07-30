@@ -256,9 +256,9 @@ void TScreenX11::setCharacter(unsigned offset, ushort value)
 
  SEMAPHORE_ON;
  XSetBgFg(newAttr);
- UnDrawCursor();
+ //UnDrawCursor();
  drawChar(gc,x,y,newChar,newAttr);
- DrawCursor();
+ //DrawCursor();
  XFlush(disp);
  SEMAPHORE_OFF;
 }
@@ -281,7 +281,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
  unsigned oldAttr=0x100;
 
  SEMAPHORE_ON;
- UnDrawCursor();
+ //UnDrawCursor();
  while (count--)
    {
     newChar=b[charPos];
@@ -299,7 +299,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
       }
     x+=fontW; b+=2; sb+=2;
    }
- DrawCursor();
+ //DrawCursor();
  XFlush(disp);
  SEMAPHORE_OFF;
 }
@@ -1369,7 +1369,7 @@ void TScreenX11::DrawCursor()
        memset(cursorData+cShapeFrom*fontWb,0xFF,(cShapeTo-cShapeFrom)*fontWb);
 
     /* Now put it in the screen */
-    XPutImage(disp,mainWin,cursorGC,cursorImage,0,0,cursorPX,cursorPY,fontW,fontH);
+    putChar(cursorImage,cursorPX,cursorPY);
     XFlush(disp);
     SEMAPHORE_OFF;
    }
@@ -1573,7 +1573,7 @@ void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned col
  SEMAPHORE_ON;
  XSetBgFg(color);
  x*=fontW; y*=fontH;
- UnDrawCursor();
+ //UnDrawCursor();
  XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
  while (w--)
    {
