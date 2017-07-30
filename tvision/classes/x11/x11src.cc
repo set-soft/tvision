@@ -117,7 +117,6 @@ Colormap  TScreenX11::cMap;
 GC        TScreenX11::gc;
 uint32    TScreenX11::gcForeground; // Last values used
 uint32    TScreenX11::gcBackground;
-GC        TScreenX11::cursorGC=NULL;
 XIC       TScreenX11::xic=NULL;
 XIM       TScreenX11::xim=NULL;
 Atom      TScreenX11::theProtocols;
@@ -186,8 +185,6 @@ TScreenX11::~TScreenX11()
        XFreeCursor(disp,leftPtr);
       }
 
-    if (cursorGC)
-       XFreeGC(disp,cursorGC);
     XDestroyWindow(disp,mainWin);
     XCloseDisplay(disp); //This could do all of the above for us, but anyway...
    }
@@ -1572,7 +1569,8 @@ TScreenX11::TScreenX11()
  screen=DefaultScreen(disp);
  gc=DefaultGC(disp,screen);
  visual=DefaultVisual(disp,screen);
- isTrueColor=DefaultDepth(disp,screen)>=24 && useTrueColorXImage;
+ isTrueColor=DefaultDepth(disp,screen)>=24 && useTrueColorXImage &&
+             !useX11Font;
  if (useX11Font)
     XSetFont(disp,gc,x11Font);
 
@@ -1691,12 +1689,6 @@ TScreenX11::TScreenX11()
      colorMap[col]=query.pixel;
     }
  memcpy(ActualPalette,pal,sizeof(ActualPalette));
-
- /* A graphics context for the text cursor */
- cursorGC=XCreateGC(disp,mainWin,0,0);
- if (useX11Font)
-    /* Select the same font for this context */
-    XSetFont(disp,cursorGC,x11Font);
 
  /* Create the cursor timer */
  gettimeofday(&refCursorTime,0);
@@ -1863,8 +1855,8 @@ void TScreenX11::UnDrawCursor()
     uchar *theChar=(uchar *)(screenBuffer+offset);
     uchar newChar=theChar[charPos];
     uchar newAttr=theChar[attrPos];
-    XSetBgFgC(newAttr);
-    drawChar(cursorGC,cursorX*fontW,cursorY*fontH,newChar,newAttr);
+    XSetBgFg(newAttr);
+    drawChar(gc,cursorX*fontW,cursorY*fontH,newChar,newAttr);
    }
  else
    {
@@ -1878,8 +1870,8 @@ void TScreenX11::UnDrawCursor()
        uint16 *buf=screenBuffer+offset*2;
        uchar newChar=buf[charPos];
        uchar newAttr=buf[attrPos];
-       XSetBgFgC(newAttr);
-       drawCharU16(cursorGC,cursorX*fontW,cursorY*fontH,newChar);
+       XSetBgFg(newAttr);
+       drawCharU16(gc,cursorX*fontW,cursorY*fontH,newChar);
       }
    }
  cursorInScreen=0;
@@ -1887,26 +1879,20 @@ void TScreenX11::UnDrawCursor()
  return;
 }
 
-void TScreenX11::XSetBgFgC(uint16 attr)
-{
- int bg=attr>>4;
- int fg=attr & 0xF;
- if (bg==fg)
-    fg=~bg & 0xF;
- gcForeground=(uint32)colorMap[fg];
- gcBackground=(uint32)colorMap[bg];
- XSetBackground(disp,cursorGC,colorMap[bg]);
- XSetForeground(disp,cursorGC,colorMap[fg]);
-}
-
 void TScreenX11::XSetBgFg(uint16 attr)
 {
  int bg=attr>>4;
  int fg=attr & 0xF;
- gcForeground=(uint32)colorMap[fg];
- gcBackground=(uint32)colorMap[bg];
- XSetBackground(disp,gc,colorMap[bg]);
- XSetForeground(disp,gc,colorMap[fg]);
+ if (isTrueColor)
+   {
+    gcForeground=(uint32)colorMap[fg];
+    gcBackground=(uint32)colorMap[bg];
+   }
+ else
+   {
+    XSetBackground(disp,gc,colorMap[bg]);
+    XSetForeground(disp,gc,colorMap[fg]);
+   }
 }
 
 void TScreenX11::DrawCursor()
@@ -1937,10 +1923,10 @@ void TScreenX11::DrawCursor()
           writeLineX11U16(cursorX,cursorY,1,buf,attr);
           if (cursorInScreen)
             {
-             XSetBgFgC(attr);
+             XSetBgFg(attr);
              int y;
              for (y=cShapeFrom; y<cShapeTo; y++)
-                 XDrawLine(disp,mainWin,cursorGC,cursorPX,cursorPY+y,cursorPX+fontW-1,cursorPY+y);
+                 XDrawLine(disp,mainWin,gc,cursorPX,cursorPY+y,cursorPX+fontW-1,cursorPY+y);
             }
           XFlush(disp);
           SEMAPHORE_OFF;
@@ -1952,7 +1938,7 @@ void TScreenX11::DrawCursor()
           memcpy(cursorData,glyphs+code*fontSz,fontSz);
          }
       }
-    XSetBgFgC(attr);
+    XSetBgFg(attr);
 
     //fprintf(stderr,"DrawCursor: cursorInScreen=%d from/to %d/%d\n",cursorInScreen,cShapeFrom,cShapeTo);
     /* If the cursor is on draw it over the character */
