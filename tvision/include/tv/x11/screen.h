@@ -106,6 +106,7 @@ protected:
  // Events processing
  // Events loop
  static void   ProcessGenericEvents();
+ static void   ProcessSelectionRequest(XEvent &event);
  // Internal line update
  static void   writeLine(int x, int y, int w, unsigned char *str, unsigned color);
  // Internal rectangle update
@@ -161,6 +162,9 @@ protected:
  static XIM       xim;
  // Needed to catch the windows close
  static Atom      theProtocols;
+ // Clipboard properties
+ static Atom      XA_TARGETS;
+ static Atom      XA_MULTIPLE;
  // Our colors mapped to X ones
  static ulong     colorMap[16];
  // The images that makes our font
