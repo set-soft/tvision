@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.762  2017/07/30 20:21:29  set
+* Fixed: Ambiguous calls to abs using unsigned int as argument.
+
 Revision 2.761  2017/07/30 20:20:07  set
 * Fixed: [config] Now the require statement needs a relative path to
 include Perl files.

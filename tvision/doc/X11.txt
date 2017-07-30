@@ -138,6 +138,8 @@ DontResizeToCells      Don't resize the window to a cells multiple size if
                        Compiz also needs it. Disable it if your WM doesn't
                        pay attention to the hints and you can correct the
                        window size to be a multiple of the fonts size.
+UseTrueColorXImage     Avoid using monochrome XImage if the screen is truecolor.
+                       Enabled by default.
 InternalBusyCursor     When enabled we use our own mouse cursor for it.
 UseUpdateThread        When this option is enabled the driver updates the
                        window content even if the TV application is blocking

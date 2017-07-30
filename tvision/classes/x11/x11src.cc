@@ -22,6 +22,7 @@
    ScrCP
    InpCP
    HideCursorWhenNoFocus
+   UseTrueColorXImage
    DontResizeToCells     Don't resize the window to a cells multiple size if the WM
                          fails to follow the hints. First added to avoid problems found
                          in KDE 3.1 alpha. Now enabled by default. Compiz also needs it.
@@ -110,6 +111,8 @@ Window    TScreenX11::rootWin;
 Window    TScreenX11::mainWin;
 Colormap  TScreenX11::cMap;
 GC        TScreenX11::gc;
+uint32    TScreenX11::gcForeground; // Last values used
+uint32    TScreenX11::gcBackground;
 GC        TScreenX11::cursorGC=NULL;
 XIC       TScreenX11::xic=NULL;
 XIM       TScreenX11::xim=NULL;
@@ -118,6 +121,8 @@ ulong     TScreenX11::colorMap[16];
 XImage   *TScreenX11::ximgFont[256];    /* Our "font" is just a collection of images */
 XImage   *TScreenX11::ximgSecFont[256];
 XImage   *TScreenX11::cursorImage=NULL;
+XImage   *TScreenX11::ximgAux32=NULL; /* Aux true color template image */
+uint32   *TScreenX11::aux32data;
 int       TScreenX11::fg;
 int       TScreenX11::bg;
 char      TScreenX11::cursorEnabled=1;
@@ -126,12 +131,14 @@ uchar     TScreenX11::curAttr;
 uchar     TScreenX11::primaryFontChanged=0;
 char     *TScreenX11::cursorData=NULL;
 char      TScreenX11::hideCursorWhenNoFocus=1;
+char      TScreenX11::useTrueColorXImage=1;
 char      TScreenX11::dontResizeToCells=1;
 struct
 timeval   TScreenX11::refCursorTime,
           TScreenX11::curCursorTime;
 XSizeHints *TScreenX11::sizeHints=NULL;
 XClassHint *TScreenX11::classHint=NULL;
+bool      TScreenX11::isTrueColor;
 
 TScreenX11::~TScreenX11()
 {
@@ -157,6 +164,11 @@ TScreenX11::~TScreenX11()
  DestroyXImageFont(1);
  if (cursorImage)
     XDestroyImage(cursorImage);
+ if (ximgAux32)
+   {
+    XDestroyImage(ximgAux32);
+    ximgAux32=NULL;
+   }
 
  if (disp)
    {
@@ -191,12 +203,41 @@ void TScreenX11::clearScreen()
 }
 
 inline
+void TScreenX11::putChar(XImage *img, unsigned x, unsigned y)
+{
+ if (isTrueColor)
+   { // Manually expand the bitmap to truecolor
+    char *data=img->data;
+    unsigned line;
+    uint32 *p=aux32data;
+    for (line=0; line<fontH; line++)
+       {
+        unsigned mask=0x80, col;
+        for (col=0; col<fontW; mask>>=1, col++, p++)
+           {
+            if (!mask)
+              {
+               mask=0x80;
+               data++;
+              }
+            *p=*data & mask ? gcForeground : gcBackground;
+           }
+        data++;
+       }
+    img=ximgAux32;
+   }
+ XPutImage(disp,mainWin,gc,img,0,0,x,y,fontW,fontH);
+}
+
+inline
 void TScreenX11::drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr)
 {
+ XImage *c;
  if (useSecondaryFont && (aAttr & 0x8))
-    XPutImage(disp,mainWin,gc,ximgSecFont[aChar],0,0,x,y,fontW,fontH);
+    c=ximgSecFont[aChar];
  else
-    XPutImage(disp,mainWin,gc,ximgFont[aChar],0,0,x,y,fontW,fontH);
+    c=ximgFont[aChar];
+ putChar(c,x,y);
 }
 
 void TScreenX11::setCharacter(unsigned offset, ushort value)
@@ -956,6 +997,8 @@ TScreenX11::TScreenX11()
     hideCursorWhenNoFocus=aux;
  if (optSearch("DontResizeToCells",aux))
     dontResizeToCells=aux;
+ if (optSearch("UseTrueColorXImage",aux))
+    useTrueColorXImage=aux;
 
  TDisplayX11::Init();
 
@@ -995,6 +1038,7 @@ TScreenX11::TScreenX11()
  screen=DefaultScreen(disp);
  gc=DefaultGC(disp,screen);
  visual=DefaultVisual(disp,screen);
+ isTrueColor=DefaultDepth(disp,screen)>=24 && useTrueColorXImage;
 
  /* Create what we'll use as font */
  CreateXImageFont(0,fontData,fontW,fontH);
@@ -1153,6 +1197,23 @@ void TScreenX11::CreateXImageFont(int which, uchar *font, unsigned w, unsigned h
     }
  if (which)
     useSecondaryFont=1;
+ if (isTrueColor)
+   {/* True color aux image to avoid monochromatic images.
+       Debian 9 (xorg 7.7) perfomes really bad. */
+    if (ximgAux32)
+      {
+       if (ximgAux32->width!=(int)w || ximgAux32->height!=(int)h)
+         {
+          XDestroyImage(ximgAux32);
+          ximgAux32=NULL;
+         }
+      }
+    if (!ximgAux32)
+      {
+       aux32data=(uint32 *)malloc(w*h*4);
+       ximgAux32=XCreateImage(disp,visual,24,ZPixmap,0,(char *)aux32data,w,h,32,0);
+      }
+   }
 }
 
 void TScreenX11::DestroyXImageFont(int which)
@@ -1269,6 +1330,8 @@ void TScreenX11::XSetBgFgC(uint16 attr)
  int fg=attr & 0xF;
  if (bg==fg)
     fg=~bg & 0xF;
+ gcForeground=(uint32)colorMap[fg];
+ gcBackground=(uint32)colorMap[bg];
  XSetBackground(disp,cursorGC,colorMap[bg]);
  XSetForeground(disp,cursorGC,colorMap[fg]);
 }
@@ -1277,6 +1340,8 @@ void TScreenX11::XSetBgFg(uint16 attr)
 {
  int bg=attr>>4;
  int fg=attr & 0xF;
+ gcForeground=(uint32)colorMap[fg];
+ gcBackground=(uint32)colorMap[bg];
  XSetBackground(disp,gc,colorMap[bg]);
  XSetForeground(disp,gc,colorMap[fg]);
 }
@@ -1512,7 +1577,7 @@ void TScreenX11::writeLine(int x, int y, int w, unsigned char *str, unsigned col
  XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
  while (w--)
    {
-    XPutImage(disp,mainWin,gc,f[*str],0,0,x,y,fontW,fontH);
+    putChar(f[*str],x,y);
     str++;
     x+=fontW;
    }
