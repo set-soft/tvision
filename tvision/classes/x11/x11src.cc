@@ -270,9 +270,9 @@ void TScreenX11::setCharacter(unsigned offset, uint32 value)
 
  SEMAPHORE_ON;
  XSetBgFg(newAttr);
- UnDrawCursor();
+ //UnDrawCursor();
  drawChar(gc,x,y,newChar,newAttr);
- DrawCursor();
+ //DrawCursor();
  XFlush(disp);
  SEMAPHORE_OFF;
 }
@@ -301,7 +301,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
  unsigned oldAttr=0x100;
 
  SEMAPHORE_ON;
- UnDrawCursor();
+ //UnDrawCursor();
  while (count--)
    {
     newChar=b[charPos];
@@ -319,7 +319,7 @@ void TScreenX11::setCharacters(unsigned offset, ushort *values, unsigned count)
       }
     x+=fontW; b+=2; sb+=2;
    }
- DrawCursor();
+ //DrawCursor();
  XFlush(disp);
  SEMAPHORE_OFF;
 }
@@ -1145,7 +1145,7 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
  unsigned oldAttr=0x10000;
 
  SEMAPHORE_ON;
- UnDrawCursor();
+ //UnDrawCursor();
  while (count--)
    {
     newChar=b[charPos];
@@ -1163,7 +1163,7 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
       }
     x+=fontW; b+=2; sb+=2;
    }
- DrawCursor();
+ //DrawCursor();
 
  XFlush(disp);
  SEMAPHORE_OFF;
@@ -1191,9 +1191,9 @@ void TScreenX11::setCharacterU16(unsigned offset, uint32 value)
 
  SEMAPHORE_ON;
  XSetBgFg(newAttr);
- UnDrawCursor();
+ //UnDrawCursor();
  drawCharU16(gc,x,y,newChar);
- DrawCursor();
+ //DrawCursor();
  XFlush(disp);
  SEMAPHORE_OFF;
 }
@@ -1960,7 +1960,7 @@ void TScreenX11::DrawCursor()
        memset(cursorData+cShapeFrom*fontWb,0xFF,(cShapeTo-cShapeFrom)*fontWb);
 
     /* Now put it in the screen */
-    XPutImage(disp,mainWin,cursorGC,cursorImage,0,0,cursorPX,cursorPY,fontW,fontH);
+    putChar(cursorImage,cursorPX,cursorPY);
     XFlush(disp);
     SEMAPHORE_OFF;
    }
@@ -2163,7 +2163,7 @@ void TScreenX11::writeLineCP(int x, int y, int w, void *s, unsigned color)
  SEMAPHORE_ON;
  XSetBgFg(color);
  x*=fontW; y*=fontH;
- UnDrawCursor();
+ //UnDrawCursor();
  XImage **f=(useSecondaryFont && (color & 8)) ? ximgSecFont : ximgFont;
  uchar *str=(uchar *)s;
  while (w--)
@@ -2218,7 +2218,7 @@ void TScreenX11::writeLineU16(int x, int y, int w, void *s, unsigned color)
  SEMAPHORE_ON;
  XSetBgFg(color);
  x*=fontW; y*=fontH;
- UnDrawCursor();
+ //UnDrawCursor();
  uint16 *str=(uint16 *)s;
  while (w--)
    {
