@@ -523,7 +523,6 @@ void AlCon_GetScrChars(unsigned offset, uint16 *buffer, unsigned count)
 {
  unsigned char *b=(unsigned char *)buffer;
 
- offset/=2;
  while (count--)
    {
     b[charPos]=chars[offset];
@@ -542,7 +541,6 @@ void AlCon_PutChar(unsigned offset, uint16 value)
  unsigned x,y;
  aux[1]=0;
 
- offset/=2;
  x = (offset % AlCon_ScreenWidth) * AlCon_FontWidth;
  y = (offset / AlCon_ScreenWidth) * AlCon_FontHeight;
  AlCon_DisableAsync();
@@ -889,13 +887,17 @@ const char *AlCon_KeyNames[]=
 static
 uchar keyCode[KEY_MAX]=
 {
- kbUnkNown,kbA,kbB,kbC,kbD,kbE,kbF,kbG,kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,kbP,
- kbQ,kbR,kbS,kbT,kbU,kbV,kbW,kbX,kbY,kbZ,kb0,kb1,kb2,kb3,kb4,kb5,kb6,kb7,
- kb8,kb9,kb0,kb1,kb2,kb3,kb4,kb5,kb6,kb7,kb8,kb9,kbF1,kbF2,kbF3,kbF4,kbF5,
- kbF6,kbF7,kbF8,kbF9,kbF10,kbF11,kbF12,kbEsc,kbGrave,kbMinus,kbEqual,
- kbBackSpace,kbTab,kbOpenBrace,kbCloseBrace,kbEnter,kbColon,kbQuote,
- kbBackSlash,kbBackSlash,kbComma,kbStop,kbSlash,kbSpace,kbInsert,kbDelete,
- kbHome,kbEnd,kbPgUp,kbPgDn,kbLeft,kbRight,kbUp,kbDown,kbSlash,kbAsterisk,
+ kbUnkNown,kbA,kbB,kbC,kbD,kbE,kbF,kbG, // 0-7
+ kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO, // 8-15
+ kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW, // 16-23
+ kbX,kbY,kbZ,kb0,kb1,kb2,kb3,kb4, // 24-31
+ kb5,kb6,kb7,kb8,kb9,kb0,kb1,kb2, // 32-39
+ kb3,kb4,kb5,kb6,kb7,kb8,kb9,kbF1, // 40-47
+ kbF2,kbF3,kbF4,kbF5,kbF6,kbF7,kbF8,kbF9, // 48-55
+ kbF10,kbF11,kbF12,kbEsc,kbGrave,kbMinus,kbEqual,kbBackSpace, // 56-63
+ kbTab,kbOpenBrace,kbCloseBrace,kbEnter,kbColon,kbQuote,kbBackSlash,kbBackSlash, // 64-71
+ kbComma,kbStop,kbSlash,kbSpace,kbInsert,kbDelete,kbHome,kbEnd, // 72-79
+ kbPgUp,kbPgDn,kbLeft,kbRight,kbUp,kbDown,kbSlash,kbAsterisk,
  kbMinus,kbPlus,kbDelete,kbEnter,kbPrnScr,kbPause,kbUnkNown,kbUnkNown,
  kbUnkNown,kbUnkNown,kbUnkNown,kbA_Roba,kbCaret,kbColon,kbUnkNown,kbUnkNown,
  kbUnkNown,kbUnkNown,kbUnkNown,kbUnkNown,kbUnkNown,kbUnkNown,kbWinLeft,
@@ -916,7 +918,7 @@ uchar KeyCodeByASCII[96]=
  kbGrave,kbA,kbB,kbC,kbD,kbE,kbF,kbG,
  kbH,kbI,kbJ,kbK,kbL,kbM,kbN,kbO,
  kbP,kbQ,kbR,kbS,kbT,kbU,kbV,kbW,
- kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbBackSpace
+ kbX,kbY,kbZ,kbOpenCurly,kbOr,kbCloseCurly,kbTilde,kbDelete
 };
 
 int AlCon_GetKey(unsigned *aSymbol, uchar *aScan, unsigned *aFlags)
@@ -926,7 +928,6 @@ int AlCon_GetKey(unsigned *aSymbol, uchar *aScan, unsigned *aFlags)
  int ascii=key & 0xFF;
  int name,flags;
 
- //AlCon_CPrintf("key: 0x%04X scan: 0x%02X ascii: 0x%02X ",key,scan,ascii);
  if (ascii>=32 && ascii<128)
     name=KeyCodeByASCII[ascii-32];
  else
@@ -944,6 +945,7 @@ int AlCon_GetKey(unsigned *aSymbol, uchar *aScan, unsigned *aFlags)
  *aFlags=flags;
  *aScan=scan;
 
+ //printf("key: 0x%04X scan: 0x%02X ascii: 0x%02X Abstract: 0x%02X\n",key,scan,ascii,name|flags);
  return name|flags;
 }
 

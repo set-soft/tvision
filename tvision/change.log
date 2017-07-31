@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.767  2017/07/30 21:00:14  set
+* Modified: [Debian] DebHelper compat level from 1 to 5, also moved some
+files that are no longer automagically moved.
+
 Revision 2.766  2017/07/30 20:39:17  set
 * Added: [X11] Support for the XA_TARGETS request. It solves clipboard
 problems on KDE (tested on KDE 5.28)
