@@ -1,4 +1,7 @@
-$Log$
+$Log$.
+Revision 2.399.2.403  2017/07/31 15:28:37  set
+* Modified: Version to 2.2.2.
+
 Revision 2.399.2.402  2017/07/31 13:06:55  set
 * Fixed: [AlCon] Wrong offset in AlCon_GetScrChars and AlCon_PutChar.
 * Fixed: [AlCon] Wrong Delete key mapping.

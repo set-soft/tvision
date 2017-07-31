@@ -5,9 +5,12 @@
   Unicode16=1
   UnicodeFont="boxround.sft"
   UseX11Fonts=1
-  FontWidth=12
-  FontHeight=13
+  FontWidth=10
+  FontHeight=20
   ScreenHeight=40
+  ScreenWidth=110
+  # This font is the Fixed medium used in TV
+  X11Font="-misc-fixed-*-r-normal-*-20-*-*-*-*-*-iso10646-1"
   #X11Font="-adobe-courier-*-r-*-*-18-*-*-*-m-*-iso10646-*"
   #X11Font="-b&h-lucidatypewriter-*-r-*-*-18-*-*-*-m-*-iso10646-*"
   #X11Font="-b&h-lucidatypewriter-*-r-*-*-34-*-*-*-m-*-iso10646-*"
@@ -19,4 +22,5 @@
   #X11Font="-*-terminal-*-*-*-*-*-*-*-*-c-*-*-*"
  }
 }
+
 
