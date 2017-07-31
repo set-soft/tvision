@@ -1123,13 +1123,15 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
  statSCSt++;
  uint32 *b32=(uint32 *)values;
  uint32 *sb32=(uint32 *)(screenBuffer+offset*2);
- unsigned i;
+ unsigned skip, i;
  // Skip repeated characters at the left
- for (i=0; count && b32[i]==sb32[i]; count--, i++);
- offset+=i;
+ for (skip=0; w && b32[skip]==sb32[skip]; w--, skip++);
+ offset+=skip;
+ values+=skip*2;
  // Skip repeated characters at the right
- for (i=count-1; count && b32[i]==sb32[i]; count--, i--);
- if (!count)
+ if (w)
+    for (i=w-1; w && b32[skip+i]==sb32[skip+i]; w--, i--);
+ if (!w)
    {// All skipped
     statSCSs++;
     return;
@@ -1231,12 +1233,14 @@ void TScreenX11::setCharactersX11U16(unsigned offset, ushort *values, unsigned w
  statSCSt++;
  uint32 *b32=(uint32 *)values;
  uint32 *sb32=(uint32 *)(screenBuffer+offset*2);
- unsigned i;
+ unsigned skip, i;
  // Skip repeated characters at the left
- for (i=0; w && b32[i]==sb32[i]; w--, i++);
- offset+=i;
+ for (skip=0; w && b32[skip]==sb32[skip]; w--, skip++);
+ offset+=skip;
+ values+=skip*2;
  // Skip repeated characters at the right
- for (i=w-1; w && b32[i]==sb32[i]; w--, i--);
+ if (w)
+    for (i=w-1; w && b32[skip+i]==sb32[skip+i]; w--, i--);
  if (!w)
    {// All skipped
     statSCSs++;
@@ -1564,9 +1568,15 @@ TScreenX11::TScreenX11()
  startupCursor=cursorLines;
  startupMode=screenMode;
  if (drawingMode==unicode16)
+   {
     screenBuffer=new uint16[screenWidth*screenHeight*2];
+    memset(screenBuffer,0,screenWidth*screenHeight*4);
+   }
  else
+   {
     screenBuffer=new uint16[screenWidth*screenHeight];
+    memset(screenBuffer,0,screenWidth*screenHeight*2);
+   }
 
  /* Get screen and graphic context */
  screen=DefaultScreen(disp);
