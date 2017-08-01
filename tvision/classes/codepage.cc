@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 1996-2003 by Salvador Eduardo Tropea (SET)
+  Copyright 1996-2017 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
   Module: Code Page
@@ -2961,6 +2961,201 @@ void *TVCodePage::convertStrU16_2_CP(void *dest, const void *orig,
 /**[txh]********************************************************************
 
   Description:
+  Converts a string containing UTF8 to Application Code Page. The len
+indicates how many chars from orig we must process. The dest buffer must
+be long enough to hold the result. If dest is NULL this routine just
+meassure the length of the result.
+  
+  Return: -1 if the UTF8 sequence is wrong, the length of the converted
+text otherwise.
+  
+***************************************************************************/
+
+int TVCodePage::convertStrUTF8_2_CP(char *dest, const char *orig,
+                                    unsigned len)
+{
+ const uchar *utf8=(const uchar *)orig;
+ uchar *d=(uchar *)dest;
+ unsigned unicode;
+ int retLen=0;
+
+ uchar c=*(utf8++);
+ while (len--)
+   {
+    if ((c&0x80)==0)
+      {// 1 byte
+       unicode=c;
+      }
+    else if ((c&0xF8)==0xF0)
+      {// 4 bytes
+       if (len<3) return -1;
+       len-=3;
+       unicode =(c&0x07)<<18;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F)<<12;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F)<<6;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F);
+      }
+    else if ((c&0xE0)==0xE0)
+      {// 3 bytes
+       if (len<2) return -1;
+       len-=2;
+       unicode =(c&0x0F)<<12;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F)<<6;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F);
+      }
+    else
+      {// 2 bytes
+       if (!len) return -1;
+       len-=1;
+       unicode =(c&0x1F)<<6;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F);
+      }
+    c=*(utf8++);
+    // Convert the unicode value to the app code page
+    if (dest)
+      {
+       if (unicode>0xFFFF)
+          d+=sprintf((char *)d,"&#x%08X;",unicode); // &#x00000000; 12
+       else
+         {
+          uint16 cp=unicodeToApp->search(unicode);
+          if (cp==0xFFFF)
+             d+=sprintf((char *)d,"&#x%04X;",unicode); // &#x0000; 8
+          else
+             *(d++)=(uchar)cp;
+         }
+      }
+    else
+      {
+       if (unicode>0xFFFF)
+          retLen+=12;
+       else
+         {
+          uint16 cp=unicodeToApp->search(unicode);
+          retLen+=cp==0xFFFF ? 8 : 1;
+         }
+      }
+   }
+ if (dest)
+   {
+    *d=0;
+    retLen=d-(uchar *)dest;
+   }
+ return retLen;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a string containing Application Code Page to UTF8. Only len bytes
+are processed. If dest is NULL it just meassures the destination length.
+  
+  Return: The destination length, or -1 if the string can't be represented
+using UTF8.
+  
+***************************************************************************/
+
+int TVCodePage::convertStrCP_2_UTF8(char *dest, const char *orig,
+                                    unsigned len)
+{
+ const uchar *o=(const uchar *)orig;
+ uchar *d=(uchar *)dest;
+ unsigned unicode;
+ int retLen=0;
+
+ while (len--)
+   {
+    if (*o=='&')
+      {
+       unicode='&';
+       // Is it a 12 bytes escaped U32?
+       if (len>=11 && o[1]=='#' && o[2]=='x' && o[11]==';')
+         {// Seems to be, try
+          char *end;
+          unsigned v=strtoul((const char *)(o+3),&end,16);
+          if (end-(char *)o==11)
+            {
+             unicode=v;
+             len-=11;
+             o+=11;
+            }
+         }
+       // Is it an 8 bytes escaped U16?
+       else if (len>=7 && o[1]=='#' && o[2]=='x' && o[7]==';')
+         {// Seems to be, try
+          char *end;
+          unsigned v=strtoul((const char *)(o+3),&end,16);
+          if (end-(char *)o==7)
+            {
+             unicode=v;
+             len-=7;
+             o+=7;
+            }
+         }
+      }
+    else
+       unicode=appToUnicode[*o];
+    o++;
+    // Now encode the unicode value using UTF8
+    if (unicode<=0x7F)
+      {
+       retLen++;
+       if (d)
+          *(d++)=unicode;
+      }
+    else if (unicode<=0x7FF)
+      {
+       retLen+=2;
+       if (d)
+         {
+          *(d++)=0xC0 | (unicode>>6);
+          *(d++)=0x80 | (unicode&0x3F);
+         }
+      }
+    else if (unicode<=0xFFFF)
+      {
+       retLen+=3;
+       if (d)
+         {
+          *(d++)=0xE0 | (unicode>>12);
+          *(d++)=0x80 | ((unicode>>6)&0x3F);
+          *(d++)=0x80 | (unicode&0x3F);
+         }
+      }
+    else if (unicode<=0x1FFFFF)
+      {
+       retLen+=4;
+       if (d)
+         {
+          *(d++)=0xF0 | (unicode>>18);
+          *(d++)=0x80 | ((unicode>>12)&0x3F);
+          *(d++)=0x80 | ((unicode>> 6)&0x3F);
+          *(d++)=0x80 | (unicode&0x3F);
+         }
+      }
+    else // UTF8 doesn't support bigger values
+       return -1;
+   }
+ if (d)
+    *d=0;
+ return retLen;
+}
+
+/**[txh]********************************************************************
+
+  Description:
   Converts a string containing Application Code Page to Unicode. The
 destination must be (len+1)*2 bytes for the EOS.
   
@@ -2972,7 +3167,7 @@ void *TVCodePage::convertStrCP_2_U16(void *dest, const void *orig,
                                      unsigned len)
 {
  uint16 *d=(uint16 *)dest;
- uchar *o=(uchar *)orig;
+ const uchar *o=(const uchar *)orig;
  while (len--)
     *(d++)=appToUnicode[*(o++)];
  *d=0;

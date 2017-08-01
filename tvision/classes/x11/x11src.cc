@@ -1,5 +1,5 @@
 /* X11 screen routines.
-   Copyright (c) 2001-2012 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2017 by Salvador E. Tropea (SET)
    Covered by the GPL license.
     Thanks to José Ángel Sánchez Caso (JASC). He implemented a first X11
    driver.
@@ -122,7 +122,7 @@ XIM       TScreenX11::xim=NULL;
 Atom      TScreenX11::theProtocols;
 /* Clipboard properties */
 Atom      TScreenX11::XA_TARGETS;
-Atom      TScreenX11::XA_MULTIPLE;
+Atom      TScreenX11::XA_UTF8_STRING;
 ulong     TScreenX11::colorMap[16];
 XImage   *TScreenX11::ximgFont[256];    /* Our "font" is just a collection of images */
 XImage   *TScreenX11::ximgSecFont[256];
@@ -1658,7 +1658,7 @@ TScreenX11::TScreenX11()
  XSetWMProtocols(disp,mainWin,&theProtocols,1);
 
  XA_TARGETS=XInternAtom(disp,"TARGETS",False);
- XA_MULTIPLE=XInternAtom(disp,"MULTIPLE",False);
+ XA_UTF8_STRING=XInternAtom(disp,"UTF8_STRING",False);
 
  /* Initialize the Input Context for international support */
  if ((xim=XOpenIM(disp,NULL,NULL,NULL))==NULL)
@@ -2013,23 +2013,33 @@ void TScreenX11::ProcessSelectionRequest(XEvent &event)
 
  if (req->target==XA_TARGETS)
    { // This is a request of the supported formats
-    Atom targets[]={XA_TARGETS,XA_MULTIPLE,XA_STRING};
+    Atom targets[]={XA_TARGETS,XA_UTF8_STRING,XA_STRING};
     XChangeProperty(disp,req->requestor,req->property,XA_ATOM,32,PropModeReplace,
                     (const uchar *)targets,3);
    }
- else if (req->target==XA_MULTIPLE)
-   {
-    printf("XA_MULTIPLE, please contact author\n");
-    respond.xselection.property=None;
-   }
- else if (req->target==XA_STRING && TVX11Clipboard::buffer)
+ else if (TVX11Clipboard::buffer && req->target==XA_STRING)
    {
     XChangeProperty(disp,req->requestor,req->property,XA_STRING,
-                    8/*bits*/,PropModeReplace,
+                    8,PropModeReplace,
                     (const uchar *)TVX11Clipboard::buffer,
                     TVX11Clipboard::length);
    }
- else // Strings only please
+ else if (TVX11Clipboard::buffer && req->target==XA_UTF8_STRING)
+   {// Convert the buffer to UTF8
+    int cnvLen=TVCodePage::convertStrCP_2_UTF8(NULL,TVX11Clipboard::buffer,TVX11Clipboard::length);
+    if (cnvLen==-1)
+       // The selection can't be represented using UTF8
+       respond.xselection.property=None;
+    else
+      {
+       char *data=new char[cnvLen+1];
+       TVCodePage::convertStrCP_2_UTF8(data,TVX11Clipboard::buffer,TVX11Clipboard::length);
+       XChangeProperty(disp,req->requestor,req->property,XA_UTF8_STRING,
+                       8,PropModeReplace,(const uchar *)data,cnvLen);
+       delete[] data;
+      }
+   }
+ else // Unsupported target or no selection
    {
     //printf("Unknown target (%s)\n",XGetAtomName(disp,req->target));
     // By default reply with a refusal
@@ -2317,7 +2327,8 @@ const char *TVX11Clipboard::x11NameError[]=
  __("Unsupported data type"),
  __("No data"),
  __("X11 error"),
- __("Another application holds the clipboard")
+ __("Another application holds the clipboard"),
+ __("Malformed UTF8 string")
 };
 
 void TVX11Clipboard::Init()
@@ -2395,6 +2406,7 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
  unsigned long len, bytes, dummy;
  unsigned char *data;
 
+ // Find who owns the selection
  owner=XGetSelectionOwner(TScreenX11::disp,clip);
  if (owner==None)
    {
@@ -2402,10 +2414,9 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
     SEMAPHORE_OFF;
     return NULL;
    }
- // What a hell should I use as property here? I use XA_STRING because it was
- // used by the example. BTW the example failed with Eterm.
- XConvertSelection(TScreenX11::disp,clip,XA_STRING,XA_STRING,TScreenX11::mainWin,
-                   CurrentTime);
+ // Ask for the data as an UTF8 string
+ Atom target=TScreenX11::XA_UTF8_STRING;
+ XConvertSelection(TScreenX11::disp,clip,target,target,TScreenX11::mainWin,CurrentTime);
  XFlush(TScreenX11::disp);
  SEMAPHORE_OFF;
  waiting=1;
@@ -2413,15 +2424,29 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
    if (!IS_SECOND_THREAD_ON)
       TScreenX11::ProcessGenericEvents();
 
- if (property!=XA_STRING)
-   {
-    TVOSClipboard::error=x11clipWrongType;
-    return NULL;
+ // The owner could reply with None if UTF8 isn't supported or the selection can't be
+ // converted to a string
+ if (property!=target)
+   {// Try again with a plain string
+    target=XA_STRING;
+    SEMAPHORE_ON;
+    XConvertSelection(TScreenX11::disp,clip,target,target,TScreenX11::mainWin,CurrentTime);
+    XFlush(TScreenX11::disp);
+    SEMAPHORE_OFF;
+    waiting=1;
+    while (waiting)
+      if (!IS_SECOND_THREAD_ON)
+         TScreenX11::ProcessGenericEvents();
+    if (property!=target)
+      {// The selection can't be pasted as a string
+       TVOSClipboard::error=x11clipWrongType;
+       return NULL;
+      }
    }
  // Check the size
  SEMAPHORE_ON;
  Atom type;
- XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,0,0,0,
+ XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,property,0,0,0,
                     AnyPropertyType,&type,&format,&len,&bytes,&data);
  if (bytes<=0)
    {
@@ -2429,7 +2454,8 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
     SEMAPHORE_OFF;
     return NULL;
    }
- result=XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,XA_STRING,
+ // Now get the selection
+ result=XGetWindowProperty(TScreenX11::disp,TScreenX11::mainWin,property,
                            0,bytes,0,AnyPropertyType,&type,&format,&len,
                            &dummy,&data);
  if (result!=Success)
@@ -2439,11 +2465,31 @@ char *TVX11Clipboard::paste(int id, unsigned &lenRet)
     SEMAPHORE_OFF;
     return NULL;
    }
- char *ret=new char[bytes+1];
- memcpy(ret,data,bytes);
- ret[bytes]=0;
+ // Copy the selection to a local buffer
+ char *ret=NULL;
+ if (target==TScreenX11::XA_UTF8_STRING)
+   {// Convert the UTF8 string to the app codepage
+    int cnvLen=TVCodePage::convertStrUTF8_2_CP(NULL,(const char *)data,bytes);
+    if (cnvLen!=-1)
+      {
+       ret=new char[cnvLen+1];
+       lenRet=cnvLen;
+       TVCodePage::convertStrUTF8_2_CP(ret,(const char *)data,bytes);
+      }
+    else
+       TVOSClipboard::error=x11clipUTF8Error;
+    //printf("UTF8 data: %s ret: %s\n",data,ret);
+   }
+ else
+   {// Just make a copy
+    ret=new char[bytes+1];
+    memcpy(ret,data,bytes);
+    ret[bytes]=0;
+    lenRet=bytes;
+    //printf("String: %s\n",ret);
+   }
+ // Release the data
  XFree(data);
- lenRet=bytes;
  SEMAPHORE_OFF;
  //printf("Recibiendo: `%s' %ld\n",ret,bytes);
 
