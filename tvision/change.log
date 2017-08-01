@@ -1,4 +1,9 @@
-$Log$
+$Log$.
+Revision 2.399.2.405  2017/08/01 14:10:41  set
+* Added: [TVCodePage] Functions to convert the app cp to and from UTF8
+(convertStrUTF8_2_CP and convertStrCP_2_UTF8).
+* Added: [X11] Support for copy/paste using UTF8.
+
 Revision 2.399.2.404  2017/07/31 22:55:42  set
 * Added: [examples/UTF8] How to select the "Fixed medium" font used in
 SETEdit from X11. In fact the font *is* from Xorg.
