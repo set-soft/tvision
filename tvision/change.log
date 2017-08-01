@@ -1,4 +1,7 @@
-$Log$.
+$Log$
+Revision 2.399.2.406  2017/08/01 16:03:21  set
+* Fixed: [X11] argument name in TScreenX11::setCharactersU16
+
 Revision 2.399.2.405  2017/08/01 14:10:41  set
 * Added: [TVCodePage] Functions to convert the app cp to and from UTF8
 (convertStrUTF8_2_CP and convertStrCP_2_UTF8).

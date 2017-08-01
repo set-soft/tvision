@@ -3030,7 +3030,7 @@ int TVCodePage::convertStrUTF8_2_CP(char *dest, const char *orig,
           d+=sprintf((char *)d,"&#x%08X;",unicode); // &#x00000000; 12
        else
          {
-          uint16 cp=unicodeToApp->search(unicode);
+          uint16 cp=unicode<32 ? unicode : unicodeToApp->search(unicode);
           if (cp==0xFFFF)
              d+=sprintf((char *)d,"&#x%04X;",unicode); // &#x0000; 8
           else
@@ -3043,7 +3043,7 @@ int TVCodePage::convertStrUTF8_2_CP(char *dest, const char *orig,
           retLen+=12;
        else
          {
-          uint16 cp=unicodeToApp->search(unicode);
+          uint16 cp=unicode<32 ? unicode : unicodeToApp->search(unicode);
           retLen+=cp==0xFFFF ? 8 : 1;
          }
       }
@@ -3105,6 +3105,8 @@ int TVCodePage::convertStrCP_2_UTF8(char *dest, const char *orig,
             }
          }
       }
+    else if (*o=='\t' || *o=='\n')
+       unicode=*o;
     else
        unicode=appToUnicode[*o];
     o++;
