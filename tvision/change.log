@@ -1,4 +1,8 @@
-$Log$
+$Log$.
+Revision 2.399.2.407  2017/08/01 17:39:35  set
+* Modified: [TVCodePage] Excluded some control characters from the UTF8
+conversion.
+
 Revision 2.399.2.406  2017/08/01 16:03:21  set
 * Fixed: [X11] argument name in TScreenX11::setCharactersU16
 

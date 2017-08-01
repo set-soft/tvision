@@ -1,3 +1,9 @@
+rhtvision (2.2.2-2) UNRELEASED; urgency=medium
+
+  * Excluded some control characters from the UTF8 conversion
+
+ -- Salvador Eduardo Tropea <salvador@inti.gov.ar>  Tue, 01 Aug 2017 14:24:52 -0300
+
 rhtvision (2.2.2-1) stable; urgency=medium
 
   * Fixed: Stretch compilation issues
