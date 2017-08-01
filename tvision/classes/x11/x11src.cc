@@ -1118,7 +1118,7 @@ void TScreenX11::drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar)
  putChar(unicodeGlyphs[code],x,y);
 }
 
-void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned count)
+void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned w)
 {
  statSCSt++;
  uint32 *b32=(uint32 *)values;
@@ -1148,7 +1148,7 @@ void TScreenX11::setCharactersU16(unsigned offset, ushort *values, unsigned coun
 
  SEMAPHORE_ON;
  //UnDrawCursor();
- while (count--)
+ while (w--)
    {
     newChar=b[charPos];
     newAttr=b[attrPos];
