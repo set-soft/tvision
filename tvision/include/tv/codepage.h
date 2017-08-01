@@ -94,7 +94,9 @@ public:
  static void   *convertBufferU16_2_CP(void *dest, const void *orig, unsigned count);
  static void   *convertBufferCP_2_U16(void *dest, const void *orig, unsigned count);
  static void   *convertStrU16_2_CP(void *dest, const void *orig, unsigned len);
+ static int     convertStrUTF8_2_CP(char *dest, const char *orig, unsigned len);
  static void   *convertStrCP_2_U16(void *dest, const void *orig, unsigned len);
+ static int     convertStrCP_2_UTF8(char *dest, const char *orig, unsigned len);
  static char    convertU16_2_CP(uint16 val);
  static uint16  convertCP_2_U16(char val);
  static char    convertU16_2_InpCP(uint16 val);

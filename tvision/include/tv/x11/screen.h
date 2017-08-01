@@ -1,5 +1,5 @@
 /* X11 screen routines header.
-   Copyright (c) 2001-2007 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2017 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // X headers are needed to include it
 #if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11) && !defined(X11SCR_HEADER_INCLUDED)
@@ -178,7 +178,7 @@ protected:
  static Atom      theProtocols;
  // Clipboard properties
  static Atom      XA_TARGETS;
- static Atom      XA_MULTIPLE;
+ static Atom      XA_UTF8_STRING;
  // Our colors mapped to X ones
  static ulong     colorMap[16];
  // The images that makes our font
@@ -249,8 +249,9 @@ const int x11clipNoSelection=1,
           x11clipNoData=3,
           x11clipX11Error=4,
           x11clipAnother=5,
+          x11clipUTF8Error=6,
 
-          x11clipErrors=5;
+          x11clipErrors=6;
 
 #define aMouseEvent (ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | \
                      PointerMotionMask | PointerMotionHintMask |\
