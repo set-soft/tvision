@@ -219,6 +219,8 @@ protected:
  static int appHelperError;
  static TNSCollection *appHelperHandlers;
  static bool isTrueColor;
+ // Name of the image viewer
+ static const char *imageViewer;
 };
 
 // A small class to encapsulate the cliboard, this is too tied to TScreen

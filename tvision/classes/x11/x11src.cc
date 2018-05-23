@@ -149,6 +149,7 @@ void    (*TScreenX11::writeLine)(int x, int y, int w, void *str, unsigned color)
 void    (*TScreenX11::redrawBuf)(int x, int y, unsigned w, unsigned off)=
                 TScreenX11::redrawBufCP;
 bool      TScreenX11::isTrueColor; /* Indicates we are using truecolor Ximages */
+const char *TScreenX11::imageViewer=NULL;
 
 TScreenX11::~TScreenX11()
 {
@@ -3038,7 +3039,11 @@ TScreen::appHelperHandler TScreenX11::OpenHelperApp(TScreen::AppHelper kind)
                appHelperError=2;
                return -1;
               }
+            else
+               imageViewer="gqview";
            }
+         else
+            imageViewer="geeqie";
          break;
     case PDFViewer:
          xpdfInstalled=CheckInstalled("xpdf -v","xpdf version",xpdfInstalled);
@@ -3125,8 +3130,11 @@ Boolean TScreenX11::SendFileToHelper(appHelperHandler id, const char *file,
  switch (p->kind)
    {
     case ImageViewer:
-         CLY_snprintf(buf,len,"gqview -r \"file:%s\"",file);
-         System(buf,&p->pid,-1,nullH,nullH);
+         if (imageViewer)
+           {
+            CLY_snprintf(buf,len,"%s -r \"file:%s\"",imageViewer,file);
+            System(buf,&p->pid,-1,nullH,nullH);
+           }
          break;
     case PDFViewer:
          page=0;
