@@ -248,6 +248,12 @@ static int is_plane_mode = 0;
 static int TextModeXres;
 static int TextModeYres;
 
+inline
+static unsigned abs(unsigned v)
+{
+ return unsigned(abs(int(v)));
+}
+
 /*****************************************************************************
 
 ***************************  VESA BIOS ROUTINES ******************************

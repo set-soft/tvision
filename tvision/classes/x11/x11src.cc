@@ -151,6 +151,12 @@ void    (*TScreenX11::redrawBuf)(int x, int y, unsigned w, unsigned off)=
 bool      TScreenX11::isTrueColor; /* Indicates we are using truecolor Ximages */
 const char *TScreenX11::imageViewer=NULL;
 
+inline
+static unsigned abs(unsigned v)
+{
+ return unsigned(abs(int(v)));
+}
+
 TScreenX11::~TScreenX11()
 {
  STOP_UPDATE_THREAD;

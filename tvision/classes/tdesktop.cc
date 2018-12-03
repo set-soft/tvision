@@ -26,6 +26,12 @@ Modified cursor behavior while desktop locked by Salvador E. Tropea (SET)
 #define Uses_TVCodePage
 #include <tv.h>
 
+inline
+static unsigned abs(unsigned v)
+{
+ return unsigned(abs(int(v)));
+}
+
 TDeskInit::TDeskInit( TBackground *(*cBackground)( TRect ) ) :
     createBackground( cBackground )
 {
