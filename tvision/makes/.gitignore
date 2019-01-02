@@ -1,3 +1,4 @@
 rhide.env
 *.so*
 *.mak
+*.a
