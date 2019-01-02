@@ -142,6 +142,12 @@ XSizeHints *TScreenX11::sizeHints=NULL;
 XClassHint *TScreenX11::classHint=NULL;
 bool      TScreenX11::isTrueColor; /* Indicates we are using truecolor Ximages */
 
+inline
+static unsigned abs(unsigned v)
+{
+ return unsigned(abs(int(v)));
+}
+
 TScreenX11::~TScreenX11()
 {
  STOP_UPDATE_THREAD;
