@@ -1,20 +1,32 @@
+
+
+%define debug_package %{nil}
+
 %define name librhtv
 %define version @version@
-%define rel 3
+%define release 1%{?dist}
 %define namefull %{name}.so.%{version}
 %define incname rhtvision
 
 Summary:   An intuitive TUI interface for console applications. 
 Name:      %{name}
 Version:   %{version}
-Release:   %{rel}
-Copyright: GPL
-Packager:  Michel Catudal <bbcat@users.sf.net>
+Release:   %{release}
+License:   GPL
+Distribution: Fedora Linux
+Packager:  Alexander Frolov <froller@froller.net>
 Vendor:    Salvador Eduardo Tropea <set@users.sf.net>
 URL:       http://tvision.sf.net/
 Group:     System Environment/Libraries
-Source:    %{name}-%{version}.tar.bz2
+Source:    tvision-2.2.2.tar.gz
+#Patch0:    tvision_fixed.diff
+#Patch1:    f28.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}
+BuildRequires: gcc
+BuildRequires: make
+BuildRequires: perl
+BuildRequires: gpm-devel
+Requires: gpm-libs
 
 %description 
 This is the shared library for programs using the RHTVision library.
@@ -33,7 +45,7 @@ also need to install librhtv-devel.
 %package devel
 Summary:   RHTVision library development.
 Group:     Development/Libraries
-Requires:  %{name} = %{PACKAGE_VERSION}
+Requires:  %{name} = %{version}
 
 %description devel
 Libraries and include files you can use for developing applications using
@@ -52,47 +64,43 @@ applications using the RHTVision library or you would like to compile programs
 that use the RHTVision library.
 
 %prep
-%setup -q
-rm -rf $RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_DIR/%{name}-%{version}
-rm -f $RPM_BUILD_DIR/tvision
-ln -s $RPM_BUILD_DIR/%{name}-%{version} $RPM_BUILD_DIR/tvision
-
-%setup
-./configure
+%setup -n tvision
+#%patch0 -p1
+#%patch1 -p1
 
 %build
+./configure
 make
 
 %install
 
-install -d -m 0755 $RPM_BUILD_ROOT/usr/include/rhtvision
-rm -f $RPM_BUILD_ROOT/usr/include/rhtvision/*.h
-install -m 0644 include/*.h $RPM_BUILD_ROOT/usr/include/rhtvision
-install -d -m 0755 $RPM_BUILD_ROOT/usr/include/rhtvision/tv
-install -m 0644 include/tv/*.h $RPM_BUILD_ROOT/usr/include/rhtvision/tv
-install -d -m 0755 $RPM_BUILD_ROOT/usr/include/rhtvision/tv/linux
-install -m 0644 include/tv/linux/*.h $RPM_BUILD_ROOT/usr/include/rhtvision/tv/linux
-install -d -m 0755 $RPM_BUILD_ROOT/usr/include/rhtvision/tv/x11
-install -m 0644 include/tv/x11/*.h $RPM_BUILD_ROOT/usr/include/rhtvision/tv/x11
-install -d -m 0755 $RPM_BUILD_ROOT/usr/include/rhtvision/cl
-install -m 0644 include/cl/*.h $RPM_BUILD_ROOT/usr/include/rhtvision/cl
-install -d -m 0755 $RPM_BUILD_ROOT/usr/lib
-install -m 0644 makes/librhtv.a $RPM_BUILD_ROOT/usr/lib
-rm -f $RPM_BUILD_ROOT/usr/lib/librhtv.so
-rm -f $RPM_BUILD_ROOT/usr/lib/librhtv.so.2
-rm -f $RPM_BUILD_ROOT/usr/lib/librhtv.so.%{version}
-cd $RPM_BUILD_ROOT/usr/lib; ln -s librhtv.so.%{version} librhtv.so
-cd $RPM_BUILD_DIR/%{name}-%{version}
-install -m 0755 makes/librhtv.so.%{version} $RPM_BUILD_ROOT/usr/lib
-strip --strip-debug $RPM_BUILD_ROOT/usr/lib/librhtv.so.%{version}
-install -d -m 0755 $RPM_BUILD_ROOT/usr/lib
-install -m 0644 intl/dummy/libtvfintl.a $RPM_BUILD_ROOT/usr/lib/libtvfintl.a
-mkdir -p $RPM_BUILD_ROOT/usr/share/doc/packages/librhtv
-install -m 0644 doc/*.txt doc/*.html  $RPM_BUILD_ROOT/usr/share/doc/packages/librhtv
+install -d -m 0755 $RPM_BUILD_ROOT%{_includedir}/rhtvision
+rm -f $RPM_BUILD_ROOT%{_includedir}/rhtvision/*.h
+install -m 0644 include/*.h $RPM_BUILD_ROOT%{_includedir}/rhtvision
+install -d -m 0755 $RPM_BUILD_ROOT%{_includedir}/rhtvision/tv
+install -m 0644 include/tv/*.h $RPM_BUILD_ROOT%{_includedir}/rhtvision/tv
+install -d -m 0755 $RPM_BUILD_ROOT%{_includedir}/rhtvision/tv/linux
+install -m 0644 include/tv/linux/*.h $RPM_BUILD_ROOT%{_includedir}/rhtvision/tv/linux
+install -d -m 0755 $RPM_BUILD_ROOT%{_includedir}/rhtvision/tv/x11
+install -m 0644 include/tv/x11/*.h $RPM_BUILD_ROOT%{_includedir}/rhtvision/tv/x11
+install -d -m 0755 $RPM_BUILD_ROOT%{_includedir}/rhtvision/cl
+install -m 0644 include/cl/*.h $RPM_BUILD_ROOT%{_includedir}/rhtvision/cl
+
+install -d -m 0755 $RPM_BUILD_ROOT%{_libdir}
+install -m 0644 makes/librhtv.a $RPM_BUILD_ROOT%{_libdir}
+install -m 0755 makes/librhtv.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+install -m 0644 makes/libtvfintl.a $RPM_BUILD_ROOT%{_libdir}/libtvfintl.a
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/packages/tvision
+install -m 0644 doc/*.txt doc/*.html  $RPM_BUILD_ROOT%{_datadir}/doc/packages/tvision
+
+cd $RPM_BUILD_ROOT%{_libdir}
+ln -s librhtv.so.%{version} librhtv.so
+ln -s librhtv.so.%{version} librhtv.so.2
+
+strip --strip-debug $RPM_BUILD_ROOT%{_libdir}/librhtv.so.%{version}
 
 %clean
-#rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %post -p /sbin/ldconfig
 
@@ -100,23 +108,54 @@ install -m 0644 doc/*.txt doc/*.html  $RPM_BUILD_ROOT/usr/share/doc/packages/lib
 
 %files
 %defattr(-,root,root)
-/usr/lib/lib*.so.*
+%{_libdir}/lib*.so.*
 
 %files devel
 %defattr(-,root,root)
-%dir /usr/include/%{incname}
-%dir /usr/include/%{incname}/tv
-/usr/include/%{incname}/*.h
-/usr/include/%{incname}/tv/*.h
-/usr/include/%{incname}/tv/linux/*.h
-/usr/include/%{incname}/tv/x11/*.h
-/usr/include/%{incname}/cl/*.h
-/usr/lib/*.a
-/usr/lib/lib*.so
-/usr/share/doc/packages/librhtv/*
-
+%dir %{_includedir}/%{incname}
+%dir %{_includedir}/%{incname}/tv
+%{_includedir}/%{incname}/*.h
+%{_includedir}/%{incname}/tv/*.h
+%{_includedir}/%{incname}/tv/linux/*.h
+%{_includedir}/%{incname}/tv/x11/*.h
+%{_includedir}/%{incname}/cl/*.h
+%{_libdir}/*.a
+%{_libdir}/lib*.so
+%{_datadir}/doc/packages/tvision/*
 
 %changelog -n librhtv
+* Sat Dec 18 2010 - mcatudal@comcast.net
+- A few fixes for Fedora 14
+* Sun Dec 12 2010 - mcatudal@comcast.net
+- First Fedora 14 release
+* Sun Dec 12 2010 - mcatudal@comcast.net
+- First Mandriva 2010.1 release
+* Sat Feb 20 2010 - mcatudal@comcast.net
+- Updated spec file to be more generic
+* Sat Feb 20 2010 - mcatudal@comcast.net
+- Updated to version 2.2.0 revision 2.738
+* Sat Feb 13 2010 - mcatudal@comcast.net
+- First Fedora 12 release
+* Sat Sep 26 2009 - mcatudal@comcast.net
+- First Fedora 11 release
+* Sat Jul 1 2009 - mcatudal@comcast.net
+- First Mandriva 2009.1 release
+* Sun Dec 28 2008 - mcatudal@comcast.net
+- First Fedora 9 release
+* Fri May 2 2008 - mcatudal@comcast.net
+- First Mandriva 2008.1 release
+* Sun Oct 30 2005 - mcatudal@comcast.net
+- First SuSE 10.0 release
+* Sun Apr 17 2005 - mcatudal@comcast.net
+- Adapted for 64 bits AMD processor on Fedora Core 4
+* Sun Mar 20 2005 - mcatudal@comcast.net
+- Adapted for 64 bits AMD processor on Fedora Core 3
+* Wed Nov 24 2004 - Michel Catudal mcatudal@comcast.net
+- Update to last CVS, added support for debug
+* Sun Nov 14 2004 - Michel Catudal mcatudal@comcast.net
+- Update to latest CVS code, use same directory name as CVS
+  added revision number to match the revision stated
+  in the change.log file
 * Tue Feb 18 2003 - Michel Catudal bbcat@netonecom.net
 - Add documentation
 * Sun Jan 5 2003 - Michel Catudal bbcat@netonecom.net
