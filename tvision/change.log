@@ -1,4 +1,22 @@
 $Log$
+Revision 2.773  2020/08/20 23:18:30  set
+*******************************************************************************
+    Merge branch 'r2_0_1u' into master
+    
+    I no longer have the time to keep both updated.
+    The r2_0_1u was the one used for releases for years.
+    So this merge should be the best.
+*******************************************************************************
+
+Revision 2.772  2020/08/20 19:25:43  set
+* Fixed: [compilation] gcc 10.2.0 compilation errors.
+
+Revision 2.771  2020/08/20 19:23:16  set
+* Modified: [config] Temporally disabled some options.
+
+Revision 2.770  2020/08/20 19:07:28  set
+* Added: [git] Excluded objects and executables
+
 Revision 2.769  2019/01/01 09:54:00  set
 * Added: [classes/dos/sescreen.cc classes/tdesktop.cc classes/x11/x11src.cc]
 an implementation of abs() using unsigned values. Could be needed by gcc 7.x.
