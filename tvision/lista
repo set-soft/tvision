@@ -91,6 +91,7 @@ classes/tnssorte.cc
 classes/tobject.cc
 classes/tpalette.cc
 classes/tparamte.cc
+classes/parttree.cc
 classes/tpoint.cc
 classes/tprogini.cc
 classes/tprogram.cc
@@ -481,6 +482,10 @@ examples/tvhc/rhide.env
 examples/tvhc/tvhc.cc
 -examples/tvhc/tvhc.gpr
 examples/tvhc/tvhc.h
+examples/utf8/fileview.cc
+-examples/utf8/fileview.gpr
+examples/utf8/rhide.env
+examples/utf8/test.utf8
 examples/videomode/test.cc
 -examples/videomode/test.gpr
 examples/videomode/rhide.env
@@ -749,6 +754,7 @@ names/nframe.cc
 names/ngroup.cc
 names/nhistory.cc
 names/nindicat.cc
+names/ninput16.cc
 names/ninputli.cc
 names/nlabel.cc
 names/nlistbox.cc
@@ -817,6 +823,7 @@ stream/sframe.cc
 stream/sgroup.cc
 stream/shistory.cc
 stream/sindicat.cc
+stream/sinput16.cc
 stream/sinputli.cc
 stream/slabel.cc
 stream/slistbox.cc

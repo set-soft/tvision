@@ -1,5 +1,5 @@
 /* Copyright (C) 1996-1998 Robert H”hne, see COPYING.RH for details */
-/* Copyright (C) 1998-2002 Salvador Eduardo Tropea */
+/* Copyright (C) 1998-2003 Salvador Eduardo Tropea */
 /*
 TODO:
 TurboVision_screenOptions
@@ -20,9 +20,9 @@ Mouse reporting not disabled at exit!!!
 #define Uses_TGKey
 #define Uses_string
 #define Uses_ctype
+#define Uses_ioctl
 #define Uses_TVCodePage
 #define Uses_signal
-#define Uses_ioctl
 #define Uses_stdio
 #define Uses_stdlib
 #include <tv.h>
@@ -639,7 +639,6 @@ TScreenUNIX::TScreenUNIX()
   TScreen::setVideoModeExt=setVideoModeExt;
   TScreen::getCharacters=getCharacters;
   TScreen::getCharacter=getCharacter;
-  TScreen::setCharacter=setCharacter;
   TScreen::setCharacters=setCharacters;
   TScreen::System_p=System;
 
@@ -874,11 +873,6 @@ ushort TScreenUNIX::getCharacter(unsigned dst)
  ushort src;
  getCharacters(dst,&src,1);
  return src;
-}
-
-void TScreenUNIX::setCharacter(unsigned offset,ushort value)
-{
- setCharacters(offset,&value,1);
 }
 
 /*

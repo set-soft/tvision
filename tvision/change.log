@@ -6,6 +6,25 @@ an implementation of abs() using unsigned values. Could be needed by gcc 7.x.
 * Added: [config] the static lib to makes/.gitignore
 * Modified: [config] Renamed all .cvsignore to .gitignore
 
+Revision 2.399.2.407  2017/08/01 17:39:35  set
+* Modified: [TVCodePage] Excluded some control characters from the UTF8
+conversion.
+
+Revision 2.399.2.406  2017/08/01 16:03:21  set
+* Fixed: [X11] argument name in TScreenX11::setCharactersU16
+
+Revision 2.399.2.405  2017/08/01 14:10:41  set
+* Added: [TVCodePage] Functions to convert the app cp to and from UTF8
+(convertStrUTF8_2_CP and convertStrCP_2_UTF8).
+* Added: [X11] Support for copy/paste using UTF8.
+
+Revision 2.399.2.404  2017/07/31 22:55:42  set
+* Added: [examples/UTF8] How to select the "Fixed medium" font used in
+SETEdit from X11. In fact the font *is* from Xorg.
+
+Revision 2.399.2.403  2017/07/31 15:28:37  set
+* Modified: Version to 2.2.2.
+
 Revision 2.768  2017/07/31 13:08:43  set
 * Fixed: [AlCon] Wrong offset in AlCon_GetScrChars and AlCon_PutChar.
 * Fixed: [AlCon] Wrong Delete key mapping.
@@ -26,8 +45,13 @@ Revision 2.764  2017/07/30 20:29:35  set
 * Modified: [X11] Eliminated the cursorGC.
 * Modified: [X11] Avoided X11 calls when setting colors in truecolor mode.
 
-Revision 2.763  2017/07/30 20:26:31  set
-* Added: [X11] A new mode where mochrome fonts are expanded to truecolor
+Revision 2.399.2.398  2017/07/30 16:43:17  set
+* Modified: [X11] Removed Un/DrawCursor calls that aren't really needed.
+* Modified: [X11] Use of monochrome XImage in DrawCursor (finally good
+performance on my Debian 9)
+
+Revision 2.399.2.397  2017/07/30 16:15:54  set
+* Added: [X11] A new mode where monochrome fonts are expanded to truecolor
 locally. My system performs 100s time slower on Debian 9 (compared to
 Debian 8) using it the problem is just 10s times slower.
 
@@ -149,7 +173,7 @@ Revision 2.740  2009/08/27 14:22:37  set
 * Fixed: [examples/fonts/test.cc] Missing Uses_limits request.
 * Added: [examples/Makefile.nmk ] MSVC makefile for the examples,
 contributed by Jure Erznoznik.
-.
+
 Revision 2.739  2009/08/27 13:14:18  set
 ** Patches contributed by Jure Erznoznik <jure.erznoznik@gmail.com>
 * Fixed: [tfilecol.cc] for 64bit size_t (MSVC)
@@ -201,7 +225,7 @@ Revision 2.729  2009/02/27 11:32:27  set
 4.3.x.
 * Modified: [tbutton.cc teditor.cc tmenuvie.cc tpxvalid.cc tscrolle.cc
 tstatict.cc tview.cc] To avoid gcc warnings about ambiguous else statements
-.
+
 Revision 2.728  2009/02/25 16:25:37  set
 * Modified: [newstr.cc tmenuvie.cc] Use of NULL instead of 0.
 * Modified: [tfileinp.cc tfilelis.cc tgkey.cc codepage.h gkey.h menuitem.h
@@ -215,7 +239,7 @@ execvp takes a char *const and not const char *, so now we allocate copies.
 const char *.
 * Fixed(?): [listbox.h] TListBoxRec should be packed for 64 bits
 architectures.
-.
+
 Revision 2.727  2009/01/22 14:58:09  set
 * Modified: TCalculator::keyChar to be constant. SF #2526590 patch
 submitted by Larry Ziegenbein (SF larryzie)
@@ -235,14 +259,14 @@ Revision 2.723  2008/07/10 19:08:01  set
 
 Revision 2.722  2008/07/10 19:07:31  set
 * Added: Some equivalences to the Unicode table.
-.
+
 Revision 2.721  2008/07/10 18:55:20  set
 * Modified: Libraries named to create the library (exclude itself).
-.
+
 Revision 2.720  2008/02/27 20:09:25  set
 * Fixed: [X11] The cursor became invisible if it was over a character with
 background color = foreground color.
-.
+
 Revision 2.719  2008/02/27 14:20:28  set
 * Modified: [X11] To fully skip request to draw areas with the same
 content. Previous code did some work even if nothing was actually drawn.
@@ -324,6 +348,10 @@ Revision 2.702  2007/05/08 19:43:52  terrible
 * Updated: [Debian] Packaging to version 2.1.0-3, small things.
 
 Revision 2.701  2007/04/18 15:45:11  set
+* Modified: Added new CVS release to the web page.
+* Modified: Debian version.
+
+Revision 2.399.2.338  2007/04/18 16:36:35  set
 * Fixed: [Makefile] added -f to the rm command to remove the old symblinks
 to avoid messages from rm.
 * Fixed: [tresfile.cc] the THeader structure requested packed attibute for
@@ -352,6 +380,9 @@ SF #1618614.
 used to dynamically link the library, not really good for executables ;-)
 * Fixed: [config] the test for gcc 4.x was executed before detecting gcc.
 
+Revision 2.399.2.334  2007/01/16 15:06:07  domatlantida
+* Fixed: [WinGr] external command execution fixed
+
 Revision 2.697  2006/12/05 15:02:55  set
 * Fixed(?): Compilation issue in the Win32 code. The WinGr driver wrongly
 declared setCharacter. Bug tracker: SF #1607447.
@@ -366,10 +397,13 @@ Revision 2.695  2006/11/13 19:33:55  set
 file.
 
 Revision 2.694  2006/11/06 13:11:33  set
+* Added: Workaround for Ubuntu's gcc 4.0.3. It seems to expand templates
+as soon as the declaration is found and if the member bodies aren't yet
+defined they are simply omitted (Ugh!). The templates must be instantiated
+at the end of the file. Reported by Donald R. Ziesig <Donald/Ziesig/org>
 * Added: A workaround for Ubuntu's glibc, it looks like an explicit
 inclusion of libintl.h is needed. The code is experimental and could break
-other gcc 4.x Linux distros. Reported by Donald R. Ziesig
-<Donald/Ziesig/org>.
+other gcc 4.x Linux distros. Also from Donald.
 
 Revision 2.693  2006/08/18 14:42:42  set
 * Fixed: When adding a variable to a TVConfigFile and this variable already
@@ -401,6 +435,9 @@ invalid.
 Revision 2.687  2006/04/05 15:39:57  set
 * Added: [MSVC] Information about MSVC 8.0 to the compatlayer header.
 
+Revision 2.399.2.324  2006/03/27 19:54:42  set
+Cursor now displays on ASCII greater than 127
+
 Revision 2.686  2006/03/21 18:56:01  set
 * Modified: [MSVC] The /GX command line option is deprecated. Using /EHsc
 instead.
@@ -408,7 +445,7 @@ instead.
 option to disabling those warnings.
 * Modified: [MSVC] v8.0 seems to be unable to handle open(const char *,
 int):
-./fileview.cc(145) : error C2668: '_open' : ambiguous call to overloaded function
+../fileview.cc(145) : error C2668: '_open' : ambiguous call to overloaded function
         E:\MVS8\VC\INCLUDE\io.h(328): could be 'int _open(const char *,int,...)'
         E:\MVS8\VC\INCLUDE\io.h(254): or 'int _open(const char *,int,int)'
         while trying to match the argument list '(const char *, int)'
@@ -423,6 +460,9 @@ Revision 2.684  2006/03/17 13:58:55  set
 the real argv/environ vector, just a copy. The methode to set the title
 corrupted the environment.
 
+Revision 2.399.2.320  2006/03/16 17:16:47  domatlantida
+WinGr: Drag and drop support, CPU usage, windows exec, bugfixes
+
 Revision 2.683  2006/03/15 17:14:39  set
 * Fixed: Indentation and data type in tvedit1.cc patch from domatlantida.
 
@@ -431,6 +471,9 @@ Revision 2.682  2006/03/15 16:46:03  set
 reports tons of them from inside X11.
 * Added: TInputLine::setHide(Boolean val) shortcut.
 
+Revision 2.399.2.317  2006/03/15 16:29:35  domatlantida
+WinGr: drag n drop
+
 Revision 2.681  2006/03/14 17:50:42  set
 * Fixed: Problems using current Perl interpreter shipped with MSys (MinGW).
 Based on a patch by JASC.
@@ -438,9 +481,56 @@ Based on a patch by JASC.
 Revision 2.680  2006/02/10 18:12:30  set
 * Added: Workaround for a gdb bug, seen on Debian Sarge.
 
+Revision 2.399.2.314  2006/02/07 11:50:07  domatlantida
+* Added: colored menu to the video mode example.
+
+Revision 2.399.2.313  2006/02/07 11:48:57  domatlantida
+WinGr: reads config file, video modes, bugfixes
+
+Revision 2.399.2.312  2006/02/06 18:28:12  domatlantida
+WinGr: winGr also uses it
+
+Revision 2.399.2.311  2006/02/06 18:27:23  domatlantida
+WinGr: ALT-GR keys, resizing, bugs
+
+Revision 2.399.2.310  2006/02/06 18:26:28  domatlantida
+WinGr: not hangs on windows exit
+
+Revision 2.399.2.309  2006/02/06 18:25:37  domatlantida
+WinGr: color palette support
+
+Revision 2.399.2.308  2006/02/06 18:25:04  domatlantida
+WinGr: can test color change mode
+
+Revision 2.399.2.307  2006/02/06 18:24:13  domatlantida
+WinGr: Windows meta keys conflict (Now alt-G). resolutions
+
+Revision 2.399.2.306  2006/02/06 18:22:43  domatlantida
+WinGr: Fixed resolutions stuff
+
 Revision 2.679  2006/02/03 15:57:50  set
 * Fixed: Last patch to WinGr prevented compilation using gcc (/* inside a
 comment).
+
+Revision 2.399.2.304  2006/02/03 12:56:51  domatlantida
+WinGr: systems keys conflict resolved (Alt Gr for ALT-function keys). No mappings at this moment
+
+Revision 2.399.2.303  2006/02/02 16:32:56  domatlantida
+WinGr: keys working now
+
+Revision 2.399.2.302  2006/01/30 15:24:05  domatlantida
+WinGr: multiple fonts managed now
+
+Revision 2.399.2.301  2006/01/30 15:23:32  domatlantida
+WinGr: now draws cursor
+
+Revision 2.399.2.300  2006/01/30 15:02:39  domatlantida
+WinGr: Now working, SET fonts
+
+Revision 2.399.2.299  2006/01/26 19:09:49  set
+* Modified: The old workaround for bintextdomain prototype missmatch (dated
+december 2002) now gives troubles for gcc 4.0.3. I'm removing it to find if
+it is needed for modern gcc versions. I tried 3.3.5 without problems.
 
 Revision 2.678  2006/01/25 22:33:06  terrible
 * Updated: [Debian] Packaging to version 2.1.0-2, cosmetic changes.
@@ -451,11 +541,14 @@ frank.taffelt/web/de.
 
 Revision 2.676  2006/01/18 14:00:26  set
 * Added: A methode to make input lines hide their content.
-.
+
 Revision 2.675  2005/12/27 14:18:30  set
 * Modified: Restored the code to honor the ilValidatorBlocks flag in
 TInputLineBase::setState. I don't know why I removed it when I added BTV
 2.0 stuff.
+
+Revision 2.399.2.294  2005/12/06 18:21:50  set
+* Fixed: Wrong computation in last patch to TInputLine::setData.
 
 Revision 2.674  2005/12/05 20:24:10  set
 * Added: Now the list box in the file dialog uses left and right arrows to
@@ -464,10 +557,14 @@ navigate directories. Suggested by Sergio Núñez snunez/esquemas/com.
 Revision 2.673  2005/11/10 19:46:26  set
 * Fixed: TParamText::~TParamText new/delete[] missmatch. SF patch #1353152
 (David cz, using valgrind).
-.
+
 Revision 2.672  2005/11/10 19:39:58  set
 * Modified: TInputLine::setData to support a constant as argument. Closes
 SF patch #1353157 by fytodent (David cz).
+
+Revision 2.399.2.291  2005/11/10 19:38:27  set
+* Modified: TInputLine::setData to support a constant as argument. This is
+related to SF patch #1353157 adapted to the Unicode branch.
 
 Revision 2.671  2005/09/23 15:26:07  set
 * Fixed: [OpenWatcom] Some details related to the import lib generation.
@@ -703,22 +800,22 @@ default because I never got confirmation. From Andris.
 * Modified: [Linux] Enclosed Linux headers with extern "C", seems to be
 needed by 2.6.11 headers (new used as a variable *8-P). From a bug report
 in Gentoo.
-.
+
 Revision 2.620  2005/06/29 14:13:41  set
 * Fixed: [Watcom] DIR and dirent are defined in direct.h
-.
+
 Revision 2.619  2005/06/21 20:33:08  set
 * Modified: Third wave of patches to add support for Open Watcom. Patches
 from Lothar. We are almost there ;-)
-.
+
 Revision 2.618  2005/06/17 19:54:17  set
 * Added: [Config] Options to use the C++ compiler indicated by the CXX
 environment variable.
-.
+
 Revision 2.617  2005/06/01 15:40:11  set
 * Added: A second wave of patches to add support for Open Watcom. All based
 on information and examples from Lothar.
-.
+
 Revision 2.616  2005/05/19 21:01:11  set
 * Note: Watcom effort is being done by: Lothar Behrens (lothar/behrens/
 lollisoft/de)
@@ -824,7 +921,7 @@ Revision 2.600  2004/11/23 00:31:47  terrible
 
 Revision 2.599  2004/11/02 20:06:39  set
 * Added: [Compilation][MSVC] Option to compile with debug information.
->From information sent by Grzegorz.
+From information sent by Grzegorz.
 * Fixed: [Compilation][Darwin] libtvfintl.a must be listed "as-is", not
 using -l.
 * Modified: [Configuration] ar and install detection. Now more robust.
@@ -981,6 +1078,10 @@ succesfuly built packages for an old Sid and of course Woody, though I am not
 uploading them to the repository since I want to test 'em with SETEdit. I
 will try to do them tomorrow if I can escape from paid work ;-).
 
+Revision 2.399.2.195  2004/09/24 18:02:42  set
+* Fixed: [RPMs] The development RPM must contain the rhtv-config tool.
+Reported by ogi, closes SF bug #974062
+
 Revision 2.573  2004/09/22 21:26:40  set
 * Fixed: [RPM] problems when the compress script didn't have execute
 attributes.
@@ -988,11 +1089,11 @@ attributes.
 Revision 2.572  2004/09/22 19:37:40  set
 * Added: [MSVC] Now UNCs are also supported (previously only BC++ code had
 it). Arnold helped to enable it using MSVC 6.0.
-.
+
 Revision 2.571  2004/09/21 20:55:12  set
 * Fixed: [Compilation] Problems with the examples when using
 MAINTAINER_MODE.
-.
+
 Revision 2.570  2004/09/20 14:47:45  set
 * Fixed: [gcc 3.x] Warning in compat/snprintf.c. Reported by Nicola Asuni.
 
@@ -1049,11 +1150,19 @@ Revision 2.559  2004/08/23 20:43:53  set
 changes doesn't break all platforms ;-)
 * Added: Incremental search in the TDirListBox.
 
+Revision 2.399.2.181  2004/08/20 16:19:14  set
+* Fixed: Call to drawView() before updating the topItem memeber in
+TListViewer::focusItem. Patch by Egon Eckert (egon/heaven/industries/cz).
+
 Revision 2.558  2004/08/18 20:23:16  set
 * Modified: TDirListBox to show the directories alphabetically sorted.
 
 Revision 2.557  2004/08/17 14:44:10  set
 * Fixed: [gcc] Errors in the examples when using 3.4.1. Patch by Andris.
+
+Revision 2.399.2.178  2004/08/17 13:20:58  set
+* Modified: Boolean TInputLine::insertChar(TEvent &event) to insertCharEv
+because the C++ polimorphism is quite crapy for this case.
 
 Revision 2.556  2004/08/12 19:02:09  set
 * Added: Compatibility with gcc 3.4 streams. It isn't fully compatible with
@@ -1084,6 +1193,11 @@ Revision 2.552  2004/06/28 17:51:19  set
 * Fixed: [BC++] warnings in regex.c because of implicit const char * to
 unsigned char * conversion (double error).
 
+Revision 2.399.2.172  2004/06/28 16:23:39  set
+* Modified: [MSVC] It looks like all MSVC versions have _snprintf and
+_vsnprintf, but only some of them the snprintf alias. In order to make
+things more clear I'm trying to use the _* versions for all MSVC versions.
+
 Revision 2.551  2004/06/25 19:30:54  set
 * Added: [MSVC] a simple bool/true/false replacement to compatlayer.
 
@@ -1107,6 +1221,9 @@ snprintf. I also needs new.h instead of new.
 Revision 2.547  2004/06/23 19:40:51  set
 * Modified: [MSVC] Use of /Tp<file> instead of /TP in makefiles. It looks
 like MSVC 4.0 only supports it. Reported by by Arnold Wiegert.
+
+Revision 2.399.2.167  2004/06/14 16:36:41  set
+* Fixed: Memory leak in TCluster (i18n stuff), reported by valgrind.
 
 Revision 2.546  2004/06/14 14:43:39  set
 - From valgrind:
@@ -1138,7 +1255,7 @@ it's needed. Patch by David D. (ddoubrava/volny/cz)
 
 Revision 2.541  2004/05/28 20:53:38  set
 * Updated: Library version in the readme.txt and Debian control file.
-.
+
 Revision 2.540  2004/05/26 20:42:43  set
 * Fixed: [Win32] The size of clipboard returned by Win32 API isn't the size
 of the text it contains (>=real size). For this reason we must meassure the
@@ -1205,6 +1322,10 @@ data is invalid.
 * Modified: Now dialogs become "inactive" (sfActive=False) after execution.
 In this way TView childs can know when the dialog is no longer running.
 
+Revision 2.399.2.149  2004/04/12 14:35:23  set
+* Added: [config] another patch for compatibility with autotools. Patch by
+Aurelian.
+
 Revision 2.529  2004/03/18 18:03:18  set
 * Fixed: [BC++] The version to use ISO C++ 1998 stuff seems to be >= 0x560.
 From a report by Hartmut Welpmann <hartmut.welpmann@gmx.de>
@@ -1213,6 +1334,9 @@ Revision 2.528  2004/03/12 19:25:05  set
 * Added: [config] Some stuff to the configure and makefiles to maintain
 compatibility with packages that uses "auto tools". Patch by Aurelian
 Melinte (LinCS/tiger project).
+
+Revision 2.399.2.146  2004/03/03 17:34:15  set
+* Fixed: Typos in big-endian fix.
 
 Revision 2.527  2004/03/02 19:52:41  set
 * Fixed: [Linux] Problems with big-endian terminals using /dev/vcs*
@@ -1238,6 +1362,10 @@ to try to include it.
 Revision 2.522  2003/12/03 20:28:08  set
 * Fixed: Moved changes to winnt/Makefile.nmk to winnt/msvcmake.in. Reported
 by gradha.
+
+Revision 2.399.2.140  2003/12/03 15:39:14  set
+* Fixed: Wrong ushort vs unsigned in Windows drivers. Patch from Grzegorz
+(gradha).
 
 Revision 2.521  2003/12/03 15:09:10  set
 * Added: Patch from Mike to cleanly compile using MSVC 7.1 (.NET 2003
@@ -1328,6 +1456,7 @@ Dershak <derja@gaz.cv.ua>
 
 Revision 2.502  2003/09/02 13:46:45  set
 * Updated: QNX configuration. Patch from Mike.
+* Fixed: configset script to cut lines propperly.
 
 Revision 2.501  2003/08/13 20:18:47  set
 * Added: Link to the BC++ and pure DOS fix release to the web page.
@@ -1403,6 +1532,26 @@ Revision 2.487  2003/07/16 14:00:57  set
 where to create the RPMs. I needed it when using S.F. Compiler Farm and
 Red Hat 7.3 which always failed when using a directory mounted with NFS.
 
+Revision 2.399.2.108  2003/07/14 20:59:33  set
+* Fixed: [X11] the "mouse" event mask I used was incomplete. This generated
+problems when using the update thread because in this case the events are
+retired in random order and the mask must be strict.
+
+Revision 2.399.2.107  2003/07/14 14:40:32  set
+* Added: [X11] Another approach for the update thread using setitimer and
+SIGALRM, seems to be more reliable.
+
+Revision 2.399.2.106  2003/07/10 20:10:55  set
+* Added: [X11] a new option for this driver called UseUpdateThread. When
+enabled (and support is compiled) the driver uses a second thread to handle
+X11 expose events and make the cursor blink. In this way even when the
+application blocks the execution the window doesn't become "black" (lack
+of redraw). This is only supported for Linux and I'm using glibc's pthread
+library. I'm really sad to see how bad it works, I put a long list of
+problems I'm facing in the x11src.cc code. I hope all of this is just my
+fault because if they are pthread limitations then Linux have a really poor
+threads support. I'm looking for pthread replacements.
+
 Revision 2.486  2003/06/30 14:02:28  set
 * Added: makes/rhide.env to distro.
 * Added: gprexp to the genimk.
@@ -1452,6 +1601,9 @@ remain:
 1) Need of tar.bz2 file.
 2) Use of package-version dir.
 3) The package have a name different than Debian package.
+
+Revision 2.399.2.97  2003/06/10 15:17:55  set
+* Fixed: The dependencies to reflect the fact we use .umks.
 
 Revision 2.477  2003/06/09 18:54:50  set
 * Modified: The maintainance rules to maintain examples/*/*.umk because
@@ -1766,6 +1918,11 @@ tricks used in RHIDE and SETEdit.
 Revision 2.425  2003/04/21 16:37:19  set
 * Fixed(?): Use of \r in i18n messages. This is a really bad limitation.
 
+Revision 2.399.2.46  2003/04/21 16:18:52  set
+* Modified: Enlarged the colors dialog lists to let more space for
+translated colors and also added an horizontal scroll bar to the items
+list.
+
 Revision 2.424  2003/04/21 16:17:16  set
 * Added: Support for the new i18n API to TColorGroup and TColorItem.
 * Added: snprintf and fprintf members to TVIntl. They transparentlty
@@ -1790,6 +1947,9 @@ Revision 2.421  2003/04/21 15:46:31  set
 According to modern implementations (like GNU one) it must return the
 number of characters we should write the buffer if it have enough space and
 not the ammount we wrote. I hope my changes are ok ;-)
+
+Revision 2.399.2.41  2003/04/21 15:43:10  set
+* Fixed: [DOS] the arguments of TScreen::setCharacter (ushort to uint).
 
 Revision 2.420  2003/04/21 15:29:04  set
 * Added: Dummy versions of the TVIntl members for systems without gettext.
@@ -1832,6 +1992,9 @@ Revision 2.413  2003/04/10 21:26:43  set
 Revision 2.412  2003/04/08 19:07:42  set
 * Added: Now added support to TButton and TWindow/TDialog.
 
+Revision 2.399.2.31  2003/04/08 15:22:41  set
+* Added: parttree.cc/h to the distribution list.
+
 Revision 2.411  2003/04/08 15:19:43  set
 * Added: A dummy include/tv/parttree.h file to avoid dependencie problems.
 
@@ -1865,6 +2028,13 @@ Revision 2.405  2003/04/03 20:08:26  set
 * Modified: The following patch enforces the use of the return value of
 gettext (intl library) as a const char *.
 
+Revision 2.399.2.24  2003/04/02 13:37:31  set
+* Added: [MinGW] Some comments about common problems with MinGW, like
+configuring without international support and avoiding files with debug info
+(in the MinGW I have installed the library is over 150 MB compiled with
+debug, I think they are generating extra line debug info, it happened once to
+djgpp team).
+
 Revision 2.404  2003/04/02 13:35:49  set
 * Fixed: [MinGW] The configuration script shown the error messages created
 when running non-existent programs appear in the screen generating
@@ -1882,6 +2052,139 @@ doEditDialogDefault function used an 80 bytes buffer. Reported by Mike.
 
 Revision 2.400  2003/03/18 16:03:17  set
 * Fixed: QNX details, patch from Mike.
+
+Revision 2.399.2.18  2003/02/27 19:22:15  set
+* Fixed: Direct use of data member in TFileInputLine.
+* Fixed: Error in tinputli.cc (setDataFromStr).
+
+Revision 2.399.2.17  2003/02/25 19:34:42  set
+* Modified: Well, Iván wanted templates ... now we have them. I recoded the
+TInputLine stuff adding an intermediate class (TInputLineBaseT<T,D>) it
+contains all the functions that are almost equal between TInputLine and
+TInputLineU16. The first type is the data type and the second is the kind
+of TDrawBuffer tu use.
+
+Revision 2.399.2.16  2003/02/21 18:54:15  set
+* Fixed: Oops! some test code I left in TInputLine.
+* Added: A new snapshot to the web page.
+
+Revision 2.399.2.15  2003/02/21 18:28:34  set
+* Modified: In my new structure class I avoid computing the length of the
+data member over and over. This makes some old code to break because it
+accesses the data member directly. So I moved these data members to the
+protected section and added members to handle this member in a better way.
+
+Revision 2.399.2.14  2003/02/21 15:55:15  set
+* Added: Unicode 16 support to TInputLine, now is composed by three
+classes: TInputLineBase (abstract), TInputLine (8 bits) and TInputLineU16
+(16 bits). Some stuff needs solutions and is marked with TODO.
+* Added: Unicode<->Input Code Page conversions to TVCodePage.
+* Added: 16 bits strings read & write members to i/opstream.
+* Added: An optional argument to moveStr to limit the size of the copy. It
+avoided the use of a temporal buffer in TInputLine::draw.
+* Added: "inputMode" to TGKey, like drawingMode. To know if the driver is
+using Unicode or not.
+* Added: fillCharCode member to ensure we get Unicode in the TEvent (even
+when running in 8 bits mode).
+* Added: [X11] Unicode 16 support using the new stuff in TGKey.
+* Added: TInputLine demonstration to UTF-8 example, seems to work.
+
+Revision 2.399.2.13  2003/02/19 13:52:12  set
+* Added: [X11] now the keyboard driver reports the Unicode16 of the key.
+* Modified: A lot of internal details in TInputLine in order to reduce the
+direct access to the data member.
+* Added: Code to test a dialog in the UTF-8 example. Also a printf to
+verify the Unicodes reported by the keyboard.
+
+Revision 2.399.2.12  2003/02/19 13:50:42  set
+* Added: An example of how to hardcore the contents of the tvrc file in the
+executable to the UTF-8 example.
+
+Revision 2.399.2.11  2003/02/18 20:48:14  set
+* Added: [X11] a configuration option to select the X11 font to use. It
+should be used carefully because TV can't work with proportional fonts nor
+fonts encoded in anything but Unicode16 (ISO 10646). Documented.
+* Modified: TVCodePage to separate the "broken Linux" unicodes. It made
+frames to be single line.
+* Added: Various font examples to the tvrc used by UTF-8 example.
+* Fixed: [X11] The way I computed the font height seems to be wrong, the
+new approach seems to work for all the fonts.
+
+Revision 2.399.2.10  2003/02/18 19:09:15  set
+* Fixed: a typo in TScreen::defaultGetCharacter (extra *2) it made the
+"match pair on the fly" of SETEdit behave quite crazy.
+
+Revision 2.399.2.9  2003/02/18 18:33:26  set
+* Added: [X11] cursor support for the driver when using X11 fonts.
+* Added: A new field in TEvent to hold the key in unicode, not used ... yet.
+
+Revision 2.399.2.8  2003/02/18 14:53:37  set
+* Added: [X11] Configuration options to use X11 fonts instead of internal
+fonts. Only available for Unicode16 mode. Documented.
+* Added: Japanese text to the example and a configuration that (at least in
+my system) allows to display it. Snapshot in the web page.
+
+Revision 2.399.2.7  2003/02/17 18:12:02  set
+* Added: [X11] Two configuration variables to control if we want Unicode 16
+mode and which SFT to use. Also added a search in various directories and
+TV_FONTS environment variable. Documented.
+
+Revision 2.399.2.6  2003/02/17 12:59:01  set
+* Added: The first Unicode example. It loads an UTF-8 encoded file and
+displays it using a class derived from TScroller. The code is based on the
+7th step of the tutorial. The program is really simple and most of the
+needed changes were to make the program load UTF-8 text and convert it into
+Unicode 16. To test it I created a file with spanish acents, cyrillics and
+greek.
+
+Revision 2.399.2.5  2003/02/17 12:50:48  set
+* Added: A couple of inline members to X11 driver to make the code less
+complex and avoid repeated code.
+
+Revision 2.399.2.4  2003/02/17 12:48:21  set
+* Added: Unicode buffers support at low level. Achieved by the following
+changes. Still experimental and useless ;-)
+* Added: TVCodePage members to convert Unicode16 <-> Application Code Page
+for 1 char, a string and a char/attr buffer.
+* Added: TVFontCollection member to get the shapes for all the glyphs in
+a font. Currently used by X11 driver (is a hack) to create an Unicode font.
+* Added: TDisplay::drawingMode and getDrawingMode() to know the encoding
+used by the display. Currently codepage and unicode16 are supported.
+* Modified: TGroup to properly handle and draw from buffers that now can be
+of two different sizes.
+* Modified: Some default TScreen members to work with both types of
+encodings.
+* Modified: TView to support both kind of encodings as input and output. If
+needed TView does the proper translations. I tested the code using Unicode
+at low level and a code page at high level, it forces a conversion but
+works quite well. It will allow mixing Unicode and CodePage TView objects
+in the same application.
+* Modified: TScreen::setCharacter arguments, it triggered changes in
+various drivers, only UNIX drivers are updated.
+* Added: Unicode16 code to X11 driver. It currently tries to load one of
+the setedit fonts, if available creates an Unicode font and sets the screen
+mode to unicode16. The behavior should be selectable, but this is for
+testing.
+
+Revision 2.399.2.3  2003/02/14 13:43:26  set
+* Added: A base class for TDrawBuffer called TDrawBufferBase. It adds a
+"type" field to identify different types of draw buffers and a virtual
+memeber to get a pointer to the buffer containing the data. Also
+implemented a new type of TDrawBuffer to hold 16 bits characters and 16
+bits attributes.
+
+Revision 2.399.2.2  2003/02/13 18:05:20  set
+* Modified: Cleaned the drawing mechanism in TView. Now the code is much
+more easy to understand and there is no nasty gotos.
+
+Revision 2.399.2.1  2003/02/13 18:03:45  set
+* Added: Members for Unicode of 16 bits to TDrawBuffer. Completly
+experimental and untested.
+* Modified: The TView::exposed member to be much more easy to understand.
+I simply recoded it.
+* Modified: Part of the TView::writeView machinery to be more easy to
+understand. Needs much more work but I'm committing it because it currently
+works.
 
 Revision 2.399  2003/02/05 13:43:51  set
 * Modified: The default TMouse::resume behavior to restore the buttonsCount

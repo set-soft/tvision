@@ -102,6 +102,7 @@ OBJFILES=\
 	obj/ngroup$(ExOBJ) \
 	obj/nhistory$(ExOBJ) \
 	obj/nindicat$(ExOBJ) \
+	obj/ninput16$(ExOBJ) \
 	obj/ninputli$(ExOBJ) \
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
@@ -131,6 +132,7 @@ OBJFILES=\
 	obj/ofpstrea$(ExOBJ) \
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
+	obj/parttree$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
@@ -172,6 +174,7 @@ OBJFILES=\
 	obj/sgroup$(ExOBJ) \
 	obj/shistory$(ExOBJ) \
 	obj/sindicat$(ExOBJ) \
+	obj/sinput16$(ExOBJ) \
 	obj/sinputli$(ExOBJ) \
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
@@ -418,6 +421,7 @@ librhtv$(ExLIB):: \
 	obj/ngroup$(ExOBJ) \
 	obj/nhistory$(ExOBJ) \
 	obj/nindicat$(ExOBJ) \
+	obj/ninput16$(ExOBJ) \
 	obj/ninputli$(ExOBJ) \
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
@@ -447,6 +451,7 @@ librhtv$(ExLIB):: \
 	obj/ofpstrea$(ExOBJ) \
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
+	obj/parttree$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
@@ -488,6 +493,7 @@ librhtv$(ExLIB):: \
 	obj/sgroup$(ExOBJ) \
 	obj/shistory$(ExOBJ) \
 	obj/sindicat$(ExOBJ) \
+	obj/sinput16$(ExOBJ) \
 	obj/sinputli$(ExOBJ) \
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
@@ -822,6 +828,9 @@ obj/nhistory$(ExOBJ):: ../names/nhistory.cc
 obj/nindicat$(ExOBJ):: ../names/nindicat.cc  
 	$(RHIDE_COMPILE_CC)
 
+obj/ninput16$(ExOBJ):: ../names/ninput16.cc  
+	$(RHIDE_COMPILE_CC)
+
 obj/ninputli$(ExOBJ):: ../names/ninputli.cc  
 	$(RHIDE_COMPILE_CC)
 
@@ -907,6 +916,9 @@ obj/opstream$(ExOBJ):: ../classes/opstream.cc
 	$(RHIDE_COMPILE_CC)
 
 obj/osclipboard$(ExOBJ):: ../classes/osclipboard.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/parttree$(ExOBJ):: ../classes/parttree.cc  
 	$(RHIDE_COMPILE_CC)
 
 obj/pstream$(ExOBJ):: ../classes/pstream.cc  
@@ -1030,6 +1042,9 @@ obj/shistory$(ExOBJ):: ../stream/shistory.cc
 	$(RHIDE_COMPILE_CC)
 
 obj/sindicat$(ExOBJ):: ../stream/sindicat.cc  
+	$(RHIDE_COMPILE_CC)
+
+obj/sinput16$(ExOBJ):: ../stream/sinput16.cc  
 	$(RHIDE_COMPILE_CC)
 
 obj/sinputli$(ExOBJ):: ../stream/sinputli.cc  

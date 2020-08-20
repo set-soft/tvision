@@ -51,4 +51,3 @@ Lothar Behrens <lothar/behrens/lollisoft/de>
   DLL stuff.
   Compilation rules.
 
-

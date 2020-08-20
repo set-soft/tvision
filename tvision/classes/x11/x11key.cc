@@ -67,11 +67,10 @@ KeySym   TGKeyX11::Key;
 unsigned TGKeyX11::kbFlags=0;
 uchar    TGKeyX11::KeyCodeByKeySym[256];
 unsigned TGKeyX11::Symbol;
+unsigned TGKeyX11::Unicode;
 unsigned TGKeyX11::Flags;
 uchar    TGKeyX11::Scan;
 uchar    TGKeyX11::sendQuit=0;
-stIntCodePairs
-        *TGKeyX11::inputCP=NULL;
 
 static
 uint16 utf8_2_u16(const char *b)
@@ -332,6 +331,7 @@ ushort TGKeyX11::GKey()
  getKeyEvent(1);
  kbWaiting=0;
 
+ Unicode=0xFFFFFFFF;
  if ((Key & 0xFF00)==0xFF00)
    {/* Special keys by keysym */
     Symbol=(unsigned char)bufferKb[0];
@@ -348,13 +348,17 @@ ushort TGKeyX11::GKey()
     else
       {
        if (Symbol>=32 && Symbol<128)
+         {
           name=KeyCodeByASCII[Symbol-32];
+          Unicode=Symbol;
+         }
        else
          {
           if (Symbol>=1 && Symbol<=26) // ^A to ^Z
              name=kbA+Symbol-1;
           else
             {
+             Unicode=Symbol;
              if (Symbol>26 && Symbol<32) // ^{ ^\ ^} ?? ^/
                 name=KeyCodeByASCII[Key-32];
              else
@@ -373,6 +377,10 @@ ushort TGKeyX11::GKey()
     name=kbUnkNown;
    }
  Scan=Key & 0xFF;
+ #ifndef X_HAVE_UTF8_STRING
+ // If X can't return Unicode values just make it invalid
+ Unicode=0xFFFFFFFF;
+ #endif
 
  /* Process the flags, just like if it came from an IBM BIOS */
  Flags=0;
@@ -404,24 +412,10 @@ ushort TGKeyX11::GKey()
  return name|Flags;
 }
 
-static
-int compare(const void *v1, const void *v2)
-{
- stIntCodePairs *p1=(stIntCodePairs *)v1;
- stIntCodePairs *p2=(stIntCodePairs *)v2;
- return (p1->unicode>p2->unicode)-(p1->unicode<p2->unicode);
-}
-
 unsigned TGKeyX11::Unicode2CP(uint16 unicode)
 {
- if (!inputCP)
-    return unicode;
- stIntCodePairs se,*re;
- se.unicode=unicode;
- re=(stIntCodePairs *)bsearch(&se,inputCP,256,sizeof(stIntCodePairs),compare);
- /*if (!re)
-    printf("No encuentro U+%04X\n",unicode);*/
- return re ? re->code : '?';
+ unsigned re=TVCodePage::convertU16_2_InpCP(unicode);
+ return re ? re : '?';
 }
 
 unsigned TGKeyX11::GetShiftState()
@@ -444,6 +438,7 @@ void TGKeyX11::FillTEvent(TEvent &e)
  e.keyDown.raw_scanCode=Scan;
  e.keyDown.keyCode=Abstract;
  e.keyDown.shiftState=kbFlags;
+ e.keyDown.charCode=Unicode; // Should I do the same as with Symbol?
  e.what=evKeyDown;
 }
 
@@ -453,23 +448,21 @@ void TGKeyX11::Init()
  TGKey::gkey         =GKey;
  TGKey::getShiftState=GetShiftState;
  TGKey::fillTEvent   =FillTEvent;
- TGKey::SetCodePage  =SetCodePage;
  /* Initialize keyboard tables */
  for (int i=0; XEquiv[i].symbol; i++)
      KeyCodeByKeySym[XEquiv[i].symbol & 0xFF]=XEquiv[i].key;
- /* Find which encoding is used for input */
- if (!inputCP)
-    inputCP=new stIntCodePairs[256];
- TVCodePage::GetUnicodesForCP(TVCodePage::GetInpCodePage(),inputCP);
+ #ifdef X_HAVE_UTF8_STRING
+ if (TDisplay::getDrawingMode()==TDisplay::unicode16)
+    inputMode=TGKey::unicode16;
+ TGKey::fillCharCode =FillCharCode; // We ever fill it, unless the char isn't a real char
+ #endif
 }
 
-int TGKeyX11::SetCodePage(int id)
+void TGKeyX11::FillCharCode(TEvent &)
 {
- if (!inputCP)
-    inputCP=new stIntCodePairs[256];
- TVCodePage::GetUnicodesForCP(id,inputCP);
- return TGKey::defaultSetCodePage(id);
+ return;
 }
+
 #else
 
 #include <tv/x11/screen.h>

@@ -104,7 +104,7 @@ protected:
  static void   clearScreen();
  static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
  static ushort getCharacter(unsigned dst);
- static void   setCharacter(unsigned offset,ushort value);
+ static void   setCharacter(unsigned offset,uint32 value);
  static void   setCharacters(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild, int in, int out,
                       int err);

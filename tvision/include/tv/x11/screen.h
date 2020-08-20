@@ -1,5 +1,5 @@
 /* X11 screen routines header.
-   Copyright (c) 2001-2007 by Salvador E. Tropea (SET)
+   Copyright (c) 2001-2017 by Salvador E. Tropea (SET)
    Covered by the GPL license. */
 // X headers are needed to include it
 #if (defined(TVOS_UNIX) || defined(TVCompf_Cygwin)) && defined(HAVE_X11) && !defined(X11SCR_HEADER_INCLUDED)
@@ -75,8 +75,11 @@ protected:
  // Default: static void   setVideoModeExt(char *mode);
  // Default: static void   getCharacters(unsigned offset,ushort *buf,unsigned count);
  // Default: static ushort getCharacter(unsigned dst);
- static void   setCharacter(unsigned offset, ushort value);
+ static void   setCharacter(unsigned offset, uint32 value);
+ static void   setCharacterU16(unsigned offset, uint32 value);
  static void   setCharacters(unsigned dst, ushort *src, unsigned len);
+ static void   setCharactersU16(unsigned offset, ushort *values, unsigned count);
+ static void   setCharactersX11U16(unsigned offset, ushort *values, unsigned w);
  static int    System(const char *command, pid_t *pidChild, int in, int out, int err);
  static int    setWindowTitle(const char *aName);
  static const char *getWindowTitle(void);
@@ -108,9 +111,14 @@ protected:
  static void   ProcessGenericEvents();
  static void   ProcessSelectionRequest(XEvent &event);
  // Internal line update
- static void   writeLine(int x, int y, int w, unsigned char *str, unsigned color);
+ static void   writeLineCP(int x, int y, int w, void *str, unsigned color);
+ static void   writeLineU16(int x, int y, int w, void *str, unsigned color);
+ static void   writeLineX11U16(int x, int y, int w, void *str, unsigned color);
+ static void   (*writeLine)(int x, int y, int w, void *str, unsigned color);
  // Internal rectangle update
- static void   redrawBuf(int x, int y, unsigned w, unsigned off);
+ static void   redrawBufCP(int x, int y, unsigned w, unsigned off);
+ static void   redrawBufU16(int x, int y, unsigned w, unsigned off);
+ static void   (*redrawBuf)(int x, int y, unsigned w, unsigned off);
 
  // Font helpers
  static void   CreateXImageFont(int which, uchar *font, unsigned w, unsigned h);
@@ -125,12 +133,18 @@ protected:
  static void   drawChar(GC gc, unsigned x, unsigned y, uchar aChar, uchar aAttr);
  inline
  static void   putChar(XImage *img, unsigned x, unsigned y);
+ inline
+ static void   drawCharU16(GC gc, unsigned x, unsigned y, uint16 aChar);
  // Creates the mouse cursors
  static Boolean createCursors();
-
+ // Unicode font helpers
+ inline // Find which glyph represents the unicode value
+ static uint16  unicode2index(uint16 unicode);
+ inline // Ensure the glyph is available as XImage
+ static void    checkUnicodeGlyph(uint16 code);
  // Helper to set the bacground and foreground in one step
  static void    XSetBgFg(uint16 attr);
-
+ 
  // Variables for this driver
  // Foreground and background colors
  static int       fg,bg;
@@ -164,7 +178,7 @@ protected:
  static Atom      theProtocols;
  // Clipboard properties
  static Atom      XA_TARGETS;
- static Atom      XA_MULTIPLE;
+ static Atom      XA_UTF8_STRING;
  // Our colors mapped to X ones
  static ulong     colorMap[16];
  // The images that makes our font
@@ -195,6 +209,11 @@ protected:
  static Cursor busyCursor, leftPtr;
  static unsigned char busyCursorMap[];
  static unsigned char busyCursorMask[];
+ // For testing purposes should be removed
+ void LoadFontAsUnicode();
+ char *SearchX11Font(const char *foundry, const char *family, int w, int h);
+ char *SearchX11Font(const char *foundry, const char *family);
+ char *SearchX11Font(const char *pattern);
  // Application Helpers stuff
  static const char *appHelperNameError[];
  static int appHelperError;
@@ -230,8 +249,9 @@ const int x11clipNoSelection=1,
           x11clipNoData=3,
           x11clipX11Error=4,
           x11clipAnother=5,
+          x11clipUTF8Error=6,
 
-          x11clipErrors=5;
+          x11clipErrors=6;
 
 #define aMouseEvent (ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | \
                      PointerMotionMask | PointerMotionHintMask |\

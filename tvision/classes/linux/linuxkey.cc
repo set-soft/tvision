@@ -33,6 +33,7 @@
 #define Uses_FullSingleKeySymbols
 #define Uses_TScreen
 #define Uses_TVCodePage
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
@@ -619,6 +620,7 @@ void TGKeyLinux::FillTEvent(TEvent &e)
  GKey();
  e.keyDown.charScan.charCode=lastModifiers & kblAltL ? 0 : ascii;
  e.keyDown.charScan.scanCode=ascii;
+ e.keyDown.charCode=ascii; // Needed for GetAltChar
  e.keyDown.raw_scanCode=ascii;
  e.keyDown.keyCode=lastKeyCode;
  e.keyDown.shiftState=lastModifiers;

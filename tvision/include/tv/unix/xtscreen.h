@@ -1,5 +1,5 @@
 /* XTerm display handler routines header.
-   Copyright by Salvador E. Tropea (SET) (2002)
+   Copyright by Salvador E. Tropea (SET) (2002-2003)
    Covered by the GPL license. */
 #if defined(TVOS_UNIX) && !defined(TVOSf_QNXRtP) && !defined(XTERMSCREEN_HEADER_INCLUDED)
 #define XTERMSCREEN_HEADER_INCLUDED
@@ -88,7 +88,7 @@ protected:
  static void   SetVideoModeExt(char *mode);
  // Default: static void   GetCharacters(unsigned offset,ushort *buf,unsigned count);
  // Default: static ushort GetCharacter(unsigned dst);
- static void   SetCharacter(unsigned offset,ushort value);
+ // Default: static void   SetCharacter(unsigned offset,ushort value);
  static void   SetCharacters(unsigned dst,ushort *src,unsigned len);
  static int    System(const char *command, pid_t *pidChild, int in, int out,
                       int err);

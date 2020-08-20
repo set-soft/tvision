@@ -53,4 +53,3 @@ char hotKey( const char *s )
         return 0;
 }
 
-

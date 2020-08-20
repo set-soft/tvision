@@ -1,0 +1,27 @@
+This is a simple test file encoded in UTF-8 format.
+It will be loaded by fileview automatically.
+
+Este es un archivo de texto simple codificado en formato UTF-8.
+El mismo será cargado automaticamente por fileview.
+
+áéíóúÁÉÍÓÚñÑüÜ
+йцукенгшщзфывапролдячсмить
+ЙЦУКЕНГШЩЗФЫВАПРОЛДЯЧСМИТЬ
+ςερτυθιοπασδφγηξκλζχψωβνμ
+ΣΕΡΤΥΘΙΟΠΑΣΔΦΓΗΞΚΛΖΧΨΩΒΝΜ
+
+山本麻里安  南央美  氷上恭子
+
+From XMMS:
+オプション:                                                                     
+--------                                                                        
+                                                                                
+-h, --help              この文を表示して終了。
+-g, --geometry          位置の指定(例 +20+20)
+-s, --session           xmmsのセッションを指定(デフォルト: 0)
+-c, --command           xmmsを起動するコマンドを指定(デフォルト: xmms)
+-i, --icon              xmmsが起動していない時のアイコンを指定。
+-n, --single            xmmsを起動するのにシングルクリックで起動。
+-t, --title             マウスが窓の中にある時にタイトルを表示。
+-v, --version           バージョンを表示して終了。
+

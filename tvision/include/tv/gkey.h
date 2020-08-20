@@ -110,6 +110,8 @@ public:
  // can be outdated.
  static unsigned (*getShiftState)();
  static void     (*fillTEvent)(TEvent &e);
+ // This is used by objects that needs Unicode16 as input
+ static void     (*fillCharCode)(TEvent &e);
 
  // Very used by: menues and hotkeys (buttons, status bar, etc).
  // Get the ascii associated to Alt+key, example Alt+A => A
@@ -159,6 +161,9 @@ public:
  static void   (*SetKbdMapping)(int version);
  static int    (*GetKbdMapping)(int version);
 
+ enum { codepage=0, unicode16=1 };
+ static int     getInputMode() { return inputMode; }
+
 protected:
  static uchar    defaultNonASCII2ASCII(uchar val);
  static int      defaultCompareASCII(uchar val, uchar code);
@@ -173,6 +178,7 @@ protected:
  static void     defaultResume();
  static int      defaultSetCodePage(int id);
  static int      defaultAltInternat2ASCII(TEvent &event);
+ static void     defaultFillCharCode(TEvent &e);
 
  // Greek table
  static stIntCodePairs GreekKeyboard[];
@@ -198,6 +204,7 @@ protected:
  //static KeyType rawCode;
  // SetKbdMapping:
  static int      Mode;
+ static int      inputMode;
 };
 
 extern unsigned short getshiftstate();

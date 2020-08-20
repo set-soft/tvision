@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 1996-2002 by Salvador Eduardo Tropea (SET)
+  Copyright 1996-2003 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
   Module: TVCodePage
@@ -90,6 +90,17 @@ public:
  static void    GetDefaultCodePages(int &idScr, int &idApp, int &idInp)
                 { idApp=defAppCP; idScr=defScrCP; idInp=defInpCP; }
  static int     LookSimilarInRange(int code, int last);
+ // TView helpers
+ static void   *convertBufferU16_2_CP(void *dest, const void *orig, unsigned count);
+ static void   *convertBufferCP_2_U16(void *dest, const void *orig, unsigned count);
+ static void   *convertStrU16_2_CP(void *dest, const void *orig, unsigned len);
+ static int     convertStrUTF8_2_CP(char *dest, const char *orig, unsigned len);
+ static void   *convertStrCP_2_U16(void *dest, const void *orig, unsigned len);
+ static int     convertStrCP_2_UTF8(char *dest, const char *orig, unsigned len);
+ static char    convertU16_2_CP(uint16 val);
+ static uint16  convertCP_2_U16(char val);
+ static char    convertU16_2_InpCP(uint16 val);
+ static uint16  convertInpCP_2_U16(char val);
 
  // Arbitrary names for the supported code pages
  // Just to avoid using the magics, look in codepage.cc for more information
@@ -109,6 +120,11 @@ public:
   ISOIR153=22216718,
   LinuxACM=0x7FFF0000, LinuxSFM=0x7FFF0001
  };
+ // Be careful with this table is public just to simplify the code.
+ static stIntCodePairs      InternalMap[];
+ static stIntCodePairs      InternalMapBrokenLinux[];
+ static const int           providedUnicodes;
+ static const int           providedUnicodesBL;
 
 protected:
  static CodePage *CodePageOfID(int id);
@@ -138,8 +154,10 @@ protected:
  static char   NeedsOnTheFlyInpRemap;
  static uchar  OnTheFlyInpMap[256];
  static TVCodePageCallBack  UserHook;
- static stIntCodePairs      InternalMap[];
- static const int           providedUnicodes;
+ static uint16 appToUnicode[256];
+ static TVPartitionTree556 *unicodeToApp;
+ static uint16 inpToUnicode[256];
+ static TVPartitionTree556 *unicodeToInp;
  // CodePage structures
  static CodePage stPC437;
  static CodePage stPC775;

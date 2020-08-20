@@ -102,6 +102,7 @@ OBJFILES=\
 	obj/ngroup$(ExOBJ) \
 	obj/nhistory$(ExOBJ) \
 	obj/nindicat$(ExOBJ) \
+	obj/ninput16$(ExOBJ) \
 	obj/ninputli$(ExOBJ) \
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
@@ -131,6 +132,7 @@ OBJFILES=\
 	obj/ofpstrea$(ExOBJ) \
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
+	obj/parttree$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
@@ -172,6 +174,7 @@ OBJFILES=\
 	obj/sgroup$(ExOBJ) \
 	obj/shistory$(ExOBJ) \
 	obj/sindicat$(ExOBJ) \
+	obj/sinput16$(ExOBJ) \
 	obj/sinputli$(ExOBJ) \
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
@@ -418,6 +421,7 @@ librhtv$(ExLIB):: \
 	obj/ngroup$(ExOBJ) \
 	obj/nhistory$(ExOBJ) \
 	obj/nindicat$(ExOBJ) \
+	obj/ninput16$(ExOBJ) \
 	obj/ninputli$(ExOBJ) \
 	obj/nlabel$(ExOBJ) \
 	obj/nlistbox$(ExOBJ) \
@@ -447,6 +451,7 @@ librhtv$(ExLIB):: \
 	obj/ofpstrea$(ExOBJ) \
 	obj/opstream$(ExOBJ) \
 	obj/osclipboard$(ExOBJ) \
+	obj/parttree$(ExOBJ) \
 	obj/pstream$(ExOBJ) \
 	obj/qnx4dis$(ExOBJ) \
 	obj/qnx4key$(ExOBJ) \
@@ -488,6 +493,7 @@ librhtv$(ExLIB):: \
 	obj/sgroup$(ExOBJ) \
 	obj/shistory$(ExOBJ) \
 	obj/sindicat$(ExOBJ) \
+	obj/sinput16$(ExOBJ) \
 	obj/sinputli$(ExOBJ) \
 	obj/slabel$(ExOBJ) \
 	obj/slistbox$(ExOBJ) \
@@ -1728,6 +1734,13 @@ obj/nindicat$(ExOBJ):: ../names/nindicat.cc \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 
+obj/ninput16$(ExOBJ):: ../names/ninput16.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
 obj/ninputli$(ExOBJ):: ../names/ninputli.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
@@ -1968,6 +1981,26 @@ obj/osclipboard$(ExOBJ):: ../classes/osclipboard.cc \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/osclipboard.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/parttree$(ExOBJ):: ../classes/parttree.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
@@ -3106,6 +3139,35 @@ obj/sindicat$(ExOBJ):: ../stream/sindicat.cc \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/drawbuf.h \
 	$(INCLUDE_DIR)/tv/indicato.h \
+	$(INCLUDE_DIR)/tv/intl.h \
+	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/object.h \
+	$(INCLUDE_DIR)/tv/objects.h \
+	$(INCLUDE_DIR)/tv/opstream.h \
+	$(INCLUDE_DIR)/tv/point.h \
+	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/ssc_streams.h \
+	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/strmblcl.h \
+	$(INCLUDE_DIR)/tv/system.h \
+	$(INCLUDE_DIR)/tv/tobjstrm.h \
+	$(INCLUDE_DIR)/tv/ttypes.h \
+	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
+	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/view.h \
+	$(INCLUDE_DIR)/tv/views.h \
+	$(MAKEFILE_DEPS) 
+	$(RHIDE_COMPILE_CC)
+
+obj/sinput16$(ExOBJ):: ../stream/sinput16.cc \
+	$(INCLUDE_DIR)/compatlayer.h \
+	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/dialogs.h \
+	$(INCLUDE_DIR)/tv/drawbuf.h \
+	$(INCLUDE_DIR)/tv/inputln.h \
 	$(INCLUDE_DIR)/tv/intl.h \
 	$(INCLUDE_DIR)/tv/ipstream.h \
 	$(INCLUDE_DIR)/tv/object.h \
@@ -4924,6 +4986,7 @@ obj/tgroup$(ExOBJ):: ../classes/tgroup.cc \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
+	$(INCLUDE_DIR)/tv/screen.h \
 	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
 	$(INCLUDE_DIR)/tv/streambl.h \
@@ -5098,10 +5161,12 @@ obj/tindicat$(ExOBJ):: ../classes/tindicat.cc \
 obj/tinputli$(ExOBJ):: ../classes/tinputli.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
+	$(INCLUDE_DIR)/tv/codepage.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
 	$(INCLUDE_DIR)/tv/dialogs.h \
 	$(INCLUDE_DIR)/tv/drawbuf.h \
 	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/gkey.h \
 	$(INCLUDE_DIR)/tv/group.h \
 	$(INCLUDE_DIR)/tv/inputln.h \
 	$(INCLUDE_DIR)/tv/intl.h \
@@ -5111,6 +5176,7 @@ obj/tinputli$(ExOBJ):: ../classes/tinputli.cc \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/osclipboard.h \
 	$(INCLUDE_DIR)/tv/palette.h \
+	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
 	$(INCLUDE_DIR)/tv/rect.h \
@@ -7263,29 +7329,47 @@ obj/x11src$(ExOBJ):: ../classes/x11/x11src.cc \
 	$(INCLUDE_DIR)/compatlayer.h \
 	$(INCLUDE_DIR)/tv.h \
 	$(INCLUDE_DIR)/tv/codepage.h \
+	$(INCLUDE_DIR)/tv/collectn.h \
 	$(INCLUDE_DIR)/tv/configtv.h \
+	$(INCLUDE_DIR)/tv/dialogs.h \
+	$(INCLUDE_DIR)/tv/drawbuf.h \
 	$(INCLUDE_DIR)/tv/event.h \
+	$(INCLUDE_DIR)/tv/fontcoll.h \
 	$(INCLUDE_DIR)/tv/gkey.h \
 	$(INCLUDE_DIR)/tv/intl.h \
 	$(INCLUDE_DIR)/tv/ipstream.h \
+	$(INCLUDE_DIR)/tv/listbox.h \
+	$(INCLUDE_DIR)/tv/lstviewr.h \
+	$(INCLUDE_DIR)/tv/no_mss.h \
+	$(INCLUDE_DIR)/tv/nscoll.h \
+	$(INCLUDE_DIR)/tv/nssorcol.h \
+	$(INCLUDE_DIR)/tv/object.h \
 	$(INCLUDE_DIR)/tv/objects.h \
 	$(INCLUDE_DIR)/tv/opstream.h \
 	$(INCLUDE_DIR)/tv/osclipboard.h \
 	$(INCLUDE_DIR)/tv/parttree.h \
 	$(INCLUDE_DIR)/tv/point.h \
 	$(INCLUDE_DIR)/tv/pstream.h \
+	$(INCLUDE_DIR)/tv/resource.h \
 	$(INCLUDE_DIR)/tv/screen.h \
+	$(INCLUDE_DIR)/tv/sortcoll.h \
+	$(INCLUDE_DIR)/tv/sortlibo.h \
 	$(INCLUDE_DIR)/tv/ssc_streams.h \
 	$(INCLUDE_DIR)/tv/stddlg.h \
+	$(INCLUDE_DIR)/tv/streambl.h \
+	$(INCLUDE_DIR)/tv/strncoll.h \
 	$(INCLUDE_DIR)/tv/system.h \
 	$(INCLUDE_DIR)/tv/tobjstrm.h \
 	$(INCLUDE_DIR)/tv/ttypes.h \
 	$(INCLUDE_DIR)/tv/tvconfig.h \
+	$(INCLUDE_DIR)/tv/tvobjs.h \
 	$(INCLUDE_DIR)/tv/tvutil.h \
+	$(INCLUDE_DIR)/tv/view.h \
 	$(INCLUDE_DIR)/tv/views.h \
 	$(INCLUDE_DIR)/tv/x11/key.h \
 	$(INCLUDE_DIR)/tv/x11/mouse.h \
 	$(INCLUDE_DIR)/tv/x11/screen.h \
+	$(INCLUDE_DIR)/tv/yes_mss.h \
 	$(MAKEFILE_DEPS) 
 	$(RHIDE_COMPILE_CC)
 

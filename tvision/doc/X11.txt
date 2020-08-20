@@ -141,6 +141,22 @@ DontResizeToCells      Don't resize the window to a cells multiple size if
 UseTrueColorXImage     Avoid using monochrome XImage if the screen is truecolor.
                        Enabled by default.
 InternalBusyCursor     When enabled we use our own mouse cursor for it.
+Unicode16              When selected the driver will try to use 16 bits Unicode
+                       mode.
+UnicodeFont            Name of the font to use for Unicode mode. Just the file
+                       name without path. Use TV_FONTS to specify a path
+                       different than:
+                       ~/.tv
+                       /usr/share/rhtvision
+                       /usr/local/share/rhtvision
+                       /usr/share/setedit
+                       /usr/local/share/setedit
+UseX11Fonts            Use the X11 fonts instead of internal fonts. It have
+                       advantages: speed, number of available glyphs, etc.
+                       and disadavantages: not sure what you get, not exactly
+                       the same you get with other drivers, etc.
+X11Font                Suggested X11 font, note that the first match will be
+                       used, be careful.
 UseUpdateThread        When this option is enabled the driver updates the
                        window content even if the TV application is blocking
                        the CPU. That's very useful when the application

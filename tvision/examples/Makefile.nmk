@@ -24,9 +24,9 @@ CXXFLAGS=-O2 -I../winnt/include -I../include -D_WIN32 /GR- /EHsc
 OBJDIR=../winnt/obj_ms
 
 #clean default extension list
-SUFFIXES:
+.SUFFIXES:
 #append extensions to list
-SUFFIXES: .cc .cpp .c
+.SUFFIXES: .cc .cpp .c
 
 
 CC=cl /nologo
@@ -354,105 +354,4 @@ sdlg2.exe tcombo.exe terminal.exe tutorial.exe tvedit.exe tvhc.exe videomode.exe
 
 #fonts.exe progba.exe tprogb.exe
 #!!! Don't know what to do with cyrillic samples
-
-
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with 
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
-_______________________________________________
-Tvision-checkins mailing list
-Tvision-checkins@lists.sourceforge.net
-https://lists.sourceforge.net/lists/listinfo/tvision-checkins
-
-
---------------050500080606050507080009
-Content-Type: message/rfc822;
- name="CVS: tvision/examples/fonts test.cc,1.8,1.8.2.1.eml"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="CVS: tvision/examples/fonts test.cc,1.8,1.8.2.1.eml"
-
-X-Account-Key: account1
-X-Mozilla-Keys:                                                                                 
-Return-path: <tvision-checkins-bounces@lists.sourceforge.net>
-Envelope-to: salvador@inti.gob.ar
-Delivery-date: Thu, 27 Aug 2009 11:20:24 -0300
-Received: from sharon-in.inti.gov.ar ([200.10.161.28] helo=sharon.inti.gov.ar)
-	by wanda.inti.gov.ar with esmtp (Exim 4.69)
-	(envelope-from <tvision-checkins-bounces@lists.sourceforge.net>)
-	id 1Mgfpw-0003x4-Ha
-	for salvador@inti.gob.ar; Thu, 27 Aug 2009 11:20:24 -0300
-X-AuditID: c80aa11c-00000ab800000540-85-4a96962a7ed6
-Received: from mx.sourceforge.net ([216.34.181.68]) by sharon.inti.gov.ar with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 27 Aug 2009 11:20:25 -0300
-Received-SPF: neutral (29vjzd1.ch3.sourceforge.com: 172.29.29.181 is neither permitted nor denied by domain of lists.sourceforge.net) client-ip=172.29.29.181; envelope-from=tvision-checkins-bounces@lists.sourceforge.net; helo=lists.sourceforge.net;
-Received: from sfs-ml-3.v29.ch3.sourceforge.com ([172.29.29.181] helo=lists.sourceforge.net)
-	by 29vjzd1.ch3.sourceforge.com with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.69)
-	id 1Mgfpv-0002ix-63
-	for set@users.sourceforge.net; Thu, 27 Aug 2009 14:20:23 +0000
-Received: from localhost ([127.0.0.1] helo=sfs-ml-3.v29.ch3.sourceforge.com)
-	by h25xhf1.ch3.sourceforge.com with esmtp (Exim 4.69)
-	(envelope-from <tvision-checkins-bounces@lists.sourceforge.net>)
-	id 1Mgfpv-0006u4-2q
-	for set@users.sourceforge.net; Thu, 27 Aug 2009 14:20:23 +0000
-Received: from sfi-mx-4.v28.ch3.sourceforge.com ([172.29.28.124]
-	helo=mx.sourceforge.net)
-	by h25xhf1.ch3.sourceforge.com with esmtp (Exim 4.69)
-	(envelope-from <set@users.sourceforge.net>) id 1Mgfpu-0006tt-1y
-	for tvision-checkins@lists.sourceforge.net;
-	Thu, 27 Aug 2009 14:20:22 +0000
-X-ACL-Warn: 
-Received: from sfp-cvsdas-2.v30.ch3.sourceforge.com ([172.29.30.178]
-	helo=ddv4jf1.ch3.sourceforge.com)
-	by 1b2kzd1.ch3.sourceforge.com with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.69) id 1Mgfpl-0003B5-Ox
-	for tvision-checkins@lists.sourceforge.net;
-	Thu, 27 Aug 2009 14:20:22 +0000
-Received: from localhost ([127.0.0.1] helo=ddv4jf1.ch3.sourceforge.com)
-	by ddv4jf1.ch3.sourceforge.com with smtp (Exim 4.69)
-	(envelope-from <set@users.sourceforge.net>) id 1Mgfpf-00009f-N9
-	for tvision-checkins@lists.sourceforge.net;
-	Thu, 27 Aug 2009 14:20:08 +0000
-Received: by ddv4jf1.ch3.sourceforge.com (sSMTP sendmail emulation);
-	Thu, 27 Aug 2009 14:20:07 +0000
-From: "Salvador Eduardo Tropea" <set@users.sourceforge.net>
-Date: Thu, 27 Aug 2009 14:20:07 +0000
-To: tvision-checkins@lists.sourceforge.net
-Subject: CVS: tvision/examples/fonts test.cc,1.8,1.8.2.1
-Message-Id: <E1Mgfpf-00009f-N9@ddv4jf1.ch3.sourceforge.com>
-X-Spam-Score: 0.0 (/)
-X-Spam-Report: Spam Filtering performed by mx.sourceforge.net.
-	See http://spamassassin.org/tag/ for more details. _SUMMARY_
-X-Headers-End: 1Mgfpl-0003B5-Ox
-X-BeenThere: tvision-checkins@lists.sourceforge.net
-X-Mailman-Version: 2.1.9
-Precedence: list
-List-Id: <tvision-checkins.lists.sourceforge.net>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/tvision-checkins>,
-	<mailto:tvision-checkins-request@lists.sourceforge.net?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=tvision-checkins>
-List-Post: <mailto:tvision-checkins@lists.sourceforge.net>
-List-Help: <mailto:tvision-checkins-request@lists.sourceforge.net?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/tvision-checkins>,
-	<mailto:tvision-checkins-request@lists.sourceforge.net?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Errors-To: tvision-checkins-bounces@lists.sourceforge.net
-X-Brightmail-Tracker: AAAAAA==
-
-Update of /cvsroot/tvision/tvision/examples/fonts
-In directory ddv4jf1.ch3.sourceforge.com:/tmp/cvs-serv540/examples/fonts
-
-Modified Files:
-      Tag: r2_0_1u
-	test.cc 
-Log Message:
-* Fixed: [examples/fonts/test.cc] Missing Uses_limits request.
-* Added: [examples/Makefile.nmk ] MSVC makefile for the examples,
-contributed by Jure Erznoznik.
-
 

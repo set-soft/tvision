@@ -31,11 +31,11 @@ ushort CLY_EXPORT messageBoxRect( const TRect &r, ushort aOptions, const char *m
                 __attribute__ ((format (printf, 3, 4)));
 
 ushort CLY_EXPORT inputBox( const char *Title, const char *aLabel, char *s, int limit,
-                            TValidator *aVal=NULL);
+                            TValidator *v=NULL );
 
 ushort CLY_EXPORT inputBoxRect( const TRect &bounds, const char *title,
                                 const char *aLabel, char *s, int limit,
-                                TValidator *aVal=NULL);
+                                TValidator *v=NULL );
 
 const ushort
 

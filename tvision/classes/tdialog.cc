@@ -10,7 +10,7 @@ Modified by Robert H”hne to be used for RHIDE.
  *
  *
  */
-
+ 
 #define Uses_TKeys
 #define Uses_TDialog
 #define Uses_TEvent

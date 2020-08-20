@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright 1996-2002 by Salvador Eduardo Tropea (SET)
+  Copyright 1996-2017 by Salvador Eduardo Tropea (SET)
   This file is covered by the GPL license.
 
   Module: Code Page
@@ -164,6 +164,13 @@ int            TVCodePage::curInpCP=437;
 int            TVCodePage::defAppCP=437;
 int            TVCodePage::defScrCP=437;
 int            TVCodePage::defInpCP=437;
+// Helpers to convert internal buffers
+uint16         TVCodePage::appToUnicode[256];
+TVPartitionTree556
+              *TVCodePage::unicodeToApp=NULL;
+uint16         TVCodePage::inpToUnicode[256];
+TVPartitionTree556
+              *TVCodePage::unicodeToInp=NULL;
 // User provided function to call each time we change the code page.
 // This is called before sending a broadcast.
 void         (*TVCodePage::UserHook)(ushort *map)=NULL;
@@ -1378,7 +1385,7 @@ TVCodePage::TVCodePage(int idApp, int idScr, int idInp)
  TGKey::SetCodePage(idInp);
  if (idApp!=curAppCP)
    {
-    curAppCP=idApp;
+    curAppCP=idApp; // After filling the tables
     RemapTVStrings(GetTranslate(curAppCP));
    }
 }
@@ -1480,6 +1487,28 @@ to translate values on the fly. @x{::CreateRemap}.
 
 void TVCodePage::CreateOnTheFlyInpRemap(int idInp, int idApp)
 {
+ // Unicode tables
+ // Create a table to convert 8 bits inp. code page into 16 bits unicode
+ ushort *internals=GetTranslate(idInp);
+ unsigned i;
+ for (i=0; i<256; i++)
+     inpToUnicode[i]=UnicodeForInternalCode(internals[i]);
+
+ if (!unicodeToInp || curInpCP!=idInp)
+   {
+    // Create a "partition tree" to convert a 16 bits unicode into 8 bits inp
+    // code page
+    delete unicodeToInp;
+    unicodeToInp=NULL;
+    if (idInp!=idApp)
+      {
+       unicodeToInp=new TVPartitionTree556();
+       for (i=0; i<256; i++)
+           unicodeToInp->add(appToUnicode[i],i);
+      }
+   }
+
+ // Remap tables
  if (idInp==idApp)
    {
     NeedsOnTheFlyInpRemap=0;
@@ -1519,8 +1548,8 @@ void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
  TGKey::SetCodePage(idInp);
  if (curAppCP!=idApp)
    {
-    curAppCP=idApp;
-    FillTables(curAppCP);
+    FillTables(idApp);
+    curAppCP=idApp; // After filling the tables
     RemapTVStrings(GetTranslate(curAppCP));
    }
 }
@@ -1529,6 +1558,7 @@ void TVCodePage::SetCodePage(int idApp, int idScr, int idInp)
 
   Description:
   Protected member used to create the toupper, tolower and isalpha tables.
+Also creates tables to convert code page <-> Unicode.
 
 ***************************************************************************/
 
@@ -1572,6 +1602,22 @@ void TVCodePage::FillTables(int id)
  if (s)
     for (; *s; s++)
         AlphaTable[*s]=alphaChar;
+
+ // Create a table to convert 8 bits app. code page into 16 bits unicode
+ ushort *internals=GetTranslate(id);
+ for (i=0; i<256; i++)
+     appToUnicode[i]=UnicodeForInternalCode(internals[i]);
+
+ // Create a "partition tree" to convert a 16 bits unicode into 8 bits app
+ // code page
+ if (!unicodeToApp || id!=curAppCP)
+   {
+    delete unicodeToApp;
+    unicodeToApp=new TVPartitionTree556();
+    for (i=0; i<256; i++)
+        unicodeToApp->add(appToUnicode[i],i);
+   }
+
  /* Dump tables
  fputs("uchar          TVCodePage::AlphaTable[256]=\n{\n",stderr);
  for (i=0; i<256; i++)
@@ -1605,6 +1651,8 @@ TVCodePage::~TVCodePage()
 {
  CLY_destroy(CodePages);
  CodePages=NULL;
+ if (unicodeToApp)
+    delete unicodeToApp;
 }
 
 /**[txh]********************************************************************
@@ -2539,27 +2587,16 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0x2423,   32 }, // Should be fixed
  { 0x2424,  446 },
  { 0x2500,  196 },
- { 0x2501,  205 }, // (*1)
  { 0x2502,  179 },
- { 0x2503,  186 }, // (*1)
  { 0x250c,  218 },
- { 0x250f,  201 }, // (*1)
  { 0x2510,  191 },
- { 0x2513,  187 }, // (*1)
  { 0x2514,  192 },
- { 0x2517,  200 }, // (*1)
  { 0x2518,  217 },
- { 0x251b,  188 }, // (*1)
  { 0x251c,  195 },
- { 0x2523,  204 }, // (*1)
  { 0x2524,  180 },
- { 0x252b,  185 }, // (*1)
  { 0x252c,  194 },
- { 0x2533,  203 }, // (*1)
  { 0x2534,  193 },
- { 0x253b,  202 }, // (*1)
  { 0x253c,  197 },
- { 0x254b,  206 }, // (*1)
  { 0x2550,  205 },
  { 0x2551,  186 },
  { 0x2552,  213 },
@@ -2636,6 +2673,21 @@ stIntCodePairs TVCodePage::InternalMap[]=
  { 0xfffd,  439 }
 };
 
+stIntCodePairs TVCodePage::InternalMapBrokenLinux[]=
+{
+ { 0x2501,  205 }, // (*1)
+ { 0x2503,  186 }, // (*1)
+ { 0x250f,  201 }, // (*1)
+ { 0x2513,  187 }, // (*1)
+ { 0x2517,  200 }, // (*1)
+ { 0x251b,  188 }, // (*1)
+ { 0x2523,  204 }, // (*1)
+ { 0x252b,  185 }, // (*1)
+ { 0x2533,  203 }, // (*1)
+ { 0x253b,  202 }, // (*1)
+ { 0x254b,  206 }, // (*1)
+};
+
 // Notes:
 // (*1) Linux lat1 says this. I think this is wrong and in fact XFree86 10x20
 //      font author interprets Unicode tables as me.
@@ -2645,6 +2697,7 @@ stIntCodePairs TVCodePage::InternalMap[]=
 
 
 const int TVCodePage::providedUnicodes=sizeof(TVCodePage::InternalMap)/sizeof(stIntCodePairs);
+const int TVCodePage::providedUnicodesBL=sizeof(TVCodePage::InternalMapBrokenLinux)/sizeof(stIntCodePairs);
 
 /**[txh]********************************************************************
 
@@ -2679,6 +2732,8 @@ int TVCodePage::InternalCodeForUnicode(ushort unicode)
  if (!unicode) return 0;
  stIntCodePairs s={unicode,0};
  void *res=bsearch(&s,InternalMap,providedUnicodes,sizeof(stIntCodePairs),compare);
+ if (!res)
+    res=bsearch(&s,InternalMapBrokenLinux,providedUnicodesBL,sizeof(stIntCodePairs),compare);
  return res ? ((stIntCodePairs *)res)->code : -1;
 }
 
@@ -2766,4 +2821,360 @@ int TVCodePage::LookSimilarInRange(int code, int last)
    }
  return code>last ? -1 : code;
 }
+
+/*****************************************************************************
+ Helper functions used by TView. They convert the application code page values
+to Unicode and viceversa.
+*****************************************************************************/
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an Unicode value to application code page.
+  
+  Return: application code page value, 0 is the fallback.
+  
+***************************************************************************/
+
+char TVCodePage::convertU16_2_CP(uint16 val)
+{
+ uint16 ret=unicodeToApp->search(val);
+ return ret==0xFFFF ? 0 : (uchar)ret;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an application code page value to Unicode.
+  
+  Return: The Unicode that represents this value.
+  
+***************************************************************************/
+
+uint16 TVCodePage::convertCP_2_U16(char val)
+{
+ return appToUnicode[(uchar)val];
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an Unicode value to input code page.
+  
+  Return: application code page value, 0 is the fallback.
+  
+***************************************************************************/
+
+char TVCodePage::convertU16_2_InpCP(uint16 val)
+{
+ if (!unicodeToInp)
+    return convertU16_2_CP(val);
+ uint16 ret=unicodeToInp->search(val);
+ return ret==0xFFFF ? 0 : (uchar)ret;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts an input code page value to Unicode.
+  
+  Return: The Unicode that represents this value.
+  
+***************************************************************************/
+
+uint16 TVCodePage::convertInpCP_2_U16(char val)
+{
+ return inpToUnicode[(uchar)val];
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a buffer containing Unicode/Attribute to Application Code Page/
+Attribute.
+  
+  Return: The destination buffer.
+  
+***************************************************************************/
+
+void *TVCodePage::convertBufferU16_2_CP(void *dest, const void *orig,
+                                        unsigned count)
+{
+ uint16 *o=(uint16 *)orig;
+ uchar *d=(uchar *)dest;
+ while (count--)
+   {
+    uint16 uni=unicodeToApp->search(*(o++));
+    *(d++)=uni==0xFFFF ? 0 : (uchar)uni;
+    *(d++)=(uchar)*(o++);
+   }
+ return dest;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a buffer containing Application Code Page/Attribute to
+Unicode/Attribute.
+  
+  Return: The destination buffer.
+  
+***************************************************************************/
+
+void *TVCodePage::convertBufferCP_2_U16(void *dest, const void *orig,
+                                        unsigned count)
+{
+ uint16 *d=(uint16 *)dest;
+ uchar *o=(uchar *)orig;
+ while (count--)
+   {
+    *(d++)=appToUnicode[*(o++)];
+    *(d++)=(uint16)*(o++);
+   }
+ return dest;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a string containing Unicode to Application Code Page. The len is
+as returned by strlen and the destination must be len+1 bytes for the EOS.
+  
+  Return: The destination string.
+  
+***************************************************************************/
+
+void *TVCodePage::convertStrU16_2_CP(void *dest, const void *orig,
+                                     unsigned len)
+{
+ uint16 *o=(uint16 *)orig;
+ uchar *d=(uchar *)dest;
+ while (len--)
+   {
+    uint16 uni=unicodeToApp->search(*(o++));
+    *(d++)=uni==0xFFFF ? 0 : (uchar)uni;
+   }
+ *d=0;
+ return dest;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a string containing UTF8 to Application Code Page. The len
+indicates how many chars from orig we must process. The dest buffer must
+be long enough to hold the result. If dest is NULL this routine just
+meassure the length of the result.
+  
+  Return: -1 if the UTF8 sequence is wrong, the length of the converted
+text otherwise.
+  
+***************************************************************************/
+
+int TVCodePage::convertStrUTF8_2_CP(char *dest, const char *orig,
+                                    unsigned len)
+{
+ const uchar *utf8=(const uchar *)orig;
+ uchar *d=(uchar *)dest;
+ unsigned unicode;
+ int retLen=0;
+
+ uchar c=*(utf8++);
+ while (len--)
+   {
+    if ((c&0x80)==0)
+      {// 1 byte
+       unicode=c;
+      }
+    else if ((c&0xF8)==0xF0)
+      {// 4 bytes
+       if (len<3) return -1;
+       len-=3;
+       unicode =(c&0x07)<<18;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F)<<12;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F)<<6;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F);
+      }
+    else if ((c&0xE0)==0xE0)
+      {// 3 bytes
+       if (len<2) return -1;
+       len-=2;
+       unicode =(c&0x0F)<<12;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F)<<6;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F);
+      }
+    else
+      {// 2 bytes
+       if (!len) return -1;
+       len-=1;
+       unicode =(c&0x1F)<<6;
+       c=*(utf8++);
+       if ((c&0xC0)!=0x80) return -1;
+       unicode|=(c&0x3F);
+      }
+    c=*(utf8++);
+    // Convert the unicode value to the app code page
+    if (dest)
+      {
+       if (unicode>0xFFFF)
+          d+=sprintf((char *)d,"&#x%08X;",unicode); // &#x00000000; 12
+       else
+         {
+          uint16 cp=unicode<32 ? unicode : unicodeToApp->search(unicode);
+          if (cp==0xFFFF)
+             d+=sprintf((char *)d,"&#x%04X;",unicode); // &#x0000; 8
+          else
+             *(d++)=(uchar)cp;
+         }
+      }
+    else
+      {
+       if (unicode>0xFFFF)
+          retLen+=12;
+       else
+         {
+          uint16 cp=unicode<32 ? unicode : unicodeToApp->search(unicode);
+          retLen+=cp==0xFFFF ? 8 : 1;
+         }
+      }
+   }
+ if (dest)
+   {
+    *d=0;
+    retLen=d-(uchar *)dest;
+   }
+ return retLen;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a string containing Application Code Page to UTF8. Only len bytes
+are processed. If dest is NULL it just meassures the destination length.
+  
+  Return: The destination length, or -1 if the string can't be represented
+using UTF8.
+  
+***************************************************************************/
+
+int TVCodePage::convertStrCP_2_UTF8(char *dest, const char *orig,
+                                    unsigned len)
+{
+ const uchar *o=(const uchar *)orig;
+ uchar *d=(uchar *)dest;
+ unsigned unicode;
+ int retLen=0;
+
+ while (len--)
+   {
+    if (*o=='&')
+      {
+       unicode='&';
+       // Is it a 12 bytes escaped U32?
+       if (len>=11 && o[1]=='#' && o[2]=='x' && o[11]==';')
+         {// Seems to be, try
+          char *end;
+          unsigned v=strtoul((const char *)(o+3),&end,16);
+          if (end-(char *)o==11)
+            {
+             unicode=v;
+             len-=11;
+             o+=11;
+            }
+         }
+       // Is it an 8 bytes escaped U16?
+       else if (len>=7 && o[1]=='#' && o[2]=='x' && o[7]==';')
+         {// Seems to be, try
+          char *end;
+          unsigned v=strtoul((const char *)(o+3),&end,16);
+          if (end-(char *)o==7)
+            {
+             unicode=v;
+             len-=7;
+             o+=7;
+            }
+         }
+      }
+    else if (*o=='\t' || *o=='\n')
+       unicode=*o;
+    else
+       unicode=appToUnicode[*o];
+    o++;
+    // Now encode the unicode value using UTF8
+    if (unicode<=0x7F)
+      {
+       retLen++;
+       if (d)
+          *(d++)=unicode;
+      }
+    else if (unicode<=0x7FF)
+      {
+       retLen+=2;
+       if (d)
+         {
+          *(d++)=0xC0 | (unicode>>6);
+          *(d++)=0x80 | (unicode&0x3F);
+         }
+      }
+    else if (unicode<=0xFFFF)
+      {
+       retLen+=3;
+       if (d)
+         {
+          *(d++)=0xE0 | (unicode>>12);
+          *(d++)=0x80 | ((unicode>>6)&0x3F);
+          *(d++)=0x80 | (unicode&0x3F);
+         }
+      }
+    else if (unicode<=0x1FFFFF)
+      {
+       retLen+=4;
+       if (d)
+         {
+          *(d++)=0xF0 | (unicode>>18);
+          *(d++)=0x80 | ((unicode>>12)&0x3F);
+          *(d++)=0x80 | ((unicode>> 6)&0x3F);
+          *(d++)=0x80 | (unicode&0x3F);
+         }
+      }
+    else // UTF8 doesn't support bigger values
+       return -1;
+   }
+ if (d)
+    *d=0;
+ return retLen;
+}
+
+/**[txh]********************************************************************
+
+  Description:
+  Converts a string containing Application Code Page to Unicode. The
+destination must be (len+1)*2 bytes for the EOS.
+  
+  Return: The destination string.
+  
+***************************************************************************/
+
+void *TVCodePage::convertStrCP_2_U16(void *dest, const void *orig,
+                                     unsigned len)
+{
+ uint16 *d=(uint16 *)dest;
+ const uchar *o=(const uchar *)orig;
+ while (len--)
+    *(d++)=appToUnicode[*(o++)];
+ *d=0;
+ return dest;
+}
+
+
 

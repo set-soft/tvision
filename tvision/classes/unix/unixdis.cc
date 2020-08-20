@@ -8,8 +8,8 @@
 #define Uses_TDisplay
 #define Uses_TScreen
 #define Uses_string
-#define Uses_signal
 #define Uses_ioctl
+#define Uses_signal
 #include <tv.h>
 
 // I delay the check to generate as much dependencies as possible
