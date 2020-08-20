@@ -5,3 +5,7 @@ configure.cache
 Makefile
 *.epr
 rhtv-config
+**/*.o
+**/*.exe
+0LEEME.txt
+**/*.a
