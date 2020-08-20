@@ -85,7 +85,7 @@ static TLinkList * ObjLink = 0;
 static TObjEdit * ObjEdit;
 
 // To resolve (sprintf "%s") when there is nothing to do
-static char * blank = "";
+static const char * blank = "";
 
 //extern int TabOrder;
 
@@ -757,7 +757,7 @@ void TObjEditView::editItem(const TStructMap * map)
 #define _do_(editor) chg = (execDialog(editor(), ldata) == cmOK); break;
 #define _constsel_(list, editor)                                             \
           rec.items = list();                                                \
-          rec.selection = list()->getIndex((ushort)(int)ldata);              \
+          rec.selection = list()->getIndex((ushort)(long)ldata);             \
           chg = (execDialog(editor(), &rec) == cmOK);                        \
           if (chg) memcpy(ldata, &rec.selection, sizeof(ushort)); break;
 
@@ -794,10 +794,10 @@ void TObjEditView::editItem(const TStructMap * map)
        case etIntegerEditor:
           calcPlace(place, separator, map->index, dataMap);
           if (vtCurrent == vtListBox && map->index == 14)
-               i = (short)(int)ldata; else i = (int)ldata;
+               i = (short)(long)ldata; else i = (int)(long)ldata;
           chg = IntegerEditor(i, place, owner);
           if (vtCurrent == vtListBox && map->index == 14)
-             ldata = (void *)i; else ldata = (void *)i;
+             ldata = (void *)(long)i; else ldata = (void *)(long)i;
           if (chg) message(owner, evMessage, cmValueChanged, 0);
        break;
        case etOptionsEditor: _do_(OptionsEditor);
@@ -956,7 +956,7 @@ void TObjEditView::draw()
    const TStructMap * cur;
    int r, l, tmp, line = 0;
    char lstr[100], rstr[100];
-   char lfmt[10], rfmt[10];
+   char lfmt[16], rfmt[16];
    ushort attr;
    
    if (separator > size.x) separator = size.x / 2;

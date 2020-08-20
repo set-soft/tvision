@@ -61,7 +61,7 @@ extern int execDialog(TDialog *, void *);
 static TConstCollection * CommandList;
 static TConstCollection * HelpCtxList;
 
-typedef struct TConstData
+struct TConstData
 {
    char * Id;
    int Value;
@@ -155,7 +155,7 @@ static Boolean identMatch(void * item, void * ident)
 
 static Boolean valueMatch(void * item, void *value)
 {
-   return (((TConstData *)item)->Value == (int)value);
+   return (((TConstData *)item)->Value == (long)value);
 }
 
 int TConstCollection::getIndex(char * Ident)
@@ -291,7 +291,7 @@ void TConstEdit::handleEvent(TEvent& event)
    
    struct {
      char id_value[50];
-     char value[5];
+     char value[12];
    } datarec;
 
    TDialog::handleEvent(event);

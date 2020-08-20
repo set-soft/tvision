@@ -83,7 +83,7 @@ TInterior::TInterior( const TRect& bounds ) : TView( bounds )
 
 void TInterior::draw()
 {
-    char *hstr = "Hello World!";
+    const char *hstr = "Hello World!";
     ushort color = getColor(0x0301);
     TView::draw();
     TDrawBuffer b;

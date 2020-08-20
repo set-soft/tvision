@@ -27,7 +27,7 @@
 #define AppDataFileSig    "FreeDsgn App Data File\x1a"
 #define hintsDataFileSig  "FreeDsgn Hints File\x1a"
 
-ifpstream * openFile(const char * FileName, char * Signature);
-ofpstream * initFile(const char * FileName, char * current, char * Signature);
+ifpstream * openFile(const char * FileName, const char * Signature);
+ofpstream * initFile(const char * FileName, char * current, const char * Signature);
 char * getFileName(const char * aTitle, const char * ext, int Mode);
 

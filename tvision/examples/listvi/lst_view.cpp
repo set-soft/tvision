@@ -73,7 +73,7 @@ void TListViewBox::putData(void *rec)
 //************************************************************
 //************************************************************
 
-TListViewDialog::TListViewDialog(const TRect &trect, char *title,
+TListViewDialog::TListViewDialog(const TRect &trect, const char *title,
 					char *aList[],char *aList2[],int aListSize,int wList)
 					: TWindowInit(TDialog::initFrame)
 					, TDialog(trect, title) {

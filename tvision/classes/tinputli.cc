@@ -169,7 +169,7 @@ void  TInputLine::deleteSelect()
 {
     if( selStart < selEnd )
         {
-        strcpy( data+selStart, data+selEnd );
+        memmove( data+selStart, data+selEnd, strlen(data+selEnd) );
         curPos = selStart;
         }
 }

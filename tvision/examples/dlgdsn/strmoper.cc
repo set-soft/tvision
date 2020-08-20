@@ -76,7 +76,7 @@ char * getFileName(const char * aTitle, const char * ext, int Mode)
 }
 
 
-ifpstream * openFile(const char * FileName, char * Signature)
+ifpstream * openFile(const char * FileName, const char * Signature)
 {
    if (!fileExists(FileName)) return 0;
    ifpstream * rst = new ifpstream( FileName, ios::in|ios::binary );
@@ -93,7 +93,7 @@ ifpstream * openFile(const char * FileName, char * Signature)
    return rst;
 }
 
-ofpstream * initFile(const char * FileName, char * current, char * Signature)
+ofpstream * initFile(const char * FileName, char * current, const char * Signature)
 {
    if ( fileExists(FileName) &&
       ( current == 0 || strcmp(FileName, current) != 0 ) )

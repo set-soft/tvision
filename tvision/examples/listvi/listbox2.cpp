@@ -32,7 +32,7 @@
 
 const int wCity=18, cCities=13;
 
-char *aCityList[cCities]=
+const char *aCityList[cCities]=
 {
  "Boston MA.   ",
  "Washington DC  ",
@@ -48,7 +48,7 @@ char *aCityList[cCities]=
  "Fort Worth TX",
  "Seattle WA"
 };
-char *aNumList[cCities]={"1","2","3","4","5","6","7","8","9","10","11","12","13"};
+const char *aNumList[cCities]={"1","2","3","4","5","6","7","8","9","10","11","12","13"};
 char **cityList;
 char **numList;
 

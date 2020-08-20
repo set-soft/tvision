@@ -42,7 +42,7 @@ public:
  ~TMyApp();
  static TMenuBar *initMenuBar(TRect r);
  virtual void handleEvent(TEvent& event);
-         void openFile(char *fileSpec);
+         void openFile(const char *fileSpec);
  static  void viewImage(const char *fileName);
  static  void viewPDF(const char *fileName);
 
@@ -79,7 +79,7 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
          *new TMenuItem("E~x~it",cmQuit,kbAltX,hcNoContext,"Alt-X"));
 }
 
-void TMyApp::openFile(char *fileSpec)
+void TMyApp::openFile(const char *fileSpec)
 {
  TFileDialog *d=(TFileDialog *)validView(
     new TFileDialog(fileSpec,"View a File","~N~ame",fdOpenButton,100));

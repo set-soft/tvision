@@ -69,7 +69,7 @@ void TFileInfoPane::draw()
 
     if ( *(file_block.name) != EOS )
     {
-      const int blen=10;
+      const int blen=12;
       char buf[blen];
       CLY_snprintf(buf,blen,"%ld",(long)file_block.size);
       b.moveStr( 14, buf, color );

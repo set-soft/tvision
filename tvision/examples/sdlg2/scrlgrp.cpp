@@ -128,15 +128,19 @@ void ScrollGroup::setState(ushort aState, Boolean enable)
 	if((aState & (sfActive | sfSelected)) != 0 )
 		{
 		if(hScrollBar != 0)
+			{
 			if(enable)
 				hScrollBar->show();
 			else
 				hScrollBar->hide();
+			}
 		if(vScrollBar != 0)
+			{
 			if(enable)
 				vScrollBar->show();
 			else
 				vScrollBar->hide();
+			}
 		}
 }
 

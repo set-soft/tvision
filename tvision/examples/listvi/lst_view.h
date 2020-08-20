@@ -29,7 +29,7 @@ public:
 //
 class TListViewDialog : public TDialog {
   public:
-	TListViewDialog(const TRect &trect, char *title,char *aList[],char *aList2[],
+	TListViewDialog(const TRect &trect, const char *title,char *aList[],char *aList2[],
 		int aListSize, int wList);
     ~TListViewDialog() { };
     void handleEvent(TEvent &);

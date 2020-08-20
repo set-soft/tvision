@@ -108,7 +108,7 @@ TProtectedStream::TProtectedStream( char *aFileName, CLY_OpenModeT aMode ) :
     mode = aMode;
 }
 
-void error(char *text);
+void error(const char *text);
 
 void QNXSplitExt(char* PathName, char* Name, char* Ext)
 {
@@ -137,7 +137,7 @@ void QNXSplitExt(char* PathName, char* Name, char* Ext)
 //  replaced anyway.                                                     //
 //-----------------------------------------------------------------------//
 
-void replaceExt( char *fileName, char *nExt, Boolean force, char *dest )
+void replaceExt( char *fileName, const char *nExt, Boolean force, char *dest )
 {
     char dir[PATH_MAX]; 
     //char name[NAME_MAX];
@@ -218,7 +218,7 @@ void prntMsg( const char *pref, const char *text )
 //  Used to indicate an error.  Terminates the program                   //
 //-----------------------------------------------------------------------//
 
-void error( char *text )
+void error( const char *text )
 {
     prntMsg("Error", text);
     exit(1);
@@ -372,7 +372,7 @@ void resolveReference( char *topic, ushort value, fpstream& s )
         {
         strcpy(bufStr,"Redefinition of ");
         strcat(bufStr,ref->topic);
-        error(bufStr);
+        error((const char *)bufStr);
         }
     else
         {
@@ -387,7 +387,7 @@ void resolveReference( char *topic, ushort value, fpstream& s )
 
 void skipWhite( char *line, unsigned &i )
 {
-    while (i <= strlen(line) && (line[i] == ' ') || (line[i] == 8))
+    while ((i <= strlen(line) && (line[i] == ' ')) || (line[i] == 8))
         ++i;
 }
 
@@ -721,10 +721,12 @@ TParagraph *readParagraph( fstream& textFile, int& offset, TCrossRefNode *&xRefs
     while (isEndParagraph(state) == False)
         {
         if (state == undefined )
+            {
             if (line[0] == ' ')
                 state = notWrapping;
             else
                 state = wrapping;
+            }
         scanForCrossRefs(line, offset, xRefs);
         flag = (state == wrapping)? True: False;
         addToBuffer(line, flag);

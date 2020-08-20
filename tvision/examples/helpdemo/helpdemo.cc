@@ -30,7 +30,7 @@ const unsigned short hcExit         = 104;
 const unsigned short hcDemoMenu     = 105;
 const unsigned short hcLast         = 104;      // Last context
 
-char *helpString[] = {
+const char *helpString[] = {
     "Button OK!",
     "Button Cancel!",
     "Button Help!",

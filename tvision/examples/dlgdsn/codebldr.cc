@@ -35,7 +35,7 @@
       return buildStr(ctrlName, c, aObj->defaultData.a, a, &b);\
    else return blank\
 
-static char * blank = "";
+static const char * blank = "";
 
 static int scrollCount = 0;
 
@@ -59,22 +59,22 @@ const char * buildStr(const char * ctrlname,
    return strcat(buf1, buf2);
 }
 
-const char * getOptions(TDsgObj * aObj, char * ctrlName)
+const char * getOptions(TDsgObj * aObj, const char * ctrlName)
 {
    _commomget_(options, OptionsStr, "options");
 }
 
-const char * getEventMask(TDsgObj * aObj, char * ctrlName)
+const char * getEventMask(TDsgObj * aObj, const char * ctrlName)
 {
    _commomget_(eventMask, EventMaskStr, "eventMask");
 }
 
-const char * getState(TDsgObj * aObj, char * ctrlName)
+const char * getState(TDsgObj * aObj, const char * ctrlName)
 {
    _commomget_(state, StateStr, "state");
 }
 
-const char * getFlags(TDsgObj * aObj, char * ctrlName)
+const char * getFlags(TDsgObj * aObj, const char * ctrlName)
 {
    if (aObj->viewType != vtDialog) return blank;
    ushort flags = ((TDDialogData *)aObj->attributes)->flags;
@@ -84,24 +84,24 @@ const char * getFlags(TDsgObj * aObj, char * ctrlName)
    else return blank;
 }
 
-const char * getGrowMode(TDsgObj * aObj, char * ctrlName)
+const char * getGrowMode(TDsgObj * aObj, const char * ctrlName)
 {
    _commomget_(growMode, GrowModeStr, "growMode");
 }
 
-const char * getDragMode(TDsgObj * aObj, char * ctrlName)
+const char * getDragMode(TDsgObj * aObj, const char * ctrlName)
 {
    _commomget_(dragMode, DragModeStr, "dragMode");
 }
 
-const char * getHelpCtx(TDsgObj * aObj, char * ctrlName)
+const char * getHelpCtx(TDsgObj * aObj, const char * ctrlName)
 {
    ushort i = ((TViewData *)aObj->attributes)->helpCtx;
    if (i == 0) return blank;
    return (char *)HelpCtxsList()->getId(i);
 }
 
-const char * getValidator(TDsgObj * aObj, char * ctrlName)
+const char * getValidator(TDsgObj * aObj, const char * ctrlName)
 {
    if (aObj->viewType != vtInput) return blank;
 
@@ -191,7 +191,7 @@ const char * getRectStr(const TRect& r)
 
 const char * getDlgRectStr(TDsgObj * aObj, TView * v)
 {
-  if (((TDDialogData *)aObj->attributes)->options & ofCentered == ofCentered)
+  if ((((TDDialogData *)aObj->attributes)->options & ofCentered) == ofCentered)
      return getRectStr(v->getExtent()); else
      return getRectStr(v->getBounds());
 }

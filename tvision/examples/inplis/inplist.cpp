@@ -75,7 +75,7 @@ TInputBox::TInputBox(const TRect& bounds, ushort aNumCols, TScrollBar *aScrollBa
 void TInputBox::getText(char *dest, int item, short maxLen)
  {
   ListBoxItem *v;
-  char s[MAXVALUELEN+MAXLABELLEN];
+  char s[MAXVALUELEN+MAXLABELLEN+2];
   if (list() != 0 )
     {
      v = (ListBoxItem *)(list()->at(item));

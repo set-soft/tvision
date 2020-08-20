@@ -76,7 +76,7 @@
 
 class TComboBox : public TView {
    protected:
-      static char *icon;
+      const static char *icon;
       TInputLine  *link;
       TCollection *list;
 

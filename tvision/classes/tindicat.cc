@@ -43,7 +43,7 @@ void TIndicator::draw()
 {
     uchar color, frame;
     TDrawBuffer b;
-    char s[15];
+    char s[26];
 
     if( (state & sfDragging) == 0 )
         {

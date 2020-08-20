@@ -57,18 +57,18 @@ static int vtAttrSize[vtDialog + 1] = { sizeof(TDsgObjData),
                                         sizeof(TViewData),
                                         sizeof(TDDialogData) };
                                         
-static char * TheClassName[vtDialog + 1] = { "TUser",
-                                             "TLabel",
-                                             "TInputLine",
-                                             "TMemo",
-                                             "TStaticText",
-                                             "TButton",
-                                             "TListBox",
-                                             "TRadioButtons",
-                                             "TCheckBoxes",
-                                             "TScrollBar",
-                                             "TScrollBar",
-                                             "TDialog" };
+static const char * TheClassName[vtDialog + 1] = { "TUser",
+                                                   "TLabel",
+                                                   "TInputLine",
+                                                   "TMemo",
+                                                   "TStaticText",
+                                                   "TButton",
+                                                   "TListBox",
+                                                   "TRadioButtons",
+                                                   "TCheckBoxes",
+                                                   "TScrollBar",
+                                                   "TScrollBar",
+                                                   "TDialog" };
 
 
 #if 0 // A useful visual map of AppPalette indexed by dialog and app

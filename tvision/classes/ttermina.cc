@@ -109,7 +109,7 @@ void TTerminal::draw()
         if( delta.x >= (int32)strlen(s) )
             *s = EOS;
         else
-            strcpy( s, &s[delta.x] );
+            memmove( s, &s[delta.x], strlen(&s[delta.x]) );
 
         writeStr( 0, i, s, 1 );
         writeChar( strlen(s), i, ' ', 1, size.x );

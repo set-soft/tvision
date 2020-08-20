@@ -509,7 +509,7 @@ void TFileList::readDirectory( const char *aWildCard )
   DirSearchRec *p;
   char dir[PATH_MAX];
   char file[PATH_MAX];
-  char path[PATH_MAX];
+  char path[PATH_MAX+NAME_MAX+2];
   char *np;
   dirent *de;
   glob_t gl;

@@ -60,8 +60,10 @@ TMenuBar *TMyApp::initMenuBar(TRect r)
 
 int main()
 {
+ char buffer[8];
+ strcpy(buffer, "LANG=es");
  // Here I force the use of spanish
- putenv("LANG=es");
+ putenv(buffer);
  // Here we tell gettext to use the "domain" test located at the "intl" dir.
  // In real life TVIntl::textDomain("test"); should be enough.
  TVIntl::autoInit("test","intl");

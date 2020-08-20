@@ -43,7 +43,7 @@ char TCalendarView::oupArrowChar ='\036';
 char TCalendarView::downArrowChar ='\037';
 char TCalendarView::odownArrowChar='\037';
 
-static char *monthNames[] = {
+static const char *monthNames[] = {
     "",
     "January",  "February", "March",    "April",    "May",      "June",
     "July",     "August",   "September","October",  "November", "December"

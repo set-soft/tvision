@@ -199,12 +199,11 @@ TStreamableClass RBorlandHelpIndex(TBorlandHelpIndex::name,
 
 TBorlandHelpFile::TBorlandHelpFile(fpstream & s):THelpFile(s)
 {
-  char *Stamp;
   char FormatVersion;
 
   modified=False;
   stream->seekg(0);
-  Stamp = read0String(*stream);
+  read0String(*stream);
   stream->seekg(14, CLY_IOSCur);
   *stream >> FormatVersion;
   stream->seekg(1, CLY_IOSCur);

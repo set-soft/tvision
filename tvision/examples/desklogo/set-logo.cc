@@ -45,7 +45,7 @@
 
 const int cmAbout   = 100;  // User selected menu item 'About'
 
-char *lines[]=
+const char *lines[]=
 {
 "                                                                                ",
 "                                                                                ",

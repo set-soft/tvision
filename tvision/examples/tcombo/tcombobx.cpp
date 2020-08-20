@@ -37,7 +37,7 @@
 
 #define cpComboBox "\x16"
 
-char* TComboBox::icon = "\x19";
+const char* TComboBox::icon = "\x19";
 
 
 TComboBox::TComboBox(const TRect& bounds, TInputLine *aLink, TCollection *aList) :

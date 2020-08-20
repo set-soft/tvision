@@ -42,7 +42,7 @@ class TStructMap;
 // Sort function prototype
 typedef int (* ccSortFunc)(const void *, const void *);
 
-typedef struct TDsgLink
+struct TDsgLink
 {
   TView * v;
   TDsgObj * d;
