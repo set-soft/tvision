@@ -23,8 +23,9 @@ rm -f Makefile
 # gcc 3.4.4 test
 #export CC="gcc-3.4"
 #export CXX="g++-3.4"
+#--enable-maintainer-mode --with-ssc
 perl config.pl --cflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
                --cxxflags=-O2\ -Wall\ -Werror\ -gstabs+3\ -pipe \
-               --with-debug --enable-maintainer-mode --without-static \
-               --with-ssc "$@"
+               --with-debug --without-static \
+               "$@"
 
