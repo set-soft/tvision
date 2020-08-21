@@ -46,6 +46,14 @@ Mouse reporting not disabled at exit!!!
 #include <tv/unix/mouse.h>
 #include <tv/linux/mouse.h>
 
+#ifdef TVOSf_Darwin
+ // MacOSX defines NCURSES_OPAQUE as 1 which generates problems
+ #ifdef NCURSES_OPAQUE
+  #undef NCURSES_OPAQUE
+ #endif
+ #define NCURSES_OPAQUE 0
+#endif
+
 #ifdef TVOSf_FreeBSD
  #include <ncurses.h>
 #else

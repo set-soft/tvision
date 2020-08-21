@@ -349,12 +349,25 @@ typedef unsigned long  ulong;
     stuff in versions like BC++ 5.5. So that's a real mess. */
  #if __GNUC__>=3
   #if __GNUC__>=4 || __GNUC_MINOR__>=4
-   // gcc>=3.4. It have __gnu_cxx::stdio_filebuf class.
-   #define CLY_filebuf       __gnu_cxx::stdio_filebuf<char>
+   // gcc>=3.4 or CLang
+   #undef  FSTREAM_HEADER
+   // Is that CLang? Clang/libc++ defines __GNUC__=4 ...
+   // and C++ standard says inclusion of this file has no effect, to detect libc++
+   #if defined(__cplusplus)
+    #include <ciso646>
+   #endif
+   #ifdef _LIBCPP_VERSION
+    // This is not defined by g++. We assume this is CLang
+    // Use a special stdio_filebuf
+    #define CLY_filebuf       cxutil::stdio_filebuf<char>
+    #define FSTREAM_HEADER  <cl/cx_stdio_filebuf.hpp>
+   #else
+    // gcc>=3.4. It has __gnu_cxx::stdio_filebuf class.
+    #define CLY_filebuf       __gnu_cxx::stdio_filebuf<char>
+    #define FSTREAM_HEADER  <ext/stdio_filebuf.h>
+   #endif
    #define CLY_int_filebuf   CLY_filebuf
    #define CLY_NewFBFromFD(buf,f) buf=new CLY_int_filebuf(fdopen(f,"rb+"),ios::in|ios::out|ios::binary)
-   #undef  FSTREAM_HEADER
-   #define FSTREAM_HEADER  <ext/stdio_filebuf.h>
   #else
    // gcc 3.1 needs a special filebuf
    #define CLY_filebuf       std::filebuf
