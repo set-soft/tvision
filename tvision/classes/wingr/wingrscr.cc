@@ -37,6 +37,7 @@
 #define Uses_string
 #define Uses_stdlib
 #define Uses_unistd
+#define Uses_limits
 #define Uses_AllocLocal
 #define Uses_TScreen
 #define Uses_TEvent
@@ -167,7 +168,7 @@ int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
  */ 
 VOID CALLBACK cursorProc( HWND hwnd          // handle of window for timer messages
                         , UINT uMsg          // WM_TIMER message
-                        , UINT idEvent       // timer identifier
+                        , UINT_PTR idEvent   // timer identifier
                         , DWORD /*dwTime*/ ) // current system time
 { if ( uMsg )
   { TScreenWinGr::zPos ^= 0x80;         /* Toggle phase (turn 180 degrees) */
