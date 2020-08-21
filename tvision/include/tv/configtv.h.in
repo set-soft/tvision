@@ -1,0 +1,73 @@
+/* Generated automatically by the configure script */
+
+/* ncurses library */
+#cmakedefine HAVE_NCURSES 1
+
+/* ncurses 4.2 or better have define_key (In Linux) */
+#cmakedefine HAVE_DEFINE_KEY 1
+
+/* The X11 keysyms are there */
+/*#define HAVE_KEYSYMS 1*/
+
+/* X11 library and headers */
+#cmakedefine HAVE_X11 1
+
+/* Allegro library */
+/*#define HAVE_ALLEGRO 1*/
+
+/* International support with gettext */
+#define HAVE_INTL_SUPPORT 1
+
+/* GPM mouse support */
+/*#define HAVE_GPM 1*/
+
+/* out/in functions defined by glibc */
+#cmakedefine HAVE_OUTB_IN_SYS 1
+
+/* Use stream replacements */
+#cmakedefine HAVE_SSC 1
+
+/* Byte order for this machine */
+#cmakedefine TV_BIG_ENDIAN 1
+
+/* Linux implementation of POSIX threads */
+#cmakedefine HAVE_LINUX_PTHREAD 1
+
+/* Memcpy doesn't support overlaps */
+#define HAVE_UNSAFE_MEMCPY 1
+
+/* 64 bits pointers */
+#cmakedefine HAVE_64BITS_POINTERS 1
+
+#cmakedefine TVOS_UNIX 1
+#cmakedefine TVOS_Win32 1
+#cmakedefine TVOSf_Linux 1
+#cmakedefine TVOSf_FreeBSD 1
+#cmakedefine TVOSf_NetBSD 1
+#cmakedefine TVOSf_Solaris 1
+#cmakedefine TVOSf_Darwin 1
+#cmakedefine TVOSf_QNXRtP 1
+#cmakedefine TVOSf_QNX4 1
+#cmakedefine TVComp_GCC 1
+#cmakedefine TVComp_BCPP 1
+#cmakedefine TVComp_MSC 1
+#cmakedefine TVCompf_MinGW 1
+#cmakedefine TVCompf_Cygwin 1
+#cmakedefine TV_Disable_WinGr_Driver 1
+
+#define TVCONFIG_RHIDE_STDINC "/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib"
+#define TVCONFIG_TVSRC "../../include /Users/chenxu/repos/tvision/include /usr/include/rhtvision"
+#define TVCONFIG_RHIDE_OS_LIBS "stdc++ tvfintl ncurses m"
+#define TVCONFIG_TVOBJ "/usr/lib ../../makes /Users/chenxu/repos/tvision/makes ../../intl/dummy "
+#define TVCONFIG_STDCPP_LIB "-lstdc++"
+#define TVCONFIG_SHARED_CODE_OPTION "-fno-common"
+#define TVCONFIG_RHIDE_LDFLAGS ""
+#define TVCONFIG_RHIDE_LIBS "-lncurses -lstdc++ -lm -lc libtvfintl.a"
+#define TVCONFIG_LIB_VER "2.2.1"
+#define TVCONFIG_EXTRA_INCLUDE_DIRS ""
+#define TVCONFIG_LIB_VER_MAJOR "2"
+#define TVCONFIG_INCLUDE "/usr/include/rhtvision"
+#define TVCONFIG_CFLAGS   "-O2 -pipe -Wno-long-double -Wno-packed"
+#define TVCONFIG_CXXFLAGS "-O2 -pipe -Wno-long-double -Wno-packed"
+#define TVCONFIG_REF_DIR  "/Users/chenxu/repos/tvision"
+

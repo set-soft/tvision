@@ -1,0 +1,562 @@
+cmake_minimum_required(VERSION 3.0)
+project(rhtvision)
+
+option(ENABLE_WINGR_DRIVER "Enable WinGr Driver" ON)
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
+include(TVConfig)
+
+include_directories(${CMAKE_BINARY_DIR}/include ${CMAKE_SOURCE_DIR}/include)
+
+set(COMPAT_SRCS
+	compat/beep.c
+	compat/drivevalid.c
+	compat/expandpath.c
+	compat/fexpand.c
+	compat/fileattrs.c
+	compat/fileexists.c
+	compat/filelength.c
+	compat/fixpath.c
+	compat/getcurdir.c
+	compat/getline.c
+	compat/getopt.c
+	compat/getopt1.c
+	compat/getshell.c
+	compat/iffilelen.cc
+	compat/isdir.c
+	compat/isrelpath.c
+	compat/iswild.c
+	compat/itoa.c
+	compat/nl_langinfo.c
+	compat/pathvalid.c
+	compat/releasec.c
+	compat/snprintf.c
+	compat/strlwr.c
+	compat/strupr.c
+	compat/ticks.c
+	compat/validfilename.c
+	compat/yieldpro.c
+)
+
+set(INTL_SRCS
+	intl/dummy/intldummy.c
+)
+
+set(RHTV_SRCS
+	drivers2.cc
+	dual.cc
+	fileview.cc
+	histlist.cc
+	misc.cc
+	msgbox.cc
+	newstr.cc
+	classes/calcdisp.cc
+	classes/calculat.cc
+	classes/codepage.cc
+	classes/configfile.cc
+	classes/fontcoll.cc
+	classes/fpbase.cc
+	classes/fpstream.cc
+	classes/help.cc
+	classes/helpbase.cc
+	classes/ifpstrea.cc
+	classes/iopstrea.cc
+	classes/ipstream.cc
+	classes/ofpstrea.cc
+	classes/opstream.cc
+	classes/osclipboard.cc
+	classes/parttree.cc
+	classes/pstream.cc
+	classes/tapplica.cc
+	classes/tbackgro.cc
+	classes/tbutton.cc
+	classes/tchdirdi.cc
+	classes/tcheckbo.cc
+	classes/tclrdisp.cc
+	classes/tcluster.cc
+	classes/tcollect.cc
+	classes/tcolordi.cc
+	classes/tcolorgr.cc
+	classes/tcolorit.cc
+	classes/tcolorse.cc
+	classes/tcommand.cc
+	classes/tdesktop.cc
+	classes/tdialog.cc
+	classes/tdircoll.cc
+	classes/tdirlist.cc
+	classes/tdisplay.cc
+	classes/tdrawbuf.cc
+	classes/teditor.cc
+	classes/teditorf.cc
+	classes/teditwin.cc
+	classes/tevent.cc
+	classes/tfilecol.cc
+	classes/tfiledia.cc
+	classes/tfileedi.cc
+	classes/tfileinf.cc
+	classes/tfileinp.cc
+	classes/tfilelis.cc
+	classes/tfilterv.cc
+	classes/tframe.cc
+	classes/tgkey.cc
+	classes/tgroup.cc
+	classes/thistory.cc
+	classes/thistvie.cc
+	classes/thistwin.cc
+	classes/thwmouse.cc
+	classes/tindicat.cc
+	classes/tinputli.cc
+	classes/tlabel.cc
+	classes/tlistbox.cc
+	classes/tlistvie.cc
+	classes/tlookupv.cc
+	classes/tmemo.cc
+	classes/tmenubar.cc
+	classes/tmenubox.cc
+	classes/tmenuvie.cc
+	classes/tmonosel.cc
+	classes/tmouse.cc
+	classes/tnscolle.cc
+	classes/tnssorte.cc
+	classes/tobject.cc
+	classes/tpalette.cc
+	classes/tparamte.cc
+	classes/tpoint.cc
+	classes/tprogini.cc
+	classes/tprogram.cc
+	classes/tpwobj.cc
+	classes/tpwreado.cc
+	classes/tpwritte.cc
+	classes/tpxvalid.cc
+	classes/tradiobu.cc
+	classes/trangeva.cc
+	classes/trescoll.cc
+	classes/tresfile.cc
+	classes/tscreen.cc
+	classes/tscrollb.cc
+	classes/tscrolle.cc
+	classes/tsortedc.cc
+	classes/tsortedl.cc
+	classes/tstatict.cc
+	classes/tstatusd.cc
+	classes/tstatusl.cc
+	classes/tstrinde.cc
+	classes/tstringc.cc
+	classes/tstringl.cc
+	classes/tstrlist.cc
+	classes/tstrmcla.cc
+	classes/tstrmtyp.cc
+	classes/tsubmenu.cc
+	classes/ttermina.cc
+	classes/ttextdev.cc
+	classes/tvalidat.cc
+	classes/tvedit1.cc
+	classes/tvedit2.cc
+	classes/tvedit3.cc
+	classes/tview.cc
+	classes/tvintl.cc
+	classes/tvtext1.cc
+#	classes/tvtext2.cc
+	classes/twindow.cc
+	names/nbackgro.cc
+	names/nbutton.cc
+	names/ncalcdis.cc
+	names/ncalcula.cc
+	names/nchdirdi.cc
+	names/ncheckbo.cc
+	names/nclrdisp.cc
+	names/ncluster.cc
+	names/ncollect.cc
+	names/ncolordi.cc
+	names/ncolorgr.cc
+	names/ncolorit.cc
+	names/ncolorse.cc
+	names/ndesktop.cc
+	names/ndialog.cc
+	names/ndircoll.cc
+	names/ndirlist.cc
+	names/neditor.cc
+	names/neditwi.cc
+	names/nfilecol.cc
+	names/nfiledia.cc
+	names/nfiledtr.cc
+	names/nfileinf.cc
+	names/nfileinp.cc
+	names/nfilelis.cc
+	names/nfilterv.cc
+	names/nframe.cc
+	names/ngroup.cc
+	names/nhistory.cc
+	names/nindicat.cc
+	names/ninput16.cc
+	names/ninputli.cc
+	names/nlabel.cc
+	names/nlistbox.cc
+	names/nlistvie.cc
+	names/nlookupv.cc
+	names/nmemo.cc
+	names/nmenubar.cc
+	names/nmenubox.cc
+	names/nmenuvie.cc
+	names/nmonosel.cc
+	names/nparamte.cc
+	names/npxvalid.cc
+	names/nradiobu.cc
+	names/nrangeva.cc
+	names/nresourc.cc
+	names/nscrollb.cc
+	names/nscrolle.cc
+	names/nsortedc.cc
+	names/nsortedl.cc
+	names/nstatict.cc
+	names/nstatusl.cc
+	names/nstringc.cc
+	names/nstringl.cc
+	names/nvalidat.cc
+	names/nview.cc
+	names/nwindow.cc
+	stream/sbackgro.cc
+	stream/sbutton.cc
+	stream/scalcdis.cc
+	stream/scalcula.cc
+	stream/schdirdi.cc
+	stream/scheckbo.cc
+	stream/sclrdisp.cc
+	stream/scluster.cc
+	stream/scolordi.cc
+	stream/scolorgr.cc
+	stream/scolorit.cc
+	stream/scolorse.cc
+	stream/sdesktop.cc
+	stream/sdialog.cc
+	stream/sdircoll.cc
+	stream/sdirlist.cc
+	stream/seditor.cc
+	stream/seditwin.cc
+	stream/sfilecol.cc
+	stream/sfiledia.cc
+	stream/sfileedi.cc
+	stream/sfileinf.cc
+	stream/sfileinp.cc
+	stream/sfilelis.cc
+	stream/sfilterv.cc
+	stream/sframe.cc
+	stream/sgroup.cc
+	stream/shistory.cc
+	stream/sindicat.cc
+	stream/sinputli.cc
+	stream/sinput16.cc
+	stream/slabel.cc
+	stream/slistbox.cc
+	stream/slistvie.cc
+	stream/slookupv.cc
+	stream/smemo.cc
+	stream/smenubar.cc
+	stream/smenubox.cc
+	stream/smenuvie.cc
+	stream/smonosel.cc
+	stream/sparamte.cc
+	stream/spxvalid.cc
+	stream/sradiobu.cc
+	stream/srangeva.cc
+	stream/sresourc.cc
+	stream/sscrollb.cc
+	stream/sscrolle.cc
+	stream/sstatict.cc
+	stream/sstatusl.cc
+	stream/sstringc.cc
+	stream/sstringl.cc
+	stream/sview.cc
+	stream/swindow.cc
+)
+
+set(RHTV_HDRS
+	include/cl/unistd.h
+	include/compatlayer.h
+	include/tv.h
+	include/tv/app.h
+	include/tv/applictn.h
+	include/tv/backgrnd.h
+	include/tv/button.h
+	include/tv/calc.h
+	include/tv/chdirdlg.h
+	include/tv/checkbox.h
+	include/tv/clrdisp.h
+	include/tv/clrdlg.h
+	include/tv/clrgroup.h
+	include/tv/clrgrpli.h
+	include/tv/clritem.h
+	include/tv/clriteml.h
+	include/tv/clrselct.h
+	include/tv/cluster.h
+	include/tv/cmdset.h
+	include/tv/codepage.h
+	include/tv/collectn.h
+	include/tv/colorsel.h
+	include/tv/configfile.h
+	include/tv/configtv.h
+	include/tv/desktop.h
+	include/tv/dialog.h
+	include/tv/dialogs.h
+	include/tv/dircoll.h
+	include/tv/direntr.h
+	include/tv/dirlibo.h
+	include/tv/drawbuf.h
+	include/tv/drivers.h
+	include/tv/editors.h
+	include/tv/event.h
+	include/tv/eventqu.h
+	include/tv/filecoll.h
+	include/tv/filedlg.h
+	include/tv/filelist.h
+	include/tv/fileview.h
+	include/tv/filinfpn.h
+	include/tv/filinpln.h
+	include/tv/findrepl.h
+	include/tv/fontcoll.h
+	include/tv/fpbase.h
+	include/tv/fpstream.h
+	include/tv/frame.h
+	include/tv/gkey.h
+	include/tv/group.h
+	include/tv/help.h
+	include/tv/helpbase.h
+	include/tv/history.h
+	include/tv/histvwer.h
+	include/tv/histwind.h
+	include/tv/ifpstrm.h
+	include/tv/indicato.h
+	include/tv/inputln.h
+	include/tv/intl.h
+	include/tv/iopstrm.h
+	include/tv/ipstream.h
+	include/tv/label.h
+	include/tv/listbox.h
+	include/tv/lstviewr.h
+	include/tv/menu.h
+	include/tv/menubar.h
+	include/tv/menubox.h
+	include/tv/menuitem.h
+	include/tv/menus.h
+	include/tv/menuview.h
+	include/tv/mnoselct.h
+	include/tv/msgbox.h
+	include/tv/no_mss.h
+	include/tv/nscoll.h
+	include/tv/nssorcol.h
+	include/tv/object.h
+	include/tv/objects.h
+	include/tv/ofpstrm.h
+	include/tv/opstream.h
+	include/tv/osclipboard.h
+	include/tv/palette.h
+	include/tv/parmtext.h
+	include/tv/parttree.h
+	include/tv/point.h
+	include/tv/preadobj.h
+	include/tv/program.h
+	include/tv/pstream.h
+	include/tv/pwritobj.h
+	include/tv/radiobtn.h
+	include/tv/rect.h
+	include/tv/rescoll.h
+	include/tv/resfile.h
+	include/tv/resitem.h
+	include/tv/resource.h
+	include/tv/screen.h
+	include/tv/scrlbar.h
+	include/tv/scroller.h
+	include/tv/searchrc.h
+	include/tv/sitem.h
+	include/tv/sortcoll.h
+	include/tv/sortlibo.h
+	include/tv/ssc_streams.h
+	include/tv/statsdef.h
+	include/tv/statsitm.h
+	include/tv/statslin.h
+	include/tv/stddlg.h
+	include/tv/streambl.h
+	include/tv/strilist.h
+	include/tv/strinrec.h
+	include/tv/strlistm.h
+	include/tv/strmblcl.h
+	include/tv/strmblty.h
+	include/tv/strncoll.h
+	include/tv/sttctext.h
+	include/tv/submenu.h
+	include/tv/system.h
+	include/tv/tkeyext.h
+	include/tv/tkeys.h
+	include/tv/tobjstrm.h
+	include/tv/ttypes.h
+	include/tv/tvconfig.h
+	include/tv/tvedit.h
+	include/tv/tvobjs.h
+	include/tv/tvutil.h
+	include/tv/validate.h
+	include/tv/view.h
+	include/tv/views.h
+	include/tv/window.h
+	include/tv/yes_mss.h
+)
+
+if(TVCompf_MinGW OR TVComp_MSC)
+	set(RHTV_REGEX_SRCS compat/regex.c)
+endif(TVCompf_MinGW OR TVComp_MSC)
+
+if(HAVE_SSC)
+	set(RHTV_SSC_SRCS compat/ssc_streams.cc )
+endif(HAVE_SSC)
+
+set(RHTV_ALCON_SRCS
+	include/tv/alcon/alcon.h
+	include/tv/alcon/key.h
+	include/tv/alcon/mouse.h
+	include/tv/alcon/screen.h
+	classes/alcon/alcon.cc
+	classes/alcon/alcondis.cc
+	classes/alcon/alconkey.cc
+	classes/alcon/alconmouse.cc
+	classes/alcon/alconscr.cc
+)
+
+set(RHTV_DOS_SRCS
+	include/tv/dos/key.h
+	include/tv/dos/mouse.h
+	include/tv/dos/screen.h
+	classes/dos/dosdis.cc
+	classes/dos/doskey.cc
+	classes/dos/dosmouse.cc
+	classes/dos/dosscr.cc
+	classes/dos/rhscreen.cc
+	classes/dos/screen.cc
+	classes/dos/sescreen.cc
+	classes/dos/vesa.cc
+	classes/dos/vga.cc
+	classes/dos/vgaregs.c
+	classes/dos/vgaregs.h
+	classes/dos/vgastate.c
+	classes/dos/vgastate.h
+)
+
+set(RHTV_LINUX_SRCS
+		include/tv/linux/key.h
+		include/tv/linux/log.h
+		include/tv/linux/mouse.h
+		include/tv/linux/screen.h
+		classes/linux/linuxdis.cc
+		classes/linux/linuxkey.cc
+		classes/linux/linuxmouse.cc
+		classes/linux/linuxscr.cc
+		)
+
+set(RHTV_QNX4_SRCS
+	include/tv/qnx4/key.h
+	include/tv/qnx4/mouse.h
+	include/tv/qnx4/screen.h
+	classes/qnx4/qnx4dis.cc
+	classes/qnx4/qnx4key.cc
+	classes/qnx4/qnx4mouse.cc
+	classes/qnx4/qnx4scr.cc
+)
+
+set(RHTV_QNXRTP_SRCS
+	include/tv/qnxrtp/key.h
+	include/tv/qnxrtp/mouse.h
+	include/tv/qnxrtp/screen.h
+	classes/qnxrtp/qnxdis.cc
+	classes/qnxrtp/qnxkey.cc
+	classes/qnxrtp/qnxmouse.cc
+	classes/qnxrtp/qnxscr.cc
+)
+
+set(RHTV_UNIX_SRCS
+	include/tv/unix/key.h
+	include/tv/unix/mouse.h
+	include/tv/unix/screen.h
+	include/tv/unix/xtkey.h
+	include/tv/unix/xtmouse.h
+	include/tv/unix/xtscreen.h
+	classes/unix/unixdis.cc
+	classes/unix/unixkey.cc
+	classes/unix/unixmouse.cc
+	classes/unix/unixscr.cc
+	classes/unix/xtermdis.cc
+	classes/unix/xtermkey.cc
+	classes/unix/xtermmouse.cc
+	classes/unix/xtermscr.cc
+)
+
+set(RHTV_WINDOWS_SRCS
+	compat/fnmatch.c
+	compat/glob.c
+	compat/globfree.c
+	compat/mkstemp.c
+	compat/ntdirent.c
+	compat/unc.c
+	compat/unc_nt.c
+	include/tv/wingr/key.h
+	include/tv/wingr/mouse.h
+	include/tv/wingr/screen.h
+	classes/wingr/wingrdis.cc
+	classes/wingr/wingrkey.cc
+	classes/wingr/wingrmouse.cc
+	classes/wingr/wingrscr.cc
+	include/tv/win32/key.h
+	include/tv/win32/mouse.h
+	include/tv/win32/screen.h
+	include/tv/win32/win32clip.h
+	classes/win32/win32clip.cc
+	classes/win32/win32dis.cc
+	classes/win32/win32key.cc
+	classes/win32/win32mouse.cc
+	classes/win32/win32scr.cc
+	include/tv/winnt/key.h
+	include/tv/winnt/mouse.h
+	include/tv/winnt/screen.h
+	classes/winnt/winntdis.cc
+	classes/winnt/winntkey.cc
+	classes/winnt/winntmouse.cc
+	classes/winnt/winntscr.cc
+)
+
+set(RHTV_X11_SRCS
+	include/tv/x11/key.h
+	include/tv/x11/mouse.h
+	include/tv/x11/screen.h
+	classes/x11/x11dis.cc
+	classes/x11/x11key.cc
+	classes/x11/x11mouse.cc
+	classes/x11/x11src.cc
+)
+
+# TODO: Make these work
+#if(DOS)
+#	set(RHTV_PLATFORM_SRCS "${RHTV_DOS_SRCS}")
+#endif(DOS)
+#if(QNX4)
+#	set(RHTV_PLATFORM_SRCS "${RHTV_QNX4_SRCS}")
+#endif(QNX4)
+#if(QNXRTP)
+#	set(RHTV_PLATFORM_SRCS "${RHTV_QNXRTP_SRCS}")
+#endif(QNXRTP)
+
+if(WIN32)
+	set(RHTV_PLATFORM_SRCS "${RHTV_WINDOWS_SRCS}")
+endif(WIN32)
+
+if(UNIX)
+	set(RHTV_PLATFORM_SRCS "${RHTV_UNIX_SRCS}")
+endif(UNIX)
+
+if(X11_FOUND)
+	list(APPEND RHTV_PLATFORM_SRCS "${RHTV_X11_SRCS}")
+endif(X11_FOUND)
+
+if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+	list(APPEND RHTV_PLATFORM_SRCS "${RHTV_LINUX_SRCS}")
+endif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+
+add_library(rhtv ${RHTV_HDRS} ${INTL_SRCS} ${COMPAT_SRCS} ${RHTV_SRCS} ${RHTV_PLATFORM_SRCS} ${RHTV_REGEX_SRCS} ${RHTV_SSC_SRCS})
+
+ADD_SUBDIRECTORY(examples EXCLUDE_FROM_ALL)
