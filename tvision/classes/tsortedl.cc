@@ -99,7 +99,7 @@ void TSortedListBox::handleEvent(TEvent& event)
                 if( searchPos == USHRT_MAX )
                     shiftState = shiftKeys;
                 }
-            else if( (event.keyDown.charScan.charCode == '.') )
+            else if( event.keyDown.charScan.charCode == '.' )
                 {
                 char *loc = strchr( curString+
                                     (searchPos==USHRT_MAX ? 0 : searchPos), '.' );
