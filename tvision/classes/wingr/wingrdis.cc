@@ -25,6 +25,8 @@
 #define Uses_TRect
 #define Uses_TEvent
 #define Uses_alloca
+// PATH_MAX:
+#define Uses_limits
 #include <tv.h>
 
 #if defined(TVOS_Win32) && !defined(TV_Disable_WinGr_Driver)
