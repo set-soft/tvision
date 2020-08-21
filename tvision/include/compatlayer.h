@@ -523,6 +523,10 @@ typedef unsigned long  ulong;
    #undef  Include_io
    #define Include_io 1
   #endif
+  #ifdef Uses_access
+   #undef  Include_unistd
+   #define Include_unistd 1
+  #endif
   #ifdef Uses_utime
    /* I can't beleive they forgot the header when the function is there! */
    #undef  Include_cl_utime
