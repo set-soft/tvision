@@ -94,8 +94,10 @@ typedef          __int64 int64;
 
 #if defined(HAVE_64BITS_POINTERS) || (defined(TVComp_MSC) && defined(_WIN64))
 typedef uint64 uipointer;
+typedef  int64  ipointer;
 #else
 typedef uint32 uipointer;
+typedef  int32  ipointer;
 #endif
 /* Macros to cast a pointer into a 64 bits unsigned and viceversa */
 #undef  CLY_PointerToUI64

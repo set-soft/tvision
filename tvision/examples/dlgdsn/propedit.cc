@@ -757,7 +757,7 @@ void TObjEditView::editItem(const TStructMap * map)
 #define _do_(editor) chg = (execDialog(editor(), ldata) == cmOK); break;
 #define _constsel_(list, editor)                                             \
           rec.items = list();                                                \
-          rec.selection = list()->getIndex((ushort)(long)ldata);             \
+          rec.selection = list()->getIndex((ushort)(ipointer)ldata);         \
           chg = (execDialog(editor(), &rec) == cmOK);                        \
           if (chg) memcpy(ldata, &rec.selection, sizeof(ushort)); break;
 
@@ -794,10 +794,14 @@ void TObjEditView::editItem(const TStructMap * map)
        case etIntegerEditor:
           calcPlace(place, separator, map->index, dataMap);
           if (vtCurrent == vtListBox && map->index == 14)
-               i = (short)(long)ldata; else i = (int)(long)ldata;
+               i = (short)(ipointer)ldata;
+          else
+               i = (int)(ipointer)ldata;
           chg = IntegerEditor(i, place, owner);
           if (vtCurrent == vtListBox && map->index == 14)
-             ldata = (void *)(long)i; else ldata = (void *)(long)i;
+             ldata = (void *)(ipointer)i;
+          else
+             ldata = (void *)(ipointer)i;
           if (chg) message(owner, evMessage, cmValueChanged, 0);
        break;
        case etOptionsEditor: _do_(OptionsEditor);

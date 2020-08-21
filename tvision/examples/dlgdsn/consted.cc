@@ -64,7 +64,7 @@ static TConstCollection * HelpCtxList;
 struct TConstData
 {
    char * Id;
-   int Value;
+   ipointer Value;
    int Order;
    bool ReadOnly;
 };
@@ -126,7 +126,7 @@ TConstCollection::~TConstCollection()
    delete[] listName;
 }
 
-void TConstCollection::change(int index, const char * Ident, int Value)
+void TConstCollection::change(int index, const char * Ident, ipointer Value)
 {
   if (count > 0 && index < count && !((TConstData *)at(index))->ReadOnly )
   {
@@ -136,7 +136,7 @@ void TConstCollection::change(int index, const char * Ident, int Value)
   }
 }
 
-void TConstCollection::add(const char * Ident, int Value, bool IsReadOnly)
+void TConstCollection::add(const char * Ident, ipointer Value, bool IsReadOnly)
 {
    TConstData * item = (TConstData *)calloc(1, sizeof(TConstData));
    item->Id = newStr(Ident);
@@ -155,7 +155,7 @@ static Boolean identMatch(void * item, void * ident)
 
 static Boolean valueMatch(void * item, void *value)
 {
-   return (((TConstData *)item)->Value == (long)value);
+   return (((TConstData *)item)->Value == (ipointer)value);
 }
 
 int TConstCollection::getIndex(char * Ident)
@@ -164,19 +164,19 @@ int TConstCollection::getIndex(char * Ident)
    if (i) return indexOf(i); else return -1;
 }
 
-int TConstCollection::getIndex(int Value)
+int TConstCollection::getIndex(ipointer Value)
 {
    void * i = firstThat(&valueMatch, (void *)&Value);
    if (i) return indexOf(i); else return -1;
 }
 
-char * TConstCollection::getId(int Value)
+char * TConstCollection::getId(ipointer Value)
 {
    if (getIndex(Value)!=-1) return ((TConstData*)at(getIndex(Value)))->Id;
      else return 0;
 }
 
-int TConstCollection::getValue(char * Ident)
+ipointer TConstCollection::getValue(char * Ident)
 {
    if (getIndex(Ident)!=-1) return ((TConstData*)at(getIndex(Ident)))->Value;
      else return 0;

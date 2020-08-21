@@ -38,12 +38,12 @@ class TConstCollection: public TCollection
 public:
    TConstCollection(const char * aListName);
    ~TConstCollection();
-   void add(const char * Ident, int Value, bool IsReadOnly = false);
-   void change(int index, const char * Ident, int Value);
+   void add(const char * Ident, ipointer Value, bool IsReadOnly = false);
+   void change(int index, const char * Ident, ipointer Value);
    int getIndex(char * Ident);
-   int getIndex(int Value);
-   char * getId(int Value);
-   int getValue(char * Ident);
+   int getIndex(ipointer Value);
+   char * getId(ipointer Value);
+   ipointer getValue(char * Ident);
    virtual void freeItem(void * item);
    void sort(int mode);
    char * listName;
