@@ -14,7 +14,7 @@ Modified by Robert H”hne to be used for RHIDE.
 #if defined( Uses_TFileCollection ) && !defined( __TFileCollection )
 #define __TFileCollection
 
-class TSearchRec;
+struct TSearchRec;
 
 const unsigned fcolAlphabetical=0, fcolDirsFirst=1, fcolDirsLast=2,
                fcolTypeMask=0x1F;
