@@ -25,6 +25,7 @@ Andris Pavenis.
 #define __pstream
 
 class TStreamableTypes;
+class TStreamableClass;
 
 class CLY_EXPORT pstream
 {
