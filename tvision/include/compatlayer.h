@@ -1923,6 +1923,13 @@ when compiler version 7.0 was released.
    #define Include_strstrea 1
   #endif
  #endif
+
+// Is this needed? For which version?
+// windoze/tvision uses it for all, but the code worked for years
+// #ifndef usleep
+//  // Doesn't work, needs to be fixed.
+//  #define usleep(microseconds) CLY_YieldProcessor(microseconds)
+// #endif
 #endif
 
 #ifdef Uses_IOS_BIN
