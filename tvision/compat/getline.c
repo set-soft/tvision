@@ -2,7 +2,7 @@
 
   Description:
   getline.c -- Replacement for GNU C library function getline.
-  
+
 ***************************************************************************/
 #include <cl/needs.h>
 
@@ -62,7 +62,7 @@ ssize_t CLY_getstr(char **_lineptr, size_t *_n, FILE *_stream,
    read no more than LIMIT chars.
 
    *LINEPTR is a pointer returned from malloc (or NULL), pointing to
-   *N characters of space.  It is realloc'd as necessary.  
+   *N characters of space.  It is realloc'd as necessary.
 
    Return the number of characters read (not including the null
    terminator), or -1 on error or EOF.  On a -1 return, the caller

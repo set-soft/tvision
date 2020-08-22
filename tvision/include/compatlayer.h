@@ -460,7 +460,7 @@ typedef unsigned long  ulong;
    #define Include_strstream 1
   #endif
  #endif
- 
+
  /* Use the internal bool type for Boolean */
  #undef Boolean
  #undef False
@@ -653,7 +653,7 @@ typedef unsigned long  ulong;
    #define Uses_CLY_getline 1
   #endif
  #endif
- 
+
  /* Under DOS djgpp defines it */
  #ifdef TVCompf_djgpp
   #define CLY_UseCrLf 1
@@ -873,7 +873,7 @@ typedef unsigned long  ulong;
   #undef CLY_Have_snprintf
  #endif
 
- #if defined(TVOSf_QNX4) 
+ #if defined(TVOSf_QNX4)
   #if defined(Uses_alloca) && !defined(alloca)
    #define alloca __builtin_alloca
   #endif // alloca
@@ -891,7 +891,7 @@ typedef unsigned long  ulong;
    CLY_CFunc int strcasencmp(const char* s1, const char* s2, size_t n);
 
   #endif // string
-  
+
   #if defined(Uses_stdlib) || defined(Uses_unistd)
    #undef  Include_process
    #define Include_process 1

@@ -24,7 +24,7 @@ needed.
 screen buffer. I comment more in the "WinNT" driver. One really strange
 thing is that this driver behaves better with the cursor. Don't know why.
 I also added the resize window stuff.
-  
+
 ***************************************************************************/
 
 #include <tv/configtv.h>
@@ -184,7 +184,7 @@ void TScreenWin32::DoneConsole()
  WriteConsoleInput(hIn,&ir,1,&written);
  WaitForSingleObject(EventThreadHandle,INFINITE);
  CloseHandle(EventThreadHandle);
- 
+
  DeleteCriticalSection(&lockWindowSizeChanged);
  THWMouseWin32::DeInit();
  TGKeyWin32::DeInit();
@@ -294,7 +294,7 @@ void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)
  ushort *old=((ushort*)screenBuffer)+dst;
  ushort *old_right=old+len-1;
  ushort *src_right=src+len-1;
- 
+
  while (len>0 && *old==*src)
    {
     dst++;
@@ -302,7 +302,7 @@ void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)
     old++;
     src++;
    }
- 
+
  /* remove unchanged characters from right to left */
  while (len>0 && *old_right==*src_right)
    {
@@ -310,13 +310,13 @@ void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)
     old_right--;
     src_right--;
    }
- 
+
  /* write only middle changed characters */
  if (len>0)
    {
     CHAR_INFO ch[maxViewWidth];
     int i=0;
- 
+
     while (len-->0)
       {
        *old++=*src;
@@ -325,9 +325,9 @@ void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)
        i++;
        src++;
       }
- 
+
    ushort x=dst%screenWidth, y=dst/screenWidth;
- 
+
    SMALL_RECT to={(SHORT)x,(SHORT)y,(SHORT)(x+i-1),(SHORT)y};
    COORD bsize={(SHORT)i,1};
    static COORD from={0,0};
@@ -434,9 +434,9 @@ that can fit on the screen based on the current font size (controlled
 exclusively by the user).".@*
   It only works if we are windowed and this will prevent from going full
 screen unless Windows knows an equivalent text mode.
-  
+
   Return: 0 no change, 1 full change, 2 approx. change. by SET
-  
+
 ***************************************************************************/
 
 int TScreenWin32::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)

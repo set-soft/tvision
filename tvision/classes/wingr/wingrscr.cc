@@ -1,10 +1,10 @@
 /**[txh]********************************************************************
 
   Copyright (c) 2002 by Jose Angel Sánchez Caso (JASC)
-  
+
     -> altomaltes@yahoo.es
     -> altomaltes@gmail.com
-    
+
   Squeletons by Salvador E. Tropea (SET)
 
   Description:
@@ -15,13 +15,13 @@
 
     HalfColor     ->  Palette brightness
     FullColor
-    
+
     ScreenWidth   -> Screen font and size
     ScreenHeight
     FontWidth
     FontHeight
     Font10x20
-    
+
     optSearch
     optSearch
     optSearch
@@ -96,16 +96,16 @@ long TScreenWinGr::FullColor= 0xFF;
 int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
                          , int changeS, TScreenFont256 *fontS
                          , int fontCP, int appCP )
-{ if (!changeP && !changeS) 
+{ if (!changeP && !changeS)
   { return 1;
   }
-  
+
   if ( !fontP )
-  { fontP= defaultFont; 
+  { fontP= defaultFont;
   }
-                         
+
   if ( !fontS )
-  { fontS= defaultFont;  
+  { fontS= defaultFont;
   }
   if ( changeP )
   { selectFont( primary, fontP );
@@ -122,8 +122,8 @@ int TScreenWinGr::SetFont( int changeP, TScreenFont256 *fontP
   { TVCodePage::SetCodePage( appCP
                            , fontCP
                            ,-1 );
-  }                       
-  
+  }
+
   return( 1 );
 }                         
 
@@ -135,7 +135,7 @@ void TScreenWinGr::RestoreFonts()
 { SetFont( 1, NULL
          , 1, NULL
          , TVCodePage::ISOLatin1Linux
-         , TVCodePage::ISOLatin1Linux); 
+         , TVCodePage::ISOLatin1Linux);
 }
 
 
@@ -165,7 +165,7 @@ int TScreenWinGr::GetFontGeometryRange( unsigned &wmin, unsigned &hmin
 
 /*
  *  Time callback to blink the cursor
- */ 
+ */
 VOID CALLBACK cursorProc( HWND hwnd          // handle of window for timer messages
                         , UINT uMsg          // WM_TIMER message
                         , UINT_PTR idEvent   // timer identifier
@@ -176,11 +176,11 @@ VOID CALLBACK cursorProc( HWND hwnd          // handle of window for timer messa
     if ( TScreenWinGr::xPos >= 0 )
     { TScreenWinGr::lowSetCursor( TScreenWinGr::xPos /* Show or hide cursor */
                                 , TScreenWinGr::yPos
-                                , true ); 
-    }                                 
+                                , true );
+    }
   }
-  
-  SetTimer( hwnd                 /* Reload timer        */ 
+
+  SetTimer( hwnd                 /* Reload timer        */
           , idEvent
           , TScreenWinGr::cursorDelay / 1000   /* from usecs to msecs */
           , cursorProc );
@@ -206,8 +206,8 @@ TScreenWinGr::TScreenWinGr()
   GetStartupInfoA (&startinfo);   /* Get the command line passed to the process. */
 
 /*
- *  JASC, ene 2006, now bitmap fonts 
- */  
+ *  JASC, ene 2006, now bitmap fonts
+ */
 
 
 /* Look for defaults */
@@ -247,8 +247,8 @@ TScreenWinGr::TScreenWinGr()
   TestAllFonts( fontW      /* Try the best fit */
               , fontH );
   CheckWindowSize( windowArea );
-  
-/* 
+
+/*
  * Code page, User settings have more priority than detected settings 
  */
   optSearch("AppCP", forcedAppCP );
@@ -259,14 +259,14 @@ TScreenWinGr::TScreenWinGr()
     new TVCodePage( forcedAppCP != -1 ? forcedAppCP : TVCodePage::ISOLatin1Linux
                   , forcedScrCP != -1 ? forcedScrCP : TVCodePage::ISOLatin1Linux
                   , forcedInpCP != -1 ? forcedInpCP : TVCodePage::ISOLatin1Linux );
-                 
+
   SetDefaultCodePages( TVCodePage::ISOLatin1Linux
                      , TVCodePage::ISOLatin1Linux
                      , TVCodePage::ISOLatin1Linux );
 
   normCursor= LoadCursor( NULL, IDC_ARROW   );
   handCursor= LoadCursor( NULL, IDC_HAND    );
-  
+
   if( handCursor==NULL )                        /* Not available in 95 and NT */
   { handCursor= LoadCursor(NULL, IDC_ARROW  );
   }
@@ -274,7 +274,7 @@ TScreenWinGr::TScreenWinGr()
 
   wincl.hIcon  = LoadIcon( NULL              /* Use default icon and mousepointer */
                          , IDI_APPLICATION);
-                         
+
   wincl.hIconSm= LoadIcon( NULL
                          , IDI_APPLICATION);
 
@@ -289,17 +289,17 @@ TScreenWinGr::TScreenWinGr()
   wincl.lpszClassName= className;
   wincl.hbrBackground= NULL;
 
-/* 
- * Register the window class, if fail quit the program 
+/*
+ * Register the window class, if fail quit the program
  */
  
   if( !RegisterClassEx( &wincl ) )
-  { return; 
+  { return;
   }
 
 
-/* 
- * The class is registered, lets create a program 
+/*
+ * The class is registered, lets create a program
  */
   hwnd= CreateWindowEx
   ( exStyle               /* Possible styles                        */
@@ -314,9 +314,9 @@ TScreenWinGr::TScreenWinGr()
   , NULL                  /* No menu                                */
   , TvWinInstance         /* Program Instance handler               */
   , NULL );               /* No Window Creation data                */
-  
+
   if ( ! hwnd )           /* Fails to create (font creation assigns) */
-  { return; 
+  { return;
   }
 
 /*
@@ -329,11 +329,11 @@ TScreenWinGr::TScreenWinGr()
    *  Now we have an hwnd, and can create fonts
    */
 
-  initialized++ ; 
+  initialized++ ;
 
   ShowWindow( hwnd                /* Make the window visible on the screen  */
-            ,  startinfo.dwFlags 
-            & STARTF_USESHOWWINDOW 
+            ,  startinfo.dwFlags
+            & STARTF_USESHOWWINDOW
             ? startinfo.wShowWindow
             : SW_SHOWDEFAULT );
 
@@ -347,15 +347,15 @@ TScreenWinGr::TScreenWinGr()
 
   flags0= CodePageVar
         | CursorShapes
-        | CanSetBFont   
+        | CanSetBFont
         | CanSetSBFont
         | NoUserScreen
         | CanSetVideoSize
         | CanSetFontSize
         | CanSetPalette
         | CanReadPalette;
- 
-     
+
+
   cursorLines=
     startupCursor=
      getCursorType();
@@ -365,23 +365,23 @@ TScreenWinGr::TScreenWinGr()
 
 
 /*
- * Start cursor blinking handler  
+ * Start cursor blinking handler
  */
 
   cursorProc( hwnd     // handle of window for timer messages
             , 0        // Don´t draw cursor
             , 0        // timer identifier
             , 0 );     // current system time
-            
-}            
+
+}
 
 
 
-/* 
+/*
  *    JASC, 2002
  *
  *  Link the driver by loading the static method pointers
- */ 
+ */
 void TScreenWinGr::Init()
 { TScreen::System_p            = System;
   TScreen::Resume              = Resume;
@@ -406,14 +406,14 @@ void TScreenWinGr::Init()
  *
  */
 void TScreenWinGr::Resume()
-{ SaveScreen(); 
+{ SaveScreen();
 }
 
 /*
  *
  */
 void TScreenWinGr::Suspend()
-{ RestoreScreen(); 
+{ RestoreScreen();
 }
 
 /*
@@ -426,7 +426,7 @@ TScreenWinGr::~TScreenWinGr()
 
   if ( screenBuffer )
   { delete screenBuffer;
-    screenBuffer= NULL; 
+    screenBuffer= NULL;
   }
 }
 
@@ -443,28 +443,28 @@ void TScreenWinGr::writeLine( unsigned x
   uchar * str= (uchar *) org;
 
   if ( w<=0 )   // Nothing to do
-  { return; 
+  { return;
   }
 
   SetBkColor  ( hdc, colorMap[ color&15 ]);     // Color de fondo
   SetTextColor( hdc, colorMap[ color>>4 ]);     // Color de fondo
-    
+
   while( w -- )
   { letter= *str++;  /* Next character */
     BitBlt( hdc
           , x ++ * primary.w   /* Move right */
           , y    * primary.h
           , primary.w
-          , primary.h 
+          , primary.h
 
           , useSecondaryFont && ( color  & 0x8 )
           ? secondary.bitmapMemo
           : primary.bitmapMemo
-          
+
           , 0, letter * primary.h
           , SRCCOPY );
-  }        
-                             
+  }
+
   if ( y==yPos )
   { if ( xPos >= x)
     { if ( xPos<= x+w )
@@ -477,8 +477,8 @@ void TScreenWinGr::writeLine( unsigned x
     }
   }
 }
-           
-              
+
+
 /*
  *  JASC jul/2002
  *
@@ -502,36 +502,36 @@ void TScreenWinGr::setCharacters( unsigned  offset
   char * dst;
 
   if ( !len )
-  { return; 
+  { return;
   }
 
-/* 
- * remove unchanged characters from left to right 
+/*
+ * remove unchanged characters from left to right
  */
   if ( !forceRedraw )
-  { while (len > 0 && *old == *src)   
-    { x++; offset++; old++; src++; len--; 
+  { while (len > 0 && *old == *src)
+    { x++; offset++; old++; src++; len--;
     }
 
-/* 
- * remove unchanged characters from right to left 
+/*
+ * remove unchanged characters from right to left
  */
-    while (len > 0 && *old_right == *src_right) 
-    { old_right--; src_right--; len--;     
+    while (len > 0 && *old_right == *src_right)
+    { old_right--; src_right--; len--;
     }
   }
 
   AllocLocalStr(tmp,len); /* write only middle changed characters */
   dst= tmp; add= 0; last= -1;
 
-  memcpy( old                /* Copy to screen buffer */     
+  memcpy( old                /* Copy to screen buffer */
         , src
         , len*2 );
 
   while(len--)              /* Iterate                             */
   { letra= attrChar(*src);  /* JASC, are macros (endian dependent) */
     color= attrColor(*src);
-    
+
     if ( color != last )
     { if (last>=0)
       { writeLine( x
@@ -555,7 +555,7 @@ void TScreenWinGr::setCharacters( unsigned  offset
 }
 
 
- 
+
 /*
  *
  */
@@ -569,14 +569,14 @@ void TScreenWinGr::setCharacter(unsigned offset, uint32 value)
  *
  */
 void TScreenWinGr::SaveScreen()
-{ 
+{
 }
 
 /*
  *
  */
 void TScreenWinGr::RestoreScreen()
-{ 
+{
 }
 
 /*
@@ -704,12 +704,12 @@ int TScreenWinGr::System( const char * command
     { si.dwFlags|= STARTF_USESTDHANDLES; // Use new handles
       si.hStdInput = (HANDLE)_get_osfhandle( in  );
     }
-  
+
     if ( out != -1 )
     { si.dwFlags|= STARTF_USESTDHANDLES; // Use new handles
       si.hStdOutput= (HANDLE)_get_osfhandle( out );
     }
-  
+
     if ( err != -1 )
     { si.dwFlags|= STARTF_USESTDHANDLES; // Use new handles
       si.hStdError = (HANDLE)_get_osfhandle( err );
@@ -756,7 +756,7 @@ TScreen * TV_WinGrDriverCheck()
 
   if ( !TScreen::initialized )
   { delete drv;
-    drv= NULL; 
+    drv= NULL;
   }
 
  TDisplayWinGr::Init();  /* First */

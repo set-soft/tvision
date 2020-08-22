@@ -12,12 +12,12 @@
 #ifdef MSS
  #define __MSS_USED__
  #undef MSS
-#endif 
+#endif
 #include <compatlayer.h>
 #ifdef __MSS_USED__
  #define MSS
  #undef __MSS_USED__
-#endif 
+#endif
 #include <locale.h>
 #include <tv/ttypes.h>
 #define Uses_intl_fprintf
