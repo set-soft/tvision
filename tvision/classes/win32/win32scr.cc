@@ -328,8 +328,8 @@ void TScreenWin32::setCharacters(unsigned dst, ushort *src, unsigned len)
  
    ushort x=dst%screenWidth, y=dst/screenWidth;
  
-   SMALL_RECT to={x,y,x+i-1,y};
-   COORD bsize={i,1};
+   SMALL_RECT to={(SHORT)x,(SHORT)y,(SHORT)(x+i-1),(SHORT)y};
+   COORD bsize={(SHORT)i,1};
    static COORD from={0,0};
    WriteConsoleOutput(hOut,ch,bsize,from,&to);
   }
@@ -457,7 +457,7 @@ int TScreenWin32::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
    }
  // Find the max. size, depends on the font and screen size.
  COORD max=GetLargestConsoleWindowSize(hOut);
- COORD newSize={w,h};
+ COORD newSize={(SHORT)w,(SHORT)h};
  if (newSize.X>max.X) newSize.X=max.X;
  if (newSize.Y>max.Y) newSize.Y=max.Y;
  // The buffer must be large enough to hold both modes (current and new)
@@ -476,7 +476,7 @@ int TScreenWin32::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
     return 0;
    }
  // Resize the window.
- SMALL_RECT r={0,0,newSize.X-1,newSize.Y-1};
+ SMALL_RECT r={0,0,(SHORT)(newSize.X-1),(SHORT)(newSize.Y-1)};
  DBPr3("Resizing window to %d,%d\n",newSize.X,newSize.Y);
  if (!SetConsoleWindowInfo(hOut,TRUE,&r))
    {// Revert buffer size

@@ -339,9 +339,9 @@ void TScreenWinNT::SetCharacters(unsigned offset, ushort *values, unsigned count
      outBufCI[i].Attributes=(WORD)(*values>>8);
     }
   
- COORD dwBufferSize={count,1};
+ COORD dwBufferSize={(SHORT)count,1};
  COORD dwBufferCoord={0, 0};
- SMALL_RECT rcWriteRegion={coord.X, coord.Y, coord.X+count-1, coord.Y};
+ SMALL_RECT rcWriteRegion={coord.X, coord.Y, (SHORT)(coord.X+count-1), coord.Y};
  WriteConsoleOutput(hOut,outBufCI,dwBufferSize,dwBufferCoord,&rcWriteRegion);
 }
 
@@ -475,7 +475,7 @@ int TScreenWinNT::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
    }
  // Find the max. size, depends on the font and screen size.
  COORD max=GetLargestConsoleWindowSize(hCurrentOut);
- COORD newSize={w,h};
+ COORD newSize={(SHORT)w,(SHORT)h};
  if (newSize.X>max.X) newSize.X=max.X;
  if (newSize.Y>max.Y) newSize.Y=max.Y;
  // The buffer must be large enough to hold both modes (current and new)
@@ -487,7 +487,7 @@ int TScreenWinNT::SetCrtModeRes(unsigned w, unsigned h, int fW, int fH)
  // Enlarge the buffer size. It fails if not windowed.
  if (!SetConsoleScreenBufferSize(hCurrentOut,newBufSize)) return 0;
  // Resize the window.
- SMALL_RECT r={0,0,newSize.X-1,newSize.Y-1};
+ SMALL_RECT r={0,0,(SHORT)(newSize.X-1),(SHORT)(newSize.Y-1)};
  if (!SetConsoleWindowInfo(hCurrentOut,TRUE,&r))
    {// Revert buffer size
     newSize.X=info.dwMaximumWindowSize.X;
