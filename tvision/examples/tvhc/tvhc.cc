@@ -288,7 +288,7 @@ void TRefTable::freeItem( void *item )
 TReference *TRefTable::getReference( char *topic )
 {
     TReference *ref;
-    int i;
+    ccIndex i;
 
     if (search(topic, i))
         ref = (TReference *) at(i);

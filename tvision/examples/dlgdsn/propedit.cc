@@ -210,7 +210,7 @@ TDsgLink * TLinkList::scrollFind(char * aScroll) // Look for a ScrollBar
 // Remove the object from and notificates all others in the list
 void TLinkList::removeMe(TDsgObj * aDsgObj)
 {
-   int index;
+   ccIndex index;
 
    void * link = firstThat(&matchDsgObj, aDsgObj);
    if (link)

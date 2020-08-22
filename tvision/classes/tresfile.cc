@@ -124,7 +124,7 @@ short TResourceFile::count()
 
 void TResourceFile::remove( const char *key )
 {
-    int i;
+    ccIndex i;
 
     if (index->search( (char *)key, i))
         {
@@ -155,7 +155,7 @@ void TResourceFile::flush()
 
 void *TResourceFile::get( const char *key)
 {
-    int i;
+    ccIndex i;
     void *p;
 
     if (! index->search((char *)key, i))
@@ -173,7 +173,7 @@ const char *TResourceFile::keyAt(short i)
 
 void TResourceFile::put(TStreamable *item, const char *key)
 {
-    int i;
+    ccIndex i;
     TResourceItem  *p;
 
     if (index->search( (char *)key, i))

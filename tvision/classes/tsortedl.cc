@@ -63,7 +63,7 @@ void TSortedListBox::handleEvent(TEvent& event)
 {
     char curString[256], newString[256];
     void* k;
-    int value, oldPos, oldValue;
+    ccIndex value, oldPos, oldValue;
 
     oldValue = focused;
     TListBox::handleEvent( event );
