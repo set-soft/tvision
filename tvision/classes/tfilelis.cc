@@ -342,7 +342,6 @@ void TFileList::readDirectory( const char *aWildCard )
   else
     {
      slash = wildcard;
-     path = ".";
      char *cwd=getcwd(0,PATH_MAX);
      if (cwd)
        {
@@ -350,7 +349,7 @@ void TFileList::readDirectory( const char *aWildCard )
            removeParent=1;
         free(cwd);
        }
-     strcpy(dirpath,path);
+     strcpy(dirpath,".");
      strcat(dirpath,DIRSEPARATOR_"*");
     }
   //find all directories
