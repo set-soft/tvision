@@ -811,10 +811,11 @@ sub DetectOS
     $supportDir='win32';
     $ExeExt='.exe';
    }
- elsif ($os=~/MINGW/)
+ elsif ($os=~/MINGW/ || $os=~/MSYS_NT/)
    {
     $OS='Win32';
     $OSf='';
+    $OSf='NT' if $os=~/MSYS_NT/;
     $Compf='MinGW';
     $stdcxx='-lstdc++';
     $defaultCXX='g++';
