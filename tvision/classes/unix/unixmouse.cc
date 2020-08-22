@@ -68,6 +68,11 @@ void show_mouse_char()
    last_x=0;
  if (last_y>TScreen::screenHeight)
    last_y=0;
+ // JACS, overflows on some terminals, see above
+ if (last_x<0)
+   last_x=0;
+ if (last_y<0)
+   last_y=0;
  get_mouse_char();
  set_mouse_char();
 }
