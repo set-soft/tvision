@@ -74,10 +74,11 @@ uchar ipstream::readByte()
 
 
 /*
- *  readShort, readInt and readLong:
+ *  readShort, readInt, readLong and readLongLong:
  *  These are platform dependent, reads the size and byte order of the native
  *  platform.
  *  Created by SET to be compatible with original code and V. Bugrov ideas.
+ *  LongLong by JASC
  */
 
 #define DefineReadDep(name,type)\
@@ -92,6 +93,7 @@ type ipstream::read##name()\
 DefineReadDep(Short,ushort);
 DefineReadDep(Int,uint);
 DefineReadDep(Long,ulong);
+DefineReadDep(LongLong,uint64);
 
 /*
  *  read16, read32 and read64:

@@ -48,6 +48,7 @@ public:
     void writeShort(ushort val);
     void writeInt(uint val);
     void writeLong(ulong val);
+    void writeLongLong(uint64 val);
     /* The following are platform independent (stores in little endian) */
     void write8(uint8 val) { writeByte(val); };
     void write16(uint16 val);
@@ -68,6 +69,8 @@ public:
     opstream& operator << ( float          val ) { writeBytes(&val,sizeof(val)); return *this; };
     opstream& operator << ( double         val ) { writeBytes(&val,sizeof(val)); return *this; };
     opstream& operator << ( long double    val ) { writeBytes(&val,sizeof(val)); return *this; };
+    opstream& operator << ( int64          val ) { writeLongLong(val); return *this; };
+    opstream& operator << ( uint64         val ) { writeLongLong(val); return *this; };
 
     friend opstream& operator << ( opstream&, TStreamable& );
     friend opstream& operator << ( opstream&, TStreamable * );

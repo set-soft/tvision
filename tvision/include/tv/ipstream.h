@@ -52,6 +52,7 @@ public:
     ushort readShort();
     uint   readInt();
     ulong  readLong();
+    uint64 readLongLong();
     /* The following are platform independent (stores in little endian) */
     uint8  read8() { return readByte(); };
     uint16 read16();
@@ -71,6 +72,8 @@ public:
     ipstream& operator >> (unsigned long  &l  ) { l=readLong(); return (*this);}
     ipstream& operator >> (float          &f  ) { readBytes( &f, sizeof(f) ); return (*this);}
     ipstream& operator >> (double         &d  ) { readBytes( &d, sizeof(d) ); return (*this);}
+    ipstream& operator >> ( int64         &i  ) { i=readLongLong(); return (*this); }
+    ipstream& operator >> ( uint64        &i  ) { i=readLongLong(); return (*this); }
 
     friend ipstream& operator >> ( ipstream&, TStreamable& );
     friend ipstream& operator >> ( ipstream&, void *& );

@@ -91,10 +91,11 @@ void opstream::writeBytes( const void *data, size_t sz )
 }
 
 /*
- *  writeShort, writeInt and writeLong:
+ *  writeShort, writeInt, writeLong and writeLongLong:
  *  These are platform dependent, writes the size and byte order of the native
  *  platform.
  *  Created by SET to be compatible with original code and V. Bugrov ideas.
+ *  LongLong by JASC
  */
 
 #define DefineWriteDep(name,type)\
@@ -105,6 +106,7 @@ void opstream::write##name(type val)\
 DefineWriteDep(Short,ushort);
 DefineWriteDep(Int,uint);
 DefineWriteDep(Long,ulong);
+DefineWriteDep(LongLong,uint64);
 
 /*
  *  write16, write32 and write64:
