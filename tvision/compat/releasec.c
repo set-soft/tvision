@@ -24,7 +24,17 @@ extern void __tvWin32Yield(int micros);
 
 void CLY_ReleaseCPU()
 {
+ #ifdef TVCompf_MinGW
+ // SET: MinGW users report abnormal behavior whem using -1:
+ // "This fixes several issues under Windows 7 64-bit in the tvedit sample with
+ // file tvedit.cc: the WinGr driver would hang at initialization; the WinNT
+ // and Win32 drivers would scroll the cursor down, but would stop scrolling up
+ // at the first function; copy and paste would cause the displayed source to
+ // jump all around."
+ __tvWin32Yield(100);
+ #else
  __tvWin32Yield(-1);
+ #endif
 }
 #else
 // By Vadim Beloborodov to be used on WIN32 console
