@@ -596,9 +596,10 @@ int TScreenWinGr::SetDisPaletteColors( int from
   number= 0;                 /* Now is a counter */
 
   while( from < to )
-  { colorMap[ from++ ]= RGB( colors[ from ].R
-                           , colors[ from ].G
-                           , colors[ from ].B );
+  { colorMap[ from ]= RGB( colors[ from ].R
+                         , colors[ from ].G
+                         , colors[ from ].B );
+    from ++;
     number ++;
   }
 
