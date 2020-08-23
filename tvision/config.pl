@@ -173,7 +173,7 @@ $MakeDefsRHIDE[3].='../../makes '  unless $conf{'libs-here'} eq 'no';
 $MakeDefsRHIDE[3].=$here.'/makes ' unless $conf{'libs-here'} eq 'no';
 if ($OS eq 'UNIX')
   {
-   $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib';
+   $MakeDefsRHIDE[0]='RHIDE_STDINC=/usr/include /usr/local/include /usr/include/g++ /usr/local/include/g++ /usr/lib/gcc-lib /usr/local/lib/gcc-lib /usr/lib/gcc';
    if (@conf{'HAVE_X11'} eq 'yes')
      {
       $aux=$conf{'X11IncludePath'} ? ' '.$conf{'X11IncludePath'} : ' /usr/X11R6/include';
@@ -193,7 +193,7 @@ if ($OS eq 'UNIX')
   }
 elsif ($OS eq 'DOS')
   {
-   $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib';
+   $MakeDefsRHIDE[0]='RHIDE_STDINC=$(DJDIR)/include $(DJDIR)/lang/cxx $(DJDIR)/lib/gcc-lib $(DJDIR)/lib/gcc';
    # DJGPP's gcc includes djgpp.ver from the same directory where specs
    $a=`redir -eo $GCC -v`;
    if ($a=~/(\w:)(.*)\/specs/i)
