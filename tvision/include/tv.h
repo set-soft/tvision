@@ -19,8 +19,8 @@ Modified by Salvador E. Tropea
 // in programs that are very sensitive, like my editor.
 #define TV_MAJOR_VERSION  2
 #define TV_MIDDLE_VERSION 2
-#define TV_MINOR_VERSION  1
-#define TV_VERSION "2.2.1"
+#define TV_MINOR_VERSION  3
+#define TV_VERSION "2.2.3"
 
 #define Uses_EventCodes
 #define Uses_ViewCommands

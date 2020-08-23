@@ -1,3 +1,12 @@
+rhtvision (2.2.3-1) stable; urgency=medium
+
+  * Compiles with gcc 10.2
+  * Fixes to TInputLine (not showing last char)
+  * Fixes in Linux ISO-8859-1 code page ($ pasted as currency symbol)
+  + Fixes to avoid negative mouse coordinates on Linux terminals
+
+ -- Salvador E. Tropea <salvador@inti.gov.ar>  Sun, 23 Aug 2020 09:35:58 -0300
+
 rhtvision (2.2.2-2) stable; urgency=medium
 
   * Excluded some control characters from the UTF8 conversion
