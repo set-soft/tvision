@@ -1,6 +1,6 @@
 #!/usr/bin/make
 #
-# Copyright (c) 2003-2004 by Salvador E. Tropea.
+# Copyright (c) 2003-2020 by Salvador E. Tropea.
 # Covered by the GPL license.
 #
 ifeq ($(prefix),)
@@ -17,7 +17,7 @@ OS=@OS@
 export
 
 .PHONY: @targets@ @installers@ install-headers install-config clean \
-	intl-dummy examples
+	intl-dummy examples deb deb_clean
 
 all: @targets@ intl-dummy
 
@@ -46,6 +46,13 @@ install-config:
 install: @installers@ install-headers install-intl-dummy install-config
 
 @clean@
+
+deb:
+	fakeroot dpkg-buildpackage -b -uc
+	#fakeroot debian/rules binary
+
+deb_clean:
+	fakeroot debian/rules clean
 
 #
 # For compatibility with automake:
