@@ -1,10 +1,56 @@
 $Log$
+Revision 2.796
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sat Aug 22 21:18:13 2020 -0300
+
+    Fixed some typos in comments.
+
+Revision 2.795
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sat Aug 22 20:22:08 2020 -0300
+
+    Avoided negative mouse coordinates on UNIX terminals
+
+    From JASC repo: https://github.com/altomaltes/tvision
+
+Revision 2.794
+commit 5bb60a5cebff3a3ecb351d7e064084188df1a54f
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sat Aug 22 20:21:04 2020 -0300
+
+    Removed extra spaces at the end of lines.
+
+    From JASC repo: https://github.com/altomaltes/tvision
+    He was the main responsable ;-)
+
+Revision 2.793
+commit ed310507ea43b949dadc065484e7e398c68cc866
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sat Aug 22 20:19:16 2020 -0300
+
+    Added u/int64 i/opstream functionality.
+
+    From JASC repo: https://github.com/altomaltes/tvision
+    He enabled it only for systems with 64 bits pointers, but all the
+    supported targets support u/int64.
+
+Revision 2.792
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sat Aug 22 20:16:43 2020 -0300
+
+    Fixed use of int where ccIndex is the correct one.
+
+    Currently is the same, but if we switch to 64 bits ccIndex this could
+    be a problem.
+    From JASC repo: https://github.com/altomaltes/tvision
+    He switched to 64 bits, but I'm not sure this is a good idea.
+
 Revision 2.791
 Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 21:28:59 2020 -0300
 
     Better support for 64 bits MinGW.
-    
+
     This patch adds detection and defines OSf as NT.
     Is the central part of @guy-rouillier PR: windoze/tvision#4
     On GitHub.
@@ -14,7 +60,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 21:23:54 2020 -0300
 
     Fix pointer to int conversions in compat/regex.c
-    
+
     This code is seldom used so I didn't notice the conversions.
     Pointed out by @guy-rouillier in the following PR:
     windoze/tvision#4
@@ -25,7 +71,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 21:20:57 2020 -0300
 
     Fix data type manipulation in WinGr's TScreenWinGr::System
-    
+
     A couple of unsafe casts fixed there.
     Pointed out by @guy-rouillier in the following PR:
     windoze/tvision#4
@@ -36,7 +82,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 21:19:14 2020 -0300
 
     Explicit code intention in Win32 driver.
-    
+
     The WinGr driver has a loop where the post increment of an index
     could lead to confusion. Now is separated.
     Pointed out by @guy-rouillier in the following PR:
@@ -48,7 +94,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 21:15:24 2020 -0300
 
     Win32 drivers: explicit conversion to short.
-    
+
     The COORD and SMALL_RECT Win32 API structures uses SHORT.
     Truncating an unsigned/int to it generates a warning.
     So we now explicitly cat it to SHORT.
@@ -61,7 +107,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 21:12:06 2020 -0300
 
     Fixed const char * assignment to char * in MinGW code.
-    
+
     Pointed out by @guy-rouillier in the following PR:
     windoze/tvision#4
     On GitHub.
@@ -71,10 +117,10 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 18:32:48 2020 -0300
 
     Added comment about MSVC potential need of internal usleep.
-    
+
     I saw it as part of the GitHub patch:
     windoze/tvision@6ac86c30f2e23a84df0bedd9b6c98ba49a548d26
-    
+
     But I don't know if this is really needed. Is added at a level
     that affects all the MSVC versions and the code compiled for
     all MSVCs from 4 to 8, so I can't see why could be needed for
@@ -85,7 +131,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 18:14:09 2020 -0300
 
     WinGr driver: missing limits include
-    
+
     An adaptation of part of this patch from GitHub:
     windoze/tvision@6ac86c30f2e23a84df0bedd9b6c98ba49a548d26
 
@@ -94,7 +140,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 17:36:53 2020 -0300
 
     Added missing forward declararion of TStreamableClass class.
-    
+
     Not sure when needed, but doesn't break anything.
     From an unrelated patch on GitHub:
     windoze/tvision@63090519575bbecaf5d2a5a326cd67109527e5ad
@@ -104,7 +150,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 17:32:00 2020 -0300
 
     Fix potential issues when including access.h on MinGW
-    
+
     It can't do harm, just include an extra file.
     From an unrelated patch on GitHub:
     windoze/tvision@63090519575bbecaf5d2a5a326cd67109527e5ad
@@ -114,7 +160,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 17:25:45 2020 -0300
 
     Fix WinGr potential problem on 64 bits systems
-    
+
     Fixed data type of 3rd argument of cursorProc.
     Was UINT but must be UINT_PTR.
     From an unrelated patch on GitHub:
@@ -125,7 +171,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 17:03:16 2020 -0300
 
     Removed dangerous condition in TV help compiler.
-    
+
     The code has some ambiguous condition, reported by gcc.
     I first added parenthesis to make it behave just like it does
     without the parenthesis. But the GitHub code I'm analyzing used
@@ -138,7 +184,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 16:34:37 2020 -0300
 
     TSearchRec is strictly a struct not a class.
-    
+
     Some compilers report it as a warning.
     Part of the following GitHub patch:
     windoze/tvision@a35439f3d2f47ef5a134695a68507c56446d763e
@@ -148,7 +194,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 16:31:43 2020 -0300
 
     Fixed detail in calendar demo.
-    
+
     The way the code handled the events wasn't strictly correct.
     But it worked, not sure how.
     This patch uses the proper operators.
@@ -160,7 +206,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 16:01:33 2020 -0300
 
     Fix in getopt.c compatibility replacement.
-    
+
     Seems some targets needs string.h
     Patch from GitHub:
     windoze/tvision@081e2f8c69d778cb3af4041a817704181efb58e2
@@ -170,11 +216,11 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 15:52:48 2020 -0300
 
     Fix problems in progress bar example.
-    
+
     For modern compilers needing std::cout.
     Based on a GitHub patch:
     windoze/tvision@11b4dfbe6fc07f2ee6e90031c0e2c70c290de5b2
-    
+
     But applied without breaking compatibility.
 
 Revision 2.775
@@ -182,7 +228,7 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 15:40:15 2020 -0300
 
     Fixed some ponter to integer conversion issues in dlgdsn
-    
+
     ** This example is broken, before and after this patch
     This is a patch from GitHub:
     windoze/tvision@0d5bb6529b675f54b4342f30376fb975e60411dd
@@ -193,11 +239,11 @@ Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 12:57:58 2020 -0300
 
     Partial suppor for CLang under MaxOSX
-    
+
     This is a patch from GitHub:
     windoze/tvision@c4b52d9459188b75cf114c83a9c74ec25bffa6d7
     windoze/tvision@7e5a29ec9e96ad3a9df79dd4e60bb1a72c11922d
-    
+
     I added it with a few changes.
 
 Revision 2.773  2020/08/20 23:18:30  set
