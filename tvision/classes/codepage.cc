@@ -10,7 +10,7 @@
 character to all the supported terminals.@p
   It was originally designed for SETEdit and moved to Turbo Vision in 2002.@p
   The internal encoding system maps the first 256 to CP 437.@p
-  Important: The Turbo Vision never had such a thing and this is completly
+  Important: The Turbo Vision never had such a thing and this is completely
 new code that affects a lot of TV components.@p
   The mechanism used is similar to what Linux kernel uses, why? simple:@*
 1) That's the most complex mechanism I found in all the targets so far.@*

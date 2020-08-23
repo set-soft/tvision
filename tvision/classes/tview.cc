@@ -1287,7 +1287,7 @@ void WriteView(int xStart, int line, int xEnd, const void *buffer,
            continue;
           }
        }
-     // The mouse is in the draw area or an event has occoured during
+     // The mouse is in the draw area or an event has occurred during
      // the above drawing
      HideMouse();
      blitBuffer(view,line,xStart,xEnd,offset,((const ushort *)buffer),inShadow);

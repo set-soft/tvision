@@ -106,7 +106,7 @@ public:
 
     // This is a very nasty function only needed if you call
     // TScreen::resume bypassing TProgram::resume. In this case
-    // the buffers could get unsychronized. This is done by
+    // the buffers could get unsynchronized. This is done by
     // RHIDE.
     void syncScreenBuffer();
     //   { buffer = TScreen::screenBuffer; }

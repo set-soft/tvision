@@ -106,7 +106,7 @@ typedef  int32  ipointer;
 #define CLY_PointerToUI64(a) ((uint64)(uipointer)(a))
 
 #if defined(CLY_DefineUTypes) || defined(__cplusplus)
-/* The following are just aliases and the size is platform dependant */
+/* The following are just aliases and the size is platform dependent */
 typedef unsigned char  uchar;
 typedef unsigned short ushort;
 typedef unsigned int   uint;

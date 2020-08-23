@@ -13,7 +13,7 @@ driver. The word "Skeleton" should be replaced by the target i.e. the OS.
 class TDisplaySkeleton : virtual public TDisplay
 {
 protected:
- // Usually TDisplay contructor does nothing. All the magic is in TScreen
+ // Usually TDisplay constructor does nothing. All the magic is in TScreen
  // constructor, a class derived from it.
  TDisplaySkeleton() {};
  // We will use casts to base classes, destructors must be pointers.
@@ -65,7 +65,7 @@ public:
  TScreenSkeleton();
  // We will use casts to base classes, destructors must be pointers
  // Here you can put the code needed to restore the state of the machine
- // before initialization. Be very careful we the order and avoid doble
+ // before initialization. Be very careful we the order and avoid double
  // deinitializations.
  virtual ~TScreenSkeleton();
 
@@ -89,7 +89,7 @@ protected:
  // Clear the contents of the whole screen. Here just to be compatible with
  // original TV.
  static void   clearScreen();
- // See TDisplaySkeleton::SetCrtMode, this is the function expossed to the
+ // See TDisplaySkeleton::SetCrtMode, this is the function exposed to the
  // application.
  static void   setVideoMode(ushort mode);
  // See TDisplaySkeleton::SetCrtModeExt, this is the function expossed to the

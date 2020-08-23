@@ -1,5 +1,5 @@
 /* Copyright (C) 2001-2003 by Salvador E. Tropea (SET),
-   see copyrigh file for details */
+   see copyright file for details */
 /**[txh]********************************************************************
 
   Description:
