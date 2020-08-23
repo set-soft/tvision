@@ -1,4 +1,111 @@
 $Log$
+Revision 2.810
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 17:12:28 2020 -0300
+
+    Added the binaries of RHIDE 1.5 that I used to generate today.
+
+Revision 2.809
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 17:02:36 2020 -0300
+
+    Added RHIDE desktop files to the list of ignored files.
+
+Revision 2.808
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 17:00:40 2020 -0300
+
+    Updated the RHIDE projects.
+
+    First time in 15 years.
+
+Revision 2.807
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 16:56:58 2020 -0300
+
+    Various changes in the dependency extractor.
+
+    - Avoid cons char * to char * conversions.
+    - Support longer lines.
+    - Add classes/alcon as a source directory.
+    - Better support for absolute paths created by RHIDE 1.5.
+
+Revision 2.806
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 16:50:29 2020 -0300
+
+    Enabled the maintainer mode of configset.
+
+    I compiled the library using RHIDE, last time was 15 years ago.
+
+Revision 2.805
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 16:47:02 2020 -0300
+
+    Added /usr/lib/gcc as a directory that can contain gcc headers.
+
+    We keep a list of system directories with includes.
+    They can't be a direct dependency for the code.
+
+Revision 2.804
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 12:27:02 2020 -0300
+
+    Enabled the --with-ssc option of the configset script.
+
+    Now all the library and examples compiles using it.
+    It makes the compilation faster, even when this isn't that important
+    for modern systems. My Ryzen 3 CPU compiles the whole code in 10 s.
+    When using SSC it goes down to 3.6 s.
+
+Revision 2.803
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 12:25:01 2020 -0300
+
+    Fixed debug printf I left in codepage.cc
+
+Revision 2.802
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 12:17:21 2020 -0300
+
+    Adapted the tvhc example to be usable even when using SSC.
+
+Revision 2.801
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 09:52:05 2020 -0300
+
+    Bumped version to 2.2.3 (Debian 2.2.3-1)
+
+Revision 2.800
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 09:48:33 2020 -0300
+
+    Removed debian/.cvsignore file from Linux source tarball.
+
+Revision 2.799
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 09:09:08 2020 -0300
+
+    Fixed 0xA4 code of Linux ISO-8859-1 font.
+
+    Was mapped to $ instead of currency sign.
+    This generated a problem when pasting UTF-8 text: $ was converted to
+    currency sign.
+
+Revision 2.798
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 08:15:32 2020 -0300
+
+    Fixed typo in TStringCollection comments.
+
+Revision 2.797
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 08:04:35 2020 -0300
+
+    Fixed the TInputLine not drawing the last character.
+
+    Introduced by the Unicode branch.
+
 Revision 2.796
 Author: Salvador E. Tropea <salvador@inti.gob.ar>
 Date:   Sat Aug 22 21:18:13 2020 -0300
@@ -227,7 +334,7 @@ Revision 2.775
 Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 15:40:15 2020 -0300
 
-    Fixed some ponter to integer conversion issues in dlgdsn
+    Fixed some pointer to integer conversion issues in dlgdsn
 
     ** This example is broken, before and after this patch
     This is a patch from GitHub:
@@ -238,7 +345,7 @@ Revision 2.774
 Author: SET <salvador@inti.gob.ar>
 Date:   Fri Aug 21 12:57:58 2020 -0300
 
-    Partial suppor for CLang under MaxOSX
+    Partial suppor for CLang under MacOSX
 
     This is a patch from GitHub:
     windoze/tvision@c4b52d9459188b75cf114c83a9c74ec25bffa6d7
