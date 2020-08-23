@@ -19,7 +19,7 @@ project.
 
 #define ONE_DEP_BY_LINE 1
 
-const int maxLine=1024;
+const int maxLine=65536;
 unsigned maxCol=78;
 
 struct node;
@@ -30,8 +30,8 @@ static int   IncludeCounter=0;
 struct stMak
 {
  node *base, *last;
- char *objDir;
- char *mainTarget;
+ const char *objDir;
+ const char *mainTarget;
  char *baseDir;
 };
 
@@ -46,8 +46,8 @@ struct node
 
 struct stIncDir
 {
- char *var;
- char *dir;
+ const char *var;
+ const char *dir;
  int   ldir;
 };
 
@@ -59,9 +59,10 @@ stIncDir incDirs[]=
 {0,0}
 };
 
-char *srcDirs[]=
+const char *srcDirs[]=
 {
  "../classes",
+ "../classes/alcon",
  "../classes/dos",
  "../classes/linux",
  "../classes/qnx4",
@@ -97,7 +98,7 @@ void AddFileName(const char *name, stMak &mk)
 static
 int PrConvertExt(FILE *d, const char *file)
 {
- char *s=strrchr(file,'.');
+ const char *s=strrchr(file,'.');
  if (!s)
     return fprintf(d,"%s",file);
  int l=s-file;
@@ -214,6 +215,9 @@ void ExtractDeps(FILE *f, node *p)
         sscanf(buffer,"DEPS_%d=%s ",&depNum,bName)==2 &&
         depNum)
       {
+       int lenName=strlen(bName);
+       if (lenName && bName[lenName-1]=='\\')
+          bName[lenName-1]=0;
        if (strcmp(bName,p->name))
          {
           fprintf(stderr,"Error: unsorted deps? (%d,%s looking for %s)\n",depNum,bName,
@@ -237,7 +241,9 @@ void ExtractDeps(FILE *f, node *p)
     while (fName)
       {
        if (*fName)
+         {
           AddDependency(fName,p);
+         }
        fName=strtok(NULL," \t\\\n");
       }
     fgets(buffer,maxLine,f);
@@ -329,6 +335,26 @@ int IsAbsolute(const char *s)
  #endif
 }
 
+/* By liw. */
+static
+const char *last_strstr(const char *haystack, const char *needle)
+{
+ if (*needle == '\0')
+    return haystack;
+
+ const char *result=NULL;
+ for (;;)
+    {
+     const char *p=strstr(haystack, needle);
+     if (p == NULL)
+        break;
+     result=p;
+     haystack=p+1;
+    }
+
+ return result;
+}
+
 static
 void GenerateDepFor(node *p, FILE *d, stMak &mk)
 {
@@ -377,30 +403,47 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
     int foundOnVPath=0;
     if (stat(toStat,&st))
       {
-       //fprintf(stderr,"Buscando %s\n",toStat);
-       // RHIDE 1.5 CVS filters the VPATH part, now I added it to common.imk.
-       int i;
        char buf[PATH_MAX];
-       for (i=0; !foundOnVPath && incDirs[i].var; i++)
-          {
-           strcpy(buf,incDirs[i].dir);
-           strcat(buf,"/");
-           strcat(buf,toStat);
-           if (stat(buf,&st)==0)
-              foundOnVPath=1;
-          }
-       for (i=0; !foundOnVPath && srcDirs[i]; i++)
-          {
-           strcpy(buf,srcDirs[i]);
-           strcat(buf,"/");
-           strcat(buf,toStat);
-           if (stat(buf,&st)==0)
-              foundOnVPath=1;
-          }
-       if (!foundOnVPath)
+       //fprintf(stderr,"Buscando %s\n",toStat);
+       // 2020 try to make it relative
+       const char *last=last_strstr(s,"tvision");
+       if (last)
          {
-          fprintf(stderr,"Can't stat %s dependency\n",toStat);
-          exit(12);
+          char *test=strcpy(buf,last+5);
+          buf[0]=buf[1]='.';
+          if (stat(buf,&st)==0)
+            {
+             //foundOnVPath=1;
+             s=strdup(buf);
+             free(c->name);
+             c->name=s;
+            }
+         }
+       else
+         {
+          // RHIDE 1.5 CVS filters the VPATH part, now I added it to common.imk.
+          int i;
+          for (i=0; !foundOnVPath && incDirs[i].var; i++)
+             {
+              strcpy(buf,incDirs[i].dir);
+              strcat(buf,"/");
+              strcat(buf,toStat);
+              if (stat(buf,&st)==0)
+                 foundOnVPath=1;
+             }
+          for (i=0; !foundOnVPath && srcDirs[i]; i++)
+             {
+              strcpy(buf,srcDirs[i]);
+              strcat(buf,"/");
+              strcat(buf,toStat);
+              if (stat(buf,&st)==0)
+                 foundOnVPath=1;
+             }
+          if (!foundOnVPath)
+            {
+             fprintf(stderr,"Can't stat %s dependency\n",toStat);
+             exit(12);
+            }
          }
       }
     free(toStat);
@@ -437,8 +480,31 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
                }
              if (s==c->name)
                {
-                fprintf(stderr,"Unknown include dir: %s\n",c->name);
-                exit(4);
+                // 2020: I no longer have the old disk structure, if this is an absolute path try to
+                // make it relative to projectBase
+                const char *last=last_strstr(s,"tvision");
+                if (last)
+                  {
+                   last+=8;
+                   char *toTest=(char *)malloc(strlen(last)+3+1);
+                   sprintf(toTest,"../%s",last);
+                   for (i=0; incDirs[i].var; i++)
+                      {
+                       if (strncmp(toTest,incDirs[i].dir,incDirs[i].ldir)==0)
+                         {
+                          s=(char *)malloc(3+strlen(incDirs[i].var)+1+strlen(toTest+incDirs[i].ldir));
+                          sprintf(s,"$(%s)%s",incDirs[i].var,toTest+incDirs[i].ldir);
+                          //fprintf(stderr,"%s Da: %s\n",c->name,s);
+                          break;
+                         }
+                       }
+                   free(toTest);
+                  }
+                if (s==c->name)
+                  {
+                   fprintf(stderr,"Unknown include dir: %s\n",c->name);
+                   exit(4);
+                  }
                }
             }
          }
@@ -468,7 +534,7 @@ void GenerateDepFor(node *p, FILE *d, stMak &mk)
 }
 
 static
-int ExtractVar(FILE *f, const char *var, char *&dest, char ret)
+int ExtractVar(FILE *f, const char *var, const char *&dest, char ret)
 {
  char buffer[maxLine];
  int l=strlen(var);
@@ -586,7 +652,7 @@ void GenerateTarget(FILE *d, stMak &mk)
  fputs(":: ",d);
  l=ListTargetItems(d,l,mk);
  l=AddFixedDeps(d,l);
- char *ext=strrchr(mk.mainTarget,'.');
+ const char *ext=strrchr(mk.mainTarget,'.');
  if (ext) ext++; else ext="exe";
  fputc('\n',d);
  if (strcmp(ext,"exe")==0)
@@ -730,7 +796,7 @@ void GenerateLibs(FILE *f, stMak &mk)
 static
 void ExtractBaseDir(const char *mak, stMak &mk)
 {
- char *s=strrchr(mak,'/');
+ const char *s=strrchr(mak,'/');
  if (s)
    {
     int l=s-mak+1;
@@ -820,7 +886,7 @@ void ProcessMakefile(const char *mak, stMak &mk, int level)
  // Write the variables now
  if (mk.mainTarget && *mk.mainTarget)
    {
-    char *ext=strrchr(mk.mainTarget,'.');
+    const char *ext=strrchr(mk.mainTarget,'.');
     if (!ext) ext=".exe";
     if (strcmp(ext,".a")==0 || strcmp(ext,".exe")==0)
       {
@@ -839,7 +905,7 @@ void ProcessMakefile(const char *mak, stMak &mk, int level)
  char buffer[maxLine];
  while (!feof(fT))
    {
-    if (fgets(buffer,maxLine,fT))
+    if (fgets(buffer, maxLine,fT))
        fputs(buffer,stdout);
    }
  fclose(fT);
