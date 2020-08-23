@@ -139,10 +139,10 @@ void TInputLineBaseT<T,D>::draw()
    {
     int rest=dataLen-firstPos;
     if (rest>0)
-       b.moveChar(1,'*',color,min(size.x-2,rest));
+       b.moveChar(1,'*',color,min(size.x-1,rest));
    }
  else
-    b.moveStr(1,((T *)data)+firstPos,color,size.x-2);
+    b.moveStr(1,((T *)data)+firstPos,color,size.x-1);
  
  if (canScroll(1))
     b.moveChar(size.x-1,sizeof(T)==1 ? rightArrow : 0x25b6,(uchar)getColor(4),1);
