@@ -1,4 +1,16 @@
 $Log$
+Revision 2.812
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 18:35:57 2020 -0300
+
+    Added deb and deb_clean as main Makefile targets.
+
+Revision 2.811
+Author: Salvador E. Tropea <salvador@inti.gob.ar>
+Date:   Sun Aug 23 18:35:41 2020 -0300
+
+    Made debian/rules executable.
+
 Revision 2.810
 Author: Salvador E. Tropea <salvador@inti.gob.ar>
 Date:   Sun Aug 23 17:12:28 2020 -0300
