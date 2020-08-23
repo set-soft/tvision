@@ -1564,7 +1564,6 @@ Also creates tables to convert code page <-> Unicode.
 
 void TVCodePage::FillTables(int id)
 {
- printf("TVCodePage::FillTables(%d)\n", id);
  CodePage *p=CodePageOfID(id);
  int i;
  // Initialize toUpperTable, toLowerTable and AlphaTable:
