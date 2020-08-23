@@ -16,10 +16,13 @@ const int bufferSize = 4096;
 
 typedef enum State { undefined, wrapping, notWrapping } _State;
 
-class TProtectedStream : public CLY_std(fstream)
+class TProtectedStream : public fpstream
 {
 public:
     TProtectedStream( char *aFileName, CLY_OpenModeT aMode );
+
+    TProtectedStream &operator << ( const char *val ) { writeBytes( val, strlen(val) ); return *this; };
+    TProtectedStream &getline(char *s, unsigned size, char delim);
 
 private:
     char  fileName[MAXSIZE];

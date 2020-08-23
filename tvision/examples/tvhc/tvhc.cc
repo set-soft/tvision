@@ -8,6 +8,13 @@
 /* Modified: 1) Headers mechanism and sign mismatch comparissons.        */
 /*           2) Adapted to use compatlayer (new ISO C++ 1998 and gcc 3.x)*/
 /*           by Salvador E. Tropea (SET) 2002-2003                       */
+/*           3) Forced this class to avoid using fstream and only use    */
+/*           fpstream (the Turbo Vision file stream class). This is a    */
+/*           ridiculous requirement I imposed to make this program work  */
+/*           even when using SSC (the simplified std:: streams).         */
+/*           This is not natural and you shouldn't take it as an example */
+/*           is just me keeping the compilation time 3 times faster and  */
+/*           also the size of the static linked binaries.                */
 /*                                                                       */
 /*-----------------------------------------------------------------------*/
 
@@ -88,7 +95,7 @@
 #define Uses_ctype
 #define Uses_limits
 #define Uses_stdlib
-#define Uses_fstream
+#define Uses_iostream
 #define Uses_fpstream
 #define Uses_StrStream
 #define Uses_TSortedCollection
@@ -102,11 +109,40 @@ UsingNamespaceStd
 //======================= File Management ===============================//
 
 TProtectedStream::TProtectedStream( char *aFileName, CLY_OpenModeT aMode ) :
-    fstream( aFileName, aMode )
+    fpstream( aFileName, aMode )
 {
     strcpy(fileName, aFileName);
     mode = aMode;
 }
+
+
+TProtectedStream &TProtectedStream::getline(char *s, unsigned size, char delim)
+{
+    unsigned bread = 0;
+    uchar eos = delim;
+    while (!eof() && bread < size)
+    {
+       uchar b = readByte();
+       if (!eof())
+       {
+          if (b == eos)
+          {
+             s[bread] = 0;
+             return *this;
+          }
+          s[bread++] = b;
+       }
+    }
+    if (size)
+    {
+       if (bread >= size)
+          bread--;
+       s[bread] = 0;
+    }
+    setstate(CLY_IOSFailBit);
+    return *this;
+}
+
 
 void error(const char *text);
 
@@ -173,7 +209,7 @@ Boolean fExists(char *fileName)
 //  Returns the next line out of the stream.                             //
 //-----------------------------------------------------------------------//
 
-char *getLine( fstream& s)
+char *getLine( TProtectedStream& s)
 {
     if (s.eof())
         {
@@ -696,7 +732,7 @@ Boolean isEndParagraph( State state )
 // references and updates the xRefs variable.                            //
 //-----------------------------------------------------------------------//
 
-TParagraph *readParagraph( fstream& textFile, int& offset, TCrossRefNode *&xRefs )
+TParagraph *readParagraph( TProtectedStream& textFile, int& offset, TCrossRefNode *&xRefs )
 {
     State state;
     Boolean flag;
@@ -756,7 +792,7 @@ void handleCrossRefs( opstream& s, int xRefValue )
         recordReference((p->topic), s);
 }
 
-void skipBlankLines( fstream& s )
+void skipBlankLines( TProtectedStream& s )
 {
     char line[256];
 
@@ -804,7 +840,7 @@ void recordTopicDefinitions( TTopicDefinition *p, THelpFile& helpFile )
 // Read a topic from the source file and write it to the help file      //
 //----------------------------------------------------------------------//
 
-void readTopic( fstream& textFile, THelpFile& helpFile )
+void readTopic( TProtectedStream& textFile, THelpFile& helpFile )
 {
     TParagraph *p;
     THelpTopic *topic;
