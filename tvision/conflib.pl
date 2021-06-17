@@ -1386,21 +1386,27 @@ sub LookForGNUMake
 
 sub LookForGNUar
 {
- my $test;
- print 'Looking for GNU ar: ';
+ my ($ar, $test);
 
- if ($conf{'GNU_AR'})
+ print 'Looking for GNU ar: ';
+ $ar=$conf{'GNU_AR'};
+ if ($ar)
    {
-    print "$conf{'GNU_AR'} (cached)\n";
-    return $conf{'GNU_AR'};
+    print "$ar (cached)\n";
+    return $ar;
+   }
+ $ar=$ENV{'AR'};
+ if (!length($ar))
+   {
+    $ar='ar';
    }
  $conf{'UseRanLib'}=0;
- $test=RunRedirect('ar --version',$ErrorLog);
+ $test=RunRedirect($ar.' --version',$ErrorLog);
  if (($test=~/GNU ar/) || ($test=~/BSD ar/))
    {
-    $conf{'GNU_AR'}='ar';
-    print "ar\n";
-    return 'ar';
+    $conf{'GNU_AR'}=$ar;
+    print "$ar\n";
+    return $ar;
    }
  $test=RunRedirect('gar --version',$ErrorLog);
  if ($test=~/GNU ar/)
