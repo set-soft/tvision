@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2004 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2021 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # Common configuration routines.

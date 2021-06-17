@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 1999-2012 by Salvador E. Tropea (SET),
+# Copyright (C) 1999-2021 by Salvador E. Tropea (SET),
 # see copyrigh file for details
 #
 # To specify the compilation flags define the CFLAGS environment variable.
