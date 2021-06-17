@@ -73,7 +73,14 @@ if ($OS eq 'DOS')
 
 if ($OS eq 'UNIX')
   {
-   LookForGPM($GPMVersionNeeded);
+   if ($conf{'gpm'} eq 'no')
+     {
+      $conf{'HAVE_GPM'}='no';
+     }
+   else
+     {
+      LookForGPM($GPMVersionNeeded);
+     }
    LookForNCurses($NCursesVersionNeeded);
    LookForKeysyms();
    LookForXlib();
@@ -424,6 +431,10 @@ sub SeeCommandLine
       {
        $conf{'no-dynamic'}='yes';
       }
+    elsif ($i eq '--without-gpm')
+      {
+       $conf{'gpm'}='no';
+      }
 #    elsif ($i eq '--unsafe-memcpy')
 #      {
 #       $conf{'HAVE_UNSAFE_MEMCPY'}='yes';
@@ -482,6 +493,7 @@ sub ShowHelp
  print "--no-intl        : don't use international support.\n";
  print "--without-static : don't create the static library.\n";
  print "--without-dynamic: don't create the dynamic library.\n";
+ print "--without-gpm    : skip gpm library detection.\n";
  print "--with-mss       : compiles with MSS memory debugger.\n";
  print "--without-mss    : compiles without MSS [default].\n";
  print "--with-ssc       : compiles using Simple Streams Compatibility.\n";
@@ -532,7 +544,7 @@ sub GiveAdvice
     print "  using this library reconfigure using --no-intl. Read about it in the readme.\n";
     print "  [[[[[[[*******************>>>>> IMPORTANT!!! <<<<<*******************]]]]]]]\n";
    }
- if ((@conf{'HAVE_GPM'} eq 'no') && ($OSf eq 'Linux'))
+ if ((@conf{'HAVE_GPM'} eq 'no') && ($OSf eq 'Linux') && ($conf{'gpm'} ne 'no'))
    {
     print "\n";
     print "* No mouse support for console! please install the libgpm package needed\n";
