@@ -14,6 +14,7 @@ different.
 ***************************************************************************/
 
 #define Uses_stdlib
+#define Uses_string
 #define Uses_TApplication
 #define Uses_TKeys
 #define Uses_TRect
