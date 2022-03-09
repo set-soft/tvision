@@ -33,7 +33,11 @@ const int maxReplaceStrLen = 80;
 #include <tv/intl.h>
 
 #ifndef pid_t
-# define pid_t int
+   #ifdef HAVE_64BITS_POINTERS
+      #define pid_t __int64
+   #else
+      #define pid_t int
+   #endif
 #endif
 
 #endif // CONFIG_H_INCLUDED

@@ -37,7 +37,7 @@ General Public License for more details.  */
 #define GETLINE_NO_LIMIT -1
 
 #if defined(TVCompf_MinGW)
- #if defined(_SSIZE_T_) && !defined(_NO_OLDNAMES)
+ #if (defined(_SSIZE_T_) || defined(_SSIZE_T_DEFINED)) && !defined(_NO_OLDNAMES)
   #define MinGW_SSIZE_T 0
  #else
   #define MinGW_SSIZE_T 1
