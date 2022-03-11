@@ -41,6 +41,8 @@ const int maxReplaceStrLen = 80;
           #define pid_t int64_t
         #endif
       #endif
+   #else
+     #define pid_t int
    #endif
 #endif
 
