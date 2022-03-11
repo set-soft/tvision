@@ -34,9 +34,13 @@ const int maxReplaceStrLen = 80;
 
 #ifndef pid_t
    #ifdef HAVE_64BITS_POINTERS
-      #define pid_t __int64
-   #else
-      #define pid_t int
+      #ifdef TVOS_Win32
+        #define pid_t __int64
+      #else
+        #ifdef TVOSf_Linux
+          #define pid_t int64_t
+        #endif
+      #endif
    #endif
 #endif
 
