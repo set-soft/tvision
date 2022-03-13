@@ -1,7 +1,7 @@
 /*
 
   This file isn't based in original TV file anymore.
-  It was originally based on it and modified by Robert H”hne to be used for
+  It was originally based on it and modified by Robert HÂ”hne to be used for
 RHIDE. But currently it was rethinked from the start by Salvador E. Tropea.
   Copyright (c) 2000-2003 by Salvador E. Tropea. Covered by the GPL license.
   Most of the OS dependent code was moved to the "Compat LaYer" library.
@@ -33,17 +33,7 @@ const int maxReplaceStrLen = 80;
 #include <tv/intl.h>
 
 #ifndef pid_t
-   #ifdef HAVE_64BITS_POINTERS
-      #ifdef TVOS_Win32
-        #define pid_t __int64
-      #else
-        #ifdef TVOSf_Linux
-          #define pid_t int64_t
-        #endif
-      #endif
-   #else
-     #define pid_t int
-   #endif
+  #define pid_t unsigned int
 #endif
 
 #endif // CONFIG_H_INCLUDED

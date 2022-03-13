@@ -1,6 +1,6 @@
 /**[txh]********************************************************************
 
-  Copyright (c) 2002 by Jose Angel Sánchez Caso (JASC)
+  Copyright (c) 2002 by Jose Angel SÃ¡nchez Caso (JASC)
 
     -> altomaltes@yahoo.es
     -> altomaltes@gmail.com
@@ -369,7 +369,7 @@ TScreenWinGr::TScreenWinGr()
  */
 
   cursorProc( hwnd     // handle of window for timer messages
-            , 0        // Don´t draw cursor
+            , 0        // DonÂ´t draw cursor
             , 0        // timer identifier
             , 0 );     // current system time
 
@@ -734,7 +734,12 @@ int TScreenWinGr::System( const char * command
   }
 
   if ( pidChild )                      // Leave in the background
-  { return( *pidChild= (pid_t)pi.hProcess );  // Give process identifier
+  { 
+	#if defined(TVCompf_MinGW) && defined(HAVE_64BITS_POINTERS)
+		return( *pidChild= (uint64_t)pi.hProcess );  // Give process identifier
+	#else
+		return( *pidChild= (pid_t)pi.hProcess );  // Give process identifier
+	#endif
   }
   else
   { WaitForSingleObject                // DO NOT leave in the background
