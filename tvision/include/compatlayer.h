@@ -563,9 +563,10 @@ typedef unsigned long  ulong;
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
   #endif
-  #ifndef usleep
-   #define usleep(microseconds) CLY_YieldProcessor(microseconds)
-  #endif
+ // In mingw_w64, usleep is a function in unistd.h, not a define
+	#if !defined(usleep) && defined(__NO_ISOCEXT)
+		#define usleep(microseconds) CLY_YieldProcessor(microseconds)
+	#endif
   #ifndef __MINGW32_MAJOR_VERSION
    // MinGW people is really ignorant about gcc.
    // This definition should be done by gcc itself.
@@ -2108,7 +2109,9 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  /* Platforms where sys/types.h doesn't define ssize_t: */
  #if defined(Uses_CLY_ssize_t) && !defined(CLY_ssize_t)
   #define CLY_ssize_t 1
-  typedef long ssize_t;
+	#ifndef _SSIZE_T_DEFINED
+		typedef long ssize_t;
+	#endif
  #endif
 #endif
 

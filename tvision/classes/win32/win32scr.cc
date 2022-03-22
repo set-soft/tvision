@@ -128,8 +128,8 @@ int TScreenWin32::InitConsole()
 
  // Enable mouse input
  GetConsoleMode(hIn,&oldConsoleMode);
- newConsoleMode=oldConsoleMode | ENABLE_MOUSE_INPUT|ENABLE_WINDOW_INPUT;
- newConsoleMode&=~(ENABLE_LINE_INPUT|ENABLE_ECHO_INPUT|ENABLE_PROCESSED_INPUT);
+ newConsoleMode=oldConsoleMode | ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT | ENABLE_EXTENDED_FLAGS;
+ newConsoleMode&=~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT | ENABLE_QUICK_EDIT_MODE);
  SetConsoleMode(hIn,newConsoleMode);
  SetConsoleCtrlHandler(ConsoleEventHandler,TRUE);
 
