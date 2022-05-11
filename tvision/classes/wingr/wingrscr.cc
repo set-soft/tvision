@@ -735,20 +735,14 @@ int TScreenWinGr::System( const char * command
 
   if ( pidChild )                      // Leave in the background
   {
-	#if defined(TVCompf_MinGW) && defined(HAVE_64BITS_POINTERS)
-		return( *pidChild= (uint64_t)pi.hProcess );  // Give process identifier
-	#else
-		return( *pidChild= (pid_t)pi.hProcess );  // Give process identifier
-	#endif
-	}
+    return( *pidChild= (pid_t)pi.dwProcessId );  // Give process identifier
+  }
   else
   { WaitForSingleObject                // DO NOT leave in the background
     ( pi.hProcess
     , INFINITE );
     return( 0 );                       // Return task done
   }
-
-
 }
 
 /*                                                                        #####

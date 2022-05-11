@@ -37,6 +37,7 @@ Modified by Salvador E. Tropea:
  #define Uses_dir // getdisk()
 #endif
 #include <tv.h>
+#include "compatlayer.h"
 
 TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aVScrollBar,
                           TScrollBar *aHScrollBar ) :
@@ -50,7 +51,7 @@ TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aVScrollBar,
 }
 
 TDirListBox::~TDirListBox()
-{ 
+{
     CLY_destroy( list() );
 }
 
@@ -75,7 +76,7 @@ void TDirListBox::getText( char *text, ccIndex item, short maxChars )
   Description:
   This is a new member added to update the cursor position. Originaly this
 class had no cursor. Now is used to show the incremental search state.
-  
+
 ***************************************************************************/
 
 void TDirListBox::updateCursorPos()
@@ -133,7 +134,7 @@ void TDirListBox::handleEvent( TEvent& event )
                          incremental, incPos ) == 0 )
                         {
                         newFocus = i;
-                        break;                        
+                        break;
                         }
                      }
               // From beginning
@@ -202,7 +203,7 @@ void TDirListBox::showDrives( TDirCollection *dirs )
 {
     Boolean isFirst = True;
     char oldc[5];
-    strcpy( oldc, "0:"DIRSEPARATOR_ );
+    strcpy( oldc, "0:" DIRSEPARATOR_ );
     // SET: We actually assume firstDir, middleDir and lastDir have the same
     // len. Otherwise the list becomes unreadable.
     // Doing this I replaced strcpy by memcpy and avoided continues strlen
