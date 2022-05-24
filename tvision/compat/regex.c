@@ -82,6 +82,9 @@ char *realloc ();
 #include <malloc.h>
 #endif
 
+// Defines ipointer
+#include "compatlayer.h"
+
 static void init_syntax_once ();
 
 /* Define the syntax stuff for \<, \>, etc.  */

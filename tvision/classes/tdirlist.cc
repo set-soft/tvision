@@ -37,6 +37,8 @@ Modified by Salvador E. Tropea:
  #define Uses_dir // getdisk()
 #endif
 #include <tv.h>
+// MinGW needs this:
+#include "compatlayer.h"
 
 TDirListBox::TDirListBox( const TRect& bounds, TScrollBar *aVScrollBar,
                           TScrollBar *aHScrollBar ) :

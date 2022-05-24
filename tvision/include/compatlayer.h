@@ -470,6 +470,16 @@ typedef unsigned long  ulong;
  #define False false
 
  #ifdef TVCompf_MinGW
+  #ifndef __MINGW32_MAJOR_VERSION
+   // MinGW people is really ignorant about gcc.
+   // This definition should be done by gcc itself.
+   #include <_mingw.h>
+  #endif
+  #ifndef Included_sys_types
+    #define Included_sys_types 1
+    #include <sys/types.h>
+  #endif
+
   // MinGW uses MSVC runtime. Read more about the MSVC bug in the MSVC
   // section.
   #undef CLY_Have_snprintf
@@ -558,18 +568,19 @@ typedef unsigned long  ulong;
    #define Uses_CLY_nl_langinfo 1
   #endif
   #undef  Uses_CLY_ssize_t
-  #define Uses_CLY_ssize_t 1
+  #undef  Force_CLY_ssize_t
+  #ifndef _SSIZE_T_DEFINED
+   #define Uses_CLY_ssize_t 1
+   // We already forced sys/types.h inclusion, Uses_CLY_ssize_t isn't enough
+   #define Force_CLY_ssize_t 1
+  #endif
   #ifdef Uses_getline
    #undef  Uses_CLY_getline
    #define Uses_CLY_getline 1
   #endif
-  #ifndef usleep
+  // In mingw_w64, usleep is a function in unistd.h, not a define
+  #if !defined(usleep) && defined(__NO_ISOCEXT)
    #define usleep(microseconds) CLY_YieldProcessor(microseconds)
-  #endif
-  #ifndef __MINGW32_MAJOR_VERSION
-   // MinGW people is really ignorant about gcc.
-   // This definition should be done by gcc itself.
-   #include <_mingw.h>
   #endif
   #if defined(Uses_alloca) && (__MINGW32_MAJOR_VERSION>=2) && !defined(alloca)
    // Why needed? that's a really idiot thing.
@@ -1930,7 +1941,7 @@ when compiler version 7.0 was released.
 //  // Doesn't work, needs to be fixed.
 //  #define usleep(microseconds) CLY_YieldProcessor(microseconds)
 // #endif
-#endif
+#endif // TVComp_MSC
 
 #ifdef Uses_IOS_BIN
  #undef  IOS_BIN
@@ -2102,9 +2113,11 @@ CLY_CFunc int  CLY_getcurdir(int drive, char *buffer);
  #define Include_sys_types 1
 #endif
 
-#if defined(Include_sys_types) && !defined(Included_sys_types)
- #define Included_sys_types 1
- #include <sys/types.h>
+#if (defined(Include_sys_types) && !defined(Included_sys_types)) || defined(Force_CLY_ssize_t)
+ #ifndef Included_sys_types
+   #define Included_sys_types 1
+   #include <sys/types.h>
+ #endif
  /* Platforms where sys/types.h doesn't define ssize_t: */
  #if defined(Uses_CLY_ssize_t) && !defined(CLY_ssize_t)
   #define CLY_ssize_t 1
