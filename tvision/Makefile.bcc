@@ -8,13 +8,14 @@
 # I used BC++ 5.5 free command line tools for testing.
 #
 
+ExLIB=.dll
 !ifdef FOR_NMAKE
+DEFINE_FOR_NMAKE=FOR_NMAKE=$(FOR_NMAKE)
 MKF_EXT=.nmk
 MAKE=nmake
 !else ifdef FOR_OW
 MKF_EXT=.wat
 MAKE=wmake -ms
-ExLIB=.dll
 !else
 MKF_EXT=.bmk
 !endif
@@ -26,7 +27,7 @@ all: makes\librhtv$(ExLIB) $(EXTRA_TARGETS)
 
 makes\librhtv$(ExLIB):
 	-cd makes
-	$(MAKE) MKF_EXT="$(MKF_EXT)" DEBUG="$(DEBUG)" EXTRA_TARGETS="$(EXTRA_TARGETS)" -f librhtv.bmk all
+	$(MAKE) MKF_EXT="$(MKF_EXT)" DEBUG="$(DEBUG)" $(DEFINE_FOR_NMAKE) EXTRA_TARGETS="$(EXTRA_TARGETS)" -f librhtv.bmk all
 	-cd ..
 
 clean:

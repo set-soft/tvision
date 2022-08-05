@@ -9,15 +9,22 @@
 
 !ifdef DEBUG
 # Options to debug
-CFLAGS   = /nologo -D_WIN32 -DFOR_EDITOR /EHsc -D_USE_32BIT_TIME_T -D_CRT_SECURE_NO_DEPRECATE /Zi
 LDFLAGS  = /DEBUG
+!ifdef WIN64
+CFLAGS   = /nologo -D_WIN64 -DFOR_EDITOR /EHsc -D_CRT_SECURE_NO_DEPRECATE /Zi
+!else
+CFLAGS   = /nologo -D_WIN32 -DFOR_EDITOR /EHsc -D_USE_32BIT_TIME_T /Zi
+!endif
 !else
 # Options for optimization (production)
-CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /EHsc -D_USE_32BIT_TIME_T -D_CRT_SECURE_NO_DEPRECATE
-# Note: /GX is deprecated, not sure if needed for old versions
-#CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GX -D_USE_32BIT_TIME_T
-#CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GR- /GX-
 LDFLAGS  = /verbose
+!ifdef WIN64
+CFLAGS   = /nologo -O2 -D_WIN64 -DFOR_EDITOR /EHsc -D_CRT_SECURE_NO_DEPRECATE
+!else
+# Note: /GX is deprecated, not sure if needed for old versions
+CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /EHsc -D_USE_32BIT_TIME_T
+#CFLAGS   = /nologo -O2 -D_WIN32 -DFOR_EDITOR /GR- /GX-
+!endif
 !endif
 CXXFLAGS = /TP $(CFLAGS)
 

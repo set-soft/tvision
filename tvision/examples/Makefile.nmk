@@ -7,21 +7,25 @@
 #In order for the makefile to work, you have to start "Visual Studio xxxx Command prompt" 
 #                                                  or "Visual Studio xxxx x64 Cross tools command prompt"
 #I'm not sure about pre 2005 settings. Maybe you need to use them for 2005 as well, please report
-CFLAGS=-O2 -I../winnt/include -I../include -D_WIN32 /GR- /EHs-c-
 
+!ifdef WIN64
+CFLAGS=-O2 -I../winnt/include -I../include -D_WIN64 /GR- /EHs-c-
 #VS 2008 64bit: CFLAGS=-O2 -I./include -I../include -D_WIN64 /GR- /EHs-c-
+CXXFLAGS=-O2 -I../winnt/include -I../include -D_WIN64 /GR- /EHsc
+#VC 2008 64bit: CXXFLAGS=-O2 -I./include -I../include -D_WIN64 /GR- /EHsc
+!else
+CFLAGS=-O2 -I../winnt/include -I../include -D_WIN32 /GR- /EHs-c-
 #VS 2008 32bit: CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHs-c-
 #VS pre 2005  : CFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX-
-
 # The /EHsc options seems to be needed by .NET 2003 compiler.
 # I'm not sure if they interfere with older versions, please report about it.
 CXXFLAGS=-O2 -I../winnt/include -I../include -D_WIN32 /GR- /EHsc
-
-#VC 2008 64bit: CXXFLAGS=-O2 -I./include -I../include -D_WIN64 /GR- /EHsc
 #VC 2008 32bit: CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /EHsc
 #VS pre 2005  : CXXFLAGS=-O2 -I./include -I../include -D_WIN32 /GR- /GX- /EHsc
+!endif
 
 OBJDIR=../winnt/obj_ms
+TVLIBDIR=../makes
 
 #clean default extension list
 .SUFFIXES:
@@ -313,7 +317,7 @@ TVEDITEXE = tvedit.exe
 	$(CXX) -c $(CXXFLAGS) /Tp$? -Fo$*.o
 	
 tvedit.exe: $(TVEDITOBJ)
-	link /out:$(TVEDITSRC)/$(TVEDITEXE) $(TVEDITOBJ) libtv.lib user32.lib gdi32.lib
+	link /out:$(TVEDITSRC)/$(TVEDITEXE) $(TVEDITOBJ) $(TVLIBDIR)/librhtv.lib user32.lib gdi32.lib
 	del /f /q ..\winnt\obj_ms\*
 
 
