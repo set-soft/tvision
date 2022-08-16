@@ -44,6 +44,8 @@ $GCC=CheckGCC();
 $CFLAGS=FindCFLAGS();
 # Determine C++ flags
 $CXXFLAGS=FindCXXFLAGS();
+# Determine linker flags
+$LDFLAGS=FindLDFLAGS();
 # Extra lib directories
 $LDExtraDirs=FindLDExtraDirs();
 # Check if gcc can compile C++
@@ -242,9 +244,16 @@ else
    # However, the linker doesn't allow "common" symbols in shared libraries.
    $MakeDefsRHIDE[5]='SHARED_CODE_OPTION=-fno-common';
   }
-# Flags to link as a dynamic lib
+
+# Supplied linker flags
 $ldflags1='RHIDE_LDFLAGS=';
+if ($LDFLAGS)
+  {
+  $ldflags1.=$LDFLAGS;
+  }
 $ldflags2=$ldflags1;
+
+# Flags to link as a dynamic lib
 if ($OS eq 'UNIX')
   {
    if ($OSf ne 'Darwin')
@@ -354,6 +363,10 @@ sub SeeCommandLine
     elsif ($i=~'--cxxflags=(.*)')
       {
        @conf{'CXXFLAGS'}=$1;
+      }
+    elsif ($i=~'--ldflags=(.*)')
+      {
+       @conf{'LDFLAGS'}=$1;
       }
     elsif ($i eq '--fhs')
       {
@@ -471,15 +484,16 @@ sub ShowHelp
  print "Flags:\n";
  print "--cflags=val    : normal C flags [default is env. CFLAGS].\n";
  print "--cxxflags=val  : normal C++ flags [default is env. CXXFLAGS].\n";
+ print "--ldflags=val   : normal linker flags [default is env. LDFLAGS].\n";
  print "--debug         : selects C/C++ switches for debugging\n";
- 
+
  print "\nPaths and library names:\n";
  print "--x-include=path: X11 include path [/usr/X11R6/lib].\n";
  print "--x-lib=path    : X11 library path [/usr/X11R6/include].\n";
  print "--X11lib=val    : Name of X11 libraries [default is X11 Xmu].\n";
  print "--include=path  : Add this path for includes. Repeat for each dir.\n";
  print "--no-libs-here  : Don't use the sources path for libs.\n";
- 
+
  print "\nIntallation:\n";
  print "--prefix=path   : defines the base directory for installation.\n";
  print "--fhs           : force the FHS layout under UNIX.\n";
@@ -487,7 +501,7 @@ sub ShowHelp
  print "--with-debug    : install dynamic library without running strip.\n";
  print "--without-debug : run strip to reduce the size [default]\n";
  print "--real-prefix=pa: real prefix, for Debian package\n";
- 
+
  print "\nLibraries:\n";
  print "--force-dummy    : use the dummy intl library even when gettext is detected.\n";
  print "--no-intl        : don't use international support.\n";
@@ -500,7 +514,7 @@ sub ShowHelp
  print "--without-ssc    : compiles without SSC [default].\n";
  print "--with-pthread   : uses pthread for X11 driver.\n";
  print "--without-pthread: avoids pthread for X11 driver [default].\n";
- 
+
  print "\nOthers:\n";
  print "--enable-maintainer-mode:\n";
  print "                : enables header dependencies and other stuff needed\n";
@@ -1248,7 +1262,7 @@ sub GenerateMakefile
  $rep.="\t".GenInstallDir('0755','$(prefix)/include/rhtvision/cl');
  $rep.="\t".GenInstallFiles('0644','include/cl/*.h','$(prefix)/include/rhtvision/cl');
  $text=~s/\@install_headers\@/$rep/g;
- 
+
  # Dummy replacement for i8n library
  $rep ="install-intl-dummy: intl-dummy\n";
  $rep.="\t".GenInstallDir('0755','$(libdir)');

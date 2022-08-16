@@ -591,7 +591,7 @@ sub FindCFLAGS
 # Description:
 #  Simple hook to get the extra dirs.
 #
-# Return: 
+# Return:
 #  Space separated list of directories.
 #
 ####################################################################[txi]###
@@ -609,6 +609,37 @@ sub FindLDExtraDirs()
  $ret.='/usr/local/lib' if ($OSf eq 'FreeBSD');
  $ret.='/usr/pkg/lib'   if ($OSf eq 'NetBSD');
  $conf{'LDExtraDirs'}=$ret;
+ $ret;
+}
+
+
+###[txh]####################################################################
+#
+# Prototype: FindLDFLAGS()
+# Description:
+#   Determines the flags to be used for linking. Mechanism:@*
+# 1) Cached LDFLAGS key.@*
+# 2) Environment variable LDFLAGS.@*
+#   The result is stored in the 'LDFLAGS' configuration key.
+#
+# Return: The value determined.
+#
+####################################################################[txi]###
+
+sub FindLDFLAGS
+{
+ my $ret;
+
+ print 'LD flags: ';
+ $ret=@conf{'LDFLAGS'};
+ if ($ret)
+   {
+    print "$ret (cached)\n";
+    return $ret;
+   }
+ $ret=@ENV{'LDFLAGS'};
+ print "$ret\n";
+ $conf{'LDFLAGS'}=$ret;
  $ret;
 }
 
@@ -1082,7 +1113,7 @@ sub CreateRHIDEenvs
     $rep ='rc';
     $rep.='s' unless $conf{'UseRanLib'};
     $text.="RHIDE_ARFLAGS=$rep\n";
-    
+
     if ($useXtreme)
       {
        $text.="RHIDE_OS_CFLAGS=@conf{'XCFLAGS'}\n";
