@@ -27,7 +27,7 @@
   #pragma alloca
 #endif
 
-#if defined(TVCompf_MinGW) || defined(TVComp_BCPP) || defined(TVComp_MSC)
+#if defined(TVCompf_MinGW) || defined(TVComp_BCPP) || defined(TVComp_MSC) || defined(TVOSf_Linux)
 #define STDC_HEADERS 1
 #endif
 
@@ -4110,8 +4110,8 @@ re_match_2 ( struct re_pattern_buffer *bufp, const char *string1,
                register from the stack, since lowest will == highest in
                `pop_failure_point'.  */
             unsigned dummy_low_reg, dummy_high_reg;
-            unsigned char *pdummy;
-            const char *sdummy;
+            unsigned char *pdummy CLY_Unused;
+            const char *sdummy CLY_Unused;
 
             DEBUG_PRINT1 ("EXECUTING pop_failure_jump.\n");
             POP_FAILURE_POINT (sdummy, pdummy,

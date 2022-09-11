@@ -161,6 +161,7 @@ typedef unsigned long  ulong;
 /* The following are unconditionally defined for all platforms so here I avoid
    redefinitions. */
 #undef CLY_Packed
+#undef CLY_Unused
 #undef NEVER_RETURNS
 #undef RETURN_WHEN_NEVER_RETURNS
 #undef DeleteArray
@@ -319,6 +320,7 @@ typedef unsigned long  ulong;
  #define NEVER_RETURNS __attribute__((noreturn))
  #define RETURN_WHEN_NEVER_RETURNS
  #define CLY_Packed __attribute__((packed))
+ #define CLY_Unused __attribute__((__unused__))
  /* SET: Anything allocated with new[] should be deleted with [].
     Pointed out by Laurynas Biveinis. */
  #define DeleteArray(a) delete[] a
@@ -986,6 +988,7 @@ typedef unsigned long  ulong;
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
+ #define CLY_Unused
  #ifndef CLY_BooleanDefined
   #define CLY_BooleanDefined 1
   /* Simple Boolean type */
@@ -1246,6 +1249,7 @@ typedef unsigned long  ulong;
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
+ #define CLY_Unused
  #ifndef CLY_BooleanDefined
   #define CLY_BooleanDefined 1
   /* Simple Boolean type */
@@ -1532,6 +1536,7 @@ when compiler version 7.0 was released.
  #define CLY_UseCrLf 1
  #define CLY_HaveDriveLetters 1
  #define CLY_Packed
+ #define CLY_Unused
  /*
    I'm disabling warnings 4311/2 that generates:
    'type cast' : pointer truncation from 'void *' to 'uipointer'
