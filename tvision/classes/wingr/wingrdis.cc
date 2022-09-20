@@ -42,7 +42,7 @@
 
 const int maxTitleSize= 256;
 
-char *     TDisplayWinGr::className= "TVISION for windows"; /* Make the classname into a global variable */
+const char * TDisplayWinGr::className= "TVISION for windows"; /* Make the classname into a global variable */
 HINSTANCE TDisplayWinGr::TvWinInstance;
 
 char       TDisplayWinGr::cShapeFr;
@@ -733,7 +733,7 @@ VideoModeData TDisplayWinGr::videoModes[]=
 
 int TDisplayWinGr::SetFontCrt( bitmapFontRec & fontResource
                              , ushort w, ushort h )
-{ HGDIOBJ fontObject;
+{ HGDIOBJ fontObject CLY_Unused;
   int     loop;
   RECT    celda;
   char    letra;
@@ -1228,13 +1228,13 @@ bool TDisplayWinGr::processEvent(  )
                                 , message.lParam );
       }
 
-      if ( message.message != WM_TIMER )
+    if ( message.message != WM_TIMER )
       { timer= 0;                     /* Reset adaptative counter    */
       }
       
-      TranslateMessage( &message );   /* Arrange key events              */
-      DispatchMessage ( &message );   /* Send message to WindowProcedure */
-      return( true );
+    TranslateMessage( &message );   /* Arrange key events              */
+    DispatchMessage ( &message );   /* Send message to WindowProcedure */
+    return( true );
   }
   return( false );
 }

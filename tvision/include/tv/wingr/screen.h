@@ -54,7 +54,7 @@ struct TDisplayWinGr : public virtual TDisplay // virtual to avoid problems with
   static  unsigned zPos;        /* Cursor size               */
   static       HDC hdc;         /* Context used for drawing  */
   static      RECT wGeo;        /* Window position and size  */
-  static    char * className;   /* Make the classname into a global variable */
+  static const char * className;   /* Make the classname into a global variable */
   static HINSTANCE TvWinInstance;
 
 /*
