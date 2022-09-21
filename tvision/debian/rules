@@ -85,7 +85,7 @@ install: build
 	dh_installdirs -p $(package)$(version) usr/lib usr/share \
 		usr/share/doc/$(package)$(version) \
 		usr/share/doc/$(package)$(version)/eterm
-	$(MAKE) install
+	$(MAKE) install prefix=$(destdir)
 # We need to move files for other packages than the first one in the control file:
 	dh_movefiles -p $(package)$(version) usr/lib/$(LIB_SUBDIR)/librhtv.so.$(version) \
 		usr/share/locale/
