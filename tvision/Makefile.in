@@ -48,11 +48,10 @@ install: @installers@ install-headers install-intl-dummy install-config
 @clean@
 
 deb:
-	fakeroot dpkg-buildpackage -b -uc
-	#fakeroot debian/rules binary
+	debuild --no-sign --build=binary
 
 deb_clean:
-	fakeroot debian/rules clean
+	debuild -- clean
 
 #
 # For compatibility with automake:

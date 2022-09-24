@@ -1,5 +1,6 @@
-rhtvision1
-rhtvision1.substvars
+rhtvision*/
+rhtvision*.substvars
+rhtvision*.debhelper.log
+debhelper-build-stamp
 files
-tmp
-
+tmp/

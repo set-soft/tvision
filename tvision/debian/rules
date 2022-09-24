@@ -1,140 +1,67 @@
 #!/usr/bin/make -f
-# Made with the aid of dh_make, by Craig Small
-# Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
-# This version is for a hypothetical package that builds an
-# architecture-dependant package, as well as an architecture-independant
-# package.
 
-version=$(shell cat version.txt)
-package=rhtvision
-destdir=$(shell pwd)/debian/tmp/usr
-
-LIB_SUBDIR=$(shell dpkg-architecture -qDEB_TARGET_MULTIARCH)
+version := $(shell cat version.txt)
+package := rhtvision$(version)
+destdir := $(shell pwd)/debian/tmp/usr
 
 # Uncomment this to turn on verbose mode:
 #export DH_VERBOSE=1
 
-# Set CFLAGS according to the Debian Policy:
-CFLAGS = -D_REENTRANT -g -Wall
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
-CXXFLAGS = $(CFLAGS)
-LDFLAGS=
+# Set CFLAGS, CXXFLAGS, etc.
+DPKG_EXPORT_BUILDFLAGS := 1
+include /usr/share/dpkg/default.mk
 
-# Compile the beast!:
-build: build-stamp
-build-stamp: debianbackup.tar
-	dh_testdir
-# Rename debian/rhtvision.postinst file if it exists (and others):
-ifneq ($(wildcard debian/rhtvision.postinst),)
-	mv debian/rhtvision.postinst debian/rhtvision$(version).postinst
-	mv debian/rhtvision.postrm debian/rhtvision$(version).postrm
-endif
-	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure \
-		--prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr \
-		--libs-subdir=$(LIB_SUBDIR)
-	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" $(MAKE) -j `nproc`
-	touch build-stamp
+%:
+	dh $@
 
+override_dh_auto_clean: ../debianbackup.tar
+	-git clean -dx --force
 
-# Clean everything as if nothing happened :) :
-clean: clean-debian debianbackup.tar
-# If we don't configure there is no guarantee that we have a Makefile:
-	./configure --prefix=$(destdir) --fhs --no-libs-here --real-prefix=/usr \
-		--libs-subdir=$(LIB_SUBDIR)
-	$(MAKE) clean
-# Restore upstream provided regenerated files:
-	test -e debianbackup.tar && tar -xf debianbackup.tar
-	rm -f debianbackup.tar
-# FIXME: ask upstream about adding the next files to his clean target:
-	rm -f compat/rhide.env examples/rhide.env include/tv/configtv.h Makefile \
-		makes/rhide.env redhat/librhtv-*.spec makes/libtvfintl.a
-	rm -f build-stamp
+override_dh_auto_configure:
+	./configure --prefix=$(destdir) --real-prefix=/usr \
+		--libs-subdir=$(DEB_HOST_MULTIARCH) --fhs \
+		--no-libs-here --with-debug
 
-# Use the following target when you just want for example to rebuild the
-# package without recompiling the sources:
-clean-debian:
-	dh_testdir
-	dh_testroot
-# Rename rhtvision$(version).postinst file if it exists (and others):
-ifneq ($(wildcard debian/rhtvision$(version).postinst),)
-	mv debian/rhtvision$(version).postinst debian/rhtvision.postinst
-	mv debian/rhtvision$(version).postrm debian/rhtvision.postrm
-endif
-	dh_clean
-
-# Let's backup modified files to restore them later!:
-debianbackup.tar:
-	dh_testdir
-# Backup upstream provided regenerated files:
-	-tar -cf debianbackup.tar --files-from=debian/files_to_backup
-
-
-# Copy needed files to the temporary directories for the packages:
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean
-	dh_installdirs -p $(package)$(version)-dev usr/lib usr/bin \
-		usr/include/$(package) usr/share/doc \
-		usr/share/doc/$(package)$(version)-dev \
-		usr/share/doc/$(package)$(version)-dev/examples
-	dh_installdirs -p $(package)$(version) usr/lib usr/share \
-		usr/share/doc/$(package)$(version) \
-		usr/share/doc/$(package)$(version)/eterm
+override_dh_auto_install:
 	$(MAKE) install prefix=$(destdir)
-# We need to move files for other packages than the first one in the control file:
-	dh_movefiles -p $(package)$(version) usr/lib/$(LIB_SUBDIR)/librhtv.so.$(version) \
-		usr/share/locale/
-	dh_movefiles -p $(package)$(version)-dev usr/
 
+override_dh_install:
+	dh_movefiles -p $(package) usr/share/locale/ \
+		usr/lib/$(DEB_HOST_MULTIARCH)/librhtv.so.$(version)
+	dh_movefiles -p $(package)-dev usr/
 
-# Build the packages for a specific architecture:
-binary-arch: build install
-	dh_testdir
-	dh_testroot
+override_dh_installdocs:
 	dh_installdocs -A borland.txt copying copying.rh readme.txt \
-		doc/CodePages.txt doc/ConfigFile.txt doc/Eterm.txt doc/Linux.txt \
-		doc/X11.txt doc/XTerm.txt THANKS
-	dh_installdocs -p $(package)$(version)-dev doc/TVReference.html \
+		doc/CodePages.txt doc/ConfigFile.txt doc/Eterm.txt \
+		doc/Linux.txt doc/X11.txt doc/XTerm.txt THANKS
+	dh_installdocs -p $(package)-dev doc/TVReference.html \
 		doc/I18n.txt doc/Streams.txt
-	dh_installdocs -p $(package)$(version) extra/eterm/ debian/README.debian
-	mv debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.debian \
-		debian/$(package)$(version)/usr/share/doc/$(package)$(version)/README.Debian
-	dh_installexamples -p $(package)$(version)-dev examples/*
-	find $(destdir) debian/$(package)$(version) \
-        \( -name '.cvsignore' -o -name 'CVS' -prune \) -exec rm -rf '{}' \;
-#	dh_installmenu
-#	dh_installemacsen
-#	dh_installinit
-#	dh_installcron
-#	dh_installmanpages
-#	dh_undocumented -p $(package)$(version) rhtvision.3
+	dh_installdocs -p $(package) extra/eterm/ debian/README.debian
+	mv debian/$(package)/usr/share/doc/$(package)/README.debian \
+		debian/$(package)/usr/share/doc/$(package)/README.Debian
+
+override_dh_installexamples:
+	dh_installexamples -p $(package)-dev examples/*
+
+override_dh_installchangelogs:
 	dh_installchangelogs change.log
-	dh_strip
-	dh_compress
-	dh_fixperms
-#	dh_suidregister
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_makeshlibs -m$(version)
+
+override_dh_md5sums:
+	# Clean up cvs/git files before checksumming
+	find debian/$(package) debian/$(package)-dev \
+		\( -name '.gitignore' -o -name '.cvsignore' \) -delete
 	dh_md5sums
+
+override_dh_makeshlibs:
+	dh_makeshlibs -m$(version)
+
+override_dh_builddeb:
 	dh_builddeb
+	# Restore files that were removed by git clean
+	-tar -xf ../debianbackup.tar && rm -f ../debianbackup.tar
 
-
-# Build architecture-independent files here.
-binary-indep: build install
-#This package doesn't have architecture-independent files for the moment...
-
-source diff:
-	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
-
-# Build all the packages:
-binary: binary-indep binary-arch
-
-.PHONY: build clean binary-indep binary-arch binary clean-debian
-
+../debianbackup.tar:
+	dh_testdir
+	git clean -dx --exclude=debian/ --dry-run \
+		| sed 's/Would remove //g' \
+		| tar --files-from=- -cf $@
