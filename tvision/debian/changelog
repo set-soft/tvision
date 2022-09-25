@@ -1,4 +1,4 @@
-rhtvision (2.2.3-1) stable; urgency=medium
+rhtvision (2.2.3+1) stable; urgency=medium
 
   * Compiles with gcc 10.2
   * Fixes to TInputLine (not showing last char)
