@@ -23,13 +23,27 @@ be found in the ../win32/readme.txt file.
 
   Because the configuration mechanism to compile the library uses tools that
 aren't common for BC++ and MSVC users.
-  
+
 * How do I compile the library?
 
-  Borland: Run make from this directory. It uses the Makefile archive.
-  MSVC: Run nmake from this directory. It uses the Makefile.nmk archive. Note
-        that usually you must edit this file to indicate where are installed
-        the MSVC header files.
+  Borland: Run make from the tvision directory. It uses the Makefile archive.
+  MSVC: Run nmake from the tvision directory. It uses the Makefile.nmk archive.
+        Recent version of the Microsoft Visual Studio include system menu
+        entries for both 64-bit and 32-bit Native Tools command lines. If
+        you use those command lines, then the proper MSVC header files are
+        automatically includded.  Otherwise, you usually you must edit the
+        make file to indicate where the correct MSVC header files are
+        installed.
+
+  To accommodate various build environments, the makefiles utilizes optional
+  command line directives:
+
+  nmake -f Makefile.nmk WIN64=1 USE_LOCAL_INCLUDE=1
+
+  WIN64=1 include this is you are building 64-bit binaries.
+  USE_LOCAL_INCLUDE=1 use this if the Windows SDK you are using does not
+      contain the SVRAPI.H header file. That header file is no longer
+      included in newer versions of the Windows SDK.
 
 * How do I compile the demo?
 
