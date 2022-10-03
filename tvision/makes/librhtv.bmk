@@ -25,6 +25,9 @@ INCLUDE_DIR=..\include
 CLASSES_DIR=..\classes
 EXTRA_SRC_DIR=..
 INCLUDE_DIRS=-I..\winnt\include -I$(INCLUDE_DIR)
+!ifdef USE_LOCAL_INCLUDE
+INCLUDE_DIRS=$(INCLUDE_DIRS) -I..\winnt\local\include
+!endif
 
 ##########################################################################################
 #
